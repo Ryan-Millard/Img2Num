@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { loadImageToUint8Array } from './utils/image-utils.js';
-import createImageModule from './wasm/build/image_utils.js';
+import createImageModule from '@wasm/image_utils.js';
 
 function App() {
 	const [mod, setMod] = useState(null);
