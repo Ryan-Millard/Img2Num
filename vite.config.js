@@ -11,8 +11,10 @@ export default defineConfig({
 	assetsInclude: ['**/*.wasm'],
 	resolve: {
 		alias: {
-			// map "@wasm" -> "<project-root>/wasm/build"
-			'@wasm': path.resolve(__dirname, 'src/wasm/build')
+			'@pages': path.resolve(__dirname, 'src/pages'),
+			'@components': path.resolve(__dirname, 'src/components'),
+			'@utils': path.resolve(__dirname, 'src/utils'),
+			'@wasm': path.resolve(__dirname, 'src/wasm/build'),
 		}
 	}
 })
