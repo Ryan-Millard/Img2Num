@@ -15,3 +15,37 @@ export function loadImageToUint8Array(file) {
 		img.src = URL.createObjectURL(file);
 	});
 }
+
+export async function getCroppedImg(imageSrc, pixelCrop) {
+	const image = await new Promise((resolve, reject) => {
+		const img = new Image();
+		img.crossOrigin = 'anonymous';
+		img.onload = () => resolve(img);
+		img.onerror = (err) => reject(err);
+		img.src = imageSrc;
+	});
+
+	const canvas = document.createElement('canvas');
+	canvas.width = pixelCrop.width;
+	canvas.height = pixelCrop.height;
+	const ctx = canvas.getContext('2d');
+
+	ctx.drawImage(
+		image,
+		pixelCrop.x,
+		pixelCrop.y,
+		pixelCrop.width,
+		pixelCrop.height,
+		0,
+		0,
+		pixelCrop.width,
+		pixelCrop.height
+	);
+
+	return new Promise((resolve) => {
+		canvas.toBlob((blob) => {
+			const url = URL.createObjectURL(blob);
+			resolve(url);
+		}, 'image/png');
+	});
+}

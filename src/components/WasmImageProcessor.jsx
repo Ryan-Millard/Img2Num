@@ -1,107 +1,63 @@
-import { useEffect, useRef, useState, useId } from 'react';
-import { loadImageToUint8Array } from '@utils/image-utils';
-import createImageModule from '@wasm/image_utils';
+import React, { useEffect } from 'react';
+import FileDropZone from './FileDropZone';
+import CropModal from './CropModal';
 import ProcessedImageDisplay from './ProcessedImageDisplay';
+import { useWasmProcessor } from '../hooks/useWasmProcessor';
 import styles from './WasmImageProcessor.module.css';
-import LetterGlitch from './LetterGlitch';
 
-const WasmImageProcessor = () => {
-	const [mod, setMod] = useState(null);
-	const [originalSrc, setOriginalSrc] = useState(null);
-	const [fileData, setFileData] = useState(null);
-	const [editedImageData, setEditedImageData] = useState(null);
-	const canvasRef = useRef(null);
-	const inputId = useId();
+export default function WasmImageProcessor() {
+	const {
+		mod,
+		fileData,
+		editedImageData,
+		loadFromFile,
+		processImage,
+	} = useWasmProcessor();
+	const [cropOpen, setCropOpen] = React.useState(false);
 
 	useEffect(() => {
-		createImageModule().then(setMod);
-
-		const handlePaste = async (e) => {
+		const handlePaste = async e => {
 			const items = e.clipboardData?.items;
 			if (!items) return;
-
 			for (const item of items) {
-				if (item.type.startsWith("image/")) {
-					const file = item.getAsFile();
-					await loadOriginal(file);
+				if (item.type.startsWith('image/')) {
+					loadFromFile(item.getAsFile());
 					break;
 				}
 			}
 		};
-		document.addEventListener("paste", handlePaste);
-		return () => document.removeEventListener("paste", handlePaste);
-	}, []);
+		document.addEventListener('paste', handlePaste);
+		return () => document.removeEventListener('paste', handlePaste);
+	}, [loadFromFile]);
 
-	const handleDrop = async (e) => {
-		e.preventDefault();
-		const file = e.dataTransfer.files[0];
-		await loadOriginal(file);
-	};
-
-	const handleSelect = async (e) => {
-		const file = e.target.files[0];
-		await loadOriginal(file);
-	};
-
-	const loadOriginal = async (file) => {
-		if (!file) return;
-		const url = URL.createObjectURL(file);
-		setOriginalSrc(url);
-		const { pixels, width, height } = await loadImageToUint8Array(file);
-		setFileData({ pixels, width, height });
-	};
-
-	const processImage = () => {
-		if (!fileData || !mod) return;
-		const { pixels, width, height } = fileData;
-		const size = pixels.length;
-		let ptr = null;
-		try {
-			ptr = mod._malloc(size);
-			mod.HEAPU8.set(pixels, ptr);
-			mod._invert_image(ptr, size);
-
-			const modified = new Uint8ClampedArray(mod.HEAPU8.subarray(ptr, ptr + size));
-			setEditedImageData({ pixels: modified, width, height });
-		} catch (err) {
-			console.error('Processing failed', err);
-			alert('Error during image processing');
-		} finally {
-			if (ptr) mod._free(ptr);
-		}
+	const openCrop = () => setCropOpen(true);
+	const closeCrop = () => setCropOpen(false);
+	const handleCropApply = url => {
+		fetch(url)
+			.then(res => res.blob())
+			.then(blob => loadFromFile(new File([blob], 'cropped.png', { type: blob.type })));
+		closeCrop();
 	};
 
 	return (
 		<div className={styles.container}>
 			{!mod && <p>Loading WASM Engine...</p>}
-			<label htmlFor={inputId} className={styles.dropZone}
-				onDrop={handleDrop}
-				onDragOver={(e) => e.preventDefault()}
-			>
-				<LetterGlitch glitchSpeed={50} className={styles.letterGlitch} />
 
-				{originalSrc ? (
-					<img src={originalSrc} alt="Original" className={styles.preview} />
-				) : (
-					<>
-						<p className={`text-center ${styles.dragDropText}`}>Drag & Drop or <span>Choose File</span></p>
-					</>
-				)}
+			<FileDropZone originalSrc={fileData?.url} onFile={loadFromFile} />
 
-				{/* Always keep input in the DOM to allow new image click selections */}
-				<input
-					id={inputId}
-					type="file"
-					accept="image/*"
-					onChange={handleSelect}
-					hidden
+			{fileData?.url && !cropOpen && (
+				<div className={styles.controls}>
+					<button className="button" onClick={openCrop}>Crop</button>
+					<button className="button" onClick={processImage}>OK</button>
+				</div>
+			)}
+
+			{cropOpen && (
+				<CropModal
+					imageSrc={fileData.url}
+					onApply={handleCropApply}
+					onCancel={closeCrop}
 				/>
-			</label>
-
-			{originalSrc && (
-				<button className="button" onClick={processImage}>
-					OK
-				</button>
 			)}
 
 			{editedImageData && (
@@ -109,6 +65,4 @@ const WasmImageProcessor = () => {
 			)}
 		</div>
 	);
-};
-
-export default WasmImageProcessor;
+}
