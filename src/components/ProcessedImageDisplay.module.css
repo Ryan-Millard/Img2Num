@@ -1,0 +1,37 @@
+.wrapper {
+	border: 2px dashed #888;
+	border-radius: 8px;
+	width: 60vw;
+	height: fit-content;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.wrapper *:not(.letterGlitch) {
+	z-index: 1;
+}
+
+.letterGlitch {
+	position: absolute;
+	z-index: 0;
+}
+
+.canvas {
+	max-width: 60vw;
+	max-height: 40vh;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+@media (max-width: 600px) {
+	.wrapper {
+		width: 90vw;
+		padding: 0.75rem;
+	}
+
+	.canvas {
+		max-width: 90vw;
+		max-height: 30vh;
+	}
+}

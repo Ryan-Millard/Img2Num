@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
-import { loadImageToUint8Array } from './utils/image-utils.js';
-import createImageModule from '@wasm/image_utils.js';
+import { useEffect } from 'react';
 import Home from '@pages/Home';
 
 function App() {
-	return <Home />
+	useEffect(() => {
+		document.documentElement.classList.add('dark');
+	}, []); // empty dependency array = run once after mount
+
+	return <Home />;
 }
 
 export default App;
