@@ -18,8 +18,8 @@
 	},
 	"dependencies": {
 		"react": "^19.1.0",
-		"react-dom": "^19.1.0",
-		"react-easy-crop": "^5.4.2"
+		"react-advanced-cropper": "^0.20.1",
+		"react-dom": "^19.1.0"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.29.0",
