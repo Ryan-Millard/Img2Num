@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { Cropper } from 'react-advanced-cropper';
 import 'react-advanced-cropper/dist/style.css';
-import styles from './CropModal.module.css';
+import styles from './ImageEditModal.module.css';
 import { useWasmProcessor } from '../hooks/useWasmProcessor';
 
 // Icons
@@ -38,7 +38,7 @@ const AspectRadioOption = React.memo(({ option, isChecked, onChange }) => (
 	</label>
 ));
 
-export default function CropModal({ imageSrc, onApply, onCancel }) {
+export default function ImageEditModal({ imageSrc, onApply, onCancel }) {
 	const {
 		mod,
 		fileData,
@@ -62,6 +62,8 @@ export default function CropModal({ imageSrc, onApply, onCancel }) {
 	const [brightness, setBrightness] = useState(0);
 	const [contrast, setContrast] = useState(0);
 	const [hue, setHue] = useState(0);
+	// Inversion (mode)
+	const [isInverted, setIsInverted] = useState(false);
 
 	// Action being done to image
 	const [mode, setMode] = useState('crop');
@@ -118,6 +120,13 @@ export default function CropModal({ imageSrc, onApply, onCancel }) {
 		if (mode !== 'invert' || !editedImageData?.url) return;
 		setImageSource(editedImageData.url);
 	}, [editedImageData?.url, mode]);
+
+	useEffect(() => {
+		if (mode === 'invert' && fileData) {
+			invertImageColors();
+		}
+	}, [mode, fileData]);
+
 
 	// Sync transformation on flip changes
 	const transformCropperImage = useCallback((data) => {
@@ -204,22 +213,6 @@ export default function CropModal({ imageSrc, onApply, onCancel }) {
 		<div className={styles.overlay}>
 			<div className={styles.modal}>
 				<h2>Crop Image</h2>
-				<div className={styles.radioGroup}>
-					{radioOptions}
-					{aspectChoice === 'custom' && (
-						<div className={styles.customInputs}>
-							<label>
-								Width ratio:
-								<input type="number" min="1" step="0.1" value={customWidth} onChange={handleCustomWidthChange} />
-							</label>
-							<label>
-								Height ratio:
-								<input type="number" min="1" step="0.1" value={customHeight} onChange={handleCustomHeightChange} />
-							</label>
-						</div>
-					)}
-				</div>
-
 				<div className={styles.imageControls}>
 					<div className={styles.controlsContainer}>
 						<button
@@ -279,7 +272,23 @@ export default function CropModal({ imageSrc, onApply, onCancel }) {
 					disabled={mode !== 'crop'}
 				/>
 
-				{!['crop', 'invert'].includes(mode) && (
+				{mode === 'crop' && (
+					<div className={styles.radioGroup}>
+						{radioOptions}
+						{aspectChoice === 'custom' && (
+							<div className={styles.customInputs}>
+								<label>
+									Width ratio:
+									<input type="number" min="1" step="0.1" value={customWidth} onChange={handleCustomWidthChange} />
+								</label>
+								<label>
+									Height ratio:
+									<input type="number" min="1" step="0.1" value={customHeight} onChange={handleCustomHeightChange} />
+								</label>
+							</div>
+						)}
+					</div>
+				) || mode !== 'invert' && (
 					<input
 						type="range"
 						min="-100"
@@ -330,25 +339,24 @@ export default function CropModal({ imageSrc, onApply, onCancel }) {
 						<button
 							className={`${styles.controlButton} ${mode === 'hue' ? styles.active : ''}`}
 							onClick={() => setMode('hue')}
-							title="Saturation"
+							title="Hue"
 						>
 							<img src={hueIcon} alt="Hue" style={{ width: 20 }} />
 						</button>
 					</div>
 					<div className={styles.flipControls}>
 						<button
-							className={`${styles.controlButton} ${mode === 'invert' ? styles.active : ''}`}
+							className={`${styles.controlButton} ${isInverted ? styles.active : ''}`}
 							onClick={async () => {
 								setMode('invert');
+								setIsInverted(prev => !prev);
+
 								// 1) fetch the current image
 								const res = await fetch(imageSource);
 								const blob = await res.blob();
 
 								// 2) load into WASM (and wait for fileData to update)
 								await loadFromFile(new File([blob], 'inverted.png', { type: blob.type }));
-
-								// 3) now that fileData is current, actually invert
-								invertImageColors();
 							}}
 							title="Invert Colors"
 						>

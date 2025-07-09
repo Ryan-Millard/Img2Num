@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import FileDropZone from './FileDropZone';
-import CropModal from './CropModal';
+import ImageEditModal from './ImageEditModal';
 import ProcessedImageDisplay from './ProcessedImageDisplay';
 import { useWasmProcessor } from '../hooks/useWasmProcessor';
 import styles from './WasmImageProcessor.module.css';
@@ -13,7 +13,7 @@ export default function WasmImageProcessor() {
 		loadFromFile,
 		invertImageColors,
 	} = useWasmProcessor();
-	const [cropOpen, setCropOpen] = React.useState(false);
+	const [editOpen, setEditOpen] = React.useState(false);
 
 	useEffect(() => {
 		const handlePaste = async e => {
@@ -30,13 +30,13 @@ export default function WasmImageProcessor() {
 		return () => document.removeEventListener('paste', handlePaste);
 	}, [loadFromFile]);
 
-	const openCrop = () => setCropOpen(true);
-	const closeCrop = () => setCropOpen(false);
-	const handleCropApply = url => {
+	const openEdit = () => setEditOpen(true);
+	const closeEdit = () => setEditOpen(false);
+	const handleEditApply = url => {
 		fetch(url)
 			.then(res => res.blob())
-			.then(blob => loadFromFile(new File([blob], 'cropped.png', { type: blob.type })));
-		closeCrop();
+			.then(blob => loadFromFile(new File([blob], 'edited.png', { type: blob.type })));
+		closeEdit();
 	};
 
 	return (
@@ -45,18 +45,18 @@ export default function WasmImageProcessor() {
 
 			<FileDropZone originalSrc={fileData?.url} onFile={loadFromFile} />
 
-			{fileData?.url && !cropOpen && (
+			{fileData?.url && !editOpen && (
 				<div className={styles.controls}>
-					<button className="button" onClick={openCrop}>Crop</button>
+					<button className="button" onClick={openEdit}>Edit</button>
 					<button className="button" onClick={invertImageColors}>OK</button>
 				</div>
 			)}
 
-			{cropOpen && (
-				<CropModal
+			{editOpen && (
+				<ImageEditModal
 					imageSrc={fileData.url}
-					onApply={handleCropApply}
-					onCancel={closeCrop}
+					onApply={handleEditApply}
+					onCancel={closeEdit}
 				/>
 			)}
 
