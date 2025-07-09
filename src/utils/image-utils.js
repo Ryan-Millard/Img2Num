@@ -1,5 +1,5 @@
 export function loadImageToUint8Array(file) {
-	return new Promise((resolve) => {
+	const p = new Promise((resolve) => {
 		const img = new Image();
 		img.onload = () => {
 			const canvas = document.createElement('canvas');
@@ -14,6 +14,7 @@ export function loadImageToUint8Array(file) {
 		};
 		img.src = URL.createObjectURL(file);
 	});
+	return p;
 }
 
 export async function getCroppedImg(imageSrc, pixelCrop) {

@@ -1,3 +1,7 @@
+h2 {
+	margin: 0;
+}
+
 .overlay {
 	position: fixed;
 	top: 0;
@@ -25,7 +29,7 @@
 }
 
 .radioGroup {
-	display: flex;
+	display: inline-flex;
 	flex-wrap: wrap;
 	gap: 1rem;
 }
@@ -39,7 +43,7 @@
 }
 
 .customInputs {
-	display: flex;
+	display: inline-flex;
 	gap: 1rem;
 	align-items: center;
 	margin-bottom: 1rem;
@@ -70,7 +74,6 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	gap: 2rem;
 	padding: 1rem;
 	background: #2a2a2a;
 	border-radius: 0.5rem;

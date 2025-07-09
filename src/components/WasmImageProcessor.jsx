@@ -11,7 +11,7 @@ export default function WasmImageProcessor() {
 		fileData,
 		editedImageData,
 		loadFromFile,
-		processImage,
+		invertImageColors,
 	} = useWasmProcessor();
 	const [cropOpen, setCropOpen] = React.useState(false);
 
@@ -48,7 +48,7 @@ export default function WasmImageProcessor() {
 			{fileData?.url && !cropOpen && (
 				<div className={styles.controls}>
 					<button className="button" onClick={openCrop}>Crop</button>
-					<button className="button" onClick={processImage}>OK</button>
+					<button className="button" onClick={invertImageColors}>OK</button>
 				</div>
 			)}
 

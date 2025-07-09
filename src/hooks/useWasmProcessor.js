@@ -18,7 +18,7 @@ export function useWasmProcessor() {
 		setFileData({ pixels, width, height, url });
 	}
 
-	function processImage() {
+	function invertImageColors() {
 		if (!fileData || !mod) return;
 		const { pixels, width, height } = fileData;
 		const size = pixels.length;
@@ -28,7 +28,17 @@ export function useWasmProcessor() {
 			mod.HEAPU8.set(pixels, ptr);
 			mod._invert_image(ptr, size);
 			const modified = new Uint8ClampedArray(mod.HEAPU8.subarray(ptr, ptr + size));
-			setEditedImageData({ pixels: modified, width, height });
+
+			// Draw into a temporary canvas and get a data URL
+			const imageData = new ImageData(modified, width, height);
+			const canvas = document.createElement('canvas');
+			canvas.width = width;
+			canvas.height = height;
+			const ctx = canvas.getContext('2d');
+			ctx.putImageData(imageData, 0, 0);
+			const url = canvas.toDataURL();
+
+			setEditedImageData({ pixels: modified, width, height, url });
 		} catch (err) {
 			console.error(err);
 		} finally {
@@ -41,6 +51,6 @@ export function useWasmProcessor() {
 		fileData,
 		editedImageData,
 		loadFromFile,
-		processImage,
+		invertImageColors,
 	};
 }

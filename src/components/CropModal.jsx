@@ -2,10 +2,18 @@ import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { Cropper } from 'react-advanced-cropper';
 import 'react-advanced-cropper/dist/style.css';
 import styles from './CropModal.module.css';
+import { useWasmProcessor } from '../hooks/useWasmProcessor';
+
+// Icons
 import flipHorizontalIcon from '@assets/flip-horizontal-icon.svg';
 import flipVerticalIcon from '@assets/flip-vertical-icon.svg';
 import zoomInIcon from '@assets/zoom-in-icon.svg';
 import zoomOutIcon from '@assets/zoom-out-icon.svg';
+import cropIcon from '@assets/crop-icon.svg';
+import saturationIcon from '@assets/saturation-icon.svg';
+import brightnessIcon from '@assets/brightness-icon.svg';
+import hueIcon from '@assets/hue-icon.svg';
+import contrastIcon from '@assets/contrast-icon.svg';
 
 // Predefined aspect options
 const ASPECT_PRESETS = [
@@ -31,12 +39,49 @@ const AspectRadioOption = React.memo(({ option, isChecked, onChange }) => (
 ));
 
 export default function CropModal({ imageSrc, onApply, onCancel }) {
+	const {
+		mod,
+		fileData,
+		editedImageData,
+		loadFromFile,
+		invertImageColors,
+	} = useWasmProcessor();
+	const [imageSource, setImageSource] = useState(imageSrc);
+
 	const [aspectChoice, setAspectChoice] = useState(null);
 	const [customWidth, setCustomWidth] = useState(1);
 	const [customHeight, setCustomHeight] = useState(1);
+
+	// Image orientation
 	const [rotation, setRotation] = useState(0);
 	const [flipHorizontal, setFlipHorizontal] = useState(false);
 	const [flipVertical, setFlipVertical] = useState(false);
+
+	// Image colours (modes)
+	const [saturation, setSaturation] = useState(0);
+	const [brightness, setBrightness] = useState(0);
+	const [contrast, setContrast] = useState(0);
+	const [hue, setHue] = useState(0);
+
+	// Action being done to image
+	const [mode, setMode] = useState('crop');
+	const getModeString = useMemo(() => mode.toString(), [mode]);
+	const getModeValue = () => {
+		switch(getModeString) {
+			case 'saturation':
+				return saturation;
+			case 'brightness':
+				return brightness;
+			case 'contrast':
+				return contrast;
+			case 'hue':
+				return hue;
+			default:
+				return 0;
+				break;
+		}
+	};
+
 	const cropperRef = useRef(null);
 
 	// Compute actual aspect ratio
@@ -65,7 +110,14 @@ export default function CropModal({ imageSrc, onApply, onCancel }) {
 		setRotation(0);
 		setFlipHorizontal(false);
 		setFlipVertical(false);
-	}, [imageSrc]);
+		console.log('imageSource useEffect');
+	}, [imageSource]);
+
+	// Sync whenever we get a new inverted URL
+	useEffect(() => {
+		if (mode !== 'invert' || !editedImageData?.url) return;
+		setImageSource(editedImageData.url);
+	}, [editedImageData?.url, mode]);
 
 	// Sync transformation on flip changes
 	const transformCropperImage = useCallback((data) => {
@@ -118,6 +170,24 @@ export default function CropModal({ imageSrc, onApply, onCancel }) {
 	const handleZoomOut = useCallback(() => {
 		zoomCropper(0.75);
 	}, []);
+	const handleRangeChange = (event) => {
+		switch(getModeString) {
+			case 'saturation':
+				setSaturation(event.target.value);
+				break;
+			case 'brightness':
+				setBrightness(event.target.value);
+				break;
+			case 'contrast':
+				setContrast(event.target.value);
+				break;
+			case 'hue':
+				setHue(event.target.value);
+				break;
+			default:
+				break;
+		}
+	};
 
 	const radioOptions = useMemo(() => 
 		ASPECT_PRESETS.map(opt => (
@@ -134,20 +204,21 @@ export default function CropModal({ imageSrc, onApply, onCancel }) {
 		<div className={styles.overlay}>
 			<div className={styles.modal}>
 				<h2>Crop Image</h2>
-				<div className={styles.radioGroup}>{radioOptions}</div>
-
-				{aspectChoice === 'custom' && (
-					<div className={styles.customInputs}>
-						<label>
-							Width ratio:
-							<input type="number" min="1" step="0.1" value={customWidth} onChange={handleCustomWidthChange} />
-						</label>
-						<label>
-							Height ratio:
-							<input type="number" min="1" step="0.1" value={customHeight} onChange={handleCustomHeightChange} />
-						</label>
-					</div>
-				)}
+				<div className={styles.radioGroup}>
+					{radioOptions}
+					{aspectChoice === 'custom' && (
+						<div className={styles.customInputs}>
+							<label>
+								Width ratio:
+								<input type="number" min="1" step="0.1" value={customWidth} onChange={handleCustomWidthChange} />
+							</label>
+							<label>
+								Height ratio:
+								<input type="number" min="1" step="0.1" value={customHeight} onChange={handleCustomHeightChange} />
+							</label>
+						</div>
+					)}
+				</div>
 
 				<div className={styles.imageControls}>
 					<div className={styles.controlsContainer}>
@@ -201,11 +272,90 @@ export default function CropModal({ imageSrc, onApply, onCancel }) {
 
 				<Cropper
 					ref={cropperRef}
-					src={imageSrc}
+					src={imageSource}
 					className={styles.cropper}
 					stencilProps={stencilProps}
 					backgroundClass={styles.cropperBackground}
+					disabled={mode !== 'crop'}
 				/>
+
+				{!['crop', 'invert'].includes(mode) && (
+					<input
+						type="range"
+						min="-100"
+						max="100"
+						step="1"
+						value={getModeValue()}
+						onChange={handleRangeChange}
+					/>
+				)}
+				<div className={styles.imageControls}>
+					<div className={styles.flipControls}>
+						<button
+							className={`${styles.controlButton} ${mode === 'crop' ? styles.active : ''}`}
+							onClick={() => setMode('crop')}
+							title="Crop"
+						>
+							<img src={cropIcon} alt="Flip Horizontal" style={{ width: 20 }} />
+						</button>
+					</div>
+					<div className={styles.flipControls}>
+						<button
+							className={`${styles.controlButton} ${mode === 'saturation' ? styles.active : ''}`}
+							onClick={() => setMode('saturation')}
+							title="Saturation"
+						>
+							<img src={saturationIcon} alt="Saturation" style={{ width: 20 }} />
+						</button>
+					</div>
+					<div className={styles.flipControls}>
+						<button
+							className={`${styles.controlButton} ${mode === 'brightness' ? styles.active : ''}`}
+							onClick={() => setMode('brightness')}
+							title="Brightness"
+						>
+							<img src={brightnessIcon} alt="Brightness" style={{ width: 20 }} />
+						</button>
+					</div>
+					<div className={styles.flipControls}>
+						<button
+							className={`${styles.controlButton} ${mode === 'contrast' ? styles.active : ''}`}
+							onClick={() => setMode('contrast')}
+							title="Contrast"
+						>
+							<img src={contrastIcon} alt="Contrast" style={{ width: 20 }} />
+						</button>
+					</div>
+					<div className={styles.flipControls}>
+						<button
+							className={`${styles.controlButton} ${mode === 'hue' ? styles.active : ''}`}
+							onClick={() => setMode('hue')}
+							title="Saturation"
+						>
+							<img src={hueIcon} alt="Hue" style={{ width: 20 }} />
+						</button>
+					</div>
+					<div className={styles.flipControls}>
+						<button
+							className={`${styles.controlButton} ${mode === 'invert' ? styles.active : ''}`}
+							onClick={async () => {
+								setMode('invert');
+								// 1) fetch the current image
+								const res = await fetch(imageSource);
+								const blob = await res.blob();
+
+								// 2) load into WASM (and wait for fileData to update)
+								await loadFromFile(new File([blob], 'inverted.png', { type: blob.type }));
+
+								// 3) now that fileData is current, actually invert
+								invertImageColors();
+							}}
+							title="Invert Colors"
+						>
+							<img src={hueIcon} alt="Invert Colors" style={{ width: 20 }} />
+						</button>
+					</div>
+				</div>
 
 				<div className={styles.controls}>
 					<button className="button" onClick={applyCrop}>Apply</button>
