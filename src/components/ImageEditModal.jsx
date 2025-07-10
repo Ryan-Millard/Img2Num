@@ -14,6 +14,7 @@ import saturationIcon from '@assets/saturation-icon.svg';
 import brightnessIcon from '@assets/brightness-icon.svg';
 import hueIcon from '@assets/hue-icon.svg';
 import contrastIcon from '@assets/contrast-icon.svg';
+import invertIcon from '@assets/invert-icon.svg';
 
 // Predefined aspect options
 const ASPECT_PRESETS = [
@@ -45,6 +46,7 @@ export default function ImageEditModal({ imageSrc, onApply, onCancel }) {
 		editedImageData,
 		loadFromFile,
 		invertImageColors,
+		adjustImageSaturation
 	} = useWasmProcessor();
 	const [imageSource, setImageSource] = useState(imageSrc);
 
@@ -59,6 +61,7 @@ export default function ImageEditModal({ imageSrc, onApply, onCancel }) {
 
 	// Image colours (modes)
 	const [saturation, setSaturation] = useState(0);
+	const lastSaturationRef = useRef(0);
 	const [brightness, setBrightness] = useState(0);
 	const [contrast, setContrast] = useState(0);
 	const [hue, setHue] = useState(0);
@@ -112,27 +115,52 @@ export default function ImageEditModal({ imageSrc, onApply, onCancel }) {
 		setRotation(0);
 		setFlipHorizontal(false);
 		setFlipVertical(false);
-		console.log('imageSource useEffect');
+
+		const setUpFileData = async() => {
+			// fetch the current image
+			const res = await fetch(imageSource);
+			const blob = await res.blob();
+			// load into WASM (and wait for fileData to update)
+			await loadFromFile(new File([blob], 'inverted.png', { type: blob.type }));
+		};
+		setUpFileData();
 	}, [imageSource]);
 
 	// Sync whenever we get a new inverted URL
 	useEffect(() => {
-		if (mode !== 'invert' || !editedImageData?.url) return;
-		setImageSource(editedImageData.url);
-	}, [editedImageData?.url, mode]);
+		if (editedImageData?.url) { setImageSource(editedImageData.url); }
+	}, [editedImageData?.url]);
 
 	useEffect(() => {
-		if (mode === 'invert' && fileData) {
+		if (!fileData) { return; }
+
+		if (mode === 'invert') {
 			invertImageColors();
 		}
-	}, [mode, fileData]);
+		else if (mode === 'saturation') {
+			// Only calculate undo factor if there was a previous saturation applied
+			let newFactor;
+			if (lastSaturationRef.current !== 0) {
+				const oldFactor = 1 + (lastSaturationRef.current / 100);
+				const undoOldFactor = 1 / oldFactor;
+				const currentFactor = 1 + (saturation / 100);
+				newFactor = currentFactor * undoOldFactor; // Fixed math too
+			} else {
+				// First time applying saturation, no need to undo
+				newFactor = 1 + (saturation / 100);
+			}
 
+			console.log(newFactor);
+			adjustImageSaturation(newFactor);
+
+			// Update the ref to track the current saturation value
+			lastSaturationRef.current = saturation;
+		}
+	}, [isInverted, saturation]);
 
 	// Sync transformation on flip changes
 	const transformCropperImage = useCallback((data) => {
-		cropper.transformImage({
-			data
-		});
+		cropper.transformImage({ data });
 	}, []);
 	useEffect(() => {
 		const cropper = cropperRef.current;
@@ -179,7 +207,7 @@ export default function ImageEditModal({ imageSrc, onApply, onCancel }) {
 	const handleZoomOut = useCallback(() => {
 		zoomCropper(0.75);
 	}, []);
-	const handleRangeChange = (event) => {
+	const handleRangeChange = async (event) => {
 		switch(getModeString) {
 			case 'saturation':
 				setSaturation(event.target.value);
@@ -291,7 +319,7 @@ export default function ImageEditModal({ imageSrc, onApply, onCancel }) {
 				) || mode !== 'invert' && (
 					<input
 						type="range"
-						min="-100"
+						min="-99"
 						max="100"
 						step="1"
 						value={getModeValue()}
@@ -350,17 +378,10 @@ export default function ImageEditModal({ imageSrc, onApply, onCancel }) {
 							onClick={async () => {
 								setMode('invert');
 								setIsInverted(prev => !prev);
-
-								// 1) fetch the current image
-								const res = await fetch(imageSource);
-								const blob = await res.blob();
-
-								// 2) load into WASM (and wait for fileData to update)
-								await loadFromFile(new File([blob], 'inverted.png', { type: blob.type }));
 							}}
 							title="Invert Colors"
 						>
-							<img src={hueIcon} alt="Invert Colors" style={{ width: 20 }} />
+							<img src={invertIcon} alt="Invert Colors" style={{ width: 20 }} />
 						</button>
 					</div>
 				</div>
