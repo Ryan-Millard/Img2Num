@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import styles from './ProcessedImageDisplay.module.css';
-import LetterGlitch from '@components/LetterGlitch/LetterGlitch';
+import LetterGlitch from '@components/LetterGlitch';
 
 const ProcessedImageDisplay = ({ data, className = '' }) => {
 	const { pixels, width, height } = data;

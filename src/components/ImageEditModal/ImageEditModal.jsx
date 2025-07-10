@@ -3,18 +3,19 @@ import { Cropper } from 'react-advanced-cropper';
 import 'react-advanced-cropper/dist/style.css';
 import styles from './ImageEditModal.module.css';
 import { useWasmProcessor } from '@hooks/useWasmProcessor';
-
-// Icons
-import flipHorizontalIcon from '@assets/flip-horizontal-icon.svg';
-import flipVerticalIcon from '@assets/flip-vertical-icon.svg';
-import zoomInIcon from '@assets/zoom-in-icon.svg';
-import zoomOutIcon from '@assets/zoom-out-icon.svg';
-import cropIcon from '@assets/crop-icon.svg';
-import saturationIcon from '@assets/saturation-icon.svg';
-import brightnessIcon from '@assets/brightness-icon.svg';
-import hueIcon from '@assets/hue-icon.svg';
-import contrastIcon from '@assets/contrast-icon.svg';
-import invertIcon from '@assets/invert-icon.svg';
+import {
+	brightnessIcon,
+	contrastIcon,
+	cropIcon,
+	flipHorizontalIcon,
+	flipVerticalIcon,
+	hueIcon,
+	invertIcon,
+	saturationIcon,
+	uploadIcon,
+	zoomInIcon,
+	zoomOutIcon
+} from '@assets/icons';
 
 // Predefined aspect options
 const ASPECT_PRESETS = [

@@ -1,0 +1,11 @@
+export { default as brightnessIcon      } from './brightness-icon.svg';
+export { default as contrastIcon        } from './contrast-icon.svg';
+export { default as cropIcon            } from './crop-icon.svg';
+export { default as flipHorizontalIcon  } from './flip-horizontal-icon.svg';
+export { default as flipVerticalIcon    } from './flip-vertical-icon.svg';
+export { default as hueIcon             } from './hue-icon.svg';
+export { default as invertIcon          } from './invert-icon.svg';
+export { default as saturationIcon      } from './saturation-icon.svg';
+export { default as uploadIcon          } from './upload-icon.svg';
+export { default as zoomInIcon          } from './zoom-in-icon.svg';
+export { default as zoomOutIcon         } from './zoom-out-icon.svg';

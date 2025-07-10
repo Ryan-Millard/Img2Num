@@ -1,5 +1,5 @@
 import React, { useId } from 'react';
-import LetterGlitch from '@components/LetterGlitch/LetterGlitch';
+import LetterGlitch from '@components/LetterGlitch';
 import styles from './FileDropZone.module.css';
 
 export default function FileDropZone({ originalSrc, onFile }) {

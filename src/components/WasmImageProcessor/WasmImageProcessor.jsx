@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import FileDropZone from '@components/FileDropZone/FileDropZone';
-import ImageEditModal from '@components/ImageEditModal/ImageEditModal';
-import ProcessedImageDisplay from '@components/ProcessedImageDisplay/ProcessedImageDisplay';
+import FileDropZone from '@components/FileDropZone';
+import ImageEditModal from '@components/ImageEditModal';
+import ProcessedImageDisplay from '@components/ProcessedImageDisplay';
 import { useWasmProcessor } from '@hooks/useWasmProcessor';
 import styles from './WasmImageProcessor.module.css';
 
