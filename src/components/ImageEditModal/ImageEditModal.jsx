@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { Cropper } from 'react-advanced-cropper';
 import 'react-advanced-cropper/dist/style.css';
 import styles from './ImageEditModal.module.css';
-import { useWasmProcessor } from '../hooks/useWasmProcessor';
+import { useWasmProcessor } from '@hooks/useWasmProcessor';
 
 // Icons
 import flipHorizontalIcon from '@assets/flip-horizontal-icon.svg';

@@ -1,4 +1,4 @@
-import WasmImageProcessor from '@components/WasmImageProcessor';
+import WasmImageProcessor from '@components/WasmImageProcessor/WasmImageProcessor';
 
 const Home = () => {
 	return <WasmImageProcessor />
