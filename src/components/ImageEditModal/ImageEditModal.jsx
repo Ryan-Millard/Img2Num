@@ -3,12 +3,27 @@ import { Cropper } from 'react-advanced-cropper';
 import 'react-advanced-cropper/dist/style.css';
 import styles from './ImageEditModal.module.css';
 import { useWasmProcessor } from '@hooks/useWasmProcessor';
+import useLinkedList from '@hooks/useLinkedList';
 
 import OrientationControls from './OrientationControls';
 import ZoomControls from './ZoomControls';
 import AspectRadioOption from './AspectRadioOption';
 import ModeSlider from './ModeSlider';
 import ModeSelector from './ModeSelector';
+
+const DEFAULT_EDIT_STATE = {
+	flipHorizontal: false,
+	flipVertical: false,
+	saturation: 0,
+	brightness: 0,
+	contrast: 0,
+	hue: 0,
+	isInverted: false,
+	mode: 'crop',
+	aspectChoice: null,
+	customWidth: 1,
+	customHeight: 1,
+};
 
 export default function ImageEditModal({ imageSrc, onApply, onCancel }) {
 	const {
@@ -17,26 +32,20 @@ export default function ImageEditModal({ imageSrc, onApply, onCancel }) {
 		editedImageData,
 		loadFromFile,
 		invertImageColors,
-		adjustImageSaturation
+		adjustImageSaturation,
 	} = useWasmProcessor();
-	const [imageSource, setImageSource] = useState(imageSrc);
-	const [aspectChoice, setAspectChoice] = useState(null);
-	const [customWidth, setCustomWidth] = useState(1);
-	const [customHeight, setCustomHeight] = useState(1);
-	const [flipHorizontal, setFlipHorizontal] = useState(false);
-	const [flipVertical, setFlipVertical] = useState(false);
-	const [saturation, setSaturation] = useState(0);
+
+	const imageHistory = useLinkedList(imageSrc);
+
+	const [editState, setEditState] = useState(DEFAULT_EDIT_STATE);
 	const lastSaturationRef = useRef(0);
-	const [brightness, setBrightness] = useState(0);
-	const [contrast, setContrast] = useState(0);
-	const [hue, setHue] = useState(0);
-	const [isInverted, setIsInverted] = useState(false);
-	const [mode, setMode] = useState('crop');
 	const cropperRef = useRef(null);
 
-	const getModeString = useMemo(() => mode.toString(), [mode]);
+	const updateState = (key, val) => setEditState(prev => ({ ...prev, [key]: val }));
+
 	const getModeValue = () => {
-		switch(getModeString) {
+		const { mode, saturation, brightness, contrast, hue } = editState;
+		switch (mode) {
 			case 'saturation': return saturation;
 			case 'brightness': return brightness;
 			case 'contrast': return contrast;
@@ -45,9 +54,10 @@ export default function ImageEditModal({ imageSrc, onApply, onCancel }) {
 		}
 	};
 
-	const aspect = useMemo(() => (
-		aspectChoice === 'custom' ? customWidth / customHeight : aspectChoice
-	), [aspectChoice, customWidth, customHeight]);
+	const aspect = useMemo(() => {
+		const { aspectChoice, customWidth, customHeight } = editState;
+		return aspectChoice === 'custom' ? customWidth / customHeight : aspectChoice;
+	}, [editState.aspectChoice, editState.customWidth, editState.customHeight]);
 
 	const stencilProps = useMemo(() => {
 		const base = { resizable: true, movable: true };
@@ -63,60 +73,54 @@ export default function ImageEditModal({ imageSrc, onApply, onCancel }) {
 	}, [onApply]);
 
 	useEffect(() => {
-		setAspectChoice(null);
-		setFlipHorizontal(false);
-		setFlipVertical(false);
+		setEditState(DEFAULT_EDIT_STATE);
 		(async () => {
-			const res = await fetch(imageSource);
+			const res = await fetch(imageSrc);
 			const blob = await res.blob();
 			await loadFromFile(new File([blob], 'inverted.png', { type: blob.type }));
 		})();
-	}, [imageSource]);
+	}, [imageSrc]);
 
 	useEffect(() => {
-		if (editedImageData?.url) setImageSource(editedImageData.url);
+		if (editedImageData?.url) imageHistory.set(editedImageData.url);
 	}, [editedImageData?.url]);
 
 	useEffect(() => {
 		if (!fileData) return;
+		const { mode, saturation } = editState;
 		if (mode === 'invert') {
 			invertImageColors();
 		} else if (mode === 'saturation') {
-			let newFactor;
+			let newFactor = 1 + (saturation / 100);
 			if (lastSaturationRef.current !== 0) {
 				const oldFactor = 1 + (lastSaturationRef.current / 100);
 				const undoOldFactor = 1 / oldFactor;
 				const currentFactor = 1 + (saturation / 100);
 				newFactor = currentFactor * undoOldFactor;
-			} else {
-				newFactor = 1 + (saturation / 100);
 			}
 			adjustImageSaturation(newFactor);
 			lastSaturationRef.current = saturation;
 		}
-	}, [isInverted, saturation]);
+	}, [editState.isInverted, editState.saturation]);
 
 	useEffect(() => {
 		const cropper = cropperRef.current;
 		if (!cropper) return;
-		// NOTE: Flips only occur if flip value is true.
-		cropper.transformImage({ flip: { horizontal: true, }, });
-	}, [flipHorizontal]);
-	useEffect(() => {
-		const cropper = cropperRef.current;
-		if (!cropper) return;
-		// NOTE: Flips only occur if flip value is true.
-		cropper.transformImage({ flip: { vertical: true, }, });
-	}, [flipVertical]);
-
-	const handleRangeChange = async (event) => {
-		switch(getModeString) {
-			case 'saturation': setSaturation(event.target.value); break;
-			case 'brightness': setBrightness(event.target.value); break;
-			case 'contrast': setContrast(event.target.value); break;
-			case 'hue': setHue(event.target.value); break;
-			default: break;
+		if (editState.flipHorizontal) {
+			cropper.transformImage({ flip: { horizontal: true } });
 		}
+	}, [editState.flipHorizontal]);
+
+	useEffect(() => {
+		const cropper = cropperRef.current;
+		if (!cropper) return;
+		if (editState.flipVertical) {
+			cropper.transformImage({ flip: { vertical: true } });
+		}
+	}, [editState.flipVertical]);
+
+	const handleRangeChange = (event) => {
+		updateState(editState.mode, Number(event.target.value));
 	};
 
 	return (
@@ -126,10 +130,10 @@ export default function ImageEditModal({ imageSrc, onApply, onCancel }) {
 
 				<div className={styles.imageControls}>
 					<OrientationControls
-						flipHorizontal={flipHorizontal}
-						flipVertical={flipVertical}
-						setFlipHorizontal={setFlipHorizontal}
-						setFlipVertical={setFlipVertical}
+						flipHorizontal={editState.flipHorizontal}
+						flipVertical={editState.flipVertical}
+						setFlipHorizontal={val => updateState('flipHorizontal', val)}
+						setFlipVertical={val => updateState('flipVertical', val)}
 						cropperRef={cropperRef}
 					/>
 					<ZoomControls cropperRef={cropperRef} />
@@ -137,31 +141,31 @@ export default function ImageEditModal({ imageSrc, onApply, onCancel }) {
 
 				<Cropper
 					ref={cropperRef}
-					src={imageSource}
+					src={imageHistory.value}
 					className={styles.cropper}
 					stencilProps={stencilProps}
 					backgroundClass={styles.cropperBackground}
-					disabled={mode !== 'crop'}
+					disabled={editState.mode !== 'crop'}
 				/>
 
-				{mode === 'crop'
-					? <AspectRadioOption
-						aspectChoice={aspectChoice}
-						customWidth={customWidth}
-						customHeight={customHeight}
-						setAspectChoice={setAspectChoice}
-						setCustomWidth={setCustomWidth}
-						setCustomHeight={setCustomHeight}
+				{editState.mode === 'crop' ? (
+					<AspectRadioOption
+						aspectChoice={editState.aspectChoice}
+						customWidth={editState.customWidth}
+						customHeight={editState.customHeight}
+						setAspectChoice={val => updateState('aspectChoice', val)}
+						setCustomWidth={val => updateState('customWidth', val)}
+						setCustomHeight={val => updateState('customHeight', val)}
 					/>
-					: mode !== 'invert' && (
-						<ModeSlider value={getModeValue()} onChange={handleRangeChange} />
-					)}
+				) : editState.mode !== 'invert' && (
+					<ModeSlider value={getModeValue()} onChange={handleRangeChange} />
+				)}
 
 				<ModeSelector
-					mode={mode}
-					setMode={setMode}
-					isInverted={isInverted}
-					setIsInverted={setIsInverted}
+					mode={editState.mode}
+					setMode={val => updateState('mode', val)}
+					isInverted={editState.isInverted}
+					setIsInverted={val => updateState('isInverted', val)}
 				/>
 
 				<div className={styles.controls}>
