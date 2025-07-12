@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useId } from 'react';
 import { loadImageToUint8Array } from '@utils/image-utils';
-import createImageModule from '@wasm/image_utils';
+import createImageModule from '@wasm-image';
 import ProcessedImageDisplay from './ProcessedImageDisplay';
 import styles from './WasmImageProcessor.module.css';
 import LetterGlitch from './LetterGlitch';
