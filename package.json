@@ -7,7 +7,7 @@
 		"build-wasm": "make build-wasm",
 		"build-wasm:debug": "make debug-build",
 		"clean-wasm": "make clean",
-		"dev": "npm run build-wasm && vite",
+		"dev": "vite",
 		"dev:debug": "npm run build-wasm:debug && vite",
 		"build": "npm run build-wasm && vite build",
 		"lint": "eslint .",
@@ -28,6 +28,7 @@
 		"eslint": "^9.29.0",
 		"eslint-plugin-react-hooks": "^5.2.0",
 		"eslint-plugin-react-refresh": "^0.4.20",
+		"fast-glob": "^3.3.3",
 		"globals": "^16.2.0",
 		"vite": "^7.0.0"
 	}
