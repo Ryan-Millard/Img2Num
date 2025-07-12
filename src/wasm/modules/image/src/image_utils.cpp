@@ -5,17 +5,31 @@
 #include <emscripten/emscripten.h>
 #include <stdint.h>
 #include <iostream>
+#include "Image.h"
+#include "RGBAPixel.h"
+#include "PixelConverters.h"
 
 extern "C" {
 	// Called from JS. `ptr` points to RGBA bytes.
 	EMSCRIPTEN_KEEPALIVE
-	void invert_image(uint8_t* ptr, int length) {
-		for (int i = 0; i < length; i += 4) {
-			ptr[i + 0] = 255 - ptr[i + 0]; // R
-			ptr[i + 1] = 255 - ptr[i + 1]; // G
-			ptr[i + 2] = 255 - ptr[i + 2]; // B
-											// ptr[i + 3] = A (leave alpha as-is)
+	void invert_image(uint8_t* ptr, int width, int height) {
+		ImageLib::Image<ImageLib::RGBAPixel> img;
+		img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER);
+
+		for(int x{0}; x < img.getWidth(); ++x) {
+			for(int y{0}; y < img.getHeight(); ++y) {
+				const auto& p{img.getPixel(x, y)};
+
+				const uint8_t red = 255 - p.red;
+				const uint8_t blue = 255 - p.blue;
+				const uint8_t green = 255 - p.green;
+				const uint8_t alpha = p.alpha;
+				img.setPixel(x,y, ImageLib::RGBAPixel{red, green, blue, alpha});
+			}
 		}
+
+		const auto& modified = img.getRawData();
+		std::memcpy(ptr, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel));
 	}
 }
 

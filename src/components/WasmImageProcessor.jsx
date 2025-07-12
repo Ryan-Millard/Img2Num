@@ -59,7 +59,7 @@ const WasmImageProcessor = () => {
 		try {
 			ptr = mod._malloc(size);
 			mod.HEAPU8.set(pixels, ptr);
-			mod._invert_image(ptr, size);
+			mod._invert_image(ptr, width, height);
 
 			const modified = new Uint8ClampedArray(mod.HEAPU8.subarray(ptr, ptr + size));
 			setEditedImageData({ pixels: modified, width, height });

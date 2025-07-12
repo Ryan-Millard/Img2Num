@@ -8,7 +8,7 @@
 extern "C" {
 	// Called from JS. `ptr` points to RGBA bytes.
 	EMSCRIPTEN_KEEPALIVE
-		void invert_image(uint8_t* ptr, int length);
+	void invert_image(uint8_t* ptr, int width, int height);
 }
 
 #endif
