@@ -1,5 +1,4 @@
 # Directories
-SRC_DIR      := src
 INCLUDE_DIR  := include
 BUILD_DIR    := build
 
@@ -8,7 +7,7 @@ MODULE_NAME     := $(notdir $(CURDIR))
 CAP_MODULE_NAME := $(shell echo $(MODULE_NAME) | sed 's/^./\U&/')
 
 # Sources & output
-SRC_FILES  := $(wildcard $(SRC_DIR)/*.cpp)
+SRC_FILES  := $(shell find . -type f -name '*.cpp' ! -path './$(BUILD_DIR)/*')
 OUT_JS     := $(BUILD_DIR)/index.js
 
 # Shared Emscripten options
