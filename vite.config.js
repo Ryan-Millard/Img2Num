@@ -3,6 +3,21 @@ import react from '@vitejs/plugin-react-swc'
 import { exec } from 'child_process';
 import path from 'path';
 import fg from 'fast-glob';
+import fs from 'fs';
+
+function generateWasmAliases() {
+	const modulesPath = path.resolve(__dirname, 'src/wasm/modules');
+	const moduleNames = fs.readdirSync(modulesPath).filter((name) =>
+		fs.statSync(path.join(modulesPath, name)).isDirectory()
+	);
+
+	const aliases = {};
+	moduleNames.forEach((name) => {
+		aliases[`@wasm-${name}`] = path.join(modulesPath, name, 'build');
+	});
+
+	return aliases;
+}
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -14,7 +29,7 @@ export default defineConfig({
 			'@assets': path.resolve(__dirname, 'src/assets'),
 			'@components': path.resolve(__dirname, 'src/components'),
 			'@utils': path.resolve(__dirname, 'src/utils'),
-			'@wasm': path.resolve(__dirname, 'src/wasm/build'),
+			...generateWasmAliases(), // in the form of '@wasm-{module}
 		}
 	},
 	plugins: [
