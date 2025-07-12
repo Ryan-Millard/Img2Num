@@ -226,7 +226,7 @@ float colorDistance(const RGB& a, const RGB& b) {
 
 extern "C" {
     EMSCRIPTEN_KEEPALIVE
-    void kmeans_clustering(uint8_t* data, int width, int height, int k, int max_iter = 100) {
+    void kmeans_clustering(uint8_t* data, int width, int height, int k, int max_iter) {
         int num_pixels = width * height;
         std::cout << "width = " << width << "\nheight = " << height << "\nnum_pixels = " << num_pixels << std::endl;
         std::vector<RGB> pixels(num_pixels);
@@ -236,9 +236,9 @@ extern "C" {
         // Step 1: Convert data to RGB float values
         for (int i = 0; i < num_pixels; ++i) {
             pixels[i] = {
-                static_cast<float>(data[i * 3 + 0]),
-                static_cast<float>(data[i * 3 + 1]),
-                static_cast<float>(data[i * 3 + 2])
+                static_cast<float>(data[i * 4 + 0]),
+                static_cast<float>(data[i * 4 + 1]),
+                static_cast<float>(data[i * 4 + 2])
             };
         }
 
@@ -288,6 +288,10 @@ extern "C" {
             }
 
             for (int j = 0; j < k; ++j) {
+				/* 
+				A centroid may become a dead centroid if it never gets pixels assigned to it.
+				May be good idea to reinitialize these dead centroids.
+				*/
                 if (counts[j] > 0) {
                     centroids[j].r = new_centroids[j].r / counts[j];
                     centroids[j].g = new_centroids[j].g / counts[j];
@@ -300,9 +304,9 @@ extern "C" {
 		//std::cout << "centroids.size() = " << centroids.size() << "new_centroids.size() = " << new_centroids.size() << 
 		for (int i = 0; i < num_pixels; ++i) {
 			int cluster = labels[i];
-			data[i * 3 + 0] = static_cast<uint8_t>(centroids[cluster].r);
-			data[i * 3 + 1] = static_cast<uint8_t>(centroids[cluster].g);
-			data[i * 3 + 2] = static_cast<uint8_t>(centroids[cluster].b);
+			data[i * 4 + 0] = static_cast<uint8_t>(centroids[cluster].r);
+			data[i * 4 + 1] = static_cast<uint8_t>(centroids[cluster].g);
+			data[i * 4 + 2] = static_cast<uint8_t>(centroids[cluster].b);
 		}
         //return labels;
     }
