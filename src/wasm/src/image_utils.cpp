@@ -1,3 +1,6 @@
+// TODO: fix ignored alpha channels for all kmeans functions.
+// TODO: Clean up comments & unused code
+
 #include "image_utils.h"
 #include <emscripten/emscripten.h>
 #include <stdint.h>
