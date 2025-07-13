@@ -10,9 +10,9 @@
 
 namespace ImageLib {
 	template<typename PixelT>
-
 	class Image {
-		static_assert(std::is_base_of_v<Pixel, PixelT>, "PixelT must derive from Pixel");
+		static_assert(std::is_base_of_v<Pixel<typename PixelT::value_type /*NumberT*/>, PixelT>,
+				"Image<PixelT>: PixelT must derive from Pixel<NumberT>");
 
 		public:
 		Image() : width(0), height(0) {}
@@ -20,6 +20,7 @@ namespace ImageLib {
 
 		template<typename ConverterT>
 		void loadFromBuffer(const uint8_t* buffer, int width, int height, PixelConverter<ConverterT> converter) {
+			// converter.convert must return exactly PixelT
 			static_assert(std::is_same_v<decltype(converter.convert((const uint8_t*)nullptr)), PixelT>,
 					"Converter return type must match PixelT");
 
@@ -41,7 +42,7 @@ namespace ImageLib {
 		int getPixelCount() const { return width * height; }
 		int getSize() const { return getPixelCount(); }
 
-		const std::vector<PixelT>& getRawData() const { return data; }
+		const std::vector<PixelT>& getData() const { return data; }
 
 		const PixelT& getPixel(int x, int y) const { return data[index(x, y)]; }
 		PixelT& getPixel(int x, int y) { return data[index(x, y)]; }

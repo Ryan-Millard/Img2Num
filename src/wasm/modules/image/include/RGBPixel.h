@@ -4,11 +4,12 @@
 #include "Pixel.h"
 
 namespace ImageLib {
-	struct RGBPixel : public ImageLib::Pixel {
+	template <typename NumberT>
+	struct RGBPixel : public Pixel<NumberT> {
 		// ----- Members -----
-		uint8_t red, green, blue;
+		NumberT red, green, blue;
 
-		constexpr RGBPixel(uint8_t red = 0, uint8_t green = 0, uint8_t blue = 0)
+		constexpr RGBPixel(NumberT red = 0, NumberT green = 0, NumberT blue = 0)
 			: red(red), green(green), blue(blue) {}
 
 		// ----- Modifiers -----
@@ -20,10 +21,10 @@ namespace ImageLib {
 		}
 
 		// ----- Utilities -----
-		inline void setGray(uint8_t gray) {
+		inline void setGray(NumberT gray) {
 			red = green = blue = gray;
 		}
-	};
+	} __attribute__((packed));
 }
 
 #endif // RGBPIXEL_H

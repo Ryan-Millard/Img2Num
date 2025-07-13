@@ -4,25 +4,26 @@
 #include "RGBPixel.h"
 
 namespace ImageLib {
-	struct RGBAPixel : public ImageLib::RGBPixel {
+	template <typename NumberT>
+	struct RGBAPixel : public ImageLib::RGBPixel<NumberT> {
 		// ----- Members -----
-		uint8_t alpha;
+		NumberT alpha;
 
 		// ----- Constructors -----
-		constexpr RGBAPixel(uint8_t red = 0, uint8_t green = 0, uint8_t blue = 0, uint8_t alpha = 255)
-			: RGBPixel(red, green, blue), alpha(alpha) {}
+		constexpr RGBAPixel(NumberT red = 0, NumberT green = 0, NumberT blue = 0, NumberT alpha = 255)
+			: RGBPixel<NumberT>(red, green, blue), alpha(alpha) {}
 
 		// ----- Modifiers -----
 		[[nodiscard]] inline bool operator==(const RGBAPixel& other) const {
-			return RGBPixel::operator==(other) && alpha == other.alpha;
+			return RGBPixel<NumberT>::operator==(other) && alpha == other.alpha;
 		}
 		[[nodiscard]] inline bool operator!=(const RGBAPixel& other) const {
 			return !(*this == other);
 		}
 
 		// ----- Utilities -----
-		inline void setGray(uint8_t gray, uint8_t alpha = 255) {
-			RGBPixel::setGray(gray);
+		inline void setGray(NumberT gray, NumberT alpha = 255) {
+			RGBPixel<NumberT>::setGray(gray);
 			this->alpha = alpha;
 		}
 
