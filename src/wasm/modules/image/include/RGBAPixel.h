@@ -21,7 +21,7 @@ namespace ImageLib {
 		}
 
 		// ----- Utilities -----
-		inline void setGray(uint8_t gray, uint8_t alpha) {
+		inline void setGray(uint8_t gray, uint8_t alpha = 255) {
 			RGBPixel::setGray(gray);
 			this->alpha = alpha;
 		}

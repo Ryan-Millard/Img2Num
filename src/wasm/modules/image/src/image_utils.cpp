@@ -75,23 +75,26 @@ extern "C" {
 
 extern "C" {
 	EMSCRIPTEN_KEEPALIVE
-	void black_threshold_image(uint8_t* ptr, int length) {
-		int threshold = 128;
-		bool R;
-		bool B;
-		bool G;
-		for (int i = 0; i < length; i += 4) {
-			R = ptr[i + 0] < threshold;
-			B = ptr[i + 1] < threshold;
-			G = ptr[i + 2] < threshold;
+	void black_threshold_image(uint8_t* ptr, const int width, const int height, const int threshold) {
+		ImageLib::Image<ImageLib::RGBAPixel> img;
+		img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER);
 
-			if (R && B && G)
-			{
-				ptr[i + 0] = 0;
-				ptr[i + 1] = 0;
-				ptr[i + 2] = 0;
+		const auto imgWidth{img.getWidth()}, imgHeight{img.getHeight()};
+		for(int x{0}; x < imgWidth; ++x) {
+			for(int y{0}; y < imgHeight; ++y) {
+				auto& currentPixel{img.getPixel(x, y)};
+
+				const bool R{currentPixel.red < threshold};
+				const bool G{currentPixel.green < threshold};
+				const bool B{currentPixel.blue < threshold};
+				if (R && B && G) {
+					currentPixel.setGray(0);
+				}
 			}
 		}
+
+		const auto& modified = img.getRawData();
+		std::memcpy(ptr, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel));
 	}
 }
 
