@@ -16,15 +16,14 @@ extern "C" {
 		ImageLib::Image<ImageLib::RGBAPixel> img;
 		img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER);
 
-		for(int x{0}; x < img.getWidth(); ++x) {
-			for(int y{0}; y < img.getHeight(); ++y) {
-				const auto& p{img.getPixel(x, y)};
+		const auto imgWidth{img.getWidth()}, imgHeight{img.getHeight()};
+		for(int x{0}; x < imgWidth; ++x) {
+			for(int y{0}; y < imgHeight; ++y) {
+				auto& p{img.getPixel(x, y)};
 
-				const uint8_t red = 255 - p.red;
-				const uint8_t blue = 255 - p.blue;
-				const uint8_t green = 255 - p.green;
-				const uint8_t alpha = p.alpha;
-				img.setPixel(x,y, ImageLib::RGBAPixel{red, green, blue, alpha});
+				p.red = 255 - p.red;
+				p.blue = 255 - p.blue;
+				p.green = 255 - p.green;
 			}
 		}
 
@@ -43,7 +42,7 @@ uint8_t quantize(uint8_t value, uint8_t region_size) {
 	// In case of bucket_midpoint overflow: revert to a smaller bucket than the largest possible value
 	if (bucket_midpoint - bucket_region < 0)
 	{
-		std::cout << "bucket_midpoint = " << bucket_midpoint << std::endl;
+		// std::cout << "bucket_midpoint = " << bucket_midpoint << std::endl;
 		bucket_midpoint = ((bucket - 1) * region_size) + (region_size / 2);
 	}
 	
@@ -52,13 +51,25 @@ uint8_t quantize(uint8_t value, uint8_t region_size) {
 
 extern "C" {
 	EMSCRIPTEN_KEEPALIVE
-	void threshold_image(uint8_t* ptr, int length, int num_thresholds) {
-		int region_size = 255 / num_thresholds;
-		for (int i = 0; i < length; i += 4) {
-			ptr[i + 0] = quantize(ptr[i + 0], region_size);
-			ptr[i + 1] = quantize(ptr[i + 1], region_size);
-			ptr[i + 2] = quantize(ptr[i + 2], region_size);
+	void threshold_image(uint8_t* ptr, const int width, const int height, const int num_thresholds) {
+		const uint8_t REGION_SIZE(255 / num_thresholds); // Size of buckets per colour
+
+		ImageLib::Image<ImageLib::RGBAPixel> img;
+		img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER);
+
+		const auto imgWidth{img.getWidth()}, imgHeight{img.getHeight()};
+		for(int x{0}; x < imgWidth; ++x) {
+			for(int y{0}; y < imgHeight; ++y) {
+				auto& currentPixel{img.getPixel(x, y)};
+
+				currentPixel.red = quantize(currentPixel.red, REGION_SIZE);
+				currentPixel.green = quantize(currentPixel.green, REGION_SIZE);
+				currentPixel.blue = quantize(currentPixel.blue, REGION_SIZE);
+			}
 		}
+
+		const auto& modified = img.getRawData();
+		std::memcpy(ptr, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel));
 	}
 }
 
