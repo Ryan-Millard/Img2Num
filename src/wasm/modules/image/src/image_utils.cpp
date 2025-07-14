@@ -16,15 +16,10 @@ extern "C" {
 		ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> img;
 		img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
-		const auto imgWidth{img.getWidth()}, imgHeight{img.getHeight()};
-		for(int x{0}; x < imgWidth; ++x) {
-			for(int y{0}; y < imgHeight; ++y) {
-				auto& p{img.getPixel(x, y)};
-
-				p.red = 255 - p.red;
-				p.blue = 255 - p.blue;
-				p.green = 255 - p.green;
-			}
+		for(ImageLib::RGBAPixel<uint8_t>& p : img) {
+			p.red = 255 - p.red;
+			p.blue = 255 - p.blue;
+			p.green = 255 - p.green;
 		}
 
 		const auto& modified = img.getData();
@@ -58,14 +53,10 @@ extern "C" {
 		img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
 		const auto imgWidth{img.getWidth()}, imgHeight{img.getHeight()};
-		for(int x{0}; x < imgWidth; ++x) {
-			for(int y{0}; y < imgHeight; ++y) {
-				auto& currentPixel{img.getPixel(x, y)};
-
-				currentPixel.red = quantize(currentPixel.red, REGION_SIZE);
-				currentPixel.green = quantize(currentPixel.green, REGION_SIZE);
-				currentPixel.blue = quantize(currentPixel.blue, REGION_SIZE);
-			}
+		for(ImageLib::RGBAPixel<uint8_t>& p : img) {
+			p.red = quantize(p.red, REGION_SIZE);
+			p.green = quantize(p.green, REGION_SIZE);
+			p.blue = quantize(p.blue, REGION_SIZE);
 		}
 
 		const auto& modified = img.getData();
@@ -80,16 +71,12 @@ extern "C" {
 		img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
 		const auto imgWidth{img.getWidth()}, imgHeight{img.getHeight()};
-		for(int x{0}; x < imgWidth; ++x) {
-			for(int y{0}; y < imgHeight; ++y) {
-				auto& currentPixel{img.getPixel(x, y)};
-
-				const bool R{currentPixel.red < threshold};
-				const bool G{currentPixel.green < threshold};
-				const bool B{currentPixel.blue < threshold};
-				if (R && B && G) {
-					currentPixel.setGray(0);
-				}
+		for(ImageLib::RGBAPixel<uint8_t>& p : img) {
+			const bool R{p.red < threshold};
+			const bool G{p.green < threshold};
+			const bool B{p.blue < threshold};
+			if (R && B && G) {
+				p.setGray(0);
 			}
 		}
 

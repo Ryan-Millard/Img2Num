@@ -37,6 +37,13 @@ namespace ImageLib {
 			std::fill(data.begin(), data.end(), color);
 		}
 
+		using iter = typename std::vector<PixelT>::iterator;
+		iter begin() { return data.begin(); }
+		iter end() { return data.end(); }
+		using const_iter = typename std::vector<PixelT>::const_iterator;
+		const_iter begin() const { return data.begin(); }
+		const_iter end() const { return data.end(); }
+
 		int getWidth() const { return width; }
 		int getHeight() const { return height; }
 		int getPixelCount() const { return width * height; }
