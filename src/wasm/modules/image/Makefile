@@ -36,7 +36,7 @@ debug: all
 
 $(OUT_JS): $(SRC_FILES)
 	@mkdir -p $(BUILD_DIR)
-	@echo "→ Building $(MODULE_NAME) [flags: $(FLAGS)]"
+	@echo "ΓåÆ Building $(MODULE_NAME) [flags: $(FLAGS)]"
 	emcc $^ $(COMMON_FLAGS) $(FLAGS) \
 	  -s EXPORT_NAME="create$(CAP_MODULE_NAME)Module" \
 	  -o $@
