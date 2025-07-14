@@ -7,12 +7,21 @@
 namespace ImageLib {
 	template<typename NumberT>
 	inline RGBPixel<NumberT> convertRGB(const uint8_t* p) {
-		return RGBPixel<NumberT>{p[0], p[1], p[2]};
+		return RGBPixel<NumberT>{
+			static_cast<NumberT>(p[0]),
+			static_cast<NumberT>(p[1]),
+			static_cast<NumberT>(p[2])
+		};
 	}
 
 	template<typename NumberT>
 	inline RGBAPixel<NumberT> convertRGBA(const uint8_t* p) {
-		return RGBAPixel<NumberT>{p[0], p[1], p[2], p[3]};
+		return RGBAPixel<NumberT>{
+			static_cast<NumberT>(p[0]),
+			static_cast<NumberT>(p[1]),
+			static_cast<NumberT>(p[2]),
+			static_cast<NumberT>(p[3])
+		};
 	}
 
 	template<typename NumberT>
