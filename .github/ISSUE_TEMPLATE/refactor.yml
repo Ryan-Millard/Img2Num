@@ -1,0 +1,19 @@
+name: Refactor or Code Quality Improvement
+description: Suggest internal improvements that do not change behavior.
+labels: [refactor, code quality]
+
+body:
+  - type: textarea
+    attributes:
+      label: Current Code Issue
+      description: Describe the current code smell or anti-pattern.
+
+  - type: textarea
+    attributes:
+      label: Suggested Refactor
+      description: Describe the changes you'd propose.
+
+  - type: textarea
+    attributes:
+      label: Benefit
+      description: Why is this refactor useful?
