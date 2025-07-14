@@ -70,142 +70,6 @@ extern "C" {
 	}
 }
 
-//struct Pixel
-//{
-//	int r, g, b;
-//};
-//
-//centroid[] get_centroids(int num_per_256, window_size) {
-//	int interval = 256 / num_per_256;
-//	int c_i = 0;
-//	Pixel[] centroids = Pixel[12];
-//
-//	 interval determines the bounds of pixel values in colour space
-//	 interval / 2 ensures the centroid is initialized at the midpoint of colour regions
-//	 the midpoint closest to 255 will not be the midpoint of the region if num_per_256 is not in 2^n
-//	for (int r = interval / 2; r < 256; r += interval) {
-//		for (int g = interval / 2; g < 256; g += interval) {
-//			for (int b = interval / 2; b < 256; b += interval) {
-//				centroids[c_i++] = centroid(r, g, b, window_size);
-//			}
-//		}
-//	}
-//	return centroids;
-//}
-//
-//extern "c" {
-//	emscripten_keepalive
-//	void k_means(uint8_t* ptr, int length) {
-//		int window = 21;
-//		centroid[] centroids = get_centroids(4, 21);
-//	}
-//
-//
-//}
-
-//#include <cstdlib>
-//#include <cmath>
-//#include <ctime>
-//#include <limits>
-//#include <cstdint>
-//#include <emscripten/emscripten.h>
-//
-//struct RGB {
-//    float r, g, b;
-//};
-//
-//float colorDistance(uint8_t* data, int i, const RGB& centroid) {
-//    float dr = static_cast<float>(data[i]) - centroid.r;
-//    float dg = static_cast<float>(data[i + 1]) - centroid.g;
-//    float db = static_cast<float>(data[i + 2]) - centroid.b;
-//    return dr * dr + dg * dg + db * db;
-//}
-//
-//extern "C" {
-//
-//    EMSCRIPTEN_KEEPALIVE
-//        void kmeans_clustering(uint8_t* data, int width, int height, int k, int max_iter = 100) {
-//        const int num_pixels = width * height;
-//        const int stride = 3; // RGB
-//
-//        std::vector<RGB> centroids(k);
-//        std::vector<int> labels(num_pixels, 0);
-//        std::vector<int> counts(k, 0);
-//
-//        srand(static_cast<unsigned int>(time(nullptr)));
-//
-//        // Initialize centroids randomly (read directly from data)
-//        for (int i = 0; i < k; ++i) {
-//            int idx = (rand() % num_pixels) * stride;
-//            centroids[i] = {
-//                static_cast<float>(data[idx]),
-//                static_cast<float>(data[idx + 1]),
-//                static_cast<float>(data[idx + 2])
-//            };
-//        }
-//
-//        for (int iter = 0; iter < max_iter; ++iter) {
-//            bool changed = false;
-//
-//            // Assignment step
-//            for (int i = 0; i < num_pixels; ++i) {
-//                int idx = i * stride;
-//                float min_dist = std::numeric_limits<float>::max();
-//                int best_cluster = 0;
-//
-//                for (int j = 0; j < k; ++j) {
-//                    float dist = colorDistance(data, idx, centroids[j]);
-//                    if (dist < min_dist) {
-//                        min_dist = dist;
-//                        best_cluster = j;
-//                    }
-//                }
-//
-//                if (labels[i] != best_cluster) {
-//                    changed = true;
-//                    labels[i] = best_cluster;
-//                }
-//            }
-//
-//            if (!changed) {
-//                for (int i = 0; i < num_pixels; ++i) {
-//                    int cluster = labels[i];
-//                    int idx = i * stride;
-//                    data[idx] = static_cast<uint8_t>(centroids[cluster].r);
-//                    data[idx + 1] = static_cast<uint8_t>(centroids[cluster].g);
-//                    data[idx + 2] = static_cast<uint8_t>(centroids[cluster].b);
-//                }
-//                break;
-//            }
-//
-//            // Clear centroids and counts
-//            for (int j = 0; j < k; ++j) {
-//                centroids[j] = { 0, 0, 0 };
-//                counts[j] = 0;
-//            }
-//
-//            // Update centroids (accumulate directly)
-//            for (int i = 0; i < num_pixels; ++i) {
-//                int idx = i * stride;
-//                int cluster = labels[i];
-//                centroids[cluster].r += data[idx];
-//                centroids[cluster].g += data[idx + 1];
-//                centroids[cluster].b += data[idx + 2];
-//                counts[cluster]++;
-//            }
-//
-//            for (int j = 0; j < k; ++j) {
-//                if (counts[j] > 0) {
-//                    centroids[j].r /= counts[j];
-//                    centroids[j].g /= counts[j];
-//                    centroids[j].b /= counts[j];
-//                }
-//            }
-//        }
-//    }
-//}
-
-
 #include <vector>
 #include <cstdlib>
 #include <cmath>
@@ -224,9 +88,16 @@ float colorDistance(const RGB& a, const RGB& b) {
         (a.b - b.b) * (a.b - b.b));
 }
 
+// std::vector<RGB> get_pixels(const uint8_t* data, const int num_pixels) {
+// 	std::vector<RGB> pixels = std::vector<RGB>(num_pixels);
+// 	for (int i = 0; i < num_pixels; ++i) {
+// 		pixels[i] =
+// 	}
+// }
+
 extern "C" {
     EMSCRIPTEN_KEEPALIVE
-    void kmeans_clustering(uint8_t* data, int width, int height, int k, int max_iter = 100) {
+    void kmeans_clustering(uint8_t* data, int width, int height, int k, int max_iter) {
         int num_pixels = width * height;
         std::cout << "width = " << width << "\nheight = " << height << "\nnum_pixels = " << num_pixels << std::endl;
         std::vector<RGB> pixels(num_pixels);
@@ -236,9 +107,9 @@ extern "C" {
         // Step 1: Convert data to RGB float values
         for (int i = 0; i < num_pixels; ++i) {
             pixels[i] = {
-                static_cast<float>(data[i * 3 + 0]),
-                static_cast<float>(data[i * 3 + 1]),
-                static_cast<float>(data[i * 3 + 2])
+                static_cast<float>(data[i * 4 + 0]),
+                static_cast<float>(data[i * 4 + 1]),
+                static_cast<float>(data[i * 4 + 2])
             };
         }
 
@@ -288,6 +159,10 @@ extern "C" {
             }
 
             for (int j = 0; j < k; ++j) {
+				/* 
+				A centroid may become a dead centroid if it never gets pixels assigned to it.
+				May be good idea to reinitialize these dead centroids.
+				*/
                 if (counts[j] > 0) {
                     centroids[j].r = new_centroids[j].r / counts[j];
                     centroids[j].g = new_centroids[j].g / counts[j];
@@ -300,13 +175,17 @@ extern "C" {
 		//std::cout << "centroids.size() = " << centroids.size() << "new_centroids.size() = " << new_centroids.size() << 
 		for (int i = 0; i < num_pixels; ++i) {
 			int cluster = labels[i];
-			data[i * 3 + 0] = static_cast<uint8_t>(centroids[cluster].r);
-			data[i * 3 + 1] = static_cast<uint8_t>(centroids[cluster].g);
-			data[i * 3 + 2] = static_cast<uint8_t>(centroids[cluster].b);
+			data[i * 4 + 0] = static_cast<uint8_t>(centroids[cluster].r);
+			data[i * 4 + 1] = static_cast<uint8_t>(centroids[cluster].g);
+			data[i * 4 + 2] = static_cast<uint8_t>(centroids[cluster].b);
 		}
         //return labels;
     }
 }
+
+
+//git commit - m "implemented(src/wasm/src/image_utils.cpp): Implemented threshold_image() & black_threshold_image() fully. Implemented kmeans_clustering() & kmeans_clustering_spatial() & their distance functions partly - they have bugs."
+
 
 struct RGBXY {
 	float r, g, b;
