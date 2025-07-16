@@ -18,7 +18,11 @@ COMMON_FLAGS  := \
   -s ENVIRONMENT=web \
   -I$(INCLUDE_DIR) \
   -s EXPORTED_FUNCTIONS="['_malloc','_free']" \
-  -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap","getValue","setValue","HEAPU8"]'
+  -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap","getValue","setValue","HEAPU8"]' \
+  -s INITIAL_MEMORY=1024MB \
+  -s MAXIMUM_MEMORY=2048MB \
+  -s ALLOW_MEMORY_GROWTH=1 \
+  -s ASSERTIONS=2
 
 # Release vs Debug flags
 RELEASE_FLAGS := -O3 -s SINGLE_FILE=0
