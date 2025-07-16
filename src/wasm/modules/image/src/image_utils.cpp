@@ -107,7 +107,6 @@ extern "C" {
 	EMSCRIPTEN_KEEPALIVE
 		void kmeans_clustering(uint8_t* data, int width, int height, int k, int max_iter) {
 			int num_pixels = width * height;
-			std::cout << "width = " << width << "\nheight = " << height << "\nnum_pixels = " << num_pixels << std::endl;
 			std::vector<RGB> pixels(num_pixels);
 			std::vector<RGB> centroids(k);
 			std::vector<int> labels(num_pixels, 0);
