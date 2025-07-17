@@ -10,6 +10,10 @@
 #include <cstdint>
 #include <iostream>
 
+#include "Image.h"
+#include "RGBAPixel.h"
+#include "PixelConverters.h"
+
 struct RGB {
 	float r, g, b;
 };

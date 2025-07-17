@@ -1,3 +1,5 @@
+// TODO: The kmeans algorithm actually ignores the values of alpha where it should actually be taken into account.
+
 #include "kmeans.h"
 
 float colorDistance(const RGB& a, const RGB& b) {
@@ -6,22 +8,28 @@ float colorDistance(const RGB& a, const RGB& b) {
 			(a.b - b.b) * (a.b - b.b));
 }
 
+float colorDistance(const ImageLib::RGBAPixel<float>& a, const RGB& b) {
+	return std::sqrt((a.red - b.r) * (a.red - b.r) +
+			(a.green - b.g) * (a.green - b.g) +
+			(a.blue - b.b) * (a.blue - b.b));
+}
+
+float colorDistance(const ImageLib::RGBAPixel<float>& a, const ImageLib::RGBAPixel<float>& b) {
+	return std::sqrt((a.red - b.red) * (a.red - b.red) +
+			(a.green - b.green) * (a.green - b.green) +
+			(a.blue - b.blue) * (a.blue - b.blue));
+}
+
 extern "C" {
 	EMSCRIPTEN_KEEPALIVE
 		void kmeans_clustering(uint8_t* data, int width, int height, int k, int max_iter) {
 			int num_pixels = width * height;
-			std::vector<RGB> pixels(num_pixels);
-			std::vector<RGB> centroids(k);
-			std::vector<int> labels(num_pixels, 0);
+            ImageLib::Image<ImageLib::RGBAPixel<float>> pixels;
+            pixels.loadFromBuffer(data, width, height, ImageLib::RGBA_CONVERTER<float>);
 
-			// Step 1: Convert data to RGB float values
-			for (int i = 0; i < num_pixels; ++i) {
-				pixels[i] = {
-					static_cast<float>(data[i * 4 + 0]),
-					static_cast<float>(data[i * 4 + 1]),
-					static_cast<float>(data[i * 4 + 2])
-				};
-			}
+            /* CHECK WITH RYAN IF ALPAH IS 255 IF INITIALIZED TO 0 */
+            ImageLib::Image<ImageLib::RGBAPixel<float>> centroids(k, 1, 0);     // k centroids, initialized to {R,G,B,A} = {0,0,0,255}
+			std::vector<int> labels(num_pixels, 0);
 
 			// Step 2: Initialize centroids randomly
 			srand(static_cast<unsigned int>(time(nullptr)));
@@ -57,14 +65,15 @@ extern "C" {
 				if (!changed) break;
 
 				// Update step
-				std::vector<RGB> new_centroids(k, { 0, 0, 0 });
+                // std::vector<RGB> new_centroids(k, { 0, 0, 0 });
+				ImageLib::Image<ImageLib::RGBAPixel<float>> new_centroids(k, 1, 0);
 				std::vector<int> counts(k, 0);
 
 				for (int i = 0; i < num_pixels; ++i) {
 					int cluster = labels[i];
-					new_centroids[cluster].r += pixels[i].r;
-					new_centroids[cluster].g += pixels[i].g;
-					new_centroids[cluster].b += pixels[i].b;
+					new_centroids[cluster].red += pixels[i].red;
+					new_centroids[cluster].green += pixels[i].green;
+					new_centroids[cluster].blue += pixels[i].blue;
 					counts[cluster]++;
 				}
 
@@ -74,9 +83,9 @@ extern "C" {
 					   May be good idea to reinitialize these dead centroids.
 					*/
 					if (counts[j] > 0) {
-						centroids[j].r = new_centroids[j].r / counts[j];
-						centroids[j].g = new_centroids[j].g / counts[j];
-						centroids[j].b = new_centroids[j].b / counts[j];
+						centroids[j].red = new_centroids[j].red / counts[j];
+						centroids[j].green = new_centroids[j].green / counts[j];
+						centroids[j].blue = new_centroids[j].blue / counts[j];
 					}
 				}
 			}
@@ -85,9 +94,9 @@ extern "C" {
 			//std::cout << "centroids.size() = " << centroids.size() << "new_centroids.size() = " << new_centroids.size() << 
 			for (int i = 0; i < num_pixels; ++i) {
 				int cluster = labels[i];
-				data[i * 4 + 0] = static_cast<uint8_t>(centroids[cluster].r);
-				data[i * 4 + 1] = static_cast<uint8_t>(centroids[cluster].g);
-				data[i * 4 + 2] = static_cast<uint8_t>(centroids[cluster].b);
+				data[i * 4 + 0] = static_cast<uint8_t>(centroids[cluster].red);
+				data[i * 4 + 1] = static_cast<uint8_t>(centroids[cluster].green);
+				data[i * 4 + 2] = static_cast<uint8_t>(centroids[cluster].blue);
 			}
 		}
 }
