@@ -44,6 +44,8 @@ export default defineConfig({
 			'@assets': path.resolve(__dirname, 'src/assets'),
 			'@components': path.resolve(__dirname, 'src/components'),
 			'@utils': path.resolve(__dirname, 'src/utils'),
+			'@hooks': path.resolve(__dirname, 'src/hooks'),
+			'@workers': path.resolve(__dirname, 'src/workers'),
 			...generateWasmAliases(), // in the form of '@wasm-{module}
 		}
 	},
