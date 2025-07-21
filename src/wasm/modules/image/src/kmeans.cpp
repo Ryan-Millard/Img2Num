@@ -24,11 +24,12 @@ extern "C" {
 	EMSCRIPTEN_KEEPALIVE
 		void kmeans_clustering(uint8_t* data, int width, int height, int k, int max_iter) {
 			int num_pixels = width * height;
-            ImageLib::Image<ImageLib::RGBAPixel<float>> pixels;
-            pixels.loadFromBuffer(data, width, height, ImageLib::RGBA_CONVERTER<float>);
+			ImageLib::Image<ImageLib::RGBAPixel<float>> pixels;
+			pixels.loadFromBuffer(data, width, height, ImageLib::RGBA_CONVERTER<float>);
 
-            /* CHECK WITH RYAN IF ALPAH IS 255 IF INITIALIZED TO 0 */
-            ImageLib::Image<ImageLib::RGBAPixel<float>> centroids(k, 1, 0);     // k centroids, initialized to {R,G,B,A} = {0,0,0,255}
+			// 1-D image (height = 1)
+			ImageLib::Image<ImageLib::RGBAPixel<float>> centroids(k, 1); // k centroids, initialized to rgba(0,0,0,255)
+																		 // Init of each pixel is from default in Image constructor
 			std::vector<int> labels(num_pixels, 0);
 
 			// Step 2: Initialize centroids randomly
@@ -65,7 +66,7 @@ extern "C" {
 				if (!changed) break;
 
 				// Update step
-                // std::vector<RGB> new_centroids(k, { 0, 0, 0 });
+				// std::vector<RGB> new_centroids(k, { 0, 0, 0 });
 				ImageLib::Image<ImageLib::RGBAPixel<float>> new_centroids(k, 1, 0);
 				std::vector<int> counts(k, 0);
 
@@ -78,7 +79,7 @@ extern "C" {
 				}
 
 				for (int j = 0; j < k; ++j) {
-					/* 
+					/*
 					   A centroid may become a dead centroid if it never gets pixels assigned to it.
 					   May be good idea to reinitialize these dead centroids.
 					*/
