@@ -16,7 +16,7 @@ extern "C" {
 	EMSCRIPTEN_KEEPALIVE
 	void invert_image(uint8_t* ptr, int width, int height);
 	void threshold_image(uint8_t* ptr, const int width, const int height, const int num_thresholds);
-	void threshold_image(uint8_t* ptr, const int width, const int height, const int num_thresholds);
+	void black_threshold_image(uint8_t* ptr, const int width, const int height, const int num_thresholds);
 }
 
 #endif
