@@ -56,6 +56,14 @@ namespace ImageLib {
 
 		void setPixel(int x, int y, const PixelT& p) { data[index(x, y)] = p; }
 
+		// Operator[] for flat indexing
+		PixelT& operator[](int idx) { return data.at(idx); }							// set
+		const PixelT& operator[](int idx) const { return data.at(idx); }				// get
+
+		// Operator() for (x, y) access
+		PixelT& operator()(int x, int y) { return data.at(index(x, y)); }				// set
+		const PixelT& operator()(int x, int y) const { return data.at(index(x, y)); }	// get
+		
 		private:
 		std::vector<PixelT> data;
 		int width, height;
