@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState, useId } from 'react';
 import { loadImageToUint8Array } from '@utils/image-utils';
-import createImageModule from '@wasm-image';
+import { useWasmWorker } from '@hooks/useWasmWorker';
 import ProcessedImageDisplay from './ProcessedImageDisplay';
 import styles from './WasmImageProcessor.module.css';
 import LetterGlitch from './LetterGlitch';
 
 const WasmImageProcessor = () => {
-	const [mod, setMod] = useState(null);
+	const { call } = useWasmWorker();
 	const [originalSrc, setOriginalSrc] = useState(null);
 	const [fileData, setFileData] = useState(null);
 	const [editedImageData, setEditedImageData] = useState(null);
@@ -14,8 +14,6 @@ const WasmImageProcessor = () => {
 	const inputId = useId();
 
 	useEffect(() => {
-		createImageModule().then(setMod);
-
 		const handlePaste = async (e) => {
 			const items = e.clipboardData?.items;
 			if (!items) return;
@@ -45,35 +43,33 @@ const WasmImageProcessor = () => {
 
 	const loadOriginal = async (file) => {
 		if (!file) return;
+		if (originalSrc) URL.revokeObjectURL(originalSrc); // cleanup - prevent memory leaks
 		const url = URL.createObjectURL(file);
 		setOriginalSrc(url);
 		const { pixels, width, height } = await loadImageToUint8Array(file);
 		setFileData({ pixels, width, height });
 	};
 
-	const processImage = () => {
-		if (!fileData || !mod) return;
+	const processImage = async () => {
+		if (!fileData) return;
 		const { pixels, width, height } = fileData;
-		const size = pixels.length;
-		let ptr = null;
 		try {
-			ptr = mod._malloc(size);
-			mod.HEAPU8.set(pixels, ptr);
-			mod._invert_image(ptr, width, height);
-
-			const modified = new Uint8ClampedArray(mod.HEAPU8.subarray(ptr, ptr + size));
-			setEditedImageData({ pixels: modified, width, height });
+			const start = performance.now();
+			console.log(`Starting ms: ${start}`);
+			const { output } = await call(
+				'kmeans_clustering',
+				{ pixels, width, height, k: 5, max_iter: 50 },
+				['pixels']
+			);
+			console.log(`WASM call took ${performance.now() - start}ms`);
+			setEditedImageData({ pixels: output.pixels, width, height });
 		} catch (err) {
-			console.error('Processing failed', err);
-			alert('Error during image processing');
-		} finally {
-			if (ptr) mod._free(ptr);
+			console.error(err);
 		}
 	};
 
 	return (
 		<div className={styles.container}>
-			{!mod && <p>Loading WASM Engine...</p>}
 			<label htmlFor={inputId} className={styles.dropZone}
 				onDrop={handleDrop}
 				onDragOver={(e) => e.preventDefault()}
