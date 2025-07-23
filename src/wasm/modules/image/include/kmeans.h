@@ -1,7 +1,8 @@
 #ifndef KMEANS_H
 #define KMEANS_H
 
-#include <emscripten/emscripten.h>
+#include "exported.h" // EXPORTED macro
+
 #include <vector>
 #include <cstdlib>
 #include <cmath>
@@ -25,10 +26,7 @@ struct RGBXY {
 float colorDistance(const RGB& a, const RGB& b);
 float colorSpatialDistance(const RGBXY& a, const RGBXY& b, float spatial_weight);
 
-extern "C" {
-    EMSCRIPTEN_KEEPALIVE
-    void kmeans_clustering(uint8_t* data, int width, int height, int k, int max_iter);
-    void kmeans_clustering_spatial(uint8_t* data, int width, int height, int k, int max_iter, float spatial_weight);
-}
+EXPORTED void kmeans_clustering(uint8_t* data, int width, int height, int k, int max_iter);
+EXPORTED void kmeans_clustering_spatial(uint8_t* data, int width, int height, int k, int max_iter, float spatial_weight);
 
 #endif
