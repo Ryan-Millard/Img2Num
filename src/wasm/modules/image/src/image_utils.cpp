@@ -48,15 +48,15 @@ void threshold_image(uint8_t* ptr, const int width, const int height, const int 
 	std::memcpy(ptr, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
 }
 
-void black_threshold_image(uint8_t* ptr, const int width, const int height, const int num_thresholds) {
+void black_num_thresholds_image(uint8_t* ptr, const int width, const int height, const int num_thresholds) {
 	ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> img;
 	img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
 	const auto imgWidth{img.getWidth()}, imgHeight{img.getHeight()};
 	for(ImageLib::RGBAPixel<uint8_t>& p : img) {
-		const bool R{p.red < threshold};
-		const bool G{p.green < threshold};
-		const bool B{p.blue < threshold};
+		const bool R{p.red < num_thresholds};
+		const bool G{p.green < num_thresholds};
+		const bool B{p.blue < num_thresholds};
 		if (R && B && G) {
 			p.setGray(0);
 		}
@@ -64,4 +64,4 @@ void black_threshold_image(uint8_t* ptr, const int width, const int height, cons
 
 	const auto& modified = img.getData();
 	std::memcpy(ptr, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
-		}
+}
