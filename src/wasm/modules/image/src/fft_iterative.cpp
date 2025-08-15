@@ -128,4 +128,52 @@ namespace fft {
 		iterative_fft(a, inverse);
 		return a;
 	}
+
+	// Perform 2D FFT using your iterative FFT on rows and columns
+	void iterative_fft_2d(std::vector<cd>& data, size_t width, size_t height, bool inverse) {
+		// Determine next power-of-two dimensions
+		size_t W = fft::next_power_of_two(width);
+		size_t H = fft::next_power_of_two(height);
+
+		// Pad if necessary
+		if (W != width || H != height) {
+			std::vector<cd> padded(W * H, {0.0, 0.0});
+			for (size_t y = 0; y < height; y++)
+				for (size_t x = 0; x < width; x++)
+					padded[y * W + x] = data[y * width + x];
+			data = std::move(padded);
+			width = W;
+			height = H;
+		}
+
+		// Temporary buffers for row/column FFTs
+		std::vector<cd> temp_row(width);
+		std::vector<cd> temp_col(height);
+
+		// FFT rows
+		for (size_t y = 0; y < height; y++) {
+			std::copy(data.begin() + y * width, data.begin() + (y + 1) * width, temp_row.begin());
+			fft::iterative_fft(temp_row, inverse);
+			std::copy(temp_row.begin(), temp_row.end(), data.begin() + y * width);
+		}
+
+		// FFT columns
+		for (size_t x = 0; x < width; x++) {
+			for (size_t y = 0; y < height; y++)
+				temp_col[y] = data[y * width + x];
+			fft::iterative_fft(temp_col, inverse);
+			for (size_t y = 0; y < height; y++)
+				data[y * width + x] = temp_col[y];
+		}
+	}
+
+	/*
+	 * Convenience wrapper: take a const input vector and return the 2D FFT result
+	 * as a new vector. This will optionally pad to power-of-two if requested.
+	 */
+	std::vector<cd> iterative_fft_2d_copy(const std::vector<cd> &input, size_t width, size_t height, bool inverse) {
+		std::vector<cd> a = input;
+		iterative_fft_2d(a, width, height, inverse);
+		return a;
+	}
 }
