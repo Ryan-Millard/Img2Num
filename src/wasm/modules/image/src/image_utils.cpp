@@ -113,7 +113,7 @@ void threshold_image(uint8_t* ptr, const int width, const int height, const int 
 	std::memcpy(ptr, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
 }
 
-void black_num_thresholds_image(uint8_t* ptr, const int width, const int height, const int num_thresholds) {
+void black_threshold_image(uint8_t* ptr, const int width, const int height, const int num_thresholds) {
 	ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> img;
 	img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
