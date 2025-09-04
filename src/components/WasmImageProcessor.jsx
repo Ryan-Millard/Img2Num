@@ -55,29 +55,38 @@ const WasmImageProcessor = () => {
 		const { pixels, width, height } = fileData;
 
 		try {
+			const sigma_pixels = width * 0.005; // ~0.5% of width
+			const num_colors = 8;
+			let newPixels = pixels;
+
 			const start = performance.now();
-			console.log(`Starting forward ms: ${start}`);
-			const perc_width = width * 0.005; // ~0.5% of width
-			const sigma_pixels = perc_width > 5 ? 5 : perc_width;
+			// console.log(`Starting forward ms: ${start}`);
 
 			// Run Gaussian blur
-			const blurResult = await call(
+			newPixels = ( await call(
 				'gaussian_blur_fft',
-				{ pixels, width, height, sigma_pixels },
+				{ pixels: newPixels, width, height, sigma_pixels },
 				['pixels']
-			);
+			) ).output.pixels;
+
+			// Run Thresholding
+			newPixels = ( await call(
+				'black_threshold_image',
+				{ pixels: newPixels, width, height, num_colors },
+				['pixels']
+			) ).output.pixels;
 
 			// Run k-means on blurred image
-			const kmeansResult = await call(
+			newPixels = ( await call(
 				'kmeans_clustering',
-				{ pixels: blurResult.output.pixels, width, height, k: 5, max_iter: 100 },
+				{ pixels: newPixels, width, height, num_colors, max_iter: 100 },
 				['pixels']
-			);
+			) ).output.pixels;
 
-			console.log(`WASM processing took ${performance.now() - start}ms`);
-			console.log('fileData pixels sample (after forward):', kmeansResult.output.pixels.slice(0, 16));
+			// console.log(`WASM processing took ${performance.now() - start}ms`);
+			// console.log('fileData pixels sample (after forward):', kmeansResult.output.pixels.slice(0, 16));
 
-			setEditedImageData({ pixels: kmeansResult.output.pixels, width, height });
+			setEditedImageData({ pixels: newPixels, width, height });
 		} catch (err) {
 			console.error(err);
 		}
