@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useId } from 'react';
-import { loadImageToUint8Array } from '@utils/image-utils';
+import { loadImageToUint8Array, uint8ClampedArrayToSVG } from '@utils/image-utils';
 import { useWasmWorker } from '@hooks/useWasmWorker';
 import ProcessedImageDisplay from './ProcessedImageDisplay';
 import styles from './WasmImageProcessor.module.css';
@@ -10,6 +10,7 @@ const WasmImageProcessor = () => {
 	const [originalSrc, setOriginalSrc] = useState(null);
 	const [fileData, setFileData] = useState(null);
 	const [editedImageData, setEditedImageData] = useState(null);
+	const [editedSvg, setEditedSvg] = useState(null);
 	const canvasRef = useRef(null);
 	const inputId = useId();
 
@@ -59,9 +60,6 @@ const WasmImageProcessor = () => {
 			const num_colors = 8;
 			let newPixels = pixels;
 
-			const start = performance.now();
-			// console.log(`Starting forward ms: ${start}`);
-
 			// Run Gaussian blur
 			newPixels = ( await call(
 				'gaussian_blur_fft',
@@ -83,10 +81,15 @@ const WasmImageProcessor = () => {
 				['pixels']
 			) ).output.pixels;
 
-			// console.log(`WASM processing took ${performance.now() - start}ms`);
-			// console.log('fileData pixels sample (after forward):', kmeansResult.output.pixels.slice(0, 16));
-
 			setEditedImageData({ pixels: newPixels, width, height });
+
+			// Convert k-means result to SVG
+			const svgString = await uint8ClampedArrayToSVG({ pixels: newPixels, width, height });
+			if (svgString) {
+				setEditedSvg(svgString);
+			} else {
+				console.error('SVG conversion returned null/undefined');
+			}
 		} catch (err) {
 			console.error(err);
 		}
@@ -126,6 +129,19 @@ const WasmImageProcessor = () => {
 
 			{editedImageData && (
 				<ProcessedImageDisplay data={editedImageData} />
+			)}
+
+			{editedSvg && (
+				<div
+					className={styles.svgContainer}
+					dangerouslySetInnerHTML={{ __html: editedSvg }}
+					onClick={(e) => {
+						// Ensure we're clicking a <path>
+						if (e.target.tagName === 'path') {
+							e.target.id = styles.svgContainerColouredPath;
+						}
+					}}
+				/>
 			)}
 		</div>
 	);

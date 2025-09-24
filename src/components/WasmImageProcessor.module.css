@@ -48,3 +48,9 @@
 	position: absolute;
 	z-index: 0;
 }
+
+.svgContainer svg path:not(#svgContainerColouredPath) {
+	stroke: black;
+	stroke-width: 0.25;
+	fill: white;
+}
