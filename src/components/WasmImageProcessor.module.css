@@ -48,3 +48,8 @@
 	position: absolute;
 	z-index: 0;
 }
+
+.svgContainer svg path {
+  stroke: black;
+  stroke-width: 1;
+}
