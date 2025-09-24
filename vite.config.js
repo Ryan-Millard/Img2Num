@@ -36,6 +36,7 @@ async function buildWasmModules() {
 }
 
 export default defineConfig({
+	base: '/Img2Num/', // important for GitHub Pages
 	// Ensure Vite copies .wasm files
 	assetsInclude: ['**/*.wasm'],
 	resolve: {
