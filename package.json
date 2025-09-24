@@ -17,6 +17,7 @@
 		"help": "make -C src/wasm help"
 	},
 	"dependencies": {
+		"imagetracerjs": "^1.2.6",
 		"react": "^19.1.0",
 		"react-dom": "^19.1.0"
 	},
