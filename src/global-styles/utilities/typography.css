@@ -1,0 +1,29 @@
+.text-primary {
+	color: var(--color-primary);
+}
+.text-secondary {
+	color: var(--color-secondary);
+}
+.text-light {
+	color: var(--color-text-light);
+}
+.text-error {
+	color: var(--color-error);
+}
+.text-success {
+	color: var(--color-success);
+}
+.text-center {
+	text-align: center;
+}
+
+.font-bold {
+	font-weight: 700;
+}
+.font-normal {
+	font-weight: 400;
+}
+
+.uppercase {
+	text-transform: uppercase;
+}
