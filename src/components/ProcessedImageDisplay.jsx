@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import styles from './ProcessedImageDisplay.module.css';
-import LetterGlitch from './LetterGlitch';
 
 const ProcessedImageDisplay = ({ data, className = '' }) => {
 	const { pixels, width, height } = data;
@@ -18,8 +17,6 @@ const ProcessedImageDisplay = ({ data, className = '' }) => {
 
 	return (
 		<div className={`${styles.wrapper} ${className}`}>
-			<LetterGlitch glitchSpeed={50} className={styles.letterGlitch} />
-
 			<canvas ref={canvasRef} className={styles.canvas} />
 		</div>
 	);

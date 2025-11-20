@@ -8,13 +8,8 @@
 	flex-direction: column;
 	align-items: center;
 }
-.wrapper *:not(.letterGlitch) {
+.wrapper * {
 	z-index: 1;
-}
-
-.letterGlitch {
-	position: absolute;
-	z-index: 0;
 }
 
 .canvas {
