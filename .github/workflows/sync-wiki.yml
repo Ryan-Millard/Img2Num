@@ -20,7 +20,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: Andrew-Chen-Wang/github-wiki-action@v4
+      - uses: Andrew-Chen-Wang/github-wiki-action@v5
         with:
           strategy: init
           path: wiki
