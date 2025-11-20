@@ -37,6 +37,14 @@ async function buildWasmModules() {
 
 export default defineConfig({
 	base: '/Img2Num/', // important for GitHub Pages
+	server: {
+		watch: {
+			ignored: [
+				'src/wasm/**/*.js',
+				'src/wasm/**/*.wasm',
+			],
+		}
+	},
 	// Ensure Vite copies .wasm files
 	assetsInclude: ['**/*.wasm'],
 	resolve: {
@@ -70,7 +78,7 @@ export default defineConfig({
 		{
 			name: 'watch-cpp-and-build-wasm',
 			__isBuilding: false,
-			handleHotUpdate({ file, server }) {
+			handleHotUpdate({ file }) {
 				if ((file.endsWith('.cpp') || file.endsWith('.h')) && !this.__isBuilding) {
 					this.__isBuilding = true;
 					console.log(`🔄 Detected change in ${file}, rebuilding WASM...`);
@@ -81,7 +89,6 @@ export default defineConfig({
 						} else {
 							console.log('✅ WASM rebuilt successfully');
 							if (stdout) console.log('Build output:', stdout);
-							server.ws.send({ type: 'full-reload' });
 						}
 					});
 				}
