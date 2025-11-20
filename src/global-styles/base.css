@@ -1,0 +1,51 @@
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding: var(--spacing-lg);
+	color: var(--color-text);
+	font-family: var(--font-sans);
+	line-height: 1.5;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	background-image: url('@assets/hedgehog-bg.svg');
+	background-repeat: repeat;
+	background-size: 600px 600px; /* same as tile size */
+	background-attachment: fixed;
+}
+
+h1 {
+	font-size: 2rem;
+	margin-bottom: var(--spacing-md);
+}
+h2 {
+	font-size: 1.5rem;
+	margin-bottom: var(--spacing-sm);
+}
+p {
+	margin-bottom: var(--spacing-md);
+}
+
+input[type='text'], input[type='number'], textarea, select {
+	width: 100%;
+	padding: var(--spacing-sm);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-sm);
+	font-family: var(--font-sans);
+	font-size: 1rem;
+	transition: border-color 0.2s ease-in-out;
+}
+input[type='text']:focus, input[type='number']:focus, textarea:focus, select:focus {
+	outline: none;
+	border-color: var(--color-primary);
+	box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}

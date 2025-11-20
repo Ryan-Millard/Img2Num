@@ -1,17 +1,17 @@
-import { useEffect, useRef, useState, useId } from 'react';
+import { useEffect, useState, useId } from 'react';
 import { loadImageToUint8Array, uint8ClampedArrayToSVG } from '@utils/image-utils';
 import { useWasmWorker } from '@hooks/useWasmWorker';
-import ProcessedImageDisplay from './ProcessedImageDisplay';
+import GlassCard from '@components/GlassCard';
 import styles from './WasmImageProcessor.module.css';
+import uploadIcon from '@assets/upload-icon.svg';
+import { useNavigate } from 'react-router-dom';
 
 const WasmImageProcessor = () => {
-	const { call } = useWasmWorker();
+	const { gaussianBlur, blackThreshold, kmeans } = useWasmWorker();
 	const [originalSrc, setOriginalSrc] = useState(null);
 	const [fileData, setFileData] = useState(null);
-	const [editedImageData, setEditedImageData] = useState(null);
-	const [editedSvg, setEditedSvg] = useState(null);
-	const canvasRef = useRef(null);
 	const inputId = useId();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const handlePaste = async (e) => {
@@ -55,37 +55,20 @@ const WasmImageProcessor = () => {
 		const { pixels, width, height } = fileData;
 
 		try {
-			const sigma_pixels = width * 0.005; // ~0.5% of width
-			const num_colors = 8;
-			let newPixels = pixels;
+			//Process image:
+			//1. Blur to reduce noise in provided image - helps in step 3 since K-Means is sensitive to noise
+			//2. Threshold colors to reduce total number of colors to 8
+			//3. Run K-Means to detect color clusters based on the 8 colors we have limited it to
+			const newPixels = await gaussianBlur(fileData)
+				.then(p => blackThreshold({ ...fileData, pixels: p, num_colors: 8 }))
+				.then(p => kmeans({ ...fileData, pixels: p, num_colors: 8 }));
 
-			// Run Gaussian blur
-			newPixels = ( await call(
-				'gaussian_blur_fft',
-				{ pixels: newPixels, width, height, sigma_pixels },
-				['pixels']
-			) ).output.pixels;
-
-			// Run Thresholding
-			newPixels = ( await call(
-				'black_threshold_image',
-				{ pixels: newPixels, width, height, num_colors },
-				['pixels']
-			) ).output.pixels;
-
-			// Run k-means on blurred image
-			newPixels = ( await call(
-				'kmeans_clustering',
-				{ pixels: newPixels, width, height, num_colors, max_iter: 100 },
-				['pixels']
-			) ).output.pixels;
-
-			setEditedImageData({ pixels: newPixels, width, height });
-
-			// Convert k-means result to SVG
+			// Convert result to SVG to allow coloring-in
 			const svgString = await uint8ClampedArrayToSVG({ pixels: newPixels, width, height });
 			if (svgString) {
-				setEditedSvg(svgString);
+				navigate("/editor", {
+					state: { svg: svgString, imgData: { pixels: newPixels, width, height } }
+				});
 			} else {
 				console.error('SVG conversion returned null/undefined');
 			}
@@ -95,15 +78,19 @@ const WasmImageProcessor = () => {
 	};
 
 	return (
-		<div className={styles.container}>
-			<label htmlFor={inputId} className={styles.dropZone}
-				onDrop={handleDrop}
-				onDragOver={(e) => e.preventDefault()}
-			>
+		<label htmlFor={inputId}
+			onDrop={handleDrop}
+			onDragOver={(e) => e.preventDefault()}
+		>
+			<GlassCard className={`flex-center flex-column ${styles.dropZone}`}>
 				{originalSrc ? (
-					<img src={originalSrc} alt="Original" className={styles.preview} />
+					<>
+						<img src={originalSrc} alt="Original Image" className={styles.preview} />
+						<button className="uppercase button" onClick={processImage}>Ok</button>
+					</>
 				) : (
 					<>
+						<img src={uploadIcon} alt="Upload Icon" className={styles.uploadIcon} />
 						<p className={`text-center ${styles.dragDropText}`}>Drag & Drop or <span>Choose File</span></p>
 					</>
 				)}
@@ -116,31 +103,8 @@ const WasmImageProcessor = () => {
 					onChange={handleSelect}
 					hidden
 				/>
-			</label>
-
-			{originalSrc && (
-				<button className="button" onClick={processImage}>
-					OK
-				</button>
-			)}
-
-			{editedImageData && (
-				<ProcessedImageDisplay data={editedImageData} />
-			)}
-
-			{editedSvg && (
-				<div
-					className={styles.svgContainer}
-					dangerouslySetInnerHTML={{ __html: editedSvg }}
-					onClick={(e) => {
-						// Ensure we're clicking a <path>
-						if (e.target.tagName === 'path') {
-							e.target.id = styles.svgContainerColouredPath;
-						}
-					}}
-				/>
-			)}
-		</div>
+			</GlassCard>
+		</label>
 	);
 };
 

@@ -1,0 +1,7 @@
+.featureContainer {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+	justify-content: space-evenly;
+	align-items: stretch;
+}

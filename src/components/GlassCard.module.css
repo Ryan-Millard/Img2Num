@@ -1,0 +1,6 @@
+.card {
+	color: var(--color-text-light);
+	padding: 1.5rem;
+	flex: 1;
+	min-width: 200px;
+}

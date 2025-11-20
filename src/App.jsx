@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
-import Home from '@pages/Home';
+import { Routes, Route } from "react-router-dom";
+import Home from "@pages/Home";
+import EditorPage from "@pages/EditorPage";
 
-function App() {
-	useEffect(() => {
-		document.documentElement.classList.add('dark');
-	}, []); // empty dependency array = run once after mount
-
-	return <Home />;
+export default function App() {
+	return (
+		<Routes>
+			<Route path="/" element={<Home />} />
+			<Route path="/editor" element={<EditorPage />} />
+		</Routes>
+	);
 }
-
-export default App;
