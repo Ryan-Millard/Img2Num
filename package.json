@@ -18,12 +18,12 @@
 	},
 	"dependencies": {
 		"imagetracerjs": "^1.2.6",
-		"react": "^19.1.0",
+		"react": "^19.2.0",
 		"react-dom": "^19.1.0"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.29.0",
-		"@types/react": "^19.1.8",
+		"@types/react": "^19.2.6",
 		"@types/react-dom": "^19.1.6",
 		"@vitejs/plugin-react-swc": "^3.10.2",
 		"eslint": "^9.29.0",
