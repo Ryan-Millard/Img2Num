@@ -5,6 +5,7 @@ import path from 'path';
 import fg from 'fast-glob';
 import fs from 'fs';
 import { promisify } from 'util';
+import { imagetools } from 'vite-imagetools';
 
 const execAsync = promisify(exec);
 
@@ -55,11 +56,13 @@ export default defineConfig({
 			'@utils': path.resolve(__dirname, 'src/utils'),
 			'@hooks': path.resolve(__dirname, 'src/hooks'),
 			'@workers': path.resolve(__dirname, 'src/workers'),
+			'@global-styles': path.resolve(__dirname, 'src/global-styles'),
 			...generateWasmAliases(), // in the form of '@wasm-{module}
 		}
 	},
 	plugins: [
 		react(),
+		imagetools(),
 		// Build WASM modules on startup
 		{
 			name: 'build-wasm-on-startup',

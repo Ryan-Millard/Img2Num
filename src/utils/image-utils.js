@@ -19,28 +19,36 @@ export function loadImageToUint8Array(file) {
 }
 
 export const uint8ClampedArrayToSVG = async ({ pixels, width, height }) => {
-	// Force full alpha
-	for (let i = 3; i < pixels.length; i += 4) pixels[i] = 255;
-
-	// Create a canvas
-	const canvas = document.createElement('canvas');
-	canvas.width = width;
-	canvas.height = height;
-	const ctx = canvas.getContext('2d');
-
+	let canvas = null;
 	try {
+		// Force full alpha
+		for (let i = 3; i < pixels.length; i += 4) pixels[i] = 255;
+
+		canvas = document.createElement('canvas');
+		canvas.width = width;
+		canvas.height = height;
+		const ctx = canvas.getContext('2d');
+
 		const imageData = new ImageData(pixels, width, height);
 		ctx.putImageData(imageData, 0, 0);
 
-		const svgString = ImageTracer.imagedataToSVG(imageData, {
+		let svgString = ImageTracer.imagedataToSVG(imageData, {
 			ltres: 0,
 			rightangleenhance: false,
 		});
 
-		return svgString;
+		// Inject viewBox
+		svgString = svgString.replace(
+			/<svg([^>]*)>/,
+			`<svg$1 viewBox="0 0 ${width} ${height}" width="100%" height="auto">`
+		);
 
+		return svgString;
 	} catch (error) {
 		console.error('Error in SVG conversion:', error);
 		return null;
+	} finally {
+		// Clean up
+		canvas = null;
 	}
 };

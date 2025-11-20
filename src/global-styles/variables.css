@@ -1,0 +1,26 @@
+:root {
+	--color-bg: #FED0D0; /* soft pink background */
+
+	--color-primary: #D14A72;       /* strong pink/magenta for buttons/links */
+	--color-primary-dark: #A73457;  /* darker pink for hover */
+	--color-secondary: #FFD166;     /* soft yellow for accents */
+
+	--color-text: #2C1A1A;          /* very dark brown for all text */
+	--color-text-light: #2C1A1A;    /* also dark, for any “light” text elements */
+
+	--color-border: #F2B8C3;        /* slightly darker pink than background */
+
+	--color-error: #E94B4B;         
+	--color-success: #4BB543;       
+
+	--font-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+	--spacing-xs: 4px;
+	--spacing-sm: 8px;
+	--spacing-md: 16px;
+	--spacing-lg: 24px;
+	--spacing-xl: 32px;
+
+	--radius-sm: 4px;
+	--radius-md: 8px;
+}
