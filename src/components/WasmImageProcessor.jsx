@@ -3,7 +3,6 @@ import { loadImageToUint8Array, uint8ClampedArrayToSVG } from '@utils/image-util
 import { useWasmWorker } from '@hooks/useWasmWorker';
 import ProcessedImageDisplay from './ProcessedImageDisplay';
 import styles from './WasmImageProcessor.module.css';
-import LetterGlitch from './LetterGlitch';
 
 const WasmImageProcessor = () => {
 	const { call } = useWasmWorker();
@@ -101,8 +100,6 @@ const WasmImageProcessor = () => {
 				onDrop={handleDrop}
 				onDragOver={(e) => e.preventDefault()}
 			>
-				<LetterGlitch glitchSpeed={50} className={styles.letterGlitch} />
-
 				{originalSrc ? (
 					<img src={originalSrc} alt="Original" className={styles.preview} />
 				) : (
