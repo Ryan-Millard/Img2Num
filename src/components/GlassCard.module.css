@@ -4,3 +4,38 @@
 	flex: 1;
 	min-width: 200px;
 }
+
+/*Table Styles*/
+.card table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 1rem;
+	word-break: break-word;
+}
+
+.card td {
+	padding: 0.35rem 0.5rem;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+	font-size: 0.95rem;
+}
+
+/* round top row */
+.card tr:first-child td:first-child { border-top-left-radius: var(--spacing-md); }
+.card tr:first-child td:last-child { border-top-right-radius: var(--spacing-md); }
+
+/* round bottom row */
+.card tr:last-child td:first-child { border-bottom-left-radius: var(--spacing-md); }
+.card tr:last-child td:last-child { border-bottom-right-radius: var(--spacing-md); }
+
+.card tr:nth-child(odd) {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.card tr:hover {
+  background-color: rgb(255, 255, 255);
+  transform: scale(1.02);
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.card tr td:first-child {
+	font-weight: bold;
+}

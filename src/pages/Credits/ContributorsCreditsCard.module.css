@@ -1,0 +1,24 @@
+.contributorsGrid {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center; /* center all items */
+	align-items: flex-start; /* align tables to top */
+	gap: 2rem; /* uniform spacing */
+}
+
+.contributorsGrid table {
+	min-width: 250px;
+	max-width: 800px;
+	border-collapse: collapse;
+}
+
+.contributorsGrid td {
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	white-space: nowrap;
+}
+
+.contributorsGrid img {
+	height: auto;
+	min-width: var(--spacing-xl);
+	margin: 0 auto;
+}
