@@ -1,5 +1,6 @@
 {
 	"name": "imgtonum",
+	"homepage": "https://ryan-millard.github.io/Img2Num",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
