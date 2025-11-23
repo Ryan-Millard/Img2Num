@@ -1,25 +1,32 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styles from "./NavBar.module.css";
 import GlassCard from '@components/GlassCard';
 
 export default function NavBar() {
 	const [isOpen, setIsOpen] = useState(false);
-	const links = (
-		<>
-			<li>
-				<Link to="/">Home</Link>
+	const location = useLocation(); // <--- current URL
+
+	const links = [
+		{ path: "/", label: "Home" },
+		{ path: "/credits", label: "Credits" },
+		{ path: "https://github.com/Ryan-Millard/Img2Num", label: "GitHub", external: true }
+	];
+
+	const renderLinks = links.map(link => {
+		const isActive = !link.external && location.pathname === link.path; // active if route matches
+		return (
+			<li key={link.label}>
+				{link.external ? (
+					<a href={link.path} target="_blank">{link.label}</a>
+				) : (
+					<Link to={link.path} className={isActive ? styles.activeLink : ""}>
+						{link.label}
+					</Link>
+				)}
 			</li>
-			<li>
-				<Link to="/credits">Credits</Link>
-			</li>
-			<li>
-				<a href="https://github.com/Ryan-Millard/Img2Num" target="_blank">
-					GitHub
-				</a>
-			</li>
-		</>
-	);
+		);
+	});
 
 	return (
 		<GlassCard as='nav' className={styles.navbar} style={{ padding: '0.5rem 1rem' }}>
@@ -37,16 +44,13 @@ export default function NavBar() {
 				<span className={isOpen ? styles.barActive : styles.bar}></span>
 			</button>
 
-		{isOpen ? (
-				<GlassCard as='ul'
-					className={`${styles.navLinks} ${isOpen ? `glass ${styles.active}` : ""}`}
-					stacked={isOpen ? "true" : "false"}>
-						{links}
+			{isOpen ? (
+				<GlassCard as='ul' className={`${styles.navLinks} ${styles.active}`} style={{ padding: '1rem' }}>
+					{renderLinks}
 				</GlassCard>
 			) : (
-				<ul className={`${styles.navLinks} ${isOpen ? `glass ${styles.active}` : ""}`}
-					stacked={isOpen ? "true" : "false"}>
-						{links}
+				<ul className={styles.navLinks}>
+					{renderLinks}
 				</ul>
 			)}
 		</GlassCard>

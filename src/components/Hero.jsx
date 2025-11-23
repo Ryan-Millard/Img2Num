@@ -1,10 +1,10 @@
 import styles from './Hero.module.css';
 import GlassCard from '@components/GlassCard';
 
-const Hero = () => (
+const Hero = ({ header, description }) => (
 	<GlassCard className="text-center">
-		<h1>Img2Num</h1>
-		<p className={styles.heroParagraph}>Convert images of numbers into actual digits instantly in your browser!</p>
+		<h1>{header}</h1>
+		<p className={styles.heroParagraph}>{description}</p>
 	</GlassCard>
 );
 

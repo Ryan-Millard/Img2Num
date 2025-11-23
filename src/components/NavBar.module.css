@@ -24,6 +24,11 @@
 	font-weight: 500;
 	transition: color 0.2s;
 }
+.navLinks li a.activeLink {
+	color: var(--color-secondary); /* highlight current page */
+	font-weight: 600;
+	text-decoration: underline;
+}
 
 /* Hamburger Menu */
 .hamburger {
