@@ -1,0 +1,76 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	padding: 2rem;
+	max-width: 1200px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.cardsContainer {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2rem;
+	justify-content: center;
+}
+
+.scrollCard {
+	flex: 1 1 300px;
+	max-height: 400px;
+	overflow-y: auto;
+	backdrop-filter: blur(15px) saturate(180%);
+	border-radius: 2rem;
+	padding: 1.5rem;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.scrollCard:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.scrollList {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	margin-top: 1rem;
+}
+
+.listItem {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.avatar {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+}
+
+.list {
+	list-style: none;
+	padding: 0;
+	margin: 1rem 0 0 0;
+	text-align: left;
+}
+
+.list a {
+	color: var(--color-text-light);
+	text-decoration: underline;
+}
+
+.staticImage {
+	width: 100%;
+	margin-top: 1rem;
+	border-radius: 1rem;
+	object-fit: cover;
+}
+
+.loading {
+	text-align: center;
+	margin-top: 2rem;
+	font-size: 1.2rem;
+	color: var(--color-text-light);
+}
