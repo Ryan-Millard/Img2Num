@@ -34,6 +34,8 @@ export default function NavBar() {
 				<Link to="/">Img2Num</Link>
 			</div>
 
+			<h1>Credits</h1>
+
 			<button
 				className={styles.hamburger}
 				onClick={() => setIsOpen(!isOpen)}
@@ -45,7 +47,7 @@ export default function NavBar() {
 			</button>
 
 			{isOpen ? (
-				<GlassCard as='ul' className={`${styles.navLinks} ${styles.active}`} style={{ padding: '1rem' }}>
+				<GlassCard as='ul' className={`${styles.navLinks} ${isOpen ? styles.active : ""} ${isOpen ? "stacked" : ""}`}>
 					{renderLinks}
 				</GlassCard>
 			) : (

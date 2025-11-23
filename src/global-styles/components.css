@@ -44,9 +44,7 @@
 	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 	border-radius: 1rem; /* optional if most elements should have rounded corners */
 }
-/* Fake stackable blur using pseudo-element */
-.glass[stacked="false"]::before { display: none; }
-.glass[stacked="true"]::before {
+.glass.stacked::before {
 	content: '';
 	position: absolute;
 	inset: 0;
