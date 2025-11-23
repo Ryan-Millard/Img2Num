@@ -1,8 +1,8 @@
 import { useLocation } from "react-router-dom";
 import GlassCard from "@components/GlassCard";
-import styles from "./EditorPage.module.css";
+import styles from "./Editor.module.css";
 
-export default function EditorPage() {
+export default function Editor() {
 	const { state } = useLocation();
 	const { svg, imgData } = state || {};
 

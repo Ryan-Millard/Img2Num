@@ -49,3 +49,18 @@ img {
 	height: auto;
 	display: block;
 }
+
+/* General link style */
+a, .anchor-style {
+	color: var(--color-primary);
+	font-weight: 500;
+	transition: color 0.3s, text-decoration 0.3s;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+/* Hover/focus states */
+a:hover, a:focus,
+.anchor-style:hover, .anchor-style:focus {
+	color: var(--color-secondary);
+}

@@ -1,12 +1,11 @@
 import WasmImageProcessor from '@components/WasmImageProcessor';
 import Hero from '@components/Hero';
 import GlassCard from '@components/GlassCard';
-
-	import styles from './Home.module.css';
+import styles from './Home.module.css';
 
 const Home = () => (
 	<div className="flex-column gap-md">
-		<Hero />
+		<Hero header="Img2Num" description="Convert images of numbers into actual digits instantly in your browser!" />
 
 		<WasmImageProcessor />
 

@@ -30,8 +30,3 @@ label, label * {
 	font-size: 2em;
 	margin: 0;
 }
-.dragDropText > span {
-	color: var(--color-primary);
-	text-decoration: underline;
-	text-wrap: nowrap;
-}

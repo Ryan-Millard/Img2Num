@@ -1,12 +1,12 @@
 import styles from './GlassCard.module.css';
 
-const GlassCard = ({ children, className = '', style = {} }) => (
-	<div
+const GlassCard = ({ children, className = '', style = {}, as: Component = 'div' }) => (
+	<Component
 		className={`text-center glass ${styles.card} ${className}`}
 		style={style}
 	>
 		{children}
-	</div>
+	</Component>
 );
 
 export default GlassCard;
