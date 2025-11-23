@@ -5,11 +5,14 @@ import GlassCard from '@components/GlassCard';
 import styles from './WasmImageProcessor.module.css';
 import uploadIcon from '@assets/upload-icon.svg';
 import { useNavigate } from 'react-router-dom';
+import LoadingHedgehog from '@components/LoadingHedgehog';
 
 const WasmImageProcessor = () => {
 	const { gaussianBlur, blackThreshold, kmeans } = useWasmWorker();
 	const [originalSrc, setOriginalSrc] = useState(null);
 	const [fileData, setFileData] = useState(null);
+	const [isProcessing, setIsProcessing] = useState(false);
+	const [progress, setProgress] = useState(0);
 	const inputId = useId();
 	const navigate = useNavigate();
 
@@ -19,15 +22,15 @@ const WasmImageProcessor = () => {
 			if (!items) return;
 
 			for (const item of items) {
-				if (item.type.startsWith("image/")) {
+				if (item.type.startsWith('image/')) {
 					const file = item.getAsFile();
 					await loadOriginal(file);
 					break;
 				}
 			}
 		};
-		document.addEventListener("paste", handlePaste);
-		return () => document.removeEventListener("paste", handlePaste);
+		document.addEventListener('paste', handlePaste);
+		return () => document.removeEventListener('paste', handlePaste);
 	}, []);
 
 	const handleDrop = async (e) => {
@@ -43,7 +46,7 @@ const WasmImageProcessor = () => {
 
 	const loadOriginal = async (file) => {
 		if (!file) return;
-		if (originalSrc) URL.revokeObjectURL(originalSrc); // cleanup - prevent memory leaks
+		if (originalSrc) URL.revokeObjectURL(originalSrc);
 		const url = URL.createObjectURL(file);
 		setOriginalSrc(url);
 		const { pixels, width, height } = await loadImageToUint8Array(file);
@@ -54,48 +57,63 @@ const WasmImageProcessor = () => {
 		if (!fileData) return;
 		const { pixels, width, height } = fileData;
 
-		try {
-			//Process image:
-			//1. Blur to reduce noise in provided image - helps in step 3 since K-Means is sensitive to noise
-			//2. Threshold colors to reduce total number of colors to 8
-			//3. Run K-Means to detect color clusters based on the 8 colors we have limited it to
-			const newPixels = await gaussianBlur(fileData)
-				.then(p => blackThreshold({ ...fileData, pixels: p, num_colors: 8 }))
-				.then(p => kmeans({ ...fileData, pixels: p, num_colors: 8 }));
+		setIsProcessing(true);
+		setProgress(5);
 
-			// Convert result to SVG to allow coloring-in
-			const svgString = await uint8ClampedArrayToSVG({ pixels: newPixels, width, height });
+		try {
+			// 1) Blur
+			setProgress(15);
+			const blurred = await gaussianBlur(fileData);
+			setProgress(40);
+
+			// 2) Threshold
+			const thresholded = await blackThreshold({ ...fileData, pixels: blurred, num_colors: 8 });
+			setProgress(65);
+
+			// 3) K-means
+			const kmeansed = await kmeans({ ...fileData, pixels: thresholded, num_colors: 8 });
+			setProgress(95);
+
+			// final small step: convert to SVG
+			const svgString = await uint8ClampedArrayToSVG({ pixels: kmeansed, width, height });
+			setProgress(100);
+
 			if (svgString) {
-				navigate("/editor", {
-					state: { svg: svgString, imgData: { pixels: newPixels, width, height } }
-				});
+				navigate('/editor', { state: { svg: svgString, imgData: { pixels: kmeansed, width, height } } });
 			} else {
 				console.error('SVG conversion returned null/undefined');
 			}
 		} catch (err) {
 			console.error(err);
+		} finally {
+			// keep the sleeping animation visible briefly so the user sees it
+			setTimeout(() => {
+				setIsProcessing(false);
+				setProgress(0);
+			}, 800);
 		}
 	};
 
 	return (
-		<label htmlFor={inputId}
-			onDrop={handleDrop}
-			onDragOver={(e) => e.preventDefault()}
-		>
+		<label htmlFor={inputId} onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
 			<GlassCard className={`flex-center flex-column ${styles.dropZone}`}>
 				{originalSrc ? (
 					<>
 						<img src={originalSrc} alt="Original Image" className={styles.preview} />
-						<button
-							className="uppercase button"
-							onClick={(e) => {
-								e.stopPropagation();
-								processImage();
-							}}
-							onTouchStart={(e) => e.stopPropagation()}
-						>
-							Ok
-						</button>
+						{!isProcessing ? (
+							<button
+								className="uppercase button"
+								onClick={(e) => {
+									e.stopPropagation();
+									processImage();
+								}}
+								onTouchStart={(e) => e.stopPropagation()}
+							>
+								Ok
+							</button>
+						) : (
+							<LoadingHedgehog progress={progress} text={`Processing — ${Math.round(progress)}%`} />
+						)}
 					</>
 				) : (
 					<>

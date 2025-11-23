@@ -4,7 +4,8 @@ import styles from "./Editor.module.css";
 
 export default function Editor() {
 	const { state } = useLocation();
-	const { svg, imgData } = state || {};
+	console.log(state);
+	const { svg } = state || {};
 
 	if (!svg) {
 		return (
