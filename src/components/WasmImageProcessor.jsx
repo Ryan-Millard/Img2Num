@@ -100,7 +100,7 @@ const WasmImageProcessor = () => {
 				) : (
 					<>
 						<img src={uploadIcon} alt="Upload Icon" className={styles.uploadIcon} />
-						<p className={`text-center ${styles.dragDropText}`}>Drag & Drop or <span>Choose File</span></p>
+						<p className={`text-center ${styles.dragDropText}`}>Drag & Drop or <span className="anchor-style">Choose File</span></p>
 					</>
 				)}
 
