@@ -49,25 +49,6 @@ export default function DependencyCreditsCard() {
     })),
   });
 
-  // Render table rows
-  const renderRow = (dep, index) => (
-    <tr key={`${dep.name}-${index}`}>
-      <td>{dep.name}</td>
-      <td>{dep.version}</td>
-      <td>
-        {depQueries[index]?.isLoading || devDepQueries[index]?.isLoading ? (
-          'Loading...'
-        ) : dep.url ? (
-          <a href={dep.url} target="_blank" rel="noopener noreferrer">
-            {dep.url}
-          </a>
-        ) : (
-          'No URL'
-        )}
-      </td>
-    </tr>
-  );
-
   // Render a table
   const renderTable = (items, queries) => (
     <table>

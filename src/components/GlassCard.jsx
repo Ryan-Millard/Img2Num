@@ -1,13 +1,10 @@
 import styles from './GlassCard.module.css';
 
-const GlassCard = ({ as: Component = 'div', children, ...rest }) => {
-  const mergedClassName = `glass ${rest.className || ''}`;
-
-  return (
-    <Component {...rest} className={mergedClassName}>
-      {children}
-    </Component>
-  );
-};
+// eslint-disable-next-line no-unused-vars
+const GlassCard = ({ as: Tag = 'div', children, ...rest }) => (
+	<Tag {...rest} className={`text-center glass ${styles.card} ${rest.className || ''}`}>
+		{children}
+	</Tag>
+);
 
 export default GlassCard;

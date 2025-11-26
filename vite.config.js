@@ -69,7 +69,7 @@ export default defineConfig({
           await buildWasmModules();
         }
       },
-      async configureServer(server) {
+      async configureServer() {
         // Only build on dev server start
         await buildWasmModules();
       },

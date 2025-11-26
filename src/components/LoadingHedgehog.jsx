@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import styles from './LoadingHedgehog.module.css';
 
 import hedgeMove from '@assets/pixel_art_hedgehog/move/move.gif';
-import hedgeIdle from '@assets/pixel_art_hedgehog/idle/idle.gif';
+//import hedgeIdle from '@assets/pixel_art_hedgehog/idle/idle.gif';
 import hedgeSleep from '@assets/pixel_art_hedgehog/sleep/sleep.gif';
 import hedgeSleepTransition from '@assets/pixel_art_hedgehog/sleep_transition/hedgehog.gif';
 

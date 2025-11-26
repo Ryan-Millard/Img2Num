@@ -74,7 +74,7 @@ const WasmImageProcessor = () => {
     step(5);
 
     try {
-      const { pixels, width, height } = fileData;
+      const { width, height } = fileData;
 
       step(20);
       const blurred = await gaussianBlur(fileData);
