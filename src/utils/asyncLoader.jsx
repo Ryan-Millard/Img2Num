@@ -6,13 +6,13 @@
  * @returns {Promise<Array>} - resolves when all items are loaded
  */
 export async function loadItemsSequentially(items, fetchItem, onItem) {
-	const results = [];
-	for (const item of items) {
-		const data = await fetchItem(item);
-		results.push(data);
-		if (onItem) onItem(data);
-	}
-	return results;
+  const results = [];
+  for (const item of items) {
+    const data = await fetchItem(item);
+    results.push(data);
+    if (onItem) onItem(data);
+  }
+  return results;
 }
 
 /**
@@ -23,10 +23,10 @@ export async function loadItemsSequentially(items, fetchItem, onItem) {
  * @returns {Promise<Array>} resolves when all items are loaded
  */
 export function loadItemsParallel(items, fetchItem, onItem) {
-	const promises = items.map(async (item) => {
-		const data = await fetchItem(item);
-		if (onItem) onItem(data);
-		return data;
-	});
-	return Promise.all(promises);
+  const promises = items.map(async (item) => {
+    const data = await fetchItem(item);
+    if (onItem) onItem(data);
+    return data;
+  });
+  return Promise.all(promises);
 }

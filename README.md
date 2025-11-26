@@ -5,18 +5,19 @@
 ---
 
 ## Goal
+
 > To make a fast, offline, serverless application that runs at near-native speeds, enabling in-browser colouring or printing of the image.
 
 ---
 
 ## ✨ Features
 
-* Upload an image (e.g. PNG, JPG)
-* Convert it into a colour-by-number version
-* Preview the simplified image directly in the browser
-* Print-friendly output for physical colouring
-* In-browser colouring support
-* Fast image processing using WebAssembly and C++
+- Upload an image (e.g. PNG, JPG)
+- Convert it into a colour-by-number version
+- Preview the simplified image directly in the browser
+- Print-friendly output for physical colouring
+- In-browser colouring support
+- Fast image processing using WebAssembly and C++
 
 ---
 
@@ -51,12 +52,12 @@
 
 Make sure the following tools are installed on your system:
 
-* [Node.js](https://nodejs.org/) (includes `npm`)
-* [Vite](https://vitejs.dev/)
-  *(Installed automatically via `npm install`, but you can install globally with `npm install -g vite` for convenience)*
-* [Emscripten](https://emscripten.org/docs/getting_started/downloads.html)
-  *(Ensure `emcc` is available in your `PATH`)*
-* [Make](https://www.gnu.org/software/make/) or compatible build system
+- [Node.js](https://nodejs.org/) (includes `npm`)
+- [Vite](https://vitejs.dev/)
+  _(Installed automatically via `npm install`, but you can install globally with `npm install -g vite` for convenience)_
+- [Emscripten](https://emscripten.org/docs/getting_started/downloads.html)
+  _(Ensure `emcc` is available in your `PATH`)_
+- [Make](https://www.gnu.org/software/make/) or compatible build system
 
 ### 📅 Installation
 
@@ -120,9 +121,9 @@ We plan to use K-Means Clustering to reduce the number of unique colours in the 
 
 We're planning to add a clean, print-friendly version of the colour-by-number output so that users can:
 
-* Print the image
-* View the legend with colour numbers
-* Colour it in manually
+- Print the image
+- View the legend with colour numbers
+- Colour it in manually
 
 ---
 
@@ -134,8 +135,8 @@ GNU General Public License v3.0 (see [LICENSE](https://github.com/Ryan-Millard/I
 
 ## 👥 Authors
 
-* Ryan Millard
-* Hayden Millard
+- Ryan Millard
+- Hayden Millard
 
 ---
 

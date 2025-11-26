@@ -1,34 +1,35 @@
-label, label * {
-	-webkit-tap-highlight-color: transparent;
+label,
+label * {
+  -webkit-tap-highlight-color: transparent;
 }
 
 .dropZone {
-	cursor: pointer;
-	padding: 2%;
-	gap: 1em;
+  cursor: pointer;
+  padding: 2%;
+  gap: 1em;
 }
-.dropZone[data-image-loaded="false"] {
-	padding: 5%;
-	gap: 2em;
+.dropZone[data-image-loaded='false'] {
+  padding: 5%;
+  gap: 2em;
 }
 
 .noTextWrap {
-	white-space: nowrap;
+  white-space: nowrap;
 }
 
 .preview {
-	height: 50vh;
-	object-fit: contain;
-	margin-bottom: var(--spacing-xs);
+  height: 50vh;
+  object-fit: contain;
+  margin-bottom: var(--spacing-xs);
 }
 
 .uploadIcon {
-	width: 7em;
-	height: 7em;
+  width: 7em;
+  height: 7em;
 }
 
 .dragDropText {
-	font-weight: bold;
-	font-size: 2em;
-	margin: 0;
+  font-weight: bold;
+  font-size: 2em;
+  margin: 0;
 }

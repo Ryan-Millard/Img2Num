@@ -1,90 +1,91 @@
 .logo {
-	font-size: x-large;
+  font-size: x-large;
 }
 
 .navbar {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	position: sticky;
-	top: 0;
-	z-index: 100;
-	margin-bottom: var(--spacing-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  margin-bottom: var(--spacing-md);
 }
 
 .navLinks {
-	display: flex;
-	gap: 1.5rem;
-	list-style: none;
-	font-weight: bolder;
-	font-size: large;
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  font-weight: bolder;
+  font-size: large;
 }
 
 .navLinks li a {
-	font-weight: 500;
-	transition: color 0.2s;
+  font-weight: 500;
+  transition: color 0.2s;
 }
 .navLinks li a.activeLink {
-	color: var(--color-secondary); /* highlight current page */
-	font-weight: 600;
-	text-decoration: underline;
+  color: var(--color-secondary); /* highlight current page */
+  font-weight: 600;
+  text-decoration: underline;
 }
 
 /* Hamburger Menu */
 .hamburger {
-	display: none;
-	flex-direction: column;
-	gap: 5px;
-	background: none;
-	border: none;
-	cursor: pointer;
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
-.bar, .barActive {
-	width: 25px;
-	height: 4px;
-	background-color: var(--color-primary);
-	transition: all 0.3s;
-	border-radius: var(--spacing-xs);
+.bar,
+.barActive {
+  width: 25px;
+  height: 4px;
+  background-color: var(--color-primary);
+  transition: all 0.3s;
+  border-radius: var(--spacing-xs);
 }
 
 .barActive:nth-child(1) {
-	transform: rotate(45deg) translate(5px, 5px);
+  transform: rotate(45deg) translate(5px, 5px);
 }
 
 .barActive:nth-child(2) {
-	opacity: 0;
+  opacity: 0;
 }
 
 .barActive:nth-child(3) {
-	transform: rotate(-45deg) translate(5px, -5px);
+  transform: rotate(-45deg) translate(5px, -5px);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-	.hamburger {
-		display: flex;
-	}
+  .hamburger {
+    display: flex;
+  }
 
-	.navbar {
-		overflow-x: clip;
-	}
-	.navLinks {
-		position: absolute;
-		top: 100%;
-		right: 0;
-		flex-direction: column;
-		width: 200px;
-		padding: 1rem;
-		transform: translateX(100%);
-		transition: transform 0.3s ease;
-	}
+  .navbar {
+    overflow-x: clip;
+  }
+  .navLinks {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    flex-direction: column;
+    width: 200px;
+    padding: 1rem;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
 
-	.navLinks.active {
-		transform: translateX(0);
-	}
+  .navLinks.active {
+    transform: translateX(0);
+  }
 
-	.navLinks li {
-		margin: 0.25rem 0;
-	}
+  .navLinks li {
+    margin: 0.25rem 0;
+  }
 }

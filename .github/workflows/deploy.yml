@@ -30,7 +30,7 @@ jobs:
           ./emsdk activate latest
           source ./emsdk_env.sh
           cd ../
-          
+
           # Build WASM modules
           npm run build-wasm
         shell: bash

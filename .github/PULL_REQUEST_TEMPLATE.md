@@ -17,12 +17,15 @@ If this **is** the right template, go ahead and complete it below 👇
 Please describe the changes made in this PR and why they are necessary.
 
 Fixes #issue-number (if applicable)
+
 <!-- e.g. Fixes #17 -->
 
 ## ✅ Type of Change
 
 Place an "x" in the brackets below:
+
 <!-- e.g. [x] Bug fix 🐛 -->
+
 - [ ] Bug fix 🐛
 - [ ] New feature ✨
 - [ ] Refactor 🔧
@@ -37,7 +40,9 @@ Please describe how you tested your changes (e.g., unit tests, manual testing, s
 ## 🧩 Checklist
 
 Place an "x" in the brackets below:
+
 <!-- e.g. [x] Bug fix 🐛 -->
+
 - [ ] I’ve followed the contribution guidelines.
 - [ ] My code follows the code style of this project.
 - [ ] I’ve added tests where necessary.

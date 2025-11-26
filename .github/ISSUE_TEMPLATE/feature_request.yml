@@ -1,6 +1,6 @@
 name: New feature
 description: Suggest or request a new feature
-labels: ["enhancement"]
+labels: ['enhancement']
 body:
   - type: markdown
     attributes:
@@ -27,9 +27,9 @@ body:
   - type: dropdown
     id: assign
     attributes:
-      label: "Would you like to work on this issue?"
+      label: 'Would you like to work on this issue?'
       options:
-        - "Yes"
+        - 'Yes'
   - type: markdown
     attributes:
       value: |

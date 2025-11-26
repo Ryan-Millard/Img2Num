@@ -4,8 +4,8 @@
 @import 'typography.css';
 
 .hidden {
-	display: none !important;
+  display: none !important;
 }
 .visible {
-	display: block !important;
+  display: block !important;
 }

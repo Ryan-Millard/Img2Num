@@ -16,4 +16,5 @@ This wiki is read-only. All contributions must be made by editing the files unde
 ## 📬 Contact
 
 For questions or help:
+
 - Open a [GitHub Issue](https://github.com/Ryan-Millard/Img2Num/issues)

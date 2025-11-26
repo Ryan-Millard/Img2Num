@@ -1,8 +1,8 @@
 .container {
-	display: flex;
-	flex-direction: column;
-	gap: 2rem;
-	max-width: 1200px;
-	margin: 0 auto;
-	text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
 }
