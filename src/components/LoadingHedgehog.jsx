@@ -71,7 +71,7 @@ const LoadingHedgehog = ({ progress = 0, text = 'Processing image...' }) => {
         rafRef.current = null;
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [isSleeping, progress]); // restart loop if sleeping state changes or new target
 
   // helpers to start/clear timers safely
