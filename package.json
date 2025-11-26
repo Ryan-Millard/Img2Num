@@ -1,49 +1,46 @@
 {
-	"name": "imgtonum",
-	"version": "0.0.0",
-	"private": true,
-	"type": "module",
-	"homepage": "https://ryan-millard.github.io/Img2Num",
-	"scripts": {
-		"help": "node scripts/help.js",
-
-		"dev": "vite",
-		"dev:debug": "npm run build-wasm:debug && vite",
-		"preview": "vite preview",
-
-		"build": "npm run build-wasm && vite build",
-		"build-js": "vite build",
-		"build-wasm": "make -C src/wasm build",
-		"build-wasm:debug": "make -C src/wasm debug",
-		"clean": "npm run clean-wasm && npm run clean-js",
-		"clean-js": "rm -rf dist",
-		"clean-wasm": "make -C src/wasm clean",
-
-		"format": "prettier --write .",
-		"lint": "eslint .",
-		"lint:fix": "eslint . --fix",
-		"lint:style": "editorconfig-checker"
-	},
-	"dependencies": {
-		"imagetracerjs": "^1.2.6",
-		"lucide-react": "^0.555.0",
-		"react": "^19.2.0",
-		"react-dom": "^19.2.0",
-		"react-router-dom": "^7.9.6"
-	},
-	"devDependencies": {
-		"@eslint/js": "^9.29.0",
-		"@tanstack/react-query": "^5.90.10",
-		"@types/react": "^19.2.6",
-		"@types/react-dom": "^19.1.6",
-		"@vitejs/plugin-react-swc": "^4.2.2",
-		"editorconfig-checker": "^6.1.1",
-		"eslint": "^9.39.1",
-		"eslint-plugin-react-hooks": "^7.0.1",
-		"eslint-plugin-react-refresh": "^0.4.20",
-		"fast-glob": "^3.3.3",
-		"globals": "^16.5.0",
-		"vite": "^7.2.4",
-		"vite-imagetools": "^9.0.0"
-	}
+  "name": "imgtonum",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "homepage": "https://ryan-millard.github.io/Img2Num",
+  "scripts": {
+    "help": "node scripts/help.js",
+    "dev": "vite",
+    "dev:debug": "npm run build-wasm:debug && vite",
+    "preview": "vite preview",
+    "build": "npm run build-wasm && vite build",
+    "build-js": "vite build",
+    "build-wasm": "make -C src/wasm build",
+    "build-wasm:debug": "make -C src/wasm debug",
+    "clean": "npm run clean-wasm && npm run clean-js",
+    "clean-js": "rm -rf dist",
+    "clean-wasm": "make -C src/wasm clean",
+    "format": "prettier --write .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:style": "editorconfig-checker"
+  },
+  "dependencies": {
+    "imagetracerjs": "^1.2.6",
+    "lucide-react": "^0.555.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.9.6"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.29.0",
+    "@tanstack/react-query": "^5.90.10",
+    "@types/react": "^19.2.6",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react-swc": "^4.2.2",
+    "editorconfig-checker": "^6.1.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "fast-glob": "^3.3.3",
+    "globals": "^16.5.0",
+    "vite": "^7.2.4",
+    "vite-imagetools": "^9.0.0"
+  }
 }

@@ -71,7 +71,6 @@ const LoadingHedgehog = ({ progress = 0, text = 'Processing image...' }) => {
         rafRef.current = null;
       }
     };
-     
   }, [isSleeping, progress]); // restart loop if sleeping state changes or new target
 
   // helpers to start/clear timers safely
