@@ -1,2 +1,53 @@
-# Force Unix-style LF line endings for all text files
-* text eol=lf
+# -------------------------
+# Text files — force LF line endings
+# -------------------------
+* text=auto eol=lf
+
+# -------------------------
+# JavaScript / JSX / TypeScript
+# -------------------------
+*.js    text eol=lf
+*.jsx   text eol=lf
+*.ts    text eol=lf
+*.tsx   text eol=lf
+
+# -------------------------
+# C++ / C headers
+# -------------------------
+*.cpp   text eol=lf
+*.h     text eol=lf
+
+# -------------------------
+# HTML / CSS / Markdown / YAML / JSON / TXT
+# -------------------------
+*.html  text eol=lf
+*.htm   text eol=lf
+*.css   text eol=lf
+*.md    text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.json  text eol=lf
+*.txt   text eol=lf
+
+# -------------------------
+# Python
+# -------------------------
+*.py    text eol=lf
+
+# -------------------------
+# Git config files
+# -------------------------
+.gitattributes  text eol=lf
+.gitignore      text eol=lf
+
+# -------------------------
+# Images / binary assets
+# -------------------------
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.svg   binary
+*.ase   binary
+*.ico   binary
+*.webp  binary
