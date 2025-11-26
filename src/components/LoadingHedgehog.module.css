@@ -1,0 +1,105 @@
+:root {
+	--grass-top: #5fa43b;
+	--grass-bottom: #2e7b17;
+	--bar-padding: 8px;
+	--grass-height: 18px; /* tweak to align feet perfectly */
+}
+
+/* container — simple, no glass */
+.container {
+	width: 100%;
+	max-width: 720px;
+	margin: 0 auto;
+	padding: 10px;
+	font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+	user-select: none;
+}
+
+/* header */
+.header {
+	font-size: 13px;
+	margin-bottom: 10px;
+	opacity: 0.95;
+}
+
+/* wrapper — positions grass and hedgehog overlay */
+.barWrap {
+	position: relative;
+	padding: var(--bar-padding) 0;
+	border-radius: 8px;
+	/* intentionally minimal: no glass, no heavy shadows */
+}
+
+/* grass bar */
+.grass {
+	position: relative;
+	height: var(--grass-height);
+	border-radius: 999px;
+	overflow: hidden;
+	background: linear-gradient(180deg, var(--grass-top), var(--grass-bottom));
+	border: 1px solid rgba(0,0,0,0.06);
+	z-index: 1;
+}
+
+/* low-contrast texture for seriousness */
+.grass::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background-image: repeating-linear-gradient(-75deg, rgba(255,255,255,0.01) 0 2px, transparent 2px 6px);
+	mix-blend-mode: overlay;
+	opacity: 0.55;
+	pointer-events: none;
+}
+
+/* progress fill (darker patch) */
+.fill {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	height: 100%;
+	border-radius: inherit;
+	background: linear-gradient(180deg, rgba(8,50,8,0.12), rgba(6,36,6,0.22));
+	transition: width 360ms linear;
+	z-index: 1;
+}
+
+/* hedgehog overlay wrapper (sibling of .grass) */
+.hedgehogWrap {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	pointer-events: none; /* decorative only */
+	z-index: 2; /* above the grass */
+}
+
+/* hedgehog sits on top of the grass — feet visually meet the grass edge */
+/* no bobbing, no rotation — serious tone */
+.hedgehog {
+	position: absolute;
+	bottom: calc(var(--grass-height) - 4px); /* place hedgehog on top of the grass; tweak as needed */
+	transform: translateX(-50%);
+	width: 56px;
+	height: 56px;
+	pointer-events: none;
+	transition: left 420ms linear, bottom 220ms ease, opacity 180ms ease;
+	filter: drop-shadow(0 6px 8px rgba(0,0,0,0.35));
+	will-change: left;
+}
+
+/* sleeping: hedge stays in place and lowers slightly (no rotation) */
+.sleeping {
+	bottom: calc(var(--grass-height) - 8px); /* subtle settle */
+	opacity: 0.98;
+}
+
+/* responsive */
+@media (max-width: 460px) {
+	:root { --grass-height: 16px; }
+	.hedgehog { width: 48px; height: 48px; }
+	.container { padding: 8px; }
+}
