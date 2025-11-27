@@ -18,6 +18,14 @@
   display: flex;
   flex-direction: column;
 }
+.flex-space-evenly {
+	display: flex;
+	justify-content: space-evenly;
+}
+.flex-space-between {
+	display: flex;
+	justify-content: space-between;
+}
 
 .grid {
   display: grid;
