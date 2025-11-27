@@ -18,9 +18,9 @@
 
 The **iterative FFT** is an implementation of the Cooley-Tukey FFT algorithm that:
 
-* Avoids recursion (unlike classic divide-and-conquer recursive FFT).
-* Computes an \$N\$-point DFT in \$O(N \log N)\$ time.
-* Uses in-place updates to minimize memory allocations.
+- Avoids recursion (unlike classic divide-and-conquer recursive FFT).
+- Computes an \$N\$-point DFT in \$O(N \log N)\$ time.
+- Uses in-place updates to minimize memory allocations.
 
 **High-level steps:**
 
@@ -51,7 +51,7 @@ The iterative approach is chosen here for **performance and low memory overhead*
 
 Before applying the iterative butterfly operations, the input array must be **reordered so that the indices correspond to the bit-reversed order** of their original index.
 
-* Example: For N=8, binary indices:
+- Example: For N=8, binary indices:
 
 | Original Index (binary) | Bit-Reversed Index (binary) | Decimal |
 | ----------------------- | --------------------------- | ------- |
@@ -64,8 +64,8 @@ Before applying the iterative butterfly operations, the input array must be **re
 | 110                     | 011                         | 3       |
 | 111                     | 111                         | 7       |
 
-* Reordering ensures that the iterative algorithm can **process butterflies in a linear pass** without recursion.
-* Each butterfly stage combines elements separated by certain distances; bit-reversal guarantees that the data for each stage are contiguous in memory.
+- Reordering ensures that the iterative algorithm can **process butterflies in a linear pass** without recursion.
+- Each butterfly stage combines elements separated by certain distances; bit-reversal guarantees that the data for each stage are contiguous in memory.
 
 **Why it matters:**
 
@@ -94,11 +94,10 @@ Where `w` is a **twiddle factor** ($$e^{\frac{-2πi k}{N}}$$).
 
 **Explanation:**
 
-* Each butterfly combines two elements from a smaller DFT to form part of a larger DFT.
-* At stage `s` of the FFT:
-
-  * Each group has size `m = 2^s`.
-  * Half of the elements are combined with the other half using the corresponding twiddle factor.
+- Each butterfly combines two elements from a smaller DFT to form part of a larger DFT.
+- At stage `s` of the FFT:
+  - Each group has size `m = 2^s`.
+  - Half of the elements are combined with the other half using the corresponding twiddle factor.
 
 **Visualization:**
 
@@ -163,7 +162,7 @@ classDef invisible fill:none,stroke:none;
 class Stage0,Stage1,Stage2,Stage3 invisible;
 ```
 
-* All stages are applied iteratively, doubling the sub-transform size each time.
+- All stages are applied iteratively, doubling the sub-transform size each time.
 
 ---
 
@@ -177,26 +176,26 @@ $$
 W_N^k = e^{-2\pi i k / N}
 $$
 
-* They encode the **phase rotation** needed to combine sub-DFTs at each stage.
-* Precomputing twiddle factors per stage improves efficiency.
+- They encode the **phase rotation** needed to combine sub-DFTs at each stage.
+- Precomputing twiddle factors per stage improves efficiency.
 
 **Why we need them:**
 
-* Each butterfly combines values that are separated in the original signal; the twiddle factor rotates one of the values so that they **sum correctly in the frequency domain**.
-* For the inverse FFT, conjugate the twiddle factor to reverse rotation.
+- Each butterfly combines values that are separated in the original signal; the twiddle factor rotates one of the values so that they **sum correctly in the frequency domain**.
+- For the inverse FFT, conjugate the twiddle factor to reverse rotation.
 
 ---
 
 # 6. Inverse Transform and Normalization
 
-* **Forward FFT:** no normalization (standard engineering convention).
-* **Inverse FFT:** divide each element by N to recover original signal magnitude:
+- **Forward FFT:** no normalization (standard engineering convention).
+- **Inverse FFT:** divide each element by N to recover original signal magnitude:
 
 $$
 x[n] = \frac{1}{N} \sum_{k=0}^{N-1} X[k] e^{+2 \pi i k n / N}
 $$
 
-* In code: after completing the iterative FFT with conjugated twiddle factors, scale all output values by `1/N`.
+- In code: after completing the iterative FFT with conjugated twiddle factors, scale all output values by `1/N`.
 
 ---
 

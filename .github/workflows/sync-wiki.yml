@@ -1,7 +1,7 @@
 name: Publish wiki
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
       - 'wiki/**'
 
@@ -24,4 +24,4 @@ jobs:
         with:
           strategy: init
           path: wiki
-          commit-message: "Sync wiki from /wiki"
+          commit-message: 'Sync wiki from /wiki'

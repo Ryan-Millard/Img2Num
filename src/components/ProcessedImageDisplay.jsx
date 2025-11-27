@@ -2,24 +2,24 @@ import { useEffect, useRef } from 'react';
 import styles from './ProcessedImageDisplay.module.css';
 
 const ProcessedImageDisplay = ({ data, className = '' }) => {
-	const { pixels, width, height } = data;
-	const canvasRef = useRef(null);
+  const { pixels, width, height } = data;
+  const canvasRef = useRef(null);
 
-	useEffect(() => {
-		const canvas = canvasRef.current;
-		if (!canvas) return;
-		canvas.width = width;
-		canvas.height = height;
-		const ctx = canvas.getContext('2d');
-		const imageData = new ImageData(pixels, width, height);
-		ctx.putImageData(imageData, 0, 0);
-	}, [pixels, width, height]);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    const imageData = new ImageData(pixels, width, height);
+    ctx.putImageData(imageData, 0, 0);
+  }, [pixels, width, height]);
 
-	return (
-		<div className={`${styles.wrapper} ${className}`}>
-			<canvas ref={canvasRef} className={styles.canvas} />
-		</div>
-	);
+  return (
+    <div className={`${styles.wrapper} ${className}`}>
+      <canvas ref={canvasRef} className={styles.canvas} />
+    </div>
+  );
 };
 
 export default ProcessedImageDisplay;

@@ -1,36 +1,36 @@
 .p-0 {
-	padding: 0 !important;
+  padding: 0 !important;
 }
 .pt-0 {
-	padding-top: 0 !important;
+  padding-top: 0 !important;
 }
 .pb-0 {
-	padding-bottom: 0 !important;
+  padding-bottom: 0 !important;
 }
 .p-1 {
-	padding: var(--spacing-xs) !important;
+  padding: var(--spacing-xs) !important;
 }
 .pt-1 {
-	padding-top: var(--spacing-xs) !important;
+  padding-top: var(--spacing-xs) !important;
 }
 .pb-1 {
-	padding-bottom: var(--spacing-xs) !important;
+  padding-bottom: var(--spacing-xs) !important;
 }
 .p-2 {
-	padding: var(--spacing-sm) !important;
+  padding: var(--spacing-sm) !important;
 }
 .pt-2 {
-	padding-top: var(--spacing-sm) !important;
+  padding-top: var(--spacing-sm) !important;
 }
 .pb-2 {
-	padding-bottom: var(--spacing-sm) !important;
+  padding-bottom: var(--spacing-sm) !important;
 }
 .p-3 {
-	padding: var(--spacing-md) !important;
+  padding: var(--spacing-md) !important;
 }
 .pt-3 {
-	padding-top: var(--spacing-md) !important;
+  padding-top: var(--spacing-md) !important;
 }
 .pb-3 {
-	padding-bottom: var(--spacing-md) !important;
+  padding-bottom: var(--spacing-md) !important;
 }
