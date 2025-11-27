@@ -16,7 +16,9 @@
     "clean": "npm run clean-wasm && npm run clean-js",
     "clean-js": "rm -rf dist",
     "clean-wasm": "make -C src/wasm clean",
-    "format": "prettier --write .",
+    "format": "npm run format-js && npm run format-wasm",
+    "format-js": "prettier --write .",
+    "format-wasm": "node scripts/format-wasm.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:style": "editorconfig-checker"
@@ -34,12 +36,14 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react-swc": "^4.2.2",
+    "clang-format": "^1.8.0",
     "editorconfig-checker": "^6.1.1",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.20",
     "fast-glob": "^3.3.3",
     "globals": "^16.5.0",
+    "prettier": "^3.7.1",
     "vite": "^7.2.4",
     "vite-imagetools": "^9.0.2"
   }

@@ -1,22 +1,26 @@
 #!/usr/bin/env node
 import fs from 'fs';
 
-// Read the package.json dynamically
+// Read package.json dynamically
 const pkg = JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url)));
 
-// Optional descriptions for scripts you want to explain
+// Descriptions for scripts
 const descriptions = {
   dev: 'Run Vite dev server',
   'dev:debug': 'Build WASM in debug mode then start dev server',
   preview: 'Preview the production build locally',
   build: 'Build WASM then build the site',
+  'build-js': 'Build only the JS/React site',
   'build-wasm': 'Build the WebAssembly modules',
   'build-wasm:debug': 'Build WASM modules in debug mode',
+  clean: 'Clean WASM build artifacts and dist folder',
+  'clean-js': 'Remove dist folder',
   'clean-wasm': 'Clean WASM build artifacts',
-  clean: 'Clean WASM and dist folders',
-  format: 'Format all files with Prettier',
+  format: 'Format all files with Prettier and clang-format',
+  'format-js': 'Format all non-C++ files with Prettier',
+  'format-wasm': 'Format all C++ files with clang-format',
   lint: 'Run ESLint to check for code issues',
-  'lint:fix': 'Run ESLint and fix issues automatically',
+  'lint:fix': 'Run ESLint and automatically fix issues',
   'lint:style': 'Check all files against .editorconfig rules',
 };
 

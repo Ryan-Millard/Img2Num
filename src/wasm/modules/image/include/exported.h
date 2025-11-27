@@ -3,7 +3,8 @@
 
 // Macro to export functions for WASM or other C compilers
 
-#ifdef __EMSCRIPTEN__ // Emscripten (Web Assembly) compilation (avoid name mangling & instruct emscripten to keep it)
+#ifdef __EMSCRIPTEN__ // Emscripten (Web Assembly) compilation (avoid name
+                      // mangling & instruct emscripten to keep it)
 #include <emscripten/emscripten.h>
 #define EXPORTED extern "C" EMSCRIPTEN_KEEPALIVE
 #else // Standard C++ compilation (avoid name mangling)
