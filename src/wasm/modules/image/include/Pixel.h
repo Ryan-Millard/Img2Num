@@ -4,14 +4,14 @@
 #include <type_traits>
 
 namespace ImageLib {
-	template <typename NumberT>
-	struct Pixel {
-		static_assert(std::is_arithmetic<NumberT>::value, "RGBPixel<NumberT>: NumberT must be a numeric type");
+template <typename NumberT> struct Pixel {
+  static_assert(std::is_arithmetic<NumberT>::value,
+                "RGBPixel<NumberT>: NumberT must be a numeric type");
 
-		using value_type = NumberT;
+  using value_type = NumberT;
 
-		~Pixel() = default;
-	};
-}
+  ~Pixel() = default;
+};
+} // namespace ImageLib
 
 #endif // PIXEL_H

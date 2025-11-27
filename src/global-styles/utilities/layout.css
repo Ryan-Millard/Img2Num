@@ -19,12 +19,12 @@
   flex-direction: column;
 }
 .flex-space-evenly {
-	display: flex;
-	justify-content: space-evenly;
+  display: flex;
+  justify-content: space-evenly;
 }
 .flex-space-between {
-	display: flex;
-	justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .grid {
