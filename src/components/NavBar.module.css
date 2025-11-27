@@ -89,3 +89,12 @@
     margin: 0.25rem 0;
   }
 }
+
+.externalLink {
+	margin-left: 1.25em;
+}
+
+.externalLinkIcon{
+	vertical-align: top;
+	margin-left: 0.25em;
+}
