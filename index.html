@@ -8,6 +8,41 @@
   </head>
   <body>
     <div id="root"></div>
+
+    <noscript class="flex-column gap-lg">
+      <link rel="stylesheet" href="@global-styles/index.css" />
+
+      <div class="glass text-center p-3">
+        <h1>You have JavaScript disabled. :(</h1>
+        <p>This app needs JavaScript to work properly.</p>
+      </div>
+
+      <div class="glass p-3 text-center">
+        <h2>Why JavaScript is Needed</h2>
+        <p>
+        This app uses JavaScript to work.
+        Think of JavaScript as the “magic” that makes buttons clickable,
+        pages update without reloading, and tools like the editor or
+        image processor actually do something.
+        </p>
+      </div>
+
+      <div class="glass p-3 flex-center flex-column">
+        <h2>Without JavaScript:</h2>
+        <ul>
+          <li>The pages will stay blank or static.</li>
+          <li>You won’t be able to switch between sections like Home, Credits, or About.</li>
+          <li>Interactive features, like the editor, won’t work.</li>
+        </ul>
+        <p>Don’t worry — you can easily turn it back on! Instructions vary depending on your browser:</p>
+      </div>
+
+      <div class="text-center glass p-3">
+        <h2>Don't know how to enable JavaScript?</h2>
+        <a href="https://www.enable-javascript.com/" target="_blank">This link</a> will guide you through enabling it!
+      </div>
+    </noscript>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
