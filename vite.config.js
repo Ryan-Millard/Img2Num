@@ -6,6 +6,7 @@ import fg from 'fast-glob';
 import fs from 'fs';
 import { promisify } from 'util';
 import { imagetools } from 'vite-imagetools';
+import generateContributorCreditsPlugin from './scripts/generate-contributor-credits-json.js';
 
 const execAsync = promisify(exec);
 
@@ -54,12 +55,14 @@ export default defineConfig({
       '@hooks': path.resolve(__dirname, 'src/hooks'),
       '@workers': path.resolve(__dirname, 'src/workers'),
       '@global-styles': path.resolve(__dirname, 'src/global-styles'),
+      '@data': path.resolve(__dirname, 'src/data'),
       ...generateWasmAliases(), // in the form of '@wasm-{module}
     },
   },
   plugins: [
     react(),
     imagetools(),
+    generateContributorCreditsPlugin(),
     // Build WASM modules on startup
     {
       name: 'build-wasm-on-startup',
