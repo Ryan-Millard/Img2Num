@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import GlassCard from '@components/GlassCard';
 import styles from './Editor.module.css';
+import EditorHelmet from './EditorHelmet';
 
 export default function Editor() {
   const { state } = useLocation();
@@ -17,16 +18,20 @@ export default function Editor() {
   }
 
   return (
-    <GlassCard>
-      <div
-        className={`flex-center ${styles.svgContainer}`}
-        dangerouslySetInnerHTML={{ __html: svg }}
-        onClick={(e) => {
-          if (e.target.tagName === 'path') {
-            e.target.id = styles.svgContainerColouredPath;
-          }
-        }}
-      />
-    </GlassCard>
+    <>
+      <EditorHelmet />
+
+      <GlassCard>
+        <div
+          className={`flex-center ${styles.svgContainer}`}
+          dangerouslySetInnerHTML={{ __html: svg }}
+          onClick={(e) => {
+            if (e.target.tagName === 'path') {
+              e.target.id = styles.svgContainerColouredPath;
+            }
+          }}
+        />
+      </GlassCard>
+    </>
   );
 }
