@@ -45,6 +45,7 @@
     "globals": "^16.5.0",
     "prettier": "^3.7.3",
     "vite": "^7.2.4",
-    "vite-imagetools": "^9.0.2"
+    "vite-imagetools": "^9.0.2",
+    "vite-plugin-sitemap": "^0.8.2"
   }
 }

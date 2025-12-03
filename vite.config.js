@@ -7,6 +7,7 @@ import fs from 'fs';
 import { promisify } from 'util';
 import { imagetools } from 'vite-imagetools';
 import generateContributorCreditsPlugin from './scripts/generate-contributor-credits-json.js';
+import VitePluginSitemap from 'vite-plugin-sitemap';
 
 const execAsync = promisify(exec);
 
@@ -62,6 +63,13 @@ export default defineConfig({
   plugins: [
     react(),
     imagetools(),
+    VitePluginSitemap({
+      hostname: 'https://ryan-millard.github.io/Img2Num',
+      dynamicRoutes: [
+        '/',
+        '/credits',
+      ],
+    }),
     generateContributorCreditsPlugin(),
     // Build WASM modules on startup
     {
