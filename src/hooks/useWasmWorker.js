@@ -41,6 +41,9 @@ export function useWasmWorker() {
   const kmeans = async ({ pixels, width, height, num_colors, max_iter = 100 }) => {
     return (await call('kmeans_clustering', { pixels, width, height, num_colors, max_iter }, ['pixels'])).output.pixels;
   };
+  const mergeSmallRegionsInPlace = async ({ pixels, width, height, minArea, minWidth, minHeight }) => {
+    return (await call('mergeSmallRegionsInPlace', { pixels, width, height, minArea, minWidth, minHeight }, ['pixels'])).output.pixels;
+  };
 
-  return { call, gaussianBlur, blackThreshold, kmeans };
+  return { call, gaussianBlur, blackThreshold, kmeans, mergeSmallRegionsInPlace };
 }
