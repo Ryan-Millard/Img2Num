@@ -12,7 +12,7 @@ const WasmImageProcessor = () => {
   const inputId = useId();
   const inputRef = useRef(null);
 
-  const { gaussianBlur, blackThreshold, kmeans } = useWasmWorker();
+  const { gaussianBlur, blackThreshold, kmeans, mergeSmallRegionsInPlace } = useWasmWorker();
 
   const [originalSrc, setOriginalSrc] = useState(null);
   const [fileData, setFileData] = useState(null);
@@ -93,9 +93,25 @@ const WasmImageProcessor = () => {
         num_colors: 8,
       });
 
+      const minWidth = Math.ceil(Math.max(width / 50, 1)); // 2% of width or 1px
+      const minHeight = Math.ceil(Math.max(height / 50, 1)); // 2% of width or 1px
+      const area = width*height;
+      // Prevents minArea from being too small
+      const minimumAllowedMinArea = area > 100_000_000 ? 25 : (area > 10_000_000 ? 20 : (area > 1_000_000 ? 15 : 10));
+      const minArea = Math.ceil(Math.max(area / 10_000, minimumAllowedMinArea));
+      console.table({ minWidth, minHeight, minArea, area, minimumAllowedMinArea });
+      const merged = await mergeSmallRegionsInPlace({
+        pixels: kmeansed,
+        width,
+        height,
+        minArea,
+        minWidth,
+        minHeight,
+      });
+
       step(95);
       const svg = await uint8ClampedArrayToSVG({
-        pixels: kmeansed,
+        pixels: merged,
         width,
         height,
       });
@@ -103,7 +119,7 @@ const WasmImageProcessor = () => {
       step(100);
 
       navigate('/editor', {
-        state: { svg, imgData: { pixels: kmeansed, width, height } },
+        state: { svg, imgData: { pixels: merged, width, height } },
       });
     } catch (err) {
       console.error(err);
