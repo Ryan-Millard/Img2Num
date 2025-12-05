@@ -38,7 +38,17 @@ jobs:
       - name: Build Vite app
         run: npm run build
 
-      - name: Deploy to GitHub Pages
+      - name: Build Docusaurus site
+        run: |
+          cd docs
+          npm ci
+          npm run build
+          cd ..
+          mkdir -p dist/docs
+          cp -r docs/build/* dist/docs/
+        shell: bash
+
+      - name: Deploy everything to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
