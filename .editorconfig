@@ -129,3 +129,4 @@ max_line_length = off
 # -------------------------
 [LICENSE]
 max_line_length = off
+trim_trailing_whitespace = false
