@@ -9,7 +9,7 @@ async function fetchContributors() {
   if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
   const contributors = await res.json();
 
-  return contributors.map(c => ({
+  return contributors.map((c) => ({
     id: c.id,
     login: c.login,
     html_url: c.html_url,
@@ -32,6 +32,6 @@ export default function generateContributorCreditsPlugin() {
       } catch (err) {
         console.error('❌ Failed to generate contributor-credits.json:', err);
       }
-    }
+    },
   };
 }

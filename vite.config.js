@@ -65,10 +65,7 @@ export default defineConfig({
     imagetools(),
     VitePluginSitemap({
       hostname: 'https://ryan-millard.github.io/Img2Num',
-      dynamicRoutes: [
-        '/',
-        '/credits',
-      ],
+      dynamicRoutes: ['/', '/credits'],
     }),
     generateContributorCreditsPlugin(),
     // Build WASM modules on startup
