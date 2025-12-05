@@ -1,0 +1,9 @@
+launch:
+  label: Launch
+  permalink: /launch
+  description: New feature launches
+
+tutorial:
+  label: Tutorial
+  permalink: /tutorial
+  description: Guides on how the app works
