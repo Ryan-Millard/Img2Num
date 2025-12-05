@@ -44,8 +44,8 @@ jobs:
           npm ci
           npm run build
           cd ..
-          mkdir -p dist/docs
-          cp -r docs/build/* dist/docs/
+          mkdir -p dist/learn
+          cp -r docs/build/* dist/learn/
         shell: bash
 
       - name: Deploy everything to GitHub Pages

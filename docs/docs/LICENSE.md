@@ -1,3 +1,9 @@
+---
+id: license
+title: MIT License
+sidebar_position: 6
+---
+
 MIT License
 
 Copyright (c) 2025 Ryan Millard, Hayden Millard, and Contributors

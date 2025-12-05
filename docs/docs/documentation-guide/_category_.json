@@ -1,0 +1,7 @@
+{
+  "label": "Documentation Guide",
+  "link": {
+    "type": "generated-index",
+    "description": "Learn how to use Docusaurus to write documentation for Img2Num"
+  }
+}
