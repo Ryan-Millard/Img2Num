@@ -24,7 +24,7 @@ const config = {
   url: 'https://ryan-millard.github.io/',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/Img2Num/learn/',
+  baseUrl: '/Img2Num/info/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -62,7 +62,7 @@ const config = {
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/Ryan-Millard/Img2Num/edit/main/docs/',
-          routeBasePath: '',
+          routeBasePath: 'docs',
         },
         blog: {
           showReadingTime: true,
@@ -95,9 +95,9 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: 'My Site',
+        title: 'Img2Num',
         logo: {
-          alt: 'My Site Logo',
+          alt: 'Img2Num Logo',
           src: 'img/favicon.svg',
         },
         items: [
@@ -105,7 +105,8 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: 'Learn',
+            label: 'Documentation',
+            to: '/docs',
           },
           {to: '/blog', label: 'Blog', position: 'left'},
           {
@@ -119,7 +120,7 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Learn',
+            title: 'Documentation',
             items: [
               {
                 label: 'Documentation',
