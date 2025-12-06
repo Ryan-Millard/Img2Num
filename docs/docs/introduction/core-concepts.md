@@ -1,6 +1,6 @@
 ---
 id: core-concepts
-title: Core Concepts
+title: 🧩 Core Concepts
 sidebar_position: 3
 ---
 

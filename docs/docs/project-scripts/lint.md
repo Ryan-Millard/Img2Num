@@ -1,6 +1,6 @@
 ---
 id: lint-scripts
-title: Lint Scripts
+title: 🔍 Lint Scripts
 sidebar_position: 6
 ---
 

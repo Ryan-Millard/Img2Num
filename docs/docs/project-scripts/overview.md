@@ -1,6 +1,6 @@
 ---
 id: project-scripts-overview
-title: Project Scripts Overview
+title: 🗂️ Overview
 sidebar_position: 1
 ---
 

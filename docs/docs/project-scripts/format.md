@@ -1,6 +1,6 @@
 ---
 id: format-scripts
-title: Format Scripts
+title: 🎨 Format Scripts
 sidebar_position: 5
 ---
 

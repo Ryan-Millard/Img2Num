@@ -1,7 +1,7 @@
 ---
 id: coding-style
 title: 📝 Coding Style
-sidebar_position: 1
+sidebar_position: 3
 ---
 
 ## 🌐General Rules

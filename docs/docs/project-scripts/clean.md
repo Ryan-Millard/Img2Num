@@ -1,6 +1,6 @@
 ---
 id: clean-scripts
-title: Clean Scripts
+title: 🧹 Clean Scripts
 sidebar_position: 4
 ---
 

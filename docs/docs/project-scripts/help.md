@@ -1,6 +1,6 @@
 ---
 id: help-scripts
-title: Help Scripts
+title: ❓ Help Scripts
 ---
 
 This page explains how to use the **help scripts** included in the Img2Num project.

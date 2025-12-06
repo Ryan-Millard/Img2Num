@@ -1,7 +1,7 @@
 ---
 id: contributing
-title: Contributing
-sidebar_position: 4
+title: 🤝 Contributing
+sidebar_position: 1
 ---
 
 # Contributing to Img2Num

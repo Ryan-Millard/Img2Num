@@ -1,7 +1,7 @@
 ---
 id: license
-title: MIT License
-sidebar_position: 6
+title: ⚖️ License
+sidebar_position: 2
 ---
 
 MIT License

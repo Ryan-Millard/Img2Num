@@ -1,6 +1,6 @@
 ---
 id: build-scripts
-title: Build Scripts
+title: 🛠️ Build Scripts
 sidebar_position: 3
 ---
 

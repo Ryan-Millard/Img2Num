@@ -1,7 +1,7 @@
 ---
 id: pull-requests
 title: 🔀 Pull Requests
-sidebar_position: 4
+sidebar_position: 6
 ---
 
 ## Fork the repo & create a feature branch:

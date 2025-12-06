@@ -1,6 +1,6 @@
 ---
 id: development-scripts
-title: Development Scripts
+title: 💻 Development Scripts
 sidebar_position: 2
 ---
 

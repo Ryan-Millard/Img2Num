@@ -1,5 +1,5 @@
 ---
-id: docs-scripts
+id: 📚 docs-scripts
 title: Documentation Scripts
 sidebar_position: 8
 ---

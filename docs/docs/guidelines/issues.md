@@ -1,7 +1,7 @@
 ---
 id: issues
 title: 🐛 Issues
-sidebar_position: 3
+sidebar_position: 5
 ---
 
 To keep issues clear, actionable, and easy to triage, we provide templates for contributors. Always use the appropriate template when creating a new issue.
