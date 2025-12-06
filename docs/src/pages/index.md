@@ -18,8 +18,8 @@ Turn your favorite images into interactive color-by-number templates in seconds!
 
 ## Get Started
 
-[Let's go!](/getting-started)
+[Let's go!](/docs/introduction/getting-started)
 
 ## Learn More
 
-Check out the [Docs](/introduction) for tutorials and advanced usage, or visit our [Blog](/blog) for updates and tips.
+Check out the [Docs](/docs) for tutorials and advanced usage, or visit our [Blog](/blog) for updates and tips.

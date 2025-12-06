@@ -5,7 +5,9 @@
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
 import { themes as prismThemes } from 'prism-react-renderer';
-const path = require('path');
+import path from 'path';
+import webpackAliasPlugin from './plugins/webpack-alias/index.js';
+import { changelogSidebarGenerator } from './changelogSidebarGenerator.js';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -48,7 +50,19 @@ const config = {
     path.resolve(__dirname, '..', 'public'), // main app's public folder
   ],
 
-  plugins: [path.resolve(__dirname, 'plugins', 'webpack-alias')],
+  plugins: [
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'changelog',
+        path: 'changelog',
+        routeBasePath: 'changelog',
+        sidebarPath: require.resolve('./sidebars.js'),
+        sidebarItemsGenerator: changelogSidebarGenerator,
+      },
+    ],
+    webpackAliasPlugin,
+  ],
 
   presets: [
     [
@@ -106,6 +120,7 @@ const config = {
             to: '/docs',
           },
           { to: '/blog', label: 'Blog', position: 'left' },
+          { to: '/changelog', label: 'Changelog', position: 'left' },
           {
             href: 'https://github.com/Ryan-Millard/Img2Num',
             label: 'GitHub',
@@ -121,7 +136,7 @@ const config = {
             items: [
               {
                 label: 'Documentation',
-                to: '/introduction',
+                to: '/docs',
               },
             ],
           },
