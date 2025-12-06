@@ -1,0 +1,30 @@
+# Node modules
+node_modules/
+
+# Build/dist output
+dist/
+build/
+
+# Docusaurus build files
+docs/.docusaurus/
+docs/.docusaurus/**/*.json
+docs/.docusaurus/**/*.js
+
+# Ignore binary or assets files
+src/assets/
+public/
+*.ico
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.ase
+*.db
+
+# Lock files
+package-lock.json
+yarn.lock
+
+# Other config or auto-generated files
+*.log

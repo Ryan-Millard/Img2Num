@@ -4,7 +4,12 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import { defineConfig, globalIgnores } from 'eslint/config';
 
 export default defineConfig([
-  globalIgnores(['dist', 'node_modules', 'src/wasm/**/build/**']),
+  globalIgnores([
+    'dist', // Vite build output
+    'node_modules', // Dependencies
+    'src/wasm/**/build/**', // WebAssembly build output
+    'docs/build', // Docusaurus build output
+  ]),
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {

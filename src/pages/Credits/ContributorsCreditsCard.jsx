@@ -1,5 +1,5 @@
 import GlassCard from '@components/GlassCard';
-import contributors  from '@data/contributor-credits.json';
+import contributors from '@data/contributor-credits.json';
 import styles from './ContributorsCreditsCard.module.css';
 import FallbackImage from '@components/FallbackImage';
 import { User } from 'lucide-react';
@@ -22,7 +22,14 @@ export default function ContributorsCreditsCard() {
                 <tr key={c.id}>
                   <td>
                     <a href={c.html_url} target="_blank" rel="noopener noreferrer">
-                      <FallbackImage src={c.avatar_url} fallback={<User color={'var(--color-text-light)'} />} alt={c.login} width="28" height="28" style={{ borderRadius: '50%' }} />
+                      <FallbackImage
+                        src={c.avatar_url}
+                        fallback={<User color={'var(--color-text-light)'} />}
+                        alt={c.login}
+                        width="28"
+                        height="28"
+                        style={{ borderRadius: '50%' }}
+                      />
                     </a>
                   </td>
                   <td>

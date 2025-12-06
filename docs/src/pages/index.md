@@ -10,7 +10,7 @@ import hedgeMove from '@site/static/img/pixel_art_hedgehog/move/move.gif';
 
 <img src={hedgeMove} alt="Hedhehog Running" style={{ display: 'block', margin: '0 auto', height: '20vh', aspectRatio: 'maintain' }} />
 
-Turn your favorite images into interactive color-by-number templates in seconds!  
+Turn your favorite images into interactive color-by-number templates in seconds!
 
 - Upload any image and instantly get a numbered template.
 - Click or tap to fill in colors digitally.
@@ -18,7 +18,7 @@ Turn your favorite images into interactive color-by-number templates in seconds!
 
 ## Get Started
 
-[Let's go!](/getting-started) 
+[Let's go!](/getting-started)
 
 ## Learn More
 

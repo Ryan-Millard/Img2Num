@@ -4,7 +4,7 @@
 // There are various equivalent ways to declare your Docusaurus config.
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
-import {themes as prismThemes} from 'prism-react-renderer';
+import { themes as prismThemes } from 'prism-react-renderer';
 const path = require('path');
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
@@ -12,7 +12,8 @@ const path = require('path');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Img2Num',
-  tagline: 'Transforms any image into a printable or digital colour-by-number template using WebAssembly-powered C++ image processing.',
+  tagline:
+    'Transforms any image into a printable or digital colour-by-number template using WebAssembly-powered C++ image processing.',
   favicon: 'img/favicon.svg',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -47,9 +48,7 @@ const config = {
     path.resolve(__dirname, '..', 'public'), // main app's public folder
   ],
 
-  plugins: [
-    path.resolve(__dirname, 'plugins', 'webpack-alias'),
-  ],
+  plugins: [path.resolve(__dirname, 'plugins', 'webpack-alias')],
 
   presets: [
     [
@@ -60,8 +59,7 @@ const config = {
           sidebarPath: './sidebars.js',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/Ryan-Millard/Img2Num/edit/main/docs/',
+          editUrl: 'https://github.com/Ryan-Millard/Img2Num/edit/main/docs/',
           routeBasePath: 'docs',
         },
         blog: {
@@ -72,8 +70,7 @@ const config = {
           },
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/Ryan-Millard/Img2Num/edit/main/docs/',
+          editUrl: 'https://github.com/Ryan-Millard/Img2Num/edit/main/docs/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -108,7 +105,7 @@ const config = {
             label: 'Documentation',
             to: '/docs',
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
+          { to: '/blog', label: 'Blog', position: 'left' },
           {
             href: 'https://github.com/Ryan-Millard/Img2Num',
             label: 'GitHub',

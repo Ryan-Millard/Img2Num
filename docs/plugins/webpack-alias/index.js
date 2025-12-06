@@ -1,7 +1,6 @@
 const path = require('path');
 
-
-module.exports = function (context, options) {
+module.exports = function () {
   return {
     name: 'webpack-alias-plugin',
     configureWebpack() {

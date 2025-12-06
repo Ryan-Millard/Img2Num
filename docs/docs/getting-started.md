@@ -13,7 +13,7 @@ This section covers how to run the application for the first time - from install
 
 ### Requirements
 
-Before you start installing anything, make sure you have the below installed 
+Before you start installing anything, make sure you have the below installed
 
 - [Git](https://git-scm.com/install/)
   - Used to download the code and make contributions.
@@ -78,6 +78,7 @@ These all need to be set in your PATH variable and must be accessible in your te
       #### Not in your path?
       For `Linux`, [this link](https://unix.stackexchange.com/questions/26047/how-to-correctly-add-a-path-to-path) will explain how to add variables to your `PATH`.
     </TabItem>
+
   </Tabs>
 </details>
 
@@ -108,6 +109,7 @@ You can choose to only install the dependencies for one portion of the app, but 
     # Install documentation site's dependencies
     npm install --prefix ./docs
     ```
+
   </TabItem>
   <TabItem value="main-app-only" label="Main App Only">
     ```bash title="Install only the main app's dependencies"
@@ -133,6 +135,7 @@ This section will help you run both the main application and the documentation s
     ```bash title="Concurrently run both the Vite development and Docs servers"
     npm run dev:all
     ```
+
   </TabItem>
   <TabItem value="running-main-app-only" label="Running Main App Only">
     From the project's root, run:
@@ -140,6 +143,7 @@ This section will help you run both the main application and the documentation s
     ```bash title="Run the Vite development server"
     npm run dev
     ```
+
   </TabItem>
   <TabItem value="running-documentation-site-only" label="Running Docs Site Only" default>
     From the `docs/` folder, run:
@@ -154,5 +158,6 @@ This section will help you run both the main application and the documentation s
     ```bash
     npm run docs start
     ```
+
   </TabItem>
 </Tabs>

@@ -8,38 +8,38 @@ const pkg = JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.ur
 
 // Grouped scripts and descriptions
 const scriptsInfo = {
-  "Development": {
-    dev: "Run Vite dev server",
-    "dev:debug": "Build WASM in debug mode then start dev server",
-    "dev:all": "Run Vite dev server and Docusaurus server",
-    "dev:all:debug": "Build WASM in debug mode then start dev and Docusaurus server",
-    preview: "Preview the production build locally",
+  Development: {
+    dev: 'Run Vite dev server',
+    'dev:debug': 'Build WASM in debug mode then start dev server',
+    'dev:all': 'Run Vite dev server and Docusaurus server',
+    'dev:all:debug': 'Build WASM in debug mode then start dev and Docusaurus server',
+    preview: 'Preview the production build locally',
   },
-  "Build": {
-    build: "Build WASM then build the site",
-    "build-js": "Build only the JS/React site",
-    "build-wasm": "Build the WebAssembly modules",
-    "build-wasm:debug": "Build WASM modules in debug mode",
+  Build: {
+    build: 'Build WASM then build the site',
+    'build-js': 'Build only the JS/React site',
+    'build-wasm': 'Build the WebAssembly modules',
+    'build-wasm:debug': 'Build WASM modules in debug mode',
   },
-  "Cleaning": {
-    clean: "Clean WASM build artifacts and dist folder",
-    "clean-js": "Remove dist folder",
-    "clean-wasm": "Clean WASM build artifacts",
+  Cleaning: {
+    clean: 'Clean WASM build artifacts and dist folder',
+    'clean-js': 'Remove dist folder',
+    'clean-wasm': 'Clean WASM build artifacts',
   },
-  "Formatting": {
-    format: "Format all files with Prettier and clang-format",
-    "format-js": "Format all non-C++ files with Prettier",
-    "format-wasm": "Format all C++ files with clang-format",
+  Formatting: {
+    format: 'Format all files with Prettier and clang-format',
+    'format-js': 'Format all non-C++ files with Prettier',
+    'format-wasm': 'Format all C++ files with clang-format',
   },
-  "Linting": {
-    lint: "Run ESLint to check for code issues",
-    "lint:fix": "Run ESLint and automatically fix issues",
-    "lint:style": "Check all files against .editorconfig rules",
+  Linting: {
+    lint: 'Run ESLint to check for code issues',
+    'lint:fix': 'Run ESLint and automatically fix issues',
+    'lint:style': 'Check all files against .editorconfig rules',
   },
-  "Other": {
-    help: "Show this help message",
-    docs: "Run docs scripts - run `npm run docs help` to see its available scripts",
-  }
+  Other: {
+    help: 'Show this help message',
+    docs: 'Run docs scripts - run `npm run docs help` to see its available scripts',
+  },
 };
 
 // Flatten known scripts for lookup
@@ -51,11 +51,11 @@ for (const group of Object.values(scriptsInfo)) {
 }
 
 // Add extra scripts dynamically
-const extraScripts = Object.keys(pkg.scripts).filter(name => !knownScripts.has(name));
+const extraScripts = Object.keys(pkg.scripts).filter((name) => !knownScripts.has(name));
 if (extraScripts.length > 0) {
-  scriptsInfo["Other"] = {
-    ...scriptsInfo["Other"],
-    ...Object.fromEntries(extraScripts.map(s => [s, "No description"]))
+  scriptsInfo['Other'] = {
+    ...scriptsInfo['Other'],
+    ...Object.fromEntries(extraScripts.map((s) => [s, 'No description'])),
   };
 }
 
@@ -63,13 +63,13 @@ if (extraScripts.length > 0) {
 const flatScripts = {};
 for (const [group, scripts] of Object.entries(scriptsInfo)) {
   for (const [name, desc] of Object.entries(scripts)) {
-    flatScripts[name] = { desc, command: pkg.scripts[name] || "No command defined", group };
+    flatScripts[name] = { desc, command: pkg.scripts[name] || 'No command defined', group };
   }
 }
 
 // List a beginner-friendly set of basic commands
-const basicCommands = ["dev", "build", "clean", "format", "lint", "help"];
-console.log("Basic scripts (get started quickly):");
+const basicCommands = ['dev', 'build', 'clean', 'format', 'lint', 'help'];
+console.log('Basic scripts (get started quickly):');
 for (const name of basicCommands) {
   if (flatScripts[name]) {
     const info = flatScripts[name];
@@ -85,9 +85,9 @@ const rl = readline.createInterface({
   output: process.stdout,
   completer: (line) => {
     const names = Object.keys(flatScripts);
-    const hits = fuzzy.filter(line, names).map(el => el.original);
+    const hits = fuzzy.filter(line, names).map((el) => el.original);
     return [hits.length ? hits : names, line];
-  }
+  },
 });
 
 rl.setPrompt('> ');
@@ -107,9 +107,9 @@ rl.on('line', (line) => {
       console.log(`      > ${info.command}`);
     }
   } else {
-    const matches = fuzzy.filter(input, Object.keys(flatScripts)).map(el => el.original);
+    const matches = fuzzy.filter(input, Object.keys(flatScripts)).map((el) => el.original);
     if (matches.length === 0) {
-      console.log("No matching scripts found.");
+      console.log('No matching scripts found.');
     } else {
       for (const name of matches) {
         const info = flatScripts[name];

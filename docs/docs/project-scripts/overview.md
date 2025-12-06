@@ -4,7 +4,6 @@ title: Project Scripts Overview
 sidebar_position: 1
 ---
 
-
 Img2Num provides several `npm scripts` that help with development, building, formatting, and documentation.
 
 This section explains each script category in detail:

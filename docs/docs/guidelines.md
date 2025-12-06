@@ -4,7 +4,7 @@ title: Guidelines
 sidebar_position: 7
 ---
 
-To save everyone time and energy, we try to keep the code, commits, pull requests, and issues on the repository as uniform as possible - 
+To save everyone time and energy, we try to keep the code, commits, pull requests, and issues on the repository as uniform as possible -
 and, as a contributor, that starts with you!
 
 :::tip
@@ -21,13 +21,14 @@ Try your best to stick to the guidelines outlined in this section because it mak
 
 Write clear, concise commit messages in the format below:
 
-  `<type>(<scope>): <subject>`
+`<type>(<scope>): <subject>`
 
-  - `<body>`
+- `<body>`
 
 :::
 
 Explanation:
+
 - `type`:
   - **feat** (for new features)
   - **fix** (for bug fixes)
@@ -54,10 +55,10 @@ Explanation:
    git push origin feature/your-feature
    ```
 4. Open a pull request against `main`:
-    - Use a clear, descriptive title.
-    - Write a meaningful description summarizing what you changed and why.
+   - Use a clear, descriptive title.
+   - Write a meaningful description summarizing what you changed and why.
 5. Wait for review. Address feedback by pushing additional commits.
-    - When requested, address feedback by pushing additional commits to the same branch.
+   - When requested, address feedback by pushing additional commits to the same branch.
 
 :::tip[Pull Request Tips]
 
@@ -70,4 +71,4 @@ Explanation:
   ```bash title="Place this in the body of your pull request"
   Fixes #123
   ```
-:::
+  :::

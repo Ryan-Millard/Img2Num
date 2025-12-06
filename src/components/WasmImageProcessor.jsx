@@ -95,9 +95,9 @@ const WasmImageProcessor = () => {
 
       const minWidth = Math.ceil(Math.max(width / 50, 1)); // 2% of width or 1px
       const minHeight = Math.ceil(Math.max(height / 50, 1)); // 2% of width or 1px
-      const area = width*height;
+      const area = width * height;
       // Prevents minArea from being too small
-      const minimumAllowedMinArea = area > 100_000_000 ? 25 : (area > 10_000_000 ? 20 : (area > 1_000_000 ? 15 : 10));
+      const minimumAllowedMinArea = area > 100_000_000 ? 25 : area > 10_000_000 ? 20 : area > 1_000_000 ? 15 : 10;
       const minArea = Math.ceil(Math.max(area / 10_000, minimumAllowedMinArea));
       console.table({ minWidth, minHeight, minArea, area, minimumAllowedMinArea });
       const merged = await mergeSmallRegionsInPlace({
@@ -129,7 +129,7 @@ const WasmImageProcessor = () => {
         step(0);
       }, 800);
     }
-  }, [fileData, gaussianBlur, blackThreshold, kmeans, navigate, step]);
+  }, [fileData, gaussianBlur, blackThreshold, kmeans, mergeSmallRegionsInPlace, navigate, step]);
 
   /* Memo’d UI fragments */
   const EmptyState = useMemo(
