@@ -25,13 +25,9 @@ _When reporting issues, please:_
 
 ## Development Setup
 
-The [Getting Started](./getting-started) section shows how to clone and run the application for the first time.
+The [Getting Started](../introduction/getting-started.md) section shows how to clone and run the application for the first time.
 
-The [Project Scripts](./project-scripts/project-scripts-overview) section shows all of the available scripts you may find useful whilst working on Img2Num's source code as well as a helful way to find specific scripts if you have forgotten one.
-
-## Guidelines
-
-The [Guidelines](./guidelines) section covers the coding style, committing, and pull request conventions we would like to maintain in this repository.
+The [Project Scripts](../project-scripts/overview.md) section shows all of the available scripts you may find useful whilst working on Img2Num's source code as well as a helful way to find specific scripts if you have forgotten one.
 
 ## Additional Resources
 
