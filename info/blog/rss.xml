@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="rss.xsl"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>Img2Num Blog</title>
+        <link>https://ryan-millard.github.io/Img2Num/info/blog</link>
+        <description>Img2Num Blog</description>
+        <lastBuildDate>Fri, 05 Dec 2025 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>en</language>
+        <item>
+            <title><![CDATA[Welcome to Img2Num!]]></title>
+            <link>https://ryan-millard.github.io/Img2Num/info/blog/launch</link>
+            <guid>https://ryan-millard.github.io/Img2Num/info/blog/launch</guid>
+            <pubDate>Fri, 05 Dec 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[We are excited to launch Img2Num, the interactive app that converts any image into a color-by-number template.]]></description>
+            <content:encoded><![CDATA[<p>We are excited to launch <strong>Img2Num</strong>, the interactive app that converts any image into a color-by-number template.</p>
+<p>Try it out online at <a href="https://ryan-millard.github.io/Img2Num/" target="_blank" rel="noopener noreferrer" class="">https://ryan-millard.github.io/Img2Num/</a> and start coloring your favorite images today!</p>
+<p>Stay tuned for tutorials, tips, and updates right here on the blog.</p>]]></content:encoded>
+            <category>Launch</category>
+            <category>Tutorial</category>
+        </item>
+    </channel>
+</rss>
