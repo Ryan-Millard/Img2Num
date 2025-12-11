@@ -22,15 +22,22 @@ The list of prerequisites and helpful resources can be found below.
 
 | Topic                                                                         | Suggested Time on Topic (in hours) |
 | ----------------------------------------------------------------------------- | ---------------------------------- |
+| [Pythagorean theorem](#quick-recap--pythagorean-theorem)                      | 1                                  |
 | [Complex numbers & trigonometry](#foundations--complex-numbers--trigonometry) | 4-8                                |
 | [Basic calculus (integrals / limits)](#basic-calculus--prerequisite-math)     | 4-8                                |
 | [Linear Algebra (vectors, basis)](#linear-algebra-optional-but-helpful)       | 4-8                                |
 | [Signals & sampling (Nyquist, aliasing)](#signals--systems--sampling-theory)  | 6-10                               |
 | [Practical DFT/FFT & coding (NumPy/Scipy)](#dft--fft-practicals-and-coding)   | 4-8                                |
 
-**Total**: = 22-42 hours
+**Total**: = 23-43 hours
 
 ## Helpful resources
+
+### Quick Recap — Pythagorean Theorem
+
+- **NASA — Pythagorean Theorem**
+  - Anything will do — NASA made it, so why not?
+  - [Pythagorean Theorem](https://www.grc.nasa.gov/www/k-12/airplane/pythag.html)
 
 ### Foundations — Complex numbers & trigonometry
 

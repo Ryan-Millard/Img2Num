@@ -6,10 +6,23 @@ sidebar_position: 2
 
 ## Keywords
 
-- **FT:** Fourier Transform
-- **CFT:** Continuous Fourier Transform
-- **DFT:** Discrete Fourier Transform
-- **FFT:** Fast Fourier Transform (based on the DFT)
+- **CFT**: Continuous Fourier Transform
+- **DFT**: Discrete Fourier Transform
+- **FFT**: Fast Fourier Transform (based on the DFT)
+- **FT**: Fourier Transform
+- $f_0$ (Fundamental Frequency): The lowest frequency component in a periodic signal.  
+  Every other frequency component (harmonics) can be expressed as an integer multiple of $f_0$:
+  $$
+  \begin{align*}
+  f_k = k \cdot f_0, \quad &\text{where } k > 0 \text{ is the order (index) of the harmonic,}\\
+  &\text{and } f_k \text{ is the frequency of the } k^{th}\text{ harmonic.}
+  \end{align*}
+  $$
+    :::note
+    $k=0$ corresponds to the DC component ($0 \text{ Hz}$), which is not considered a harmonic.
+    :::
+- **Harmonics**: Sinusoids at integer multiples of the fundamental frequency (i.e., frequencies $f_k=k f_0$).
+                  Constituent/Underlying frequencies of a signal.
 
 ## Conventions Used in This Repository (engineering / FFT)
 
