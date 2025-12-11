@@ -80,6 +80,8 @@ $$
   <summary>Understanding Magnitude and Phase of Fourier Coefficients</summary>
 
 When you see a Fourier coefficient $X_k = a + jb$, it's easy to forget what the real and imaginary parts mean. Here's a clear way to visualize it:
+
+Using **Euler's formula** ($e^{i \theta} = \cos\theta + i \sin\theta$), we know that:
 - **Real part ($a = \Re(X_k)$)** → corresponds to the **cosine** component
 - **Imag part ($b = \Im(X_k)$)** → corresponds to the **sine** component
 
