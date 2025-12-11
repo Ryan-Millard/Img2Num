@@ -77,6 +77,6 @@ ax2.grid(True)
 plt.tight_layout()
 
 # Uncomment this line to save the figure as a PNG image file:
-# plt.savefig("discrete_sinusoid_time_and_frequency.png", dpi=300)
+# plt.savefig("discrete-sinusoid.png", dpi=300)
 
 plt.show()
