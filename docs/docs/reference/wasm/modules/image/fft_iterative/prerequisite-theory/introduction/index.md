@@ -30,9 +30,12 @@ The *Fourier Transform* converts between these representations.
 ## Sinusoids
 
 ### Continuous Sinusoids
-For the purpose of illustration, we’ll treat the finely sampled sinusoid in [Figure 1](#figure-1) as a continuous signal.
+For the purpose of illustration, we’ll treat the finely sampled sinusoid in
+[Figure 1](#figure-1-a-densely-sampled-sinusoid-to-approximate-a-continuous-signal-plotted-in-time-and-frequency-domains)
+as a continuous signal.
 
-Below, [Figure 1](#figure-1) shows the exact same sinusoid plotted in both the time and frequency domain.
+Below, [Figure 1](#figure-1-a-densely-sampled-sinusoid-to-approximate-a-continuous-signal-plotted-in-time-and-frequency-domains)
+shows the exact same sinusoid plotted in both the time and frequency domain.
 Notice how the time domain graph looks like the typical wave shape of a sine graph that you are likely familiar with,
 whereas the frequency domain graph contains only *one non-zero point*, $(5, 1)$. This is because the signal contains
 only a single pure tone (see _f0_ in [Figure 1's Python Code](#figure-1-details)).
@@ -41,9 +44,9 @@ only a single pure tone (see _f0_ in [Figure 1's Python Code](#figure-1-details)
 Continuous sinusoidal data are best-suited for **CFTs** (Continuous Fourier Transforms).
 :::
 
-<img alt="sinusoid_time_and_frequency" src={figOne} id={'figure-1'}/>
-**Figure 1: A densely sampled sinusoid to approximate a continuous signal plotted in time and frequency domains**
-<details id='figure-1-details'>
+#### Figure 1: A densely sampled sinusoid to approximate a continuous signal plotted in time and frequency domains
+<img alt="sinusoid_time_and_frequency" src={figOne} />
+<details id="figure-1-details">
   <summary>View Figure 1's Code</summary>
   <CodeBlock language="python">{continuousSinusoid}</CodeBlock>
 </details>
@@ -62,9 +65,9 @@ manipulate (e.g. by multiplying by frequency-domain kernels in a Gaussian blur),
 Discrete sinusoidal data are best-suited for **DFTs** (Discrete Fourier Transforms).
 :::
 
-<img alt="discrete_sinusoid_time_and_frequency" src={figTwo} id={'figure-2'} />
-**Figure 2: A realistically sampled sinusoid plotted in time and frequency domains**
-<details id="figure-2-details">
+#### Figure 2: A realistically sampled sinusoid plotted in time and frequency domains
+<img alt="discrete_sinusoid_time_and_frequency" src={figTwo} />
+<details>
   <summary>View Figure 2's Code</summary>
   <CodeBlock language="python">{discreteSinusoid}</CodeBlock>
 </details>
@@ -72,21 +75,25 @@ Discrete sinusoidal data are best-suited for **DFTs** (Discrete Fourier Transfor
 Notice, once again, how the time domain graph looks like the typical wave shape of a sine graph that you are likely familiar with
 (even if it is a bit broken up due to poorly-timed sampling),
 whereas the frequency domain graph contains only *one non-zero point*, $(5, 1)$. This is because the signal contains
-only a single pure tone (see _f0_ in [Figure 2's Python Code](#figure-2-details) above).
+only a single pure tone (see _f0_ in [Figure 2's Python Code](#figure-2-a-realistically-sampled-sinusoid-plotted-in-time-and-frequency-domains) above).
 
 ### Realistic Sinusoids
-**[Figure 1](#figure-1) shows the ideal scenario**: a clean sinusoid sampled densely enough to look continuous.
+**[Figure 1](#figure-1-a-densely-sampled-sinusoid-to-approximate-a-continuous-signal-plotted-in-time-and-frequency-domains)
+shows the ideal scenario**: a clean sinusoid sampled densely enough to look continuous.
 
-**[Figure 2](#figure-2) shows the type of data we actually work with in real programs**: discrete, finite samples.
+**[Figure 2](#figure-2-a-realistically-sampled-sinusoid-plotted-in-time-and-frequency-domains)
+shows the type of data we actually work with in real programs**: discrete, finite samples.
 
-**Both figures ([1](#figure-1) and [2](#figure-2)) represent the same sinusoid**:
+**Both figures ([1](#figure-1-a-densely-sampled-sinusoid-to-approximate-a-continuous-signal-plotted-in-time-and-frequency-domains)
+and [2](#figure-2-a-realistically-sampled-sinusoid-plotted-in-time-and-frequency-domains)) represent the same sinusoid**:
 $$
 x(t)=\sin(2\pi f_0 t), \quad f_0=5 Hz
 $$
 
 This distinction is the entire reason the DFT exists.
 
-Above, [Figure 2](#figure-2) is more representative of the data we are likely to encounter since the sensors we use measure data at
+Above, [Figure 2](#figure-2-a-realistically-sampled-sinusoid-plotted-in-time-and-frequency-domains)
+is more representative of the data we are likely to encounter since the sensors we use measure data at
 imprecise intervals (due to slight natural variations) rather than continuously - it wouldn't be possible to get a continuous reading from them. Hence, DFTs are
 better suited for the domain conversions in this context.
 

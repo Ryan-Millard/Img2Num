@@ -22,35 +22,41 @@ These harmonics represent the signal's building blocks in the frequency domain.
 In other words, a periodic time-domain signal can be perfectly represented by adding together these harmonic sinusoids.
 Conversely, the Fourier series maps the time-domain periodic signal to discrete points in the frequency domain — its harmonic frequencies.
 
-<img alt="Jittered sum" src={sum_jittered} id="figure-1" />
-**Figure 1: Sum Continuous (High-Resolution) with Actual Jittered Samples Overlaid**
-<details id='figure-1-details'>
+#### Figure 1: Sum Continuous (High-Resolution) with Actual Jittered Samples Overlaid
+<img alt="Jittered sum" src={sum_jittered} />
+<details>
   <summary>View Figure 1's Code</summary>
   <CodeBlock language="python">{sum_jittered_py}</CodeBlock>
 </details>
 
-[Figure 1](#figure-1) (above) shows a periodic signal plotted over time with discretely sampled points.
+[Figure 1](#figure-1-sum-continuous-high-resolution-with-actual-jittered-samples-overlaid)
+(above) shows a periodic signal plotted over time with discretely sampled points.
 
-[Figure 2](#figure-2) (below) illustrates each underlying harmonic as a continuous sine wave in the time domain.
+[Figure 2](#figure-2-underlying-harmonics---individual-continuous-harmonic-components)
+(below) illustrates each underlying harmonic as a continuous sine wave in the time domain.
 
-<img alt="Individual Harmonics" src={harmonics_individual} id="figure-2" />
-**Figure 2: Underlying Harmonics - Individual Continuous Harmonic Components**
-<details id='figure-2-details'>
+#### Figure 2: Underlying Harmonics - Individual Continuous Harmonic Components
+<img alt="Individual Harmonics" src={harmonics_individual} />
+<details>
   <summary>View Figure 2's Code</summary>
   <CodeBlock language="python">{harmonics_individual_py}</CodeBlock>
 </details>
 
-<img alt="Harmonic comparison in time and frequency domain" src={time_freq_domain} id="figure-3" />
-**Figure 3: Combined Time-Domain Harmonics with Jittered Samples and Frequency Spectrum**
-<details id='figure-3-details'>
+#### Figure 3: Combined Time-Domain Harmonics with Jittered Samples and Frequency Spectrum
+<img alt="Harmonic comparison in time and frequency domain" src={time_freq_domain} />
+<details>
   <summary>View Figure 3's Code</summary>
   <CodeBlock language="python">{time_freq_domain_py}</CodeBlock>
 </details>
 
-[Figure 3](#figure-3) (above) combines these harmonics (from figures [1](#figure-1) & [2](#figure-2))
+[Figure 3](#figure-3-combined-time-domain-harmonics-with-jittered-samples-and-frequency-spectrum)
+(above) combines these harmonics (from figures
+[1](#figure-1-sum-continuous-high-resolution-with-actual-jittered-samples-overlaid) &
+[2](#figure-2-underlying-harmonics---individual-continuous-harmonic-components))
 and shows the signal’s corresponding amplitude peaks at harmonic frequencies in the frequency domain.
 
-_The bottom panel in [Figure 3](#figure-3) shows the frequency domain representation of the signal,
+_The bottom panel in
+[Figure 3](#figure-3-combined-time-domain-harmonics-with-jittered-samples-and-frequency-spectrum) shows the frequency domain representation of the signal,
 highlighting discrete peaks at the harmonic frequencies corresponding to the sinusoidal components in the time domain._
 
 ## Block Equation (Fourier Series)
@@ -88,7 +94,7 @@ Using **Euler's formula** ($e^{i \theta} = \cos\theta + i \sin\theta$), we know 
 Think of $X_k$ as a **vector in the complex plane**:
 
 <img alt="Complex Fourier Coefficient Triangle" src={fourier_coefficient_triangle} />
-<details id='figure-4-details'>
+<details>
   <summary>View the above image's code</summary>
   <CodeBlock language="python">{fourier_coefficient_triangle_py}</CodeBlock>
 </details>

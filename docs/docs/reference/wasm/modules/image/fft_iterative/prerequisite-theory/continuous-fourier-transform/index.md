@@ -35,12 +35,13 @@ $$
 ## Example: Gaussian pulse
 
 A Gaussian pulse is a common non-periodic signal. Its CFT is also a Gaussian (frequency-domain spread inversely proportional to time-domain width).
-Note how the time-domain Gaussian width inversely affects the spread in the frequency domain in [Figure 1](#figure-1).
+Note how the time-domain Gaussian width inversely affects the spread in the frequency domain in
+[Figure 1](#figure-1-gaussian-pulse-in-time-domain-top-and-magnitude-of-its-cft-bottom).
 
 In practice, we compute approximate transforms digitally using the DFT/FFT, which discretizes both time and frequency.
 
-<img alt="Gaussian pulse CFT" src={cft_gaussian} id="figure-1" />
-**Figure 1: Gaussian pulse in time domain (top) and magnitude of its CFT (bottom)**
+#### Figure 1: Gaussian pulse in time domain (top) and magnitude of its CFT (bottom)
+<img alt="Gaussian pulse CFT" src={cft_gaussian} />
 
 :::danger You may have missed this
 In previous sections, frequency-domain graphs showed the magnitude on the y-axis. Here, |X(f)| represents the same concept: the amplitude of each frequency component.
@@ -48,7 +49,7 @@ In previous sections, frequency-domain graphs showed the magnitude on the y-axis
 $|X(f)|$ is the same as what we referred to as **"magnitude"** in the previous sections.
 :::
 
-<details id='figure-1-details'>
+<details>
   <summary>View Figure 1's code</summary>
   <CodeBlock language="python">{cft_gaussian_py}</CodeBlock>
 </details>
