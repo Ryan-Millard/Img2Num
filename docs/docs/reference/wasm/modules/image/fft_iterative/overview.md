@@ -1,54 +1,34 @@
 ---
 id: overview
-title: Overview
+title: Iterative FFT — Overview
+sidebar_label: Overview
 sidebar_position: 2
 ---
 
-# FFT — Overview
+# FFT — Iterative Implementation (Overview)
 
-This page is a short overview of the iterative FFT implementation in `src/wasm/modules/image`.
+This section introduces the **iterative, radix-2, decimation-in-time (DIT) FFT** used in the Img2Num project
+(see [`fft_iterative.h`](https://github.com/Ryan-Millard/Img2Num/blob/main/src/wasm/modules/image/include/fft_iterative.h)
+& [`fft_iterative.cpp`](https://github.com/Ryan-Millard/Img2Num/blob/main/src/wasm/modules/image/src/fft_iterative.cpp)).
+It focuses on how the algorithm is implemented, why each step is necessary,
+and where the corresponding code lives so you can jump straight into the implementation.
 
-The implementation provides a compact, iterative (non-recursive) FFT with utilities for 1D and 2D transforms. It is designed to be used in-place on `std::vector<std::complex<double>>` buffers and includes small helpers for power-of-two padding and bit-reversal permutation.
+If you need the mathematical background before diving in, see the prerequisite page: [Prerequisite theory](./prerequisite-theory/).
 
-## Key capabilities
+## At a glance
 
-* In-place iterative FFT (`iterative_fft`) with optional inverse (normalizes on inverse).
-* Convenience wrappers that return new vectors (`fft_copy`, `iterative_fft_2d_copy`).
-* 2D FFT support via row/column transforms (`iterative_fft_2d`).
-* Auto-padding to the next power of two when input length is not a power of two.
+- **Algorithm:** Radix-2, Decimation-in-Time (DIT), iterative, in-place.
+- **Complex type:** `std::complex<double>` (double precision for numerical stability).
+- **Key steps:**
+  1. Bit-reversal permutation (reorder input indices)
+  2. Iterative butterfly stages (combine sub-DFTs)
+  3. Twiddle-factor multiplication (complex phase rotations)
+  4. Optional inverse normalization (`1/N`)
 
-## Important notes
+## Pages in this mini-guide
 
-* Inputs are `std::complex<double>` vectors.
-* The implementation pads inputs to a power of two when needed (so output length may increase).
-* Complexity is `O(N log N)` for 1D transforms; 2D is handled via separable row/column FFTs.
+* **Overview** (this page)
+* **Implementation details** — step-by-step mapping between theory and the actual C++ code.
+* **API & reference** — brief function signatures and purpose for quick lookup.
 
-## Minimal usage (C++ style)
-
-```cpp
-#include <complex>
-#include <vector>
-#include "fft_iterative.h"
-
-std::vector<std::complex<double>> data = /* fill */;
-// forward FFT (in-place)
-//    data: signal in spatial domain
-//    2nd argument: direction
-//      false: transform to frequency domain
-//      true:  transform to spatial domain
-fft::iterative_fft(data, false);
-// data is now in frequency domain
-
-// inverse FFT (in-place)
-fft::iterative_fft(data, true);
-// data is back to spatial domain
-
-// 2D example (width/height known)
-fft::iterative_fft_2d(data, width, height, false);
-// data is now in frequency domain
-```
-
-For details, see the source file
-[`fft_iterative.cpp`](https://github.com/Ryan-Millard/Img2Num/blob/main/src/wasm/modules/image/src/fft_iterative.cpp)
-and its header
-[`fft_iterative.h`](https://github.com/Ryan-Millard/Img2Num/blob/main/src/wasm/modules/image/include/fft_iterative.h).
+Jump to implementation: [Implementation details](./implementation/)
