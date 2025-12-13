@@ -9,7 +9,14 @@ sidebar_position: 4
 
 This page maps the conceptual steps of the iterative FFT to the concrete functions and loops in the implementation. Use this when you want to understand a particular loop or optimize the code.
 
-## 1. DIT vs DIF and where bit-reversal lives
+:::important
+The iterative FFT efficiently computes the DFT using these key steps. Each step—bit-reversal,
+butterfly operations, and twiddle factor multiplication corresponds directly to the mathematical
+structure of the Cooley-Tukey algorithm. Avoiding recursion and using in-place computation keeps it memory
+and cache-efficient, which is crucial for large signals or image processing pipelines.
+:::
+
+## DIT vs DIF and where bit-reversal lives
 
 The implementation is **DIT** (decimation-in-time). That implies the input must be bit-reversed **before** the main butterfly stages. The function responsible is:
 
@@ -21,7 +28,7 @@ void bit_reverse_permute(std::vector<cd> &a);
 In DIT, successive stages assume contiguous blocks of data represent the smaller sub-DFTs. Reordering at the start makes each stage operate on contiguous memory and avoids recursion.
 :::
 
-## 2. Main iterative loop (butterflies)
+## Main iterative loop (butterflies)
 
 The iterative core uses three nested loops:
 
@@ -49,7 +56,7 @@ w *= wlen; // advance twiddle
 
 This corresponds exactly to the algebraic forms `y0 = u + w·v` and `y1 = u − w·v`.
 
-## 3. Twiddle factors
+## Twiddle factors
 
 Twiddle factors are computed per-stage using `std::polar`:
 
@@ -61,7 +68,7 @@ const cd wlen = std::polar(1.0, angle);
 `w` starts at `1.0` for each block and is multiplied by `wlen` after each butterfly. The code uses `sign = -1` for forward FFT and `+1` for inverse
 (**engineering convention**).
 
-## 4. Inverse transform and normalization
+## Inverse transform and normalization
 
 If `inverse` is `true`, the implementation uses the conjugate sign for twiddles and then divides every output element by `N` at the end to normalize:
 
@@ -71,12 +78,12 @@ if (inverse) for (size_t i = 0; i < N; ++i) a[i] /= double(N);
 
 This yields the true inverse DFT.
 
-## 5. Padding & 2D transforms
+## Padding & 2D transforms
 
 * The code auto-pads input to the next power of two using `next_power_of_two` and `pad_to_pow_two`.
 * 2D transforms are implemented by running the 1D FFT across rows, then across columns (separable property). See `iterative_fft_2d(...)`.
 
-## 6. Practical optimization notes
+## Practical optimization notes
 
 * Precompute stage roots if you want to micro-optimise repeated transforms of the same size.
 * Keep the transform in-place to minimise allocations and improve cache locality.
