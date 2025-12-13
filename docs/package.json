@@ -15,6 +15,7 @@
     "write-heading-ids": "docusaurus write-heading-ids"
   },
   "dependencies": {
+    "@docusaurus/theme-mermaid": "^3.9.2",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
     "prism-react-renderer": "^2.3.0",
