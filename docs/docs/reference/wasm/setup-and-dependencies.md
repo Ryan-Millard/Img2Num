@@ -8,11 +8,11 @@ sidebar_position: 2
 
 ## Windows Compatibility
 
-Img2Num supports two development workflows:
+Img2Num now supports **full cross-platform development** on Windows, macOS, and Linux using CMake.
 
-### Frontend-Only Development (Windows Native)
+### Frontend-Only Development
 
-If you are working on the React/TypeScript frontend, documentation, or any non-WASM features, you can develop natively on Windows without WSL. The following npm scripts work cross-platform:
+If you are working on the React/TypeScript frontend, documentation, or any non-WASM features, simply install Node.js and run `npm install` or `pnpm install`. The following npm scripts work cross-platform:
 
 - **Development**: `dev`, `dev:all`, `preview`
 - **Building**: `build-js` (JavaScript/React build only)
@@ -20,19 +20,15 @@ If you are working on the React/TypeScript frontend, documentation, or any non-W
 - **Documentation**: `docs` (all docs scripts)
 - **Utilities**: `help`, `clean-js`, `release`
 
-Simply install Node.js and run `npm install` or `pnpm install` to get started.
+### Full Development (Including WASM)
 
-### WASM Development (Requires WSL on Windows)
+WASM development now works natively on **all platforms** including Windows. You need:
 
-To build the WebAssembly modules, you need a Unix-like environment with the Emscripten toolchain. On Windows, this means using WSL (Windows Subsystem for Linux).
+1. **Node.js** (v18+)
+2. **CMake** (v3.16+)
+3. **Emscripten SDK** (emsdk)
 
-**Why WSL is required for WASM:**
-
-- Emscripten officially recommends WSL for Windows development
-- The build system uses `make` and Unix shell commands
-- WASM compilation produces more consistent results in a Linux environment
-
-**WASM-specific scripts** (require WSL on Windows):
+**WASM scripts** (cross-platform):
 
 - `build-wasm`, `build-wasm:debug`
 - `clean-wasm`
@@ -41,31 +37,98 @@ To build the WebAssembly modules, you need a Unix-like environment with the Emsc
 
 ## WASM Build Setup
 
-To build the WASM modules you will need a working Emscripten toolchain (emsdk) available on your `PATH` and a Unix-y shell environment (bash / WSL / macOS). Steps in brief:
+### Step 1: Install CMake
 
-1. Install Emscripten (emsdk) — follow the official Emscripten docs for your OS.
-2. Activate emsdk and ensure `emcc`/`em++` are available in the shell used by `npm`/`make`.
-3. Optionally install `clang-format` and `cmake` if module Makefiles rely on them.
+**Windows:**
+```bash
+# Using winget
+winget install Kitware.CMake
+
+# Or download from https://cmake.org/download/
+```
+
+**macOS:**
+```bash
+brew install cmake
+```
+
+**Linux (Ubuntu/Debian):**
+```bash
+sudo apt install cmake
+```
+
+### Step 2: Install Emscripten
+
+```bash
+# Clone emsdk
+git clone https://github.com/emscripten-core/emsdk.git
+cd emsdk
+
+# Install and activate latest
+./emsdk install latest
+./emsdk activate latest
+
+# Add to PATH (run this in each new terminal, or add to your shell profile)
+# Linux/macOS:
+source ./emsdk_env.sh
+
+# Windows (cmd):
+emsdk_env.bat
+
+# Windows (PowerShell):
+./emsdk_env.ps1
+```
 
 :::tip
-For Windows WASM development, we recommend WSL2 + Ubuntu and activating emsdk inside WSL for consistent WASM compilation results.
+Add the emsdk environment script to your shell profile (`.bashrc`, `.zshrc`, or Windows equivalent) so `emcc` is always available.
 :::
+
+### Step 3: Verify Installation
+
+```bash
+cmake --version   # Should show 3.16+
+emcc --version    # Should show Emscripten version
+```
 
 ## How package.json ties into builds
 
-The repo ships npm scripts that call `make` in the `src/wasm` directory. Example snippets from `package.json`:
+The repo ships npm scripts that use a cross-platform Node.js build script with CMake:
 
 ```json
 "scripts": {
-  "build-wasm": "make -C src/wasm build",
-  "build-wasm:debug": "make -C src/wasm debug",
-  "clean-wasm": "make -C src/wasm clean"
+  "build-wasm": "node scripts/build-wasm.js",
+  "build-wasm:debug": "node scripts/build-wasm.js --debug",
+  "clean-wasm": "node scripts/build-wasm.js --clean"
 }
 ```
 
-Use the `npm` scripts when developing locally or in CI; they make the JS side independent from the exact make command.
+The build script:
+1. Verifies Emscripten is installed
+2. Runs `emcmake cmake` to configure the build
+3. Runs `cmake --build` to compile all WASM modules
+4. Outputs to each module's `build/` directory
+
+Use the `npm` scripts when developing locally or in CI; they abstract away the build system details.
 
 ## Environment variables
 
 - `NODE_ENV=production` — some parts of `vite.config.js` only trigger a WASM build when building for production; during dev the plugin also triggers builds but only as configured.
 - `EMSDK` / `EMCC` — if you maintain multiple SDK installs, ensure the correct one is on `PATH` when running `npm run build-wasm`.
+
+## Build System Architecture
+
+The WASM modules use CMake for cross-platform compatibility:
+
+```
+src/wasm/
+├── CMakeLists.txt          # Root orchestrator (auto-discovers modules)
+├── cmake-build/            # CMake build artifacts (gitignored)
+└── modules/
+    └── image/
+        ├── CMakeLists.txt  # Module build configuration
+        ├── src/            # C++ source files
+        ├── include/        # Header files
+        └── build/          # Output (index.js + index.wasm)
+```
+
+This replaces the previous Makefile-based system and works identically on Windows, macOS, and Linux.
