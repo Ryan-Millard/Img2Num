@@ -11,14 +11,25 @@
  */
 
 import { execFileSync } from 'node:child_process';
-import { existsSync, rmSync, mkdirSync } from 'node:fs';
+import { existsSync, rmSync, mkdirSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { platform } from 'node:os';
 
 const WASM_DIR = resolve(import.meta.dirname, '..', 'src', 'wasm');
 const BUILD_DIR = join(WASM_DIR, 'cmake-build');
+const MODULES_DIR = join(WASM_DIR, 'modules');
 
+const VALID_ARGS = ['--debug', '--clean'];
 const args = process.argv.slice(2);
+
+// Validate arguments
+const unknownArgs = args.filter((arg) => !VALID_ARGS.includes(arg));
+if (unknownArgs.length > 0) {
+  console.error(`Unknown argument(s): ${unknownArgs.join(', ')}`);
+  console.error(`Valid arguments: ${VALID_ARGS.join(', ')}`);
+  process.exit(1);
+}
+
 const isDebug = args.includes('--debug');
 const isClean = args.includes('--clean');
 
@@ -39,6 +50,13 @@ function run(cmd, cmdArgs, options = {}) {
     });
   } catch (error) {
     console.error(`Command failed: ${fullCmd}`);
+    console.error(`  Exit code: ${error.status ?? 'unknown'}`);
+    if (error.signal) {
+      console.error(`  Signal: ${error.signal}`);
+    }
+    if (error.message) {
+      console.error(`  Message: ${error.message}`);
+    }
     process.exit(error.status || 1);
   }
 }
@@ -51,8 +69,64 @@ function checkEmscripten() {
   try {
     execFileSync(emcc, ['--version'], { stdio: 'pipe' });
     return true;
-  } catch {
+  } catch (error) {
+    // ENOENT means the command was not found (expected when Emscripten not installed)
+    if (error.code === 'ENOENT') {
+      return false;
+    }
+    // For other errors, log diagnostics and return false
+    console.error(`Error checking for Emscripten (${emcc}):`);
+    console.error(`  Error code: ${error.code ?? 'unknown'}`);
+    if (error.status !== undefined) {
+      console.error(`  Exit status: ${error.status}`);
+    }
+    if (error.message) {
+      console.error(`  Message: ${error.message}`);
+    }
     return false;
+  }
+}
+
+/**
+ * Safely remove a directory with proper error handling
+ * @param {string} dir - Directory path to remove
+ * @returns {boolean} - true if successful, false if failed
+ */
+function safeRemoveDir(dir) {
+  if (!existsSync(dir)) {
+    return true; // Nothing to remove
+  }
+
+  try {
+    rmSync(dir, { recursive: true, force: false });
+    console.log(`  Removed: ${dir}`);
+    return true;
+  } catch (error) {
+    console.error(`  Failed to remove: ${dir}`);
+    console.error(`    Error code: ${error.code ?? 'unknown'}`);
+    if (error.message) {
+      console.error(`    Message: ${error.message}`);
+    }
+    return false;
+  }
+}
+
+/**
+ * Discover all module directories dynamically
+ * @returns {string[]} - Array of module names
+ */
+function discoverModules() {
+  if (!existsSync(MODULES_DIR)) {
+    return [];
+  }
+
+  try {
+    const entries = readdirSync(MODULES_DIR, { withFileTypes: true });
+    return entries.filter((entry) => entry.isDirectory()).map((entry) => entry.name);
+  } catch (error) {
+    console.error(`Failed to read modules directory: ${MODULES_DIR}`);
+    console.error(`  Error: ${error.message}`);
+    return [];
   }
 }
 
@@ -62,17 +136,28 @@ function checkEmscripten() {
 function clean() {
   console.log('Cleaning build directories...');
 
+  const failedDirs = [];
+
   // Remove CMake build directory
-  if (existsSync(BUILD_DIR)) {
-    rmSync(BUILD_DIR, { recursive: true, force: true });
-    console.log(`  Removed: ${BUILD_DIR}`);
+  if (!safeRemoveDir(BUILD_DIR)) {
+    failedDirs.push(BUILD_DIR);
   }
 
-  // Remove module build outputs
-  const moduleBuildDir = join(WASM_DIR, 'modules', 'image', 'build');
-  if (existsSync(moduleBuildDir)) {
-    rmSync(moduleBuildDir, { recursive: true, force: true });
-    console.log(`  Removed: ${moduleBuildDir}`);
+  // Discover and remove all module build directories dynamically
+  const modules = discoverModules();
+  for (const moduleName of modules) {
+    const moduleBuildDir = join(MODULES_DIR, moduleName, 'build');
+    if (!safeRemoveDir(moduleBuildDir)) {
+      failedDirs.push(moduleBuildDir);
+    }
+  }
+
+  if (failedDirs.length > 0) {
+    console.error('\nClean completed with errors. Failed to remove:');
+    for (const dir of failedDirs) {
+      console.error(`  - ${dir}`);
+    }
+    process.exit(1);
   }
 
   console.log('Clean complete.');
@@ -99,7 +184,21 @@ function build() {
 
   // Create build directory
   if (!existsSync(BUILD_DIR)) {
-    mkdirSync(BUILD_DIR, { recursive: true });
+    try {
+      mkdirSync(BUILD_DIR, { recursive: true });
+    } catch (error) {
+      console.error(`Failed to create build directory: ${BUILD_DIR}`);
+      console.error(`  Error code: ${error.code ?? 'unknown'}`);
+      if (error.message) {
+        console.error(`  Message: ${error.message}`);
+      }
+      console.error('');
+      console.error('Possible causes:');
+      console.error('  - Insufficient permissions to create directory');
+      console.error('  - Parent directory does not exist and cannot be created');
+      console.error('  - Disk is full or read-only');
+      process.exit(1);
+    }
   }
 
   // Configure with CMake via emcmake
