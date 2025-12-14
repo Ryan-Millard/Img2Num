@@ -10,10 +10,12 @@
 }
 
 /* Default path appearance */
-.svgContainer svg path:not(#svgContainerColouredPath) {
+.svgContainer:not(#noEditSvgContainer) {
+  cursor: pointer;
+  transition: 150ms ease;
+}
+.emptyPathSvgContainer svg path:not(#svgContainerColouredPath) {
   stroke: var(--color-text);
   stroke-width: 0.25;
   fill: white;
-  cursor: pointer;
-  transition: 150ms ease;
 }
