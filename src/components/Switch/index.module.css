@@ -1,0 +1,15 @@
+.switchContainer {
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.switchKnob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  background: white;
+  transition: transform 0.3s;
+  box-shadow: 0 0 2px rgba(0,0,0,0.3);
+}
+
