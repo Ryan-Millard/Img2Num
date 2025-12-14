@@ -6,6 +6,7 @@ const pkg = JSON.parse(fs.readFileSync(require('path').resolve(__dirname, '../pa
 
 // Optional descriptions for scripts
 const descriptions = {
+  help: 'Show this help message',
   docusaurus: 'Run Docusaurus CLI',
   start: 'Start the Docusaurus dev server',
   build: 'Build the Docusaurus site',
