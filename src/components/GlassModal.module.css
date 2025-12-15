@@ -41,28 +41,31 @@
 /* Close button */
 .close {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
   background: transparent;
   border: none;
   font-size: 28px;
   line-height: 1;
   cursor: pointer;
-  color: inherit;
-  opacity: 0.7;
-  transition: opacity 0.2s ease;
-  padding: 4px 8px;
+  color: var(--color-primary);
+  font-weight: 500;
+  transition:
+    color 0.3s,
+    transform 0.2s;
+  padding: var(--spacing-xs) var(--spacing-sm);
   z-index: 1;
 }
 
-.close:hover {
-  opacity: 1;
+.close:hover,
+.close:focus {
+  color: var(--color-secondary);
+  transform: scale(1.1);
 }
 
 .close:focus {
-  outline: 2px solid currentColor;
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
-  opacity: 1;
 }
 
 /* Modal body */
@@ -91,8 +94,8 @@
   }
 
   .close {
-    top: 8px;
-    right: 8px;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
     font-size: 24px;
   }
 
