@@ -1,57 +1,80 @@
 import { useState } from 'react';
-import { SquareArrowOutUpRight } from 'lucide-react';
+import { Home, Users, Info, Github, SquareArrowOutUpRight, Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './NavBar.module.css';
-import GlassCard from '@components/GlassCard';
+
+const INTERNAL_LINKS = [
+  { path: '/', label: 'Home', icon: Home },
+  { path: '/credits', label: 'Credits', icon: Users },
+  { path: '/about', label: 'About', icon: Info },
+];
+
+const EXTERNAL_LINKS = [
+  { href: 'https://ryan-millard.github.io/Img2Num/info/', label: 'Docs', icon: Info },
+  { href: 'https://github.com/Ryan-Millard/Img2Num', label: 'GitHub', icon: Github },
+];
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
+  const { pathname } = useLocation();
 
-  const links = [
-    { path: '/', label: 'Home' },
-    { path: '/credits', label: 'Credits' },
-    { path: '/about', label: 'About' },
-    { path: 'https://github.com/Ryan-Millard/Img2Num', label: 'GitHub', external: true },
-  ];
-
-  const renderLinks = links.map((link) => {
-    const isActive = !link.external && location.pathname === link.path; // active if route matches
-    return (
-      <li key={link.label}>
-        {link.external ? (
-          <a href={link.path} target="_blank" rel="noopener noreferrer" className={styles.externalLink}>
-            {link.label}
-            <SquareArrowOutUpRight size={'1.25em'} className={styles.externalLinkIcon} />
-          </a>
-        ) : (
-          <Link to={link.path} className={isActive ? styles.activeLink : ''}>
-            {link.label}
-          </Link>
-        )}
-      </li>
-    );
-  });
+  const closeMenu = () => setIsOpen(false);
 
   return (
-    <GlassCard as="nav" className={styles.navbar} style={{ padding: '0.5rem 1rem' }}>
-      <div className={styles.logo}>
-        <Link to="/">Img2Num</Link>
-      </div>
+    <nav className={`${styles.navbar} glass`}>
+      {/* Logo */}
+      <Link to="/" className={styles.logo} onClick={closeMenu}>
+        <img src="/Img2Num/favicon.svg" alt="" className={styles.logoIcon} />
+        <span>Img2Num</span>
+      </Link>
 
-      <button className={styles.hamburger} onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
-        <span className={isOpen ? styles.barActive : styles.bar}></span>
-        <span className={isOpen ? styles.barActive : styles.bar}></span>
-        <span className={isOpen ? styles.barActive : styles.bar}></span>
+      {/* Mobile Toggle */}
+      <button
+        className={styles.menuToggle}
+        onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-controls="nav-menu"
+        aria-label={isOpen ? 'Close menu' : 'Open menu'}
+      >
+        {isOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
 
-      {isOpen ? (
-        <GlassCard as="ul" className={`${styles.navLinks} ${isOpen ? styles.active : ''} ${isOpen ? 'stacked' : ''}`}>
-          {renderLinks}
-        </GlassCard>
-      ) : (
-        <ul className={styles.navLinks}>{renderLinks}</ul>
-      )}
-    </GlassCard>
+      {/* Navigation */}
+      <ul
+        id="nav-menu"
+        className={`${styles.navList} ${isOpen ? styles.open : ''}`}
+        role="menubar"
+      >
+        {INTERNAL_LINKS.map(({ path, label, icon: Icon }) => (
+          <li key={path} role="none">
+            <Link
+              to={path}
+              role="menuitem"
+              className={`${styles.navLink} ${pathname === path ? styles.active : ''}`}
+              onClick={closeMenu}
+            >
+              <Icon size={16} />
+              <span>{label}</span>
+            </Link>
+          </li>
+        ))}
+
+        {EXTERNAL_LINKS.map(({ href, label, icon: Icon }) => (
+          <li key={href} role="none">
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              role="menuitem"
+              className={styles.navLink}
+            >
+              <Icon size={16} />
+              <span>{label}</span>
+              <SquareArrowOutUpRight size={12} className={styles.externalIcon} />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 }
