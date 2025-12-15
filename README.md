@@ -1,3 +1,13 @@
+<!--TODO: Remove the section below after #93 is merged on 22 Dec 2025-->
+> [!CAUTION]
+> ⚠️⚠️⚠️ **Breaking Change in [PR #93](https://github.com/Ryan-Millard/Img2Num/pull/93)** ⚠️⚠️⚠️
+> 
+> The Makefile behavior is changing soon.
+>
+> Please read [PR #107](https://github.com/Ryan-Millard/Img2Num/pull/107) before running the code.
+
+---
+
 # Img2Num 🖼️➞️🎨
 
 **Img2Num** is a React + WebAssembly-based application that allows users to upload an image and convert it into a **colour-by-number** version that can be either printed or coloured in directly within the browser. It's designed to be fast, efficient, and interactive, leveraging C++ (compiled to WebAssembly) for pixel manipulation.
