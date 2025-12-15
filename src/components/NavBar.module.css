@@ -2,6 +2,15 @@
   font-size: x-large;
 }
 
+/* .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  margin-bottom: var(--spacing-md);
+} */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -10,6 +19,7 @@
   top: 0;
   z-index: 100;
   margin-bottom: var(--spacing-md);
+  padding: 0.5rem 1rem;
 }
 
 .navLinks {
