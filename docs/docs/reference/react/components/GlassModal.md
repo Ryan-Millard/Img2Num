@@ -1,26 +1,22 @@
-# GlassModal Component
+---
+title: GlassModal
+description: Docs for the GlassModal component
+sidebar_position: 1
+---
 
 A fully accessible modal dialog component built on top of `GlassCard` with glassmorphism styling.
 
 ## Features
 
-✅ **Portal-based rendering** - Renders outside the DOM hierarchy to avoid z-index issues  
-✅ **Focus trapping** - Keyboard focus stays within the modal using `focus-trap-react`  
-✅ **Body scroll lock** - Prevents scrolling the background when modal is open  
-✅ **Escape key handling** - Close modal with Escape key  
-✅ **Click-outside-to-close** - Click overlay to close the modal  
-✅ **Focus restoration** - Returns focus to the element that opened the modal  
-✅ **ARIA attributes** - Full accessibility support with proper dialog roles  
-✅ **Responsive design** - Mobile-friendly with size variations  
-✅ **Customizable overlay** - Adjustable overlay opacity  
-
-## Installation
-
-The component requires `focus-trap-react`:
-
-```bash
-npm install focus-trap-react
-```
+- **Portal-based rendering** - Renders outside the DOM hierarchy to avoid z-index issues  
+- **Focus trapping** - Keyboard focus stays within the modal using `focus-trap-react`  
+- **Body scroll lock** - Prevents scrolling the background when modal is open  
+- **Escape key handling** - Close modal with Escape key  
+- **Click-outside-to-close** - Click overlay to close the modal  
+- **Focus restoration** - Returns focus to the element that opened the modal  
+- **ARIA attributes** - Full accessibility support with proper dialog roles  
+- **Responsive design** - Mobile-friendly with size variations  
+- **Customizable overlay** - Adjustable overlay opacity  
 
 ## Usage
 
@@ -91,6 +87,56 @@ function MyComponent() {
 </GlassModal>
 ```
 
+### Full Usage Example
+
+```jsx
+import React, { useState } from 'react';
+import GlassModal from './GlassModal';
+
+/**
+ * Example usage of GlassModal component
+ * This file demonstrates how to use the modal in your application
+ */
+export default function GlassModalExample() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div>
+      <button onClick={() => setIsOpen(true)}>Open Modal</button>
+
+      <GlassModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        size="medium"
+        overlayOpacity={0.5}
+        ariaLabel="Example Dialog">
+        <h2>Modal Title</h2>
+        <p>This is the modal content. You can put any React components here.</p>
+        <button onClick={() => setIsOpen(false)}>Close</button>
+      </GlassModal>
+    </div>
+  );
+}
+```
+:::tip Size variations
+  - `size="small"` - `max-width: 400px`
+  - `size="medium"` - `max-width: 640px` (default)
+  - `size="large"` - `max-width: 900px`
+:::
+:::note Advanced ARIA
+  ```jsx
+  <GlassModal
+    isOpen={isOpen}
+    onClose={handleClose}
+    ariaLabelledBy="modal-title"
+    ariaDescribedBy="modal-description"
+  >
+    <h2 id="modal-title">Modal Title</h2>
+    <p id="modal-description">Modal description</p>
+  </GlassModal>
+  ```
+:::
+
 ## Props
 
 | Prop | Type | Default | Required | Description |
@@ -156,7 +202,3 @@ Works in all modern browsers that support:
 ## Related Components
 
 - `GlassCard` - Base component providing glassmorphism styling
-
-## License
-
-This component is part of the Img2Num project.
