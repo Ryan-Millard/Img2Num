@@ -1,3 +1,8 @@
 .container p {
   text-align: justify;
 }
+
+.authorNote {
+  font-style: italic;
+  font-size: 0.9em;
+}
