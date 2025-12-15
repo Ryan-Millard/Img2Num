@@ -21,7 +21,7 @@
   color: var(--color-text);
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--radius-md);
-  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: color 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .logo:hover {
@@ -35,7 +35,7 @@
 .logoIcon {
   width: 2rem;
   height: 2rem;
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .logo:hover .logoIcon {
@@ -53,9 +53,9 @@
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-md);
-  color: inherit;
+  color: var(--color-text);
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), transform 0.2s ease;
 }
 
 .menuToggle:hover,
@@ -82,19 +82,23 @@
   padding: var(--spacing-sm) var(--spacing-md);
   font-size: 0.875rem;
   font-weight: 500;
-  color: inherit;
+  color: var(--color-text);
   text-decoration: none;
   border-radius: var(--radius-md);
-  transition: background 0.2s ease, transform 0.15s ease;
+  transition: 
+    background 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1),
+    color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .navLink:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-secondary);
+  transform: translateY(-2px);
 }
 
 .navLink:active {
-  transform: scale(0.98);
+  transform: translateY(0) scale(0.98);
 }
 
 .navLink.active {
@@ -117,12 +121,14 @@
 .externalIcon {
   opacity: 0.5;
   margin-left: calc(var(--spacing-xs) * -1);
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition: 
+    transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+    opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .navLink:hover .externalIcon {
-  opacity: 0.8;
-  transform: translate(2px, -2px);
+  opacity: 1;
+  transform: translate(3px, -3px);
 }
 
 /* ===== MOBILE STYLES ===== */
@@ -137,17 +143,21 @@
     left: var(--spacing-sm);
     right: var(--spacing-sm);
     flex-direction: column;
-    padding: var(--spacing-sm);
-    background: rgba(20, 20, 40, 0.95);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    gap: 6px;
+    padding: 12px;
+    background: linear-gradient(145deg, #3d2a3d 0%, #2a1a2a 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    box-shadow: 
+      0 20px 50px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(255, 255, 255, 0.05) inset;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-8px);
-    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    transition: 
+      opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0.4s;
   }
 
   .navList.open {
@@ -158,11 +168,73 @@
 
   .navList li {
     width: 100%;
+    opacity: 0;
+    transform: translateX(-12px);
+    transition: 
+      opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
+
+  .navList.open li {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .navList.open li:nth-child(1) { transition-delay: 0.03s; }
+  .navList.open li:nth-child(2) { transition-delay: 0.06s; }
+  .navList.open li:nth-child(3) { transition-delay: 0.09s; }
+  .navList.open li:nth-child(4) { transition-delay: 0.12s; }
+  .navList.open li:nth-child(5) { transition-delay: 0.15s; }
 
   .navLink {
     width: 100%;
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: 14px 16px;
     justify-content: flex-start;
+    border-radius: 12px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.95rem;
+  }
+
+  .navLink svg:first-child {
+    opacity: 0.6;
+    transition: opacity 0.25s ease, color 0.25s ease;
+  }
+
+  .navLink:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    transform: none;
+  }
+
+  .navLink:hover svg:first-child {
+    opacity: 1;
+    color: var(--color-secondary);
+  }
+
+  .navLink:active {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(0.98);
+  }
+
+  .navLink.active {
+    background: linear-gradient(135deg, rgba(209, 74, 114, 0.15) 0%, rgba(255, 152, 0, 0.1) 100%);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .navLink.active svg:first-child {
+    opacity: 1;
+    color: var(--color-secondary);
+  }
+
+  /* Divider between internal and external links */
+  .navList li:nth-child(3)::after {
+    content: '';
+    display: block;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    margin-top: 6px;
   }
 }
