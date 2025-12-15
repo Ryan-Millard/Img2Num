@@ -95,7 +95,7 @@ export default function GlassModal({
           }}>
           <GlassCard className={styles.content}>
             <button aria-label="Close" className={styles.close} onClick={onClose} type="button">
-              ×
+              {'\u00D7'}
             </button>
             <div className={styles.body} data-size={size}>
               {children}
