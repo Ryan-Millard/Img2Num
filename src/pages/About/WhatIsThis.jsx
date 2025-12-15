@@ -27,7 +27,11 @@ const WhatIsThis = () => {
 
       <p>Img2Num is designed for everyone—friends, family, or solo users who enjoy colouring.</p>
 
-      <p>Beyond being a creative tool, Img2Num also carries a personal touch.</p>
+      <p>
+        Beyond being a creative tool, Img2Num also carries a personal touch. The hedgehog-themed UI is a tribute to
+        Joan, the hedgehog who inspired many of the design elements on this site. It’s a blend of{' '}
+        <strong>technology, art, and memory</strong>, offering a unique colouring experience unlike any other.
+      </p>
     </GlassCard>
   );
 };
