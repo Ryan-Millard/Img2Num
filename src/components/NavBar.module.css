@@ -8,6 +8,7 @@
   z-index: 100;
   padding: var(--spacing-sm) var(--spacing-md);
   margin-bottom: var(--spacing-md);
+  padding: 0.5rem 1rem;
 }
 
 /* ===== LOGO ===== */
