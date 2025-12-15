@@ -1,18 +1,4 @@
 :root {
-  --color-bg: #fed0d0; /* soft pink background */
-
-  --color-primary: #d14a72; /* strong pink/magenta for buttons/links */
-  --color-primary-dark: #a73457; /* darker pink for hover */
-  --color-secondary: #ff9800; /* soft yellow for accents */
-
-  --color-text: #2c1a1a; /* very dark brown for all text */
-  --color-text-light: #2c1a1a; /* also dark, for any “light” text elements */
-
-  --color-border: #f2b8c3; /* slightly darker pink than background */
-
-  --color-error: #e94b4b;
-  --color-success: #4bb543;
-
   --font-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
   --spacing-xs: 4px;
@@ -23,4 +9,39 @@
 
   --radius-sm: 4px;
   --radius-md: 8px;
+}
+
+/* Light theme (default) */
+:root,
+:root.light {
+  --color-bg: #fed0d0; /* soft pink background */
+
+  --color-primary: #d14a72; /* strong pink/magenta for buttons/links */
+  --color-primary-dark: #a73457; /* darker pink for hover */
+  --color-secondary: #ff9800; /* soft yellow for accents */
+
+  --color-text: #2c1a1a; /* very dark brown for all text */
+  --color-text-light: #2c1a1a; /* also dark, for any "light" text elements */
+
+  --color-border: #f2b8c3; /* slightly darker pink than background */
+
+  --color-error: #e94b4b;
+  --color-success: #4bb543;
+}
+
+/* Dark theme */
+:root.dark {
+  --color-bg: #1a1a2e; /* dark navy background */
+
+  --color-primary: #ff6b9d; /* bright pink for buttons/links */
+  --color-primary-dark: #ff4081; /* vibrant pink for hover */
+  --color-secondary: #ffd93d; /* bright yellow for accents */
+
+  --color-text: #f0f0f0; /* light gray for text */
+  --color-text-light: #d0d0d0; /* slightly darker gray for secondary text */
+
+  --color-border: #2d2d44; /* dark border */
+
+  --color-error: #ff6b6b;
+  --color-success: #51cf66;
 }

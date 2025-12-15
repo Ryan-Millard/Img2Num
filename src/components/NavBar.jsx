@@ -3,6 +3,7 @@ import { SquareArrowOutUpRight } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './NavBar.module.css';
 import GlassCard from '@components/GlassCard';
+import ThemeSwitch from '@components/ThemeSwitch';
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +39,8 @@ export default function NavBar() {
       <div className={styles.logo}>
         <Link to="/">Img2Num</Link>
       </div>
-
+      <div className={styles.spacer}></div>
+      <ThemeSwitch />
       <button className={styles.hamburger} onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
         <span className={isOpen ? styles.barActive : styles.bar}></span>
         <span className={isOpen ? styles.barActive : styles.bar}></span>

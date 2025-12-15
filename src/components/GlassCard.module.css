@@ -49,3 +49,16 @@
 .card tr td:first-child {
   font-weight: bold;
 }
+
+/* Dark mode styles */
+:global(:root.dark) .card tr:nth-child(odd) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+:global(:root.dark) .card tr:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+:global(:root.dark) .card td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}

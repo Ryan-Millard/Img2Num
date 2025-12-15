@@ -2,9 +2,12 @@
   font-size: x-large;
 }
 
+.spacer {
+  flex-grow: 1;
+}
+
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   position: sticky;
   top: 0;
@@ -19,6 +22,7 @@
   list-style: none;
   font-weight: bolder;
   font-size: large;
+  padding-left: 0.5rem;
 }
 
 .navLinks li a {
