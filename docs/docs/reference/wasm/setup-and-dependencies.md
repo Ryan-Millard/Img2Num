@@ -4,11 +4,10 @@ title: Setup & Dependencies
 sidebar_position: 2
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Prerequisites
-
-## Windows Compatibility
-
-Img2Num now supports **full cross-platform development** on Windows, macOS, and Linux using CMake.
 
 ### Frontend-Only Development
 
@@ -39,23 +38,23 @@ WASM development now works natively on **all platforms** including Windows. You 
 
 ### Step 1: Install CMake
 
-**Windows:**
-```bash
-# Using winget
-winget install Kitware.CMake
-
-# Or download from https://cmake.org/download/
-```
-
-**macOS:**
-```bash
-brew install cmake
-```
-
-**Linux (Ubuntu/Debian):**
-```bash
-sudo apt install cmake
-```
+<Tabs groupId="operating-systems" queryString>
+  <TabItem value="windows" label="Windows" default>
+    ```cmd
+    winget install Kitware.CMake
+    ```
+  </TabItem>
+  <TabItem value="linux" label="Linux">
+    ```bash
+    sudo apt install cmake
+    ```
+  </TabItem>
+  <TabItem value="macos" label="macOS">
+    ```bash
+    brew install cmake
+    ```
+  </TabItem>
+</Tabs>
 
 ### Step 2: Install Emscripten
 
@@ -68,16 +67,29 @@ cd emsdk
 ./emsdk install latest
 ./emsdk activate latest
 
-# Add to PATH (run this in each new terminal, or add to your shell profile)
-# Linux/macOS:
-source ./emsdk_env.sh
 
-# Windows (cmd):
-emsdk_env.bat
-
-# Windows (PowerShell):
-./emsdk_env.ps1
 ```
+
+<Tabs groupId="operating-systems" queryString>
+  <TabItem value="windows" label="Windows" default>
+    ```cmd title="CMD"
+    emsdk_env.bat
+    ```
+    ```PowerShell title="PowerShell"
+    ./emsdk_env.ps1
+    ```
+  </TabItem>
+  <TabItem value="linux" label="Linux">
+    ```bash title="Add to PATH (run this in each new terminal, or add to your shell profile)"
+    source ./emsdk_env.sh
+    ```
+  </TabItem>
+  <TabItem value="macos" label="macOS">
+    ```bash title="Add to PATH (run this in each new terminal, or add to your shell profile)"
+    source ./emsdk_env.sh
+    ```
+  </TabItem>
+</Tabs>
 
 :::tip
 Add the emsdk environment script to your shell profile (`.bashrc`, `.zshrc`, or Windows equivalent) so `emcc` is always available.
@@ -108,7 +120,9 @@ The build script:
 3. Runs `cmake --build` to compile all WASM modules
 4. Outputs to each module's `build/` directory
 
+:::note
 Use the `npm` scripts when developing locally or in CI; they abstract away the build system details.
+:::
 
 ## Environment variables
 
@@ -131,4 +145,4 @@ src/wasm/
         └── build/          # Output (index.js + index.wasm)
 ```
 
-This replaces the previous Makefile-based system and works identically on Windows, macOS, and Linux.
+This replaces the previous Makefile-based system (before [#93](https://github.com/Ryan-Millard/Img2Num/pull/93)) and works identically on Windows, macOS, and Linux.
