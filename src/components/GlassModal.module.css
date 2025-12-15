@@ -1,0 +1,114 @@
+/* Modal root container */
+.modalRoot {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  --overlay-opacity: 0.5;
+}
+
+/* Overlay background */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, var(--overlay-opacity));
+  cursor: pointer;
+}
+
+/* Modal wrapper */
+.wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modal content */
+.content {
+  width: 640px;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: auto;
+  position: relative;
+  padding: 1.5rem;
+}
+
+/* Close button */
+.close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  padding: 4px 8px;
+  z-index: 1;
+}
+
+.close:hover {
+  opacity: 1;
+}
+
+.close:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+  opacity: 1;
+}
+
+/* Modal body */
+.body {
+  padding-top: 1rem;
+}
+
+/* Size variations */
+.body[data-size='small'] {
+  max-width: 400px;
+}
+
+.body[data-size='medium'] {
+  max-width: 640px;
+}
+
+.body[data-size='large'] {
+  max-width: 900px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .content {
+    width: calc(100% - 2rem);
+    padding: 1rem;
+  }
+
+  .close {
+    top: 8px;
+    right: 8px;
+    font-size: 24px;
+  }
+
+  .body {
+    padding-top: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    max-width: 95vw;
+    max-height: 95vh;
+  }
+
+  .content {
+    width: calc(100% - 1rem);
+    padding: 0.75rem;
+  }
+}

@@ -28,6 +28,7 @@
     "release": "node scripts/handle-changelog.js"
   },
   "dependencies": {
+    "focus-trap-react": "^10.3.0",
     "imagetracerjs": "^1.2.6",
     "lucide-react": "^0.561.0",
     "react": "^19.2.3",
