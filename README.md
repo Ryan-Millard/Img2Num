@@ -74,6 +74,34 @@ Try it out now by [clicking here](https://ryan-millard.github.io/Img2Num/)!
 
 ## What this repository contains (short)
 
+<div align="center"
+
+
+![React](https://img.shields.io/badge/React-19-blue?logo=react&logoColor=61DAFB)
+![C++](https://img.shields.io/badge/C++-Modern-blue?logo=c%2B%2B&logoColor=00599C)
+![WebAssembly](https://img.shields.io/badge/WebAssembly-Yes-blue?logo=webassembly)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow?logo=javascript&logoColor=black)
+![Node.js](https://img.shields.io/badge/Node.js-20-green?logo=node.js&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-7-purple?logo=vite)
+![CSS](https://img.shields.io/badge/CSS-Modern-blue?logo=css3)
+
+
+</div>
+<div align="center"
+
+
+![Prettier](https://img.shields.io/badge/Prettier-Code%20Formatter-brightgreen?logo=prettier&logoColor=F7B93E)
+![ESLint](https://img.shields.io/badge/ESLint-Linted-yellow?logo=eslint)
+![Vitest](https://img.shields.io/badge/Vitest-Tested-orange?logo=vitest)
+![Docusaurus](https://img.shields.io/badge/Docusaurus-Docs-blue?logo=docusaurus)
+![Concurrently](https://img.shields.io/badge/Concurrently-MultiTask-orange?logo=github-actions)
+![EditorConfig](https://img.shields.io/badge/EditorConfig-Style-blue?logo=editorconfig)
+![Clang-Format](https://img.shields.io/badge/Clang%20Format-Formatted-blue?logo=clang)
+
+
+
+</div>
+
 * A React frontend that handles image input, preview and in-browser colouring.
 * A WebAssembly module (C++ → Emscripten) that performs image processing and colour quantisation.
 
@@ -99,7 +127,7 @@ We welcome contributions. Please read [CONTRIBUTING.md](https://ryan-millard.git
 
 * **Add tests** with your PR — new features and bug fixes **must** include tests where appropriate. PRs without tests are unlikely to be approved.
 * Follow the repository's [coding style rules](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/coding-style) and [commit message rules](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/commits).
-* Use the issue and PR templates in `.github/` when filing issues or submitting code. Your PR will be rejected if you don't.
+* Use the issue and PR templates when filing issues or submitting code. Your PR will be rejected if you don't.
 
 If you're unsure what to change, open an issue first and we can discuss scope.
 
