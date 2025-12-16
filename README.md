@@ -139,7 +139,7 @@ We're planning to add a clean, print-friendly version of the colour-by-number ou
 
 ## 📋 License
 
-GNU General Public License v3.0 (see [LICENSE](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE))
+[GNU Affero General Public License v3.0](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE)
 
 ---
 
