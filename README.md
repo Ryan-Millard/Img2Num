@@ -12,7 +12,43 @@
 
 **Img2Num** is a React + WebAssembly-based application that allows users to upload an image and convert it into a **colour-by-number** version that can be either printed or coloured in directly within the browser. It's designed to be fast, efficient, and interactive, leveraging C++ (compiled to WebAssembly) for pixel manipulation.
 
----
+<table align="center">
+  <tr>
+    <!-- Top: Big Mountains image -->
+    <td align="center" colspan="3">
+      <img src="docs/static/img/readme-demo/aerial-view-mountains_colored_pexels-pixabay-51373.jpg" width="400" alt="Mountains Final"><br>
+      Mountains<br>
+      <img src="docs/static/img/readme-demo/aerial-view-mountains_pexels-pixabay-51373.jpg" width="150" alt="Mountains Original">
+      <img src="docs/static/img/readme-demo/aerial-view-mountains_processed_pexels-pixabay-51373.jpg" width="150" alt="Mountains Template"><br>
+      Original + Template
+    </td>
+  </tr>
+  <tr>
+    <!-- Bottom: three smaller images -->
+    <td align="center">
+      <img src="docs/static/img/readme-demo/girl-in-nature_colored_pexels-emmypaw-5461675.jpg" width="250" alt="Girl Final"><br>
+      Girl in Nature<br>
+      <img src="docs/static/img/readme-demo/girl-in-nature_pexels-emmypaw-5461675.jpg" width="100" alt="Girl Original">
+      <img src="docs/static/img/readme-demo/girl-in-nature_processed_pexels-emmypaw-5461675.jpg" width="100" alt="Girl Template"><br>
+      Original + Template
+    </td>
+    <td align="center">
+      <img src="docs/static/img/readme-demo/people_colored_pexels-rdne-6224636.jpg" width="250" alt="People Final"><br>
+      People<br>
+      <img src="docs/static/img/readme-demo/people_pexels-rdne-6224636.jpg" width="100" alt="People Original">
+      <img src="docs/static/img/readme-demo/people_processed_pexels-rdne-6224636.jpg" width="100" alt="People Template"><br>
+      Original + Template
+    </td>
+    <td align="center">
+      <img src="docs/static/img/readme-demo/rio-de-janeiro_colored_pexels-athena-6580703.jpg" width="250" alt="Rio Final"><br>
+      Rio de Janeiro<br>
+      <img src="docs/static/img/readme-demo/rio-de-janeiro_pexels-athena-6580703.jpg" width="100" alt="Rio Original">
+      <img src="docs/static/img/readme-demo/rio-de-janeiro_processed_pexels-athena-6580703.jpg" width="100" alt="Rio Template"><br>
+      Original + Template
+    </td>
+  </tr>
+</table>
+
 
 ## Goal
 
