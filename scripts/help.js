@@ -36,9 +36,17 @@ const scriptsInfo = {
     'lint:fix': 'Run ESLint and automatically fix issues',
     'lint:style': 'Check all files against .editorconfig rules',
   },
+  Testing: {
+    test: 'Run all tests once using Vitest',
+    'test:watch': 'Run tests in watch mode with Vitest',
+    'test:coverage': 'Run tests and generate a coverage report',
+  },
+  Release: {
+    release: 'Generate and update changelog, then handle release versioning',
+  },
   Other: {
     help: 'Show this help message',
-    docs: 'Run docs scripts - run `npm run docs help` to see its available scripts',
+    docs: 'Run docs scripts (use `npm run docs help` to see available commands)',
   },
 };
 
