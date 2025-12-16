@@ -135,9 +135,9 @@ const WasmImageProcessor = () => {
   const EmptyState = useMemo(
     () => (
       <>
-        <Upload className={`anchor-style ${styles.uploadIcon}`} />
+        <Upload className={`anchor-style ${styles.uploadIcon}`} title="Upload an image from your device" />
         <p className={`text-center ${styles.dragDropText}`}>
-          Drag & Drop or <span className={`anchor-style ${styles.noTextWrap}`}>Choose File</span>
+          Drag & Drop or <span className={`anchor-style ${styles.noTextWrap}`} title="Select an image file from your computer" >Choose File</span>
         </p>
       </>
     ),
@@ -154,6 +154,7 @@ const WasmImageProcessor = () => {
         {!isProcessing ? (
           <button
             className="uppercase button"
+            title="Process the image and convert it to numbers"
             onClick={(e) => {
               e.stopPropagation();
               processImage();
@@ -170,6 +171,7 @@ const WasmImageProcessor = () => {
   return (
     <GlassCard
       className={`flex-center flex-column ${styles.dropZone}`}
+      title="Drag and drop an image here or click to choose a file"
       onDrop={handleDrop}
       onDragOver={(e) => e.preventDefault()}
       onClick={() => {
@@ -178,7 +180,7 @@ const WasmImageProcessor = () => {
       data-image-loaded={!!originalSrc}>
       {originalSrc ? LoadedState : EmptyState}
 
-      <input ref={inputRef} id={inputId} type="file" accept="image/*" hidden onChange={handleSelect} />
+      <input ref={inputRef} id={inputId} type="file" accept="image/*" hidden title="Choose an image file to upload" onChange={handleSelect} />
     </GlassCard>
   );
 };

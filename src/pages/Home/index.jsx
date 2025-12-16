@@ -14,11 +14,11 @@ const Home = () => (
       <WasmImageProcessor />
 
       <div className={styles.featureContainer}>
-        <GlassCard>
+        <GlassCard title="Performance feature">
           <h3>⚡ Fast & Lightweight</h3>
           <p>Compiled C++ runs in your browser via WebAssembly with near-native speed.</p>
         </GlassCard>
-        <GlassCard>
+        <GlassCard title="Integration feature">
           <h3>🛠️ Easy to Integrate</h3>
           <p>Minimal dependencies, works with any project or workflow.</p>
         </GlassCard>
