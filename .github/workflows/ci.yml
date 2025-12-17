@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  validate-scripts:
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'pull_request' || github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci
+      - name: Determine if scripts changed
+        id: check_changes
+        run: |
+          # Check for changes in package.json scriptsInfo or any scripts folder
+          files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          echo "Changed files: $files"
+          match=false
+          for file in $files; do
+            if [[ "$file" == "package.json" || "$file" == "docs/package.json" || "$file" == "scripts/"* || "$file" == "docs/scripts/"* ]]; then
+              # Check if package.json scriptsInfo section was modified
+              if [[ "$file" == "package.json" || "$file" == "docs/package.json" ]]; then
+                if git diff ${{ github.event.before }} ${{ github.sha }} -- "$file" | grep -q '"scriptsInfo"'; then
+                  match=true
+                  break
+                fi
+              else
+                # Any change in scripts folders counts
+                match=true
+                break
+              fi
+            fi
+          done
+          echo "scripts_changed=$match" >> $GITHUB_OUTPUT
+      - name: Run script validation
+        if: steps.check_changes.outputs.scripts_changed == 'true'
+        run: npm run validate-scripts

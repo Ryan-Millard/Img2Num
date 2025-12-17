@@ -82,6 +82,9 @@
         "args": [
           "-- filter <term>    Only show scripts matching <term>"
         ]
+      },
+      "validate-scripts": {
+        "desc": "Validate that every script has a corresponding scriptsInfo entry"
       }
     }
   },
@@ -95,7 +98,8 @@
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
-    "write-heading-ids": "docusaurus write-heading-ids"
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "validate-scripts": "npm run --prefix .. validate-scripts"
   },
   "dependencies": {
     "@docusaurus/theme-mermaid": "^3.9.2",

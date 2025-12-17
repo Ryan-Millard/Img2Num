@@ -111,6 +111,9 @@
       },
       "docs": {
         "desc": "Run docs scripts (use `npm run docs help` to see available commands)"
+      },
+      "validate-scripts": {
+        "desc": "Validate that every script has a corresponding scriptsInfo entry"
       }
     }
   },
@@ -138,7 +141,8 @@
     "release": "node scripts/handle-changelog.js",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "validate-scripts": "node scripts/validate-scripts.js"
   },
   "dependencies": {
     "imagetracerjs": "^1.2.6",
