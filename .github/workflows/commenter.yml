@@ -55,8 +55,8 @@ jobs:
           script: |
             const owner = context.repo.owner;
             const repo = context.repo.repo;
-            const number = parseInt(inputs.issue_number, 10);
-            const body = inputs.message;
+            const number = ${{ inputs.issue_number }};
+            const body = `${{ inputs.message }}`;
 
             // GitHub API treats PR comments as issue comments
             await github.rest.issues.createComment({
