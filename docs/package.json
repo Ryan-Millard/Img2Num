@@ -8,26 +8,81 @@
       "basic": ["start", "build", "clear", "help"]
     },
     "Development": {
-      "start": "Start the Docusaurus dev server",
-      "serve": "Serve the production build locally"
+      "start": {
+        "desc": "Start the Docusaurus dev server",
+        "args": [
+          "-- port PORT    Set the server port",
+          "-- host HOST    Set the server host"
+        ]
+      },
+      "serve": {
+        "desc": "Serve the production build locally",
+        "args": [
+          "-- port PORT    Set the server port",
+          "-- host HOST    Set the server host"
+        ]
+      }
     },
     "Build": {
-      "build": "Build the Docusaurus site"
+      "build": {
+        "desc": "Build the Docusaurus site",
+        "args": [
+          "-- out-dir DIR    Specify output directory",
+          "-- mode MODE      Set build mode (production/development)"
+        ]
+      }
     },
     "Deployment": {
-      "deploy": "Deploy the Docusaurus site"
+      "deploy": {
+        "desc": "Deploy the Docusaurus site",
+        "args": [
+          "-- branch BRANCH    Specify the branch to deploy to",
+          "-- dry-run          Run deployment without actually pushing"
+        ]
+      }
     },
     "Maintenance": {
-      "clear": "Clear the Docusaurus cache",
-      "swizzle": "Customize Docusaurus theme components"
+      "clear": {
+        "desc": "Clear the Docusaurus cache",
+        "args": [
+          "-- force    Force clearing without confirmation"
+        ]
+      },
+      "swizzle": {
+        "desc": "Customize Docusaurus theme components",
+        "args": [
+          "-- theme THEME    Specify which theme component to swizzle",
+          "-- out-dir DIR    Directory to output the customized component"
+        ]
+      }
     },
     "Content & i18n": {
-      "write-translations": "Generate translation files",
-      "write-heading-ids": "Add heading IDs to MDX files"
+      "write-translations": {
+        "desc": "Generate translation files",
+        "args": [
+          "-- locale LOCALE    Generate files only for a specific locale"
+        ]
+      },
+      "write-heading-ids": {
+        "desc": "Add heading IDs to MDX files",
+        "args": [
+          "-- files FILES    Target specific MDX files (glob supported)"
+        ]
+      }
     },
     "Internal": {
-      "docusaurus": "Run the Docusaurus CLI directly",
-      "help": "Show this help message"
+      "docusaurus": {
+        "desc": "Run the Docusaurus CLI directly",
+        "args": [
+          "Pass any standard Docusaurus CLI arguments here"
+        ]
+      },
+      "help": {
+        "desc": "Show this help message",
+        "args": [
+          "-- filter <term>    Only show scripts matching <term>"
+        ]
+      }
     }
   },
   "scripts": {

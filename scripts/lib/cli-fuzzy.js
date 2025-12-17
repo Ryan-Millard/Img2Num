@@ -102,6 +102,14 @@ function printAll(items, rl) {
 
 function printItem(name, info) {
   console.log(`\n\t${colorText(name, Colors.YELLOW)}${info.group ? ` (${info.group})` : ""}`);
-  console.log(`\t\t- ${colorText(info.desc, Colors.YELLOW)}`);
+
+  if (Array.isArray(info.desc)) {
+    for (const line of info.desc) {
+      console.log(`\t\t- ${colorText(line, Colors.YELLOW)}`);
+    }
+  } else {
+    console.log(`\t\t- ${colorText(info.desc, Colors.YELLOW)}`);
+  }
+
   console.log(`\t\t\t\t> ${colorText(info.command, Colors.CYAN)}`);
 }

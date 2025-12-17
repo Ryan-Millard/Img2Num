@@ -9,44 +9,109 @@
       "basic": ["dev", "build", "clean", "format", "lint", "help"]
     },
     "Development": {
-      "dev": "Run Vite dev server",
-      "dev:debug": "Build WASM in debug mode then start dev server",
-      "dev:all": "Run Vite dev server and Docusaurus server",
-      "dev:all:debug": "Build WASM in debug mode then start dev and Docusaurus server",
-      "preview": "Preview the production build locally"
+      "dev": {
+        "desc": "Run Vite dev server",
+        "args": [
+          "-- port PORT    Specify dev server port",
+          "-- host HOST    Specify dev server host"
+        ]
+      },
+      "dev:debug": {
+        "desc": "Build WASM in debug mode then start dev server"
+      },
+      "dev:all": {
+        "desc": "Run Vite dev server and Docusaurus server"
+      },
+      "dev:all:debug": {
+        "desc": "Build WASM in debug mode then start dev and Docusaurus server"
+      },
+      "preview": {
+        "desc": "Preview the production build locally"
+      }
     },
     "Build": {
-      "build": "Build WASM then build the site",
-      "build-js": "Build only the JS/React site",
-      "build-wasm": "Build the WebAssembly modules",
-      "build-wasm:debug": "Build WASM modules in debug mode"
+      "build": {
+        "desc": "Build WASM then build the site",
+        "args": [
+          "-- mode MODE    Set the build mode (production/development)"
+        ]
+      },
+      "build-js": {
+        "desc": "Build only the JS/React site"
+      },
+      "build-wasm": {
+        "desc": "Build the WebAssembly modules"
+      },
+      "build-wasm:debug": {
+        "desc": "Build WASM modules in debug mode"
+      }
     },
     "Cleaning": {
-      "clean": "Clean WASM build artifacts and dist folder",
-      "clean-js": "Remove dist folder",
-      "clean-wasm": "Clean WASM build artifacts"
+      "clean": {
+        "desc": "Clean WASM build artifacts and dist folder"
+      },
+      "clean-js": {
+        "desc": "Remove dist folder"
+      },
+      "clean-wasm": {
+        "desc": "Clean WASM build artifacts"
+      }
     },
     "Formatting": {
-      "format": "Format all files with Prettier and clang-format",
-      "format-js": "Format all non-C++ files with Prettier",
-      "format-wasm": "Format all C++ files with clang-format"
+      "format": {
+        "desc": "Format all files with Prettier and clang-format"
+      },
+      "format-js": {
+        "desc": "Format all non-C++ files with Prettier"
+      },
+      "format-wasm": {
+        "desc": "Format all C++ files with clang-format"
+      }
     },
     "Linting": {
-      "lint": "Run ESLint to check for code issues",
-      "lint:fix": "Run ESLint and automatically fix issues",
-      "lint:style": "Check all files against .editorconfig rules"
+      "lint": {
+        "desc": "Run ESLint to check for code issues",
+        "args": [
+          "-- fix   Automatically fix fixable issues",
+          "-- style Check style rules only"
+        ]
+      },
+      "lint:fix": {
+        "desc": "Run ESLint and automatically fix issues",
+        "args": [
+          "Equivalent to: eslint . --fix"
+        ]
+      },
+      "lint:style": {
+        "desc": "Check all files against .editorconfig rules"
+      }
     },
     "Testing": {
-      "test": "Run all tests once using Vitest",
-      "test:watch": "Run tests in watch mode with Vitest",
-      "test:coverage": "Run tests and generate a coverage report"
+      "test": {
+        "desc": "Run all tests once using Vitest"
+      },
+      "test:watch": {
+        "desc": "Run tests in watch mode with Vitest"
+      },
+      "test:coverage": {
+        "desc": "Run tests and generate a coverage report"
+      }
     },
     "Release": {
-      "release": "Generate and update changelog, then handle release versioning"
+      "release": {
+        "desc": "Generate and update changelog, then handle release versioning"
+      }
     },
     "Other": {
-      "help": "Show this help message",
-      "docs": "Run docs scripts (use `npm run docs help` to see available commands)"
+      "help": {
+        "desc": "Show this help message",
+        "args": [
+          "-- filter <term>   Only show scripts matching <term>"
+        ]
+      },
+      "docs": {
+        "desc": "Run docs scripts (use `npm run docs help` to see available commands)"
+      }
     }
   },
   "scripts": {
