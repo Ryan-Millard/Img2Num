@@ -3,6 +3,16 @@ import fuzzy from "fuzzy";
 import { Colors, colorText } from "./colors.js";
 
 export function runFuzzyCli({ items, basicItems, title, initialSearch = [] }) {
+  if (!items || typeof items !== 'object') {
+    throw new TypeError('items must be a non-null object');
+  }
+  if (!Array.isArray(basicItems)) {
+    throw new TypeError('basicItems must be an array');
+  }
+  if (typeof title !== 'string') {
+    throw new TypeError('title must be a string');
+  }
+
   printHeader(title);
 
   // Only show basic scripts if no initial search is provided
@@ -41,7 +51,7 @@ function startInteractive(items, skipIfInitialSearch = false) {
     completer(line) {
       const names = Object.keys(items);
       const hits = fuzzy.filter(line, names).map(x => x.original);
-      return [hits.length ? hits : names, line];
+      return [hits, line];
     },
   });
 
@@ -103,7 +113,10 @@ function printAll(items, rl) {
 
 function printItem(name, info) {
   console.log(`\n\t${colorText(name, Colors.YELLOW)}${info.group ? ` (${info.group})` : ""}`);
-  console.log(`\t\t- ${colorText(info.desc, Colors.YELLOW)}`);
+  const description = Array.isArray(info.desc) ? info.desc.join(" ") : info.desc;
+  if (description) {
+    console.log(`\t\t- ${colorText(description, Colors.YELLOW)}`);
+  }
 
   if (info.args && info.args.length) {
     for (const arg of info.args) {
@@ -111,5 +124,7 @@ function printItem(name, info) {
     }
   }
 
-  console.log(`\t\t\t\t> ${colorText(info.command, Colors.CYAN)}`);
+  if (info.command) {
+    console.log(`\t\t\t\t> ${colorText(info.command, Colors.CYAN)}`);
+  }
 }
