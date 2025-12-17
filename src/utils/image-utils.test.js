@@ -463,8 +463,8 @@ describe('image-utils', () => {
 
       await uint8ClampedArrayToSVG({ pixels, width: 1, height: 1 });
 
-      // No way to directly verify cleanup, but function should complete without error
-      expect(true).toBe(true);
+      // Smoke test: function should complete without error or hanging
+      // If cleanup logic is added in the future, add specific assertions here
     });
 
     it('should handle error and still clean up', async () => {
