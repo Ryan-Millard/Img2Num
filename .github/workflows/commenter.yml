@@ -58,20 +58,10 @@ jobs:
             const number = parseInt(inputs.issue_number, 10);
             const body = inputs.message;
 
-            if (inputs.is_pr) {
-              // Pull Request comment
-              await github.rest.issues.createComment({
-                owner,
-                repo,
-                issue_number: number,
-                body
-              });
-            } else {
-              // Issue comment
-              await github.rest.issues.createComment({
-                owner,
-                repo,
-                issue_number: number,
-                body
-              });
-            }
+            // GitHub API treats PR comments as issue comments
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: number,
+              body
+            });

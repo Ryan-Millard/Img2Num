@@ -46,12 +46,13 @@ function startInteractive(items, skipIfInitialSearch = false) {
   });
 
   rl.setPrompt(colorText("> ", Colors.CYAN));
-  rl.prompt();
 
   // If initialSearch was provided, and we just want one-shot results, skip the interactive prompt
   if (skipIfInitialSearch) {
     return rl.close();
   }
+
+  rl.prompt();
 
   rl.on("line", line => {
     const input = line.trim();

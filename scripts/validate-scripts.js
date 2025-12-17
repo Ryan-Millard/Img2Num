@@ -3,7 +3,12 @@ import fs from "fs";
 import path from "path";
 
 function loadPackageJson(filePath) {
-  return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+  try {
+    return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+  } catch (error) {
+    console.error(`❌ Failed to load ${filePath}: ${error.message}`);
+    process.exit(1);
+  }
 }
 
 function flattenScriptsInfo(scriptsInfo) {

@@ -11,13 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checkout full history to ensure git diff works
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       # Node.js setup
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 22
 

@@ -24,7 +24,7 @@ export const Colors = Object.freeze({
 });
 
 // Mapping from enum to ANSI codes
-const codes = {
+const codes = Object.freeze({
   reset: "\x1b[0m",
   bold: "\x1b[1m",
   dim: "\x1b[2m",
@@ -42,10 +42,11 @@ const codes = {
   bgMagenta: "\x1b[45m",
   bgCyan: "\x1b[46m",
   bgWhite: "\x1b[47m",
-};
+});
 
 // Main color function
 export function colorText(text, colorEnum) {
+  if (text == null) return '';
   if (!supportsColor || !codes[colorEnum]) return text;
   return `${codes[colorEnum]}${text}${codes.reset}`;
 }

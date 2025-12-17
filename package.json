@@ -78,9 +78,6 @@
       },
       "lint:fix": {
         "desc": "Run ESLint and automatically fix issues",
-        "args": [
-          "Equivalent to: eslint . --fix"
-        ]
       },
       "lint:style": {
         "desc": "Check all files against .editorconfig rules"

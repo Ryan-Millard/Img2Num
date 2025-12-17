@@ -6,7 +6,12 @@ const title =
 Also see: https://ryan-millard.github.io/Img2Num/info/docs/category/-project-scripts
 `;
 
-const { flat: items, basicItems } = readPackageJsonScripts(new URL("../package.json", import.meta.url));
+try {
+  const { flat: items, basicItems } = readPackageJsonScripts(new URL("../package.json", import.meta.url));
+} catch (error) {
+  console.error("Failed to read package.json scripts:", error.message);
+  process.exit(1);
+}
 
 // Grab all CLI args after `npm run help --`
 const initialSearch = process.argv.slice(2);
