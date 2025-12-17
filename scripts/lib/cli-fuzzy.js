@@ -2,10 +2,20 @@ import readline from "readline";
 import fuzzy from "fuzzy";
 import { Colors, colorText } from "./colors.js";
 
-export function runFuzzyCli({ items, basicItems, title }) {
+export function runFuzzyCli({ items, basicItems, title, initialSearch = [] }) {
   printHeader(title);
-  printBasics(items, basicItems);
-  startInteractive(items);
+
+  // Only show basic scripts if no initial search is provided
+  if (initialSearch.length === 0) {
+    printBasics(items, basicItems);
+  }
+
+  // Run initial search terms if provided
+  if (initialSearch.length > 0) {
+    initialSearch.forEach(term => runSearch(term, items));
+  }
+
+  startInteractive(items, initialSearch.length > 0);
 }
 
 function printHeader(title) {
@@ -24,7 +34,7 @@ function printBasics(items, basicItems) {
   console.log("");
 }
 
-function startInteractive(items) {
+function startInteractive(items, skipIfInitialSearch = false) {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -38,18 +48,18 @@ function startInteractive(items) {
   rl.setPrompt(colorText("> ", Colors.CYAN));
   rl.prompt();
 
+  // If initialSearch was provided, and we just want one-shot results, skip the interactive prompt
+  if (skipIfInitialSearch) {
+    return rl.close();
+  }
+
   rl.on("line", line => {
     const input = line.trim();
     if (input === "q") return rl.close();
     if (input === "a") return printAll(items, rl);
 
-    const matches = fuzzy.filter(input, Object.keys(items)).map(x => x.original);
-    if (!matches.length) {
-      console.log(colorText("No matches.", Colors.RED));
-      return rl.prompt();
-    }
+    runSearch(input, items);
 
-    for (const name of matches) printItem(name, items[name]);
     rl.prompt();
   });
 
@@ -57,6 +67,18 @@ function startInteractive(items) {
     console.log(colorText("Exiting.", Colors.MAGENTA));
     process.exit(0);
   });
+}
+
+function runSearch(input, items) {
+  const matches = fuzzy.filter(input, Object.keys(items)).map(x => x.original);
+  if (!matches.length) {
+    console.log(colorText("No matches.", Colors.RED));
+    return;
+  }
+
+  for (const name of matches) {
+    printItem(name, items[name]);
+  }
 }
 
 function printAll(items, rl) {

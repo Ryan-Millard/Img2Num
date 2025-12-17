@@ -8,8 +8,12 @@ Also see: https://ryan-millard.github.io/Img2Num/info/docs/category/-project-scr
 
 const { flat: items, basicItems } = readPackageJsonScripts(new URL("../package.json", import.meta.url));
 
+// Grab all CLI args after `npm run help --`
+const initialSearch = process.argv.slice(2);
+
 runFuzzyCli({
   title,
   items,
   basicItems,
+  initialSearch,
 });
