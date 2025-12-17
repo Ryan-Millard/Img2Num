@@ -2,6 +2,34 @@
   "name": "docs",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
+  "scriptsInfo": {
+    "_meta": {
+      "basic": ["start", "build", "clear", "help"]
+    },
+    "Development": {
+      "start": "Start the Docusaurus dev server",
+      "serve": "Serve the production build locally"
+    },
+    "Build": {
+      "build": "Build the Docusaurus site"
+    },
+    "Deployment": {
+      "deploy": "Deploy the Docusaurus site"
+    },
+    "Maintenance": {
+      "clear": "Clear the Docusaurus cache",
+      "swizzle": "Customize Docusaurus theme components"
+    },
+    "Content & i18n": {
+      "write-translations": "Generate translation files",
+      "write-heading-ids": "Add heading IDs to MDX files"
+    },
+    "Internal": {
+      "docusaurus": "Run the Docusaurus CLI directly",
+      "help": "Show this help message"
+    }
+  },
   "scripts": {
     "help": "node scripts/help.js",
     "docusaurus": "docusaurus",
