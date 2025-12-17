@@ -2,7 +2,6 @@
   "name": "docs",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "scriptsInfo": {
     "_meta": {
       "basic": ["start", "build", "clear", "help"]
