@@ -17,7 +17,6 @@ export function readPackageJsonScripts(fileUrl) {
         command: scripts[name] || "No command defined",
         group,
       };
-      console.log(flat[name]);
     }
   }
 
