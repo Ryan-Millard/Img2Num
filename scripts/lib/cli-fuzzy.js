@@ -2,6 +2,20 @@ import readline from "readline";
 import fuzzy from "fuzzy";
 import { Colors, colorText } from "./colors.js";
 
+/**
+ * Start an interactive fuzzy-search CLI for the provided script items.
+ *
+ * Displays a header using the given title, optionally prints a set of basic items,
+ * performs any initial one-shot searches, and then enters an interactive prompt
+ * that supports fuzzy matching, listing all items, and quitting.
+ *
+ * @param {Object} params
+ * @param {Object<string, Object>} params.items - Mapping of item names to their metadata (description, command, args, group, etc.).
+ * @param {string[]} params.basicItems - Ordered list of item names to show as "basic" scripts when no initial searches are provided.
+ * @param {string} params.title - Title text to render in the CLI header.
+ * @param {string[]} [params.initialSearch=[]] - Optional list of search terms to run once before starting interactive mode.
+ * @throws {TypeError} If `items` is not a non-null object, `basicItems` is not an array, or `title` is not a string.
+ */
 export function runFuzzyCli({ items, basicItems, title, initialSearch = [] }) {
   if (!items || typeof items !== 'object') {
     throw new TypeError('items must be a non-null object');
@@ -31,6 +45,10 @@ export function runFuzzyCli({ items, basicItems, title, initialSearch = [] }) {
 const HEADER_LINE_WIDTH = 80;
 const HEADER_INSTRUCTIONS = "Type 'a' to list all, 'q' to quit.";
 const HEADER_LINE = colorText("─".repeat(HEADER_LINE_WIDTH), Colors.BLUE);
+/**
+ * Prints a styled header block containing the provided title and header instructions.
+ * @param {string} title - The header title displayed between decorative horizontal lines.
+ */
 function printHeader(title) {
   console.log(HEADER_LINE);
   console.log(colorText(title, Colors.BOLD));
@@ -38,6 +56,12 @@ function printHeader(title) {
   console.log(HEADER_LINE);
 }
 
+/**
+ * Print a "Basic scripts:" section and render each named basic script that exists.
+ *
+ * @param {Object} items - Mapping of script names to their info objects.
+ * @param {string[]} basicItems - Ordered list of script names to include in the basic section.
+ */
 function printBasics(items, basicItems) {
   console.log("\nBasic scripts:");
   for (const name of basicItems) {
@@ -46,6 +70,18 @@ function printBasics(items, basicItems) {
   console.log("");
 }
 
+/**
+ * Start an interactive fuzzy-search CLI session for the provided items.
+ *
+ * Creates a readline interface with fuzzy completion over item names, prompts the user,
+ * and responds to input commands:
+ *  - "q": quit and close the interface
+ *  - "a": list all items grouped by their `info.group`
+ *  - any other input: run a fuzzy search and display matched items
+ *
+ * @param {Object<string, Object>} items - Mapping of item names to their metadata (used for completion and display).
+ * @param {boolean} [skipIfInitialSearch=false] - If true, close the interface immediately (used when initial one-shot searches were performed).
+ */
 function startInteractive(items, skipIfInitialSearch = false) {
   const rl = readline.createInterface({
     input: process.stdin,
@@ -82,6 +118,14 @@ function startInteractive(items, skipIfInitialSearch = false) {
   });
 }
 
+/**
+ * Finds item names that fuzzy-match the given input and prints matching items' details to the console.
+ *
+ * If no matches are found, prints "No matches." and returns.
+ *
+ * @param {string} input - The search query to fuzzy-match against item names.
+ * @param {Object.<string, Object>} items - Mapping of item names to metadata used when printing matches.
+ */
 function runSearch(input, items) {
   const matches = fuzzy.filter(input, Object.keys(items)).map(x => x.original);
   if (!matches.length) {
@@ -94,6 +138,14 @@ function runSearch(input, items) {
   }
 }
 
+/**
+ * Print all scripts grouped by their `info.group` and re-prompt the given readline interface.
+ *
+ * Groups items by the `group` property on each info object (uses "Other" when absent), prints a blue header for each group, lists each script using `printItem`, and then calls `rl.prompt()` to resume the interactive prompt.
+ *
+ * @param {Object<string, Object>} items - Mapping of script names to their info objects.
+ * @param {import('readline').Interface} rl - Readline interface used to re-prompt after listing.
+ */
 function printAll(items, rl) {
   const groups = {};
 
@@ -113,6 +165,15 @@ function printAll(items, rl) {
   rl.prompt();
 }
 
+/**
+ * Print a script item to the console with colorized name, optional group, description, arguments, and command.
+ * @param {string} name - The item's name.
+ * @param {Object} info - Item metadata.
+ * @param {string} [info.group] - Optional group label displayed after the name.
+ * @param {string|string[]} [info.desc] - Description text or array of lines; arrays are joined with spaces.
+ * @param {string[]} [info.args] - Optional list of argument lines to display.
+ * @param {string} [info.command] - Optional command string displayed as a cyan-prefixed line.
+ */
 function printItem(name, info) {
   console.log(`\n\t${colorText(name, Colors.YELLOW)}${info.group ? ` (${info.group})` : ""}`);
   const description = Array.isArray(info.desc) ? info.desc.join(" ") : info.desc;

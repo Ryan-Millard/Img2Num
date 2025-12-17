@@ -44,14 +44,24 @@ const codes = Object.freeze({
   bgWhite: "\x1b[47m",
 });
 
-// Main color function
+/**
+ * Wraps the provided text with the ANSI escape sequence for the given color when the terminal supports color and the color token is recognized.
+ *
+ * @param {*} text - The value to colorize. If `null` or `undefined`, an empty string is returned.
+ * @param {string} colorEnum - A color token from the exported `Colors` set (e.g., `"red"`, `"bgBlue"`); if unrecognized the original `text` is returned unchanged.
+ * @returns {string} The text wrapped with the color's ANSI code and a reset code when applied, otherwise the original text (or empty string for `null`/`undefined`).
+ */
 export function colorText(text, colorEnum) {
   if (text == null) return '';
   if (!supportsColor || !codes[colorEnum]) return text;
   return `${codes[colorEnum]}${text}${codes.reset}`;
 }
 
-// Convenience log function
+/**
+ * Logs text to the console, applying the specified color when the terminal supports it.
+ * @param {?string} text - The text to log; if `null` or `undefined`, an empty string is logged.
+ * @param {string} colorEnum - Color token name (one of the exported `Colors`); if the token is unsupported the original text is logged without color.
+ */
 export function logColor(text, colorEnum) {
   console.log(colorText(text, colorEnum));
 }
