@@ -4,6 +4,48 @@
   "private": true,
   "type": "module",
   "homepage": "https://ryan-millard.github.io/Img2Num",
+  "scriptsInfo": {
+    "Development": {
+      "dev": "Run Vite dev server",
+      "dev:debug": "Build WASM in debug mode then start dev server",
+      "dev:all": "Run Vite dev server and Docusaurus server",
+      "dev:all:debug": "Build WASM in debug mode then start dev and Docusaurus server",
+      "preview": "Preview the production build locally"
+    },
+    "Build": {
+      "build": "Build WASM then build the site",
+      "build-js": "Build only the JS/React site",
+      "build-wasm": "Build the WebAssembly modules",
+      "build-wasm:debug": "Build WASM modules in debug mode"
+    },
+    "Cleaning": {
+      "clean": "Clean WASM build artifacts and dist folder",
+      "clean-js": "Remove dist folder",
+      "clean-wasm": "Clean WASM build artifacts"
+    },
+    "Formatting": {
+      "format": "Format all files with Prettier and clang-format",
+      "format-js": "Format all non-C++ files with Prettier",
+      "format-wasm": "Format all C++ files with clang-format"
+    },
+    "Linting": {
+      "lint": "Run ESLint to check for code issues",
+      "lint:fix": "Run ESLint and automatically fix issues",
+      "lint:style": "Check all files against .editorconfig rules"
+    },
+    "Testing": {
+      "test": "Run all tests once using Vitest",
+      "test:watch": "Run tests in watch mode with Vitest",
+      "test:coverage": "Run tests and generate a coverage report"
+    },
+    "Release": {
+      "release": "Generate and update changelog, then handle release versioning"
+    },
+    "Other": {
+      "help": "Show this help message",
+      "docs": "Run docs scripts (use `npm run docs help` to see available commands)"
+    }
+  },
   "scripts": {
     "help": "node scripts/help.js",
     "docs": "npm run --prefix docs",
