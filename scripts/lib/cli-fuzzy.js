@@ -1,5 +1,6 @@
 import readline from "readline";
 import fuzzy from "fuzzy";
+import { Colors, colorText } from "./colors.js";
 
 export function runFuzzyCli({ items, basicItems, title }) {
   printHeader(title);
@@ -8,9 +9,9 @@ export function runFuzzyCli({ items, basicItems, title }) {
 }
 
 function printHeader(title) {
-  const line = "─".repeat(72);
+  const line = colorText("─".repeat(80), Colors.BLUE);
   console.log(line);
-  console.log(title);
+  console.log(colorText(title, Colors.BOLD));
   console.log("Type 'a' to list all, 'q' to quit.");
   console.log(line);
 }
@@ -34,7 +35,7 @@ function startInteractive(items) {
     },
   });
 
-  rl.setPrompt("> ");
+  rl.setPrompt(colorText("> ", Colors.CYAN));
   rl.prompt();
 
   rl.on("line", line => {
@@ -44,7 +45,7 @@ function startInteractive(items) {
 
     const matches = fuzzy.filter(input, Object.keys(items)).map(x => x.original);
     if (!matches.length) {
-      console.log("No matches.");
+      console.log(colorText("No matches.", Colors.RED));
       return rl.prompt();
     }
 
@@ -53,20 +54,32 @@ function startInteractive(items) {
   });
 
   rl.on("close", () => {
-    console.log("Exiting.");
+    console.log(colorText("Exiting.", Colors.MAGENTA));
     process.exit(0);
   });
 }
 
 function printAll(items, rl) {
+  const groups = {};
+
   for (const [name, info] of Object.entries(items)) {
-    printItem(name, info);
+    const group = info.group || "Other";
+    if (!groups[group]) groups[group] = [];
+    groups[group].push([name, info]);
   }
+
+  for (const [groupName, scripts] of Object.entries(groups)) {
+    console.log(`\n${colorText(`=== ${groupName} ===`, Colors.BLUE)}`);
+    for (const [name, info] of scripts) {
+      printItem(name, info);
+    }
+  }
+
   rl.prompt();
 }
 
 function printItem(name, info) {
-  console.log(`\n${name}${info.group ? ` (${info.group})` : ""}`);
-  console.log(`  - ${info.desc}`);
-  console.log(`      > ${info.command}`);
+  console.log(`\n\t${colorText(name, Colors.YELLOW)}${info.group ? ` (${info.group})` : ""}`);
+  console.log(`\t\t- ${colorText(info.desc, Colors.YELLOW)}`);
+  console.log(`\t\t\t\t> ${colorText(info.command, Colors.CYAN)}`);
 }

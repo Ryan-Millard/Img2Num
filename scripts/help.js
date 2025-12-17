@@ -5,10 +5,11 @@ const title =
 `Img2Num CLI Scripts
 Also see: https://ryan-millard.github.io/Img2Num/info/docs/category/-project-scripts
 `;
-const basicCommands = ["dev", "build", "clean", "format", "lint", "help"];
+
+const { flat: items, basicItems } = readPackageJsonScripts(new URL("../package.json", import.meta.url));
 
 runFuzzyCli({
-  title: title,
-  basicItems: basicCommands,
-  items: readPackageJsonScripts("../../package.json"),
+  title,
+  items,
+  basicItems,
 });

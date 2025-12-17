@@ -5,6 +5,9 @@
   "type": "module",
   "homepage": "https://ryan-millard.github.io/Img2Num",
   "scriptsInfo": {
+    "_meta": {
+      "basic": ["dev", "build", "clean", "format", "lint", "help"]
+    },
     "Development": {
       "dev": "Run Vite dev server",
       "dev:debug": "Build WASM in debug mode then start dev server",

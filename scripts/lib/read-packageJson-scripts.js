@@ -1,12 +1,15 @@
 import fs from "fs";
 
-export function readPackageJsonScripts(relativeLocation) {
-  const { scriptsInfo, scripts } = JSON.parse(
-    fs.readFileSync(new URL(relativeLocation, import.meta.url))
-  );
+export function readPackageJsonScripts(fileUrl) {
+  const { scriptsInfo, scripts } = JSON.parse(fs.readFileSync(fileUrl));
 
+  // Separate _meta
+  const { _meta = {}, ...groups } = scriptsInfo;
+  const basicItems = _meta.basic ?? [];
+
+  // Flatten scripts for CLI
   const flat = {};
-  for (const [group, entries] of Object.entries(scriptsInfo)) {
+  for (const [group, entries] of Object.entries(groups)) {
     for (const [name, desc] of Object.entries(entries)) {
       flat[name] = {
         desc,
@@ -15,5 +18,6 @@ export function readPackageJsonScripts(relativeLocation) {
       };
     }
   }
-  return flat;
+
+  return { flat, basicItems };
 }
