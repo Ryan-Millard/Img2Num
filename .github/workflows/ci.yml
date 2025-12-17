@@ -31,13 +31,25 @@ jobs:
         shell: bash
         run: |
           echo "Checking for changed scripts..."
-          files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          else
+            BASE_SHA="${{ github.event.before }}"
+          fi
+
+          HEAD_SHA="${{ github.sha }}"
+
+          # Ensure a valid common ancestor (handles force-pushes)
+          BASE_SHA=$(git merge-base "$BASE_SHA" "$HEAD_SHA")
+
+          files=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
           echo "Changed files: $files"
 
           match=false
           for file in $files; do
             if [[ "$file" == "package.json" || "$file" == "docs/package.json" ]]; then
-              if git diff ${{ github.event.before }} ${{ github.sha }} -- "$file" | grep -q '"scriptsInfo"'; then
+              if git diff "$BASE_SHA" "$HEAD_SHA" -- "$file" | grep -q '"scriptsInfo"'; then
                 match=true
                 break
               fi
@@ -47,7 +59,7 @@ jobs:
             fi
           done
 
-          echo "scripts_changed=$match" >> $GITHUB_OUTPUT
+          echo "scripts_changed=$match" >> "$GITHUB_OUTPUT"
 
       # Run script validation if scripts changed
       - name: Run script validation
