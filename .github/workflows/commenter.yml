@@ -1,0 +1,77 @@
+# Reusable PR/Issue Commenter Workflow
+#
+# Example usage from another workflow:
+#
+# jobs:
+#   comment_on_failure:
+#     uses: ./.github/workflows/commenter.yml
+#     with:
+#       issue_number: ${{ github.event.pull_request.number }}
+#       message: |
+#         ⚠️ **Tests failed**
+#         Your changes caused some tests to fail. Please check the logs:
+#         ```
+#         ${{ steps.run_tests.outputs.logs }}
+#         ```
+#       is_pr: true  # optional, defaults to true
+#
+# Notes:
+# - This workflow creates a new comment for each call (does not edit existing comments)
+# - Set is_pr: false to comment on a regular issue instead of a PR
+# - Make sure to use "continue-on-error: true" in your previous jobs in case they fail
+
+name: Reusable PR/Issue Commenter
+
+on:
+  workflow_call:
+    inputs:
+      issue_number:
+        description: 'The PR or issue number to comment on'
+        required: true
+        type: number
+      message:
+        description: 'The comment body text'
+        required: true
+        type: string
+      is_pr:
+        description: 'If true, target a PR; if false, target an issue'
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: read
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const number = parseInt(inputs.issue_number, 10);
+            const body = inputs.message;
+
+            if (inputs.is_pr) {
+              // Pull Request comment
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: number,
+                body
+              });
+            } else {
+              // Issue comment
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: number,
+                body
+              });
+            }
