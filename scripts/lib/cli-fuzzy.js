@@ -28,12 +28,14 @@ export function runFuzzyCli({ items, basicItems, title, initialSearch = [] }) {
   startInteractive(items, initialSearch.length > 0);
 }
 
+const HEADER_LINE_WIDTH = 80;
+const HEADER_INSTRUCTIONS = "Type 'a' to list all, 'q' to quit.";
+const HEADER_LINE = colorText("─".repeat(HEADER_LINE_WIDTH), Colors.BLUE);
 function printHeader(title) {
-  const line = colorText("─".repeat(80), Colors.BLUE);
-  console.log(line);
+  console.log(HEADER_LINE);
   console.log(colorText(title, Colors.BOLD));
-  console.log("Type 'a' to list all, 'q' to quit.");
-  console.log(line);
+  console.log(HEADER_INSTRUCTIONS);
+  console.log(HEADER_LINE);
 }
 
 function printBasics(items, basicItems) {
@@ -118,7 +120,7 @@ function printItem(name, info) {
     console.log(`\t\t- ${colorText(description, Colors.YELLOW)}`);
   }
 
-  if (info.args && info.args.length) {
+  if (Array.isArray(info.args) && info.args.length) {
     for (const arg of info.args) {
       console.log(`\t\t  ${colorText(arg, Colors.YELLOW)}`);
     }
