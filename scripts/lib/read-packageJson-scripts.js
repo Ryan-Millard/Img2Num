@@ -12,10 +12,12 @@ export function readPackageJsonScripts(fileUrl) {
   for (const [group, entries] of Object.entries(groups)) {
     for (const [name, desc] of Object.entries(entries)) {
       flat[name] = {
-        desc,
+        desc: desc.desc || "", // take the actual string description
+        args: desc.args || [], // optional, if you want to show CLI args
         command: scripts[name] || "No command defined",
         group,
       };
+      console.log(flat[name]);
     }
   }
 
