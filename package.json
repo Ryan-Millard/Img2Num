@@ -77,7 +77,7 @@
         ]
       },
       "lint:fix": {
-        "desc": "Run ESLint and automatically fix issues",
+        "desc": "Run ESLint and automatically fix issues"
       },
       "lint:style": {
         "desc": "Check all files against .editorconfig rules"
