@@ -4,7 +4,12 @@
   "private": true,
   "scriptsInfo": {
     "_meta": {
-      "basic": ["start", "build", "clear", "help"]
+      "basic": [
+        "start",
+        "build",
+        "clear",
+        "help"
+      ]
     },
     "Development": {
       "start": {
@@ -116,6 +121,7 @@
     "@docusaurus/module-type-aliases": "3.9.2",
     "@docusaurus/preset-classic": "^3.9.2",
     "@docusaurus/types": "3.9.2",
+    "fuzzy": "^0.1.3",
     "raw-loader": "^4.0.2"
   },
   "browserslist": {

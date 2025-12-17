@@ -6,7 +6,14 @@
   "homepage": "https://ryan-millard.github.io/Img2Num",
   "scriptsInfo": {
     "_meta": {
-      "basic": ["dev", "build", "clean", "format", "lint", "help"]
+      "basic": [
+        "dev",
+        "build",
+        "clean",
+        "format",
+        "lint",
+        "help"
+      ]
     },
     "Development": {
       "dev": {
