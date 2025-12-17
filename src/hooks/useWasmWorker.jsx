@@ -32,19 +32,23 @@ export function useWasmWorker() {
       workerRef.current.postMessage({ id, funcName, args, bufferKeys });
     });
   }, []);
-  const gaussianBlur = async ({ pixels, width, height, sigma_pixels = width * 0.005 }) => {
+
+  const gaussianBlur = useCallback(async ({ pixels, width, height, sigma_pixels = width * 0.005 }) => {
     return (await call('gaussian_blur_fft', { pixels, width, height, sigma_pixels }, ['pixels'])).output.pixels;
-  };
-  const blackThreshold = async ({ pixels, width, height, num_colors }) => {
+  }, [call]);
+
+  const blackThreshold = useCallback(async ({ pixels, width, height, num_colors }) => {
     return (await call('black_threshold_image', { pixels, width, height, num_colors }, ['pixels'])).output.pixels;
-  };
-  const kmeans = async ({ pixels, width, height, num_colors, max_iter = 100 }) => {
+  }, [call]);
+
+  const kmeans = useCallback(async ({ pixels, width, height, num_colors, max_iter = 100 }) => {
     return (await call('kmeans_clustering', { pixels, width, height, num_colors, max_iter }, ['pixels'])).output.pixels;
-  };
-  const mergeSmallRegionsInPlace = async ({ pixels, width, height, minArea, minWidth, minHeight }) => {
+  }, [call]);
+
+  const mergeSmallRegionsInPlace = useCallback(async ({ pixels, width, height, minArea, minWidth, minHeight }) => {
     return (await call('mergeSmallRegionsInPlace', { pixels, width, height, minArea, minWidth, minHeight }, ['pixels']))
       .output.pixels;
-  };
+  }, [call]);
 
   return { call, gaussianBlur, blackThreshold, kmeans, mergeSmallRegionsInPlace };
 }
