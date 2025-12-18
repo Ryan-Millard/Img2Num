@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
+import { useId } from 'react';
 
 export default function Tooltip({ content, children, id }) {
-  if (!content) {
-    throw new Error('Tooltip requires a `content` prop');
-  }
 
-  const tooltipId = id || `tooltip-${Math.random().toString(36).slice(2)}`;
+  const reactId = useId();
+  const tooltipId = id || `tooltip-${reactId}`;
+
 
   return (
     <>
