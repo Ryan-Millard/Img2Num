@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import GlassCard from '@components/GlassCard';
 import styles from './About.module.css';
+import Tooltip from '@components/Tooltip';
 
 const Author = () => (
   <GlassCard className={styles.container}>
@@ -21,7 +22,11 @@ const Author = () => (
     </div>
 
     <p className={`flex-center ${styles.authorNote}`}>
-      While I led this project, I had some help from others—see the <Link to="/credits">Credits page</Link> for details.
+      While I led this project, I had some help from others—see the{' '} 
+      <Tooltip content="View project credits">
+        <Link to="/credits">Credits page</Link>
+      </Tooltip>{' '}
+      for details.
     </p>
   </GlassCard>
 );

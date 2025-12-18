@@ -9,8 +9,7 @@ const Home = () => (
     <HomeHelmet />
 
     <div className="flex-column gap-md">
-      <Hero header="Img2Num" description="Convert images of numbers into actual digits instantly in your browser!"
-      title="Upload an image to convert it into numbers using Img2Num" />
+      <Hero header="Img2Num" description="Upload an image to convert it into a color-by-number template to color in directly in your browser!"/>
 
       <WasmImageProcessor />
 
