@@ -21,7 +21,7 @@ export default function ContributorsCreditsCard() {
               {group.map((c) => (
                 <tr key={c.id}>
                   <td>
-                    <a href={c.html_url} target="_blank" rel="noopener noreferrer">
+                    <a href={c.html_url} target="_blank" rel="noopener noreferrer" title={`Open ${c.login}'s Github profile`}>
                       <FallbackImage
                         src={c.avatar_url}
                         fallback={<User color={'var(--color-text-light)'} />}
@@ -33,7 +33,7 @@ export default function ContributorsCreditsCard() {
                     </a>
                   </td>
                   <td>
-                    <a href={c.html_url} target="_blank" rel="noopener noreferrer">
+                    <a href={c.html_url} target="_blank" rel="noopener noreferrer" title={`Visit ${c.login}'s Github profile`}>
                       {c.login}
                     </a>
                   </td>

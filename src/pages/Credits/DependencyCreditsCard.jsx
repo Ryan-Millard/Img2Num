@@ -63,7 +63,7 @@ export default function DependencyCreditsCard() {
                 {queries[index]?.isLoading ? (
                   'Loading...'
                 ) : data.url ? (
-                  <a href={data.url} target="_blank" rel="noopener noreferrer">
+                  <a href={data.url} target="_blank" rel="noopener noreferrer" title={`Open ${name} project page`}>
                     {data.url}
                   </a>
                 ) : (
