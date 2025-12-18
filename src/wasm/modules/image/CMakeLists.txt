@@ -1,5 +1,7 @@
 # =============================================
 # Image WASM Module - CMake Build Configuration
+# Cross-platform replacement for Makefile
+# Added in https://github.com/Ryan-Millard/Img2Num/pull/93/changes
 # =============================================
 
 # Get module name from directory

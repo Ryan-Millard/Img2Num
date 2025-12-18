@@ -1,7 +1,9 @@
-# =============================================
+# =================================================================
 # WASM Root Orchestrator - CMake Build System
 # Cross-platform replacement for Makefile
-# =============================================
+# Added in https://github.com/Ryan-Millard/Img2Num/pull/93/changes
+# =================================================================
+
 cmake_minimum_required(VERSION 3.16)
 project(Img2NumWASM LANGUAGES CXX)
 
