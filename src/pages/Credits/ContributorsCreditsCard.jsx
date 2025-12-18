@@ -4,6 +4,13 @@ import styles from './ContributorsCreditsCard.module.css';
 import FallbackImage from '@components/FallbackImage';
 import { User } from 'lucide-react';
 
+/**
+ * Render a contributors card that displays GitHub avatars, usernames, and commit counts arranged into tables.
+ *
+ * The list of contributors is split into groups of 13 and each group is rendered as a separate table.
+ * Avatar and username link to the contributor's GitHub profile and contribution counts are shown per row.
+ * @returns {JSX.Element} A React element containing the contributors card.
+ */
 export default function ContributorsCreditsCard() {
   const chunk = (arr, size) =>
     Array.from({ length: Math.ceil(arr.length / size) }, (_, i) => arr.slice(i * size, i * size + size));
@@ -14,7 +21,6 @@ export default function ContributorsCreditsCard() {
   return (
     <GlassCard>
       <h2>Contributors</h2>
-
       <div className={styles.contributorsGrid}>
         {tables.map((group, i) => (
           <table key={i}>
@@ -22,24 +28,22 @@ export default function ContributorsCreditsCard() {
               {group.map((c) => (
                 <tr key={c.id}>
                   <td>
-                    <a href={c.html_url} target="_blank" rel="noopener noreferrer">
+                    <a href={c.html_url} target="_blank" rel="noopener noreferrer" title={`Open ${c.login}'s Github profile`}>
                       <FallbackImage
                         src={c.avatar_url}
-                        fallback={<User color="var(--color-text-light)" />}
+                        fallback={<User color={'var(--color-text-light)'} />}
                         alt={c.login}
                         width="28"
                         height="28"
-                        className={styles.avatar}
+                        style={{ borderRadius: '50%' }}
                       />
                     </a>
                   </td>
-
                   <td>
-                    <a href={c.html_url} target="_blank" rel="noopener noreferrer">
+                    <a href={c.html_url} target="_blank" rel="noopener noreferrer" title={`Visit ${c.login}'s Github profile`}>
                       {c.login}
                     </a>
                   </td>
-
                   <td>{c.contributions} commits</td>
                 </tr>
               ))}

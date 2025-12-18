@@ -4,15 +4,24 @@ import { Link, useLocation } from 'react-router-dom';
 import styles from './NavBar.module.css';
 import GlassCard from '@components/GlassCard';
 
+/**
+ * Top-level navigation bar component for the application.
+ *
+ * Renders a logo link, a responsive hamburger toggle, and a list of navigation links.
+ * Internal links use client-side routing and receive an active style when their path matches the current location.
+ * External links open in a new tab, include an external-link icon, and have appropriate `rel` attributes for security.
+ *
+ * @returns {JSX.Element} A React element representing the navigation bar.
+ */
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
   const links = [
-    { path: '/', label: 'Home' },
-    { path: '/credits', label: 'Credits' },
-    { path: '/about', label: 'About' },
-    { path: 'https://github.com/Ryan-Millard/Img2Num', label: 'GitHub', external: true },
+    { path: '/', label: 'Home', tooltip: 'Go to the home page' },
+    { path: '/credits', label: 'Credits', tooltip: 'View project credits' },
+    { path: '/about', label: 'About', tooltip: 'Learn more about Img2Num' },
+    { path: 'https://github.com/Ryan-Millard/Img2Num', label: 'GitHub', tooltip: 'Open the project on GitHub', external: true },
   ];
 
   const renderLinks = links.map((link) => {
@@ -20,12 +29,12 @@ export default function NavBar() {
     return (
       <li key={link.label}>
         {link.external ? (
-          <a href={link.path} target="_blank" rel="noopener noreferrer" className={styles.externalLink}>
+          <a href={link.path} target="_blank" rel="noopener noreferrer" className={styles.externalLink} title={link.tooltip}>
             {link.label}
-            <SquareArrowOutUpRight size={'1.25em'} className={styles.externalLinkIcon} />
+            <SquareArrowOutUpRight size="1.25em" className={styles.externalLinkIcon} title="Opens in a new tab" />
           </a>
         ) : (
-          <Link to={link.path} className={isActive ? styles.activeLink : ''}>
+          <Link to={link.path} className={isActive ? styles.activeLink : ''} title={link.tooltip}>
             {link.label}
           </Link>
         )}
@@ -34,12 +43,12 @@ export default function NavBar() {
   });
 
   return (
-    <GlassCard as="nav" className={styles.navbar}>
+    <GlassCard as="nav" className={styles.navbar} style={{ padding: '0.5rem 1rem' }}>
       <div className={styles.logo}>
-        <Link to="/">Img2Num</Link>
+        <Link to="/" title="Go to home page">Img2Num</Link>
       </div>
 
-      <button className={styles.hamburger} onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
+      <button className={styles.hamburger} onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu" title="Toggle navigation menu">
         <span className={isOpen ? styles.barActive : styles.bar}></span>
         <span className={isOpen ? styles.barActive : styles.bar}></span>
         <span className={isOpen ? styles.barActive : styles.bar}></span>
