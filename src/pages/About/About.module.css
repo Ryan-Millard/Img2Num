@@ -1,3 +1,14 @@
 .container p {
   text-align: justify;
 }
+
+.authorNote {
+  font-style: italic;
+  font-size: 0.9em;
+}
+.coverImage {
+  width: 10vw;
+  min-width: 100px;
+  margin: 0 auto;
+  display: block;
+}

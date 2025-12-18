@@ -14,6 +14,7 @@ export default function ContributorsCreditsCard() {
   return (
     <GlassCard>
       <h2>Contributors</h2>
+
       <div className={styles.contributorsGrid}>
         {tables.map((group, i) => (
           <table key={i}>
@@ -24,19 +25,21 @@ export default function ContributorsCreditsCard() {
                     <a href={c.html_url} target="_blank" rel="noopener noreferrer" title={`Open ${c.login}'s Github profile`}>
                       <FallbackImage
                         src={c.avatar_url}
-                        fallback={<User color={'var(--color-text-light)'} />}
+                        fallback={<User color="var(--color-text-light)" />}
                         alt={c.login}
                         width="28"
                         height="28"
-                        style={{ borderRadius: '50%' }}
+                        className={styles.avatar}
                       />
                     </a>
                   </td>
+
                   <td>
                     <a href={c.html_url} target="_blank" rel="noopener noreferrer" title={`Visit ${c.login}'s Github profile`}>
                       {c.login}
                     </a>
                   </td>
+
                   <td>{c.contributions} commits</td>
                 </tr>
               ))}

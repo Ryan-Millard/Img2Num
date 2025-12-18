@@ -1,145 +1,162 @@
-# Img2Num 🖼️➞️🎨
+<!--TODO: Remove the section below after #93 is merged on 22 Dec 2025-->
 
-**Img2Num** is a React + WebAssembly-based application that allows users to upload an image and convert it into a **colour-by-number** version that can be either printed or coloured in directly within the browser. It's designed to be fast, efficient, and interactive, leveraging C++ (compiled to WebAssembly) for pixel manipulation.
+> [!CAUTION]
+> ⚠️⚠️⚠️ **Breaking Change in [PR #93](https://github.com/Ryan-Millard/Img2Num/pull/93)** ⚠️⚠️⚠️
+>
+> The Makefile behavior is changing soon.
+>
+> Please read issues [#107](https://github.com/Ryan-Millard/Img2Num/pull/107) and [#109](https://github.com/Ryan-Millard/Img2Num/pull/109) before running the code.
 
----
+# Img2Num 🦔🖼️➞️🎨
 
-## Goal
+<div align="center">
 
-> To make a fast, offline, serverless application that runs at near-native speeds, enabling in-browser colouring or printing of the image.
 
----
 
-## ✨ Features
+[![Site Badge](https://img.shields.io/badge/site-online-blue.svg)](https://ryan-millard.github.io/Img2Num/)
+[![Docs Badge](https://img.shields.io/badge/docs-online-blue.svg)](https://ryan-millard.github.io/Img2Num/info/)
+[![License Badge](https://img.shields.io/badge/license-AGPLv3-blue.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/Ryan-Millard/Img2Num?sort=semver)](https://github.com/Ryan-Millard/Img2Num/releases)
 
-- Upload an image (e.g. PNG, JPG)
-- Convert it into a colour-by-number version
-- Preview the simplified image directly in the browser
-- Print-friendly output for physical colouring
-- In-browser colouring support
-- Fast image processing using WebAssembly and C++
+[![GitHub stars](https://img.shields.io/github/stars/Ryan-Millard/Img2Num?style=social)](https://github.com/Ryan-Millard/Img2Num/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/Ryan-Millard/Img2Num?style=social)](https://github.com/Ryan-Millard/Img2Num/network/members)
+[![Contributors](https://img.shields.io/github/contributors/Ryan-Millard/Img2Num)](https://ryan-millard.github.io/Img2Num/credits)
+[![GitHub issues](https://img.shields.io/github/issues/Ryan-Millard/Img2Num)](https://github.com/Ryan-Millard/Img2Num/issues)
 
----
 
-## 🧠 How It Works
 
-1. The user uploads an image.
-2. The image is processed into raw pixel data in JavaScript.
-3. That data is passed to WebAssembly (C++) for transformation.
-4. The output is a simplified, indexed version of the image.
-5. A **K-Means Clustering** algorithm is used to reduce colours to a small, distinct palette.
-6. The output is rendered on a `<canvas>` and optionally made printable.
+</div>
 
----
 
-## 🎞️ Tech Stack
+**Img2Num** converts photos into printable, browser-colourable **colour-by-number** templates using a fast WebAssembly (C++) image pipeline.
 
-| Layer          | Tooling                      |
-| -------------- | ---------------------------- |
-| Frontend       | React 19                     |
-| Image Handling | HTML Canvas, JavaScript      |
-| WASM           | C++ compiled with Emscripten |
-| Build Tool     | Vite 7                       |
-| Styling        | CSS (basic)                  |
-| Linting        | ESLint                       |
-| Scripting      | Makefile for WASM builds     |
+> A fast, offline, serverless application that runs at near-native speeds, enabling in-browser colouring or printing of the image.
 
----
+<table align="center">
+  <tr>
+    <!-- Top: Big Mountains image -->
+    <td align="center" colspan="3">
+      <img src="docs/static/img/readme-demo/aerial-view-mountains_colored_pexels-pixabay-51373.jpg" width="400" alt="Mountains Final After Coloring"><br>
+      Mountains<br>
+      <img src="docs/static/img/readme-demo/aerial-view-mountains_pexels-pixabay-51373.jpg" width="150" alt="Mountains Original Input Image">
+      <img src="docs/static/img/readme-demo/aerial-view-mountains_processed_pexels-pixabay-51373.jpg" width="150" alt="Mountains Color-by-Number Template"><br>
+      Original + Template
+    </td>
+  </tr>
+  <tr>
+    <!-- Bottom: three smaller images -->
+    <td align="center">
+      <img src="docs/static/img/readme-demo/girl-in-nature_colored_pexels-emmypaw-5461675.jpg" width="250" alt="Girl Final After Coloring"><br>
+      Girl in Nature<br>
+      <img src="docs/static/img/readme-demo/girl-in-nature_pexels-emmypaw-5461675.jpg" width="100" alt="Girl Original Input Image">
+      <img src="docs/static/img/readme-demo/girl-in-nature_processed_pexels-emmypaw-5461675.jpg" width="100" alt="Girl Color-by-Number Template"><br>
+      Original + Template
+    </td>
+    <td align="center">
+      <img src="docs/static/img/readme-demo/people_colored_pexels-rdne-6224636.jpg" width="250" alt="People Final After Coloring"><br>
+      People<br>
+      <img src="docs/static/img/readme-demo/people_pexels-rdne-6224636.jpg" width="100" alt="People Original Input Image">
+      <img src="docs/static/img/readme-demo/people_processed_pexels-rdne-6224636.jpg" width="100" alt="People Color-by-Number Template"><br>
+      Original + Template
+    </td>
+    <td align="center">
+      <img src="docs/static/img/readme-demo/rio-de-janeiro_colored_pexels-athena-6580703.jpg" width="250" alt="Rio Final After Coloring"><br>
+      Rio de Janeiro<br>
+      <img src="docs/static/img/readme-demo/rio-de-janeiro_pexels-athena-6580703.jpg" width="100" alt="Rio Original Input Image">
+      <img src="docs/static/img/readme-demo/rio-de-janeiro_processed_pexels-athena-6580703.jpg" width="100" alt="Rio Color-by-Number Template"><br>
+      Original + Template
+    </td>
+  </tr>
+</table>
 
-## 🛠️ Development
+### What are you waiting for?
+Try it out now by [clicking here](https://ryan-millard.github.io/Img2Num/)!
 
-### 🧱 Prerequisites
+## What this repository contains (short)
 
-Make sure the following tools are installed on your system:
+<div align="center"
 
-- [Node.js](https://nodejs.org/) (includes `npm`)
-- [Vite](https://vitejs.dev/)
-  _(Installed automatically via `npm install`, but you can install globally with `npm install -g vite` for convenience)_
-- [Emscripten](https://emscripten.org/docs/getting_started/downloads.html)
-  _(Ensure `emcc` is available in your `PATH`)_
-- [Make](https://www.gnu.org/software/make/) or compatible build system
 
-### 📅 Installation
+![React](https://img.shields.io/badge/React-19-blue?logo=react&logoColor=61DAFB)
+![C++](https://img.shields.io/badge/C++-Modern-blue?logo=c%2B%2B&logoColor=00599C)
+![WebAssembly](https://img.shields.io/badge/WebAssembly-Yes-blue?logo=webassembly)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow?logo=javascript&logoColor=black)
+![Node.js](https://img.shields.io/badge/Node.js-20-green?logo=node.js&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-7-purple?logo=vite)
+![CSS](https://img.shields.io/badge/CSS-Modern-blue?logo=css3)
 
-```bash
-git clone https://github.com/yourusername/img2num.git
-cd img2num
-npm install
-```
 
-### 🚀 Run the App
+</div>
+<div align="center"
 
-```bash
-npm run dev
-```
 
-> This builds the WASM modules and starts the Vite dev server.
+![Prettier](https://img.shields.io/badge/Prettier-Code%20Formatter-brightgreen?logo=prettier&logoColor=F7B93E)
+![ESLint](https://img.shields.io/badge/ESLint-Linted-yellow?logo=eslint)
+![Vitest](https://img.shields.io/badge/Vitest-Tested-orange?logo=vitest)
+![Docusaurus](https://img.shields.io/badge/Docusaurus-Docs-blue?logo=docusaurus)
+![Concurrently](https://img.shields.io/badge/Concurrently-MultiTask-orange?logo=github-actions)
+![EditorConfig](https://img.shields.io/badge/EditorConfig-Style-blue?logo=editorconfig)
+![Clang-Format](https://img.shields.io/badge/Clang%20Format-Formatted-blue?logo=clang)
 
-### 🔪 Debug Mode
 
-```bash
-npm run dev:debug
-```
 
----
+</div>
 
-## 🔧 Scripts
+* A React frontend that handles image input, preview and in-browser colouring.
+* A WebAssembly module (C++ → Emscripten) that performs image processing and colour quantisation.
 
-| Command            | Description                         |
-| ------------------ | ----------------------------------- |
-| `npm run dev`      | Build WASM & start dev server       |
-| `npm run build`    | Build WASM & production bundle      |
-| `npm run clean`    | Remove WASM builds and Vite `dist/` |
-| `npm run lint`     | Run linter                          |
-| `npm run lint:fix` | Auto-fix lint issues                |
-| `npm run help`     | Show available `make` commands      |
+This README is intentionally short — full installation steps, guides and references live in the docs site (see **Essential links** below).
 
----
+## Essential links (docs site)
 
-## 📂 Project Structure
+Visit the docs site for full guides, API references and troubleshooting:
 
-```
-src/
-├── App.jsx               # Main React component
-├── utils/
-│   └── image-utils.js    # JS utilities for image handling
-├── wasm/
-│   ├── src/              # C++ source code
-│   ├── include/          # C++ headers
-│   └── build/            # WASM output files
-```
+* Quick start - [https://ryan-millard.github.io/Img2Num/info/docs/getting-started/](https://ryan-millard.github.io/Img2Num/info/docs/introduction/getting-started)
+* Guidelines - [https://ryan-millard.github.io/Img2Num/info/docs/category/-guidelines/](https://ryan-millard.github.io/Img2Num/info/docs/category/-guidelines)
+* Documentation - [https://ryan-millard.github.io/Img2Num/info/docs/](https://ryan-millard.github.io/Img2Num/info/docs/)
+* Reference & Advanced Guides - [https://ryan-millard.github.io/Img2Num/info/docs/reference/](https://ryan-millard.github.io/Img2Num/info/docs/reference/)
+* Changelog - [https://ryan-millard.github.io/Img2Num/info/docs/changelog/](https://ryan-millard.github.io/Img2Num/info/changelog)
 
----
+(These replace long, duplicate instructions in this README to keep maintenance easier.)
 
-## 🔮 Algorithm Plan: K-Means Clustering
+## Contributing
 
-We plan to use K-Means Clustering to reduce the number of unique colours in the uploaded image to a more manageable, user-defined number (e.g., 4–12 colours). These clustered colours will be used as the numbered colour palette for the final output.
+We welcome contributions. Please read [CONTRIBUTING.md](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/contributing) and the pinned issues before opening issues or pull requests.
 
----
+**A few important points:**
 
-## 🖨️ Print Mode (Planned)
+* **Add tests** with your PR — new features and bug fixes **must** include tests where appropriate. PRs without tests are unlikely to be approved.
+* Follow the repository's [coding style rules](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/coding-style) and [commit message rules](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/commits).
+* Use the issue and PR templates when filing issues or submitting code. Your PR will be rejected if you don't.
 
-We're planning to add a clean, print-friendly version of the colour-by-number output so that users can:
+If you're unsure what to change, open an issue first and we can discuss scope.
 
-- Print the image
-- View the legend with colour numbers
-- Colour it in manually
+## License
 
----
+[AGPLv3](https://ryan-millard.github.io/Img2Num/info/docs/license)
 
-## 📋 License
+## What we intentionally keep out of this README
 
-GNU General Public License v3.0 (see [LICENSE](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE))
+* Long, step‑by‑step build instructions (moved to the [docs site](https://ryan-millard.github.io/Img2Num/info/docs/))
+* Full API reference (moved to the [docs site](https://ryan-millard.github.io/Img2Num/info/docs/reference))
+* Very large images or heavy explanations — use the [docs site](https://ryan-millard.github.io/Img2Num/info/docs/) for in-depth content
 
----
+## Can't find something?
+Hopefully you understand by now that if you need something, it should be on the [docs site](https://ryan-millard.github.io/Img2Num/info/docs/).
+If it isn't, please open a ["New Feature" issue](https://github.com/Ryan-Millard/Img2Num/issues/new?template=feature_request.yml) to request its addition to the [docs site](https://ryan-millard.github.io/Img2Num/info/docs/).
 
-## 👥 Authors
+## Maintainers
 
-- Ryan Millard
-- Hayden Millard
+* [Ryan](https://github.com/Ryan-Millard/)
+* [Hayden](https://github.com/hjmillard/) (temporarily unavailable)
 
----
+> ⚠️ **Disclaimer:** Pull request reviews may take some time as we try to keep up with contributions.  
+> We highly encourage everyone to review each other's pull requests where possible — this helps the project move faster and benefits all contributors in the long run. Thank you for your support!
 
-## 🙌 Contributions
+## Contributors & Credits
 
-Pull requests and issues are welcome! If you have a feature request or bug to report, feel free to open an issue.
+Thanks to all project contributors!
+
+[![GitHub Contributors Image](https://contrib.rocks/image?repo=Ryan-Millard/Img2Num)](https://github.com/Ryan-Millard/Img2Num/graphs/contributors)
+
+See the detailed list on [our site](https://ryan-millard.github.io/Img2Num/credits) or on [GitHub](https://github.com/Ryan-Millard/Img2Num/graphs/contributors).

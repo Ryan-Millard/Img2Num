@@ -34,7 +34,7 @@ export default function NavBar() {
   });
 
   return (
-    <GlassCard as="nav" className={styles.navbar} style={{ padding: '0.5rem 1rem' }}>
+    <GlassCard as="nav" className={styles.navbar}>
       <div className={styles.logo}>
         <Link to="/" title="Go to home page">Img2Num</Link>
       </div>
