@@ -32,19 +32,21 @@ export default function Editor() {
       <EditorHelmet />
 
       <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} title="Print Image">
-        <div className="flex-center flex-column">
+        <div className={`flex-center flex-column gap-md ${styles.modalContentContainer}`}>
           <div
-            className={isSwitchOn ? styles.emptyPathSvgContainer : undefined}
+            className={`${styles.previewImage} ${isSwitchOn ? styles.emptyPathSvgContainer : undefined}`}
             id={styles.noEditSvgContainer}
             dangerouslySetInnerHTML={{ __html: svg }}
           />
-          <span>{isSwitchOn ? "Line Art" : "Normal"}</span>
-          <Switch isOn={isSwitchOn} onToggle={toggleSwitch} />
-          <button onClick={() => printSVG(svg, { lineArt: isSwitchOn })}>Print Image</button>
+          <div>
+            <span>{isSwitchOn ? "Line Art" : "Normal"}</span>
+            <Switch isOn={isSwitchOn} onToggle={toggleSwitch} />
+          </div>
+          <button className="button" onClick={() => printSVG(svg, { lineArt: isSwitchOn })}>Print Image</button>
         </div>
       </Modal>
 
-      <button onClick={() => setModalOpen(true)}><Printer size={24} /> Print</button>
+      <button className="button" onClick={() => setModalOpen(true)}><Printer size={24} /> Print</button>
 
       <GlassCard>
         <div

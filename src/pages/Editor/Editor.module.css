@@ -1,3 +1,9 @@
+.modalContentContainer {
+  width: max-content;    /* shrink to fit content */
+  height: max-content;   /* shrink vertically too */
+  align-items: center;   /* optional, centers children */
+}
+
 .svgContainer {
   position: relative;
   width: 100%;
@@ -18,4 +24,13 @@
   stroke: var(--color-text);
   stroke-width: 0.25;
   fill: white;
+}
+
+.previewImage svg {
+  width: fit-content;
+  height: fit-content;
+  max-width: 55vw;
+  max-height: 55vh;
+  aspect-ratio: maintain;
+  box-shadow: 0px 0px 5px #bbb;
 }

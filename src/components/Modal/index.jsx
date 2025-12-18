@@ -1,5 +1,7 @@
 import React from 'react';
+
 import styles from './index.module.css';
+import GlassCard from '@components/GlassCard';
 
 const Modal = ({ isOpen, onClose, children, title }) => {
   if (!isOpen) return null; // don't render if modal is closed
@@ -10,13 +12,15 @@ const Modal = ({ isOpen, onClose, children, title }) => {
 
   return (
     <div className={`glass flex-center ${styles.modalOverlay}`} onClick={handleBackgroundClick}>
-      <div className={styles.modalContent}>
+      <GlassCard className={styles.modalContent}>
         {title && <h2 className={`text-center ${styles.modalTitle}`}>{title}</h2>}
-        <button className={styles.modalClose} onClick={onClose}>
+
+        <button className={`anchor-style ${styles.modalClose}`} onClick={onClose}>
           &times;
         </button>
+
         <div className={styles.modalBody}>{children}</div>
-      </div>
+      </GlassCard>
     </div>
   );
 };

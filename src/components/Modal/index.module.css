@@ -4,28 +4,34 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
   z-index: 1000;
   border-radius: 0;
 }
 
 .modalContent {
-  background: var(--color-border);
-  padding: 2rem;
-  border-radius: 8px;
-  position: relative;
-  max-width: 500px;
-  width: 90%;
+  display: inline-flex;         /* shrink to fit content */
+  flex-direction: column;
+  gap: var(--spacing-xs);
+
+  width: max-content;           /* shrink horizontally */
+  height: max-content;          /* shrink vertically */
+
+  max-width: 90vw;              /* prevent overflow */
+  max-height: 90vh;
+
+  overflow: auto;               /* scroll if content is too big */
+  position: relative;           /* for close button */
 }
 
 .modalClose {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  font-size: 1.5rem;
+  font-size: 2rem;
   background: none;
   border: none;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .modalTitle {
@@ -33,5 +39,8 @@
 }
 
 .modalBody {
-  margin-top: 1rem;
+  display: inline-block;       /* shrink to fit children */
+  max-width: 100%;             /* never exceed parent */
+  max-height: 100%;            /* never exceed parent */
+  margin: 0 auto;
 }
