@@ -10,15 +10,15 @@ const Author = () => (
       started as a learning experiment and evolved into a tribute to Joan, my hedgehog.
     </p>
     <div className="flex-space-evenly">
-      <a href="https://github.com/Ryan-Millard" target="_blank" rel="noopener noreferrer">
+      <a href="https://github.com/Ryan-Millard" target="_blank" rel="noopener noreferrer" title="Visit Ryan Millard's GitHub profile">
         GitHub
       </a>
-      <a href="https://www.linkedin.com/in/ryan-millard/" target="_blank" rel="noopener noreferrer">
+      <a href="https://www.linkedin.com/in/ryan-millard/" target="_blank" rel="noopener noreferrer" title="Visit Ryan Millard's LinkedIn profile">
         LinkedIn
       </a>
     </div>
     <p style={{ fontStyle: 'italic', fontSize: '0.9em' }} className="flex-center">
-      While I led this project, I had some help from others—see the <Link to="/credits">Credits page</Link> for details.
+      While I led this project, I had some help from others—see the <Link to="/credits" title="View project credits">Credits page</Link> for details.
     </p>
   </GlassCard>
 );
