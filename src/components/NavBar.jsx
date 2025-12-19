@@ -10,38 +10,37 @@ export default function NavBar() {
   const location = useLocation();
 
   const links = [
-  { path: '/', label: 'Home', tooltip: 'Go to the home page' },
-  { path: '/credits', label: 'Credits', tooltip: 'View project credits' },
-  { path: '/about', label: 'About', tooltip: 'Learn more about Img2Num' },
-  { path: 'https://github.com/Ryan-Millard/Img2Num', label: 'GitHub', tooltip: 'Open the project on GitHub', external: true },
-];
+    { path: '/', label: 'Home', tooltip: 'Go to the home page' },
+    { path: '/credits', label: 'Credits', tooltip: 'View project credits' },
+    { path: '/about', label: 'About', tooltip: 'Learn more about Img2Num' },
+    { path: 'https://github.com/Ryan-Millard/Img2Num', label: 'GitHub', tooltip: 'Open the project on GitHub', external: true },
+  ];
 
 
   const renderLinks = links.map((link) => {
-  const isActive = !link.external && location.pathname === link.path;
-  return (
-    <li key={link.label}>
-      {link.external ? (
-    <a href={link.path} target="_blank" rel="noopener noreferrer" className={styles.externalLink}>
-      <Tooltip content={link.tooltip}>
-        <span>{link.label}</span>
-      </Tooltip>
+    const isActive = !link.external && location.pathname === link.path;
+    return (
+      <li key={link.label}>
+        {link.external ? (
+          <a href={link.path} target="_blank" rel="noopener noreferrer" className={styles.externalLink}>
+            <Tooltip content={`${link.tooltip} (opens in a new tab)`}>
+              <span className={styles.externalLinkContent}>
+                {link.label}
+                <SquareArrowOutUpRight size="1.25em" className={styles.externalLinkIcon} />
+              </span>
+            </Tooltip>
+          </a>
+        ) : (
+          <Tooltip content={link.tooltip}>
+            <Link to={link.path} className={isActive ? styles.activeLink : ''}>
+              {link.label}
+            </Link>
+          </Tooltip>
+        )}
+      </li>
 
-      <Tooltip content="Opens in a new tab">
-        <SquareArrowOutUpRight size="1.25em" className={styles.externalLinkIcon} />
-      </Tooltip>
-    </a>
-  ) : (
-    <Tooltip content={link.tooltip}>
-      <Link to={link.path} className={isActive ? styles.activeLink : ''}>
-        {link.label}
-      </Link>
-    </Tooltip>
-  )}
-</li>
-
-  );
-});
+    );
+  });
 
 
   return (

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Tooltip from './Tooltip';
+import Tooltip from '../../../../../src/components/Tooltip';
 
 describe('Tooltip component', () => {
   test('does not show tooltip content by default', () => {

@@ -202,7 +202,6 @@ const WasmImageProcessor = () => {
     >
       {originalSrc ? LoadedState : EmptyState}
 
-      <Tooltip content="Choose an image file to upload">
         <input
           ref={inputRef}
           id={inputId}
@@ -211,7 +210,6 @@ const WasmImageProcessor = () => {
           hidden
           onChange={handleSelect}
         />
-      </Tooltip>
     </GlassCard>
   );
 };
