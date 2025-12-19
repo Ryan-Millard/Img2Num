@@ -1,3 +1,7 @@
+REM ======================================================================
+REM ⚠ Recommended: use Bash / WSL2 for full compatibility
+REM ======================================================================
+
 @echo off
 REM img2num.bat – Windows wrapper for img2num.ps1
 
