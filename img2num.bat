@@ -1,6 +1,4 @@
-REM ======================================================================
-REM ⚠ Recommended: use Bash / WSL2 for full compatibility
-REM ======================================================================
+REM img2num.bat - CMD wrapper for img2num.ps1 (PowerShell script)
 
 @echo off
 REM img2num.bat – Windows wrapper for img2num.ps1

@@ -26,7 +26,7 @@ run_in_container() {
 case "$MODE" in
   # Commands that map directly to npm scripts
   dev|dev:all|dev:debug|dev:all:debug|build|build-js|build-wasm|build-wasm:debug|preview|docs|lint|lint:fix|lint:style|format|format-js|format-wasm|clean|clean-js|clean-wasm|help)
-    run_in_container npm run "$MODE"
+    run_in_container npm run "$MODE" "$@"
     ;;
 
   # Arbitrary npm commands
