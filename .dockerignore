@@ -1,7 +1,7 @@
-node_modules
-dist
-build
-docs/build
+node_modules/*
+dist/*
+build/*
+docs/build/*
 .vscode
 .git
 .gitignore

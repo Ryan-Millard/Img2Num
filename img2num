@@ -1,55 +1,95 @@
 #!/usr/bin/env bash
 set -e
-
+# Stop execution on errors
 MODE="$1"
 shift || true
 
+# Start the dev container if it's not running
 ensure_container() {
-  if [ -z "$(docker ps -q -f name=img2num-dev)" ]; then
+  if ! docker ps -q -f name=img2num-dev >/dev/null; then
     echo "Starting dev container..."
     docker compose up -d dev
   fi
 }
 
+# Run a command inside the dev container
+run_in_container() {
+  ensure_container
+  if [ "$(docker ps -q -f name=img2num-dev)" ]; then
+    docker compose exec dev "$@"
+  else
+    docker compose run --rm dev "$@"
+  fi
+}
+
+# Main command dispatch
 case "$MODE" in
+  # Commands that map directly to npm scripts
   dev|dev:all|dev:debug|dev:all:debug|build|build-js|build-wasm|build-wasm:debug|preview|docs|lint|lint:fix|lint:style|format|format-js|format-wasm|clean|clean-js|clean-wasm|help)
-    ensure_container
-    docker compose exec dev npm run "$MODE"
+    run_in_container npm run "$MODE"
     ;;
+
+  # Arbitrary npm commands
   npm)
-    ensure_container
-    docker compose exec dev npm "$@"
+    run_in_container npm "$@"
     ;;
+
+  # Open a shell in the container
   sh|shell|bash|term|terminal)
-    ensure_container
-    docker compose exec dev bash
+    run_in_container bash
     ;;
-  stop)
-    docker compose stop
-    ;;
-  restart)
-    docker compose restart
-    ;;
-  down)
-    docker compose down
-    ;;
+
+  # Docker management shortcuts
+  stop) docker compose stop ;;
+  restart) docker compose restart ;;
+  down) docker compose down ;;
   clean|destroy)
     docker compose down --volumes --remove-orphans
-    if [ "$MODE" = "destroy" ]; then
-      docker rmi img2num-dev:latest
+    [ "$MODE" = "destroy" ] && docker rmi img2num-dev:latest
+    ;;
+
+  # Tail logs
+  logs) docker compose logs -f ;;
+
+  # Fallback usage
+  -h|--help|*)
+    echo
+    if [ "$MODE" != "-h" ] && [ "$MODE" != "--help" ]; then
+      echo "Unknown command used."
+      echo
     fi
-    ;;
-  logs)
-    docker compose logs -f
-    ;;
-  *)
-    echo "Usage:"
-    echo "  ./img2num dev"
-    echo "  ./img2num dev:all"
-    echo "  ./img2num dev:debug"
-    echo "  ./img2num dev:all:debug"
-    echo "  ./img2num npm <args>"
-    echo "  ./img2num shell"
+
+    cat <<EOF
+Usage:
+  ./img2num <command>
+
+Commands:
+  NPM Scripts:
+    build|build-js|build-wasm|build-wasm:debug
+    clean|clean-js|clean-wasm
+    dev|dev:all|dev:debug|dev:all:debug
+    docs
+    format|format-js|format-wasm
+    help
+    lint|lint:fix|lint:style
+    preview
+
+    Use help see more information about each NPM script.
+
+  Using NPM Directly:
+    npm <args>       Run arbitrary npm command
+
+  Open Container Terminal:
+    sh|shell|bash
+
+  Docker Maintenance:
+    stop
+    restart
+    down
+    clean
+    destroy
+    logs
+EOF
     exit 1
     ;;
 esac
