@@ -1,0 +1,42 @@
+# ------------------------
+# Img2Num Dockerfile.dev
+# ------------------------
+FROM node:23-bullseye
+
+ENV EMSDK_VERSION=4.0.10
+ENV EMSDK_DIR=/opt/emsdk
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      build-essential \
+      cmake \
+      python3 \
+      git \
+      curl \
+      unzip \
+      pkg-config \
+      bash \
+      ca-certificates \
+      libvips-dev \
+      && rm -rf /var/lib/apt/lists/*
+
+# Install EMSDK once, cached by Docker layers
+RUN git clone --depth 1 https://github.com/emscripten-core/emsdk.git $EMSDK_DIR \
+&& cd $EMSDK_DIR \
+&& git fetch --tags \
+&& git checkout $EMSDK_VERSION \
+&& ./emsdk install $EMSDK_VERSION \
+&& ./emsdk activate $EMSDK_VERSION
+
+ENV PATH=$EMSDK_DIR:$EMSDK_DIR/upstream/emscripten:$PATH
+ENV EMSDK=$EMSDK_DIR
+
+RUN npm install -g npm@11
+
+WORKDIR /usr/src/app
+
+ENV CHOKIDAR_USEPOLLING=true
+ENV CHOKIDAR_INTERVAL=100
+
+EXPOSE 5173 3000
+
+CMD ["bash"]

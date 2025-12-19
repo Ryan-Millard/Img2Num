@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -e
+
+MODE="$1"
+shift || true
+
+ensure_container() {
+  if [ -z "$(docker ps -q -f name=img2num-dev)" ]; then
+    echo "Starting dev container..."
+    docker compose up -d dev
+  fi
+}
+
+case "$MODE" in
+  dev|dev:all|dev:debug|dev:all:debug|build|build-js|build-wasm|build-wasm:debug|preview|docs|lint|lint:fix|lint:style|format|format-js|format-wasm|clean|clean-js|clean-wasm|help)
+    ensure_container
+    docker compose exec dev npm run "$MODE"
+    ;;
+  npm)
+    ensure_container
+    docker compose exec dev npm "$@"
+    ;;
+  sh|shell|bash|term|terminal)
+    ensure_container
+    docker compose exec dev bash
+    ;;
+  stop)
+    docker compose stop
+    ;;
+  restart)
+    docker compose restart
+    ;;
+  down)
+    docker compose down
+    ;;
+  clean|destroy)
+    docker compose down --volumes --remove-orphans
+    if [ "$MODE" = "destroy" ]; then
+      docker rmi img2num-dev:latest
+    fi
+    ;;
+  logs)
+    docker compose logs -f
+    ;;
+  *)
+    echo "Usage:"
+    echo "  ./img2num dev"
+    echo "  ./img2num dev:all"
+    echo "  ./img2num dev:debug"
+    echo "  ./img2num dev:all:debug"
+    echo "  ./img2num npm <args>"
+    echo "  ./img2num shell"
+    exit 1
+    ;;
+esac
