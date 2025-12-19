@@ -3,47 +3,63 @@ import { SquareArrowOutUpRight } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './NavBar.module.css';
 import GlassCard from '@components/GlassCard';
+import Tooltip from '@components/Tooltip';
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
   const links = [
-    { path: '/', label: 'Home', tooltip: 'Go to the home page' },
-    { path: '/credits', label: 'Credits', tooltip: 'View project credits' },
-    { path: '/about', label: 'About', tooltip: 'Learn more about Img2Num' },
-    { path: 'https://github.com/Ryan-Millard/Img2Num', label: 'GitHub', tooltip: 'Open the project on GitHub', external: true },
-  ];
+  { path: '/', label: 'Home', tooltip: 'Go to the home page' },
+  { path: '/credits', label: 'Credits', tooltip: 'View project credits' },
+  { path: '/about', label: 'About', tooltip: 'Learn more about Img2Num' },
+  { path: 'https://github.com/Ryan-Millard/Img2Num', label: 'GitHub', tooltip: 'Open the project on GitHub', external: true },
+];
+
 
   const renderLinks = links.map((link) => {
-    const isActive = !link.external && location.pathname === link.path; // active if route matches
-    return (
-      <li key={link.label}>
-        {link.external ? (
-          <a href={link.path} target="_blank" rel="noopener noreferrer" className={styles.externalLink} title={link.tooltip}>
-            {link.label}
-            <SquareArrowOutUpRight size="1.25em" className={styles.externalLinkIcon} title="Opens in a new tab" />
-          </a>
-        ) : (
-          <Link to={link.path} className={isActive ? styles.activeLink : ''} title={link.tooltip}>
-            {link.label}
-          </Link>
-        )}
-      </li>
-    );
-  });
+  const isActive = !link.external && location.pathname === link.path;
+  return (
+    <li key={link.label}>
+      {link.external ? (
+    <a href={link.path} target="_blank" rel="noopener noreferrer" className={styles.externalLink}>
+      <Tooltip content={link.tooltip}>
+        <span>{link.label}</span>
+      </Tooltip>
+
+      <Tooltip content="Opens in a new tab">
+        <SquareArrowOutUpRight size="1.25em" className={styles.externalLinkIcon} />
+      </Tooltip>
+    </a>
+  ) : (
+    <Tooltip content={link.tooltip}>
+      <Link to={link.path} className={isActive ? styles.activeLink : ''}>
+        {link.label}
+      </Link>
+    </Tooltip>
+  )}
+</li>
+
+  );
+});
+
 
   return (
     <GlassCard as="nav" className={styles.navbar}>
       <div className={styles.logo}>
-        <Link to="/" title="Go to home page">Img2Num</Link>
+        <Tooltip content="Go to home page">
+          <Link to="/">Img2Num</Link>
+        </Tooltip>
       </div>
 
-      <button className={styles.hamburger} onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu" title="Toggle navigation menu">
-        <span className={isOpen ? styles.barActive : styles.bar}></span>
-        <span className={isOpen ? styles.barActive : styles.bar}></span>
-        <span className={isOpen ? styles.barActive : styles.bar}></span>
-      </button>
+      <Tooltip content="Toggle navigation menu">
+        <button className={styles.hamburger} onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
+          <span className={isOpen ? styles.barActive : styles.bar}></span>
+          <span className={isOpen ? styles.barActive : styles.bar}></span>
+          <span className={isOpen ? styles.barActive : styles.bar}></span>
+        </button>
+      </Tooltip>
+
 
       {isOpen ? (
         <GlassCard as="ul" className={`${styles.navLinks} ${isOpen ? styles.active : ''} ${isOpen ? 'stacked' : ''}`}>

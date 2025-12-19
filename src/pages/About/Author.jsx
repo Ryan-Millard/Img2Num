@@ -13,21 +13,28 @@ const Author = () => (
     </p>
 
     <div className="flex-space-evenly">
-      <a href="https://github.com/Ryan-Millard" target="_blank" rel="noopener noreferrer" title="Visit Ryan Millard's GitHub profile">
-        GitHub
-      </a>
-      <a href="https://www.linkedin.com/in/ryan-millard/" target="_blank" rel="noopener noreferrer" title="Visit Ryan Millard's LinkedIn profile">
-        LinkedIn
-      </a>
+      <Tooltip content="Visit Ryan Millard's GitHub profile">
+        <a href="https://github.com/Ryan-Millard" target="_blank" rel="noopener noreferrer">
+          GitHub
+        </a>
+      </Tooltip>
+
+      <Tooltip content="Visit Ryan Millard's LinkedIn profile">
+        <a href="https://www.linkedin.com/in/ryan-millard/" target="_blank" rel="noopener noreferrer">
+          LinkedIn
+        </a>
+      </Tooltip>
     </div>
 
     <p className={`flex-center ${styles.authorNote}`}>
-      While I led this project, I had some help from others—see the{' '} 
+      While I led this project, I had some help from others—see the&nbsp;
       <Tooltip content="View project credits">
         <Link to="/credits">Credits page</Link>
-      </Tooltip>{' '}
-      for details.
+      </Tooltip>
+      &nbsp;for details.
     </p>
+
+
   </GlassCard>
 );
 
