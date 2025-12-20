@@ -1,6 +1,6 @@
+@echo off
 REM img2num.bat - CMD wrapper for img2num.ps1 (PowerShell script)
 
-@echo off
 REM img2num.bat – Windows wrapper for img2num.ps1
 
 REM Get the directory of the batch file
