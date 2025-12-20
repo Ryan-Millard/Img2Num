@@ -7,7 +7,7 @@ sidebar_position: 2
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Prerequisites
+## Prerequisites
 
 ### Frontend-Only Development
 
@@ -133,7 +133,7 @@ Use the `npm` scripts when developing locally or in CI; they abstract away the b
 
 The WASM modules use CMake for cross-platform compatibility:
 
-```
+```txt
 src/wasm/
 ├── CMakeLists.txt          # Root orchestrator (auto-discovers modules)
 ├── cmake-build/            # CMake build artifacts (gitignored)
