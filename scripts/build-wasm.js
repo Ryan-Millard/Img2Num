@@ -107,6 +107,7 @@ function safeRemoveDir(dir) {
     if (error.message) {
       console.error(`    Message: ${error.message}`);
     }
+    console.log("You may need to forcefully remove it.");
     return false;
   }
 }
