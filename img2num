@@ -61,7 +61,7 @@ case "$MODE" in
   stop) docker compose stop ;;
   restart) docker compose restart ;;
   down) docker compose down ;;
-  clean|destroy)
+  destroy)
     docker compose down --volumes --remove-orphans
     [ "$MODE" = "destroy" ] && docker rmi img2num-dev:latest
     ;;
@@ -104,7 +104,6 @@ Commands:
     stop
     restart
     down
-    clean
     destroy
     logs
 EOF

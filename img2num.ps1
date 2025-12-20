@@ -69,7 +69,7 @@ switch ($Mode.ToLower()) {
     "stop" { docker compose stop }
     "restart" { docker compose restart }
     "down" { docker compose down }
-    { $_ -in @("clean","destroy") } {
+    { $_ -in @("destroy") } {
         docker compose down --volumes --remove-orphans
         if ($Mode -eq "destroy") {
             docker rmi img2num-dev:latest
@@ -106,7 +106,6 @@ Commands:
     stop
     restart
     down
-    clean
     destroy
     logs
 "@
