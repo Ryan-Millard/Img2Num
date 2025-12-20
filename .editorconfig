@@ -145,3 +145,48 @@ max_line_length = off
 [LICENSE]
 max_line_length = off
 trim_trailing_whitespace = false
+
+# -------------------------
+# Bash / Shell scripts
+# -------------------------
+[*.{sh,bash}]
+indent_style = space
+indent_size = 2
+charset = utf-8
+end_of_line = lf
+trim_trailing_whitespace = true
+insert_final_newline = true
+max_line_length = 120
+# img2num is in bash
+[img2num]
+indent_style = space
+indent_size = 2
+charset = utf-8
+end_of_line = lf
+trim_trailing_whitespace = true
+insert_final_newline = true
+max_line_length = 120
+
+# -------------------------
+# Batch scripts
+# -------------------------
+[*.{bat,cmd}]
+indent_style = space
+indent_size = 2
+charset = utf-8
+end_of_line = crlf
+trim_trailing_whitespace = true
+insert_final_newline = true
+max_line_length = 120
+
+# -------------------------
+# PowerShell scripts
+# -------------------------
+[*.ps1]
+indent_style = space
+indent_size = 2
+charset = utf-8
+end_of_line = crlf
+trim_trailing_whitespace = true
+insert_final_newline = true
+max_line_length = 120
