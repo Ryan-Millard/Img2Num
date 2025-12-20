@@ -4,9 +4,10 @@ set -e
 MODE="$1"
 shift || true
 
-# Start the dev container if it's not running
 ensure_container() {
-  if ! docker ps -q -f name=img2num-dev >/dev/null; then
+  # Check if the dev service container is running, start it if not
+  container_id=$(docker compose ps -q dev)
+  if [ -z "$container_id" ]; then
     echo "Starting dev container..."
     docker compose up -d dev
   fi
@@ -26,6 +27,23 @@ run_in_container() {
 case "$MODE" in
   # Commands that map directly to npm scripts
   dev|dev:all|dev:debug|dev:all:debug|build|build-js|build-wasm|build-wasm:debug|preview|docs|lint|lint:fix|lint:style|format|format-js|format-wasm|clean|clean-js|clean-wasm|help)
+    if [ "$MODE" = "docs" ]; then
+      YELLOW=""
+      MAGENTA=""
+      RESET=""
+      # Check if terminal supports colors
+      if [ -t 1 ] && command -v tput >/dev/null 2>&1 && [ "$(tput colors)" -ge 8 ]; then
+          YELLOW="$(tput setaf 3)"
+          MAGENTA="$(tput setaf 5)"
+          RESET="$(tput sgr0)"
+      fi
+
+      # Informative warning about Docusaurus port forwarding
+      echo -e "${YELLOW}[INFO] Docusaurus is running inside the container, listening on all interfaces (0.0.0.0).${RESET}"
+      echo -e "${YELLOW}[INFO] You cannot use the 0.0.0.0 link directly.${RESET}"
+      echo -e "${YELLOW}[INFO] Access the site in your browser via: ${MAGENTA}http://localhost:3000/Img2Num/info/${RESET}"
+    fi
+
     run_in_container npm run "$MODE" "$@"
     ;;
 
