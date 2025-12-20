@@ -9,43 +9,58 @@ param(
 )
 
 function Ensure-Container {
-    # Check if the dev service container is running, start it if not
+    # Get container ID (may exist but be stopped)
     $containerId = docker compose ps -q dev
+
+    # Container does not exist → create & start
     if (-not $containerId) {
         Write-Host "Starting dev container..."
         docker compose up -d dev
+        return
+    }
+
+    # Container exists but is stopped → start it
+    $running = docker inspect -f '{{.State.Running}}' $containerId 2>$null
+    if ($running -ne "true") {
+        Write-Host "Dev container exists but is stopped. Starting..."
+        docker compose start dev
     }
 }
 
 # Run a command inside the dev container
 function Run-InContainer {
     param([string[]]$CmdArgs)
+
     Ensure-Container
-    $running = docker ps -q -f "name=img2num-dev"
-    if ($running) {
-        docker compose exec dev $CmdArgs
-    } else {
-        docker compose run --rm dev $CmdArgs
-    }
+    docker compose exec dev @CmdArgs
 }
 
+# -------------------------------
 # Main command dispatch
-switch ($Mode.ToLower()) {
-    # Commands that map directly to npm scripts
-    { $_ -in @("dev","dev:all","dev:debug","dev:all:debug","build","build-js","build-wasm","build-wasm:debug","preview","docs","lint","lint:fix","lint:style","format","format-js","format-wasm","clean","clean-js","clean-wasm","help") } {
+# -------------------------------
+switch ($Mode) {
+
+    # NPM scripts
+    { $_ -in @(
+        "dev","dev:all","dev:debug","dev:all:debug",
+        "build","build-js","build-wasm","build-wasm:debug",
+        "preview","docs",
+        "lint","lint:fix","lint:style",
+        "format","format-js","format-wasm",
+        "clean","clean-js","clean-wasm",
+        "help"
+    ) } {
+
         if ($Mode -eq "docs") {
+            $YELLOW = $MAGENTA = $RESET = ""
             # Check if terminal supports colors
             $supportsColor = $Host.UI.SupportsVirtualTerminal
             if ($supportsColor) {
-                $YELLOW = "`e[33m"
+                $YELLOW  = "`e[33m"
                 $MAGENTA = "`e[35m"
-                $RESET = "`e[0m"
-            } else {
-                $YELLOW = ""
-                $MAGENTA = ""
-                $RESET = ""
+                $RESET   = "`e[0m"
             }
-            # Informative warning about Docusaurus port forwarding
+
             Write-Host "${YELLOW}[INFO] Docusaurus is running inside the container, listening on all interfaces (0.0.0.0).${RESET}"
             Write-Host "${YELLOW}[INFO] You cannot use the 0.0.0.0 link directly.${RESET}"
             Write-Host "${YELLOW}[INFO] Access the site in your browser via: ${MAGENTA}http://localhost:3000/Img2Num/info/${RESET}"
@@ -53,41 +68,52 @@ switch ($Mode.ToLower()) {
         $cmd = @("npm", "run", $Mode) + $RemainingArgs
         Run-InContainer -CmdArgs $cmd
     }
-    # Arbitrary npm commands
+
+    # Arbitrary npm
     "npm" {
         $cmd = @("npm") + $RemainingArgs
         Run-InContainer -CmdArgs $cmd
     }
+
     # Open a shell in the container
     { $_ -in @("sh","shell","bash","term","terminal") } {
-        Run-InContainer -CmdArgs @("bash")
+        Run-InContainer @("bash")
     }
-    # Docker management shortcuts
-    "stop" { docker compose stop }
-    "restart" { docker compose restart }
-    "down" { docker compose down }
-    { $_ -in @("destroy") } {
+
+    # Docker maintenance
+    "stop"     { docker compose stop }
+    "restart"  { docker compose restart }
+    "down"     { docker compose down }
+
+    { $_ -in @("purge","destroy") } {
         docker compose down --volumes --remove-orphans
         if ($Mode -eq "destroy") {
             docker rmi img2num-dev:latest
         }
     }
-    # Tail logs
-    "logs" { docker compose logs -f }
-    # Fallback usage
+
+    # Logs
+    "logs" {
+        docker compose logs -f
+    }
+
+    # Help / fallback
     default {
-      $EXIT_CODE=0
+        $EXIT_CODE = 0
         Write-Host ""
-        if ([string]::IsNullOrEmpty($Mode) -or $Mode -notin @("-h","--help","")) {
-            $EXIT_CODE=1
+
+        if ($Mode -ne "" -and $Mode -notin @("-h","--help")) {
+            $EXIT_CODE = 1
             Write-Host "Unknown command used."
             Write-Host ""
         }
+
         Write-Host @"
 Usage:
-  .\img2num.ps1 <command>
+  ./img2num <command>
+
 Commands:
-  NPM Scripts:
+  NPM Scripts (use help to see more info about each script):
     build|build-js|build-wasm|build-wasm:debug
     clean|clean-js|clean-wasm
     dev|dev:all|dev:debug|dev:all:debug
@@ -96,18 +122,22 @@ Commands:
     help
     lint|lint:fix|lint:style
     preview
-    Use help see more information about each NPM script.
+
   Using NPM Directly:
     npm <args>       Run arbitrary npm command
+
   Open Container Terminal:
-    sh|shell|bash
+    sh|shell|bash    Opens bash terminal in Docker container
+
   Docker Maintenance:
-    stop
-    restart
-    down
-    destroy
-    logs
+    stop             Stops running Docker container (keeps containers, volumes & networks).
+    restart          Restarts running Docker container.
+    down             Stops running Docker container (keeps volumes).
+    purge            Stops running Docker container (removes everything, including orphans).
+    destroy          Same as purge, but deletes Docker image.
+    logs             Displays any relevant Docker logs.
 "@
+
         exit $EXIT_CODE
     }
 }
