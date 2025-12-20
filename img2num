@@ -84,7 +84,7 @@ Usage:
   ./img2num <command>
 
 Commands:
-  NPM Scripts (use help see more info about each script):
+  NPM Scripts (use help to see more info about each script):
     build|build-js|build-wasm|build-wasm:debug
     clean|clean-js|clean-wasm
     dev|dev:all|dev:debug|dev:all:debug
