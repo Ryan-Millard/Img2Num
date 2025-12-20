@@ -23,7 +23,7 @@ If you are working on the React/TypeScript frontend, documentation, or any non-W
 
 WASM development now works natively on **all platforms** including Windows. You need:
 
-1. **Node.js** (v18+)
+1. **Node.js** (v20.11+ or v22 LTS)
 2. **CMake** (v3.16+)
 3. **Emscripten SDK** (emsdk)
 
