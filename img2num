@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-set -e
-# Stop execution on errors
 MODE="$1"
 shift || true
 
@@ -8,6 +6,7 @@ ensure_container() {
   # Check if the dev service container is running, start it if not
   container_id=$(docker compose ps -q dev)
   if [ -z "$container_id" ]; then
+  echo "hi"
     echo "Starting dev container..."
     docker compose up -d dev
   fi

@@ -8,9 +8,6 @@ param(
     [string[]]$RemainingArgs
 )
 
-# Stop execution on errors
-$ErrorActionPreference = "Stop"
-
 function Ensure-Container {
     # Check if the dev service container is running, start it if not
     $containerId = docker compose ps -q dev
