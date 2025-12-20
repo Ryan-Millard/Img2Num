@@ -71,8 +71,10 @@ case "$MODE" in
 
   # Fallback usage
   -h|--help|*)
+    EXIT_CODE=0
     echo
     if [ "$MODE" != "-h" ] && [ "$MODE" != "--help" ]; then
+      EXIT_CODE=1
       echo "Unknown command used."
       echo
     fi
@@ -82,7 +84,7 @@ Usage:
   ./img2num <command>
 
 Commands:
-  NPM Scripts:
+  NPM Scripts (use help see more info about each script):
     build|build-js|build-wasm|build-wasm:debug
     clean|clean-js|clean-wasm
     dev|dev:all|dev:debug|dev:all:debug
@@ -91,8 +93,6 @@ Commands:
     help
     lint|lint:fix|lint:style
     preview
-
-    Use help see more information about each NPM script.
 
   Using NPM Directly:
     npm <args>       Run arbitrary npm command
@@ -107,6 +107,6 @@ Commands:
     destroy
     logs
 EOF
-    exit 1
+    exit $EXIT_CODE
     ;;
 esac

@@ -79,8 +79,10 @@ switch ($Mode.ToLower()) {
     "logs" { docker compose logs -f }
     # Fallback usage
     default {
+      $EXIT_CODE=0
         Write-Host ""
-        if ($Mode -notin @("-h","--help","")) {
+        if ([string]::IsNullOrEmpty($Mode) -or $Mode -notin @("-h","--help","")) {
+            $EXIT_CODE=1
             Write-Host "Unknown command used."
             Write-Host ""
         }
@@ -109,6 +111,6 @@ Commands:
     destroy
     logs
 "@
-        exit 1
+        exit $EXIT_CODE
     }
 }
