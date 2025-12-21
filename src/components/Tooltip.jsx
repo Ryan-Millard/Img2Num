@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
-import { useId } from 'react';
+import { useId, cloneElement, isValidElement } from 'react';
 
 export default function Tooltip({
   content,
@@ -11,20 +11,33 @@ export default function Tooltip({
   const reactId = useId();
   const tooltipId = id || `tooltip-${reactId}`;
 
-  return (
-    <>
-      <span data-tooltip-id={tooltipId} data-tooltip-content={content}>
+  // If child is a single valid React element, attach tooltip attributes
+  const childWithTooltip = isValidElement(children)
+    ? cloneElement(children, {
+        'data-tooltip-id': tooltipId,
+        'data-tooltip-content': content,
+      })
+    : (
+      <span
+        data-tooltip-id={tooltipId}
+        data-tooltip-content={content}
+        tabIndex={0}
+      >
         {children}
       </span>
+    );
+
+  return (
+    <>
+      {childWithTooltip}
 
       <ReactTooltip
         id={tooltipId}
         place="right"
         appendTo={document.body}
         positionStrategy="fixed"
-        fallbackPlacements={
-          dynamicPositioning ? ['bottom', 'top', 'left'] : []
-        }
+        fallbackPlacements={dynamicPositioning ? ['bottom', 'top', 'left'] : []}
+        openOnFocus
       />
     </>
   );

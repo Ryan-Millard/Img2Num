@@ -22,14 +22,17 @@ export default function NavBar() {
     return (
       <li key={link.label}>
         {link.external ? (
-          <a href={link.path} target="_blank" rel="noopener noreferrer" className={styles.externalLink}>
-            <Tooltip content={`${link.tooltip} (opens in a new tab)`}>
-              <span className={styles.externalLinkContent}>
-                {link.label}
-                <SquareArrowOutUpRight size="1.25em" className={styles.externalLinkIcon} />
-              </span>
-            </Tooltip>
-          </a>
+          <Tooltip content={`${link.tooltip} (opens in a new tab)`}>
+            <a
+              href={link.path}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.externalLink}
+            >
+              {link.label}
+              <SquareArrowOutUpRight size="1.25em" className={styles.externalLinkIcon} />
+            </a>
+          </Tooltip>
         ) : (
           <Tooltip content={link.tooltip}>
             <Link to={link.path} className={isActive ? styles.activeLink : ''}>

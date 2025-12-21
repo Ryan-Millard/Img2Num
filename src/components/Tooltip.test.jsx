@@ -45,4 +45,36 @@ describe('Tooltip component', () => {
       expect(screen.getByRole('tooltip')).not.toBeVisible()
     })
   })
+
+  test('shows tooltip on keyboard focus', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <Tooltip content="Hello tooltip">
+        <button>Focus me</button>
+      </Tooltip>
+    )
+
+    await user.tab()
+
+    const tooltip = await screen.findByText('Hello tooltip')
+    expect(tooltip).toBeVisible()
+  })
+
+  test('hides tooltip when focus leaves', async () => {
+    const user = userEvent.setup()
+
+    render(
+      <Tooltip content="Hello tooltip">
+        <button>Focus me</button>
+      </Tooltip>
+    )
+
+    await user.tab()
+    await user.tab()
+
+    await waitFor(() => {
+      expect(screen.queryByText('Hello tooltip')).not.toBeInTheDocument()
+    })
+  })
 })
