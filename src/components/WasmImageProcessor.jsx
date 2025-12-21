@@ -97,16 +97,17 @@ const WasmImageProcessor = () => {
         num_colors: 8,
       });
 
-      const minWidth = Math.ceil(Math.max(width / 50, 1));
-      const minHeight = Math.ceil(Math.max(height / 50, 1));
-      const area = width * height;
+      // Get 2% of the input dimension (width / height), but default to 1 pixel
+      const twoPercentOrOne = (dimension) => Math.ceil(Math.max(dimension * 0.02, 1));
+      const minWidth = twoPercentOrOne(width);
+      const minHeight = twoPercentOrOne(height);
 
+      const area = width * height;
       // Prevents minArea from being too small
       const minimumAllowedMinArea =
         area > 100_000_000 ? 25 :
           area > 10_000_000 ? 20 :
             area > 1_000_000 ? 15 : 10;
-
       const minArea = Math.ceil(Math.max(area / 10_000, minimumAllowedMinArea));
 
       const merged = await mergeSmallRegionsInPlace({
@@ -122,7 +123,7 @@ const WasmImageProcessor = () => {
       const svg = await uint8ClampedArrayToSVG({
         pixels: merged,
         width,
-        height
+        height,
       });
 
       step(100);
