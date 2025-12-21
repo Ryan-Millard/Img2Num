@@ -431,6 +431,10 @@ This section will help you run both the main application and the documentation s
         ```bash title="Concurrently run both the Vite development and Docs servers"
         npm run dev:all
         ```
+
+        :::tip
+        You can always run `npm run help` to see a full list of available commands and scripts which allows you to fuzzy find specific scripts.
+        :::
       </TabItem>
     </Tabs>
 
