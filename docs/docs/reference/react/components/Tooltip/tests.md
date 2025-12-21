@@ -1,53 +1,17 @@
-# Tooltip Component Tests
+## Overview
 
-This page explains what is tested for the `Tooltip` React component and how to run those tests.
+This document describes the test cases for the Tooltip component.
+The purpose of these tests is to ensure that the tooltip behaves
+correctly during common user interactions, such as hovering
+and leaving the target element.
 
----
+These tests help prevent regressions and ensure that the Tooltip
+component remains reliable as the codebase evolves.
 
-## Tools Used
+## Technical Details
 
-The Tooltip tests use:
+The tests are written using React Testing Library and
+@testing-library/user-event to simulate real user behavior.
 
-- **Vitest** – the test runner used in this project
-- **@testing-library/react** – to test how the component behaves for users
-- **@testing-library/jest-dom** – for helpful DOM-related assertions
-
-These tools are already part of the project setup.
-
----
-
-## What the Tests Check
-
-The tests make sure the Tooltip works correctly when users interact with it.
-
-They check that:
-
-- The tooltip is **not visible at first**
-- The tooltip appears when:
-  - the user hovers over the element
-  - the user focuses on the element using the keyboard
-- The tooltip disappears when:
-  - the mouse leaves the element
-  - the element loses focus
-- The child element inside the Tooltip renders correctly
-- The correct tooltip text is shown
-
----
-
-## Accessibility
-
-The tests also make sure that:
-
-- The Tooltip works with **keyboard navigation**
-- The Tooltip does not block normal interaction with the page
-
-This helps keep the component accessible for all users.
-
----
-
-## Running the Tests
-
-To run all tests (including Tooltip tests):
-
-```bash
-npm run test
+Hover and unhover interactions are tested to verify when
+tooltip content should appear and disappear from the DOM.

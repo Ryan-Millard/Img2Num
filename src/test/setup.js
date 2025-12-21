@@ -44,3 +44,9 @@ if (typeof global.ImageData === 'undefined') {
     }
   };
 }
+
+global.ResizeObserver = class {
+  observe(){} 
+  unobserve(){} 
+  disconnect(){} 
+}

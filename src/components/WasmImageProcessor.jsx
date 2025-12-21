@@ -20,12 +20,14 @@ const WasmImageProcessor = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  /* Cleanup object URLs on unmount or src change */
   useEffect(() => {
     return () => {
       if (originalSrc) URL.revokeObjectURL(originalSrc);
     };
   }, [originalSrc]);
 
+  /* Stable loader for images */
   const loadOriginal = useCallback(async (file) => {
     if (!file) return;
 
@@ -36,6 +38,7 @@ const WasmImageProcessor = () => {
     setFileData({ pixels, width, height });
   }, []);
 
+  /* Paste support */
   useEffect(() => {
     const handlePaste = (e) => {
       for (const item of e.clipboardData?.items || []) {
@@ -50,6 +53,7 @@ const WasmImageProcessor = () => {
     return () => document.removeEventListener('paste', handlePaste);
   }, [loadOriginal]);
 
+  /* Drag & drop */
   const handleDrop = useCallback(
     (e) => {
       e.preventDefault();
@@ -63,8 +67,10 @@ const WasmImageProcessor = () => {
     [loadOriginal]
   );
 
+  /* Hashed steps to keep pipeline aligned */
   const step = useCallback((p) => setProgress(p), []);
 
+  /* Main pipeline */
   const processImage = useCallback(async () => {
     if (!fileData) return;
 
@@ -94,6 +100,8 @@ const WasmImageProcessor = () => {
       const minWidth = Math.ceil(Math.max(width / 50, 1));
       const minHeight = Math.ceil(Math.max(height / 50, 1));
       const area = width * height;
+
+      // Prevents minArea from being too small
       const minimumAllowedMinArea =
         area > 100_000_000 ? 25 :
           area > 10_000_000 ? 20 :
@@ -111,7 +119,11 @@ const WasmImageProcessor = () => {
       });
 
       step(95);
-      const svg = await uint8ClampedArrayToSVG({ pixels: merged, width, height });
+      const svg = await uint8ClampedArrayToSVG({
+        pixels: merged,
+        width,
+        height
+      });
 
       step(100);
 
@@ -126,16 +138,9 @@ const WasmImageProcessor = () => {
         step(0);
       }, 800);
     }
-  }, [
-    fileData,
-    gaussianBlur,
-    blackThreshold,
-    kmeans,
-    mergeSmallRegionsInPlace,
-    navigate,
-    step,
-  ]);
+  }, [fileData, gaussianBlur, blackThreshold, kmeans, mergeSmallRegionsInPlace, navigate, step]);
 
+  /* Memo'd UI fragments */
   const EmptyState = useMemo(
     () => (
       <>
@@ -189,7 +194,6 @@ const WasmImageProcessor = () => {
     );
   }, [originalSrc, isProcessing, progress, processImage]);
 
-  /* ✅ THIS IS WHERE YOUR GlassCard RETURN BELONGS */
   return (
     <GlassCard
       className={`flex-center flex-column ${styles.dropZone}`}
@@ -202,14 +206,14 @@ const WasmImageProcessor = () => {
     >
       {originalSrc ? LoadedState : EmptyState}
 
-        <input
-          ref={inputRef}
-          id={inputId}
-          type="file"
-          accept="image/*"
-          hidden
-          onChange={handleSelect}
-        />
+      <input
+        ref={inputRef}
+        id={inputId}
+        type="file"
+        accept="image/*"
+        hidden
+        onChange={handleSelect}
+      />
     </GlassCard>
   );
 };
