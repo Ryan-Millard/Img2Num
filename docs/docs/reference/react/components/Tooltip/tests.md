@@ -2,84 +2,43 @@
 title: Tests
 ---
 
-# Tooltip.jsx Tests
+This page documents the Vitest test suite for the `Tooltip` component and provides guidance for writing reliable tests,
+including for keyboard accessibility and portal behavior.
 
-This page documents the small Vitest test-suite provided for the `Tooltip` component and gives tips to make the tests reliable.
-
-## Test Implementation
-
-```js
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import Tooltip from '@components/Tooltip'
-
-describe('Tooltip component', () => {
-  test('does not show tooltip content by default', () => {
-    render(
-      <Tooltip content="Hello tooltip">
-        <button>Hover me</button>
-      </Tooltip>
-    )
-
-    expect(screen.queryByText('Hello tooltip')).not.toBeInTheDocument()
-  })
-
-  test('shows tooltip on hover', async () => {
-    const user = userEvent.setup()
-
-    render(
-      <Tooltip content="Hello tooltip">
-        <button>Hover me</button>
-      </Tooltip>
-    )
-
-    await user.hover(screen.getByText('Hover me'))
-
-    expect(screen.getByText('Hello tooltip')).toBeVisible()
-  })
-
-  test('hides tooltip when mouse leaves', async () => {
-    const user = userEvent.setup()
-
-    render(
-      <Tooltip content="Hello tooltip">
-        <button>Hover me</button>
-      </Tooltip>
-    )
-
-    const button = screen.getByText('Hover me')
-
-    await user.hover(button)
-    await user.unhover(button)
-
-    await waitFor(() => {
-      expect(screen.getByRole('tooltip')).not.toBeVisible()
-    })
-  })
-})
-```
-
-### Individual Test Explanations
+## Individual Test Explanations
 1. **does not show tooltip content by default**
-    - `react-tooltip` appends the real tooltip node to `document.body`. With `jsdom` this is accessible via `screen` queries.
+   - Ensures the tooltip is not rendered until user interaction.
+   `react-tooltip` appends the tooltip node to `document.body`, accessible via `screen` queries in jsdom.
 2. **shows tooltip on hover**
-    - The first test ensures the tooltip is not in the DOM before user interaction.
-3. **shows tooltip on hover**
-    - `userEvent.hover` triggers pointer events; the tooltip library responds and mounts the tooltip node.
-4. **hides tooltip when mouse leave**
-    - We use `waitFor` in the hide test to account for any small hide delay or animation.
+   - `userEvent.hover` triggers pointer events. The tooltip library mounts the tooltip node in response.
+3. **hides tooltip when mouse leaves**
+   - Uses `waitFor()` to accommodate any hide delays or CSS transitions.
+4. **shows tooltip on keyboard focus**
+   - Tests accessibility: the tooltip appears when the trigger element receives keyboard focus.
+5. **hides tooltip when focus leaves**
+   - Confirms the tooltip hides when the trigger loses focus. `waitFor()` ensures the test accounts for any hide transition delays.
 
-## Common flakiness and how to fix it
-
+## Common Flakiness and Fixes
 1. **Portal timing / animations**
-   - `react-tooltip` may add show/hide transitions. If assertions fail intermittently, wrap checks in `await waitFor(() => ...)` with a slightly longer timeout:
+   - `react-tooltip` may delay mounting/unmounting for animations.
+   Wrap visibility assertions in `await waitFor()` or use `findBy*` queries to retry until the tooltip appears/disappears:
      ```js
-     await waitFor(() => expect(...).not.toBeVisible(), { timeout: 1000 })
+     expect(await screen.findByText('Hello tooltip')).toBeVisible()
+     await waitFor(() => expect(screen.queryByText('Hello tooltip')).not.toBeInTheDocument())
      ```
-   - Alternatively you can disable CSS transitions globally in test setup (preferred if you want deterministic timing).
+   - You can also disable CSS transitions in test setup for deterministic results.
 2. **Missing jsdom environment**
-   - If `document.body` is `undefined` in tests, ensure `environment: 'jsdom'` in Vitest config. That has already been done.
+   - `Tooltip` renders portals to `document.body`. Ensure Vitest is running with `environment: 'jsdom'`.
 3. **Event ordering**
-   - Use `userEvent.setup()` and `await` the interactions (as in the tests). Avoid firing low-level events manually unless you need to.
-4. **React strict / act warnings**
-   * Vitest with `@testing-library/react` usually handles `act()` automatically. If you see warnings, ensure `globals: true` and up-to-date testing dependencies.
+   - Always use `userEvent.setup()` and `await` interactions. Avoid manually firing low-level events unless necessary.
+4. **Double focus / tab issues**
+   - When testing tooltips on interactive elements, pass a single focusable element (e.g., `<button>` or `<Link>`)
+   as `children`. If the component wraps non-element children in a `<span tabIndex={0}>`, account for that extra tab stop in tests.
+5. **React strict mode / act warnings**
+   - Vitest + Testing Library usually handles `act()` automatically. Ensure `globals: true` in your test setup and keep dependencies updated.
+
+## Testing Recommendations
+- Always test tooltips attached to **real interactive elements** (buttons, links, `<Link>` from react-router-dom) to avoid duplicate tab stops.
+- When testing external links or non-focusable nodes, account for the optional wrapper `<span tabIndex={0}>`.
+- Use `findBy*` for asserting tooltip visibility; it retries until the tooltip appears.
+- Wrap hide assertions in `waitFor()` to accommodate CSS transitions or delayed unmounts.
