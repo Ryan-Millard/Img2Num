@@ -35,7 +35,7 @@ For issues or contributions, visit our
 [GitHub repository](https://github.com/Ryan-Millard/Img2Num/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22).
 
 :::important
-If you spot an something wrong in the documentation or elsewhere, please help the community by opening an issue for it!
+If you spot something wrong in the documentation or elsewhere, please help the community by opening an issue for it!
 
 Issue links:
 - [Bug Report](https://github.com/Ryan-Millard/Img2Num/issues/new?template=bug_report.yml)
