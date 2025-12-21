@@ -390,18 +390,39 @@ This section will help you run both the main application and the documentation s
             ```bash title="Concurrently run both the Vite development and Docs servers"
             ./img2num dev:all
             ```
+
+            :::tip
+            You can always run `./img2num -h` or `./img2num --help` to see a full list of available commands and scripts.
+
+            It is a wrapper script that allows you to use scripts defined in [`package.json`](https://github.com/Ryan-Millard/Img2Num/blob/main/package.json)
+            and [`docs/package.json`](https://github.com/Ryan-Millard/Img2Num/blob/main/docs/package.json).
+            :::
           </TabItem>
           <TabItem value="batch" label="Batch (Windows CMD)">
             From the project's root, run:
             ```bash title="Concurrently run both the Vite development and Docs servers"
             .\img2num.bat dev:all
             ```
+
+            :::tip
+            You can always run `.\img2num.bat -h` or `.\img2num.bat --help` to see a full list of available commands and scripts.
+
+            It is a wrapper script that allows you to use scripts defined in [`package.json`](https://github.com/Ryan-Millard/Img2Num/blob/main/package.json)
+            and [`docs/package.json`](https://github.com/Ryan-Millard/Img2Num/blob/main/docs/package.json).
+            :::
           </TabItem>
           <TabItem value="powershell" label="PowerShell">
             From the project's root, run:
             ```bash title="Concurrently run both the Vite development and Docs servers"
             .\img2num.ps1 dev:all
             ```
+
+            :::tip
+            You can always run `.\img2num.ps1 -h` or `.\img2num.ps1 --help` to see a full list of available commands and scripts.
+
+            It is a wrapper script that allows you to use scripts defined in [`package.json`](https://github.com/Ryan-Millard/Img2Num/blob/main/package.json)
+            and [`docs/package.json`](https://github.com/Ryan-Millard/Img2Num/blob/main/docs/package.json).
+            :::
           </TabItem>
         </Tabs>
       </TabItem>
