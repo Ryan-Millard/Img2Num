@@ -11,10 +11,7 @@ The **Image** WASM module provides core image-processing functionality for Img2N
 ## Structure
 ```
 src/wasm/modules/image/
-├── Makefile
-├── build
-│   ├── index.js
-│   └── index.wasm
+├── CMakeLists.txt
 ├── include
 │   ├── Image.h
 │   ├── Pixel.h

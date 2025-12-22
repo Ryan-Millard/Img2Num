@@ -45,7 +45,7 @@ Runs the WASM release build:
 make -C src/wasm build
 ```
 
-Creates an optimized WebAssembly module using the `build` script available in the [orchestrator Makefile](https://github.com/Ryan-Millard/Img2Num/blob/main/src/wasm/Makefile).
+Creates an optimized WebAssembly module using the `build` script available in the [orchestrator CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/src/wasm/CMakeLists.txt).
 
 ## `npm run build-wasm:debug`
 
@@ -55,4 +55,4 @@ Runs the debug build:
 make -C src/wasm debug
 ```
 
-Includes debug symbols and no optimizations. Recommended for debugging logic issues inside C++ code. Also uses a script from the [orchestrator Makefile](https://github.com/Ryan-Millard/Img2Num/blob/main/src/wasm/Makefile).
+Includes debug symbols and no optimizations. Recommended for debugging logic issues inside C++ code. Also uses a script from the [orchestrator CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/src/wasm/CMakeLists.txt).
