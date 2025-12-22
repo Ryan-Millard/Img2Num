@@ -6,8 +6,6 @@ sidebar_position: 1
 
 import hedgeSleep from '@site/static/img/pixel_art_hedgehog/sleep/sleep.gif';
 
-# Getting Started with Img2Num
-
 Follow these steps to start turning images into color-by-number templates:
 
 ## 1. Accessing the site

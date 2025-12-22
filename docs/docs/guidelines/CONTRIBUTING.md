@@ -32,7 +32,7 @@ The [Project Scripts](../project-scripts/overview.md) section shows all of the a
 ## Additional Resources
 
 - [README](https://github.com/Ryan-Millard/Img2Num/blob/main/README.md)
-- [Orchestrator Makefile](https://github.com/Ryan-Millard/Img2Num/blob/main/src/wasm/Makefile)
+- [Orchestrator CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/src/wasm/CMakeLists.txt)
 - [Vite Config](https://github.com/Ryan-Millard/Img2Num/blob/main/vite.config.js)
 - [ESLint Config](https://github.com/Ryan-Millard/Img2Num/blob/main/eslint.config.js)
 

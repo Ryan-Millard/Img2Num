@@ -1,6 +1,7 @@
 import GlassCard from '@components/GlassCard';
 import styles from './About.module.css';
 import coverHedge from '@assets/pixel_art_hedgehog/cover/cover.gif';
+import Tooltip from '@components/Tooltip';
 
 const WhatIsThis = () => {
   return (
@@ -8,13 +9,15 @@ const WhatIsThis = () => {
       <h2>What This Site Is About</h2>
 
       <p>
-        <a
-          href="https://github.com/Ryan-Millard/Img2Num"
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Visit the Img2Num GitHub repository">
-          Img2Num
-        </a>{' '}
+        <Tooltip content="Visit the Img2Num GitHub repository">
+          <a
+            href="https://github.com/Ryan-Millard/Img2Num"
+            target="_blank"
+            rel="noopener noreferrer">
+            Img2Num
+          </a>{' '}
+        </Tooltip>
+
         is a web-based tool that transforms any image into a <strong>colour-by-number template</strong>.
       </p>
 

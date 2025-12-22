@@ -21,19 +21,21 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
-      - name: Install Emscripten SDK and build WASM
+      - name: Install Emscripten SDK
         run: |
           # Download and extract EMSDK
           curl -sSL https://github.com/emscripten-core/emsdk/archive/refs/tags/4.0.15.tar.gz | tar -xz
           cd emsdk-4.0.15
           ./emsdk install latest
           ./emsdk activate latest
-          source ./emsdk_env.sh
-          cd ../
 
-          # Build WASM modules
-          npm run build-wasm
-        shell: bash
+          # Source into this shell so the build here works
+          source ./emsdk_env.sh
+
+          # Persist variables for later steps
+          echo "EMSDK=${GITHUB_WORKSPACE}/emsdk-4.0.15" >> $GITHUB_ENV
+          echo "EMSDK_NODE=${GITHUB_WORKSPACE}/emsdk-4.0.15/node/22.16.0_64bit/bin/node" >> $GITHUB_ENV
+          echo "PATH=${GITHUB_WORKSPACE}/emsdk-4.0.15:${GITHUB_WORKSPACE}/emsdk-4.0.15/upstream/emscripten:$PATH" >> $GITHUB_ENV
 
       - name: Build Vite app
         run: npm run build
