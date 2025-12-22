@@ -1,4 +1,4 @@
-<!--TODO: Remove the section below after #93 is merged on 22 Dec 2025 - wait 2 weeks, so remove this on 5 Jan 2026 -->
+<!--TODO: Remove the section below after #139 (which replaced #93) is merged on 22 Dec 2025 - wait 2 weeks, so remove this on 5 Jan 2026 -->
 > [!CAUTION]
 > ⚠️⚠️⚠️ **Breaking Change in [PR #93](https://github.com/Ryan-Millard/Img2Num/pull/93)** ⚠️⚠️⚠️
 >
