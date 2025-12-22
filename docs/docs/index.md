@@ -25,8 +25,6 @@ Follow the [installation guide](./introduction/getting-started.md) to set up Img
 
 - [Overview](./introduction/getting-started.md) – Project introduction and setup
 - [Changelog](/changelog) – Track releases and updates
-- [Examples](./) – Ready-to-use snippets and demos
-- [FAQ](./) – Common questions answered
 
 ---
 
@@ -40,5 +38,5 @@ If you spot something wrong in the documentation or elsewhere, please help the c
 Issue links:
 - [Bug Report](https://github.com/Ryan-Millard/Img2Num/issues/new?template=bug_report.yml)
 - [Refactor / Code Quality Improvement](https://github.com/Ryan-Millard/Img2Num/issues/new?template=refactor.yml)
-- [Blank Issue](http://github.com/Ryan-Millard/Img2Num/issues/new)
+- [Blank Issue](https://github.com/Ryan-Millard/Img2Num/issues/new)
 :::
