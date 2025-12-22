@@ -27,3 +27,5 @@ dist-ssr
 *:Zone.Identifier
 
 src/data/contributor-credits.json
+
+.env
