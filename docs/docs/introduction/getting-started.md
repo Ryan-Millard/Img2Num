@@ -161,7 +161,6 @@ The section below will guide you through installing Docker on your operating sys
   </TabItem>
 
 </Tabs>
-
 </TabItem>
 
 <TabItem value="local" label="Local / Manual Setup">
@@ -258,6 +257,12 @@ You can choose to only install the dependencies for one portion of the app, but 
         In order to call the `img2num` script that we will be using for Docker in the following sections,
         you need to stay in the root directory of the project since that is where the file is.
         :::
+        :::tip For Experienced Docker users
+        You can skip using the `img2num` script if you prefer using plain Docker commands -
+        the script is intended to help developers who don't want to use Docker directly.
+
+        It is recommended that you read the contents of the file for examples of the commands you can use.
+        :::
         <Tabs groupId="setup-scripts" defaultValue="bash">
           <TabItem value="bash" label="Bash (Linux / macOS / WSL / Git Bash)" default>
             ```bash title="Install all dependencies"
@@ -267,24 +272,42 @@ You can choose to only install the dependencies for one portion of the app, but 
 
             ./img2num npm install --prefix ./docs
             ```
+
+            :::info
+            ```bash title="Try passing -h or --help as an argument to see the list of available script arguments"
+            ./img2num -h    # or --help (they are are the same)
+            ```
+            :::
           </TabItem>
 
           <TabItem value="batch" label="Batch (Windows CMD)">
-            ```bash title="Install all dependencies"
+            ```bat title="Install all dependencies"
             cd Img2Num
             .\img2num.bat npm install
 
             .\img2num.bat npm install --prefix ./docs
             ```
+
+            :::info
+            ```bat title="Try passing -h or --help as an argument to see the list of available script arguments"
+            .\img2num.bat -h    REM or --help (they are are the same)
+            ```
+            :::
           </TabItem>
 
           <TabItem value="powershell" label="PowerShell">
-            ```bash title="Install all dependencies"
+            ```ps1 title="Install all dependencies"
             cd Img2Num
             .\img2num.ps1 npm install
 
             .\img2num.ps1 npm install --prefix ./docs
             ```
+
+            :::info
+            ```ps1 title="Try passing -h or --help as an argument to see the list of available script arguments"
+            .\img2num.ps1 -h    # or --help (they are are the same)
+            ```
+            :::
           </TabItem>
         </Tabs>
       </TabItem>
@@ -375,6 +398,20 @@ You can choose to only install the dependencies for one portion of the app, but 
   </TabItem>
   </TabItem>
 </Tabs>
+
+### Docs Search (Algolia DocSearch)
+
+The documentation site ships with `Algolia DocSearch` already configured.
+**You do not need Algolia credentials** to run the docs locally. If you do not provide credentials,
+the search box will be inactive in local development, which is expected.
+
+:::info
+You can ignore this feature as it only affects production builds.
+:::
+
+### Environment variables (.env.example)
+
+The docs site includes a `docs/.env.example` file to document the optional Algolia environment variables. For local development, you can safely leave these values blank, and you should never commit real secrets to the repository.
 
 ## Running the app for the first time
 

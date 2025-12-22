@@ -4,6 +4,7 @@
 // There are various equivalent ways to declare your Docusaurus config.
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
+import { createRequire } from 'module';
 import { themes as prismThemes } from 'prism-react-renderer';
 import path from 'path';
 import webpackAliasPlugin from './plugins/webpack-alias/index.js';
@@ -11,7 +12,25 @@ import { changelogSidebarGenerator } from './changelogSidebarGenerator.js';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
+const require = createRequire(import.meta.url);
+require('dotenv').config();
+
+const hasAlgoliaEnvDefined = process.env.ALGOLIA_APP_ID
+                          && process.env.ALGOLIA_API_KEY
+                          && process.env.ALGOLIA_INDEX_NAME;
+const algolia =
+  hasAlgoliaEnvDefined
+  ? {
+    appId: process.env.ALGOLIA_APP_ID,
+    apiKey: process.env.ALGOLIA_API_KEY,
+    indexName: process.env.ALGOLIA_INDEX_NAME,
+    contextualSearch: true,
+  }
+  : undefined;
+const algoliaHeadTag = {
+  name: 'algolia-site-verification',
+  content: 'DB4B5FEC1545D32B',
+};
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -124,6 +143,13 @@ const config = {
       colorMode: {
         respectPrefersColorScheme: true,
       },
+
+      metadata: [
+        algoliaHeadTag,
+      ],
+
+      algolia,
+
       navbar: {
         title: 'Img2Num',
         logo: {
