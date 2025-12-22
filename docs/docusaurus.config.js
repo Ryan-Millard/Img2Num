@@ -4,12 +4,16 @@
 // There are various equivalent ways to declare your Docusaurus config.
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
+import { createRequire } from 'module';
 import { themes as prismThemes } from 'prism-react-renderer';
 import path from 'path';
 import webpackAliasPlugin from './plugins/webpack-alias/index.js';
 import { changelogSidebarGenerator } from './changelogSidebarGenerator.js';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+
+const require = createRequire(import.meta.url);
+require('dotenv').config();
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -123,6 +127,12 @@ const config = {
       image: 'img/docusaurus-social-card.jpg',
       colorMode: {
         respectPrefersColorScheme: true,
+      },
+      algolia: {
+        appId: process.env.ALGOLIA_APP_ID,
+        apiKey: process.env.ALGOLIA_SEARCH_KEY,
+        indexName: process.env.ALGOLIA_INDEX_NAME,
+        contextualSearch: true,
       },
       navbar: {
         title: 'Img2Num',
