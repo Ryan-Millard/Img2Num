@@ -15,7 +15,25 @@ import rehypeKatex from 'rehype-katex';
 const require = createRequire(import.meta.url);
 require('dotenv').config();
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
+const hasAlgoliaEnvDefined = process.env.ALGOLIA_APP_ID
+                          && process.env.ALGOLIA_API_KEY
+                          && process.env.ALGOLIA_INDEX_NAME;
+const algolia =
+  hasAlgoliaEnvDefined
+  ? {
+    appId: process.env.ALGOLIA_APP_ID,
+    apiKey: process.env.ALGOLIA_API_KEY,
+    indexName: process.env.ALGOLIA_INDEX_NAME,
+    contextualSearch: true,
+  }
+  : undefined;
+const algoliaHeadTag = {
+  tagName: 'meta',
+  attributes: {
+    name: 'algolia-site-verification',
+    content: 'DB4B5FEC1545D32B',
+  },
+};
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -128,12 +146,13 @@ const config = {
       colorMode: {
         respectPrefersColorScheme: true,
       },
-      algolia: {
-        appId: process.env.ALGOLIA_APP_ID,
-        apiKey: process.env.ALGOLIA_SEARCH_KEY,
-        indexName: process.env.ALGOLIA_INDEX_NAME,
-        contextualSearch: true,
-      },
+
+      metadata: [
+        algoliaHeadTag,
+      ],
+
+      algolia,
+
       navbar: {
         title: 'Img2Num',
         logo: {
