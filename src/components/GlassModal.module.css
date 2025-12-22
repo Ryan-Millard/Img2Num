@@ -44,28 +44,26 @@
   top: var(--spacing-sm);
   right: var(--spacing-sm);
   background: transparent;
-  border: none;
+  border: 2px solid transparent;
   font-size: 28px;
   line-height: 1;
   cursor: pointer;
-  color: var(--color-primary);
-  font-weight: 500;
+  color: var(--color-secondary);
   transition:
     color 0.3s,
     transform 0.2s;
-  padding: var(--spacing-xs) var(--spacing-sm);
   z-index: 1;
+  outline: none;
+  border-radius: var(--radius-sm);
 }
 
 .close:hover,
 .close:focus {
   color: var(--color-secondary);
-  transform: scale(1.1);
 }
 
 .close:focus {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+  border-color: var(--color-secondary);
 }
 
 /* Modal body */
