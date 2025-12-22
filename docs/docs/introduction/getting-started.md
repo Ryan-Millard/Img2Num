@@ -124,6 +124,14 @@ You can choose to only install the dependencies for one portion of the app, but 
   </TabItem>
 </Tabs>
 
+### Docs search (Algolia DocSearch)
+
+The documentation site ships with Algolia DocSearch already configured. You do not need Algolia credentials to run the docs locally. If you do not provide credentials, the search box will be inactive in local development, which is expected.
+
+### Environment variables (.env.example)
+
+The docs site includes a `docs/.env.example` file to document the optional Algolia environment variables. For local development, you can safely leave these values blank, and you should never commit real secrets to the repository.
+
 ## Running the app for the first time
 
 This section will help you run both the main application and the documentation site for the first time.
