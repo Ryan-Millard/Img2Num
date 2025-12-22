@@ -1,29 +1,24 @@
-#!/usr/bin/env node
-const fs = require('fs');
+import { runFuzzyCli } from "../../scripts/lib/cli-fuzzy.js";
+import { readPackageJsonScripts } from "../../scripts/lib/read-packageJson-scripts.js";
 
-// Read package.json dynamically
-const pkg = JSON.parse(fs.readFileSync(require('path').resolve(__dirname, '../package.json'), 'utf-8'));
+const title =
+`Img2Num Docs CLI Scripts
+Also see: https://ryan-millard.github.io/Img2Num/info/docs/category/-project-scripts
+`;
 
-// Optional descriptions for scripts
-const descriptions = {
-  help: 'Show this help message',
-  docusaurus: 'Run Docusaurus CLI',
-  start: 'Start the Docusaurus dev server',
-  build: 'Build the Docusaurus site',
-  swizzle: 'Customize Docusaurus theme components',
-  deploy: 'Deploy the site',
-  clear: 'Clear Docusaurus cache',
-  serve: 'Serve the production build locally',
-  'write-translations': 'Write translation files',
-  'write-heading-ids': 'Add heading IDs for MDX',
-};
+try {
+  const { flat: items, basicItems } = readPackageJsonScripts(new URL("../package.json", import.meta.url));
 
-// Print scripts
-console.log('Available docs scripts:');
-for (const [name, command] of Object.entries(pkg.scripts)) {
-  const desc = descriptions[name] || 'No description';
-  console.log(`\n- ${name}: ${desc}`);
-  console.log(`    > ${command}`);
+  // Grab all CLI args after `npm run help --`
+  const initialSearch = process.argv.slice(2);
+
+  runFuzzyCli({
+    title,
+    items,
+    basicItems,
+    initialSearch,
+  });
+} catch (error) {
+  console.error("Failed to read docs package.json scripts:", error.message);
+  process.exit(1);
 }
-
-console.log('\nRun a script with `npm run <script-name>`');

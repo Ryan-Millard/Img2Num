@@ -6,6 +6,7 @@ import GlassCard from '@components/GlassCard';
 import styles from './WasmImageProcessor.module.css';
 import { useNavigate } from 'react-router-dom';
 import LoadingHedgehog from '@components/LoadingHedgehog';
+import Tooltip from '@components/Tooltip';
 
 const WasmImageProcessor = () => {
   const navigate = useNavigate();
@@ -61,7 +62,10 @@ const WasmImageProcessor = () => {
     [loadOriginal]
   );
 
-  const handleSelect = useCallback((e) => loadOriginal(e.target.files[0]), [loadOriginal]);
+  const handleSelect = useCallback(
+    (e) => loadOriginal(e.target.files[0]),
+    [loadOriginal]
+  );
 
   /* Hashed steps to keep pipeline aligned */
   const step = useCallback((p) => setProgress(p), []);
@@ -93,13 +97,19 @@ const WasmImageProcessor = () => {
         num_colors: 8,
       });
 
-      const minWidth = Math.ceil(Math.max(width / 50, 1)); // 2% of width or 1px
-      const minHeight = Math.ceil(Math.max(height / 50, 1)); // 2% of width or 1px
+      // Get 2% of the input dimension (width / height), but default to 1 pixel
+      const twoPercentOrOne = (dimension) => Math.ceil(Math.max(dimension * 0.02, 1));
+      const minWidth = twoPercentOrOne(width);
+      const minHeight = twoPercentOrOne(height);
+
       const area = width * height;
       // Prevents minArea from being too small
-      const minimumAllowedMinArea = area > 100_000_000 ? 25 : area > 10_000_000 ? 20 : area > 1_000_000 ? 15 : 10;
+      const minimumAllowedMinArea =
+        area > 100_000_000 ? 25 :
+          area > 10_000_000 ? 20 :
+            area > 1_000_000 ? 15 : 10;
       const minArea = Math.ceil(Math.max(area / 10_000, minimumAllowedMinArea));
-      console.table({ minWidth, minHeight, minArea, area, minimumAllowedMinArea });
+
       const merged = await mergeSmallRegionsInPlace({
         pixels: kmeansed,
         width,
@@ -131,13 +141,21 @@ const WasmImageProcessor = () => {
     }
   }, [fileData, gaussianBlur, blackThreshold, kmeans, mergeSmallRegionsInPlace, navigate, step]);
 
-  /* Memo’d UI fragments */
+  /* Memo'd UI fragments */
   const EmptyState = useMemo(
     () => (
       <>
-        <Upload className={`anchor-style ${styles.uploadIcon}`} />
+        <Tooltip content="Upload an image from your device">
+          <Upload className={`anchor-style ${styles.uploadIcon}`} />
+        </Tooltip>
+
         <p className={`text-center ${styles.dragDropText}`}>
-          Drag & Drop or <span className={`anchor-style ${styles.noTextWrap}`}>Choose File</span>
+          Drag & Drop or{' '}
+          <Tooltip content="Select an image file from your computer">
+            <span className={`anchor-style ${styles.noTextWrap}`}>
+              Choose File
+            </span>
+          </Tooltip>
         </p>
       </>
     ),
@@ -149,19 +167,29 @@ const WasmImageProcessor = () => {
 
     return (
       <>
-        <img src={originalSrc} alt="Original" className={styles.preview} />
+        <img
+          src={originalSrc}
+          alt="Original"
+          className={styles.preview}
+        />
 
         {!isProcessing ? (
-          <button
-            className="uppercase button"
-            onClick={(e) => {
-              e.stopPropagation();
-              processImage();
-            }}>
-            Ok
-          </button>
+          <Tooltip content="Process the image and convert it to numbers">
+            <button
+              className="uppercase button"
+              onClick={(e) => {
+                e.stopPropagation();
+                processImage();
+              }}
+            >
+              Ok
+            </button>
+          </Tooltip>
         ) : (
-          <LoadingHedgehog progress={progress} text={`Processing — ${Math.round(progress)}%`} />
+          <LoadingHedgehog
+            progress={progress}
+            text={`Processing — ${Math.round(progress)}%`}
+          />
         )}
       </>
     );
@@ -175,10 +203,18 @@ const WasmImageProcessor = () => {
       onClick={() => {
         if (!originalSrc) inputRef.current?.click();
       }}
-      data-image-loaded={!!originalSrc}>
+      data-image-loaded={!!originalSrc}
+    >
       {originalSrc ? LoadedState : EmptyState}
 
-      <input ref={inputRef} id={inputId} type="file" accept="image/*" hidden onChange={handleSelect} />
+      <input
+        ref={inputRef}
+        id={inputId}
+        type="file"
+        accept="image/*"
+        hidden
+        onChange={handleSelect}
+      />
     </GlassCard>
   );
 };
