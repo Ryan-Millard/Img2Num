@@ -3,6 +3,8 @@
   "position": 1,
   "link": {
     "type": "generated-index",
-    "description": "Documentation for React UI components in the Img2Num project."
-  }
+    "title": "React Components",
+    "description": "Reference for React components in Img2Num",
+    "slug": "/reference/react/components"
+  },
 }
