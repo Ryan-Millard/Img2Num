@@ -22,11 +22,6 @@
 .icon {
   height: 1.25rem;
   width: 1.25rem;
-  color: #27272a;
-  transition: color 0.2s ease-in-out;
-}
-
-/* Dark mode styles */
-:global(:root.dark) .icon {
   color: var(--color-text);
+  transition: color 0.2s ease-in-out;
 }

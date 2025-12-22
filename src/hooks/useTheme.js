@@ -2,6 +2,11 @@ import { useEffect, useState } from 'react';
 
 export function useTheme() {
   const [theme, setTheme] = useState(() => {
+    // Guard for SSR
+    if (typeof window === 'undefined') {
+      return 'light'; // default fallback for SSR
+    }
+
     // Check localStorage first
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
@@ -12,6 +17,11 @@ export function useTheme() {
   });
 
   useEffect(() => {
+    // Skip if not in browser
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return;
+    }
+
     const root = document.documentElement;
 
     // Remove both classes first

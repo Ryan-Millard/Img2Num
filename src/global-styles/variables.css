@@ -27,11 +27,20 @@
 
   --color-error: #e94b4b;
   --color-success: #4bb543;
+
+  /* Glass effect variables */
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: rgba(0, 0, 0, 0.1);
+  --glass-table-border: rgba(255, 255, 255, 0.2);
+  --glass-table-row-odd: rgba(255, 255, 255, 0.5);
+  --glass-table-row-hover: rgb(255, 255, 255);
+  --glass-table-stacked: rgba(255, 255, 255, 0.7);
 }
 
 /* Dark theme */
 :root.dark {
-  --color-bg: #1a1a2e; /* dark navy background */
+  --color-bg: #000000; /* Black background */
 
   --color-primary: #ff6b9d; /* bright pink for buttons/links */
   --color-primary-dark: #ff4081; /* vibrant pink for hover */
@@ -44,4 +53,13 @@
 
   --color-error: #ff6b6b;
   --color-success: #51cf66;
+
+  /* Glass effect variables */
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: rgba(0, 0, 0, 0.1);
+  --glass-table-border: rgba(255, 255, 255, 0.1);
+  --glass-table-row-odd: rgba(255, 255, 255, 0.1);
+  --glass-table-row-hover: rgba(255, 255, 255, 0.15);
+  --glass-table-stacked: rgba(255, 255, 255, 0.7);
 }

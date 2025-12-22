@@ -4,13 +4,6 @@
   box-sizing: border-box;
 }
 
-/* Smooth theme transitions */
-html {
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
-}
-
 body {
   margin: 0;
   padding: var(--spacing-lg);
@@ -24,14 +17,7 @@ body {
   background-repeat: repeat;
   background-size: 600px 600px; /* same as tile size */
   background-attachment: fixed;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
-}
-
-/* Dark theme background */
-:root.dark body {
-  background-image: url('@assets/hedgehog-bg-dark.svg');
+  background-color: var(--color-bg);
 }
 
 h1 {
