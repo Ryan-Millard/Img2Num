@@ -19,7 +19,7 @@ Ensures the project returns to a “fresh” state.
 Removes the Vite build output directory:
 
 ```bash
-rm -rf dist
+rimraf dist
 ```
 
 ## `npm run clean-wasm`
@@ -27,7 +27,9 @@ rm -rf dist
 Delegates to:
 
 ```bash
-make -C src/wasm clean
+node scripts/build-wasm.js --clean
 ```
 
-This calls the [orchestrator Makefile's](https://github.com/Ryan-Millard/Img2Num/blob/main/src/wasm/Makefile) `clean` script, which calls the `clean` script in every WASM module.
+`scripts/build-wasm.js` handles the deletion of build files.
+
+This calls the [orchestrator CMakeLists.txt's](https://github.com/Ryan-Millard/Img2Num/blob/main/src/wasm/CMakeLists.txt) `clean` script, which calls the `clean` script in every WASM module.

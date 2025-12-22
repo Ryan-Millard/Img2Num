@@ -27,3 +27,8 @@ dist-ssr
 *:Zone.Identifier
 
 src/data/contributor-credits.json
+
+# CMake build artifacts
+src/wasm/cmake-build/
+src/wasm/**/CMakeCache.txt
+src/wasm/**/CMakeFiles/
