@@ -9,7 +9,7 @@ sidebar_position: 6
 git checkout -b feat/your-feature
 ```
 ## Make commits following guidelines
-These can be found in the [previous section](./commits).
+These can be found in the [previous section](../commits).
 
 ## Push to your fork:
 :::danger Danger: **Merge Conflicts**
