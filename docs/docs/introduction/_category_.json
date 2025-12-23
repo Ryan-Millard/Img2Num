@@ -2,6 +2,9 @@
   "label": "📖 Introduction",
   "position": 2,
   "link": {
-    "type": "generated-index"
-  }
+    "type": "generated-index",
+    "title": "Introduction Overview",
+    "description": "A brief usage overview and introduction to development in Img2Num."
+  },
+  "collapsed": false
 }
