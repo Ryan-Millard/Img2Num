@@ -17,9 +17,9 @@ import hedgeMove from '@site/static/img/pixel_art_hedgehog/move/move.gif';
     display: 'block',
     margin: '0 auto',
     height: '20vh',
-    aspectRatio: 'maintain',
   }}
 />
+
 
 Turn your favorite images into interactive color-by-number templates in seconds!
 

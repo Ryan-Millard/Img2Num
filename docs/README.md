@@ -1,3 +1,4 @@
+
 # Website
 
 This docs site is built using **Docusaurus** and shares the same branding and glassmorphic design system as the main Img2Num website.
@@ -8,7 +9,8 @@ Install dependencies:
 
 ```bash
 yarn
-````
+
+```
 
 ## Local Development (Docs)
 
@@ -16,6 +18,7 @@ Run the docs site locally to preview style and layout changes:
 
 ```bash
 yarn start
+
 ```
 
 The site will be available at `http://localhost:3000` and updates live as you edit files.
@@ -31,14 +34,16 @@ The site will be available at `http://localhost:3000` and updates live as you ed
 
 ```bash
 yarn build
+
 ```
 
 ## Deployment (GitHub Pages)
 
 ```bash
 GIT_USER=<your-github-username> yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
 
 ```
+
+If you are using GitHub Pages for hosting, this command builds the site and pushes it to the `gh-pages` branch.
+
+
