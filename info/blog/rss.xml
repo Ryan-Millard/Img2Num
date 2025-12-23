@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
     <channel>
         <title>Img2Num Blog</title>
-        <link>https://ryan-millard.github.io/Img2Num/info/blog</link>
+        <link>https://ryan-millard.github.io/Img2Num/info/blog/</link>
         <description>Img2Num Blog</description>
         <lastBuildDate>Fri, 05 Dec 2025 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
@@ -10,8 +10,8 @@
         <language>en</language>
         <item>
             <title><![CDATA[Welcome to Img2Num!]]></title>
-            <link>https://ryan-millard.github.io/Img2Num/info/blog/launch</link>
-            <guid>https://ryan-millard.github.io/Img2Num/info/blog/launch</guid>
+            <link>https://ryan-millard.github.io/Img2Num/info/blog/launch/</link>
+            <guid>https://ryan-millard.github.io/Img2Num/info/blog/launch/</guid>
             <pubDate>Fri, 05 Dec 2025 00:00:00 GMT</pubDate>
             <description><![CDATA[We are excited to launch Img2Num, the interactive app that converts any image into a color-by-number template.]]></description>
             <content:encoded><![CDATA[<p>We are excited to launch <strong>Img2Num</strong>, the interactive app that converts any image into a color-by-number template.</p>
