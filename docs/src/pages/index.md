@@ -6,9 +6,20 @@ slug: /
 
 import hedgeMove from '@site/static/img/pixel_art_hedgehog/move/move.gif';
 
+<div className="glass-card">
+
 # Welcome to Img2Num
 
-<img src={hedgeMove} alt="Hedhehog Running" style={{ display: 'block', margin: '0 auto', height: '20vh', aspectRatio: 'maintain' }} />
+<img
+  src={hedgeMove}
+  alt="Hedgehog Running"
+  style={{
+    display: 'block',
+    margin: '0 auto',
+    height: '20vh',
+    aspectRatio: 'maintain',
+  }}
+/>
 
 Turn your favorite images into interactive color-by-number templates in seconds!
 
@@ -23,3 +34,5 @@ Turn your favorite images into interactive color-by-number templates in seconds!
 ## Learn More
 
 Check out the [Docs](/docs) for tutorials and advanced usage, or visit our [Blog](/blog) for updates and tips.
+
+</div>

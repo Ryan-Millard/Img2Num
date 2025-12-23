@@ -1,10 +1,11 @@
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * Global styles for Img2Num Docs
+ * Includes Infima overrides + glassmorphic theme
  */
 
-/* You can override the default Infima variables here. */
+/* ============================
+   Infima Theme Overrides
+   ============================ */
 :root {
   --ifm-color-primary: #2e8555;
   --ifm-color-primary-dark: #29784c;
@@ -13,11 +14,24 @@
   --ifm-color-primary-light: #33925d;
   --ifm-color-primary-lighter: #359962;
   --ifm-color-primary-lightest: #3cad6e;
+
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  /* ============================
+     Glassmorphic Variables
+     ============================ */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg-fallback: rgba(255, 255, 255, 0.9);
+  --glass-bg-dark: rgba(20, 20, 20, 0.65);
+  --glass-bg-dark-fallback: rgba(20, 20, 20, 0.85);
+
+  --glass-blur: 12px;
+  --glass-radius: 16px;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
+/* Dark mode variables */
 [data-theme='dark'] {
   --ifm-color-primary: #25c2a0;
   --ifm-color-primary-dark: #21af90;
@@ -26,5 +40,78 @@
   --ifm-color-primary-light: #29d5b0;
   --ifm-color-primary-lighter: #32d8b4;
   --ifm-color-primary-lightest: #4fddbf;
+
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* ============================
+   Glass Card Component
+   ============================ */
+.glass-card {
+  background: var(--glass-bg-fallback);
+  border-radius: var(--glass-radius);
+  box-shadow: var(--glass-shadow);
+  padding: 1.5rem;
+}
+
+/* Enable blur where supported */
+@supports (backdrop-filter: blur(12px)) {
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+  }
+}
+
+/* Dark mode glass */
+[data-theme='dark'] .glass-card {
+  background: var(--glass-bg-dark-fallback);
+}
+
+@supports (backdrop-filter: blur(12px)) {
+  [data-theme='dark'] .glass-card {
+    background: var(--glass-bg-dark);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+  }
+}
+
+/* ============================
+   Apply to Docusaurus Layout
+   ============================ */
+
+/* Hero section spacing */
+.hero {
+  padding: 3rem 2rem;
+}
+
+.hero .container {
+  max-width: 960px;
+}
+
+.docMainContainer .container {
+  margin-top: 1rem;
+}
+
+.docMainContainer .container > .row {
+  gap: 1.5rem;
+}
+
+/* Cards */
+.card {
+  border-radius: var(--glass-radius);
+  box-shadow: var(--glass-shadow);
+}
+
+/* Optional glass cards */
+.card.glass-card {
+  background: var(--glass-bg-fallback);
+}
+
+@supports (backdrop-filter: blur(12px)) {
+  .card.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+  }
 }

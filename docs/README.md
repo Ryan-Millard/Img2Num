@@ -1,20 +1,31 @@
 # Website
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+This docs site is built using **Docusaurus** and shares the same branding and glassmorphic design system as the main Img2Num website.
 
-## Installation
+## Setup
+
+Install dependencies:
 
 ```bash
 yarn
-```
+````
 
-## Local Development
+## Local Development (Docs)
+
+Run the docs site locally to preview style and layout changes:
 
 ```bash
 yarn start
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+The site will be available at `http://localhost:3000` and updates live as you edit files.
+
+## Styling Notes
+
+* Global styles live in `docs/src/css/custom.css`
+* Glassmorphic components use the reusable `.glass-card` class
+* Logo, favicon, and social preview assets are under `docs/static/img/`
+* Theme configuration is managed in `docs/docusaurus.config.js`
 
 ## Build
 
@@ -22,20 +33,12 @@ This command starts a local development server and opens up a browser window. Mo
 yarn build
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
-
-## Deployment
-
-Using SSH:
+## Deployment (GitHub Pages)
 
 ```bash
-USE_SSH=true yarn deploy
-```
-
-Not using SSH:
-
-```bash
-GIT_USER=<Your GitHub username> yarn deploy
+GIT_USER=<your-github-username> yarn deploy
 ```
 
 If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+
+```
