@@ -1,7 +1,8 @@
 ---
-title: Tools Documentation
+title: Tools Overview
 description: Detailed reference documentation for all Img2Num tooling code. Use this as a guide to understand, use, and contribute to the project's tooling codebase.
 keywords: [reference, API, tooling, cli Img2Num, documentation, developer guide]
+sidebar_position: 1
 ---
 
 # Tools Reference

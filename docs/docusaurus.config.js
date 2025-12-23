@@ -56,6 +56,9 @@ const config = {
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/Img2Num/info/',
 
+  // GitHub Pages fix: canonical URL with trailing slash
+  trailingSlash: true,
+
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'Ryan-Millard', // Usually your GitHub org/user name.

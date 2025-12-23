@@ -10,6 +10,6 @@ This section documents all WebAssembly modules in the project. Each module is se
 
 ## Available Modules
 
-- [Image](./image)
+- [Image](../image)
 
 More modules will appear here as the project grows.

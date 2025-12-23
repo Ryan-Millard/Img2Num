@@ -556,5 +556,5 @@ This section will help you run both the main application and the documentation s
 </Tabs>
 
 ### Further Information
-You may want to have a look at the [Project Scripts section](../project-scripts/overview) now, but make sure that you understand and
-agree with Img2Num's [License](../license) and [guidelines](../category/guidelines) first.
+You may want to have a look at the [Project Scripts section](../../project-scripts/overview) now, but make sure that you understand and
+agree with Img2Num's [License](../../license) and [guidelines](../../category/guidelines) first.
