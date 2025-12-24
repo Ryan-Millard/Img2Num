@@ -3,6 +3,7 @@ import { SquareArrowOutUpRight } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './NavBar.module.css';
 import GlassCard from '@components/GlassCard';
+import ThemeSwitch from '@components/ThemeSwitch';
 import Tooltip from '@components/Tooltip';
 
 export default function NavBar() {
@@ -53,7 +54,8 @@ export default function NavBar() {
           <Link to="/">Img2Num</Link>
         </Tooltip>
       </div>
-
+      <div className={styles.spacer}></div>
+      <ThemeSwitch />
       <Tooltip content="Toggle navigation menu">
         <button className={styles.hamburger} onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
           <span className={isOpen ? styles.barActive : styles.bar}></span>

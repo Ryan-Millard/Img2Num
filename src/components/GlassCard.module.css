@@ -15,7 +15,7 @@
 
 .card td {
   padding: 0.35rem 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid var(--glass-table-border);
   font-size: 0.95rem;
 }
 
@@ -36,10 +36,10 @@
 }
 
 .card tr:nth-child(odd) {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: var(--glass-table-row-odd);
 }
 .card tr:hover {
-  background-color: rgb(255, 255, 255);
+  background-color: var(--glass-table-row-hover);
   transform: scale(1.02);
   transition:
     transform 0.2s,
