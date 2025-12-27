@@ -42,7 +42,7 @@ and their RGBA values are exactly equal.
   </svg>
 </div>
 
-2. While flood-filling, `Region` metadata is collected (`size`, `minX`, `maxX`, `minY`, `maxY`) and labelled according to an index (`labels`).
+2. While flood-filling, `Region` metadata is collected (`size`, `minX`, `maxX`, `minY`, `maxY`) and labeled according to an index (`labels`).
 3. After all components are labeled and regions metadata computed,
 iterate pixels again. For a pixel whose region is considered *small*
 (fails `isBigEnough(minArea,minWidth,minHeight)`),

@@ -336,7 +336,7 @@ Possible enhancements include:
 
 - Multi-pass merging
 - Choosing the *largest neighboring region* instead of the first valid one
-- Detecting localised width/height - regions often have large tentacle-like protusions.
+- Detecting localised width/height - regions often have large tentacle-like protrusions.
 
 The current design favors **clarity and predictability** over heuristics.
 

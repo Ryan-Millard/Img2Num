@@ -10,7 +10,7 @@ the provided implementation, usage examples, complexity, limitations, and sugges
 
 ## Why this exists
 
-Small spurious pixel clusters (`"speckles"` or thin "arms") are common after colour quantization, k-means based colour clustering,
+Small spurious pixel clusters (`"speckles"` or thin "arms") are common after colour quantization, k-means-based color clustering,
 thresholding, or other segmentation steps. They make vectorization (e.g. converting raster -> SVG)
 and any downstream shape-based processing noisy.
 This routine cleans those small clusters by merging them into neighboring, larger regions so the image looks cleaner and shapes are more blob-like.
@@ -21,8 +21,8 @@ The merge rule is important as it avoids leaving gaps in the image (a problem fa
 
 ## When to use it
 
-- You have an RGBA image stored in a tightly-packed `uint8_t*` pixels buffer (4 bytes per pixel, row-major).
-- You need to remove very small connected components while preserving large components.
+- With an RGBA image stored in a tightly-packed `uint8_t*` pixels buffer (4 bytes per pixel, row-major).
+- To remove very small connected components while preserving large components.
 - You are OK with replacing a small-region pixel by the color of an *adjacent* large region.
 
 :::important
