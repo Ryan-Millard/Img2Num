@@ -1,0 +1,10 @@
+{
+  "label": "Styling",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "title": "Styling & CSS",
+    "description": "Reference for CSS variables, themes, and styling in Img2Num",
+    "slug": "/reference/styling"
+  }
+}

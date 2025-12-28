@@ -1,0 +1,10 @@
+{
+  "label": "Hooks",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "title": "React Hooks",
+    "description": "Reference for custom React hooks in Img2Num",
+    "slug": "/reference/react/hooks"
+  }
+}

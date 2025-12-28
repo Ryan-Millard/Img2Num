@@ -40,26 +40,20 @@
 
 /* Dark theme */
 :root.dark {
-  --color-bg: #000000; /* Black background */
-
-  --color-primary: #ff6b9d; /* bright pink for buttons/links */
-  --color-primary-dark: #ff4081; /* vibrant pink for hover */
-  --color-secondary: #ffd93d; /* bright yellow for accents */
-
-  --color-text: #f0f0f0; /* light gray for text */
-  --color-text-light: #d0d0d0; /* slightly darker gray for secondary text */
-
-  --color-border: #2d2d44; /* dark border */
-
+  --color-bg: #1a001f;
+  --color-primary: #ff6b9d;
+  --color-primary-dark: #ff4081;
+  --color-secondary: #ffd93d;
+  --color-text: #f0f0f0;
+  --color-text-light: #d0d0d0;
+  --color-border: #2d2d44;
   --color-error: #ff6b6b;
   --color-success: #51cf66;
-
-  /* Glass effect variables */
-  --glass-bg: rgba(255, 255, 255, 0.1);
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --glass-shadow: rgba(0, 0, 0, 0.1);
+  --glass-bg: rgba(0, 0, 0, 0.3);
+  --glass-border: rgba(0, 0, 0, 0.2);
+  --glass-shadow: rgba(255, 255, 255, 0.1);
   --glass-table-border: rgba(255, 255, 255, 0.1);
-  --glass-table-row-odd: rgba(255, 255, 255, 0.1);
+  --glass-table-row-odd: rgba(0, 0, 0, 0.5);
   --glass-table-row-hover: rgba(255, 255, 255, 0.15);
   --glass-table-stacked: rgba(255, 255, 255, 0.7);
 }

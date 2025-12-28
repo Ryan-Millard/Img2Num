@@ -1,0 +1,205 @@
+---
+title: useTheme
+---
+
+**What this hook provides:**
+
+- Access to the current theme (`'light'` or `'dark'`)
+- A function to toggle between light and dark themes
+- Automatic persistence in localStorage
+- Automatic application of theme classes to the document root
+
+## Dependencies
+
+- `react` (useState, useEffect)
+- Browser APIs: `localStorage`, `matchMedia`, `document.documentElement`
+
+## Basic usage
+
+```jsx
+import { useTheme } from '@hooks/useTheme';
+
+export default function ThemeAwareComponent() {
+  const { theme, toggleTheme } = useTheme();
+
+  return (
+    <div>
+      <p>Current theme: {theme}</p>
+      <button onClick={toggleTheme}>Toggle theme</button>
+    </div>
+  );
+}
+```
+
+## Return value
+
+The hook returns an object with two properties:
+
+| Property      | Type                | Description                                      |
+| ------------- | ------------------- | ------------------------------------------------ |
+| `theme`       | `'light' \| 'dark'` | The current active theme                         |
+| `toggleTheme` | `() => void`        | Function to toggle between light and dark themes |
+
+## How it works
+
+### Initialization
+
+When the component first mounts, `useTheme` determines the initial theme in this order:
+
+1. **localStorage**: If a `'theme'` key exists in localStorage, that value is used
+2. **System preference**: If no saved preference exists, it checks the user's system preference using `matchMedia('(prefers-color-scheme: dark)')`
+3. **Default fallback**: If neither is available (e.g., SSR), it defaults to `'light'`
+
+### Theme application
+
+The hook uses a `useEffect` to:
+
+1. Remove any existing theme classes (`'light'` or `'dark'`) from `document.documentElement`
+2. Add the current theme as a class to the root element
+3. Save the theme preference to localStorage
+
+This ensures that CSS variables defined in `:root.light` or `:root.dark` are properly applied.
+
+### SSR safety
+
+The hook includes guards for server-side rendering:
+
+- Returns `'light'` as the default when `window` is undefined
+- Skips DOM manipulation when `document` is undefined
+
+## Usage with CSS variables
+
+The hook works in conjunction with CSS variables defined in `/src/global-styles/variables.css`:
+
+```css
+/* Applied when theme is 'light' */
+:root.light {
+  --color-bg: #fed0d0;
+  --color-text: #2c1a1a;
+  --color-primary: #d14a72;
+  /* ... more variables */
+}
+
+/* Applied when theme is 'dark' */
+:root.dark {
+  --color-bg: #1a001f;
+  --color-text: #f0f0f0;
+  --color-primary: #ff6b9d;
+  /* ... more variables */
+}
+```
+
+See [CSS Theme Variables](/reference/styling/theme-variables) for a complete list of available variables.
+
+## Examples
+
+### Simple theme toggle button
+
+```jsx
+import { useTheme } from '@hooks/useTheme';
+import { Moon, Sun } from 'lucide-react';
+
+function ThemeToggle() {
+  const { theme, toggleTheme } = useTheme();
+
+  return (
+    <button onClick={toggleTheme} aria-label="Toggle theme">
+      {theme === 'dark' ? <Sun /> : <Moon />}
+    </button>
+  );
+}
+```
+
+### Conditional rendering based on theme
+
+```jsx
+import { useTheme } from '@hooks/useTheme';
+
+function ThemedLogo() {
+  const { theme } = useTheme();
+
+  return <img src={theme === 'dark' ? '/logo-dark.svg' : '/logo-light.svg'} alt="Logo" />;
+}
+```
+
+### Reading current theme without toggling
+
+```jsx
+import { useTheme } from '@hooks/useTheme';
+
+function ThemeInfo() {
+  const { theme } = useTheme();
+
+  return <p className="theme-indicator">You are viewing in {theme} mode</p>;
+}
+```
+
+## Implementation details
+
+### State management
+
+```javascript
+const [theme, setTheme] = useState(() => {
+  if (typeof window === 'undefined') {
+    return 'light'; // SSR fallback
+  }
+
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    return savedTheme;
+  }
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+});
+```
+
+### Toggle function
+
+```javascript
+const toggleTheme = () => {
+  setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+};
+```
+
+### Side effects
+
+```javascript
+useEffect(() => {
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return;
+  }
+
+  const root = document.documentElement;
+
+  // Remove both theme classes
+  root.classList.remove('light', 'dark');
+
+  // Add current theme class
+  root.classList.add(theme);
+
+  // Persist to localStorage
+  localStorage.setItem('theme', theme);
+}, [theme]);
+```
+
+## Testing
+
+The hook can be mocked in tests:
+
+```jsx
+import { vi } from 'vitest';
+import * as useThemeModule from '@hooks/useTheme';
+
+// Mock the hook
+vi.spyOn(useThemeModule, 'useTheme').mockReturnValue({
+  theme: 'dark',
+  toggleTheme: vi.fn(),
+});
+```
+
+See [ThemeSwitch tests](/reference/react/components/ThemeSwitch/tests) for examples of testing components that use this hook.
+
+## Related
+
+- [ThemeSwitch Component](/reference/react/components/ThemeSwitch) - UI component built with this hook
+- [CSS Theme Variables](/reference/styling/theme-variables) - Available CSS variables for theming
