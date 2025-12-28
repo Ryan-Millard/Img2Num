@@ -1,13 +1,15 @@
 ---
-title: useTheme
+title: useTheme Hook
+sidebar_label: useTheme
 ---
 
+:::info
 **What this hook provides:**
-
 - Access to the current theme (`'light'` or `'dark'`)
 - A function to toggle between light and dark themes
 - Automatic persistence in localStorage
 - Automatic application of theme classes to the document root
+:::
 
 ## Dependencies
 
@@ -37,7 +39,7 @@ The hook returns an object with two properties:
 
 | Property      | Type                | Description                                      |
 | ------------- | ------------------- | ------------------------------------------------ |
-| `theme`       | `'light' \| 'dark'` | The current active theme                         |
+| `theme`       | `string`            | The current active theme (`light` or `dark`)     |
 | `toggleTheme` | `() => void`        | Function to toggle between light and dark themes |
 
 ## How it works
@@ -48,24 +50,16 @@ When the component first mounts, `useTheme` determines the initial theme in this
 
 1. **localStorage**: If a `'theme'` key exists in localStorage, that value is used
 2. **System preference**: If no saved preference exists, it checks the user's system preference using `matchMedia('(prefers-color-scheme: dark)')`
-3. **Default fallback**: If neither is available (e.g., SSR), it defaults to `'light'`
+3. **Default fallback**: If neither is available, it defaults to `'light'`
 
 ### Theme application
 
 The hook uses a `useEffect` to:
-
 1. Remove any existing theme classes (`'light'` or `'dark'`) from `document.documentElement`
 2. Add the current theme as a class to the root element
 3. Save the theme preference to localStorage
 
 This ensures that CSS variables defined in `:root.light` or `:root.dark` are properly applied.
-
-### SSR safety
-
-The hook includes guards for server-side rendering:
-
-- Returns `'light'` as the default when `window` is undefined
-- Skips DOM manipulation when `document` is undefined
 
 ## Usage with CSS variables
 
@@ -89,7 +83,7 @@ The hook works in conjunction with CSS variables defined in `/src/global-styles/
 }
 ```
 
-See [CSS Theme Variables](/reference/styling/theme-variables) for a complete list of available variables.
+See [CSS Theme Variables](../../css/global/variables/theme/) for a complete list of available variables.
 
 ## Examples
 
