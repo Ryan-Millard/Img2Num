@@ -191,9 +191,9 @@ vi.spyOn(useThemeModule, 'useTheme').mockReturnValue({
 });
 ```
 
-See [ThemeSwitch tests](/reference/react/components/ThemeSwitch/tests) for examples of testing components that use this hook.
+See [ThemeSwitch tests](../../components/ThemeSwitch/tests) for examples of testing components that use this hook.
 
 ## Related
 
-- [ThemeSwitch Component](/reference/react/components/ThemeSwitch) - UI component built with this hook
-- [CSS Theme Variables](/reference/styling/theme-variables) - Available CSS variables for theming
+- [ThemeSwitch Component](../../components/ThemeSwitch) - UI component built with this hook
+- [CSS Theme Variables](../../css/global/variables/theme/) - Available CSS variables for theming
