@@ -8,7 +8,7 @@ The ThemeSwitch component has 7 updated tests covering rendering, icon display, 
 ## Test file location
 
 ```
-src/test/ThemeSwitch.test.jsx
+src/components/ThemeSwitch.test.jsx
 ```
 
 ## Running the tests
