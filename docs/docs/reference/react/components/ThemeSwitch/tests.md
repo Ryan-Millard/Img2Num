@@ -2,7 +2,8 @@
 title: ThemeSwitch Tests
 ---
 
-The ThemeSwitch component has comprehensive test coverage with 7 tests.
+
+The ThemeSwitch component has 7 updated tests covering rendering, icon display, theme toggling, hook integration, and edge cases.
 
 ## Test file location
 
@@ -25,178 +26,100 @@ npm test -- --watch ThemeSwitch.test.jsx
 
 ## Test organization
 
-The test suite is organized into the following groups:
+### 1. Rendering (2 tests)
 
-### 1. Rendering (4 tests)
+* Renders a button with the correct aria-label based on the theme
+* Button has type="button" attribute and CSS class `themeButton`
 
-Verifies basic component rendering and structure:
+### 2. Icon display based on theme (2 tests)
 
-- ✓ Should render a button
-- ✓ Should have type="button" attribute
-- ✓ Should have proper aria-label for accessibility
-- ✓ Should apply the themeButton CSS class
+* Shows Moon icon for light theme
+* Shows Sun icon for dark theme
+* Applies `icon` CSS class correctly
 
-### 2. Icon display based on theme (4 tests)
+### 3. Theme toggling functionality (2 tests)
 
-Tests conditional rendering of icons:
+* Calls `toggleTheme` when button is clicked
+* Is keyboard accessible (focusable)
 
-- ✓ Should display Moon icon when theme is light
-- ✓ Should display Sun icon when theme is dark
-- ✓ Should apply icon CSS class to Moon icon
-- ✓ Should apply icon CSS class to Sun icon
+### 4. Integration with useTheme hook (1 test)
 
-### 3. Theme toggling functionality (4 tests)
+* Uses `toggleTheme` function from hook
 
-Verifies click and keyboard interactions:
+### 5. Edge cases (1 test)
 
-- ✓ Should call toggleTheme when button is clicked
-- ✓ Should call toggleTheme multiple times on multiple clicks
-- ✓ Should be accessible via keyboard (Enter key)
-- ✓ Should be accessible via keyboard (Space key)
-
-### 4. Integration with useTheme hook (3 tests)
-
-Tests integration with the underlying hook:
-
-- ✓ Should use theme value from useTheme hook
-- ✓ Should use toggleTheme function from useTheme hook
-- ✓ Should call useTheme hook on component mount
-
-### 5. Edge cases (3 tests)
-
-Handles unexpected or edge case scenarios:
-
-- ✓ Should handle undefined theme gracefully
-- ✓ Should handle null theme gracefully
-- ✓ Should handle unexpected theme value gracefully
+* Defaults to Moon icon when theme is undefined or falsy
 
 ## Mocking strategy
 
-The tests use comprehensive mocking to isolate the component:
+* **useTheme hook**: mocked with `vi.spyOn` to control theme and toggle function
+* **CSS modules**: mocked to check `className` usage
+* **Lucide icons**: mocked with test spans for Moon/Sun icons
+* **Tooltip**: mocked as a simple wrapper component
 
-### Mock useTheme hook
+## Example test snippets
 
-```javascript
-import * as useThemeModule from '@hooks/useTheme';
-
-vi.spyOn(useThemeModule, 'useTheme').mockReturnValue({
-  theme: 'light',
-  toggleTheme: mockToggleTheme,
-});
-```
-
-### Mock CSS modules
+### Rendering button with light theme
 
 ```javascript
-vi.mock('@components/ThemeSwitch.module.css', () => ({
-  default: {
-    themeButton: 'mocked-theme-button-class',
-    icon: 'mocked-icon-class',
-  },
-}));
+vi.spyOn(useThemeModule, 'useTheme').mockReturnValue({ theme: 'light', toggleTheme: mockToggleTheme });
+render(<ThemeSwitch />);
+const button = screen.getByRole('button', { name: 'Switch to Dark Mode' });
+expect(button).toBeInTheDocument();
+expect(button).toHaveAttribute('type', 'button');
+expect(button).toHaveClass('mocked-theme-button-class');
 ```
-
-### Mock Lucide React icons
-
-```javascript
-vi.mock('lucide-react', () => ({
-  Moon: ({ className }) => (
-    <span data-testid="moon-icon" className={className}>
-      Moon Icon
-    </span>
-  ),
-  Sun: ({ className }) => (
-    <span data-testid="sun-icon" className={className}>
-      Sun Icon
-    </span>
-  ),
-}));
-```
-
-## Example tests
 
 ### Testing icon display
 
 ```javascript
-it('should display Moon icon when theme is light', () => {
-  vi.spyOn(useThemeModule, 'useTheme').mockReturnValue({
-    theme: 'light',
-    toggleTheme: mockToggleTheme,
-  });
-
-  render(<ThemeSwitch />);
-
-  const moonIcon = screen.getByTestId('moon-icon');
-  expect(moonIcon).toBeInTheDocument();
-  expect(screen.queryByTestId('sun-icon')).not.toBeInTheDocument();
-});
+const moonIcon = screen.getByTestId('moon-icon');
+expect(moonIcon).toBeInTheDocument();
+expect(moonIcon).toHaveClass('mocked-icon-class');
+expect(screen.queryByTestId('sun-icon')).not.toBeInTheDocument();
 ```
 
-### Testing click handler
+### Testing toggleTheme
 
 ```javascript
-it('should call toggleTheme when button is clicked', () => {
-  vi.spyOn(useThemeModule, 'useTheme').mockReturnValue({
-    theme: 'light',
-    toggleTheme: mockToggleTheme,
-  });
-
-  render(<ThemeSwitch />);
-
-  const button = screen.getByRole('button');
-  fireEvent.click(button);
-
-  expect(mockToggleTheme).toHaveBeenCalledTimes(1);
-});
+const button = screen.getByRole('button', { name: 'Switch to Dark Mode' });
+fireEvent.click(button);
+expect(mockToggleTheme).toHaveBeenCalledTimes(1);
 ```
 
-### Testing edge cases
+### Edge case: undefined theme
 
 ```javascript
-it('should handle undefined theme gracefully', () => {
-  vi.spyOn(useThemeModule, 'useTheme').mockReturnValue({
-    theme: undefined,
-    toggleTheme: mockToggleTheme,
-  });
-
-  render(<ThemeSwitch />);
-
-  // Should default to showing Moon icon (theme !== 'dark')
-  expect(screen.getByTestId('moon-icon')).toBeInTheDocument();
-});
+vi.spyOn(useThemeModule, 'useTheme').mockReturnValue({ theme: undefined, toggleTheme: mockToggleTheme });
+render(<ThemeSwitch />);
+expect(screen.getByTestId('moon-icon')).toBeInTheDocument();
 ```
 
 ## Test utilities
 
-The tests use:
+* **Vitest** - Test framework
+* **React Testing Library** - Component rendering & queries
+* **vi.fn() / vi.spyOn()** - Mocking
+* **fireEvent** - User interactions
 
-- **Vitest** - Test framework
-- **React Testing Library** - Component rendering and queries
-- **vi.fn()** - Mock functions
-- **vi.spyOn()** - Spy on module exports
-- **fireEvent** - Simulate user interactions
+## Coverage
 
-## Coverage metrics
+* Component rendering (light/dark themes)
+* User interactions (click, keyboard)
+* Edge cases (undefined/falsy theme)
+* Integration with hook
+* Accessibility (aria-labels, focus)
+* CSS class application
 
-The tests achieve comprehensive coverage of:
+## Best practices
 
-- All component renders (light/dark themes)
-- All user interactions (click, keyboard)
-- All edge cases (undefined, null, unexpected values)
-- Integration with external dependencies
-- Accessibility features
-- CSS class application
-
-## Best practices demonstrated
-
-1. **Isolation** - Mocking external dependencies to test component in isolation
-2. **Accessibility testing** - Verifying aria-labels and keyboard support
-3. **Edge case handling** - Testing undefined, null, and unexpected values
-4. **User-centric testing** - Using `getByRole`, `getByTestId` for queries
-5. **Clear organization** - Grouping related tests with `describe` blocks
-6. **Setup/teardown** - Using `beforeEach` and `afterEach` for clean test state
+1. Isolation via mocking
+2. Accessibility testing
+3. Edge case handling
+4. Clear test organization
+5. Setup/teardown with beforeEach/afterEach
 
 ## Related
 
-- [ThemeSwitch Component](../) - Component documentation
-- [useTheme Hook](../../../hooks/useTheme) - Hook used by the component
+* [ThemeSwitch Component](../)
+* [useTheme Hook](../../../hooks/useTheme)
