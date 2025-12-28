@@ -1,6 +1,7 @@
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from '@hooks/useTheme';
 import styles from './ThemeSwitch.module.css';
+import Tooltip from '@components/Tooltip';
 
 /**
  * ThemeSwitch component
@@ -16,9 +17,11 @@ export default function ThemeSwitch() {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <button aria-label="Toggle Dark Mode" type="button" className={styles.themeButton} onClick={toggleTheme}>
-      {/* Show Sun icon in dark mode, Moon icon in light mode */}
-      {theme === 'dark' ? <Sun className={styles.icon} /> : <Moon className={styles.icon} />}
-    </button>
+    <Tooltip content={`Switch to ${ theme === 'dark' ? "Light" : "Dark" } Mode`}>
+      <button aria-label={`Switch to ${ theme === 'dark' ? "Light" : "Dark" } Mode`} type="button" className={`glass ${styles.themeButton}`} onClick={toggleTheme}>
+        {/* Show Sun icon in dark mode, Moon icon in light mode */}
+        {theme === 'dark' ? <Sun className={styles.icon} /> : <Moon className={styles.icon} />}
+      </button>
+    </Tooltip>
   );
 }
