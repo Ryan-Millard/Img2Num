@@ -2,7 +2,7 @@
 title: ThemeSwitch Tests
 ---
 
-The ThemeSwitch component has comprehensive test coverage with 18 tests organized into 6 test suites.
+The ThemeSwitch component has comprehensive test coverage with 7 tests.
 
 ## Test file location
 
