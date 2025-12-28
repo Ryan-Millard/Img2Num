@@ -7,7 +7,7 @@ sidebar_position: 6
 # FFT — Iterative Implementation Explained
 
 This section explains the inner workings of the **iterative FFT** used in this project. It assumes you already understand Fourier theory, the DFT,
-and complex numbers (if not, [click here](./prerequisite-theory)).
+and complex numbers (if not, [click here](../prerequisite-theory)).
 Here we focus on **how the code works**, why each step is necessary, and why it was implemented in the way it was.
 
 ## Overview
