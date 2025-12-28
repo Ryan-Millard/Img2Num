@@ -201,10 +201,10 @@ The component is fully tested. Key test scenarios include:
 - Integration with the `useTheme` hook
 - Keyboard accessibility
 
-See the [test documentation](/reference/react/components/ThemeSwitch/tests) for details.
+See the [test documentation](./tests) for details.
 
 ## Related
 
-- [useTheme Hook](/reference/react/hooks/useTheme) - The underlying hook that powers theme switching
-- [CSS Theme Variables](/reference/styling/theme-variables) - CSS variables that change with the theme
-- [NavBar Component](/reference/react/components/NavBar) - Example usage in the navigation bar
+- [useTheme Hook](../../hooks/useTheme) - The underlying hook that powers theme switching
+- [CSS Theme Variables](../../css/global/variables/theme/) - CSS variables that change with the theme
+- [NavBar Component](../NavBar) - Example usage in the navigation bar

@@ -198,5 +198,5 @@ The tests achieve comprehensive coverage of:
 
 ## Related
 
-- [ThemeSwitch Component](../) - Component documentation
-- [useTheme Hook](../../../hooks/useTheme) - Hook used by the component
+- [ThemeSwitch Component](/reference/react/components/ThemeSwitch) - Component documentation
+- [useTheme Hook](/reference/react/hooks/useTheme) - Hook used by the component
