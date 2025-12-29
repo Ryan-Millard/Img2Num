@@ -1,52 +1,70 @@
-.themeButtonLight{
+.themeButton{
   width:60px;
   height:30px;
   border-radius: 9999px;
-  padding: 0.5rem 0.75rem;
-  transition: all 0.2s ease-in-out;
+  padding-inline: 8px;
+  transition: transform 0.2s ease-in-out;
   border: none;
   margin: 0px 0.875rem;
-  cursor: pointer;
   position:relative;
+    display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.themeButtonLight{
   background-color: #1a001f;
 }
 
 .themeButtonDark{
-    width:60px;
-  height:30px;
-  border-radius: 9999px;
-  padding: 0.5rem 0.75rem;
-  transition: all 0.2s ease-in-out;
-  border: none;
-  margin: 0px 0.875rem;
-  cursor: pointer;
-  position:relative;
-  background-color: #fed0d0;;
+  background-color: #ddd9d9;
+}
+
+.themeButton:hover .icondark {
+  color: rgb(220, 220, 220);
+}
+
+.themeButton:hover .icon {
+  color: #1a001f;
 }
 
 .themeButton:hover {
-  .icon {
-    color: var(--color-secondary);
-  }
+  cursor: pointer;
   transform: scale(1.02);
 }
 
+
 .icon {
-  position:absolute;
-  top:0;
-  left:0;
-  height: 1.8rem;
-  width: 1.8rem;
+  height: 1.3rem;
+  width: 1.3rem;
   color: var(--color-primary);
-  transition: color 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 .icondark{
-   position:absolute;
-  top:0;
-  left:0;
-  height: 1.8rem;
-  width: 1.8rem;
+  height: 1.3rem;
+  width: 1.3rem;
   color: var(--color-primary);
-  transition: all 0.5s ease-in;
-  transform:translateX(31px)
+  transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.themeButtonLight .icon{
+  transform: translateX(0);
+}
+.themeButtonLight .icondark{
+transform: translateX(100%);
+}
+
+.themeButtonDark .icon{
+  transform: translateX(-100%);
+}
+.themeButtonDark .icondark{
+  transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon,
+  .icondark,
+  .themeButton {
+    transition: none;
+  }
 }
