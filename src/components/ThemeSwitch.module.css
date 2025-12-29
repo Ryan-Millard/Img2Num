@@ -1,22 +1,52 @@
-.themeButton {
+.themeButtonLight{
+  width:60px;
+  height:30px;
   border-radius: 9999px;
   padding: 0.5rem 0.75rem;
   transition: all 0.2s ease-in-out;
   border: none;
   margin: 0px 0.875rem;
   cursor: pointer;
+  position:relative;
+  background-color: #1a001f;
+}
+
+.themeButtonDark{
+    width:60px;
+  height:30px;
+  border-radius: 9999px;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.2s ease-in-out;
+  border: none;
+  margin: 0px 0.875rem;
+  cursor: pointer;
+  position:relative;
+  background-color: #fed0d0;;
 }
 
 .themeButton:hover {
   .icon {
     color: var(--color-secondary);
   }
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
 .icon {
-  height: 1.25rem;
-  width: 1.25rem;
+  position:absolute;
+  top:0;
+  left:0;
+  height: 1.8rem;
+  width: 1.8rem;
   color: var(--color-primary);
   transition: color 0.2s ease-in-out;
+}
+.icondark{
+   position:absolute;
+  top:0;
+  left:0;
+  height: 1.8rem;
+  width: 1.8rem;
+  color: var(--color-primary);
+  transition: all 0.5s ease-in;
+  transform:translateX(31px)
 }
