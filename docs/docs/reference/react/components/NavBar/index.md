@@ -2,18 +2,34 @@
 title: NavBar
 ---
 
-This page documents the **NavBar** component used across Img2Num. It handles:
+The **NavBar** component provides the main navigation interface for Img2Num.  
+It supports internal routing, external links, theme switching, and a responsive hamburger menu.
 
-- Navigation between internal pages
-- External links (e.g., GitHub)
-- Theme switching
+---
+
+## Features
+
+- Internal navigation using React Router
+- External links (open in a new tab)
+- Active link highlighting
+- Theme switch toggle
 - Responsive hamburger menu for small screens
-- Tooltips for links and buttons
+- Tooltips for navigation items
 
-:::caution Note
-Full documentation and tests are still in progress.
-:::
+---
 
-## Want to help?
-We’d love your contributions! You can help by writing documentation or adding tests.
-Check out [issue #166](https://github.com/Ryan-Millard/Img2Num/issues/166) to get started.
+## Usage
+
+The `NavBar` component is used at the top level of the application layout.
+
+```tsx
+import NavBar from '@components/NavBar';
+
+function App() {
+  return (
+    <>
+      <NavBar />
+      {/* other content */}
+    </>
+  );
+}
