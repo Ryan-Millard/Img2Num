@@ -15,49 +15,73 @@
   --navbar-menu-z-index: 100;
 }
 
-/* Light theme (default) */
+/* Light theme (default) - Warm hedgehog palette */
 :root,
 :root.light {
-  --color-bg: #fed0d0; /* soft pink background */
+  /* Background - soft cream from hedgehog */
+  --color-bg: #F8EACD;
 
-  --color-primary: #d14a72; /* strong pink/magenta for buttons/links */
-  --color-primary-dark: #a73457; /* darker pink for hover */
-  --color-secondary: #ff9800; /* soft yellow for accents */
+  /* Primary - warm brown from hedgehog fur */
+  --color-primary: #6A3817;
+  --color-primary-dark: #532E1A;
+  
+  /* Secondary - golden/tan accent */
+  --color-secondary: #D7A47D;
+  
+  /* Tertiary - soft pink from hedgehog belly */
+  --color-accent: #FABFC0;
 
-  --color-text: #2c1a1a; /* very dark brown for all text */
-  --color-text-light: #2c1a1a; /* also dark, for any "light" text elements */
+  /* Text colors - dark brown for readability */
+  --color-text: #2c1a1a;
+  --color-text-light: #69432E;
 
-  --color-border: #f2b8c3; /* slightly darker pink than background */
+  /* Border - warm beige */
+  --color-border: #EECEA4;
 
   --color-error: #e94b4b;
   --color-success: #4bb543;
 
-  /* Glass effect variables */
-  --glass-bg: rgba(255, 255, 255, 0.1);
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --glass-shadow: rgba(0, 0, 0, 0.1);
-  --glass-table-border: rgba(255, 255, 255, 0.2);
-  --glass-table-row-odd: rgba(255, 255, 255, 0.5);
-  --glass-table-row-hover: rgb(255, 255, 255);
-  --glass-table-stacked: rgba(255, 255, 255, 0.7);
+  /* Glass effect variables - warmer tones */
+  --glass-bg: rgba(248, 234, 205, 0.25);
+  --glass-border: rgba(106, 56, 23, 0.15);
+  --glass-shadow: rgba(83, 46, 26, 0.1);
+  --glass-table-border: rgba(215, 164, 125, 0.3);
+  --glass-table-row-odd: rgba(248, 234, 205, 0.5);
+  --glass-table-row-hover: rgba(250, 191, 192, 0.3);
+  --glass-table-stacked: rgba(238, 206, 164, 0.7);
 }
 
-/* Dark theme */
+/* Dark theme - Deep forest night with warm accents */
 :root.dark {
-  --color-bg: #1a001f;
-  --color-primary: #ff6b9d;
-  --color-primary-dark: #ff4081;
-  --color-secondary: #ffd93d;
-  --color-text: #f0f0f0;
-  --color-text-light: #d0d0d0;
-  --color-border: #2d2d44;
+  /* Background - deep purple/brown night */
+  --color-bg: #1a0f1f;
+  
+  /* Primary - warm coral/pink */
+  --color-primary: #E0AD7D;
+  --color-primary-dark: #D7A47D;
+  
+  /* Secondary - golden glow */
+  --color-secondary: #F8EACD;
+  
+  /* Tertiary - soft pink glow */
+  --color-accent: #FABFC0;
+
+  /* Text colors */
+  --color-text: #F8EACD;
+  --color-text-light: #EECEA4;
+  
+  /* Border - muted warm brown */
+  --color-border: #3d2a3d;
+  
   --color-error: #ff6b6b;
   --color-success: #51cf66;
-  --glass-bg: rgba(0, 0, 0, 0.3);
-  --glass-border: rgba(0, 0, 0, 0.2);
-  --glass-shadow: rgba(255, 255, 255, 0.1);
-  --glass-table-border: rgba(255, 255, 255, 0.1);
-  --glass-table-row-odd: rgba(0, 0, 0, 0.5);
-  --glass-table-row-hover: rgba(255, 255, 255, 0.15);
-  --glass-table-stacked: rgba(255, 255, 255, 0.7);
+  
+  /* Glass effect variables - darker with warm undertones */
+  --glass-bg: rgba(61, 42, 61, 0.4);
+  --glass-border: rgba(215, 164, 125, 0.2);
+  --glass-shadow: rgba(248, 234, 205, 0.05);
+  --glass-table-border: rgba(215, 164, 125, 0.15);
+  --glass-table-row-odd: rgba(42, 26, 42, 0.5);
+  --glass-table-row-hover: rgba(224, 173, 125, 0.15);
+  --glass-table-stacked: rgba(238, 206, 164, 0.7);
 }

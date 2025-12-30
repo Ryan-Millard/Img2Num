@@ -33,9 +33,6 @@ export default function NavBar() {
         </Link>
       </Tooltip>
 
-      {/* Theme Switch */}
-      <ThemeSwitch />
-
       {/* Mobile Toggle */}
       <Tooltip content={isOpen ? 'Close menu' : 'Open menu'}>
         <button
@@ -97,6 +94,11 @@ export default function NavBar() {
             </Tooltip>
           </li>
         ))}
+
+        {/* Theme Switch */}
+        <li role="none" className={styles.themeToggle}>
+          <ThemeSwitch />
+        </li>
       </ul>
     </GlassCard>
   );

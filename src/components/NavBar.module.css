@@ -51,7 +51,7 @@
   height: 40px;
   padding: 0;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   color: var(--color-text);
   cursor: pointer;
@@ -60,7 +60,7 @@
 
 .menuToggle:hover,
 .menuToggle:focus-visible {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--glass-bg);
   outline: none;
 }
 
@@ -97,7 +97,7 @@
 }
 
 .navLink:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--glass-bg);
   color: var(--color-secondary);
   transform: translateY(-2px);
 }
@@ -107,19 +107,20 @@
 }
 
 .navLink.active {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(106, 56, 23, 0.15);
   font-weight: 600;
-  color: var(--color-secondary);
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
 }
 
 .navLink.active:hover,
 .navLink.active:focus,
 .navLink.active:active {
-  color: var(--color-secondary);
+  color: var(--color-primary);
 }
 
 .navLink.active svg:first-child {
-  color: var(--color-secondary);
+  color: var(--color-primary);
 }
 
 /* External icon */
@@ -134,6 +135,13 @@
 .navLink:hover .externalIcon {
   opacity: 1;
   transform: translate(3px, -3px);
+}
+
+/* Theme Toggle in nav */
+.themeToggle {
+  display: flex;
+  align-items: center;
+  margin-left: var(--spacing-sm);
 }
 
 /* ===== MOBILE STYLES ===== */
@@ -158,12 +166,14 @@
     flex-direction: column;
     gap: 6px;
     padding: 12px;
-    background: linear-gradient(145deg, #3d2a3d 0%, #2a1a2a 100%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(145deg, 
+      rgba(106, 56, 23, 0.95) 0%, 
+      rgba(83, 46, 26, 0.98) 100%);
+    border: 1px solid rgba(215, 164, 125, 0.2);
     border-radius: 20px;
     box-shadow: 
-      0 20px 50px rgba(0, 0, 0, 0.5),
-      0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+      0 20px 50px rgba(83, 46, 26, 0.4),
+      0 0 0 1px rgba(248, 234, 205, 0.05) inset;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-8px);
@@ -207,7 +217,7 @@
     border-radius: 12px;
     background: transparent;
     border: none;
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(248, 234, 205, 0.85);
     font-size: 0.95rem;
   }
 
@@ -217,8 +227,8 @@
   }
 
   .navLink:hover {
-    background: rgba(255, 255, 255, 0.06);
-    color: #fff;
+    background: rgba(248, 234, 205, 0.1);
+    color: #F8EACD;
     transform: none;
   }
 
@@ -228,19 +238,22 @@
   }
 
   .navLink:active {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(248, 234, 205, 0.15);
     transform: scale(0.98);
   }
 
   .navLink.active {
-    background: linear-gradient(135deg, rgba(209, 74, 114, 0.15) 0%, rgba(255, 152, 0, 0.1) 100%);
-    color: #fff;
+    background: linear-gradient(135deg, 
+      rgba(248, 234, 205, 0.25) 0%, 
+      rgba(215, 164, 125, 0.2) 100%);
+    color: #F8EACD;
     font-weight: 600;
+    border-left: 3px solid #F8EACD;
   }
 
   .navLink.active svg:first-child {
     opacity: 1;
-    color: var(--color-secondary);
+    color: #F8EACD;
   }
 
   /* Divider between internal and external links */
@@ -248,7 +261,7 @@
     content: '';
     display: block;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    background: linear-gradient(90deg, transparent, rgba(215, 164, 125, 0.25), transparent);
     margin-top: 6px;
   }
 }.externalLinkIcon {
