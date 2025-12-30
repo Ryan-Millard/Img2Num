@@ -10,23 +10,23 @@ jobs:
   lint:
     name: Lint Code
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run ESLint
         run: npm run lint
-      
+
       - name: Run editorconfig-checker
         run: npm run lint:style
 
@@ -96,3 +96,4 @@ jobs:
             $(tail -n 100 validation.log)
             ```
           is_pr: true
+

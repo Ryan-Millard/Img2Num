@@ -1,0 +1,91 @@
+[1mdiff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml[m
+[1mindex 4f52964..2f97893 100644[m
+[1m--- a/.github/workflows/ci.yml[m
+[1m+++ b/.github/workflows/ci.yml[m
+[36m@@ -10,23 +10,23 @@[m [mjobs:[m
+   lint:[m
+     name: Lint Code[m
+     runs-on: ubuntu-latest[m
+[31m-    [m
+[32m+[m
+     steps:[m
+       - name: Checkout code[m
+         uses: actions/checkout@v4[m
+[31m-      [m
+[32m+[m
+       - name: Setup Node.js[m
+         uses: actions/setup-node@v4[m
+         with:[m
+           node-version: '22'[m
+           cache: 'npm'[m
+[31m-      [m
+[32m+[m
+       - name: Install dependencies[m
+         run: npm ci[m
+[31m-      [m
+[32m+[m
+       - name: Run ESLint[m
+         run: npm run lint[m
+[31m-      [m
+[32m+[m
+       - name: Run editorconfig-checker[m
+         run: npm run lint:style[m
+ [m
+[36m@@ -95,4 +95,5 @@[m [mjobs:[m
+             ```[m
+             $(tail -n 100 validation.log)[m
+             ```[m
+[31m-          is_pr: true[m
+\ No newline at end of file[m
+[32m+[m[32m          is_pr: true[m
+[41m+[m
+[1mdiff --git a/CONTRIBUTING.md b/CONTRIBUTING.md[m
+[1mindex 2ec3d91..569557d 100644[m
+[1m--- a/CONTRIBUTING.md[m
+[1m+++ b/CONTRIBUTING.md[m
+[36m@@ -28,4 +28,4 @@[m [mFor detailed information about linting standards, fixing issues, and CI integrat[m
+ If you encounter linting issues you're unsure how to fix, feel free to:[m
+ - Open a [discussion](https://github.com/Ryan-Millard/Img2Num/discussions) or [issue](https://github.com/Ryan-Millard/Img2Num/issues) and ask for guidance[m
+ - Comment on the relevant issue[m
+[31m-- Check existing PRs for examples[m
+\ No newline at end of file[m
+[32m+[m[32m- Check existing PRs for examples[m
+[1mdiff --git a/docs/docs/guidelines/coding-style.md b/docs/docs/guidelines/coding-style.md[m
+[1mindex cf68131..4dc1381 100644[m
+[1m--- a/docs/docs/guidelines/coding-style.md[m
+[1m+++ b/docs/docs/guidelines/coding-style.md[m
+[36m@@ -162,4 +162,4 @@[m [mAll pull requests automatically run linting checks. If the lint job fails:[m
+ [m
+ :::tip Current Status[m
+ The project has some existing lint violations being addressed incrementally. Focus on keeping your changes lint-clean. Don't feel obligated to fix unrelated issues![m
+[31m-:::[m
+\ No newline at end of file[m
+[32m+[m[32m:::[m
+[1mdiff --git a/docs/docs/reference/tools/ci-workflows.md b/docs/docs/reference/tools/ci-workflows.md[m
+[1mindex 70f5049..dfa4143 100644[m
+[1m--- a/docs/docs/reference/tools/ci-workflows.md[m
+[1m+++ b/docs/docs/reference/tools/ci-workflows.md[m
+[36m@@ -1,4 +1,5 @@[m
+ ---[m
+[32m+[m[32msidebar_position: 2[m
+ title: CI/CD Workflows[m
+ description: Documentation for GitHub Actions workflows used in Img2Num's continuous integration and deployment pipeline[m
+ keywords: [CI, CD, GitHub Actions, workflows, automation, testing, linting][m
+[36m@@ -80,8 +81,8 @@[m [mnpm run validate-scripts[m
+ **Solutions**:[m
+ 1. Run the failing command locally:[m
+    ```bash[m
+[31m-   npm run lint        # for ESLint errors[m
+[31m-   npm run lint:style  # for style errors[m
+[32m+[m[32m      npm run lint        # for ESLint errors[m
+[32m+[m[32m      npm run lint:style  # for style errors[m
+    ```[m
+ 2. Review the error messages[m
+ 3. Fix issues (use `npm run lint:fix` for auto-fixable ESLint issues)[m
+[36m@@ -136,4 +137,4 @@[m [mPlanned improvements to CI workflows:[m
+ [m
+ :::info Contributing to CI[m
+ If you want to improve or add new workflows, please open an issue first to discuss your ideas with the maintainers.[m
+[31m-:::[m
+\ No newline at end of file[m
+[32m+[m[32m:::[m
