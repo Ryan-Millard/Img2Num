@@ -18,10 +18,15 @@ export default function ThemeSwitch() {
 
   return (
     <Tooltip content={`Switch to ${ theme === 'dark' ? "Light" : "Dark" } Mode`}>
-      <button aria-label={`Switch to ${ theme === 'dark' ? "Light" : "Dark" } Mode`} type="button" className={`glass ${styles.themeButton}`} onClick={toggleTheme}>
-        {/* Show Sun icon in dark mode, Moon icon in light mode */}
-        {theme === 'dark' ? <Sun className={styles.icon} /> : <Moon className={styles.icon} />}
-      </button>
+      {/* Added sliding toggle effect to change theme mode which enhances ui  */}
+     <button
+  aria-label={`Switch to ${theme === "dark" ? "Light" : "Dark"} Mode`}
+  type="button"
+  className={`${styles.themeButton} ${ theme === "dark" ? styles.themeButtonDark : styles.themeButtonLight }`} onClick={toggleTheme}>
+ <Sun className={styles.icon} />
+  <Moon className={styles.icondark} />
+</button>
+
     </Tooltip>
   );
 }
