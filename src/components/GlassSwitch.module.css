@@ -7,20 +7,23 @@
     padding: 0;
     margin-right:20px;
     cursor: pointer;
+    position:relative;
 }
-.unChecked{
-    justify-content: start;
-}
+
 .checked{
-    justify-content: end;
     background-color: rgb(26, 194, 26);
 }
 
 .thumb{
+position:absolute;
+left:2px;
 width:30px;
 height:30px;
 border-radius: 100%;
-transition:color 0.3s ease;
+transition:transform 0.3s ease;
 background-color: rgba(255, 255, 255, 0.956);
 }
 
+.checked .thumb{
+    transform: translateX(100%);
+}
