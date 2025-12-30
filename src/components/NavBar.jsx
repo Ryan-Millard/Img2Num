@@ -5,10 +5,15 @@ import styles from './NavBar.module.css';
 import GlassCard from '@components/GlassCard';
 import ThemeSwitch from '@components/ThemeSwitch';
 import Tooltip from '@components/Tooltip';
+import GlassSwitch from './GlassSwitch';
+import { useTheme } from '@hooks/useTheme';
+
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const {theme , toggleTheme} = useTheme()
+const isDark = theme === 'dark';
 
   const links = [
     { path: '/', label: 'Home', tooltip: 'Go to the home page' },
@@ -55,7 +60,8 @@ export default function NavBar() {
         </Tooltip>
       </div>
       <div className={styles.spacer}></div>
-      <ThemeSwitch />
+      <GlassSwitch onChange={toggleTheme} checked={isDark} ariaLabel={'Toggle something'} />
+        <ThemeSwitch />
       <Tooltip content="Toggle navigation menu">
         <button className={styles.hamburger} onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
           <span className={isOpen ? styles.barActive : styles.bar}></span>
