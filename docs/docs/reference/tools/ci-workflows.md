@@ -81,8 +81,8 @@ npm run validate-scripts
 **Solutions**:
 1. Run the failing command locally:
    ```bash
-      npm run lint        # for ESLint errors
-      npm run lint:style  # for style errors
+   npm run lint        # for ESLint errors
+   npm run lint:style  # for style errors
    ```
 2. Review the error messages
 3. Fix issues (use `npm run lint:fix` for auto-fixable ESLint issues)
