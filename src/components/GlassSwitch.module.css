@@ -12,7 +12,7 @@
     justify-content: start;
 }
 .checked{
-    justify-content: flex-end;
+    justify-content: end;
     background-color: rgb(26, 194, 26);
 }
 
@@ -21,7 +21,6 @@ width:30px;
 height:30px;
 border-radius: 100%;
 transition:color 0.3s ease;
-background-color: rgba(255, 255, 255, 0.867);
-cursor: pointer;
+background-color: rgba(255, 255, 255, 0.956);
 }
 

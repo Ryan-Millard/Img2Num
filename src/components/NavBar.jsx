@@ -13,7 +13,7 @@ export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const {theme , toggleTheme} = useTheme()
-const isDark = theme === 'dark';
+  const isDark = theme === 'dark';
 
   const links = [
     { path: '/', label: 'Home', tooltip: 'Go to the home page' },
@@ -60,7 +60,7 @@ const isDark = theme === 'dark';
         </Tooltip>
       </div>
       <div className={styles.spacer}></div>
-      <GlassSwitch onChange={toggleTheme} checked={isDark} ariaLabel={'Toggle something'} />
+      <GlassSwitch onChange={toggleTheme} checked={isDark} ariaLabel={'Toggle'} />
         <ThemeSwitch />
       <Tooltip content="Toggle navigation menu">
         <button className={styles.hamburger} onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
