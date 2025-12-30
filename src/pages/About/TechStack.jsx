@@ -1,14 +1,16 @@
 import GlassCard from '@components/GlassCard';
+import Tooltip from '@components/Tooltip';
 import styles from './About.module.css';
 
 const NewGitHubTabAnchor = ({ path, projName }) => (
-  <a
-    href={`https://github.com/${path}`}
-    target="_blank"
-    rel="noopener noreferrer"
-    title={`Visit the ${projName} GitHub repository`}>
-    {projName}
-  </a>
+  <Tooltip content={`Visit the ${projName} GitHub repository`}>
+    <a
+      href={`https://github.com/${path}`}
+      target="_blank"
+      rel="noopener noreferrer">
+      {projName}
+    </a>
+  </Tooltip>
 );
 
 const TechStack = () => (

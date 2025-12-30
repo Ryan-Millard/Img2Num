@@ -6,7 +6,7 @@ sidebar_position: 3
 
 ## 🌐General Rules
 - **Follow `.editorconfig`** exactly:
-  - Indent: **2 spaces** (except Makefile: tabs)
+  - Indent: **2 spaces**
   - Charset: **UTF-8**
   - Line endings: **LF**
   - Max line length: 120 (off for JSON, Markdown, lock files, images)
@@ -92,9 +92,6 @@ namespace exampleNamespace
 - Do **not** trim trailing whitespace
 - Final newline: true (lock files: false)
 - Max line length: off
-
-## 📝 Makefiles
-- Indent: **tabs only**
 
 ## 🖼 Images / Binary Assets
 - Charset: binary

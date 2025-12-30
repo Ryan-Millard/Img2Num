@@ -4,6 +4,123 @@
   "private": true,
   "type": "module",
   "homepage": "https://ryan-millard.github.io/Img2Num",
+  "scriptsInfo": {
+    "_meta": {
+      "basic": [
+        "dev",
+        "build",
+        "clean",
+        "format",
+        "lint",
+        "help"
+      ]
+    },
+    "Development": {
+      "dev": {
+        "desc": "Run Vite dev server",
+        "args": [
+          "-- port PORT    Specify dev server port",
+          "-- host HOST    Specify dev server host"
+        ]
+      },
+      "dev:debug": {
+        "desc": "Build WASM in debug mode then start dev server"
+      },
+      "dev:all": {
+        "desc": "Run Vite dev server and Docusaurus server"
+      },
+      "dev:all:debug": {
+        "desc": "Build WASM in debug mode then start dev and Docusaurus server"
+      },
+      "preview": {
+        "desc": "Preview the production build locally"
+      }
+    },
+    "Build": {
+      "build": {
+        "desc": "Build WASM then build the site",
+        "args": [
+          "-- mode MODE    Set the build mode (production/development)"
+        ]
+      },
+      "build-js": {
+        "desc": "Build only the JS/React site"
+      },
+      "build-wasm": {
+        "desc": "Build the WebAssembly modules"
+      },
+      "build-wasm:debug": {
+        "desc": "Build WASM modules in debug mode"
+      }
+    },
+    "Cleaning": {
+      "clean": {
+        "desc": "Clean WASM build artifacts and dist folder"
+      },
+      "clean-js": {
+        "desc": "Remove dist folder"
+      },
+      "clean-wasm": {
+        "desc": "Clean WASM build artifacts"
+      }
+    },
+    "Formatting": {
+      "format": {
+        "desc": "Format all files with Prettier and clang-format"
+      },
+      "format-js": {
+        "desc": "Format all non-C++ files with Prettier"
+      },
+      "format-wasm": {
+        "desc": "Format all C++ files with clang-format"
+      }
+    },
+    "Linting": {
+      "lint": {
+        "desc": "Run ESLint to check for code issues",
+        "args": [
+          "-- fix   Automatically fix fixable issues",
+          "-- style Check style rules only"
+        ]
+      },
+      "lint:fix": {
+        "desc": "Run ESLint and automatically fix issues"
+      },
+      "lint:style": {
+        "desc": "Check all files against .editorconfig rules"
+      }
+    },
+    "Testing": {
+      "test": {
+        "desc": "Run all tests once using Vitest"
+      },
+      "test:watch": {
+        "desc": "Run tests in watch mode with Vitest"
+      },
+      "test:coverage": {
+        "desc": "Run tests and generate a coverage report"
+      }
+    },
+    "Release": {
+      "release": {
+        "desc": "Generate and update changelog, then handle release versioning"
+      }
+    },
+    "Other": {
+      "help": {
+        "desc": "Show this help message",
+        "args": [
+          "-- filter <term>   Only show scripts matching <term>"
+        ]
+      },
+      "docs": {
+        "desc": "Run docs scripts (use `npm run docs help` to see available commands)"
+      },
+      "validate-scripts": {
+        "desc": "Validate that every script has a corresponding scriptsInfo entry"
+      }
+    }
+  },
   "scripts": {
     "help": "node scripts/help.js",
     "docs": "npm run --prefix docs",
@@ -14,46 +131,58 @@
     "preview": "vite preview",
     "build": "npm run build-wasm && vite build",
     "build-js": "vite build",
-    "build-wasm": "make -C src/wasm build",
-    "build-wasm:debug": "make -C src/wasm debug",
+    "build-wasm": "node scripts/build-wasm.js",
+    "build-wasm:debug": "node scripts/build-wasm.js --debug",
     "clean": "npm run clean-wasm && npm run clean-js",
-    "clean-js": "rm -rf dist",
-    "clean-wasm": "make -C src/wasm clean",
+    "clean-js": "rimraf dist",
+    "clean-wasm": "node scripts/build-wasm.js --clean",
     "format": "npm run format-js && npm run format-wasm",
     "format-js": "prettier --write .",
     "format-wasm": "node scripts/format-wasm.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:style": "editorconfig-checker",
-    "release": "node scripts/handle-changelog.js"
+    "release": "node scripts/handle-changelog.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "validate-scripts": "node scripts/validate-scripts.js"
   },
   "dependencies": {
     "imagetracerjs": "^1.2.6",
-    "lucide-react": "^0.561.0",
+    "lucide-react": "^0.562.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-helmet": "^6.1.0",
-    "react-router-dom": "^7.10.1"
+    "react-router-dom": "^7.11.0",
+    "react-tooltip": "^5.30.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
-    "@tanstack/react-query": "^5.90.12",
+    "@tanstack/react-query": "^5.90.14",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react-swc": "^4.2.2",
+    "@vitest/coverage-v8": "^4.0.16",
     "clang-format": "^1.8.0",
     "concurrently": "^9.2.1",
     "editorconfig-checker": "^6.1.1",
     "eslint": "^9.39.2",
     "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.4.20",
+    "eslint-plugin-react-refresh": "^0.4.26",
     "fast-glob": "^3.3.3",
     "fuzzy": "^0.1.3",
     "globals": "^16.5.0",
+    "jsdom": "^27.4.0",
     "prettier": "^3.7.4",
+    "rimraf": "^6.1.2",
     "standard-version": "^9.5.0",
-    "vite": "^7.2.7",
+    "vite": "^7.3.0",
     "vite-imagetools": "^9.0.2",
-    "vite-plugin-sitemap": "^0.8.2"
+    "vite-plugin-sitemap": "^0.8.2",
+    "vitest": "^4.0.15"
   }
 }

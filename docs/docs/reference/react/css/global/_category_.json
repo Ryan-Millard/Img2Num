@@ -1,0 +1,10 @@
+{
+  "label": "Global CSS",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "title": "Global CSS",
+    "description": "Reference for global CSS & styling in Img2Num",
+    "slug": "/reference/react/css/global"
+  }
+}

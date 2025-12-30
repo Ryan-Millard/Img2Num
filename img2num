@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+MODE="$1"
+shift || true
+
+ensure_container() {
+  # Check if the dev service container is running, start it if not
+  container_id=$(docker compose ps -q dev)
+
+  # Container does not exist → create & start
+  if [ -z "$container_id" ]; then
+    echo "Starting dev container..."
+    docker compose up -d dev
+    return
+  fi
+
+  # Container exists but is stopped → start it
+  if ! docker inspect -f '{{.State.Running}}' "$container_id" 2>/dev/null | grep -q true; then
+    echo "Dev container exists but is stopped. Starting..."
+    docker compose start dev
+  fi
+}
+
+# Run a command inside the dev container
+run_in_container() {
+  ensure_container
+  docker compose exec dev "$@"
+}
+
+# Main command dispatch
+case "$MODE" in
+  # Commands that map directly to npm scripts
+  dev|dev:all|dev:debug|dev:all:debug|build|build-js|build-wasm|build-wasm:debug|preview|docs|lint|lint:fix|lint:style|format|format-js|format-wasm|clean|clean-js|clean-wasm|help)
+    if [ "$MODE" = "docs" ]; then
+      YELLOW=""
+      MAGENTA=""
+      RESET=""
+      # Check if terminal supports colors
+      if [ -t 1 ] && command -v tput >/dev/null 2>&1 && [ "$(tput colors)" -ge 8 ]; then
+          YELLOW="$(tput setaf 3)"
+          MAGENTA="$(tput setaf 5)"
+          RESET="$(tput sgr0)"
+      fi
+
+      # Informative warning about Docusaurus port forwarding
+      echo -e "${YELLOW}[INFO] Docusaurus is running inside the container, listening on all interfaces (0.0.0.0).${RESET}"
+      echo -e "${YELLOW}[INFO] You cannot use the 0.0.0.0 link directly.${RESET}"
+      echo -e "${YELLOW}[INFO] Access the site in your browser via: ${MAGENTA}http://localhost:3000/Img2Num/info/${RESET}"
+    fi
+
+    run_in_container npm run "$MODE" "$@"
+    ;;
+
+  # Arbitrary npm commands
+  npm)
+    run_in_container npm "$@"
+    ;;
+
+  # Open a shell in the container
+  sh|shell|bash|term|terminal)
+    run_in_container bash
+    ;;
+
+  # Docker management shortcuts
+  stop) docker compose stop ;;
+  restart) docker compose restart ;;
+  down) docker compose down ;;
+  purge|destroy)
+    docker compose down --volumes --remove-orphans
+    [ "$MODE" = "destroy" ] && docker rmi ryanmillard/img2num-dev:latest
+    ;;
+
+  # Tail logs
+  logs) docker compose logs -f ;;
+
+  # Fallback usage
+  -h|--help|*)
+    EXIT_CODE=0
+    echo
+    if [ "$MODE" != "-h" ] && [ "$MODE" != "--help" ]; then
+      EXIT_CODE=1
+      echo "Unknown command used."
+      echo
+    fi
+
+    cat <<EOF
+Usage:
+  ./img2num <command>
+
+Commands:
+  NPM Scripts (use help to see more info about each script):
+    build|build-js|build-wasm|build-wasm:debug
+    clean|clean-js|clean-wasm
+    dev|dev:all|dev:debug|dev:all:debug
+    docs
+    format|format-js|format-wasm
+    help
+    lint|lint:fix|lint:style
+    preview
+
+  Using NPM Directly:
+    npm <args>       Run arbitrary npm command
+
+  Open Container Terminal:
+    sh|shell|bash    Opens bash terminal in Docker container
+
+  Docker Maintenance:
+    stop             Stops running Docker container (keeps containers, volumes & networks).
+    restart          Restarts running Docker container.
+    down             Stops running Docker container (keeps volumes).
+    purge            Stops running Docker container (removes everything, including orphans).
+    destroy          Same as purge, but deletes Docker image.
+    logs             Displays any relevant Docker logs.
+EOF
+    exit $EXIT_CODE
+    ;;
+esac

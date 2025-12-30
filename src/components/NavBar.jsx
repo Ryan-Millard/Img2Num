@@ -1,80 +1,85 @@
 import { useState } from 'react';
-import { Home, Users, Info, Github, SquareArrowOutUpRight, Menu, X } from 'lucide-react';
+import { SquareArrowOutUpRight } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './NavBar.module.css';
-
-const INTERNAL_LINKS = [
-  { path: '/', label: 'Home', icon: Home },
-  { path: '/credits', label: 'Credits', icon: Users },
-  { path: '/about', label: 'About', icon: Info },
-];
-
-const EXTERNAL_LINKS = [
-  { href: 'https://ryan-millard.github.io/Img2Num/info/', label: 'Docs', icon: Info },
-  { href: 'https://github.com/Ryan-Millard/Img2Num', label: 'GitHub', icon: Github },
-];
+import GlassCard from '@components/GlassCard';
+import ThemeSwitch from '@components/ThemeSwitch';
+import Tooltip from '@components/Tooltip';
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
-  const { pathname } = useLocation();
+  const location = useLocation();
+
+  const links = [
+    { path: '/', label: 'Home', tooltip: 'Go to the home page' },
+    { path: '/credits', label: 'Credits', tooltip: 'View project credits' },
+    { path: '/about', label: 'About', tooltip: 'Learn more about Img2Num' },
+    { path: 'https://github.com/Ryan-Millard/Img2Num', label: 'GitHub', tooltip: 'Open the project on GitHub', external: true },
+  ];
 
   const closeMenu = () => setIsOpen(false);
 
-  return (
-    <nav className={`${styles.navbar} glass`}>
-      {/* Logo */}
-      <Link to="/" className={styles.logo} onClick={closeMenu}>
-        <img src="/Img2Num/favicon.svg" alt="" className={styles.logoIcon} />
-        <span>Img2Num</span>
-      </Link>
-
-      {/* Mobile Toggle */}
-      <button
-        className={styles.menuToggle}
-        onClick={() => setIsOpen(!isOpen)}
-        aria-expanded={isOpen}
-        aria-controls="nav-menu"
-        aria-label={isOpen ? 'Close menu' : 'Open menu'}
-      >
-        {isOpen ? <X size={20} /> : <Menu size={20} />}
-      </button>
-
-      {/* Navigation */}
-      <ul
-        id="nav-menu"
-        className={`${styles.navList} ${isOpen ? styles.open : ''}`}
-        role="menubar"
-      >
-        {INTERNAL_LINKS.map(({ path, label, icon: Icon }) => (
-          <li key={path} role="none">
-            <Link
-              to={path}
-              role="menuitem"
-              className={`${styles.navLink} ${pathname === path ? styles.active : ''}`}
-              onClick={closeMenu}
-            >
-              <Icon size={16} />
-              <span>{label}</span>
-            </Link>
-          </li>
-        ))}
-
-        {EXTERNAL_LINKS.map(({ href, label, icon: Icon }) => (
-          <li key={href} role="none">
+  const renderLinks = links.map((link) => {
+    const isActive = !link.external && location.pathname === link.path;
+    return (
+      <li key={link.label}>
+        {link.external ? (
+          <Tooltip content={`${link.tooltip} (opens in a new tab)`}>
             <a
-              href={href}
+              href={link.path}
               target="_blank"
               rel="noopener noreferrer"
-              role="menuitem"
-              className={styles.navLink}
+              className={styles.externalLink}
             >
-              <Icon size={16} />
-              <span>{label}</span>
-              <SquareArrowOutUpRight size={12} className={styles.externalIcon} />
+              {link.label}
+              <SquareArrowOutUpRight size="1.25em" className={styles.externalLinkIcon} />
             </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+          </Tooltip>
+        ) : (
+          <Tooltip content={link.tooltip}>
+            <Link to={link.path} className={isActive ? styles.activeLink : ''} onClick={closeMenu}>
+              {link.label}
+            </Link>
+          </Tooltip>
+        )}
+      </li>
+    );
+  });
+
+
+  return (
+    <GlassCard as="nav" className={styles.navbar}>
+      <div className={styles.logo}>
+        <Tooltip content="Go to home page">
+          <Link to="/">Img2Num</Link>
+        </Tooltip>
+      </div>
+      <div className={styles.spacer}></div>
+      <ThemeSwitch />
+      <Tooltip content="Toggle navigation menu">
+        <button className={styles.hamburger} onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
+          <span className={isOpen ? styles.barActive : styles.bar}></span>
+          <span className={isOpen ? styles.barActive : styles.bar}></span>
+          <span className={isOpen ? styles.barActive : styles.bar}></span>
+        </button>
+      </Tooltip>
+
+      {/* Backdrop to capture dismiss clicks on mobile */}
+      {isOpen && (
+        <div
+          className={styles.backdrop}
+          onClick={closeMenu}
+          aria-hidden="true"
+        />
+      )}
+
+      {isOpen ? (
+        <GlassCard as="ul" className={`${styles.navLinks} ${isOpen ? styles.active : ''} ${isOpen ? 'stacked' : ''}`}>
+          {renderLinks}
+        </GlassCard>
+      ) : (
+        <ul className={styles.navLinks}>{renderLinks}</ul>
+      )}
+    </GlassCard>
   );
 }
