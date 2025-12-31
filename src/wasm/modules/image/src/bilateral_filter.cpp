@@ -5,7 +5,6 @@
 #include <cstring>
 
 static constexpr double SIGMA_RADIUS_FACTOR = 3.0; 
-static constexpr int MAX_PIXEL_VAL = 255; 
 // Max possible squared Euclidean distance in a 3-channel 8-bit image: 255^2 * 3 = 195075
 // Means max delta between images (imageA - imageB) in RGB channels (255^2 * 3)
 static constexpr int MAX_RGB_DIST_SQ = 255 * 255 * 3;
