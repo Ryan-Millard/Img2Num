@@ -2,7 +2,7 @@ import styles from './GlassSwitch.module.css';
 import Tooltip from '@components/Tooltip';
 import PropTypes from 'prop-types';
 
-const GlassSwitch = ({ onChange, isOn, ariaLabel, thumbContent }) => {
+const GlassSwitch = ({ onChange, isOn, ariaLabel, thumbContent , size='medium', disabled=false}) => {
 
   return (
     <Tooltip content={ariaLabel}>
@@ -13,6 +13,7 @@ const GlassSwitch = ({ onChange, isOn, ariaLabel, thumbContent }) => {
         aria-checked={isOn ? 'true' : 'false'}
         className={`glass ${styles.switch} ${isOn ? styles.checked : ''}`}
         aria-label={ariaLabel}
+        disabled={disabled}
       >
         <span className={styles.thumb}>{thumbContent}</span>
       </button>
@@ -25,6 +26,8 @@ GlassSwitch.propTypes = {
   onChange: PropTypes.func.isRequired,
   ariaLabel: PropTypes.string.isRequired,
   thumbContent: PropTypes.node,
+  disabled:PropTypes.bool,
+  size:PropTypes.string,
 };
 
 export default GlassSwitch;
