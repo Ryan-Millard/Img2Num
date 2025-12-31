@@ -13,7 +13,7 @@ const WasmImageProcessor = () => {
   const inputId = useId();
   const inputRef = useRef(null);
 
-  const { gaussianBlur, blackThreshold, kmeans, mergeSmallRegionsInPlace } = useWasmWorker();
+  const { gaussianBlur, bilateralFilter, blackThreshold, kmeans, mergeSmallRegionsInPlace } = useWasmWorker();
 
   const [originalSrc, setOriginalSrc] = useState(null);
   const [fileData, setFileData] = useState(null);
@@ -81,7 +81,8 @@ const WasmImageProcessor = () => {
       const { width, height } = fileData;
 
       step(20);
-      const blurred = await gaussianBlur(fileData);
+      // const blurred = await gaussianBlur(fileData);
+      const blurred = await bilateralFilter(fileData);
 
       step(45);
       const thresholded = await blackThreshold({
@@ -139,7 +140,7 @@ const WasmImageProcessor = () => {
         step(0);
       }, 800);
     }
-  }, [fileData, gaussianBlur, blackThreshold, kmeans, mergeSmallRegionsInPlace, navigate, step]);
+  }, [fileData, gaussianBlur, bilateralFilter, blackThreshold, kmeans, mergeSmallRegionsInPlace, navigate, step]);
 
   /* Memo'd UI fragments */
   const EmptyState = useMemo(

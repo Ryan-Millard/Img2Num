@@ -65,6 +65,7 @@ describe('useWasmWorker', () => {
 
     expect(typeof result.current.call).toBe('function');
     expect(typeof result.current.gaussianBlur).toBe('function');
+    expect(typeof result.current.bilateralFilter).toBe('function');
     expect(typeof result.current.blackThreshold).toBe('function');
     expect(typeof result.current.kmeans).toBe('function');
     expect(typeof result.current.mergeSmallRegionsInPlace).toBe('function');

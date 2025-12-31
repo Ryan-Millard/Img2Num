@@ -1,11 +1,110 @@
 #include "image_utils.h"
 #include "fft_iterative.h"
+#include "cielab.h"
 
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
 #include <limits>
 #include <vector>
+
+double gaussian(float x, double sigma) {
+  return exp(-(pow(x, 2))/(2 * pow(sigma, 2))) / (2 * M_PI * pow(sigma, 2));
+}
+
+void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_pixels, double sigma_range)
+{
+  if (!image || width == 0 || height == 0 || sigma_pixels <= 0 || sigma_range <= 0)
+    return;
+  
+  const int radius = static_cast<int>(1.5 * sigma_range);
+  const size_t diameter = radius * 2 + 1;
+
+  // precompute
+  double range_filter[diameter * diameter];
+  for (int i = 0; i < diameter; i++){
+    for (int j = 0; j < diameter; j++){
+      float dist = static_cast<float>(sqrt(pow(i - radius, 2) + pow(j - radius, 2)));
+      range_filter[i*diameter + j] = gaussian(dist, sigma_range);
+    }
+  }
+
+  uint8_t result[4 * height * width];
+
+  for (int i = 2; i < height - 2; i++){
+    for (int j = 2; j < width - 2; j++) {
+      int center_index = 4 * (i * width + j);
+      uint8_t r0 = image[center_index];
+      uint8_t g0 = image[center_index + 1];
+      uint8_t b0 = image[center_index + 2];
+      uint8_t a0 = image[center_index + 3];
+
+      double L0, A0, B0;
+      rgb_to_lab(r0, g0, b0, L0, A0, B0);
+
+      double rf = 0.0;
+      double gf = 0.0;
+      double bf = 0.0;
+      double rW = 0.0;
+      double gW = 0.0;
+      double bW = 0.0;
+
+      for (int ki = -radius; ki < radius; ki++){
+        for (int kj = -radius; kj < radius; kj ++){
+          int _i = i + ki;
+          int _j = j + kj;
+          if (_i < 0)
+            _i = 0;
+          if (_i > height - 1)
+            _i = height - 1;
+          if (_j < 0)
+            _j = 0;
+          if (_j < width - 1)
+            _j = width - 1;
+          int index = (_i * width) + _j; // std::clamp(i + ki, 0, height-1) * width + std::clamp(j + kj, 0, width-1);
+
+          uint8_t r = image[index];
+          uint8_t g = image[index + 1];
+          uint8_t b = image[index + 2];
+
+          // independent weighting per channel
+          //double wr = gaussian(static_cast<float>(r-r0), sigma_pixels) * range_filter[ (ki + radius) * diameter + (kj + radius) ];
+          //double wg = gaussian(static_cast<float>(g-g0), sigma_pixels) * range_filter[ (ki + radius) * diameter + (kj + radius) ];
+          //double wb = gaussian(static_cast<float>(b-b0), sigma_pixels) * range_filter[ (ki + radius) * diameter + (kj + radius) ];
+
+          // euclidean color distance
+          //float dist = sqrt(pow(static_cast<float>(r-r0), 2) + pow(static_cast<float>(g-g0), 2) + pow(static_cast<float>(b-b0), 2));
+          
+          double L, A, B;
+          rgb_to_lab(r, g, b, L, A, B);
+          float dist = sqrt(pow(static_cast<float>(L-L0), 2) + pow(static_cast<float>(A-A0), 2) + pow(static_cast<float>(B-B0), 2));
+          
+          double w_euc = gaussian(dist, sigma_pixels) * range_filter[ (ki + radius) * diameter + (kj + radius) ];
+          double wr = w_euc;
+          double wg = w_euc;
+          double wb = w_euc;
+
+          rf += r * wr;
+          rW += wr;
+
+          gf += g * wg;
+          gW += wg;
+
+          bf += b * wb;
+          bW += wb;
+        }
+      }
+
+      result[center_index] = static_cast<uint8_t>(rf / rW);
+      result[center_index + 1] = static_cast<uint8_t>(gf / gW);
+      result[center_index + 2] = static_cast<uint8_t>(bf / bW);
+      result[center_index + 3] = a0;
+    }
+  }
+
+  image = result;
+}
+
 
 // image: pointer to RGBA data
 // width, height: dimensions
