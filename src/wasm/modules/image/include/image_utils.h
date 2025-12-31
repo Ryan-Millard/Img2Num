@@ -21,4 +21,7 @@ EXPORTED void threshold_image(uint8_t *ptr, const int width, const int height,
 EXPORTED void black_threshold_image(uint8_t *ptr, const int width,
                                     const int height, const int num_thresholds);
 
+EXPORTED void bilateral_filter(uint8_t *image, size_t width, size_t height,
+                                double sigma_spatial, double sigma_range);
+
 #endif
