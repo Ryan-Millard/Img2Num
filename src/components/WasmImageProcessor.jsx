@@ -85,7 +85,7 @@ const WasmImageProcessor = () => {
       // const blurred = await gaussianBlur(fileData);
 
       const imgBilateralFiltered = await bilateralFilter({
-        image: fileData.pixels,
+        pixels: fileData.pixels,
         width,
         height,
       });

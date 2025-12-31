@@ -206,25 +206,25 @@ describe('useWasmWorker', () => {
     it('should call worker with bilateral_filter function', async () => {
       const { result } = renderHook(() => useWasmWorker());
 
-      const image = new Uint8ClampedArray([255, 0, 0, 255]);
+      const pixels = new Uint8ClampedArray([255, 0, 0, 255]);
       const width = 1;
       const height = 1;
 
       act(() => {
-        result.current.bilateralFilter({ image, width, height });
+        result.current.bilateralFilter({ pixels, width, height });
       });
 
       expect(mockWorkerInstance.postMessage).toHaveBeenCalledWith(
         expect.objectContaining({
           funcName: 'bilateral_filter',
           args: expect.objectContaining({
-            image,
+            pixels,
             width,
             height,
             sigma_spatial: 3.0,
             sigma_range: 50.0,
           }),
-          bufferKeys: ['image'],
+          bufferKeys: ['pixels'],
         })
       );
     });
@@ -232,11 +232,11 @@ describe('useWasmWorker', () => {
     it('should use custom sigma_spatial and sigma_range when provided', async () => {
       const { result } = renderHook(() => useWasmWorker());
 
-      const image = new Uint8ClampedArray([255, 0, 0, 255]);
+      const pixels = new Uint8ClampedArray([255, 0, 0, 255]);
 
       act(() => {
         result.current.bilateralFilter({
-          image,
+          pixels,
           width: 100,
           height: 100,
           sigma_spatial: 5.0,
