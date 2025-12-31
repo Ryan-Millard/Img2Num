@@ -18,11 +18,24 @@ This makes it suitable for use cases such as:
 
 ---
 
+## Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `isOn` | `boolean` | Yes | — | Whether the switch is toggled on |
+| `onChange` | `function` | Yes | — | Callback function fired when the switch is clicked |
+| `ariaLabel` | `string` | Yes | — | Accessibility label for the switch |
+| `thumbContent` | `ReactNode` | No | `undefined` | Content to display inside the switch thumb |
+| `disabled` | `boolean` | No | `false` | Whether the switch is disabled |
+| `size` | `string` | No | `'medium'` | Size of the switch (`'small'`, `'medium'`, `'large'`) |
+
+---
+
 ## Basic Usage
 
 ```jsx
 import { useState } from 'react';
-+import { Moon, Sun } from 'lucide-react';
+import { Moon, Sun } from 'lucide-react';
 import GlassSwitch from '@/components/GlassSwitch';
 
 const Example = () => {
@@ -37,3 +50,27 @@ const Example = () => {
     />
   );
 };
+```
+
+---
+
+## With Optional Props
+
+```jsx
+import { useState } from 'react';
+import GlassSwitch from '@/components/GlassSwitch';
+
+const ExampleWithOptions = () => {
+  const [isOn, setIsOn] = useState(false);
+
+  return (
+    <GlassSwitch
+      isOn={isOn}
+      onChange={() => setIsOn(prev => !prev)}
+      ariaLabel="Large switch"
+      size="large"
+      disabled={false}
+    />
+  );
+};
+```
