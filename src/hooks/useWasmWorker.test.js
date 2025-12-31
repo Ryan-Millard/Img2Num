@@ -202,6 +202,59 @@ describe('useWasmWorker', () => {
     });
   });
 
+  describe('bilateralFilter', () => {
+    it('should call worker with bilateral_filter function', async () => {
+      const { result } = renderHook(() => useWasmWorker());
+
+      const image = new Uint8ClampedArray([255, 0, 0, 255]);
+      const width = 1;
+      const height = 1;
+
+      act(() => {
+        result.current.bilateralFilter({ image, width, height });
+      });
+
+      expect(mockWorkerInstance.postMessage).toHaveBeenCalledWith(
+        expect.objectContaining({
+          funcName: 'bilateral_filter',
+          args: expect.objectContaining({
+            image,
+            width,
+            height,
+            sigma_spatial: 3.0,
+            sigma_range: 50.0,
+          }),
+          bufferKeys: ['image'],
+        })
+      );
+    });
+
+    it('should use custom sigma_spatial and sigma_range when provided', async () => {
+      const { result } = renderHook(() => useWasmWorker());
+
+      const image = new Uint8ClampedArray([255, 0, 0, 255]);
+
+      act(() => {
+        result.current.bilateralFilter({
+          image,
+          width: 100,
+          height: 100,
+          sigma_spatial: 5.0,
+          sigma_range: 25.0,
+        });
+      });
+
+      expect(mockWorkerInstance.postMessage).toHaveBeenCalledWith(
+        expect.objectContaining({
+          args: expect.objectContaining({
+            sigma_spatial: 5.0,
+            sigma_range: 25.0,
+          }),
+        })
+      );
+    });
+  });
+
   describe('blackThreshold', () => {
     it('should call worker with black_threshold_image function', async () => {
       const { result } = renderHook(() => useWasmWorker());
