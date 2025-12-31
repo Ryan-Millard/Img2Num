@@ -1,19 +1,16 @@
 import { useState } from 'react';
-import { Moon, SquareArrowOutUpRight, Sun } from 'lucide-react';
+import { SquareArrowOutUpRight } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './NavBar.module.css';
 import GlassCard from '@components/GlassCard';
 import ThemeSwitch from '@components/ThemeSwitch';
 import Tooltip from '@components/Tooltip';
-import GlassSwitch from './GlassSwitch';
-import { useTheme } from '@hooks/useTheme';
 
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const {theme , toggleTheme} = useTheme()
-  const isDark = theme === 'dark';
+
 
   const links = [
     { path: '/', label: 'Home', tooltip: 'Go to the home page' },
@@ -60,7 +57,7 @@ export default function NavBar() {
         </Tooltip>
       </div>
       <div className={styles.spacer}></div>
-      <GlassSwitch isOn={isDark}  onChange={toggleTheme} thumbContent={isDark ? <Moon /> : <Sun />} ariaLabel={`switch to ${isDark ? 'light' : 'dark'} mode`} />
+      <ThemeSwitch />
       <Tooltip content="Toggle navigation menu">
         <button className={styles.hamburger} onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
           <span className={isOpen ? styles.barActive : styles.bar}></span>
