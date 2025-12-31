@@ -163,18 +163,16 @@ describe('NavBar', () => {
       
       const menuToggle = screen.getByRole('button', { name: /open menu/i });
       
-      // Get the navbar container
-      const nav = screen.getByRole('navigation');
-      
-      // Initially no backdrop (no aria-hidden divs in the nav)
-      expect(nav.querySelector('div[aria-hidden="true"]')).not.toBeInTheDocument();
+      // Initially no backdrop visible
+      expect(document.querySelector('[aria-hidden="true"]')).not.toBeInTheDocument();
       
       // Open menu
       fireEvent.click(menuToggle);
       
       await waitFor(() => {
-        // Backdrop should be present
-        const backdrop = nav.querySelector('div[aria-hidden="true"]');
+        // Backdrop is rendered as a sibling to the nav element (not inside it)
+        // for proper full-screen coverage on mobile
+        const backdrop = document.querySelector('[aria-hidden="true"]');
         expect(backdrop).toBeInTheDocument();
       });
     });

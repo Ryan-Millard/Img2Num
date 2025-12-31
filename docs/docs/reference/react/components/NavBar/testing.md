@@ -263,4 +263,5 @@ When adding new tests, follow these patterns:
 ## Related Documentation
 
 - [NavBar Component](./index.md) - Main component documentation
-- [ThemeSwitch Testing](../ThemeSwitch/testing.md) - Related component tests
+- [GlassCard](../GlassCard/index.md) - Glassmorphic container wrapper
+- [ThemeSwitch Testing](../ThemeSwitch/tests.md) - Related component tests
