@@ -14,10 +14,11 @@ double gaussian(float x, double sigma) {
 
 void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_pixels, double sigma_range)
 {
+  // sigma_pixel = spatial kernel
   if (!image || width == 0 || height == 0 || sigma_pixels <= 0 || sigma_range <= 0)
     return;
   
-  const int radius = static_cast<int>(1.5 * sigma_range);
+  const int radius = static_cast<int>(1.5 * sigma_pixels);
   const size_t diameter = radius * 2 + 1;
 
   // precompute
@@ -25,7 +26,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
   for (int i = 0; i < diameter; i++){
     for (int j = 0; j < diameter; j++){
       float dist = static_cast<float>(sqrt(pow(i - radius, 2) + pow(j - radius, 2)));
-      range_filter[i*diameter + j] = gaussian(dist, sigma_range);
+      range_filter[i*diameter + j] = gaussian(dist, sigma_pixels);
     }
   }
 
@@ -68,9 +69,9 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
           uint8_t b = image[index + 2];
 
           // independent weighting per channel
-          //double wr = gaussian(static_cast<float>(r-r0), sigma_pixels) * range_filter[ (ki + radius) * diameter + (kj + radius) ];
-          //double wg = gaussian(static_cast<float>(g-g0), sigma_pixels) * range_filter[ (ki + radius) * diameter + (kj + radius) ];
-          //double wb = gaussian(static_cast<float>(b-b0), sigma_pixels) * range_filter[ (ki + radius) * diameter + (kj + radius) ];
+          //double wr = gaussian(static_cast<float>(r-r0), sigma_range) * range_filter[ (ki + radius) * diameter + (kj + radius) ];
+          //double wg = gaussian(static_cast<float>(g-g0), sigma_range) * range_filter[ (ki + radius) * diameter + (kj + radius) ];
+          //double wb = gaussian(static_cast<float>(b-b0), sigma_range) * range_filter[ (ki + radius) * diameter + (kj + radius) ];
 
           // euclidean color distance
           //float dist = sqrt(pow(static_cast<float>(r-r0), 2) + pow(static_cast<float>(g-g0), 2) + pow(static_cast<float>(b-b0), 2));
@@ -79,7 +80,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
           rgb_to_lab(r, g, b, L, A, B);
           float dist = sqrt(pow(static_cast<float>(L-L0), 2) + pow(static_cast<float>(A-A0), 2) + pow(static_cast<float>(B-B0), 2));
           
-          double w_euc = gaussian(dist, sigma_pixels) * range_filter[ (ki + radius) * diameter + (kj + radius) ];
+          double w_euc = gaussian(dist, sigma_range) * range_filter[ (ki + radius) * diameter + (kj + radius) ];
           double wr = w_euc;
           double wg = w_euc;
           double wb = w_euc;
