@@ -21,7 +21,7 @@ const GlassSwitch = ({ onChange, isOn, ariaLabel, thumbContent }) => {
 };
 
 GlassSwitch.propTypes = {
-  isOn: PropTypes.bool,
+  isOn: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   ariaLabel: PropTypes.string.isRequired,
   thumbContent: PropTypes.node,
