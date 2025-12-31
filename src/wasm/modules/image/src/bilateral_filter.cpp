@@ -1,8 +1,13 @@
-#include "image_utils.h"
+#include "bilateral_filter.h"
+#include "exported.h"
+
 #include <cmath>
 #include <vector>
 #include <algorithm>
 #include <cstring>
+#include <climits>
+
+namespace bilateral {
 
 static constexpr double SIGMA_RADIUS_FACTOR = 3.0; 
 // Max possible squared Euclidean distance in a 3-channel 8-bit image: 255^2 * 3 = 195075
@@ -25,7 +30,6 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
 
     const int radius = static_cast<int>(std::ceil(SIGMA_RADIUS_FACTOR * sigma_spatial));
     const int kernel_width = 2 * radius + 1;
-    const size_t stride = width * 4;
     std::vector<uint8_t> result(width * height * 4);
 
     // NOTE: precompute Spatial Weights (Gaussian Kernel)
@@ -99,4 +103,12 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
     }   
 
     std::memcpy(image, result.data(), result.size());
+}
+
+} // namespace bilateral
+
+// Global wrapper for WASM export
+EXPORTED void bilateral_filter(uint8_t *image, size_t width, size_t height,
+                               double sigma_spatial, double sigma_range) {
+    bilateral::bilateral_filter(image, width, height, sigma_spatial, sigma_range);
 }
