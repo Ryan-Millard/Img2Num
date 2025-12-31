@@ -24,29 +24,8 @@ export default function NavBar() {
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <GlassCard as="nav" className={styles.navbar}>
-      {/* Logo */}
-      <Tooltip content="Go to home page">
-        <Link to="/" className={styles.logo} onClick={closeMenu}>
-          <img src="/Img2Num/favicon.svg" alt="" className={styles.logoIcon} />
-          <span>Img2Num</span>
-        </Link>
-      </Tooltip>
-
-      {/* Mobile Toggle */}
-      <Tooltip content={isOpen ? 'Close menu' : 'Open menu'}>
-        <button
-          className={styles.menuToggle}
-          onClick={() => setIsOpen(!isOpen)}
-          aria-expanded={isOpen}
-          aria-controls="nav-menu"
-          aria-label={isOpen ? 'Close menu' : 'Open menu'}
-        >
-          {isOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
-      </Tooltip>
-
-      {/* Backdrop to capture dismiss clicks on mobile */}
+    <>
+      {/* Backdrop to capture dismiss clicks on mobile - rendered outside nav for proper full-screen coverage */}
       {isOpen && (
         <div
           className={styles.backdrop}
@@ -55,12 +34,34 @@ export default function NavBar() {
         />
       )}
 
-      {/* Navigation */}
-      <ul
-        id="nav-menu"
-        className={`${styles.navList} ${isOpen ? styles.open : ''}`}
-        role="menubar"
-      >
+      <GlassCard as="nav" className={styles.navbar}>
+        {/* Logo */}
+        <Tooltip content="Go to home page">
+          <Link to="/" className={styles.logo} onClick={closeMenu}>
+            <img src="/Img2Num/favicon.svg" alt="" className={styles.logoIcon} />
+            <span>Img2Num</span>
+          </Link>
+        </Tooltip>
+
+        {/* Mobile Toggle */}
+        <Tooltip content={isOpen ? 'Close menu' : 'Open menu'}>
+          <button
+            className={styles.menuToggle}
+            onClick={() => setIsOpen(!isOpen)}
+            aria-expanded={isOpen}
+            aria-controls="nav-menu"
+            aria-label={isOpen ? 'Close menu' : 'Open menu'}
+          >
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </Tooltip>
+
+        {/* Navigation */}
+        <ul
+          id="nav-menu"
+          className={`${styles.navList} ${isOpen ? styles.open : ''}`}
+          role="menubar"
+        >
         {INTERNAL_LINKS.map(({ path, label, icon: Icon, tooltip }) => (
           <li key={path} role="none">
             <Tooltip content={tooltip}>
@@ -101,5 +102,6 @@ export default function NavBar() {
         </li>
       </ul>
     </GlassCard>
+    </>
   );
 }
