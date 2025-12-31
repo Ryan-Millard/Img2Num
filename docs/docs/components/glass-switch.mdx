@@ -1,0 +1,38 @@
+---
+title: GlassSwitch
+description: A reusable, accessible glass-style toggle switch component.
+---
+
+## GlassSwitch
+
+`GlassSwitch` is a reusable, accessible toggle switch component built using the global `glass` styles.
+
+It is a **controlled component**, meaning the parent component is responsible for managing its state.
+`GlassSwitch` focuses purely on presentation and interaction and does not contain any business or theme logic.
+
+This makes it suitable for use cases such as:
+- Theme toggles
+- Feature flags
+- Settings switches
+- Any boolean on/off state
+
+---
+
+## Basic Usage
+
+```jsx
+import { useState } from 'react';
+import GlassSwitch from '@/components/GlassSwitch';
+
+const Example = () => {
+  const [isOn, setIsOn] = useState(false);
+
+  return (
+    <GlassSwitch
+      isOn={isOn}
+      onChange={() => setIsOn(prev => !prev)}
+      thumbContent={your content}
+      ariaLabel="Toggle feature"
+    />
+  );
+};
