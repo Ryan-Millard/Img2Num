@@ -22,6 +22,7 @@ This makes it suitable for use cases such as:
 
 ```jsx
 import { useState } from 'react';
++import { Moon, Sun } from 'lucide-react';
 import GlassSwitch from '@/components/GlassSwitch';
 
 const Example = () => {
@@ -31,7 +32,7 @@ const Example = () => {
     <GlassSwitch
       isOn={isOn}
       onChange={() => setIsOn(prev => !prev)}
-      thumbContent={your content}
+      thumbContent={isOn ? <Moon /> : <Sun />}
       ariaLabel="Toggle feature"
     />
   );
