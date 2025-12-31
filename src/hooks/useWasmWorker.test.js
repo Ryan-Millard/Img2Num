@@ -59,12 +59,14 @@ describe('useWasmWorker', () => {
 
     expect(result.current).toHaveProperty('call');
     expect(result.current).toHaveProperty('gaussianBlur');
+    expect(result.current).toHaveProperty('bilateralFilter');
     expect(result.current).toHaveProperty('blackThreshold');
     expect(result.current).toHaveProperty('kmeans');
     expect(result.current).toHaveProperty('mergeSmallRegionsInPlace');
 
     expect(typeof result.current.call).toBe('function');
     expect(typeof result.current.gaussianBlur).toBe('function');
+    expect(typeof result.current.bilateralFilter).toBe('function');
     expect(typeof result.current.blackThreshold).toBe('function');
     expect(typeof result.current.kmeans).toBe('function');
     expect(typeof result.current.mergeSmallRegionsInPlace).toBe('function');
