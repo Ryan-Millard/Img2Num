@@ -7,6 +7,7 @@
 namespace bilateral {
 
 // Apply bilateral filter to an image.
+// The filter modifies the image buffer in-place.
 // Parameters:
 //  - image: Pointer to RGBA pixel buffer
 //  - width, height: Image dimensions (px)
