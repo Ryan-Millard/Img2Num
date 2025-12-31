@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SquareArrowOutUpRight } from 'lucide-react';
+import { Moon, SquareArrowOutUpRight, Sun } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './NavBar.module.css';
 import GlassCard from '@components/GlassCard';
@@ -60,7 +60,7 @@ export default function NavBar() {
         </Tooltip>
       </div>
       <div className={styles.spacer}></div>
-      <GlassSwitch onChange={toggleTheme} checked={isDark} ariaLabel={`switch to ${isDark ? 'light' : 'dark'} mode`} />
+      <GlassSwitch isOn={isDark}  onChange={toggleTheme} thumbContent={isDark ? <Moon /> : <Sun />} ariaLabel={`switch to ${isDark ? 'light' : 'dark'} mode`} />
       <Tooltip content="Toggle navigation menu">
         <button className={styles.hamburger} onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
           <span className={isOpen ? styles.barActive : styles.bar}></span>

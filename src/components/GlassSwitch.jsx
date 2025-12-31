@@ -1,16 +1,30 @@
-import styles from './GlassSwitch.module.css'
+import styles from './GlassSwitch.module.css';
 import Tooltip from '@components/Tooltip';
+import PropTypes from 'prop-types';
 
-const GlassSwitch = ({onChange ,checked,ariaLabel}) => {
+const GlassSwitch = ({ onChange, isOn, ariaLabel, thumbContent }) => {
+
   return (
     <Tooltip content={ariaLabel}>
-    <button type='button' role='switch' onClick={onChange} 
-     aria-checked={checked} className={`glass ${styles.switch} ${checked ? styles.checked : ''}`} aria-label={ariaLabel}>
-
-      <span className={`${styles.thumb}`}></span>
-    </button>
+      <button
+        type="button"
+        role="switch"
+        onClick={onChange}
+        aria-checked={isOn ? 'true' : 'false'}
+        className={`glass ${styles.switch} ${isOn ? styles.checked : ''}`}
+        aria-label={ariaLabel}
+      >
+        <span className={styles.thumb}>{thumbContent}</span>
+      </button>
     </Tooltip>
-  )
-}
+  );
+};
 
-export default GlassSwitch
+GlassSwitch.propTypes = {
+  isOn: PropTypes.bool,
+  onChange: PropTypes.func.isRequired,
+  ariaLabel: PropTypes.string.isRequired,
+  thumbContent: PropTypes.node,
+};
+
+export default GlassSwitch;
