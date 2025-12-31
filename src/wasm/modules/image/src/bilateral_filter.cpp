@@ -9,7 +9,8 @@
 
 namespace bilateral {
 
-static constexpr double SIGMA_RADIUS_FACTOR = 3.0; 
+static constexpr double SIGMA_RADIUS_FACTOR = 3.0;
+static constexpr int MAX_KERNEL_RADIUS = 50;
 // Max possible squared Euclidean distance in a 3-channel 8-bit image: 255^2 * 3 = 195075
 // Means max delta between images (imageA - imageB) in RGB channels (255^2 * 3)
 static constexpr int MAX_RGB_DIST_SQ = 255 * 255 * 3;
@@ -27,8 +28,10 @@ Parameters:
 void bilateral_filter(uint8_t *image, size_t width, size_t height,
                       double sigma_spatial, double sigma_range) {
     if (sigma_spatial <= 0.0 || sigma_range <= 0.0) return;
+    if (width <= 0 || height <= 0) return;
 
-    const int radius = static_cast<int>(std::ceil(SIGMA_RADIUS_FACTOR * sigma_spatial));
+    const int raw_radius = static_cast<int>(std::ceil(SIGMA_RADIUS_FACTOR * sigma_spatial));
+    const int radius = std::min(raw_radius, MAX_KERNEL_RADIUS);
     const int kernel_width = 2 * radius + 1;
     std::vector<uint8_t> result(width * height * 4);
 
