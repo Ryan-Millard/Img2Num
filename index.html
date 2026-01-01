@@ -58,6 +58,20 @@
         }
       }
     </script>
+
+    <!--Google Console Analytics-->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C7LD33MNTX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-C7LD33MNTX', {
+        anonymize_ip: true,
+        send_page_view: false
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>
