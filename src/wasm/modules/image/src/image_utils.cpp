@@ -22,11 +22,11 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
   const size_t diameter = radius * 2 + 1;
 
   // precompute
-  double range_filter[diameter * diameter];
+  double spatial_filter[diameter * diameter];
   for (int i = 0; i < diameter; i++){
     for (int j = 0; j < diameter; j++){
       float dist = static_cast<float>(sqrt(pow(i - radius, 2) + pow(j - radius, 2)));
-      range_filter[i*diameter + j] = gaussian(dist, sigma_pixels);
+      spatial_filter[i*diameter + j] = gaussian(dist, sigma_pixels);
     }
   }
 
@@ -69,9 +69,9 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
           uint8_t b = image[index + 2];
 
           // independent weighting per channel
-          //double wr = gaussian(static_cast<float>(r-r0), sigma_range) * range_filter[ (ki + radius) * diameter + (kj + radius) ];
-          //double wg = gaussian(static_cast<float>(g-g0), sigma_range) * range_filter[ (ki + radius) * diameter + (kj + radius) ];
-          //double wb = gaussian(static_cast<float>(b-b0), sigma_range) * range_filter[ (ki + radius) * diameter + (kj + radius) ];
+          //double wr = gaussian(static_cast<float>(r-r0), sigma_range) * spatial_filter[ (ki + radius) * diameter + (kj + radius) ];
+          //double wg = gaussian(static_cast<float>(g-g0), sigma_range) * spatial_filter[ (ki + radius) * diameter + (kj + radius) ];
+          //double wb = gaussian(static_cast<float>(b-b0), sigma_range) * spatial_filter[ (ki + radius) * diameter + (kj + radius) ];
 
           // euclidean color distance
           //float dist = sqrt(pow(static_cast<float>(r-r0), 2) + pow(static_cast<float>(g-g0), 2) + pow(static_cast<float>(b-b0), 2));
@@ -81,7 +81,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
           // needs sqrt?
           float dist = sqrt(pow(static_cast<float>(L-L0), 2) + pow(static_cast<float>(A-A0), 2) + pow(static_cast<float>(B-B0), 2));
           
-          double w_euc = gaussian(dist, sigma_range) * range_filter[ (ki + radius) * diameter + (kj + radius) ];
+          double w_euc = gaussian(dist, sigma_range) * spatial_filter[ (ki + radius) * diameter + (kj + radius) ];
           double wr = w_euc;
           double wg = w_euc;
           double wb = w_euc;
