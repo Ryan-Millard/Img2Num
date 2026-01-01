@@ -62,7 +62,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
             _j = 0;
           if (_j > width - 1)
             _j = width - 1;
-          int index = (_i * width) + _j; // std::clamp(i + ki, 0, height-1) * width + std::clamp(j + kj, 0, width-1);
+          int index = 4 * (_i * width + _j);
 
           uint8_t r = image[index];
           uint8_t g = image[index + 1];
