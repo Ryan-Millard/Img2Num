@@ -32,8 +32,8 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
 
   uint8_t result[4 * height * width];
 
-  for (int i = 2; i < height - 2; i++){
-    for (int j = 2; j < width - 2; j++) {
+  for (int i = 0; i < height; i++){
+    for (int j = 0; j < width; j++) {
       int center_index = 4 * (i * width + j);
       uint8_t r0 = image[center_index];
       uint8_t g0 = image[center_index + 1];
@@ -60,7 +60,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
             _i = height - 1;
           if (_j < 0)
             _j = 0;
-          if (_j < width - 1)
+          if (_j > width - 1)
             _j = width - 1;
           int index = (_i * width) + _j; // std::clamp(i + ki, 0, height-1) * width + std::clamp(j + kj, 0, width-1);
 
@@ -78,6 +78,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
           
           double L, A, B;
           rgb_to_lab(r, g, b, L, A, B);
+          // needs sqrt?
           float dist = sqrt(pow(static_cast<float>(L-L0), 2) + pow(static_cast<float>(A-A0), 2) + pow(static_cast<float>(B-B0), 2));
           
           double w_euc = gaussian(dist, sigma_range) * range_filter[ (ki + radius) * diameter + (kj + radius) ];
