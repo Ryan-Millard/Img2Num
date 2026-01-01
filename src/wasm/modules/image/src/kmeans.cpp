@@ -125,12 +125,12 @@ void kmeans_clustering_spatial(uint8_t *data, int width, int height, int k,
   for (int i = 0; i < height; ++i) {
     for (int j = 0; j < width; ++j) {
       int idx = i * width + j;
-      pixels[idx] = {
-          static_cast<float>(data[idx * 3 + 0]),
-          static_cast<float>(data[idx * 3 + 1]),
-          static_cast<float>(data[idx * 3 + 2]),
-          static_cast<float>(j), // x
-          static_cast<float>(i)  // y
+      pixels[idx] = RGBXY{
+          .r = static_cast<float>(data[idx * 4 + 0]) / 255, // normalize 0 -1
+          .g = static_cast<float>(data[idx * 4 + 1]) / 255,
+          .b = static_cast<float>(data[idx * 4 + 2]) / 255,
+          .x = static_cast<float>(j) / width, // normalize 0 - 1
+          .y = static_cast<float>(i) / height
       };
     }
   }
@@ -191,12 +191,11 @@ void kmeans_clustering_spatial(uint8_t *data, int width, int height, int k,
       }
     }
   }
-
-  // Assign clustered colors back to data
+  // Assign clustered colors back to data (rescale pixel values 0 - 255)
   for (int i = 0; i < num_pixels; ++i) {
     int cluster = labels[i];
-    data[i * 3 + 0] = static_cast<uint8_t>(centroids[cluster].r);
-    data[i * 3 + 1] = static_cast<uint8_t>(centroids[cluster].g);
-    data[i * 3 + 2] = static_cast<uint8_t>(centroids[cluster].b);
+    data[i * 4 + 0] = static_cast<uint8_t>(centroids[cluster].r * 255);
+    data[i * 4 + 1] = static_cast<uint8_t>(centroids[cluster].g * 255);
+    data[i * 4 + 2] = static_cast<uint8_t>(centroids[cluster].b * 255);
   }
 }
