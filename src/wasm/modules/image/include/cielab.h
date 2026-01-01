@@ -20,7 +20,7 @@ double inverse_gamma(double c) {
     }
 }
 
-void rgb_to_lab(unsigned char r_u8, unsigned char g_u8, unsigned char b_u8, double L, double A, double B) {
+void rgb_to_lab(unsigned char r_u8, unsigned char g_u8, unsigned char b_u8, double& L, double& A, double& B) {
     // 1. Convert 8-bit RGB [0, 255] to linear RGB [0.0, 1.0]
     double r = r_u8 / 255.0;
     double g = g_u8 / 255.0;
