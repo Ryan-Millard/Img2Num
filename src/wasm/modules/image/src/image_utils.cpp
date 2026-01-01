@@ -51,8 +51,8 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
       double gW = 0.0;
       double bW = 0.0;
 
-      for (int ki = -radius; ki < radius; ki++){
-        for (int kj = -radius; kj < radius; kj++){
+      for (int ki = -radius; ki <= radius; ki++){
+        for (int kj = -radius; kj <= radius; kj++){
           int _i = i + ki;
           int _j = j + kj;
           if (_i < 0)
