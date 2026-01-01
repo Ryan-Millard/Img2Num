@@ -8,7 +8,8 @@
 #include <limits>
 #include <vector>
 
-double gaussian(float x, double sigma) {
+double evaluate_gaussian(float x, double sigma) {
+  // evaluates 1d gaussian function desribed by sigma at x
   return exp(-(pow(x, 2))/(2 * pow(sigma, 2))) / (2 * M_PI * pow(sigma, 2));
 }
 
@@ -26,7 +27,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
   for (int i = 0; i < diameter; i++){
     for (int j = 0; j < diameter; j++){
       float dist = static_cast<float>(sqrt(pow(i - radius, 2) + pow(j - radius, 2)));
-      spatial_filter[i*diameter + j] = gaussian(dist, sigma_pixels);
+      spatial_filter[i*diameter + j] = evaluate_gaussian(dist, sigma_pixels);
     }
   }
 
@@ -51,7 +52,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
       double bW = 0.0;
 
       for (int ki = -radius; ki < radius; ki++){
-        for (int kj = -radius; kj < radius; kj ++){
+        for (int kj = -radius; kj < radius; kj++){
           int _i = i + ki;
           int _j = j + kj;
           if (_i < 0)
@@ -68,20 +69,15 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
           uint8_t g = image[index + 1];
           uint8_t b = image[index + 2];
 
-          // independent weighting per channel
-          //double wr = gaussian(static_cast<float>(r-r0), sigma_range) * spatial_filter[ (ki + radius) * diameter + (kj + radius) ];
-          //double wg = gaussian(static_cast<float>(g-g0), sigma_range) * spatial_filter[ (ki + radius) * diameter + (kj + radius) ];
-          //double wb = gaussian(static_cast<float>(b-b0), sigma_range) * spatial_filter[ (ki + radius) * diameter + (kj + radius) ];
-
-          // euclidean color distance
-          //float dist = sqrt(pow(static_cast<float>(r-r0), 2) + pow(static_cast<float>(g-g0), 2) + pow(static_cast<float>(b-b0), 2));
-          
+          /* 
+          as described in https://www.cs.jhu.edu/~misha/ReadingSeminar/Papers/Tomasi98.pdf
+          use euclidean distance in LAB color space for less artifacts
+          */
           double L, A, B;
           rgb_to_lab(r, g, b, L, A, B);
-          // needs sqrt?
           float dist = sqrt(pow(static_cast<float>(L-L0), 2) + pow(static_cast<float>(A-A0), 2) + pow(static_cast<float>(B-B0), 2));
           
-          double w_euc = gaussian(dist, sigma_range) * spatial_filter[ (ki + radius) * diameter + (kj + radius) ];
+          double w_euc = evaluate_gaussian(dist, sigma_range) * spatial_filter[ (ki + radius) * diameter + (kj + radius) ];
           double wr = w_euc;
           double wg = w_euc;
           double wb = w_euc;
