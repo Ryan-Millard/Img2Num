@@ -105,6 +105,10 @@ The component is covered by a test suite that verifies:
 * Default rendering as a `div`
 * Correct polymorphic rendering via the `as` prop
 * Proper forwarding of attributes and event handlers
-* Preservation of base glass styles when custom classes are applied one last time 
+* Correct rendering and preservation of children across different element types and custom class usages
+* CSS module mocking in the test environment to ensure styles and class names are applied consistently
+
+
+
 
 
