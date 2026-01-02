@@ -1,0 +1,30 @@
+{
+  "Exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    ".git",
+    "package-lock.json",
+    "docs/node_modules",
+    "docs/build",
+    "docs/.docusaurus",
+    "docs/package-lock.json",
+    "src/wasm/build",
+    "src/wasm/modules/**/build",
+    "src/wasm/modules/**/cmake-build-*",
+    "\\.ase$",
+    "\\.min\\.js$",
+    "\\.min\\.css$",
+    "\\.lock$"
+  ],
+  "AllowedContentTypes": [],
+  "PassedFiles": [],
+  "Disable": {
+    "EndOfLine": false,
+    "Indentation": false,
+    "InsertFinalNewline": false,
+    "TrimTrailingWhitespace": false,
+    "IndentSize": false,
+    "MaxLineLength": false
+  }
+}
