@@ -44,9 +44,15 @@ export default defineConfig({
     host: '0.0.0.0',  // Allow connections from outside Docker
     port: 5173,        // Match docker-compose port
     watch: {
-      ignored: ['src/wasm/**/*.js', 'src/wasm/**/*.wasm'],
+      ignored: ['**/docs/**', 'src/wasm/**/*.js', 'src/wasm/**/*.wasm'],
     },
   },
+  preview: {
+    watch: {
+      ignored: ['**/docs/**'],
+    },
+  },
+
   // Ensure Vite copies .wasm files
   assetsInclude: ['**/*.wasm'],
   resolve: {
