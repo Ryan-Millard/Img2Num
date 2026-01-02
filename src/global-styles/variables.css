@@ -19,24 +19,24 @@
 :root,
 :root.light {
   /* Background - soft cream from hedgehog */
-  --color-bg: #F8EACD;
+  --color-bg: #f8eacd;
 
   /* Primary - warm brown from hedgehog fur */
-  --color-primary: #6A3817;
-  --color-primary-dark: #532E1A;
-  
+  --color-primary: #6a3817;
+  --color-primary-dark: #532e1a;
+
   /* Secondary - golden/tan accent */
-  --color-secondary: #D7A47D;
-  
+  --color-secondary: #d7a47d;
+
   /* Tertiary - soft pink from hedgehog belly */
-  --color-accent: #FABFC0;
+  --color-accent: #fabfc0;
 
   /* Text colors - dark brown for readability */
   --color-text: #2c1a1a;
-  --color-text-light: #69432E;
+  --color-text-light: #69432e;
 
   /* Border - warm beige */
-  --color-border: #EECEA4;
+  --color-border: #eecea4;
 
   --color-error: #e94b4b;
   --color-success: #4bb543;
@@ -55,27 +55,27 @@
 :root.dark {
   /* Background - deep purple/brown night */
   --color-bg: #1a0f1f;
-  
+
   /* Primary - warm coral/pink */
-  --color-primary: #E0AD7D;
-  --color-primary-dark: #D7A47D;
-  
+  --color-primary: #e0ad7d;
+  --color-primary-dark: #d7a47d;
+
   /* Secondary - golden glow */
-  --color-secondary: #F8EACD;
-  
+  --color-secondary: #f8eacd;
+
   /* Tertiary - soft pink glow */
-  --color-accent: #FABFC0;
+  --color-accent: #fabfc0;
 
   /* Text colors */
-  --color-text: #F8EACD;
-  --color-text-light: #EECEA4;
-  
+  --color-text: #f8eacd;
+  --color-text-light: #eecea4;
+
   /* Border - muted warm brown */
   --color-border: #3d2a3d;
-  
+
   --color-error: #ff6b6b;
   --color-success: #51cf66;
-  
+
   /* Glass effect variables - darker with warm undertones */
   --glass-bg: rgba(61, 42, 61, 0.4);
   --glass-border: rgba(215, 164, 125, 0.2);
