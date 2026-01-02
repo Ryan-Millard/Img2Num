@@ -48,7 +48,7 @@ max_line_length = 120
 # -------------------------
 # JavaScript / React
 # -------------------------
-[*.{js,jsx}]
+[*.{js,jsx,tsx}]
 indent_style = space
 indent_size = 2
 charset = utf-8
@@ -90,12 +90,15 @@ indent_style = space
 indent_size = 2
 trim_trailing_whitespace = true
 insert_final_newline = true
+max_line_length = 150
 
 # -------------------------
 # Markdown
 # -------------------------
 [*.md]
 indent_style = space
+# Note: Prettier uses 3 spaces for nested list items, but enforcing 2 spaces
+# at the file level while allowing editorconfig-checker to be lenient
 indent_size = 2
 trim_trailing_whitespace = false
 insert_final_newline = true
@@ -142,9 +145,10 @@ max_line_length = off
 # -------------------------
 # LICENSE
 # -------------------------
-[LICENSE]
+[LICENSE*]
 max_line_length = off
 trim_trailing_whitespace = false
+insert_final_newline = true
 
 # -------------------------
 # Bash / Shell scripts
@@ -157,6 +161,7 @@ end_of_line = lf
 trim_trailing_whitespace = true
 insert_final_newline = true
 max_line_length = 120
+
 # img2num is in bash
 [img2num]
 indent_style = space

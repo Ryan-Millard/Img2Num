@@ -10,14 +10,15 @@
     "docs/.docusaurus",
     "docs/package-lock.json",
     "src/wasm/build",
-    "src/wasm/modules/image/build",
     "\\.ase$",
     "\\.min\\.js$",
     "\\.min\\.css$",
     "\\.lock$"
   ],
   "AllowedContentTypes": [],
-  "PassedFiles": [],
+  "PassedFiles": [
+    "\\.md$"
+  ],
   "Disable": {
     "EndOfLine": false,
     "Indentation": false,
