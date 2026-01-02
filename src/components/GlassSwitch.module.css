@@ -11,6 +11,25 @@
   margin-right:15px;
 }
 
+/* WCAG 2.4.7 Compliant Focus Indicator */
+.switch:focus-visible {
+  outline: 2px solid var(--color-primary, #4f46e5);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--color-focus-ring, rgba(79, 70, 229, 0.1));
+}
+
+/* Fallback for browsers that don't support :focus-visible */
+.switch:focus {
+  outline: 2px solid var(--color-primary, #4f46e5);
+  outline-offset: 2px;
+}
+
+/* Remove default outline from focus-visible for cleaner look */
+.switch:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
 .thumb {
   position: absolute;
   left:0;
