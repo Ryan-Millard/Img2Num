@@ -12,9 +12,6 @@ dist
 dist-ssr
 *.local
 
-# Ignore docs site
-/docs/build
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
