@@ -33,16 +33,23 @@ jobs:
           echo "Checking for changed scripts..."
 
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+            # For PRs, always use the base branch to avoid issues with force pushes
+            BASE_SHA="origin/${{ github.event.pull_request.base.ref }}"
           else
+            # For push events, try to find common ancestor
             BASE_SHA="${{ github.event.before }}"
+            HEAD_SHA="${{ github.sha }}"
+            
+            if ! COMMON_ANCESTOR=$(git merge-base "$BASE_SHA" "$HEAD_SHA" 2>/dev/null); then
+              echo "Could not find common ancestor (likely due to force push)"
+              echo "Comparing with HEAD^ instead"
+              BASE_SHA="HEAD^"
+            else
+              BASE_SHA="$COMMON_ANCESTOR"
+            fi
           fi
 
           HEAD_SHA="${{ github.sha }}"
-
-          # Ensure a valid common ancestor (handles force-pushes)
-          BASE_SHA=$(git merge-base "$BASE_SHA" "$HEAD_SHA")
-
           files=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
           echo "Changed files: $files"
 
