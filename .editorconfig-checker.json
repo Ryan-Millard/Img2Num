@@ -15,8 +15,16 @@
     "\\.min\\.js$",
     "\\.min\\.css$",
     "\\.lock$",
+    "CC-BY-SA-4\\.0\\.txt$",
     "LICENSE.*",
-    "\\.md$"
+    "\\.md$",
+    "\\.mdx$",
+    "\\.py$",
+    "\\.bat$",
+    "\\.ps1$",
+    "^img2num$",
+    "\\.cpp$",
+    "\\.h$"
   ],
   "AllowedContentTypes": [],
   "PassedFiles": [],
