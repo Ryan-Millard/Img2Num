@@ -26,7 +26,7 @@ _When reporting issues, please:_
 ## Claiming Issues
 
 - To claim an issue, comment: `/take`. This will assign the issue to you and add the `taken` label.
-- To release an issue, comment: `/untake`
+- To release an issue, comment: `/untake`. This will unassign the issue from you and remove the `taken` label.
 - Issues labeled `taken` are currently owned and being worked on.
 
 ## Development Setup
