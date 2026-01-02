@@ -1,5 +1,5 @@
 .switch {
-  --size:32px;
+  --size:30px;
   display: flex;
   align-items: center;
   width: calc(var(--size) * 2);
@@ -14,7 +14,7 @@
 .thumb {
   position: absolute;
   left:0;
-  bottom: 0;
+  bottom: 1;
   width: calc(var(--size) - 4px);
   height: calc(var(--size) - 4px);
   border-radius: 50%;
@@ -25,4 +25,11 @@
 
 .checked .thumb {
   transform: translateX(var(--size));
+}
+.fallbackThumbContentOff{
+  background-color: rgb(110, 110, 110);
+}
+
+.fallbackThumbContentOn{
+background-color: rgb(26, 219, 32);
 }

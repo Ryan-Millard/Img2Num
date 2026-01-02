@@ -2,8 +2,8 @@ import styles from './GlassSwitch.module.css';
 import Tooltip from '@components/Tooltip';
 import PropTypes from 'prop-types';
 
-const GlassSwitch = ({ onChange, isOn, ariaLabel, thumbContent , size='medium', disabled=false}) => {
-
+const GlassSwitch = ({ onChange, isOn, ariaLabel, thumbContent, size = 'medium', disabled = false }) => {
+  const fallbackContent = isOn ? styles.fallbackThumbContentOn : styles.fallbackThumbContentOff ;
   return (
     <Tooltip content={ariaLabel}>
       <button
@@ -15,7 +15,9 @@ const GlassSwitch = ({ onChange, isOn, ariaLabel, thumbContent , size='medium', 
         aria-label={ariaLabel}
         disabled={disabled}
       >
-        <span className={styles.thumb}>{thumbContent}</span>
+        <span className={`${styles.thumb} ${thumbContent ? thumbContent : fallbackContent}`}>
+          {thumbContent}
+        </span>
       </button>
     </Tooltip>
   );
