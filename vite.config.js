@@ -47,11 +47,6 @@ export default defineConfig({
       ignored: ['**/docs/**', 'src/wasm/**/*.js', 'src/wasm/**/*.wasm'],
     },
   },
-  preview: {
-    watch: {
-      ignored: ['**/docs/**'],
-    },
-  },
 
   // Ensure Vite copies .wasm files
   assetsInclude: ['**/*.wasm'],
