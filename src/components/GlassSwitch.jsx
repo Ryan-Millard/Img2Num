@@ -15,7 +15,7 @@ const GlassSwitch = ({ onChange, isOn, ariaLabel, thumbContent, size = 'medium',
         aria-label={ariaLabel}
         disabled={disabled}
       >
-        <span className={`${styles.thumb} ${thumbContent ? thumbContent : fallbackContent}`}>
+        <span className={`glass ${styles.thumb} ${thumbContent ? thumbContent : fallbackContent}`}>
           {thumbContent}
         </span>
       </button>

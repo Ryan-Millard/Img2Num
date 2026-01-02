@@ -15,7 +15,7 @@
 .switch:focus-visible {
   outline: 2px solid var(--color-primary, #4f46e5);
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px var(--color-focus-ring, rgba(79, 70, 229, 0.1));
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
 }
 
 /* Fallback for browsers that don't support :focus-visible */
@@ -50,5 +50,5 @@
 }
 
 .fallbackThumbContentOn{
-background-color: rgb(26, 219, 32);
+  background-color: var(--color-success);
 }
