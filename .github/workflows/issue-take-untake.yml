@@ -13,53 +13,6 @@ permissions:
   issues: write
 
 jobs:
-  # Post initial instructions and ensure label exists
-  issue_instructions:
-    if: github.event_name == 'issues' && github.event.action == 'opened'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Post instructions and ensure 'taken' label exists
-        uses: actions/github-script@v8
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
-            const issueNumber = context.payload.issue.number;
-            const takenLabel = 'taken';
-
-            // Ensure label exists (best-effort)
-            try {
-              await github.rest.issues.createLabel({
-                owner,
-                repo,
-                name: takenLabel,
-                color: 'ff0000',
-                description: 'Issue is currently claimed'
-              });
-            } catch (e) {
-              // ignore if label already exists
-            }
-
-            // Instructions comment (no meta marker here; preserves commit guide rules)
-            await github.rest.issues.createComment({
-              owner,
-              repo,
-              issue_number: issueNumber,
-              body: [
-                "👋 Thanks for opening this issue!",
-                "",
-                "> [!TIP]",
-                "> # Claiming rules",
-                "> - Only one claim at a time (the claimer can invite others)",
-                "> - Comment `/take` to claim the issue",
-                "> \t- You may invite collaborators: e.g., `/take @user1 @user2`",
-                "> - Comment `/untake` to release (or to remove yourself if you've been invited)",
-                "> \t- You may remove collaborators: e.g., `/untake @user1 @user2`",
-                "> - Claims expire after **3 weeks** of inactivity (automatically)",
-                ""
-              ].join("\n")
-            });
 
   # Handle /take and /untake comments (single bot comment per action)
   take_untake:
