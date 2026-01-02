@@ -54,15 +54,13 @@ describe('useTheme hook', () => {
 
   it('defaults to system preference when no localStorage value exists (prefers dark)', () => {
     // Simulate system preference = dark
-    window.matchMedia = vi
-      .fn()
-      .mockImplementation(() => ({
-        matches: true,
-        addListener: vi.fn(),
-        removeListener: vi.fn(),
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-      }));
+    window.matchMedia = vi.fn().mockImplementation(() => ({
+      matches: true,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }));
 
     render(<TestComponent />);
 
@@ -78,15 +76,13 @@ describe('useTheme hook', () => {
     localStorage.setItem('theme', 'light'); // preexisting preference
 
     // Even if system prefers dark, localStorage should win
-    window.matchMedia = vi
-      .fn()
-      .mockImplementation(() => ({
-        matches: true,
-        addListener: vi.fn(),
-        removeListener: vi.fn(),
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-      }));
+    window.matchMedia = vi.fn().mockImplementation(() => ({
+      matches: true,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }));
 
     render(<TestComponent />);
 

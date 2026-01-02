@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Home, Users, Info, Github, SquareArrowOutUpRight, Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './NavBar.module.css';
@@ -56,7 +56,7 @@ export default function NavBar() {
 
         {/* Navigation */}
         <ul id="nav-menu" className={`${styles.navList} ${isOpen ? styles.open : ''}`} role="menubar">
-          {INTERNAL_LINKS.map(({ path, label, icon: Icon, tooltip }) => (
+          {INTERNAL_LINKS.map(({ path, label, icon, tooltip }) => (
             <li key={path} role="none">
               <Tooltip content={tooltip}>
                 <Link
@@ -64,18 +64,20 @@ export default function NavBar() {
                   role="menuitem"
                   className={`${styles.navLink} ${pathname === path ? styles.active : ''}`}
                   onClick={closeMenu}>
-                  <Icon size={16} />
+                  {/* Supress eslint "no-unused-vars" rule */}
+                  {React.createElement(icon, { size: 16 })}
                   <span>{label}</span>
                 </Link>
               </Tooltip>
             </li>
           ))}
 
-          {EXTERNAL_LINKS.map(({ href, label, icon: Icon, tooltip }) => (
+          {EXTERNAL_LINKS.map(({ href, label, icon, tooltip }) => (
             <li key={href} role="none">
               <Tooltip content={`${tooltip} (opens in a new tab)`}>
                 <a href={href} target="_blank" rel="noopener noreferrer" role="menuitem" className={styles.navLink}>
-                  <Icon size={16} />
+                  {/* Supress eslint "no-unused-vars" rule */}
+                  {React.createElement(icon, { size: 16 })}
                   <span>{label}</span>
                   <SquareArrowOutUpRight size={12} className={styles.externalIcon} />
                 </a>

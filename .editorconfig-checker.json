@@ -5,6 +5,7 @@
     "build",
     ".git",
     "package-lock.json",
+    "src/data/contributor-credits.json",
     "docs/node_modules",
     "docs/build",
     "docs/.docusaurus",

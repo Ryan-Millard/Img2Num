@@ -69,15 +69,13 @@ function TestComponent() {
 
 // Example test
 it('defaults to system preference when no localStorage value exists (prefers dark)', () => {
-  window.matchMedia = vi
-    .fn()
-    .mockImplementation(() => ({
-      matches: true,
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-    }));
+  window.matchMedia = vi.fn().mockImplementation(() => ({
+    matches: true,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  }));
 
   render(<TestComponent />);
 
