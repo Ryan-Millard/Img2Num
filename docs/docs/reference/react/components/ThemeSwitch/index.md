@@ -54,7 +54,7 @@ ThemeSwitch uses `GlassSwitch`, which implements accessible switch semantics:
 | ARIA label       | `aria-label="switch to dark mode"` or `"switch to light mode"`         |
 | Button type      | `type="button"` to avoid form submission                               |
 | Keyboard support | Tab to focus; Enter/Space toggles                                        |
-| Focus indicator  | Inherits focus ring from `GlassSwitch` styles                            |
+| Focus indicator  | Visible focus ring via `:focus-visible` with 2px outline and box-shadow (WCAG 2.4.7) |
 | Icon semantics   | Icons are decorative; meaning conveyed through the aria-label            |
 
 ## Examples
@@ -120,8 +120,8 @@ export default function ThemeControl() {
 The component:
 
 1. Calls `useTheme()` to get the current theme and toggle function
-2. Renders a button with an onClick handler that calls `toggleTheme()`
-3. Conditionally displays a Sun icon (dark mode) or Moon icon (light mode)
+2. Renders a `<button>` element with `role="switch"` and an `onChange` handler that calls `toggleTheme()`
+3. Conditionally displays a Sun icon (dark mode) or Moon icon (light mode) based on current theme
 4. The `useTheme` hook handles:
    - Reading the initial theme from localStorage or system preferences
    - Applying theme classes to `document.documentElement`
