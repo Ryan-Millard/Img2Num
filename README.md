@@ -70,7 +70,7 @@ Try it out now by [clicking here](https://ryan-millard.github.io/Img2Num/)!
 
 ## What this repository contains (short)
 
-<div align="center"
+<div align="center" />
 
 ![React](https://img.shields.io/badge/React-19-blue?logo=react&logoColor=61DAFB)
 ![C++](https://img.shields.io/badge/C++-Modern-blue?logo=c%2B%2B&logoColor=00599C)
@@ -81,7 +81,7 @@ Try it out now by [clicking here](https://ryan-millard.github.io/Img2Num/)!
 ![CSS](https://img.shields.io/badge/CSS-Modern-blue?logo=css3)
 
 </div>
-<div align="center"
+<div align="center" />
 
 ![Prettier](https://img.shields.io/badge/Prettier-Code%20Formatter-brightgreen?logo=prettier&logoColor=F7B93E)
 ![ESLint](https://img.shields.io/badge/ESLint-Linted-yellow?logo=eslint)
