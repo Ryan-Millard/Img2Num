@@ -20,12 +20,14 @@ npm run lint:style    # Check code style
 ### Documentation
 
 For detailed information about linting standards, fixing issues, and CI integration, see:
+
 - [Coding Style Guidelines](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/coding-style)
 - [CI/CD Workflows](https://ryan-millard.github.io/Img2Num/info/docs/reference/tools/ci-workflows)
 
 ### Questions?
 
 If you encounter linting issues you're unsure how to fix, feel free to:
+
 - Open a [discussion](https://github.com/Ryan-Millard/Img2Num/discussions) or [issue](https://github.com/Ryan-Millard/Img2Num/issues) and ask for guidance
 - Comment on the relevant issue
 - Check existing PRs for examples

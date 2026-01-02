@@ -5,6 +5,7 @@ sidebar_position: 3
 ---
 
 ## 🌐General Rules
+
 - **Follow `.editorconfig`** exactly:
   - Indent: **2 spaces**
   - Charset: **UTF-8**
@@ -18,6 +19,7 @@ sidebar_position: 3
 - **Do not manually override formatting** outside Prettier/clang-format unless necessary.
 
 ## ⚛ JavaScript / React
+
 - Indent: 2 spaces
 - Max line length: 120
 - Single quotes `'...'`
@@ -30,6 +32,7 @@ sidebar_position: 3
 - Globals: browser
 
 ## 💻 C / C++
+
 - Indent: 2 spaces
 - Max line length: 120
 - **Brace style: Allman** (opening brace on a new line)
@@ -55,6 +58,7 @@ namespace exampleNamespace
 
 #endif // EXAMPLE_FUNCTION_H
 ```
+
 </details>
 
 <details>
@@ -67,18 +71,20 @@ namespace exampleNamespace
 
 namespace exampleNamespace
 {
-  void exampleFunction(uint8_t x)
-  {
-    if (internalLibrary::isPrime(x))
-    {
-      std::cout << "Prime" << std::endl;
-      return;
-    }
+void exampleFunction(uint8_t x)
+{
+if (internalLibrary::isPrime(x))
+{
+std::cout << "Prime" << std::endl;
+return;
+}
 
     std::cout << "Non-prime" << std::endl;
-  }
+
 }
-```
+}
+
+````
 </details>
 
 ## 🌐 HTML / CSS / Markdown / YAML
@@ -117,17 +123,19 @@ npm run lint:fix
 
 # Check code style (indentation, line endings, etc.)
 npm run lint:style
-```
+````
 
 ### What the Linters Check
 
 **ESLint** validates:
+
 - JavaScript/React syntax and best practices
 - Potential bugs and code smells
 - Consistent code style
 - React Hooks rules
 
 **editorconfig-checker** validates:
+
 - Indentation style (spaces vs tabs)
 - Line ending consistency (LF)
 - Trailing whitespace
@@ -155,6 +163,7 @@ npm run lint:style
 ### CI Integration
 
 All pull requests automatically run linting checks. If the lint job fails:
+
 1. Review the CI logs
 2. Fix issues locally using the commands above
 3. Commit and push your fixes

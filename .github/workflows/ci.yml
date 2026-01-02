@@ -96,4 +96,3 @@ jobs:
             $(tail -n 100 validation.log)
             ```
           is_pr: true
-

@@ -10,9 +10,9 @@ This repository configures a Vite plugin (`watch-cpp-and-build-wasm`) that watch
 
 Important points:
 
-* The watcher registers `src/wasm/**/*.{cpp,h}` with Vite's watcher so edits trigger rebuilds.
-* The build uses the root `src/wasm/CMakeLists.txt` which iterates through the modules and calls each module's `CMakeLists.txt`.
-* For faster local iteration use `npm run dev:debug` — this runs `make debug` and launches the dev server.
+- The watcher registers `src/wasm/**/*.{cpp,h}` with Vite's watcher so edits trigger rebuilds.
+- The build uses the root `src/wasm/CMakeLists.txt` which iterates through the modules and calls each module's `CMakeLists.txt`.
+- For faster local iteration use `npm run dev:debug` — this runs `make debug` and launches the dev server.
 
 ## Root CMakeLists.txt contract
 
@@ -94,18 +94,19 @@ message(STATUS "Module '${MODULE_NAME}' configured (export: create${CAP_MODULE_N
 ```
 
 :::note
+
 1. Place your C++ headers in include/ and sources in src/
 2. Use exported functions via ccall/cwrap in JS
 3. Adjust memory flags if your module needs more/less WASM memory
 4. For module-specific Emscripten options, add them before target_link_options
-:::
+   :::
 
 This template compiles all `.cpp` files under `src/` into `build/index.js` + `build/index.wasm` using simple flags. Tailor flags and link-time options to your needs.
 
 ## Debugging tips
 
-* Build with `debug` target to keep symbols and turn on `ASSERTIONS`.
-* Use `EMSCRIPTEN_KEEP_UNWANTED_CODE` only when you need to preserve functions — avoid it in production.
-* Use `console.log` in Emscripten glue JS — Emscripten prints useful warnings if symbols are missing.
+- Build with `debug` target to keep symbols and turn on `ASSERTIONS`.
+- Use `EMSCRIPTEN_KEEP_UNWANTED_CODE` only when you need to preserve functions — avoid it in production.
+- Use `console.log` in Emscripten glue JS — Emscripten prints useful warnings if symbols are missing.
 
 ---

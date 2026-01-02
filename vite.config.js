@@ -41,8 +41,8 @@ async function buildWasmModules() {
 export default defineConfig({
   base: '/Img2Num/', // important for GitHub Pages
   server: {
-    host: '0.0.0.0',  // Allow connections from outside Docker
-    port: 5173,        // Match docker-compose port
+    host: '0.0.0.0', // Allow connections from outside Docker
+    port: 5173, // Match docker-compose port
     watch: {
       ignored: ['src/wasm/**/*.js', 'src/wasm/**/*.wasm'],
     },

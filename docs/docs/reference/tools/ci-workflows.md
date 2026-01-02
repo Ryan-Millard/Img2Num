@@ -16,12 +16,14 @@ Img2Num uses GitHub Actions for continuous integration and deployment. This page
 **File**: `.github/workflows/ci.yml` (lint job)
 
 **Triggers**:
+
 - Pull requests to `main`
 - Pushes to `main`
 
 **Purpose**: Ensures all code meets our style and quality standards before merging.
 
 **Steps**:
+
 1. Checkout code
 2. Setup Node.js 22 with npm caching
 3. Install dependencies (`npm ci`)
@@ -29,6 +31,7 @@ Img2Num uses GitHub Actions for continuous integration and deployment. This page
 5. Run editorconfig-checker (`npm run lint:style`)
 
 **What it checks**:
+
 - JavaScript/React code quality (ESLint)
 - Code style consistency (indentation, line endings, etc.)
 - EditorConfig compliance
@@ -42,16 +45,19 @@ Img2Num uses GitHub Actions for continuous integration and deployment. This page
 **File**: `.github/workflows/ci.yml` (validate-scripts job)
 
 **Triggers**:
+
 - Pull requests to `main` (when scripts are modified)
 - Pushes to `main` (when scripts are modified)
 
 **Purpose**: Validates that every npm script has corresponding documentation in `package.json`'s `scriptsInfo` section.
 
 **Smart detection**: Only runs when:
+
 - `package.json` or `docs/package.json` changes include `scriptsInfo` modifications
 - Files under `scripts/` or `docs/scripts/` are modified
 
 **Steps**:
+
 1. Detect if script-related files changed
 2. If yes, run `npm run validate-scripts`
 3. Comment on PR if validation fails (with error details)
@@ -79,6 +85,7 @@ npm run validate-scripts
 **Symptoms**: `npm run lint` or `npm run lint:style` fails in CI
 
 **Solutions**:
+
 1. Run the failing command locally:
    ```bash
    npm run lint        # for ESLint errors
@@ -93,6 +100,7 @@ npm run validate-scripts
 **Symptoms**: `validate-scripts` job fails
 
 **Solutions**:
+
 1. Ensure every script in `package.json` has an entry in `scriptsInfo`
 2. Run `npm run validate-scripts` locally to see specific errors
 3. Add missing `scriptsInfo` entries or remove unused scripts
@@ -107,6 +115,7 @@ All workflows use **Node.js 22** to match the project's runtime environment.
 ### Caching
 
 npm dependencies are cached to speed up workflow runs:
+
 ```yaml
 - uses: actions/setup-node@v4
   with:
@@ -117,6 +126,7 @@ npm dependencies are cached to speed up workflow runs:
 ### Conditional Execution
 
 The `validate-scripts` job only runs when necessary, saving CI resources:
+
 - Checks git diff for relevant file changes
 - Uses `if: steps.check_changes.outputs.scripts_changed == 'true'`
 
@@ -130,6 +140,7 @@ The `validate-scripts` job only runs when necessary, saving CI resources:
 ## Future Enhancements
 
 Planned improvements to CI workflows:
+
 - Unit test automation
 - Build verification
 - Deployment automation

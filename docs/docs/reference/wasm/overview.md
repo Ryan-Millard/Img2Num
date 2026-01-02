@@ -28,9 +28,9 @@ This repo ships native C++ image-processing code compiled to WebAssembly (WASM) 
 
 The important pieces are:
 
-* [`src/wasm/`](https://github.com/Ryan-Millard/Img2Num/tree/main/src/wasm) — centralized place for a **root CMakeLists.txt** and a `modules/` directory containing one or more WASM modules (example: `image`).
-* [`vite.config.js`](https://github.com/Ryan-Millard/Img2Num/blob/main/vite.config.js) — contains alias generation so you can `import` built WASM outputs using `@wasm-{module-name}` and a dev-time watcher that triggers rebuilds when `.cpp` / `.h` change.
-* [`package.json`](https://github.com/Ryan-Millard/Img2Num/blob/main/package.json) scripts — `npm run build-wasm`, `npm run build-wasm:debug`, `npm run clean-wasm`, which delegate to the CMakeLists.txt in `src/wasm/`.
+- [`src/wasm/`](https://github.com/Ryan-Millard/Img2Num/tree/main/src/wasm) — centralized place for a **root CMakeLists.txt** and a `modules/` directory containing one or more WASM modules (example: `image`).
+- [`vite.config.js`](https://github.com/Ryan-Millard/Img2Num/blob/main/vite.config.js) — contains alias generation so you can `import` built WASM outputs using `@wasm-{module-name}` and a dev-time watcher that triggers rebuilds when `.cpp` / `.h` change.
+- [`package.json`](https://github.com/Ryan-Millard/Img2Num/blob/main/package.json) scripts — `npm run build-wasm`, `npm run build-wasm:debug`, `npm run clean-wasm`, which delegate to the CMakeLists.txt in `src/wasm/`.
 
 The design goals:
 
@@ -52,4 +52,3 @@ npm run build-wasm:debug
 ```bash title="Remove all generated WASM build outputs"
 npm run clean-wasm
 ```
-

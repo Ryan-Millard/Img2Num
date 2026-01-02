@@ -26,6 +26,7 @@ npm run help
 This launches an interactive CLI that shows all scripts in `package.json` grouped by category and allows fuzzy search.
 
 **Features:**
+
 - Lists scripts in groups: Development, Build, Cleaning, Formatting, Linting, Other
 - Allows fuzzy search for script names
 - `a + enter` lists all scripts
@@ -38,9 +39,10 @@ This launches an interactive CLI that shows all scripts in `package.json` groupe
 <img src={CliArgsImg} alt="CLI Args Example" style={{ width: '100%' }} />
 
 :::info
+
 - These scripts are meant to manage the documentation site.
 - Use `start` to run a local dev server for docs.
 - Use `build` and `deploy` to publish to GitHub Pages.
 - `swizzle` allows customizing theme components safely.
 - `write-translations` and `write-heading-ids` are useful for internationalization and stable MDX anchors.
-:::
+  :::

@@ -37,4 +37,3 @@ The [Project Scripts](../project-scripts/overview.md) section shows all of the a
 - [ESLint Config](https://github.com/Ryan-Millard/Img2Num/blob/main/eslint.config.js)
 
 Thank you for improving Img2Num! 🎨🚀
-
