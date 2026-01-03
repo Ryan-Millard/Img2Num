@@ -1,40 +1,110 @@
----
+
 title: GlassCard
-description: GlassCard component documentation (work in progress)
----
+description: Reusable polymorphic UI container with glassmorphism styling
 
-# GlassCard
 
-:::danger Work in progress
-Documentation for the `GlassCard` component has not been written yet.
-We are actively looking for contributors to help document this component and its tests. If you’re interested in helping, please see the linked issue below.
-:::
+## Overview
 
-## 📌 Help wanted
+`GlassCard` is a reusable, high-performance **polymorphic** UI container designed
+with a modern glassmorphism aesthetic. It allows consistent styling across
+different semantic HTML elements while maintaining a clean, blurred,
+semi-transparent appearance.
 
-👉 **GitHub issue:**  
-https://github.com/Ryan-Millard/Img2Num/issues/178
+By default, `GlassCard` renders a `div`, but this can be customized using the
+`as` prop.
 
-That issue outlines exactly what is needed, including:
-- Component overview
-- Usage examples
-- Props reference
-- Styling notes
-- Test coverage explanation
 
-This is a **documentation-only task** and a good way to get familiar with the component library.
 
-## 🧩 What is GlassCard?
+## ✨ Features
 
-`GlassCard` is a small, reusable React component used throughout the UI.  
-It supports polymorphic rendering via an `as` prop, custom class names, and arbitrary prop forwarding.
+- **Polymorphic Rendering**: Render any semantic HTML element using the `as` prop
+- **Style Merging**: Internal styles are safely merged with custom `className`
+- **Prop Forwarding**: Supports all native HTML attributes and event handlers
+- **SEO Friendly**: Easily switch to semantic tags like `section` or `main`
 
-> Full documentation coming soon — with your help 🙂
 
-## ✅ Status
 
-- Component: ✅ implemented
-- Tests: ✅ comprehensive
-- Documentation: ❌ missing (you can help!)
+## 🛠 Basic Usage
 
-If you’re unsure where to start, just comment on the issue and we’ll guide you.
+```jsx
+import { GlassCard } from './components/GlassCard';
+
+const MyComponent = () => (
+  <GlassCard>
+    <h1>Glass Effect</h1>
+    <p>This content is wrapped in a blurred container.</p>
+  </GlassCard>
+);
+
+```
+## Polymorphic Rendering (SEO & Semantics)
+
+You can change the underlying HTML element without losing any styling.
+
+```jsx
+<GlassCard as="section">
+  <h2>Section Title</h2>
+</GlassCard>
+<GlassCard as="article">
+  <p>Article content goes here...</p>
+</GlassCard>
+
+```
+Common values include:
+
+* div (default)
+* section
+* article
+* nav
+* main
+* aside
+
+## Passing Additional Props
+
+All additional props are forwarded to the underlying element.
+
+```jsx
+<GlassCard
+  id="main-card"
+  aria-label="Main featured card"
+  onClick={() => alert('Card clicked!')}
+  className="hover-effect"
+>
+  Interactive Card
+</GlassCard>
+
+```
+## API Reference
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `as` | string | `div` | HTML element to render |
+| `className` | string | — | Additional CSS classes |
+| `children` | ReactNode | — | Content inside the component |
+| `...rest` | object | — | Any valid HTML attributes |
+
+## Styling Notes
+
+GlassCard styles are defined in `GlassCard.module.css` and include:
+
+* Backdrop blur for a frosted-glass appearance
+* Semi-transparent background using RGBA
+* Subtle border for glass edge highlights
+* Text centering is applied via the global utility class `text-center` (for example, from Tailwind CSS or a global stylesheet), not from the CSS module.
+
+Custom styles passed via `className` are merged safely.
+
+## Testing Overview
+
+The component is covered by a test suite that verifies:
+
+* Default rendering as a `div`
+* Correct polymorphic rendering via the `as` prop
+* Proper forwarding of attributes and event handlers
+* Correct rendering and preservation of children across different element types and custom class usages
+* CSS module mocking in the test environment to ensure styles and class names are applied consistently
+
+
+
+
+
