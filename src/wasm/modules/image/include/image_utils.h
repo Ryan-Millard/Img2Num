@@ -15,7 +15,7 @@ uint8_t quantize(uint8_t value, uint8_t region_size);
 EXPORTED void gaussian_blur_fft(uint8_t *image, size_t width, size_t height,
                                 double sigma);
 
-EXPORTED void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_pixels, double sigma_range);
+EXPORTED void bilateral_filter_cielab(uint8_t *image, size_t width, size_t height, double sigma_pixels, double sigma_range);
 
 EXPORTED void invert_image(uint8_t *ptr, int width, int height);
 

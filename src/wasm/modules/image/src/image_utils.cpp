@@ -13,12 +13,12 @@ double evaluate_gaussian(float x, double sigma) {
   return exp(-(pow(x, 2))/(2 * pow(sigma, 2))) / (2 * M_PI * pow(sigma, 2));
 }
 
-void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_pixels, double sigma_range)
+void bilateral_filter_cielab(uint8_t *image, size_t width, size_t height, double sigma_pixels, double sigma_range)
 {
   // sigma_pixel = spatial kernel
   if (!image || width == 0 || height == 0 || sigma_pixels <= 0 || sigma_range <= 0)
     return;
-  
+
   const int radius = static_cast<int>(1.5 * sigma_pixels);
   const size_t diameter = radius * 2 + 1;
 
@@ -69,14 +69,14 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
           uint8_t g = image[index + 1];
           uint8_t b = image[index + 2];
 
-          /* 
+          /*
           as described in https://www.cs.jhu.edu/~misha/ReadingSeminar/Papers/Tomasi98.pdf
           use euclidean distance in LAB color space for less artifacts
           */
           double L, A, B;
           rgb_to_lab(r, g, b, L, A, B);
           float dist = sqrt(pow(static_cast<float>(L-L0), 2) + pow(static_cast<float>(A-A0), 2) + pow(static_cast<float>(B-B0), 2));
-          
+
           double w_euc = evaluate_gaussian(dist, sigma_range) * spatial_filter[ (ki + radius) * diameter + (kj + radius) ];
           double wr = w_euc;
           double wg = w_euc;
