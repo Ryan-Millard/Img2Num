@@ -15,17 +15,15 @@ import rehypeKatex from 'rehype-katex';
 const require = createRequire(import.meta.url);
 require('dotenv').config();
 
-const hasAlgoliaEnvDefined = process.env.ALGOLIA_APP_ID
-                          && process.env.ALGOLIA_API_KEY
-                          && process.env.ALGOLIA_INDEX_NAME;
-const algolia =
-  hasAlgoliaEnvDefined
+const hasAlgoliaEnvDefined =
+  process.env.ALGOLIA_APP_ID && process.env.ALGOLIA_API_KEY && process.env.ALGOLIA_INDEX_NAME;
+const algolia = hasAlgoliaEnvDefined
   ? {
-    appId: process.env.ALGOLIA_APP_ID,
-    apiKey: process.env.ALGOLIA_API_KEY,
-    indexName: process.env.ALGOLIA_INDEX_NAME,
-    contextualSearch: false,
-  }
+      appId: process.env.ALGOLIA_APP_ID,
+      apiKey: process.env.ALGOLIA_API_KEY,
+      indexName: process.env.ALGOLIA_INDEX_NAME,
+      contextualSearch: false,
+    }
   : undefined;
 const algoliaHeadTag = {
   name: 'algolia-site-verification',
@@ -139,8 +137,7 @@ const config = {
     {
       href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
       type: 'text/css',
-      integrity:
-        'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
+      integrity: 'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
       crossorigin: 'anonymous',
     },
   ],
@@ -154,9 +151,7 @@ const config = {
         respectPrefersColorScheme: true,
       },
 
-      metadata: [
-        algoliaHeadTag,
-      ],
+      metadata: [algoliaHeadTag],
 
       algolia,
 

@@ -2,7 +2,6 @@
 title: ThemeSwitch Tests
 ---
 
-
 The ThemeSwitch component has 7 updated tests covering rendering, icon display, theme toggling, hook integration, and edge cases.
 
 ## Test file location
@@ -28,34 +27,34 @@ npm test -- --watch ThemeSwitch.test.jsx
 
 ### 1. Rendering (2 tests)
 
-* Renders a button with the correct aria-label based on the theme
-* Button has type="button" attribute and CSS class `themeButton`
+- Renders a button with the correct aria-label based on the theme
+- Button has type="button" attribute and CSS class `themeButton`
 
 ### 2. Icon display based on theme (2 tests)
 
-* Shows Moon icon for light theme
-* Shows Sun icon for dark theme
-* Applies `icon` CSS class correctly
+- Shows Moon icon for light theme
+- Shows Sun icon for dark theme
+- Applies `icon` CSS class correctly
 
 ### 3. Theme toggling functionality (2 tests)
 
-* Calls `toggleTheme` when button is clicked
-* Is keyboard accessible (focusable)
+- Calls `toggleTheme` when button is clicked
+- Is keyboard accessible (focusable)
 
 ### 4. Integration with useTheme hook (1 test)
 
-* Uses `toggleTheme` function from hook
+- Uses `toggleTheme` function from hook
 
 ### 5. Edge cases (1 test)
 
-* Defaults to Moon icon when theme is undefined or falsy
+- Defaults to Moon icon when theme is undefined or falsy
 
 ## Mocking strategy
 
-* **useTheme hook**: mocked with `vi.spyOn` to control theme and toggle function
-* **CSS modules**: mocked to check `className` usage
-* **Lucide icons**: mocked with test spans for Moon/Sun icons
-* **Tooltip**: mocked as a simple wrapper component
+- **useTheme hook**: mocked with `vi.spyOn` to control theme and toggle function
+- **CSS modules**: mocked to check `className` usage
+- **Lucide icons**: mocked with test spans for Moon/Sun icons
+- **Tooltip**: mocked as a simple wrapper component
 
 ## Example test snippets
 
@@ -97,19 +96,19 @@ expect(screen.getByTestId('moon-icon')).toBeInTheDocument();
 
 ## Test utilities
 
-* **Vitest** - Test framework
-* **React Testing Library** - Component rendering & queries
-* **vi.fn() / vi.spyOn()** - Mocking
-* **fireEvent** - User interactions
+- **Vitest** - Test framework
+- **React Testing Library** - Component rendering & queries
+- **vi.fn() / vi.spyOn()** - Mocking
+- **fireEvent** - User interactions
 
 ## Coverage
 
-* Component rendering (light/dark themes)
-* User interactions (click, keyboard)
-* Edge cases (undefined/falsy theme)
-* Integration with hook
-* Accessibility (aria-labels, focus)
-* CSS class application
+- Component rendering (light/dark themes)
+- User interactions (click, keyboard)
+- Edge cases (undefined/falsy theme)
+- Integration with hook
+- Accessibility (aria-labels, focus)
+- CSS class application
 
 ## Best practices
 
@@ -121,5 +120,5 @@ expect(screen.getByTestId('moon-icon')).toBeInTheDocument();
 
 ## Related
 
-* [ThemeSwitch Component](../)
-* [useTheme Hook](../../../hooks/useTheme)
+- [ThemeSwitch Component](../)
+- [useTheme Hook](../../../hooks/useTheme)

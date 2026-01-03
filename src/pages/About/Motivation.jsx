@@ -10,14 +10,10 @@ const Motivation = () => {
 
       <p>
         <Tooltip content="Visit the Img2Num GitHub repository">
-          <a
-            href="https://github.com/Ryan-Millard/Img2Num"
-            target="_blank"
-            rel="noopener noreferrer">
+          <a href="https://github.com/Ryan-Millard/Img2Num" target="_blank" rel="noopener noreferrer">
             Img2Num
           </a>{' '}
         </Tooltip>
-
         started as a simple goal: to <strong>learn how image processing works</strong>. I wanted to experiment with
         transforming images at the pixel level—playing with colours and seeing how software could reinterpret visual
         data.

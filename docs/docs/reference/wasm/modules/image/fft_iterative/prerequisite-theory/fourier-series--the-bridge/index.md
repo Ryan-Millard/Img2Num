@@ -23,6 +23,7 @@ In other words, a periodic time-domain signal can be perfectly represented by ad
 Conversely, the Fourier series maps the time-domain periodic signal to discrete points in the frequency domain — its harmonic frequencies.
 
 #### Figure 1: Sum Continuous (High-Resolution) with Actual Jittered Samples Overlaid
+
 <img alt="Jittered sum" src={sum_jittered} />
 <details>
   <summary>View Figure 1's Code</summary>
@@ -36,6 +37,7 @@ Conversely, the Fourier series maps the time-domain periodic signal to discrete 
 (below) illustrates each underlying harmonic as a continuous sine wave in the time domain.
 
 #### Figure 2: Underlying Harmonics - Individual Continuous Harmonic Components
+
 <img alt="Individual Harmonics" src={harmonics_individual} />
 <details>
   <summary>View Figure 2's Code</summary>
@@ -43,6 +45,7 @@ Conversely, the Fourier series maps the time-domain periodic signal to discrete 
 </details>
 
 #### Figure 3: Combined Time-Domain Harmonics with Jittered Samples and Frequency Spectrum
+
 <img alt="Harmonic comparison in time and frequency domain" src={time_freq_domain} />
 <details>
   <summary>View Figure 3's Code</summary>
@@ -60,20 +63,24 @@ _The bottom panel in
 highlighting discrete peaks at the harmonic frequencies corresponding to the sinusoidal components in the time domain._
 
 ## Block Equation (Fourier Series)
+
 A periodic signal $x(t)$ with period $T$ can be expressed as a sum of complex exponentials (or equivalently, sinusoids)
 at integer multiples of the fundamental frequency $f_0 = \frac{1}{T}$:
+
 $$
 x(t) = \sum_{k=-\infty}^{\infty} X_k e^{j 2 \pi k f_0 t},
 \quad \text{where } k \in \mathbb{Z} \text{, } X_k \in \mathbb{C}
 $$
+
 - $k$ indexes the harmonics
   - e.g., $k=1$ is the first harmonic $(f_0)$, $k=2$ is the second harmonic $(2f_0)$, etc.
     - Hence $k f_0$ inside the exponent
-    :::note
-    $k=0$ corresponds to the DC component ($0 \text{ Hz}$), which is not considered a harmonic.
+      :::note
+      $k=0$ corresponds to the DC component ($0 \text{ Hz}$), which is not considered a harmonic.
 
     $k < 0$ corresponds to negative frequency components (complex conjugates), which is important for understanding FFT symmetry.
     :::
+
 - $X_k$ are the **complex Fourier coefficients** representing the amplitude and phase of each harmonic.
   - To interpret them:
     - Write $X_k = a + jb$ with $a = \Re(X_k)$ and $b = \Im(X_k), \quad \Re\text{: Real, } \Im\text{: Imaginary}$
@@ -88,6 +95,7 @@ $$
 When you see a Fourier coefficient $X_k = a + jb$, it's easy to forget what the real and imaginary parts mean. Here's a clear way to visualize it:
 
 Using **Euler's formula** ($e^{i \theta} = \cos\theta + i \sin\theta$), we know that:
+
 - **Real part ($a = \Re(X_k)$)** → corresponds to the **cosine** component
 - **Imag part ($b = \Im(X_k)$)** → corresponds to the **sine** component
 
@@ -100,6 +108,7 @@ Think of $X_k$ as a **vector in the complex plane**:
 </details>
 
 ### Key points:
+
 1. **Amplitude (magnitude)**:
    $$
    |X_k| = \sqrt{a^2 + b^2}
@@ -117,6 +126,7 @@ Think of $X_k$ as a **vector in the complex plane**:
    - $\tan\theta = \frac{b}{a}$ → angle of the vector
 
 ### Why this matters:
+
 The real and imaginary parts tell you **how much cosine and sine** of that frequency are in the signal.
 Combining them using Pythagoras gives the **amplitude**, and the angle gives the **phase**, which shifts the waveform in time.
 This is exactly how $X_k$ encodes both **strength** and **timing** of each harmonic.
@@ -132,9 +142,11 @@ Every periodic signal can be “built” by adding together these harmonics. The
 ### Real Fourier Series Form
 
 The Fourier series can also be expressed using **only real-valued sine and cosine functions**:
+
 $$
 x(t) = a_0 + \sum_{k=1}^{\infty} [ a_k \cos(2 \pi k f_0 t) + b_k \sin(2 \pi k f_0 t) ]
 $$
+
 - $a_0$ is the **DC component** (average value of the signal).
 - $a_k$ and $b_k$ are the **real Fourier coefficients** representing the amplitudes of cosine and sine components at the $k^\text{th}$ harmonic.
 - This form is equivalent to the complex exponential form:
@@ -143,13 +155,14 @@ $$
   $$
   so the information about amplitude and phase is fully captured.
 
-
 ## Fourier Coefficients (Complex Amplitudes)
 
 The coefficients $X_k$ quantify the contribution of each harmonic $k$ in the signal:
+
 $$
 X_k = \frac{1}{T} \int_{0}^{T} x(t) \cdot e^{-j 2 \pi k f_0 t} dt
 $$
+
 - This integral measures **how much of the frequency $k f_0$** exists in the signal.
 - You can integrate over **any interval of length $T$**, because the signal is periodic.
 - In practice:
@@ -162,10 +175,12 @@ Imagine projecting your signal onto each sine/cosine component — the integral 
 
 :::tip
 $a_k$ and $b_k$ can be converted to amplitude and phase using:
+
 $$
 \begin{align*}
 A_k &= \sqrt{a_k^2 + b_k^2}\\
 \phi_k &= \tan^{-1}(\frac{ b_k }{ a_k })
 \end{align*}
 $$
+
 :::

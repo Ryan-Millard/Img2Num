@@ -7,9 +7,7 @@ import { User } from 'lucide-react';
 
 export default function ContributorsCreditsCard() {
   const chunk = (arr, size) =>
-    Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
-      arr.slice(i * size, i * size + size)
-    );
+    Array.from({ length: Math.ceil(arr.length / size) }, (_, i) => arr.slice(i * size, i * size + size));
 
   const chunkSize = 13;
   const tables = chunk(contributors, chunkSize);

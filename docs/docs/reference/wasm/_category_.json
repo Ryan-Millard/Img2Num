@@ -6,5 +6,5 @@
     "title": "WebAssembly (WASM)",
     "description": "Documentation for all WebAssembly (WASM) modules in Img2Num, including FFT and image processing functions.",
     "slug": "/reference/wasm"
-  },
+  }
 }

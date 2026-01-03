@@ -11,12 +11,12 @@ services:
       - node_modules:/usr/src/app/node_modules
       - docs_node_modules:/usr/src/app/docs/node_modules
     environment:
-      CHOKIDAR_USEPOLLING: "true"
-      CHOKIDAR_INTERVAL: "100"
+      CHOKIDAR_USEPOLLING: 'true'
+      CHOKIDAR_INTERVAL: '100'
     ports:
-      - "5173:5173" # Vite dev
-      - "4173:4173" # Vite preview
-      - "3000:3000" # Docusaurus dev
+      - '5173:5173' # Vite dev
+      - '4173:4173' # Vite preview
+      - '3000:3000' # Docusaurus dev
     stdin_open: true
     tty: true
 

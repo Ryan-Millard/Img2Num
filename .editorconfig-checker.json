@@ -1,0 +1,40 @@
+{
+  "Exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    ".git",
+    "package-lock.json",
+    "src/data/contributor-credits.json",
+    "docs/node_modules",
+    "docs/build",
+    "docs/.docusaurus",
+    "docs/package-lock.json",
+    "src/wasm/build",
+    "src/wasm/modules/image/build",
+    "\\.ase$",
+    "\\.min\\.js$",
+    "\\.min\\.css$",
+    "\\.lock$",
+    "CC-BY-SA-4\\.0\\.txt$",
+    "LICENSE.*",
+    "\\.md$",
+    "\\.mdx$",
+    "\\.py$",
+    "\\.bat$",
+    "\\.ps1$",
+    "^img2num$",
+    "\\.cpp$",
+    "\\.h$"
+  ],
+  "AllowedContentTypes": [],
+  "PassedFiles": [],
+  "Disable": {
+    "EndOfLine": false,
+    "Indentation": false,
+    "InsertFinalNewline": false,
+    "TrimTrailingWhitespace": false,
+    "IndentSize": false,
+    "MaxLineLength": false
+  }
+}

@@ -25,8 +25,8 @@ X[k] = \sum_{n=0}^{N-1} x[n] e^{-j 2 \pi \frac{k n}{N}}, \quad &k = 0, \dots, N-
 \end{align*}
 $$
 
-* $k$ is the **bin index** corresponding to a discrete frequency.
-* $X[k]$ is generally **complex-valued**, representing both amplitude and phase of the frequency component.
+- $k$ is the **bin index** corresponding to a discrete frequency.
+- $X[k]$ is generally **complex-valued**, representing both amplitude and phase of the frequency component.
 
 ## Inverse DFT
 
@@ -57,13 +57,13 @@ $$
 f_k = k \frac{f_s}{N} \quad k = 0, 1, \dots, N-1
 $$
 
-* Frequencies above $\frac{f_s}{2}$ correspond to **negative frequencies** (aliases):
+- Frequencies above $\frac{f_s}{2}$ correspond to **negative frequencies** (aliases):
 
 $$
 f_k - f_s \quad k > \frac{N}{2}
 $$
 
-* For **real-valued signals**, the DFT is **conjugate symmetric**:
+- For **real-valued signals**, the DFT is **conjugate symmetric**:
 
 $$
 X[N-k] = \overline{X[k]} \quad (\text{complex conjugate symmetry})
@@ -72,9 +72,10 @@ $$
 This means we only need to examine the first half of the spectrum for amplitude information.
 
 :::tip Important Notes
+
 1. The DFT **assumes periodicity**: it treats the finite sequence $x[n]$ as one period of an infinitely repeating discrete signal.
-This is why windowing and zero-padding are important — they reduce artifacts caused by discontinuities at the boundaries.
+   This is why windowing and zero-padding are important — they reduce artifacts caused by discontinuities at the boundaries.
 2. The **frequency resolution** depends on the number of samples and sampling rate: $\Delta f = \frac{f_s}{N}$.
-This is the spacing between adjacent frequency bins.
+   This is the spacing between adjacent frequency bins.
 3. The DFT and IDFT differ in **exponential sign** (rotation direction) and a **normalization factor**, which ensures perfect reconstruction.
-:::
+   :::

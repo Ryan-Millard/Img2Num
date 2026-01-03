@@ -15,20 +15,23 @@ If you take the Fourier series and let the period $T \to \infty$, the discrete h
 It represents general, non-periodic continuous-time signals.
 
 ## CFT for a continuous sequence
+
 $$
 X(f) = \int_{-\infty}^{\infty} x(t)\, e^{-j 2\pi f t} \, dt
 $$
 
 ## Inverse CFT for a continuous sequence
+
 $$
 x(t) = \int_{-\infty}^{\infty} X(f)\, e^{j 2\pi f t} \, df
 $$
 
 :::note
+
 - The CFT assumes a continuous-time signal $x(t)$ defined for all $t$.
 - Not directly computable on a digital computer because it requires infinite, continuous data.
 - The forward and inverse transforms differ in the sign of the complex exponential (which determines rotation direction) and—in discrete implementations—by a normalization factor (e.g. $\frac{1}{N}$ for the inverse DFT in the engineering convention). Both differences are required so the inverse undoes the forward transform.
-:::
+  :::
 
 ---
 
@@ -41,6 +44,7 @@ Note how the time-domain Gaussian width inversely affects the spread in the freq
 In practice, we compute approximate transforms digitally using the DFT/FFT, which discretizes both time and frequency.
 
 #### Figure 1: Gaussian pulse in time domain (top) and magnitude of its CFT (bottom)
+
 <img alt="Gaussian pulse CFT" src={cft_gaussian} />
 
 :::danger You may have missed this

@@ -29,26 +29,27 @@ and their RGBA values are exactly equal.
     </div>
   </div>
 
-  <svg viewBox="0 0 120 120" style={{ width: "90%", maxWidth: "300px", height: "auto" }}>
-    <rect x={0}  y={0}  width={40} height={40} fill="#333" stroke="#000" />
-    <rect x={40} y={0}  width={40} height={40} fill="#ccc" stroke="#000" />
-    <rect x={80} y={0}  width={40} height={40} fill="#333" stroke="#000" />
-    <rect x={0}  y={40} width={40} height={40} fill="#ccc" stroke="#000" />
-    <rect x={40} y={40} width={40} height={40} fill="#1f77b4" stroke="#000" />
-    <rect x={80} y={40} width={40} height={40} fill="#ccc" stroke="#000" />
-    <rect x={0}  y={80} width={40} height={40} fill="#333" stroke="#000" />
-    <rect x={40} y={80} width={40} height={40} fill="#ccc" stroke="#000" />
-    <rect x={80} y={80} width={40} height={40} fill="#333" stroke="#000" />
-  </svg>
+<svg viewBox="0 0 120 120" style={{ width: "90%", maxWidth: "300px", height: "auto" }}>
+<rect x={0}  y={0}  width={40} height={40} fill="#333" stroke="#000" />
+<rect x={40} y={0}  width={40} height={40} fill="#ccc" stroke="#000" />
+<rect x={80} y={0}  width={40} height={40} fill="#333" stroke="#000" />
+<rect x={0}  y={40} width={40} height={40} fill="#ccc" stroke="#000" />
+<rect x={40} y={40} width={40} height={40} fill="#1f77b4" stroke="#000" />
+<rect x={80} y={40} width={40} height={40} fill="#ccc" stroke="#000" />
+<rect x={0}  y={80} width={40} height={40} fill="#333" stroke="#000" />
+<rect x={40} y={80} width={40} height={40} fill="#ccc" stroke="#000" />
+<rect x={80} y={80} width={40} height={40} fill="#333" stroke="#000" />
+</svg>
+
 </div>
 
 2. While flood-filling, `Region` metadata is collected (`size`, `minX`, `maxX`, `minY`, `maxY`) and labeled according to an index (`labels`).
 3. After all components are labeled and regions metadata computed,
-iterate pixels again. For a pixel whose region is considered *small*
-(fails `isBigEnough(minArea,minWidth,minHeight)`),
-check its four immediate neighbors. If any neighbor belongs to a *big* region,
-copy that neighbor's RGBA into the small pixel (effectively assigning the small pixel to the big region;
-over time, the small region is consumed by *bigger neighboring regions*).
+   iterate pixels again. For a pixel whose region is considered _small_
+   (fails `isBigEnough(minArea,minWidth,minHeight)`),
+   check its four immediate neighbors. If any neighbor belongs to a _big_ region,
+   copy that neighbor's RGBA into the small pixel (effectively assigning the small pixel to the big region;
+   over time, the small region is consumed by _bigger neighboring regions_).
 
 :::note
 This merges only small-region pixels which are adjacent to large regions.
@@ -62,6 +63,7 @@ the implementation stops at first qualifying neighbour.
 
 The algorithm computes **connected components** on a planar grid using 4-connectivity.
 Formally, we can describe the image as a function:
+
 $$
 \begin{align*}
 I &: \mathbb{Z}^2 \to \mathcal{C} \\
@@ -70,8 +72,9 @@ I &: \mathbb{Z}^2 \to \mathcal{C} \\
 $$
 
 :::important
-- $I$ is the image function.  
-- $\mathbb{Z}^2$ is the set of all integer pairs $(x, y)$ representing pixel coordinates.  
+
+- $I$ is the image function.
+- $\mathbb{Z}^2$ is the set of all integer pairs $(x, y)$ representing pixel coordinates.
 - $\mathcal{C}$ is the set of all possible RGBA values:
   $$
   \mathcal{C} = \{ (R, G, B, A) \mid R,G,B,A \in [0,255] \}
@@ -79,7 +82,7 @@ $$
 - $I(x, y) \in \mathcal{C}$ is the color of the pixel at coordinates $(x, y)$.
 
 > In simple terms, each pixel at position $(x, y)$ has a color given by $I(x, y)$.
-:::
+> :::
 
 Two pixels, $$p=(x,y)$$ and $$q=(x',y')$$, are **4-adjacent** if $$|x-x'| + |y-y'| = 1$$.
 A connected component is a maximal set of pixels, $$S$$, such that any two pixels in $$S$$ are connected by a path of 4-adjacent pixels with identical colors.
@@ -89,10 +92,13 @@ A flood-fill (BFS / DFS) computes these components exactly.
 ### Bounding box & geometric heuristics
 
 For each component we compute an axis-aligned bounding box with integer coordinates:
+
 $$
 [minX,maxX]\times[minY,maxY]
 $$
+
 The bounding-box width and height are:
+
 $$
 \begin{align*}
 W &= maxX - minX + 1 \\
@@ -106,7 +112,7 @@ to understand how this is used.
 :::
 
 The area (component size) is simply the number of pixels in the component, $$|S|$$.
-The heuristics used to classify *small* vs *big* regions rely on thresholds on both area and bounding box dimensions.
+The heuristics used to classify _small_ vs _big_ regions rely on thresholds on both area and bounding box dimensions.
 This avoids keeping long thin noise (e.g. a long 1-pixel-wide arm) even if its area is above `minArea`.
 
 ### Why 4-connectivity, not 8?

@@ -7,15 +7,15 @@ sidebar_position: 6
 # Step-by-step: add a new module
 
 1. Create a new directory: `src/wasm/modules/<module-name>/`.
-    - Replace `<module-name>` with your actual module name (lowercase, e.g., `audio`, `filters`).
+   - Replace `<module-name>` with your actual module name (lowercase, e.g., `audio`, `filters`).
 2. Add `src/`, `include/` directories and a `CMakeLists.txt` file.
 3. Make sure the module's `CMakeLists.txt` writes output to `build/` with `index.js` and `index.wasm` (the repo's alias generator expects `modules/{name}/build`).
 4. `vite.config.js` will automatically find the module and create an alias `@wasm-<module-name>` on next `vite` start (or rebuild of the config). Example usage:
 
-    ```js
-    import init from '@wasm-<module-name>/index.js';
-    await init();
-    ```
+   ```js
+   import init from '@wasm-<module-name>/index.js';
+   await init();
+   ```
 
 5. Commit the `CMakeLists.txt` and source files; do not commit `build/` artifacts unless you want to vendor the WASM for static hosting without building.
 

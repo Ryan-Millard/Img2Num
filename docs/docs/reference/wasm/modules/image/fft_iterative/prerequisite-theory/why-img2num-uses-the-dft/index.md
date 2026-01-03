@@ -11,8 +11,9 @@ sidebar_position: 8
 5. **Compatibility with image processing conventions** — 2D DFT is separable: apply 1D DFT across rows then columns (or vice versa); per-channel processing is straightforward.
 
 :::note Practical consequences to document in the repo
+
 - Zero-padding to reduce circular convolution effects.
 - Windowing to reduce spectral leakage.
 - `fft shift` / `ifft shift` to center the zero frequency for visualization.
 - Explain per-channel transforms for multi-channel images (RGB).
-:::
+  :::

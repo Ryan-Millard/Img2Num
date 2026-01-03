@@ -55,4 +55,3 @@ If `solidity` is low (i.e., bounding box large but region sparse), treat as smal
 ## Parallel labeling
 
 Use segmented image tiling with boundary stitching for multicore scaling or specialized GPU approaches.
-

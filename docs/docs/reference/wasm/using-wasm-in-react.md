@@ -25,9 +25,9 @@ Emscripten-generated builds often export a JS wrapper (`index.js`) that bootstra
 
 ## Best practices
 
-* Always `await` the module initializer before calling exported functions.
-* Keep the Emscripten API surface small — expose only functions you need via `extern "C"` and a small header such as `exported.h`.
-* Return simple typed arrays or pointers + lengths; avoid passing large JS objects across the bridge.
+- Always `await` the module initializer before calling exported functions.
+- Keep the Emscripten API surface small — expose only functions you need via `extern "C"` and a small header such as `exported.h`.
+- Return simple typed arrays or pointers + lengths; avoid passing large JS objects across the bridge.
 
 ## Example: small wrapper hook
 
@@ -40,8 +40,12 @@ export default function useImageWasm() {
   const [module, setModule] = useState(null);
   useEffect(() => {
     let mounted = true;
-    init().then((m) => { if (mounted) setModule(m); });
-    return () => { mounted = false; };
+    init().then((m) => {
+      if (mounted) setModule(m);
+    });
+    return () => {
+      mounted = false;
+    };
   }, []);
   return module;
 }

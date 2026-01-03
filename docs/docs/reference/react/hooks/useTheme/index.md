@@ -5,11 +5,12 @@ sidebar_label: useTheme
 
 :::info
 **What this hook provides:**
+
 - Access to the current theme (`'light'` or `'dark'`)
 - A function to toggle between light and dark themes
 - Automatic persistence in localStorage
 - Automatic application of theme classes to the document root
-:::
+  :::
 
 ## Dependencies
 
@@ -37,10 +38,10 @@ export default function ThemeAwareComponent() {
 
 The hook returns an object with two properties:
 
-| Property      | Type                | Description                                      |
-| ------------- | ------------------- | ------------------------------------------------ |
-| `theme`       | `string`            | The current active theme (`light` or `dark`)     |
-| `toggleTheme` | `() => void`        | Function to toggle between light and dark themes |
+| Property      | Type         | Description                                      |
+| ------------- | ------------ | ------------------------------------------------ |
+| `theme`       | `string`     | The current active theme (`light` or `dark`)     |
+| `toggleTheme` | `() => void` | Function to toggle between light and dark themes |
 
 ## How it works
 
@@ -55,6 +56,7 @@ When the component first mounts, `useTheme` determines the initial theme in this
 ### Theme application
 
 The hook uses a `useEffect` to:
+
 1. Remove any existing theme classes (`'light'` or `'dark'`) from `document.documentElement`
 2. Add the current theme as a class to the root element
 3. Save the theme preference to localStorage
@@ -68,17 +70,17 @@ The hook works in conjunction with CSS variables defined in `/src/global-styles/
 ```css
 /* Applied when theme is 'light' - Warm Hedgehog Palette */
 :root.light {
-  --color-bg: #F8EACD;      /* Soft cream */
-  --color-text: #2c1a1a;    /* Dark brown */
-  --color-primary: #6A3817; /* Warm brown */
+  --color-bg: #f8eacd; /* Soft cream */
+  --color-text: #2c1a1a; /* Dark brown */
+  --color-primary: #6a3817; /* Warm brown */
   /* ... more variables */
 }
 
 /* Applied when theme is 'dark' - Deep Forest Night */
 :root.dark {
-  --color-bg: #1a0f1f;      /* Deep purple/brown */
-  --color-text: #F8EACD;    /* Cream (inverted) */
-  --color-primary: #E0AD7D; /* Warm coral */
+  --color-bg: #1a0f1f; /* Deep purple/brown */
+  --color-text: #f8eacd; /* Cream (inverted) */
+  --color-primary: #e0ad7d; /* Warm coral */
   /* ... more variables */
 }
 ```

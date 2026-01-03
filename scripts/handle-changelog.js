@@ -1,37 +1,37 @@
 #!/usr/bin/env node
-import fs from "fs";
-import path from "path";
-import { execSync } from "node:child_process";
+import fs from 'fs';
+import path from 'path';
+import { execSync } from 'node:child_process';
 
 // Run standard-version
 try {
   // Stage the changelog folder
-  execSync("npx standard-version", { stdio: "inherit" });
+  execSync('npx standard-version', { stdio: 'inherit' });
 
-  console.log("[release] release created successfully");
+  console.log('[release] release created successfully');
 } catch (err) {
-  console.error("[release] Error:", err.message);
+  console.error('[release] Error:', err.message);
   process.exit(1);
 }
 
-const changelogPath = "CHANGELOG.md";
-const outputDir = "docs/changelog";
+const changelogPath = 'CHANGELOG.md';
+const outputDir = 'docs/changelog';
 
 if (!fs.existsSync(changelogPath)) {
-  console.log("[changelog] No CHANGELOG.md found. Skipping.");
+  console.log('[changelog] No CHANGELOG.md found. Skipping.');
   process.exit(0);
 }
 
-const content = fs.readFileSync(changelogPath, "utf8");
+const content = fs.readFileSync(changelogPath, 'utf8');
 
 // Write to docs/changelog/complete-changelog.md
-const completeChangelogPath = path.join(outputDir, "complete-changelog.md");
+const completeChangelogPath = path.join(outputDir, 'complete-changelog.md');
 let completeChangelogMdHeader = `---
 title: Complete Changelog
 ---
 
 `;
-fs.writeFileSync(completeChangelogPath, completeChangelogMdHeader + content, "utf8");
+fs.writeFileSync(completeChangelogPath, completeChangelogMdHeader + content, 'utf8');
 
 const lines = content.split(/\r?\n/);
 
@@ -46,13 +46,13 @@ for (const line of lines) {
     if (capture) break; // stop at next release
     capture = true;
     version = releaseMatch[1];
-    date = releaseMatch[2]
+    date = releaseMatch[2];
   }
   if (capture) releaseLines.push(line);
 }
 
 if (!version) {
-  console.log("[changelog] No release section detected. Skipping.");
+  console.log('[changelog] No release section detected. Skipping.');
   process.exit(0);
 }
 
@@ -69,20 +69,19 @@ id: ${fileName}
 # Release ${version}
 
 `;
-const fileLines = frontmatter + releaseLines.join("\n");
-fs.writeFileSync(outPath, fileLines, "utf8");
+const fileLines = frontmatter + releaseLines.join('\n');
+fs.writeFileSync(outPath, fileLines, 'utf8');
 
 console.log(`[changelog] Extracted release ${version} -> ${outPath}`);
 
 // Stage the file so it also gets committed
 try {
   // Stage the changelog folder
-  execSync(`git add ${outPath} ${completeChangelogPath}`, { stdio: "inherit" });
-  execSync(`git commit -m "chore(changelog): add ${version} release notes"`, { stdio: "inherit" });
+  execSync(`git add ${outPath} ${completeChangelogPath}`, { stdio: 'inherit' });
+  execSync(`git commit -m "chore(changelog): add ${version} release notes"`, { stdio: 'inherit' });
 
-  console.log("[git] docs/changelog added and commit amended successfully.");
+  console.log('[git] docs/changelog added and commit amended successfully.');
 } catch (err) {
-  console.error("[git] Error:", err.message);
+  console.error('[git] Error:', err.message);
   process.exit(1);
 }
-

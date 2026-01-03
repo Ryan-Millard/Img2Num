@@ -5,13 +5,17 @@ sidebar_position: 6
 ---
 
 ## Fork the repo & create a feature branch:
+
 ```bash title="Switch to a new branch"
 git checkout -b feat/your-feature
 ```
+
 ## Make commits following guidelines
+
 These can be found in the [previous section](../commits).
 
 ## Push to your fork:
+
 :::danger Danger: **Merge Conflicts**
 
 Keep your branch **up-to-date with [main](https://github.com/Ryan-Millard/Img2Num/tree/main)** to avoid conflicts
@@ -27,7 +31,9 @@ git push origin feat/your-feature
 ```
 
 ## Open PR against `main`:
+
 Make sure it has:
+
 - A clear title
 - A summary of changes & motivation
 - References to related issues: `Fixes #123`

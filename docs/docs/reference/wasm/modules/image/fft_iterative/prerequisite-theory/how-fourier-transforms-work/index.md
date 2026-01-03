@@ -26,6 +26,7 @@ core equations and a breakdown of their similarities and differences.
 <TabItem value="list-format" label="List" default>
 
 ### Definition
+
 - **CFT:**  
   $X(f) = \int_{-\infty}^{\infty} x(t)\, e^{-j 2\pi f t}\, dt$
 - **DFT:**  
@@ -34,24 +35,28 @@ core equations and a breakdown of their similarities and differences.
 **Similarity:** Both use complex exponentials to express the signal’s frequency content.
 
 ### Domain of Input
+
 - **CFT:** Continuous signal $x(t)$
 - **DFT:** Discrete sequence $x[n]$ of length $N$
 
 **Similarity:** Both operate on time-domain signals (continuous or sampled).
 
 ### Domain of Output
+
 - **CFT:** Continuous function $X(f)$
 - **DFT:** Discrete frequency bins $X[k]$
 
 **Similarity:** Both output complex-valued frequency components.
 
 ### Exponential Kernel
+
 - **CFT:** $e^{-j 2\pi f t}$
 - **DFT:** $e^{-j \frac{2\pi}{N} k n}$
 
 **Similarity:** Both use complex exponentials (phasors) as basis functions.
 
 ### Inverse Transform
+
 - **CFT:**  
   $x(t) = \int_{-\infty}^{\infty} X(f)\, e^{j 2\pi f t}\, df$
 - **DFT:**  
@@ -60,16 +65,20 @@ core equations and a breakdown of their similarities and differences.
 **Similarity:** Both perfectly reconstruct the original signal (given correct conditions).
 
 ### Linearity
+
 Both transforms are linear.
 
 ### Parseval’s Theorem
+
 Energy is preserved between time and frequency domains (with appropriate normalization).
 
 ### Purpose
+
 Both analyse the frequency content of signals.
 
 ### Periodicity (Key Concept)
-- **DFT:** Assumes that $x[n]$ is *periodically extended* with period $N$.
+
+- **DFT:** Assumes that $x[n]$ is _periodically extended_ with period $N$.
 - **CFT:** No periodicity assumption.
 
 This is why windowing and spectral leakage matter in the discrete case.
@@ -79,17 +88,17 @@ This is why windowing and spectral leakage matter in the discrete case.
 <TabItem value="table-format" label="Table">
 <span class={styles.noWrapKatexChildren}>
 
-| Aspect                 | Continuous Fourier Transform (CFT)                                | Discrete Fourier Transform (DFT)                                     | Similarities                                                                                               |
-| ---------------------- | ------------------------------------------------------------------ | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| **Definition**         | $X(f)=\int_{-\infty}^{\infty}x(t)e^{-j2\pi f t}dt$                | $X[k]=\sum_{n=0}^{N-1}x[n]e^{-j\frac{2\pi}{N}kn}$                   | Both use complex exponentials to analyse frequency content.                                                |
-| **Input Domain**       | Continuous-time signal $x(t)$                                      | Finite-length discrete sequence $x[n]$                               | Both work with time-domain signals.                                                                        |
-| **Output Domain**      | Continuous $X(f)$                                                  | Discrete $X[k]$                                                      | Both output complex spectra.                                                                               |
-| **Kernel**             | $e^{-j2\pi f t}$                                                    | $e^{-j \frac{2\pi}{N}kn}$                                            | Both use phasors as basis functions.                                                                       |
-| **Inverse Transform**  | Integral                                                            | Summation with $1/N$ factor                                          | Both perfectly reconstruct the signal (given conditions).                                                  |
-| **Linearity**          | Linear operator                                                    | Linear operator                                                      | Both obey superposition.                                                                                   |
-| **Parseval**           | Energy preserved                                                   | Energy preserved (within normalization)                             | Both conserve signal energy.                                                                               |
-| **Periodicity**        | No implicit periodicity                                            | Assumes periodic extension with period $N$                           | —                                                                                                          |
-| **Purpose**            | Analyse continuous spectra                                         | Analyse discrete/finite spectra                                      | Both decompose signals into frequency components.                                                          |
+| Aspect                | Continuous Fourier Transform (CFT)                 | Discrete Fourier Transform (DFT)                  | Similarities                                                |
+| --------------------- | -------------------------------------------------- | ------------------------------------------------- | ----------------------------------------------------------- |
+| **Definition**        | $X(f)=\int_{-\infty}^{\infty}x(t)e^{-j2\pi f t}dt$ | $X[k]=\sum_{n=0}^{N-1}x[n]e^{-j\frac{2\pi}{N}kn}$ | Both use complex exponentials to analyse frequency content. |
+| **Input Domain**      | Continuous-time signal $x(t)$                      | Finite-length discrete sequence $x[n]$            | Both work with time-domain signals.                         |
+| **Output Domain**     | Continuous $X(f)$                                  | Discrete $X[k]$                                   | Both output complex spectra.                                |
+| **Kernel**            | $e^{-j2\pi f t}$                                   | $e^{-j \frac{2\pi}{N}kn}$                         | Both use phasors as basis functions.                        |
+| **Inverse Transform** | Integral                                           | Summation with $1/N$ factor                       | Both perfectly reconstruct the signal (given conditions).   |
+| **Linearity**         | Linear operator                                    | Linear operator                                   | Both obey superposition.                                    |
+| **Parseval**          | Energy preserved                                   | Energy preserved (within normalization)           | Both conserve signal energy.                                |
+| **Periodicity**       | No implicit periodicity                            | Assumes periodic extension with period $N$        | —                                                           |
+| **Purpose**           | Analyse continuous spectra                         | Analyse discrete/finite spectra                   | Both decompose signals into frequency components.           |
 
 </span>
 </TabItem>
@@ -99,8 +108,8 @@ This is why windowing and spectral leakage matter in the discrete case.
 
 Both the CFT and DFT use **complex exponentials** of the form:
 
-- $e^{-j 2\pi f t}$ for continuous signals  
-- $e^{-j \frac{2\pi}{N} k n}$ for discrete signals  
+- $e^{-j 2\pi f t}$ for continuous signals
+- $e^{-j \frac{2\pi}{N} k n}$ for discrete signals
 
 Even though these look different, the DFT kernel is simply the CFT kernel
 **sampled at discrete times and discrete frequencies**.
@@ -168,8 +177,8 @@ This makes Fourier analysis algebraically simple because phasors rotate in the c
 A complex exponential $e^{j\theta}$ lies on the **unit circle** in the complex plane.  
 Fourier coefficients naturally contain:
 
-- **magnitude** (amplitude of sinusoid)  
-- **phase** (angle)  
+- **magnitude** (amplitude of sinusoid)
+- **phase** (angle)
 
 which match perfectly with polar form.
 

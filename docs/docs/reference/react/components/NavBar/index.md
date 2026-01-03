@@ -49,10 +49,10 @@ The component renders a sticky navigation bar at the top of the page that:
 
 This component accepts no props. All navigation links are defined internally via constants:
 
-| Constant       | Purpose                                   |
-| -------------- | ----------------------------------------- |
-| `INTERNAL_LINKS` | Array of internal route definitions     |
-| `EXTERNAL_LINKS` | Array of external URL definitions       |
+| Constant         | Purpose                             |
+| ---------------- | ----------------------------------- |
+| `INTERNAL_LINKS` | Array of internal route definitions |
+| `EXTERNAL_LINKS` | Array of external URL definitions   |
 
 ### Internal Link Structure
 
@@ -80,42 +80,44 @@ This component accepts no props. All navigation links are defined internally via
 
 The component uses CSS modules with the following key classes:
 
-| Class         | Purpose                                         |
-| ------------- | ----------------------------------------------- |
-| `navbar`      | Main container with sticky positioning          |
-| `logo`        | Logo link with hover effects                    |
-| `logoIcon`    | Logo image with hover rotation animation        |
-| `menuToggle`  | Mobile hamburger/close button                   |
-| `backdrop`    | Full-screen overlay for mobile menu dismissal   |
-| `navList`     | Navigation links container                      |
-| `navLink`     | Individual navigation link styling              |
-| `active`      | Applied to the currently active route link      |
-| `externalIcon`| Small icon indicating external links            |
-| `themeToggle` | Container for the theme switch                  |
+| Class          | Purpose                                       |
+| -------------- | --------------------------------------------- |
+| `navbar`       | Main container with sticky positioning        |
+| `logo`         | Logo link with hover effects                  |
+| `logoIcon`     | Logo image with hover rotation animation      |
+| `menuToggle`   | Mobile hamburger/close button                 |
+| `backdrop`     | Full-screen overlay for mobile menu dismissal |
+| `navList`      | Navigation links container                    |
+| `navLink`      | Individual navigation link styling            |
+| `active`       | Applied to the currently active route link    |
+| `externalIcon` | Small icon indicating external links          |
+| `themeToggle`  | Container for the theme switch                |
 
 ### CSS Variables Used
 
 The component relies on these CSS custom properties:
 
-| Variable                          | Purpose                      |
-| --------------------------------- | ---------------------------- |
-| `--navbar-menu-z-index`           | Z-index for navbar (100)     |
-| `--navbar-menu-backdrop-z-index`  | Z-index for backdrop (99)    |
-| `--spacing-sm`, `--spacing-md`    | Spacing values               |
-| `--radius-md`                     | Border radius                |
-| `--color-text`, `--color-primary` | Text and accent colors       |
-| `--glass-bg`, `--glass-border`    | Glass morphism styling       |
+| Variable                          | Purpose                   |
+| --------------------------------- | ------------------------- |
+| `--navbar-menu-z-index`           | Z-index for navbar (100)  |
+| `--navbar-menu-backdrop-z-index`  | Z-index for backdrop (99) |
+| `--spacing-sm`, `--spacing-md`    | Spacing values            |
+| `--radius-md`                     | Border radius             |
+| `--color-text`, `--color-primary` | Text and accent colors    |
+| `--glass-bg`, `--glass-border`    | Glass morphism styling    |
 
 ## Responsive Behavior
 
 The NavBar adapts to screen size:
 
 ### Desktop (> 768px)
+
 - All navigation links displayed horizontally
 - Menu toggle hidden
 - Backdrop hidden
 
 ### Mobile (≤ 768px)
+
 - Navigation links hidden by default
 - Hamburger menu toggle visible
 - Click toggle to reveal dropdown menu
@@ -127,16 +129,16 @@ The NavBar adapts to screen size:
 
 The component follows accessibility best practices:
 
-| Feature            | Implementation                                      |
-| ------------------ | --------------------------------------------------- |
-| Semantic HTML      | Uses `<nav>` element with `role="menubar"`          |
-| Menu toggle ARIA   | `aria-expanded`, `aria-controls`, `aria-label`      |
-| Menu items         | `role="menuitem"` on all links                      |
-| Backdrop           | `aria-hidden="true"` (not for screen readers)       |
-| External links     | `target="_blank"` with `rel="noopener noreferrer"`  |
-| Keyboard support   | Full keyboard navigation support                    |
-| Tooltips           | All interactive elements have descriptive tooltips  |
-| Focus management   | Browser default focus indicators                    |
+| Feature          | Implementation                                     |
+| ---------------- | -------------------------------------------------- |
+| Semantic HTML    | Uses `<nav>` element with `role="menubar"`         |
+| Menu toggle ARIA | `aria-expanded`, `aria-controls`, `aria-label`     |
+| Menu items       | `role="menuitem"` on all links                     |
+| Backdrop         | `aria-hidden="true"` (not for screen readers)      |
+| External links   | `target="_blank"` with `rel="noopener noreferrer"` |
+| Keyboard support | Full keyboard navigation support                   |
+| Tooltips         | All interactive elements have descriptive tooltips |
+| Focus management | Browser default focus indicators                   |
 
 ## Examples
 
@@ -207,7 +209,12 @@ const INTERNAL_LINKS = [
 
 const EXTERNAL_LINKS = [
   { href: 'https://ryan-millard.github.io/Img2Num/info/', label: 'Docs', icon: Info, tooltip: 'View documentation' },
-  { href: 'https://github.com/Ryan-Millard/Img2Num', label: 'GitHub', icon: Github, tooltip: 'Open the project on GitHub' },
+  {
+    href: 'https://github.com/Ryan-Millard/Img2Num',
+    label: 'GitHub',
+    icon: Github,
+    tooltip: 'Open the project on GitHub',
+  },
 ];
 
 export default function NavBar() {
@@ -225,24 +232,24 @@ export default function NavBar() {
 
 ## Visual States
 
-| State          | Appearance                                    |
-| -------------- | --------------------------------------------- |
-| Default        | Transparent background with glass blur        |
-| Link hover     | Background highlight, slight lift animation   |
-| Link active    | Brown background, primary color border        |
-| Mobile closed  | Only logo and hamburger visible               |
-| Mobile open    | Full menu dropdown with backdrop overlay      |
+| State         | Appearance                                  |
+| ------------- | ------------------------------------------- |
+| Default       | Transparent background with glass blur      |
+| Link hover    | Background highlight, slight lift animation |
+| Link active   | Brown background, primary color border      |
+| Mobile closed | Only logo and hamburger visible             |
+| Mobile open   | Full menu dropdown with backdrop overlay    |
 
 ## Animation Details
 
-| Element          | Animation                                           |
-| ---------------- | --------------------------------------------------- |
-| Logo icon        | Rotates 12° and scales 1.08x on hover               |
-| Nav links        | Translate up 2px on hover                           |
-| External icon    | Moves diagonally on hover                           |
-| Mobile menu      | Fades in with translateY animation                  |
-| Menu items       | Staggered fade + slide animation (30ms delay each)  |
-| Backdrop         | Subtle blur effect                                  |
+| Element       | Animation                                          |
+| ------------- | -------------------------------------------------- |
+| Logo icon     | Rotates 12° and scales 1.08x on hover              |
+| Nav links     | Translate up 2px on hover                          |
+| External icon | Moves diagonally on hover                          |
+| Mobile menu   | Fades in with translateY animation                 |
+| Menu items    | Staggered fade + slide animation (30ms delay each) |
+| Backdrop      | Subtle blur effect                                 |
 
 ## Testing
 

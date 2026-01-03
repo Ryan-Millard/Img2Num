@@ -10,14 +10,10 @@ const WhatIsThis = () => {
 
       <p>
         <Tooltip content="Visit the Img2Num GitHub repository">
-          <a
-            href="https://github.com/Ryan-Millard/Img2Num"
-            target="_blank"
-            rel="noopener noreferrer">
+          <a href="https://github.com/Ryan-Millard/Img2Num" target="_blank" rel="noopener noreferrer">
             Img2Num
           </a>{' '}
         </Tooltip>
-
         is a web-based tool that transforms any image into a <strong>colour-by-number template</strong>.
       </p>
 

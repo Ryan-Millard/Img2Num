@@ -13,23 +13,29 @@ description: Frequently asked questions related to the mergeSmallRegionsInPlace 
 This function removes **tiny connected regions** in an RGBA image by merging them into neighboring, sufficiently large regions **in-place**.
 
 It is intended for post-processing steps after:
+
 - k-means color quantization
 - segmentation
 
 Or as a pre-processing step before:
+
 - image-to-vector (SVG) pipelines
 
 Small regions often appear as visual noise and make downstream geometry extraction harder.
 
 ## What exactly is a “region” in this context?
-A **region** is a *4-connected component* of pixels where:
+
+A **region** is a _4-connected component_ of pixels where:
+
 - Each pixel is connected via **up, down, left, or right**
 - All pixels have **exactly the same RGBA values**
 
 Diagonal adjacency **does not** count.
 
 ## Why use 4-connectivity instead of 8-connectivity?
+
 4-connectivity:
+
 - Matches most raster algorithms (flood-fill, contour tracing)
 - Avoids diagonal “corner-touch” artifacts
 - Produces cleaner, grid-aligned regions
@@ -134,16 +140,18 @@ $$
   <text x="270" y="275" font-size="8" text-anchor="middle" alignment-baseline="middle">(4,4) idx*4=96</text>
 
   <!-- Explanation -->
-  <text x="80" y="320" font-size="10">Each pixel = 4 bytes (R,G,B,A)</text>
-  <text x="80" y="335" font-size="10">Byte offset = idx(x,y,width) * 4</text>
+
+<text x="80" y="320" font-size="10">Each pixel = 4 bytes (R,G,B,A)</text>
+<text x="80" y="335" font-size="10">Byte offset = idx(x,y,width) \* 4</text>
 </svg>
 
 </details>
 
 :::note Assumptions this layout has
+
 - Row-major order
 - No padding between rows
-:::
+  :::
 
 ## What does `sameColor(...)` check?
 
@@ -183,11 +191,13 @@ A region must satisfy **all three** conditions:
 - `height() >= minHeight`
 
 Where:
+
 - `size` = number of pixels
 - `width()` = bounding box width
 - `height()` = bounding box height
 
 This prevents:
+
 - Thin lines
 - Long but narrow artifacts
 - Small blobs
@@ -195,6 +205,7 @@ This prevents:
 ## Why use a bounding box instead of checking shape quality?
 
 Bounding boxes are:
+
 - Fast to compute
 - Memory cheap
 - Conservative
@@ -208,6 +219,7 @@ There is a TODO noting that **internal gaps** could reduce effective width/heigh
 Yes.
 
 Example:
+
 - A hollow ring
 - A U-shaped region
 - A region with internal gaps
@@ -219,11 +231,13 @@ This implementation prioritizes speed and simplicity over perfect geometric vali
 ## Why are regions merged pixel-by-pixel instead of as a whole?
 
 Because:
+
 - The function operates **in-place**
 - It avoids reallocating buffers
 - It keeps memory usage predictable
 
 Each pixel independently:
+
 - Checks its neighbors
 - Copies the color of a valid region
 
@@ -232,6 +246,7 @@ This makes the merge phase linear and simple.
 ## Why only check immediate neighbors during merging?
 
 Only **4 immediate neighbors** are checked because:
+
 - The merge should respect spatial adjacency
 - Copying from distant pixels could create visual artifacts
 
@@ -244,6 +259,7 @@ Nothing.
 Pixels in that region remain unchanged.
 
 This avoids:
+
 - Arbitrary color assignment
 - Unexpected long-range merges
 
@@ -254,6 +270,7 @@ If this is undesirable, a second pass or fallback strategy can be added.
 No.
 
 Once the merge phase starts:
+
 - `regions` is treated as read-only
 - Labels may change per pixel
 - Region sizes are **not recomputed**
@@ -270,12 +287,14 @@ Overall complexity is **linear**:
 Where $$ n = \text{width} \times \text{height} $$
 
 Each pixel is:
+
 - Visited once in flood-fill
 - Checked against at most 4 neighbors
 
 ## What is the memory overhead?
 
 Additional memory used:
+
 - `labels`: one `int` per pixel
 - `regions`: one entry per connected component
 - BFS queue (temporary)
@@ -285,6 +304,7 @@ No additional image buffers are allocated.
 ## Why use BFS (`std::queue`) instead of DFS?
 
 BFS:
+
 - Avoids deep recursion
 - Prevents stack overflow on large regions
 - Has predictable memory usage
@@ -296,11 +316,13 @@ DFS would require either recursion (unsafe) or an explicit stack (no advantage h
 Not easily in its current form.
 
 Reasons:
+
 - Flood-fill has data dependencies
 - Label assignment is sequential
 - Merge step mutates shared data
 
 Parallel versions would require:
+
 - Tiled processing
 - Boundary reconciliation
 - More complex region merging logic
@@ -308,6 +330,7 @@ Parallel versions would require:
 ## Is this suitable for SVG generation pipelines?
 
 Yes — especially as a **cleanup step** before:
+
 - Boundary tracing
 - Polygon extraction
 - Path simplification
@@ -317,6 +340,7 @@ Removing small regions early greatly simplifies vector geometry later.
 ## What are common improvements or extensions?
 
 Possible enhancements include:
+
 - Detecting holes inside regions
 
    <svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
@@ -335,7 +359,7 @@ Possible enhancements include:
   </svg>
 
 - Multi-pass merging
-- Choosing the *largest neighboring region* instead of the first valid one
+- Choosing the _largest neighboring region_ instead of the first valid one
 - Detecting localised width/height - regions often have large tentacle-like protrusions.
 
 The current design favors **clarity and predictability** over heuristics.
@@ -348,9 +372,10 @@ Given the same input image and parameters, the output is always identical.
 
 No randomness is involved.
 
-## When should I *not* use this?
+## When should I _not_ use this?
 
 Avoid this function if:
+
 - You need exact topology preservation
 - You rely on diagonal connectivity
 - You require sub-pixel or fuzzy color matching

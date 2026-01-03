@@ -35,7 +35,7 @@ if (typeof global.ImageData === 'undefined') {
       if (dataOrWidth instanceof Uint8ClampedArray) {
         this.data = dataOrWidth;
         this.width = widthOrHeight;
-        this.height = height || (dataOrWidth.length / 4 / widthOrHeight);
+        this.height = height || dataOrWidth.length / 4 / widthOrHeight;
       } else {
         this.width = dataOrWidth;
         this.height = widthOrHeight;
@@ -46,10 +46,10 @@ if (typeof global.ImageData === 'undefined') {
 }
 
 global.ResizeObserver = class {
-  observe(){} 
-  unobserve(){} 
-  disconnect(){} 
-}
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
 // Mock localStorage for tests
 const localStorageMock = (() => {
   let store = {};
@@ -73,7 +73,7 @@ global.localStorage = localStorageMock;
 // Mock window.matchMedia for theme detection
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: vi.fn().mockImplementation(query => ({
+  value: vi.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,

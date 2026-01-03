@@ -80,11 +80,11 @@ This yields the true inverse DFT.
 
 ## Padding & 2D transforms
 
-* The code auto-pads input to the next power of two using `next_power_of_two` and `pad_to_pow_two`.
-* 2D transforms are implemented by running the 1D FFT across rows, then across columns (separable property). See `iterative_fft_2d(...)`.
+- The code auto-pads input to the next power of two using `next_power_of_two` and `pad_to_pow_two`.
+- 2D transforms are implemented by running the 1D FFT across rows, then across columns (separable property). See `iterative_fft_2d(...)`.
 
 ## Practical optimization notes
 
-* Precompute stage roots if you want to micro-optimise repeated transforms of the same size.
-* Keep the transform in-place to minimise allocations and improve cache locality.
-* Use `double` for better precision; `float` can be used for speed but expect more numerical error for large N.
+- Precompute stage roots if you want to micro-optimise repeated transforms of the same size.
+- Keep the transform in-place to minimise allocations and improve cache locality.
+- Use `double` for better precision; `float` can be used for speed but expect more numerical error for large N.

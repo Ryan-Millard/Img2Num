@@ -23,7 +23,7 @@ The merge rule is important as it avoids leaving gaps in the image (a problem fa
 
 - With an RGBA image stored in a tightly-packed `uint8_t*` pixels buffer (4 bytes per pixel, row-major).
 - To remove very small connected components while preserving large components.
-- You are OK with replacing a small-region pixel by the color of an *adjacent* large region.
+- You are OK with replacing a small-region pixel by the color of an _adjacent_ large region.
 
 :::important
 Not suitable when you need to preserve small but semantically important details (e.g. text strokes),
@@ -58,10 +58,10 @@ $$
 
 ### Preconditions
 
-* `pixels != nullptr` and `width>0` and `height>0`.
-* The buffer length must be at least `width * height * 4` bytes.
+- `pixels != nullptr` and `width>0` and `height>0`.
+- The buffer length must be at least `width * height * 4` bytes.
 
 ### Postconditions
 
-* The `pixels` buffer may be modified in-place: small regions will have their pixels recolored to match an adjacent large region (if found).
-* The function uses an internal label map and region metadata; it does not return labels.
+- The `pixels` buffer may be modified in-place: small regions will have their pixels recolored to match an adjacent large region (if found).
+- The function uses an internal label map and region metadata; it does not return labels.
