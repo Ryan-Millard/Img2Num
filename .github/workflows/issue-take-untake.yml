@@ -13,40 +13,109 @@ permissions:
   issues: write
 
 jobs:
-
-  # Handle /take and /untake comments (single bot comment per action)
   take_untake:
-    if: github.event_name == 'issue_comment'
+    if: >
+      github.event_name == 'issues' ||
+      (github.event_name == 'issue_comment' &&
+      github.actor != 'github-actions[bot]')
+
     runs-on: ubuntu-latest
     steps:
-      - name: Handle /take and /untake
+      - name: Handle issue take/untake and body status
         uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            if (!github) throw new Error("github object is undefined");
-            const comment = context.payload.comment;
-            if (!comment) return;
-            const commenter = comment.user.login;
-            const body = (comment.body || '').trim();
-            const issueNumber = context.payload.issue.number;
             const owner = context.repo.owner;
             const repo = context.repo.repo;
-            const takenLabel = 'taken';
             const BOT_LOGIN = 'github-actions[bot]';
+            const takenLabel = 'taken';
             const MARKER_PREFIX = '<!-- take-meta:';
-            const EXPIRE_MS = 21 * 24 * 60 * 60 * 1000; // 3 weeks
+            const BODY_START = '<!-- issue-take-untake:start -->';
+            const BODY_END = '<!-- issue-take-untake:end -->';
+            const EXPIRE_MS = 21 * 24 * 60 * 60 * 1000;
 
-            const isTake = /^\/take(\s|$)/i.test(body);
-            const isUntake = /^\/untake(\s|$)/i.test(body);
-            if (!isTake && !isUntake) return;
+            const isIssueOpen = context.eventName === 'issues';
+            const isComment = context.eventName === 'issue_comment';
 
-            // Helper: create a plain human-visible comment (used only for short replies where meta isn't changing)
-            async function quickReply(text) {
-              await github.rest.issues.createComment({ owner, repo, issue_number: issueNumber, body: text });
+            const issueNumber = context.payload.issue.number;
+
+            function buildUntakenBody() {
+              return `
+            ${BODY_START}
+            > [!TIP]
+            > This issue hasn't been claimed yet. Comment \`/take\` if you'd like to work on it!
+            >
+            > > For more information on how Img2Num's claim system works, please see #99.
+            >
+            > <sub>This edit was made by the [\`issue-take-untake\`](https://github.com/Ryan-Millard/Img2Num/blob/main/.github/workflows/issue-take-untake.yml) GitHub workflow</sub>
+            ${BODY_END}
+            `.trim();
             }
 
-            // Get issue data and comments
+            function buildTakenBody(ownerName) {
+              return `
+            ${BODY_START}
+            > [!CAUTION]
+            > This issue has been claimed, so it is not recommended that you work on it.
+            >
+            > > For more information on how Img2Num's claim system works, please see #99.
+            >
+            > > **For the owner of the claim:**
+            > > If you would like to revoke your claim, comment \`/untake\`
+            >
+            > <sub>This edit was made by the [\`issue-take-untake\`](https://github.com/Ryan-Millard/Img2Num/blob/main/.github/workflows/issue-take-untake.yml) GitHub workflow</sub>
+            ${BODY_END}
+            `.trim();
+            }
+
+            async function updateIssueBody(newBanner) {
+              const issue = await github.rest.issues.get({ owner, repo, issue_number: issueNumber });
+              const body = issue.data.body || '';
+
+              let updated;
+              if (body.includes(BODY_START)) {
+                updated = body.replace(
+                  new RegExp(`${BODY_START}[\\s\\S]*?${BODY_END}`),
+                  newBanner
+                );
+              } else {
+                updated = `${newBanner}\n\n---\n\n${body}`;
+              }
+
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: issueNumber,
+                body: updated
+              });
+            }
+
+            if (isIssueOpen) {
+              try {
+                await github.rest.issues.createLabel({
+                  owner,
+                  repo,
+                  name: takenLabel,
+                  color: 'ff0000',
+                  description: 'Issue is currently claimed'
+                });
+              } catch (e) {}
+
+              await updateIssueBody(buildUntakenBody());
+              return;
+            }
+
+            if (!isComment) return;
+
+            const comment = context.payload.comment;
+            const commenter = comment.user.login;
+            const bodyText = (comment.body || '').trim();
+
+            const isTake = /^\/take(\s|$)/i.test(bodyText);
+            const isUntake = /^\/untake(\s|$)/i.test(bodyText);
+            if (!isTake && !isUntake) return;
+
             const issueResp = await github.rest.issues.get({ owner, repo, issue_number: issueNumber });
             const labels = (issueResp.data.labels || []).map(l => typeof l === 'string' ? l : l.name);
             const hasTakenLabel = labels.includes(takenLabel);
@@ -54,169 +123,59 @@ jobs:
             const commentsResp = await github.rest.issues.listComments({ owner, repo, issue_number: issueNumber, per_page: 200 });
             const comments = commentsResp.data || [];
 
-            // Find latest bot comment containing our marker (we only read; we never edit)
-            const botCommentsWithMarker = comments
-              .filter(c => c.user && c.user.login === BOT_LOGIN && (c.body || '').includes(MARKER_PREFIX))
-              .sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
-            const latestBotComment = botCommentsWithMarker.length ? botCommentsWithMarker[botCommentsWithMarker.length - 1] : null;
-
-            // Parse meta from latest bot comment if present
             let meta = { owner: null, members: [], ts: 0 };
-            if (latestBotComment) {
+            const latestMeta = comments
+            .filter(c => c.user?.login === BOT_LOGIN && c.body?.includes(MARKER_PREFIX))
+            .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+            .pop();
+
+            if (latestMeta) {
               try {
-                const start = latestBotComment.body.indexOf(MARKER_PREFIX);
-                const end = latestBotComment.body.indexOf('-->', start);
-                const jsonText = latestBotComment.body.slice(start + MARKER_PREFIX.length, end).trim();
-                meta = JSON.parse(jsonText);
-              } catch (e) {
-                meta = { owner: null, members: [], ts: 0 };
-              }
+                const json = latestMeta.body.split(MARKER_PREFIX)[1].split('-->')[0].trim();
+                meta = JSON.parse(json);
+              } catch {}
             }
 
             const now = Date.now();
 
-            // If meta is stale, expire it on interaction
-            if (meta && meta.owner && meta.ts && (now - meta.ts) > EXPIRE_MS) {
-              if (hasTakenLabel) {
-                try {
-                  await github.rest.issues.removeLabel({ owner, repo, issue_number: issueNumber, name: takenLabel });
-                } catch (e) { /* ignore */ }
-              }
-              // single human-visible expiry comment
-              await github.rest.issues.createComment({ owner, repo, issue_number: issueNumber, body: `⚠️ The claim by @${meta.owner} has expired after 3 weeks of inactivity. The issue is now free to be taken.` });
-              // create a new bot meta comment that resets state (we do NOT edit old comments)
-              const resetMeta = { owner: null, members: [], ts: 0 };
+            async function persistMeta(metaObj, claimed) {
               await github.rest.issues.createComment({
                 owner,
                 repo,
                 issue_number: issueNumber,
-                body: `${MARKER_PREFIX}${JSON.stringify(resetMeta)} -->\n\nThis issue is currently unclaimed.`
+                body: `${MARKER_PREFIX}${JSON.stringify(metaObj)} -->`
               });
-              // update local meta
-              meta = resetMeta;
-            }
 
-            // Persist meta by creating a new bot comment containing both the marker and a human message.
-            // This function creates exactly ONE comment and handles the label add/remove.
-            async function persistMetaAndComment(metaObj, ensureLabel, humanMessage) {
-              const botBody = `${MARKER_PREFIX}${JSON.stringify(metaObj)} -->\n\n${humanMessage}`;
-              await github.rest.issues.createComment({ owner, repo, issue_number: issueNumber, body: botBody });
-
-              if (ensureLabel) {
-                try {
-                  await github.rest.issues.addLabels({ owner, repo, issue_number: issueNumber, labels: [takenLabel] });
-                } catch (e) { /* ignore */ }
+              if (claimed) {
+                await github.rest.issues.addLabels({ owner, repo, issue_number: issueNumber, labels: [takenLabel] });
+                await updateIssueBody(buildTakenBody(metaObj.owner));
               } else {
                 try {
                   await github.rest.issues.removeLabel({ owner, repo, issue_number: issueNumber, name: takenLabel });
-                } catch (e) { /* ignore */ }
+                } catch {}
+                await updateIssueBody(buildUntakenBody());
               }
             }
 
-            // parse mentions in the /take comment
-            const mentions = [...(body.matchAll(/@([A-Za-z0-9-]+)/g))].map(m => m[1]);
-            const newMentions = mentions.filter(u => u !== commenter);
 
-            // ---------- /take ----------
-            if (isTake) {
-              if (!meta.owner) {
-                // claim the issue
-                meta.owner = commenter;
-                meta.members = Array.from(new Set([...(meta.members || []), ...newMentions]));
-                meta.ts = Date.now();
-
-                const humanMsg = meta.members.length > 0
-                  ? `✅ This issue has been taken by @${meta.owner}, with ${meta.members.map(m => `@${m}`).join(', ')} invited to collaborate.`
-                  : `✅ This issue has been taken by @${meta.owner}. Comment \`/untake\` to release it.`;
-
-                await persistMetaAndComment(meta, true, humanMsg);
-                return;
-              }
-
-              // already claimed
-              if (meta.owner === commenter) {
-                // owner re-issuing /take: allow adding new collaborators if they @mention them
-                if (newMentions.length === 0) {
-                  // single short reply (no meta change)
-                  await quickReply(`ℹ️ You have already taken this issue.`);
-                } else {
-                  meta.members = Array.from(new Set([...(meta.members || []), ...newMentions]));
-                  meta.ts = Date.now(); // refresh timestamp when owner interacts
-                  const humanMsg = `🔗 @${commenter} has invited ${newMentions.map(u => '@'+u).join(', ')} to this issue.`;
-                  await persistMetaAndComment(meta, true, humanMsg);
-                }
-              } else {
-                // someone else attempted to take -> single reply
-                await quickReply(`⚠️ Sorry, this issue is already claimed by @${meta.owner}.`);
-              }
+            if (isTake && !meta.owner) {
+              meta.owner = commenter;
+              meta.ts = now;
+              await persistMeta(meta, true);
               return;
             }
 
-            // ---------- /untake ----------
-            if (isUntake) {
-              if (!meta.owner) {
-                await quickReply(`ℹ️ This issue is not currently claimed.`);
-                return;
-              }
-
-              const mentioned = mentions[0]; // only one makes sense here
-
-              // OWNER removing a collaborator
-              if (meta.owner === commenter && mentioned) {
-                if (!meta.members.includes(mentioned)) {
-                  await quickReply(`ℹ️ @${mentioned} is not a collaborator on this issue.`);
-                  return;
-                }
-
-                meta.members = meta.members.filter(m => m !== mentioned);
-                meta.ts = Date.now();
-
-                await persistMetaAndComment(
-                  meta,
-                  true,
-                  `🚫 @${commenter} has removed @${mentioned} from this issue.`
-                );
-                return;
-              }
-
-              // OWNER unclaiming entire issue
-              if (meta.owner === commenter && !mentioned) {
-                meta = { owner: null, members: [], ts: 0 };
-
-                await persistMetaAndComment(
-                  meta,
-                  false,
-                  `🚫 @${commenter} has unclaimed this issue. It is now free for others.`
-                );
-                return;
-              }
-
-              // MEMBER removing themselves
-              if (meta.members.includes(commenter) && !mentioned) {
-                meta.members = meta.members.filter(m => m !== commenter);
-                meta.ts = Date.now();
-
-                await persistMetaAndComment(
-                  meta,
-                  true,
-                  `🚫 @${commenter} has removed themselves from this issue. It remains claimed by @${meta.owner}.`
-                );
-                return;
-              }
-
-              // Anything else is invalid
-              await quickReply(
-                `⚠️ You cannot modify this claim. Only the owner can remove collaborators, and members may remove themselves.`
-              );
+            if (isUntake && meta.owner === commenter) {
+              meta = { owner: null, members: [], ts: 0 };
+              await persistMeta(meta, false);
               return;
             }
 
-  # Weekly cleanup job (runs on schedule) — creates new comments only (no edits)
   cleanup:
     if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     steps:
-      - name: Expire stale claims (weekly)
+      - name: Expire stale claims
         uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -224,12 +183,25 @@ jobs:
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const takenLabel = 'taken';
-            const BOT_LOGIN = 'github-actions[bot]';
             const MARKER_PREFIX = '<!-- take-meta:';
-            const EXPIRE_MS = 21 * 24 * 60 * 60 * 1000; // 3 weeks
+            const BODY_START = '<!-- issue-take-untake:start -->';
+            const BODY_END = '<!-- issue-take-untake:end -->';
+            const EXPIRE_MS = 21 * 24 * 60 * 60 * 1000;
 
-            // list issues with the `taken` label (open issues only by default)
-            const issuesResp = await github.rest.issues.listForRepo({
+            function buildUntakenBody() {
+              return `
+            ${BODY_START}
+            > [!TIP]
+            > This issue hasn't been claimed yet. Comment \`/take\` if you'd like to work on it!
+            >
+            > > For more information on how Img2Num's claim system works, please see #99.
+            >
+            > <sub>This edit was made by the [\`issue-take-untake\`](https://github.com/Ryan-Millard/Img2Num/blob/main/.github/workflows/issue-take-untake.yml) GitHub workflow</sub>
+            ${BODY_END}
+            `.trim();
+            }
+
+            const issues = await github.rest.issues.listForRepo({
               owner,
               repo,
               labels: takenLabel,
@@ -237,32 +209,42 @@ jobs:
               per_page: 100
             });
 
-            for (const issue of (issuesResp.data || [])) {
-              const issueNumber = issue.number;
-              const commentsResp = await github.rest.issues.listComments({ owner, repo, issue_number: issueNumber, per_page: 200 });
-              const comments = commentsResp.data || [];
-              const botCommentsWithMarker = comments
-                .filter(c => c.user && c.user.login === BOT_LOGIN && (c.body || '').includes(MARKER_PREFIX))
-                .sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
-              if (!botCommentsWithMarker.length) continue;
-              const latestBotComment = botCommentsWithMarker[botCommentsWithMarker.length - 1];
+            for (const issue of issues.data) {
+              const comments = await github.rest.issues.listComments({
+                owner,
+                repo,
+                issue_number: issue.number,
+                per_page: 200
+              });
+
+              const metaComment = comments.data
+                .filter(c => c.body?.includes(MARKER_PREFIX))
+                .pop();
+
+              if (!metaComment) continue;
+
               try {
-                const start = latestBotComment.body.indexOf(MARKER_PREFIX);
-                const end = latestBotComment.body.indexOf('-->', start);
-                const jsonText = latestBotComment.body.slice(start + MARKER_PREFIX.length, end).trim();
-                const meta = JSON.parse(jsonText);
-                if (meta && meta.owner && meta.ts && (Date.now() - meta.ts) > EXPIRE_MS) {
-                  // expire it
-                  try {
-                    await github.rest.issues.removeLabel({ owner, repo, issue_number: issueNumber, name: takenLabel });
-                  } catch (e) { /* ignore */ }
-                  // create human-visible expiry comment
-                  await github.rest.issues.createComment({ owner, repo, issue_number: issueNumber, body: `⚠️ The claim by @${meta.owner} has expired after 3 weeks of inactivity. The issue is now free to be taken.` });
-                  // create a new bot meta comment resetting state (do NOT edit existing comments)
-                  const newMeta = { owner: null, members: [], ts: 0 };
-                  await github.rest.issues.createComment({ owner, repo, issue_number: issueNumber, body: `${MARKER_PREFIX}${JSON.stringify(newMeta)} -->\n\nThis issue is currently unclaimed.` });
+                const meta = JSON.parse(metaComment.body.split(MARKER_PREFIX)[1].split('-->')[0].trim());
+                if (meta.ts && Date.now() - meta.ts > EXPIRE_MS) {
+                  await github.rest.issues.removeLabel({ owner, repo, issue_number: issue.number, name: takenLabel });
+
+                  const body = issue.body || '';
+                  let updated;
+                  if (body.includes(BODY_START)) {
+                    updated = body.replace(
+                      new RegExp(`${BODY_START}[\\s\\S]*?${BODY_END}`),
+                      buildUntakenBody()
+                    );
+                  } else {
+                    updated = `${buildUntakenBody()}\n\n---\n\n${body}`;
+                  }
+
+                  await github.rest.issues.update({
+                    owner,
+                    repo,
+                    issue_number: issue.number,
+                    body: updated
+                  });
                 }
-              } catch (e) {
-                // ignore parse errors for now
-              }
+              } catch {}
             }
