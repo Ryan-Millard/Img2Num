@@ -53,8 +53,7 @@ Calculating `std::exp()` inside the inner loop is expensive. We precompute the t
 - **Spatial Weights**: A 2D grid of weights based on the kernel radius. Since the spatial distance between a neighbor and the center never changes, this is calculated once per filter application.
 - **Range Weights**: A 1D array mapping squared color distance ($0$ to $255^2 \times 3$) to a weight. This allows O(1) lookups for the "edge preservation" factor.
 
-```cpp
-// Precomputing Range Weights
+```cpp title="Precomputing Range Weights"
 std::vector<double> range_lut(MAX_RGB_DIST_SQ + 1);
 for (int i = 0; i <= MAX_RGB_DIST_SQ; ++i) {
     range_lut[i] = std::exp(-static_cast<double>(i) / two_sigma_range_sq);
