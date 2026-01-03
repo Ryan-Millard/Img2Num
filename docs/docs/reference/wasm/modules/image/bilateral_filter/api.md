@@ -14,6 +14,7 @@ void bilateral_filter(uint8_t *image,
                       size_t width, size_t height,
                       double sigma_spatial,
                       double sigma_range)
+```
 
 ## Parameters
 
