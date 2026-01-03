@@ -12,7 +12,6 @@ const GlassCard = ({ as: Tag = 'div', children, ...rest }) => (
 );
 
 GlassCard.propTypes = {
-  /** HTML element to render (polymorphic support) */
   as: PropTypes.oneOf([
     'div',
     'section',
@@ -20,14 +19,9 @@ GlassCard.propTypes = {
     'nav',
     'main',
     'aside',
-    'header',
-    'footer',
+    'ul', // ✅ added as requested in issue #178
   ]),
-
-  /** Content inside the GlassCard */
   children: PropTypes.node,
-
-  /** Additional CSS classes */
   className: PropTypes.string,
 };
 
