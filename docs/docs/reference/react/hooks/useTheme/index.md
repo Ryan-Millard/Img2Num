@@ -66,19 +66,19 @@ This ensures that CSS variables defined in `:root.light` or `:root.dark` are pro
 The hook works in conjunction with CSS variables defined in `/src/global-styles/variables.css`:
 
 ```css
-/* Applied when theme is 'light' */
+/* Applied when theme is 'light' - Warm Hedgehog Palette */
 :root.light {
-  --color-bg: #fed0d0;
-  --color-text: #2c1a1a;
-  --color-primary: #d14a72;
+  --color-bg: #F8EACD;      /* Soft cream */
+  --color-text: #2c1a1a;    /* Dark brown */
+  --color-primary: #6A3817; /* Warm brown */
   /* ... more variables */
 }
 
-/* Applied when theme is 'dark' */
+/* Applied when theme is 'dark' - Deep Forest Night */
 :root.dark {
-  --color-bg: #1a001f;
-  --color-text: #f0f0f0;
-  --color-primary: #ff6b9d;
+  --color-bg: #1a0f1f;      /* Deep purple/brown */
+  --color-text: #F8EACD;    /* Cream (inverted) */
+  --color-primary: #E0AD7D; /* Warm coral */
   /* ... more variables */
 }
 ```

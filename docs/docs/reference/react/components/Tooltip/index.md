@@ -1,5 +1,5 @@
 ---
-title: Tooltip.jsx
+title: Tooltip
 ---
 
 **What this file covers (quick):**

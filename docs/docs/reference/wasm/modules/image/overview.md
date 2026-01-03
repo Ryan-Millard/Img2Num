@@ -25,6 +25,7 @@ src/wasm/modules/image/
 │   ├── kmeans.h
 │   └── mergeSmallRegionsInPlace.h
 └── src
+    ├── bilateral_filter.cpp
     ├── fft_iterative.cpp
     ├── image_utils.cpp
     ├── kmeans.cpp
@@ -38,6 +39,7 @@ Each header corresponds to a major subsystem:
 - `Image.h` — Core image class.
     - Internally uses a **Pixel type**.
 - `PixelConverters` — Functions for converting between pixel formats.
+- `bilateral_filter` — Bilateral filter for edge-conserving image denoising.
 - `fft_iterative` — Fast Fourier Transform utilities.
     - Used by **Gaussian Blur** inside image_utils.h.
 - `kmeans` — K-means clustering used for quantization.
