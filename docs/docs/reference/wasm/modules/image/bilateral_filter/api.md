@@ -9,9 +9,11 @@ sidebar_position: 5
 
 Quick reference for the function implemented in the header.
 
-| Function | Signature | Purpose |
-| :--- | :--- | :--- |
-| `bilateral_filter` | `void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_spatial, double sigma_range)` | Applies a bilateral filter to an RGBA image. |
+```cpp title="Applies a bilateral filter to an RGBA image (modified in-place)."
+void bilateral_filter(uint8_t *image,
+                      size_t width, size_t height,
+                      double sigma_spatial,
+                      double sigma_range)
 
 ## Parameters
 
