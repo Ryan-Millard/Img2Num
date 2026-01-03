@@ -53,15 +53,10 @@ You can change the underlying HTML element without losing any styling.
 Common values include:
 
 * div (default)
-
 * section
-
 * article
-
 * nav
-
 * main
-
 * aside
 
 ## Passing Additional Props
@@ -95,7 +90,7 @@ GlassCard styles are defined in `GlassCard.module.css` and include:
 * Backdrop blur for a frosted-glass appearance
 * Semi-transparent background using RGBA
 * Subtle border for glass edge highlights
-* Optional text-centering utility styles
+* Text centering is applied via the global utility class `text-center` (for example, from Tailwind CSS or a global stylesheet), not from the CSS module.
 
 Custom styles passed via `className` are merged safely.
 
