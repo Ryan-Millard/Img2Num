@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <cstring>
 #include <climits>
+#include <iostream>
 
 namespace bilateral {
 
@@ -18,7 +19,7 @@ static constexpr int MAX_RGB_DIST_SQ{255 * 255 * 3};
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB{0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
 
-inline double gaussian(double x, double sigma) {
+double gaussian(double x, double sigma) {
     return std::exp(-(x * x) / (2.0 * sigma * sigma));
 }
 
@@ -63,7 +64,6 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
     std::vector<double> range_lut;
     if (color_space == COLOR_SPACE_OPTION_RGB) {
       range_lut.resize(MAX_RGB_DIST_SQ + 1);
-
       for (int i{0}; i <= MAX_RGB_DIST_SQ; ++i) {
           range_lut[i] = gaussian(static_cast<double>(std::sqrt(i)), sigma_range);
       }
@@ -84,11 +84,14 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
             // ========= CIELAB-only section start =========
             double L0, A0, B0;
             if (color_space == COLOR_SPACE_OPTION_CIELAB) {
-                rgb_to_lab(r0, g0, b0, L0, A0, B0);
+                rgb_to_lab2(r0, g0, b0, L0, A0, B0);
+                // std::cout << "cielab0 done" << std::endl;
             }
             // ========= CIELAB-only section end =========
 
             double r_acc{0.0}, g_acc{0.0}, b_acc{0.0}, weight_acc{0.0};
+            double w_space, w_range;
+            double L, A, B, dist;
 
             for (int ky{-radius}; ky <= radius; ++ky) {
                 int ny{std::clamp(y + ky, 0, h - 1)};
@@ -102,9 +105,8 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
                     uint8_t g{image[neighbor_idx + 1]};
                     uint8_t b{image[neighbor_idx + 2]};
 
-                    double w_space{spatial_weights[(ky + radius) * kernel_diameter + (kx + radius)]};
-
-                    double w_range;
+                    w_space = spatial_weights[(ky + radius) * kernel_diameter + (kx + radius)];
+                    
                     switch (color_space) {
                       case COLOR_SPACE_OPTION_RGB: {
                           const int dr = static_cast<int>(r) - r0;
@@ -115,20 +117,17 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
                           break;
                         }
                       case COLOR_SPACE_OPTION_CIELAB: {
-                        double L, A, B;
-                        rgb_to_lab(r, g, b, L, A, B);
-                        const double dist = std::sqrt((L-L0)*(L-L0) + (A-A0)*(A-A0) + (B-B0)*(B-B0));
+                        rgb_to_lab2(r, g, b, L, A, B);
+                        dist = std::sqrt((L-L0)*(L-L0) + (A-A0)*(A-A0) + (B-B0)*(B-B0));
                         w_range = gaussian(dist, sigma_range);
                         break;
                       }
                     }
 
-                    double w{w_space * w_range};
-
-                    r_acc += r * w;
-                    g_acc += g * w;
-                    b_acc += b * w;
-                    weight_acc += w;
+                    r_acc += r * w_space * w_range;
+                    g_acc += g * w_space * w_range;
+                    b_acc += b * w_space * w_range;
+                    weight_acc += w_space * w_range;
                 }
             }
 

@@ -49,7 +49,7 @@ target_link_options(${MODULE_NAME}_wasm PRIVATE ${COMMON_FLAGS})
 
 # Build-type specific flags
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_options(${MODULE_NAME}_wasm PRIVATE -O0 -g4)
+    target_compile_options(${MODULE_NAME}_wasm PRIVATE -O3 -g4)
     target_link_options(${MODULE_NAME}_wasm PRIVATE
         "SHELL:-s ASSERTIONS=2"
         -g4
