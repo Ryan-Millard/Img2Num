@@ -3,7 +3,7 @@ import Tooltip from '@components/Tooltip';
 import PropTypes from 'prop-types';
 
 const GlassSwitch = ({ onChange, isOn, ariaLabel, thumbContent, disabled = false }) => {
-  const fallbackContent = isOn ? styles.fallbackThumbContentOn : styles.fallbackThumbContentOff ;
+  const fallbackContent = isOn ? styles.fallbackThumbContentOn : styles.fallbackThumbContentOff;
   return (
     <Tooltip content={ariaLabel}>
       <button
@@ -15,7 +15,7 @@ const GlassSwitch = ({ onChange, isOn, ariaLabel, thumbContent, disabled = false
         aria-label={ariaLabel}
         disabled={disabled}
       >
-        <span className={`glass ${styles.thumb} ${thumbContent ? thumbContent : fallbackContent}`}>
+        <span className={`glass ${styles.thumb} ${!thumbContent ? fallbackContent : ''}`}>
           {thumbContent}
         </span>
       </button>
@@ -28,7 +28,7 @@ GlassSwitch.propTypes = {
   onChange: PropTypes.func.isRequired,
   ariaLabel: PropTypes.string.isRequired,
   thumbContent: PropTypes.node,
-  disabled:PropTypes.bool,
+  disabled: PropTypes.bool,
 };
 
 export default GlassSwitch;
