@@ -1,5 +1,6 @@
 #include "bilateral_filter.h"
 #include "exported.h"
+#include "cielab.h"
 
 #include <cmath>
 #include <vector>
@@ -9,14 +10,21 @@
 
 namespace bilateral {
 
-static constexpr double SIGMA_RADIUS_FACTOR = 3.0;
-static constexpr int MAX_KERNEL_RADIUS = 50;
+static constexpr double SIGMA_RADIUS_FACTOR{3.0}; // 3 standard deviations
+static constexpr int MAX_KERNEL_RADIUS{50};
 // Max possible squared Euclidean distance in a 3-channel 8-bit image: 255^2 * 3 = 195075
 // Means max delta between images (imageA - imageB) in RGB channels (255^2 * 3)
-static constexpr int MAX_RGB_DIST_SQ = 255 * 255 * 3;
+static constexpr int MAX_RGB_DIST_SQ{255 * 255 * 3};
+static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB{0};
+static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
+
+inline double gaussian(double x, double sigma) {
+    return std::exp(-(x * x) / (2.0 * sigma * sigma));
+}
 
 /*
-The Bilateral Filter applies a composite weight based on both spatial distance and radiometric difference (intensity) to return an image that is smoothed while preserving edges.
+The Bilateral Filter applies a composite weight based on both spatial distance and radiometric difference (intensity)
+  to return an image that is smoothed while preserving edges.
 It reduces noise in flat regions while preserving edges by assigning near-zero weight to pixels across high-contrast boundaries.
 
 Parameters:
@@ -24,72 +32,97 @@ Parameters:
 - width, height: Image dimensions (px)
 - sigma_spatial: Gaussian standard deviation for spatial proximity (spatial decay)
 - sigma_range: Gaussian standard deviation for intensity difference (radiometric decay)
+- color_space: Color space selector
+  ├── 0: CIELAB
+  └── 1: RGB
 */
 void bilateral_filter(uint8_t *image, size_t width, size_t height,
-                      double sigma_spatial, double sigma_range) {
-    if (sigma_spatial <= 0.0 || sigma_range <= 0.0) return;
-    if (width <= 0 || height <= 0) return;
+                      double sigma_spatial, double sigma_range,
+                      uint8_t color_space) {
+    // bad data -> return
+    if (sigma_spatial <= 0.0 || sigma_range <= 0.0 || width <= 0 || height <= 0) return;
 
-    const int raw_radius = static_cast<int>(std::ceil(SIGMA_RADIUS_FACTOR * sigma_spatial));
-    const int radius = std::min(raw_radius, MAX_KERNEL_RADIUS);
-    const int kernel_width = 2 * radius + 1;
+    const int raw_radius{static_cast<int>(std::ceil(SIGMA_RADIUS_FACTOR * sigma_spatial))};
+    const int radius{std::min(raw_radius, MAX_KERNEL_RADIUS)};
+    const int kernel_diameter{2 * radius + 1};
     std::vector<uint8_t> result(width * height * 4);
 
-    // NOTE: precompute Spatial Weights (Gaussian Kernel)
-    std::vector<double> spatial_weights(kernel_width * kernel_width);
-    double two_sigma_space_sq = 2 * sigma_spatial * sigma_spatial;
+    std::vector<double> spatial_weights(kernel_diameter * kernel_diameter);
 
-    for (int ky = -radius; ky <= radius; ++ky) {
-        for (int kx = -radius; kx <= radius; ++kx) {
-            double dist2 = static_cast<double>(kx * kx + ky * ky);
-            spatial_weights[(ky + radius) * kernel_width + (kx + radius)] = 
-                std::exp(-dist2 / two_sigma_space_sq);
+    // Precompute Spatial Weights (Gaussian Kernel)
+    for (int ky{-radius}; ky <= radius; ++ky) {
+        for (int kx{-radius}; kx <= radius; ++kx) {
+            const double dist{static_cast<double>(std::sqrt(kx * kx + ky * ky))};
+            spatial_weights[(ky + radius) * kernel_diameter + (kx + radius)] = gaussian(dist, sigma_spatial);
         }
     }
 
-    // NOTE: precompute Range Weights
-    std::vector<double> range_lut(MAX_RGB_DIST_SQ + 1);
-    double two_sigma_range_sq = 2 * sigma_range * sigma_range;
+    // ========= RGB-only section start =========
+    // Precompute Range Weights
+    std::vector<double> range_lut;
+    if (color_space == COLOR_SPACE_OPTION_RGB) {
+      range_lut.resize(MAX_RGB_DIST_SQ + 1);
 
-    for (int i = 0; i <= MAX_RGB_DIST_SQ; ++i) {
-        range_lut[i] = std::exp(-static_cast<double>(i) / two_sigma_range_sq);
+      for (int i{0}; i <= MAX_RGB_DIST_SQ; ++i) {
+          range_lut[i] = gaussian(static_cast<double>(std::sqrt(i)), sigma_range);
+      }
     }
+    // ========= RGB-only section end =========
 
-    int h = static_cast<int>(height);
-    int w = static_cast<int>(width);
+    int h{static_cast<int>(height)};
+    int w{static_cast<int>(width)};
+    for (int y{0}; y < h; ++y) {
+        for (int x{0}; x < w; ++x) {
+            size_t center_idx{(y * width + x) * 4};
 
-    for (int y = 0; y < h; ++y) {
-        for (int x = 0; x < w; ++x) {
-            size_t center_idx = (y * width + x) * 4;
+            uint8_t r0{image[center_idx]};
+            uint8_t g0{image[center_idx + 1]};
+            uint8_t b0{image[center_idx + 2]};
+            uint8_t a0{image[center_idx + 3]};
 
-            uint8_t r0 = image[center_idx];
-            uint8_t g0 = image[center_idx + 1];
-            uint8_t b0 = image[center_idx + 2];
-            uint8_t a0 = image[center_idx + 3];
+            // ========= CIELAB-only section start =========
+            double L0, A0, B0;
+            if (color_space == COLOR_SPACE_OPTION_CIELAB) {
+                rgb_to_lab(r0, g0, b0, L0, A0, B0);
+            }
+            // ========= CIELAB-only section end =========
 
-            double r_acc = 0.0, g_acc = 0.0, b_acc = 0.0, weight_acc = 0.0;
+            double r_acc{0.0}, g_acc{0.0}, b_acc{0.0}, weight_acc{0.0};
 
-            for (int ky = -radius; ky <= radius; ++ky) {
-                int ny = std::clamp(y + ky, 0, h - 1);
+            for (int ky{-radius}; ky <= radius; ++ky) {
+                int ny{std::clamp(y + ky, 0, h - 1)};
 
-                for (int kx = -radius; kx <= radius; ++kx) {
-                    int nx = std::clamp(x + kx, 0, w - 1);
+                for (int kx{-radius}; kx <= radius; ++kx) {
+                    int nx{std::clamp(x + kx, 0, w - 1)};
 
-                    size_t neighbor_idx = (ny * width + nx) * 4;
+                    size_t neighbor_idx{(ny * width + nx) * 4};
 
-                    uint8_t r = image[neighbor_idx];
-                    uint8_t g = image[neighbor_idx + 1];
-                    uint8_t b = image[neighbor_idx + 2];
+                    uint8_t r{image[neighbor_idx]};
+                    uint8_t g{image[neighbor_idx + 1]};
+                    uint8_t b{image[neighbor_idx + 2]};
 
-                    double w_space = spatial_weights[(ky + radius) * kernel_width + (kx + radius)];
+                    double w_space{spatial_weights[(ky + radius) * kernel_diameter + (kx + radius)]};
 
-                    int dr = static_cast<int>(r) - r0;
-                    int dg = static_cast<int>(g) - g0;
-                    int db = static_cast<int>(b) - b0;
-                    int dist_sq = dr*dr + dg*dg + db*db;
+                    double w_range;
+                    switch (color_space) {
+                      case COLOR_SPACE_OPTION_RGB: {
+                          const int dr = static_cast<int>(r) - r0;
+                          const int dg = static_cast<int>(g) - g0;
+                          const int db = static_cast<int>(b) - b0;
+                          const int dist_sq = dr*dr + dg*dg + db*db;
+                          w_range = range_lut[dist_sq];
+                          break;
+                        }
+                      case COLOR_SPACE_OPTION_CIELAB: {
+                        double L, A, B;
+                        rgb_to_lab(r, g, b, L, A, B);
+                        const double dist = std::sqrt((L-L0)*(L-L0) + (A-A0)*(A-A0) + (B-B0)*(B-B0));
+                        w_range = gaussian(dist, sigma_range);
+                        break;
+                      }
+                    }
 
-                    double w_range = range_lut[dist_sq];
-                    double w = w_space * w_range;
+                    double w{w_space * w_range};
 
                     r_acc += r * w;
                     g_acc += g * w;
@@ -103,7 +136,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
             result[center_idx + 2] = static_cast<uint8_t>(std::clamp(b_acc / weight_acc, 0.0, 255.0));
             result[center_idx + 3] = a0;
         }
-    }   
+    }
 
     std::memcpy(image, result.data(), result.size());
 }
@@ -112,6 +145,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
 
 // Global wrapper for WASM export
 EXPORTED void bilateral_filter(uint8_t *image, size_t width, size_t height,
-                               double sigma_spatial, double sigma_range) {
-    bilateral::bilateral_filter(image, width, height, sigma_spatial, sigma_range);
+                               double sigma_spatial, double sigma_range,
+                               uint8_t color_space) {
+    bilateral::bilateral_filter(image, width, height, sigma_spatial, sigma_range, color_space);
 }

@@ -1,108 +1,11 @@
 #include "image_utils.h"
 #include "fft_iterative.h"
-#include "cielab.h"
 
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
 #include <limits>
 #include <vector>
-
-double evaluate_gaussian(float x, double sigma) {
-  // evaluates 1d gaussian function desribed by sigma at x
-  return exp(-(pow(x, 2))/(2 * pow(sigma, 2))) / (2 * M_PI * pow(sigma, 2));
-}
-
-void bilateral_filter_cielab(uint8_t *image, size_t width, size_t height, double sigma_pixels, double sigma_range)
-{
-  // sigma_pixel = spatial kernel
-  if (!image || width == 0 || height == 0 || sigma_pixels <= 0 || sigma_range <= 0)
-    return;
-
-  const int radius = static_cast<int>(1.5 * sigma_pixels);
-  const size_t diameter = radius * 2 + 1;
-
-  // precompute
-  double spatial_filter[diameter * diameter];
-  for (int i = 0; i < diameter; i++){
-    for (int j = 0; j < diameter; j++){
-      float dist = static_cast<float>(sqrt(pow(i - radius, 2) + pow(j - radius, 2)));
-      spatial_filter[i*diameter + j] = evaluate_gaussian(dist, sigma_pixels);
-    }
-  }
-
-  uint8_t result[4 * height * width];
-
-  for (int i = 0; i < height; i++){
-    for (int j = 0; j < width; j++) {
-      int center_index = 4 * (i * width + j);
-      uint8_t r0 = image[center_index];
-      uint8_t g0 = image[center_index + 1];
-      uint8_t b0 = image[center_index + 2];
-      uint8_t a0 = image[center_index + 3];
-
-      double L0, A0, B0;
-      rgb_to_lab(r0, g0, b0, L0, A0, B0);
-
-      double rf = 0.0;
-      double gf = 0.0;
-      double bf = 0.0;
-      double rW = 0.0;
-      double gW = 0.0;
-      double bW = 0.0;
-
-      for (int ki = -radius; ki <= radius; ki++){
-        for (int kj = -radius; kj <= radius; kj++){
-          int _i = i + ki;
-          int _j = j + kj;
-          if (_i < 0)
-            _i = 0;
-          if (_i > height - 1)
-            _i = height - 1;
-          if (_j < 0)
-            _j = 0;
-          if (_j > width - 1)
-            _j = width - 1;
-          int index = 4 * (_i * width + _j);
-
-          uint8_t r = image[index];
-          uint8_t g = image[index + 1];
-          uint8_t b = image[index + 2];
-
-          /*
-          as described in https://www.cs.jhu.edu/~misha/ReadingSeminar/Papers/Tomasi98.pdf
-          use euclidean distance in LAB color space for less artifacts
-          */
-          double L, A, B;
-          rgb_to_lab(r, g, b, L, A, B);
-          float dist = sqrt(pow(static_cast<float>(L-L0), 2) + pow(static_cast<float>(A-A0), 2) + pow(static_cast<float>(B-B0), 2));
-
-          double w_euc = evaluate_gaussian(dist, sigma_range) * spatial_filter[ (ki + radius) * diameter + (kj + radius) ];
-          double wr = w_euc;
-          double wg = w_euc;
-          double wb = w_euc;
-
-          rf += r * wr;
-          rW += wr;
-
-          gf += g * wg;
-          gW += wg;
-
-          bf += b * wb;
-          bW += wb;
-        }
-      }
-
-      result[center_index] = static_cast<uint8_t>(rf / rW);
-      result[center_index + 1] = static_cast<uint8_t>(gf / gW);
-      result[center_index + 2] = static_cast<uint8_t>(bf / bW);
-      result[center_index + 3] = a0;
-    }
-  }
-
-  image = result;
-}
-
 
 // image: pointer to RGBA data
 // width, height: dimensions

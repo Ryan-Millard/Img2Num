@@ -35,8 +35,8 @@ export function useWasmWorker() {
   const gaussianBlur = async ({ pixels, width, height, sigma_pixels = width * 0.005 }) => {
     return (await call('gaussian_blur_fft', { pixels, width, height, sigma_pixels }, ['pixels'])).output.pixels;
   };
-  const bilateralFilter = async ({ pixels, width, height, sigma_spatial = 3.0, sigma_range = 50.0 }) => {
-    return (await call('bilateral_filter', { pixels, width, height, sigma_spatial, sigma_range }, ['pixels'])).output.pixels;
+  const bilateralFilter = async ({ pixels, width, height, sigma_spatial = 3.0, sigma_range = 50.0, color_space = 0 }) => {
+    return (await call('bilateral_filter', { pixels, width, height, sigma_spatial, sigma_range, color_space }, ['pixels'])).output.pixels;
   };
   const blackThreshold = async ({ pixels, width, height, num_colors }) => {
     return (await call('black_threshold_image', { pixels, width, height, num_colors }, ['pixels'])).output.pixels;
@@ -44,10 +44,6 @@ export function useWasmWorker() {
   const kmeans = async ({ pixels, width, height, num_colors, max_iter = 100 }) => {
     return (await call('kmeans_clustering', { pixels, width, height, num_colors, max_iter }, ['pixels'])).output.pixels;
   };
-
-  /*const kmeans = async ({ pixels, width, height, num_colors, max_iter = 100, spatial_weight=0.1 }) => {
-    return (await call('kmeans_clustering_spatial', { pixels, width, height, num_colors, max_iter, spatial_weight }, ['pixels'])).output.pixels;
-  };*/
   const mergeSmallRegionsInPlace = async ({ pixels, width, height, minArea, minWidth, minHeight }) => {
     return (await call('mergeSmallRegionsInPlace', { pixels, width, height, minArea, minWidth, minHeight }, ['pixels']))
       .output.pixels;
