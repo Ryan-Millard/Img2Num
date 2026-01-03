@@ -27,9 +27,11 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
+      - name: Run format check
+        run: npm run format:check
+
       - name: Run editorconfig-checker
         run: npm run lint:style
-
   validate-scripts:
     runs-on: ubuntu-latest
     steps:

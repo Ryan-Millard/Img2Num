@@ -142,7 +142,8 @@ function runSearch(input, items) {
  * Print all scripts grouped by their `info.group` and re-prompt the given readline interface.
  *
  * Groups items by the `group` property on each info object (uses "Other" when absent),
- * prints a blue header for each group, lists each script using `printItem`, and then calls `rl.prompt()` to resume the interactive prompt.
+ * prints a blue header for each group, lists each script using `printItem`, and then
+ * calls `rl.prompt()` to resume the interactive prompt.
  *
  * @param {Object<string, Object>} items - Mapping of script names to their info objects.
  * @param {import('readline').Interface} rl - Readline interface used to re-prompt after listing.

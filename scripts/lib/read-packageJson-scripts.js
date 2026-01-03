@@ -5,7 +5,9 @@ import fs from 'fs';
  *
  * @param {string} fileUrl - Path to a JSON file that contains `scriptsInfo` and `scripts` top-level properties.
  * @returns {{flat: Record<string, {desc: string, args: any[], command: string, group: string}>, basicItems: any[]}} An object with:
- *  - `flat`: a mapping of script name to its CLI metadata (description defaults to `""`, args defaults to `[]`, command falls back to `"No command defined"`, and `group` is the originating group key)
+ *  - `flat`: a mapping of script name to its CLI metadata (description defaults to `""`,
+ *    args defaults to `[]`, command falls back to `"No command defined"`, and `group`
+ *    is the originating group key).
  *  - `basicItems`: the array from `scriptsInfo._meta.basic` or an empty array when not present.
  */
 export function readPackageJsonScripts(fileUrl) {

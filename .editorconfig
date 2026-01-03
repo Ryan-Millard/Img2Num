@@ -48,7 +48,7 @@ max_line_length = 120
 # -------------------------
 # JavaScript / React
 # -------------------------
-[*.{js,jsx,tsx}]
+[*.{js,ts,jsx,tsx}]
 indent_style = space
 indent_size = 2
 charset = utf-8

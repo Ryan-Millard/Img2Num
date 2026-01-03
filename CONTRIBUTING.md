@@ -4,30 +4,32 @@ Want to contribute to Img2Num? There are a few things you need to know.
 
 We wrote a [contribution guide](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/contributing) to help you get started.
 
-## Code Quality and Linting
+## Quick Links
 
-This project uses automated linting to maintain consistent code style. All pull requests must pass linting checks.
+- **[Coding Style Guidelines](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/coding-style)** - Code quality and linting standards
+- **[CI/CD Workflows](https://ryan-millard.github.io/Img2Num/info/docs/reference/tools/ci-workflows)** - Understanding our automated checks
+- **[Commit Guidelines](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/commits)** - How to write good commit messages
+- **[Pull Request Guidelines](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/pull-requests)** - Creating and submitting PRs
 
-### Quick Start
+## Code Quality
+
+Before submitting a PR, ensure your code passes all checks:
 
 ```bash
 npm ci                # Install dependencies
 npm run lint          # Check JavaScript/React code
-npm run lint:fix      # Auto-fix ESLint issues
 npm run lint:style    # Check code style
+npm run format:check  # Verify formatting
 ```
 
-### Documentation
+For detailed information about linting, formatting, and fixing issues, see our [Coding Style Guidelines](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/coding-style).
 
-For detailed information about linting standards, fixing issues, and CI integration, see:
+## Questions?
 
-- [Coding Style Guidelines](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/coding-style)
-- [CI/CD Workflows](https://ryan-millard.github.io/Img2Num/info/docs/reference/tools/ci-workflows)
+If you have questions or need help:
 
-### Questions?
-
-If you encounter linting issues you're unsure how to fix, feel free to:
-
-- Open a [discussion](https://github.com/Ryan-Millard/Img2Num/discussions) or [issue](https://github.com/Ryan-Millard/Img2Num/issues) and ask for guidance
-- Comment on the relevant issue
+- Open a [discussion](https://github.com/Ryan-Millard/Img2Num/discussions)
+- Create an [issue](https://github.com/Ryan-Millard/Img2Num/issues)
 - Check existing PRs for examples
+
+Thank you for improving Img2Num! 🎨🚀

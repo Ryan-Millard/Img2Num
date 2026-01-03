@@ -38,8 +38,9 @@ function flattenScriptsInfo(scriptsInfo) {
 /**
  * Validates that the "scripts" keys in a package.json match the flattened entries in "scriptsInfo".
  *
- * If "scripts" or "scriptsInfo" is missing, or any script is undocumented or any description refers to a non-existent script,
- * logs errors and exits the process with code 1. On success, logs a confirmation message.
+ * If "scripts" or "scriptsInfo" is missing, or any script is undocumented or any
+ * description refers to a non-existent script, logs errors and exits the process with
+ * code 1. On success, logs a confirmation message.
  *
  * @param {string} pkgPath - Path to the package.json file to validate.
  */
