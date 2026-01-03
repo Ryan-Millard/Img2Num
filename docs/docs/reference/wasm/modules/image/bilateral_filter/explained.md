@@ -65,8 +65,8 @@ for (int i = 0; i <= MAX_RGB_DIST_SQ; ++i) {
 We iterate over every pixel `(y, x)` and then over every neighbor `(ky, kx)` within the kernel radius:
 
 1.  **Load Neighbor**: Get RGB values of the neighbor.
-2.  **Spatial Weight**: Look up precomputed $G_{\sigma_s}$.
-3.  **Range Weight**: Calculate squared color distance $\|C_p - C_q\|^2$ and look up precomputed $G_{\sigma_r}$.
+2.  **Spatial Weight**: Look up precomputed $G_{\sigma_{spatial}}$.
+3.  **Range Weight**: Calculate squared color distance $\|C_p - C_q\|^2$ and look up precomputed $G_{\sigma_{range}}$.
 4.  **Accumulate**: `pixel_acc += neighbor_rgb * (spatial_w * range_w)`.
 5.  **Normalize**: Divide by probability sum.
 
