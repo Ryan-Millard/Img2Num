@@ -41,6 +41,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
                       uint8_t color_space) {
     // bad data -> return
     if (sigma_spatial <= 0.0 || sigma_range <= 0.0 || width <= 0 || height <= 0) return;
+    if (color_space != COLOR_SPACE_OPTION_CIELAB && color_space != COLOR_SPACE_OPTION_RGB) return;
 
     const int raw_radius{static_cast<int>(std::ceil(SIGMA_RADIUS_FACTOR * sigma_spatial))};
     const int radius{std::min(raw_radius, MAX_KERNEL_RADIUS)};
