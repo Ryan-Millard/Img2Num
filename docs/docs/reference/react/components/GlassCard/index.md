@@ -1,7 +1,7 @@
----
+
 title: GlassCard
 description: Reusable polymorphic UI container with glassmorphism styling
----
+
 
 ## Overview
 
@@ -13,7 +13,7 @@ semi-transparent appearance.
 By default, `GlassCard` renders a `div`, but this can be customized using the
 `as` prop.
 
----
+
 
 ## ✨ Features
 
@@ -22,7 +22,7 @@ By default, `GlassCard` renders a `div`, but this can be customized using the
 - **Prop Forwarding**: Supports all native HTML attributes and event handlers
 - **SEO Friendly**: Easily switch to semantic tags like `section` or `main`
 
----
+
 
 ## 🛠 Basic Usage
 
