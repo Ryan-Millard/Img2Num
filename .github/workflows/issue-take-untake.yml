@@ -33,7 +33,7 @@ jobs:
             const MARKER_PREFIX = '<!-- take-meta:';
             const BODY_START = '<!-- issue-take-untake:start -->';
             const BODY_END = '<!-- issue-take-untake:end -->';
-            const EXPIRE_MS = 21 * 24 * 60 * 60 * 1000;
+            const EXPIRE_MS = 21 * 24 * 60 * 60 * 1000; // Claims expire after 21 days
 
             const isIssueOpen = context.eventName === 'issues';
             const isComment = context.eventName === 'issue_comment';
