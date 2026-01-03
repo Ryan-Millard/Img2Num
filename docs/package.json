@@ -106,6 +106,7 @@
     "validate-scripts": "npm run --prefix .. validate-scripts"
   },
   "dependencies": {
+    "@docusaurus/plugin-google-gtag": "^3.9.2",
     "@docusaurus/theme-mermaid": "^3.9.2",
     "@docusaurus/theme-search-algolia": "^3.9.2",
     "@mdx-js/react": "^3.0.0",

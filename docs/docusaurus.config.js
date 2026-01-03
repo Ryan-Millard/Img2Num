@@ -92,6 +92,13 @@ const config = {
       },
     ],
     webpackAliasPlugin,
+    [
+      '@docusaurus/plugin-google-gtag',
+      {
+        trackingID: 'G-C7LD33MNTX',
+        anonymizeIP: true,
+      },
+    ],
   ],
 
   presets: [
@@ -211,7 +218,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Img2Num.`,
       },
       prism: {
         theme: prismThemes.github,

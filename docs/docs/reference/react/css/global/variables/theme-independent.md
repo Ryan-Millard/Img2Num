@@ -35,3 +35,14 @@ These tokens are intentionally minimal - add new shared tokens here when they ar
 | ------------- | ----- | ---------------------- |
 | `--radius-sm` | `4px` | Small rounded corners  |
 | `--radius-md` | `8px` | Medium rounded corners |
+
+## Z-index layers
+
+| Variable                         | Value | Usage                                  |
+| -------------------------------- | ----- | -------------------------------------- |
+| `--navbar-menu-backdrop-z-index` | `99`  | Backdrop overlay behind mobile menu    |
+| `--navbar-menu-z-index`          | `100` | NavBar and mobile dropdown menu        |
+
+:::tip Stacking Context
+Use these z-index variables to ensure consistent stacking behavior across components. The navbar menu sits above the backdrop, which in turn sits above all other page content.
+:::

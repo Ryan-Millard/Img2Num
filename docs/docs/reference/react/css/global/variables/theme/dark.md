@@ -8,28 +8,30 @@ Defined inside `:root.dark { ... }` in `/src/global-styles/variables.css`.
 
 import ColorSwatch from '@site/src/components/ColorSwatch';
 
-## Colors — Dark mode
+## Colors — Dark mode (Deep Forest Night)
 
-| Variable               | Value     | Preview                     | Description      | Usage                      |
-| ---------------------- | --------- | --------------------------- | ---------------- | -------------------------- |
-| `--color-bg`           | `#1a001f` | <ColorSwatch color="#1a001f" /> | Very dark purple | Page background            |
-| `--color-primary`      | `#ff6b9d` | <ColorSwatch color="#ff6b9d" /> | Bright pink      | Buttons, links, accents    |
-| `--color-primary-dark` | `#ff4081` | <ColorSwatch color="#ff4081" /> | Vivid pink       | Hover states               |
-| `--color-secondary`    | `#ffd93d` | <ColorSwatch color="#ffd93d" /> | Bright yellow    | Secondary accents          |
-| `--color-text`         | `#f0f0f0` | <ColorSwatch color="#f0f0f0" /> | Very light gray  | Primary text               |
-| `--color-text-light`   | `#d0d0d0` | <ColorSwatch color="#d0d0d0" /> | Light gray       | Secondary text             |
-| `--color-border`       | `#2d2d44` | <ColorSwatch color="#2d2d44" /> | Dark gray-blue   | Borders, dividers          |
-| `--color-error`        | `#ff6b6b` | <ColorSwatch color="#ff6b6b" /> | Bright red       | Error messages, validation |
-| `--color-success`      | `#51cf66` | <ColorSwatch color="#51cf66" /> | Bright green     | Success messages           |
+| Variable               | Value     | Preview                     | Description                | Usage                      |
+| ---------------------- | --------- | --------------------------- | -------------------------- | -------------------------- |
+| `--color-bg`           | `#1a0f1f` | <ColorSwatch color="#1a0f1f" /> | Deep purple/brown night    | Page background            |
+| `--color-primary`      | `#E0AD7D` | <ColorSwatch color="#E0AD7D" /> | Warm coral/pink            | Buttons, links, accents    |
+| `--color-primary-dark` | `#D7A47D` | <ColorSwatch color="#D7A47D" /> | Golden tan                 | Hover states               |
+| `--color-secondary`    | `#F8EACD` | <ColorSwatch color="#F8EACD" /> | Golden glow (cream)        | Secondary accents          |
+| `--color-accent`       | `#FABFC0` | <ColorSwatch color="#FABFC0" /> | Soft pink glow             | Tertiary accents           |
+| `--color-text`         | `#F8EACD` | <ColorSwatch color="#F8EACD" /> | Cream (inverted from bg)   | Primary text               |
+| `--color-text-light`   | `#EECEA4` | <ColorSwatch color="#EECEA4" /> | Warm beige                 | Secondary text             |
+| `--color-border`       | `#3d2a3d` | <ColorSwatch color="#3d2a3d" /> | Muted warm brown           | Borders, dividers          |
+| `--color-error`        | `#ff6b6b` | <ColorSwatch color="#ff6b6b" /> | Bright red                 | Error messages, validation |
+| `--color-success`      | `#51cf66` | <ColorSwatch color="#51cf66" /> | Bright green               | Success messages           |
 
 ## Glass effect — Dark mode
 
-| Variable                  | Value                       | Preview                               | Description                    |
-| ------------------------- | --------------------------- | ------------------------------------- | ------------------------------ |
-| `--glass-bg`              | `rgba(0, 0, 0, 0.3)`        | <ColorSwatch color="rgba(0,0,0,0.3)" /> | Glass background               |
-| `--glass-border`          | `rgba(0, 0, 0, 0.2)`        | <ColorSwatch color="rgba(0,0,0,0.2)" /> | Glass border                   |
-| `--glass-shadow`          | `rgba(255, 255, 255, 0.1)`  | <ColorSwatch color="rgba(255,255,255,0.1)" /> | Glass shadow (lighter in dark) |
-| `--glass-table-border`    | `rgba(255, 255, 255, 0.1)`  | <ColorSwatch color="rgba(255,255,255,0.1)" /> | Table borders in glass cards   |
-| `--glass-table-row-odd`   | `rgba(0, 0, 0, 0.5)`        | <ColorSwatch color="rgba(0,0,0,0.5)" /> | Odd table row background       |
-| `--glass-table-row-hover` | `rgba(255, 255, 255, 0.15)` | <ColorSwatch color="rgba(255,255,255,0.15)" /> | Table row hover state          |
-| `--glass-table-stacked`   | `rgba(255, 255, 255, 0.7)`  | <ColorSwatch color="rgba(255,255,255,0.7)" /> | Stacked table elements         |
+| Variable                  | Value                          | Preview                                          | Description                       |
+| ------------------------- | ------------------------------ | ------------------------------------------------ | --------------------------------- |
+| `--glass-bg`              | `rgba(61, 42, 61, 0.4)`        | <ColorSwatch color="rgba(61,42,61,0.4)" />       | Purple-tinted glass background    |
+| `--glass-border`          | `rgba(215, 164, 125, 0.2)`     | <ColorSwatch color="rgba(215,164,125,0.2)" />    | Golden-tinted glass border        |
+| `--glass-shadow`          | `rgba(248, 234, 205, 0.05)`    | <ColorSwatch color="rgba(248,234,205,0.05)" />   | Subtle cream glow shadow          |
+| `--glass-table-border`    | `rgba(215, 164, 125, 0.15)`    | <ColorSwatch color="rgba(215,164,125,0.15)" />   | Table borders in glass cards      |
+| `--glass-table-row-odd`   | `rgba(42, 26, 42, 0.5)`        | <ColorSwatch color="rgba(42,26,42,0.5)" />       | Odd table row background          |
+| `--glass-table-row-hover` | `rgba(224, 173, 125, 0.15)`    | <ColorSwatch color="rgba(224,173,125,0.15)" />   | Table row hover (warm undertone)  |
+| `--glass-table-stacked`   | `rgba(238, 206, 164, 0.7)`     | <ColorSwatch color="rgba(238,206,164,0.7)" />    | Stacked table elements            |
+
