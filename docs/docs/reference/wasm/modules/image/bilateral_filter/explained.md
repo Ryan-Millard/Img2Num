@@ -29,6 +29,20 @@ Where:
 - $w_{range}$ is a Gaussian function of the intensity difference.
 - $W_p$ is the normalization factor (sum of all weights).
 
+
+
+
+:::info
+In this implementation, both weighting terms are **Gaussian kernels**:
+
+$$
+w_{\text{spatial}}(d) = \exp!\left(-\frac{d^2}{2\sigma_s^2}\right),
+\quad
+w_{\text{range}}(d) = \exp!\left(-\frac{d^2}{2\sigma_r^2}\right)
+$$
+
+where $ \sigma_s$ controls spatial smoothing and $\sigma_r$ controls edge sensitivity.
+:::
 ## Implementation Details
 
 Our implementation uses a **naive sliding window** approach with **Look-Up Table (LUT) optimizations** to improve performance in WebAssembly.
