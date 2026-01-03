@@ -6,7 +6,7 @@ on:
   issue_comment:
     types: [created]
   schedule:
-    - cron: '0 0 * * 0' # weekly cleanup (UTC)
+    - cron: "0 0 * * 0" # weekly cleanup (UTC)
 
 permissions:
   contents: read
@@ -73,15 +73,9 @@ jobs:
               const issue = await github.rest.issues.get({ owner, repo, issue_number: issueNumber });
               const body = issue.data.body || '';
 
-              let updated;
-              if (body.includes(BODY_START)) {
-                updated = body.replace(
-                  new RegExp(`${BODY_START}[\\s\\S]*?${BODY_END}`),
-                  newBanner
-                );
-              } else {
-                updated = `${newBanner}\n\n---\n\n${body}`;
-              }
+              const updated = body.includes(BODY_START)
+                ? body.replace(new RegExp(`${BODY_START}[\\s\\S]*?${BODY_END}`), newBanner)
+                : `${newBanner}\n\n---\n\n${body}`;
 
               await github.rest.issues.update({
                 owner,
@@ -116,29 +110,59 @@ jobs:
             const isUntake = /^\/untake(\s|$)/i.test(bodyText);
             if (!isTake && !isUntake) return;
 
-            const issueResp = await github.rest.issues.get({ owner, repo, issue_number: issueNumber });
-            const labels = (issueResp.data.labels || []).map(l => typeof l === 'string' ? l : l.name);
-            const hasTakenLabel = labels.includes(takenLabel);
-
-            const commentsResp = await github.rest.issues.listComments({ owner, repo, issue_number: issueNumber, per_page: 200 });
-            const comments = commentsResp.data || [];
+            const commentsResp = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number: issueNumber,
+              per_page: 200
+            });
 
             let meta = { owner: null, members: [], ts: 0 };
-            const latestMeta = comments
-            .filter(c => c.user?.login === BOT_LOGIN && c.body?.includes(MARKER_PREFIX))
-            .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
-            .pop();
+            const latestMeta = commentsResp.data
+              .filter(c => c.user?.login === BOT_LOGIN && c.body?.includes(MARKER_PREFIX))
+              .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+              .pop();
 
             if (latestMeta) {
               try {
-                const json = latestMeta.body.split(MARKER_PREFIX)[1].split('-->')[0].trim();
-                meta = JSON.parse(json);
-              } catch {}
+                const body = latestMeta.body;
+                const start = body.indexOf(MARKER_PREFIX);
+                const end = body.indexOf('-->', start);
+                if (start !== -1 && end !== -1) {
+                  meta = JSON.parse(
+                    body.slice(start + MARKER_PREFIX.length, end).trim()
+                  );
+                }
+              } catch {
+                meta = { owner: null, members: [], ts: 0 };
+              }
             }
 
-            const now = Date.now();
-
             async function persistMeta(metaObj, claimed) {
+              // Find existing meta comments
+              const commentsResp = await github.rest.issues.listComments({
+                owner,
+                repo,
+                issue_number: issueNumber,
+                per_page: 100
+              });
+
+              const metaComments = commentsResp.data.filter(
+                c => c.user?.login === BOT_LOGIN && c.body?.includes(MARKER_PREFIX)
+              );
+
+              // Delete all previous meta comments (keep state clean)
+              for (const c of metaComments) {
+                try {
+                  await github.rest.issues.deleteComment({
+                    owner,
+                    repo,
+                    comment_id: c.id
+                  });
+                } catch {}
+              }
+
+              // Create the new meta comment
               await github.rest.issues.createComment({
                 owner,
                 repo,
@@ -147,20 +171,35 @@ jobs:
               });
 
               if (claimed) {
-                await github.rest.issues.addLabels({ owner, repo, issue_number: issueNumber, labels: [takenLabel] });
+                await github.rest.issues.addLabels({
+                  owner,
+                  repo,
+                  issue_number: issueNumber,
+                  labels: [takenLabel]
+                });
                 await updateIssueBody(buildTakenBody(metaObj.owner));
               } else {
                 try {
-                  await github.rest.issues.removeLabel({ owner, repo, issue_number: issueNumber, name: takenLabel });
+                  await github.rest.issues.removeLabel({
+                    owner,
+                    repo,
+                    issue_number: issueNumber,
+                    name: takenLabel
+                  });
                 } catch {}
                 await updateIssueBody(buildUntakenBody());
               }
             }
 
+            // Normalize expired claims before handling commands
+            if (meta.owner && meta.ts && Date.now() - meta.ts > EXPIRE_MS) {
+              meta = { owner: null, members: [], ts: 0 };
+            }
+
 
             if (isTake && !meta.owner) {
               meta.owner = commenter;
-              meta.ts = now;
+              meta.ts = Date.now();
               await persistMeta(meta, true);
               return;
             }
@@ -218,26 +257,38 @@ jobs:
               });
 
               const metaComment = comments.data
-                .filter(c => c.body?.includes(MARKER_PREFIX))
-                .pop();
+              .filter(c => c.body?.includes(MARKER_PREFIX))
+              .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+              .pop();
+
 
               if (!metaComment) continue;
 
-              try {
-                const meta = JSON.parse(metaComment.body.split(MARKER_PREFIX)[1].split('-->')[0].trim());
-                if (meta.ts && Date.now() - meta.ts > EXPIRE_MS) {
-                  await github.rest.issues.removeLabel({ owner, repo, issue_number: issue.number, name: takenLabel });
+               try {
+                const body = metaComment.body;
+                const start = body.indexOf(MARKER_PREFIX);
+                const end = body.indexOf('-->', start);
+                if (start === -1 || end === -1) continue;
 
-                  const body = issue.body || '';
-                  let updated;
-                  if (body.includes(BODY_START)) {
-                    updated = body.replace(
-                      new RegExp(`${BODY_START}[\\s\\S]*?${BODY_END}`),
-                      buildUntakenBody()
-                    );
-                  } else {
-                    updated = `${buildUntakenBody()}\n\n---\n\n${body}`;
-                  }
+                const meta = JSON.parse(
+                  body.slice(start + MARKER_PREFIX.length, end).trim()
+                );
+
+                if (meta.ts && Date.now() - meta.ts > EXPIRE_MS) {
+                  await github.rest.issues.removeLabel({
+                    owner,
+                    repo,
+                    issue_number: issue.number,
+                    name: takenLabel
+                  });
+
+                  const currentBody = issue.body || '';
+                  const updated = currentBody.includes(BODY_START)
+                    ? currentBody.replace(
+                        new RegExp(`${BODY_START}[\\s\\S]*?${BODY_END}`),
+                        buildUntakenBody()
+                      )
+                    : `${buildUntakenBody()}\n\n---\n\n${currentBody}`;
 
                   await github.rest.issues.update({
                     owner,
