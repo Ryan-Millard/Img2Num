@@ -1,6 +1,11 @@
 import PropTypes from 'prop-types';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
-import { useId, cloneElement, isValidElement } from 'react';
+import {
+  useId,
+  cloneElement,
+  isValidElement,
+  useState,
+} from 'react';
 
 export default function Tooltip({
   content,
@@ -10,18 +15,35 @@ export default function Tooltip({
 }) {
   const reactId = useId();
   const tooltipId = id || `tooltip-${reactId}`;
+  const [isOpen, setIsOpen] = useState(false);
 
-  // If child is a single valid React element, attach tooltip attributes
+  // Detect touch-capable devices (mobile/tablet). Guard for SSR.
+  const isTouchDevice = typeof window !== 'undefined' && (
+    (typeof navigator !== 'undefined' && Number(navigator.maxTouchPoints) > 0) ||
+    (typeof window.matchMedia === 'function' && window.matchMedia('(pointer: coarse)').matches)
+  );
+
+  // On touch: open + auto-close after 1s
+  const showTooltip = () => {
+    if (!isTouchDevice) return;
+
+    setIsOpen(true);
+    setTimeout(() => setIsOpen(false), 1000);
+  };
+
+    // If child is a single valid React element, attach tooltip attributes
   const childWithTooltip = isValidElement(children)
     ? cloneElement(children, {
         'data-tooltip-id': tooltipId,
         'data-tooltip-content': content,
+        onClick: showTooltip,
       })
     : (
       <span
         data-tooltip-id={tooltipId}
         data-tooltip-content={content}
         tabIndex={0}
+        onClick={showTooltip}
       >
         {children}
       </span>
@@ -34,10 +56,11 @@ export default function Tooltip({
       <ReactTooltip
         id={tooltipId}
         place="right"
-        appendTo={document.body}
+        appendTo={typeof document !== 'undefined' ? document.body : undefined}
         positionStrategy="fixed"
         fallbackPlacements={dynamicPositioning ? ['bottom', 'top', 'left'] : []}
         openOnFocus
+        isOpen={isTouchDevice ? isOpen : undefined}
       />
     </>
   );
