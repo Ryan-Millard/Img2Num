@@ -82,8 +82,6 @@ const WasmImageProcessor = () => {
 
       step(20);
       // NOTE: Gaussian blur destroys the sharp outlines first, preventing the Bilateral filter from detecting and preserving them
-      // const blurred = await gaussianBlur(fileData);
-
       const imgBilateralFiltered = await bilateralFilter({
         pixels: fileData.pixels,
         width,
