@@ -96,8 +96,7 @@ export default function NotificationToggle() {
 | `isOn`         | `boolean`     | ✅ Yes   | -          | Controls the switch state (true = on, false = off)   |
 | `onChange`     | `function`    | ✅ Yes   | -          | Callback fired when the switch is toggled            |
 | `ariaLabel`    | `string`      | ✅ Yes   | -          | Accessible label for screen readers and tooltips     |
-| `thumbContent` | `React.node`  | No       | fallback   | Custom content inside the thumb (icons, text, etc.)  |
-| `size`         | `string`      | No       | `'medium'` | Size variant (future feature, currently not active)  |
+| `thumbContent` | `React.node`  | No       | fallback   | Custom content inside the thumb (icons, text, etc.).
 | `disabled`     | `boolean`     | No       | `false`    | Disables the switch and prevents interaction         |
 
 #### Prop Usage Guide
