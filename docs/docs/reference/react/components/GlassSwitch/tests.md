@@ -2,7 +2,7 @@
 title: GlassSwitch Tests
 ---
 
-The GlassSwitch component has a comprehensive test suite with 11 tests covering rendering, state management, accessibility, styling, and component props.
+The GlassSwitch component has a comprehensive test suite that covers rendering, state management, accessibility, styling, and component props.
 
 ## Test file location
 
@@ -25,31 +25,33 @@ npm test -- --watch GlassSwitch.test.jsx
 
 ## Test organization
 
-### 1. Basic rendering (1 test)
+### 1. Basic rendering
 
 - Renders a switch button with the correct role
 
-### 2. Checked state management (2 tests)
+### 2. Checked state management
 
 - Sets `aria-checked` to "true" when `isOn={true}`
 - Sets `aria-checked` to "false" when `isOn={false}`
 
-### 3. User interaction (2 tests)
+### 3. User interaction
 
 - Calls `onChange` callback when clicked
 - Is keyboard accessible (focusable and responds to Enter key)
 
-### 4. CSS class application (2 tests)
+### 4. CSS class application
 
 - Applies correct CSS classes when checked (includes `checked` class)
 - Does not apply checked class when unchecked
 
-### 5. Thumb content (2 tests)
+### 5. Thumb content
 
 - Renders custom `thumbContent` when provided
-- Renders fallback thumb content when `thumbContent` is not provided
+- Renders fallback thumb content
+  - **Off styling:** when `thumbContent` is not provided and isOff
+  - **On styling:** when `thumbContent` is not provided and isOn
 
-### 6. Component props (2 tests)
+### 6. Component props
 
 - Can be disabled via `disabled` prop
 - Sets correct `aria-label` for accessibility
@@ -159,11 +161,11 @@ it('sets correct aria-label', () => {
 
 The test suite ensures:
 
-1. ✅ **Accessibility**: ARIA attributes, keyboard navigation, labels
-2. ✅ **Functionality**: Click handlers, state management
-3. ✅ **Styling**: CSS class application based on props
-4. ✅ **Props**: All component props work correctly
-5. ✅ **Edge cases**: Fallback content, disabled state
+1. **Accessibility**: ARIA attributes, keyboard navigation, labels
+2. **Functionality**: Click handlers, state management
+3. **Styling**: CSS class application based on props
+4. **Props**: All component props work correctly
+5. **Edge cases**: Fallback content, disabled state
 
 ## Related documentation
 
