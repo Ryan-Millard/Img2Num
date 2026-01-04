@@ -35,7 +35,7 @@ export function useWasmWorker() {
   const gaussianBlur = async ({ pixels, width, height, sigma_pixels = width * 0.005 }) => {
     return (await call('gaussian_blur_fft', { pixels, width, height, sigma_pixels }, ['pixels'])).output.pixels;
   };
-  const bilateralFilter = async ({ pixels, width, height, sigma_spatial = width * 0.005, sigma_range = 50.0, color_space = 0 }) => {
+  const bilateralFilter = async ({ pixels, width, height, sigma_spatial = 3.0, sigma_range = 50.0, color_space = 0 }) => {
     return (await call('bilateral_filter', { pixels, width, height, sigma_spatial, sigma_range, color_space }, ['pixels'])).output.pixels;
   };
   const blackThreshold = async ({ pixels, width, height, num_colors }) => {
