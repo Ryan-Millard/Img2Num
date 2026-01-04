@@ -26,7 +26,7 @@ sidebar_position: 5
 ## Optimizations checklist
 
 1. Build release with `-O3` and closure compiler. Example flag additions:
-   ```
+   ```bash
    emcc ... \
      -O3 \
      --closure 1 \

@@ -33,7 +33,7 @@ Before you start installing anything, make sure you have the below installed.
 
 <Tabs groupId="installation-route" defaultValue="docker">
 <TabItem value="docker" label="Docker (Recommended)" default>
-#### Installing Docker
+### Installing Docker
 
 The section below will guide you through installing Docker on your operating system.
 
