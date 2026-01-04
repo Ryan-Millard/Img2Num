@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <cstring>
 #include <climits>
-#include <iostream>
 
 namespace bilateral {
 
