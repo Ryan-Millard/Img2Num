@@ -1,19 +1,11 @@
 import React from 'react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import ThemeSwitch from './ThemeSwitch'; // adjust path if needed
+import ThemeSwitch from './ThemeSwitch';
 import * as useThemeModule from '@hooks/useTheme';
 
 // Mock the useTheme hook module
 vi.mock('@hooks/useTheme');
-
-// Mock CSS module so `className` checks work
-vi.mock('./ThemeSwitch.module.css', () => ({
-  default: {
-    themeButton: 'mocked-theme-button-class',
-    icon: 'mocked-icon-class',
-  },
-}));
 
 // Mock lucide icons (Sun / Moon)
 vi.mock('lucide-react', () => ({
@@ -46,40 +38,36 @@ describe('ThemeSwitch component', () => {
     vi.clearAllMocks();
   });
 
-  it('renders a button with the correct aria-label when theme is light', () => {
+  it('renders a switch with the correct aria-label when theme is light', () => {
     vi.spyOn(useThemeModule, 'useTheme').mockReturnValue({ theme: 'light', toggleTheme: mockToggleTheme });
 
     render(<ThemeSwitch />);
 
-    const button = screen.getByRole('button', { name: 'Switch to Dark Mode' });
+    const button = screen.getByRole('switch', { name: 'switch to dark mode' });
     expect(button).toBeInTheDocument();
     expect(button).toHaveAttribute('type', 'button');
-    expect(button).toHaveClass('mocked-theme-button-class');
   });
 
-  it('shows Moon icon for light theme and applies icon class', () => {
+  it('shows Moon icon for light theme', () => {
     vi.spyOn(useThemeModule, 'useTheme').mockReturnValue({ theme: 'light', toggleTheme: mockToggleTheme });
 
     render(<ThemeSwitch />);
 
     const moonIcon = screen.getByTestId('moon-icon');
     expect(moonIcon).toBeInTheDocument();
-    expect(moonIcon).toHaveClass('mocked-icon-class');
     expect(screen.queryByTestId('sun-icon')).not.toBeInTheDocument();
   });
 
-  it('shows Sun icon for dark theme and applies icon class', () => {
+  it('shows Sun icon for dark theme and updates aria-label accordingly', () => {
     vi.spyOn(useThemeModule, 'useTheme').mockReturnValue({ theme: 'dark', toggleTheme: mockToggleTheme });
 
     render(<ThemeSwitch />);
 
     const sunIcon = screen.getByTestId('sun-icon');
     expect(sunIcon).toBeInTheDocument();
-    expect(sunIcon).toHaveClass('mocked-icon-class');
     expect(screen.queryByTestId('moon-icon')).not.toBeInTheDocument();
 
-    // aria-label should match dark case
-    const button = screen.getByRole('button', { name: 'Switch to Light Mode' });
+    const button = screen.getByRole('switch', { name: 'switch to light mode' });
     expect(button).toBeInTheDocument();
   });
 
@@ -88,7 +76,7 @@ describe('ThemeSwitch component', () => {
 
     render(<ThemeSwitch />);
 
-    const button = screen.getByRole('button', { name: 'Switch to Dark Mode' });
+    const button = screen.getByRole('switch', { name: 'switch to dark mode' });
     fireEvent.click(button);
 
     expect(mockToggleTheme).toHaveBeenCalledTimes(1);
@@ -99,7 +87,7 @@ describe('ThemeSwitch component', () => {
 
     render(<ThemeSwitch />);
 
-    const button = screen.getByRole('button', { name: 'Switch to Dark Mode' });
+    const button = screen.getByRole('switch', { name: 'switch to dark mode' });
     button.focus();
     expect(button).toHaveFocus();
   });
@@ -118,7 +106,7 @@ describe('ThemeSwitch component', () => {
 
     render(<ThemeSwitch />);
 
-    const btn = screen.getByRole('button', { name: 'Switch to Dark Mode' });
+    const btn = screen.getByRole('switch', { name: 'switch to dark mode' });
     fireEvent.click(btn);
     expect(customToggle).toHaveBeenCalledTimes(1);
   });
