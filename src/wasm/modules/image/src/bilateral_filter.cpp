@@ -147,7 +147,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
                         dB = cie_image[neighbor_idx + 2] - B0;
 
                         dist = std::sqrt(dL * dL + dA * dA + dB * dB);
-                        w_range = gaussian(dist, sigma_range); // this is fast
+                        w_range = gaussian(dist, sigma_range);
                         break;
                       }
                     }

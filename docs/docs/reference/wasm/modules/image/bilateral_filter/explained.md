@@ -47,7 +47,7 @@ where $ \sigma_s$ controls spatial smoothing and $\sigma_r$ controls edge sensit
 
 Our implementation uses a **naive sliding window** approach with **Look-Up Table (LUT) optimizations** to improve performance in WebAssembly.
 
-### 1. Precomputed Look-Up Tables
+### 1. Precomputed Look-Up Tables (RGB color space)
 
 Calculating `std::exp()` inside the inner loop is expensive. We precompute the two Gaussian functions:
 - **Spatial Weights**: A 2D grid of weights based on the kernel radius. Since the spatial distance between a neighbor and the center never changes, this is calculated once per filter application.
@@ -60,13 +60,31 @@ for (int i = 0; i <= MAX_RGB_DIST_SQ; ++i) {
 }
 ```
 
-### 2. The Loop
+### 2. On-the-fly Range weights (CIE-LAB color space)
+
+When deriving range weights in the CIELAB color space, the LUT approach does not work. Instead range weights are computed on the fly using the `gaussian` function.
+
+Since the RGB to CIELAB conversion is expensive, redundant computations are minimized by initially converting the full RGB image to CIELAB image.
+
+In the convolution step LAB distance is computed by reading those values from the CIELAB image buffer, and the gaussian is then evaluated.
+```
+dL = cie_image[neighbor_idx] - L0;
+dA = cie_image[neighbor_idx + 1] - A0;
+dB = cie_image[neighbor_idx + 2] - B0;
+
+dist = std::sqrt(dL * dL + dA * dA + dB * dB);
+w_range = gaussian(dist, sigma_range);
+```
+
+NOTE: `gaussian` itself is expensive to run. Future optimizations include polynomial approximations of `exp(-x^2)` via Taylor expansion or Horner's method.
+
+### 3. The Loop
 
 We iterate over every pixel `(y, x)` and then over every neighbor `(ky, kx)` within the kernel radius:
 
 1.  **Load Neighbor**: Get RGB values of the neighbor.
 2.  **Spatial Weight**: Look up precomputed $G_{\sigma_{spatial}}$.
-3.  **Range Weight**: Calculate squared color distance $\|C_p - C_q\|^2$ and look up precomputed $G_{\sigma_{range}}$.
+3.  **Range Weight**: Calculate squared color distance $\|C_p - C_q\|^2$ and look up precomputed $G_{\sigma_{range}}$ if using RGB, or compute on the fly if using CIELAB.
 4.  **Accumulate**: `pixel_acc += neighbor_rgb * (spatial_w * range_w)`.
 5.  **Normalize**: Divide by probability sum.
 
