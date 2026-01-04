@@ -1,4 +1,7 @@
 #include "cielab.h"
+#include <cmath>
+#include <algorithm>
+#include <array>
 
 // ====== Used in xyz_to_lab =======
 constexpr double DELTA{6.0 / 29.0};                   // 0.2068966
