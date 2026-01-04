@@ -7,9 +7,9 @@ sidebar_position: 2
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-import DockerHomepage  from './img/docker-desktop-homepage.jpg';
-import DockerSettings  from './img/docker-desktop-settings-button-location.jpg';
-import DockerWslSetup  from './img/docker-desktop-wsl-integration-setup.jpg';
+import DockerHomepage from './img/docker-desktop-homepage.jpg';
+import DockerSettings from './img/docker-desktop-settings-button-location.jpg';
+import DockerWslSetup from './img/docker-desktop-wsl-integration-setup.jpg';
 import DockerResources from './img/docker-desktop-resources-button-location.jpg';
 import DockerWslButton from './img/docker-desktop-wsl-integration-button-location.jpg';
 
@@ -33,7 +33,7 @@ Before you start installing anything, make sure you have the below installed.
 
 <Tabs groupId="installation-route" defaultValue="docker">
 <TabItem value="docker" label="Docker (Recommended)" default>
-#### Installing Docker
+### Installing Docker
 
 The section below will guide you through installing Docker on your operating system.
 
@@ -53,7 +53,7 @@ The section below will guide you through installing Docker on your operating sys
             wsl --install
             ```
             This will install Ubuntu by default. You can use other distributions if you prefer.
-            See [Microsoft's documentation](https://learn.microsoft.com/en-us/windows/wsl/install) to 
+            See [Microsoft's documentation](https://learn.microsoft.com/en-us/windows/wsl/install) to
             find out more about installing WSL.
           </TabItem>
           <TabItem value="git-bash" label="Git Bash">
@@ -121,42 +121,45 @@ The section below will guide you through installing Docker on your operating sys
     :::danger Docker not working?
     Make sure to keep Docker Desktop open while you're using Docker because it needs to be open to run containers.
     :::
+
   </TabItem>
 
   <TabItem value="macos" label="macOS">
 
-  ### Installing Docker on macOS
+### Installing Docker on macOS
 
-  1. Download and install **Docker Desktop** from [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop).
+1. Download and install **Docker Desktop** from [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop).
 
-  2. Open Docker Desktop and ensure it is running.
+2. Open Docker Desktop and ensure it is running.
 
-  3. Verify installation in Terminal:
-     ```bash
-     docker --version
-     docker compose version
-     ```
+3. Verify installation in Terminal:
+   ```bash
+   docker --version
+   docker compose version
+   ```
 
   </TabItem>
 
   <TabItem value="linux" label="Linux">
 
-  ### Installing Docker on Linux
+### Installing Docker on Linux
 
-  1. Install Docker and Docker Compose via your package manager. For Ubuntu/Debian:
-     ```bash
-     sudo apt update
-     sudo apt install -y docker.io docker-compose
-     sudo systemctl enable --now docker
-     sudo usermod -aG docker $USER
-     ```
-     > You may need to log out and back in for the group change to take effect.
+1. Install Docker and Docker Compose via your package manager. For Ubuntu/Debian:
 
-  2. Verify installation:
-     ```bash
-     docker --version
-     docker compose version
-     ```
+   ```bash
+   sudo apt update
+   sudo apt install -y docker.io docker-compose
+   sudo systemctl enable --now docker
+   sudo usermod -aG docker $USER
+   ```
+
+   > You may need to log out and back in for the group change to take effect.
+
+2. Verify installation:
+   ```bash
+   docker --version
+   docker compose version
+   ```
 
   </TabItem>
 
@@ -358,6 +361,7 @@ You can choose to only install the dependencies for one portion of the app, but 
         ```
       </TabItem>
     </Tabs>
+
   </TabItem>
   <TabItem value="documentation-site-only" label="Docs Site Only" default>
   <TabItem value="both" label="Both" default>
@@ -556,5 +560,6 @@ This section will help you run both the main application and the documentation s
 </Tabs>
 
 ### Further Information
+
 You may want to have a look at the [Project Scripts section](../../project-scripts/overview) now, but make sure that you understand and
 agree with Img2Num's [License](../../license) and [guidelines](../../category/guidelines) first.
