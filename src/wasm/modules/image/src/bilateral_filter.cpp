@@ -70,6 +70,27 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
     }
     // ========= RGB-only section end =========
 
+    // ========= CIELAB section start =========
+    // Compute full image RGB - CIELAB conversion
+    std::vector<double> cie_image(width * height * 4);
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            int center_idx = (y * width + x) * 4;
+            uint8_t r0 = image[center_idx];
+            uint8_t g0 = image[center_idx + 1];
+            uint8_t b0 = image[center_idx + 2];
+            uint8_t a0 = image[center_idx + 3];
+            double L0, A0, B0;
+            rgb_to_lab(r0, g0, b0, L0, A0, B0);
+
+            cie_image[center_idx]     = L0;
+            cie_image[center_idx + 1] = A0;
+            cie_image[center_idx + 2] = B0;
+            cie_image[center_idx + 3] = 0.0; // unused but keep for indexing purposes
+        }
+    }
+    // ========= CIELAB section end =========
+
     int h{static_cast<int>(height)};
     int w{static_cast<int>(width)};
     for (int y{0}; y < h; ++y) {
@@ -84,14 +105,15 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
             // ========= CIELAB-only section start =========
             double L0, A0, B0;
             if (color_space == COLOR_SPACE_OPTION_CIELAB) {
-                rgb_to_lab2(r0, g0, b0, L0, A0, B0);
-                // std::cout << "cielab0 done" << std::endl;
+                L0 = cie_image[center_idx];
+                A0 = cie_image[center_idx + 1];
+                B0 = cie_image[center_idx + 2];
             }
             // ========= CIELAB-only section end =========
 
             double r_acc{0.0}, g_acc{0.0}, b_acc{0.0}, weight_acc{0.0};
             double w_space, w_range;
-            double L, A, B, dist;
+            double dL, dA, dB, dist;
 
             for (int ky{-radius}; ky <= radius; ++ky) {
                 int ny{std::clamp(y + ky, 0, h - 1)};
@@ -117,9 +139,12 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
                           break;
                         }
                       case COLOR_SPACE_OPTION_CIELAB: {
-                        rgb_to_lab2(r, g, b, L, A, B);
-                        dist = std::sqrt((L-L0)*(L-L0) + (A-A0)*(A-A0) + (B-B0)*(B-B0));
-                        w_range = gaussian(dist, sigma_range);
+                        dL = cie_image[neighbor_idx] - L0;
+                        dA = cie_image[neighbor_idx + 1] - A0;
+                        dB = cie_image[neighbor_idx + 2] - B0;
+
+                        dist = std::sqrt(dL * dL + dA * dA + dB * dB);
+                        w_range = gaussian(dist, sigma_range); // this is fast
                         break;
                       }
                     }
