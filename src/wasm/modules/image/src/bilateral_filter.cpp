@@ -72,21 +72,25 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
 
     // ========= CIELAB section start =========
     // Compute full image RGB - CIELAB conversion
-    std::vector<double> cie_image(width * height * 4);
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            int center_idx = (y * width + x) * 4;
-            uint8_t r0 = image[center_idx];
-            uint8_t g0 = image[center_idx + 1];
-            uint8_t b0 = image[center_idx + 2];
-            uint8_t a0 = image[center_idx + 3];
-            double L0, A0, B0;
-            rgb_to_lab(r0, g0, b0, L0, A0, B0);
+    std::vector<double> cie_image;
+    if (color_space == COLOR_SPACE_OPTION_CIELAB) {
+        cie_image.resize(width * height * 4);
+        
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int center_idx = (y * width + x) * 4;
+                uint8_t r0 = image[center_idx];
+                uint8_t g0 = image[center_idx + 1];
+                uint8_t b0 = image[center_idx + 2];
+                uint8_t a0 = image[center_idx + 3];
+                double L0, A0, B0;
+                rgb_to_lab(r0, g0, b0, L0, A0, B0);
 
-            cie_image[center_idx]     = L0;
-            cie_image[center_idx + 1] = A0;
-            cie_image[center_idx + 2] = B0;
-            cie_image[center_idx + 3] = 0.0; // unused but keep for indexing purposes
+                cie_image[center_idx]     = L0;
+                cie_image[center_idx + 1] = A0;
+                cie_image[center_idx + 2] = B0;
+                cie_image[center_idx + 3] = 0.0; // unused but keep for indexing purposes
+            }
         }
     }
     // ========= CIELAB section end =========
