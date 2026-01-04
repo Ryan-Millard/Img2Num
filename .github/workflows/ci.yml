@@ -7,6 +7,31 @@ on:
     branches: [main]
 
 jobs:
+  lint:
+    name: Lint Code
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run format check
+        run: npm run format:check
+
+      - name: Run editorconfig-checker
+        run: npm run lint:style
   validate-scripts:
     runs-on: ubuntu-latest
     steps:
@@ -14,38 +39,30 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-
       # Node.js setup
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 22
-
       # Install dependencies
       - name: Install dependencies
         run: npm ci
-
       # Detect if scripts changed
       - name: Determine if scripts changed
         id: check_changes
         shell: bash
         run: |
           echo "Checking for changed scripts..."
-
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             BASE_SHA="${{ github.event.pull_request.base.sha }}"
           else
             BASE_SHA="${{ github.event.before }}"
           fi
-
           HEAD_SHA="${{ github.sha }}"
-
           # Ensure a valid common ancestor (handles force-pushes)
           BASE_SHA=$(git merge-base "$BASE_SHA" "$HEAD_SHA")
-
           files=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
           echo "Changed files: $files"
-
           match=false
           for file in $files; do
             if [[ "$file" == "package.json" || "$file" == "docs/package.json" ]]; then
@@ -58,9 +75,7 @@ jobs:
               break
             fi
           done
-
           echo "scripts_changed=$match" >> "$GITHUB_OUTPUT"
-
       # Run script validation if scripts changed
       - name: Run script validation
         id: validate
@@ -70,7 +85,6 @@ jobs:
           set -o pipefail
           npm run validate-scripts 2>&1 | tee validation.log
           echo "validation_exit_code=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
-
       # Comment on PR if validation fails
       - name: Comment on PR if validation fails
         if: steps.validate.outputs.validation_exit_code != '0' && github.event_name == 'pull_request'

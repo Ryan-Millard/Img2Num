@@ -47,7 +47,7 @@ npm test -- --watch ThemeSwitch.test.jsx
 
 ### 5. Edge cases (1 test)
 
-* Defaults to Moon icon when theme is undefined or falsy
+- Defaults to Moon icon when theme is undefined or falsy
 
 ## Mocking strategy
 
@@ -92,19 +92,19 @@ expect(screen.getByTestId('moon-icon')).toBeInTheDocument();
 
 ## Test utilities
 
-* **Vitest** - Test framework
-* **React Testing Library** - Component rendering & queries
-* **vi.fn() / vi.spyOn()** - Mocking
-* **fireEvent** - User interactions
+- **Vitest** - Test framework
+- **React Testing Library** - Component rendering & queries
+- **vi.fn() / vi.spyOn()** - Mocking
+- **fireEvent** - User interactions
 
 ## Coverage
 
-* Component rendering (light/dark themes)
-* User interactions (click, keyboard)
-* Edge cases (undefined/falsy theme)
-* Integration with hook
-* Accessibility (aria-labels, focus)
-* CSS class application
+- Component rendering (light/dark themes)
+- User interactions (click, keyboard)
+- Edge cases (undefined/falsy theme)
+- Integration with hook
+- Accessibility (aria-labels, focus)
+- CSS class application
 
 ## Best practices
 
@@ -116,5 +116,5 @@ expect(screen.getByTestId('moon-icon')).toBeInTheDocument();
 
 ## Related
 
-* [ThemeSwitch Component](../)
-* [useTheme Hook](../../../hooks/useTheme)
+- [ThemeSwitch Component](../)
+- [useTheme Hook](../../../hooks/useTheme)

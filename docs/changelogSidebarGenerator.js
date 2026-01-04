@@ -4,10 +4,7 @@
  *   1. By date (descending)
  *   2. By semver version (descending)
  */
-export async function changelogSidebarGenerator({
-  defaultSidebarItemsGenerator,
-  ...args
-}) {
+export async function changelogSidebarGenerator({ defaultSidebarItemsGenerator, ...args }) {
   const items = await defaultSidebarItemsGenerator(args);
 
   const isReleaseDoc = (item) =>
@@ -28,9 +25,7 @@ export async function changelogSidebarGenerator({
     const [dateStr, versionStr] = filename.replace(/\.md$/, '').split('_');
     const date = new Date(dateStr).getTime() || 0;
 
-    const [major = 0, minor = 0, patch = 0] = (versionStr || '0.0.0')
-      .split('.')
-      .map((n) => Number(n));
+    const [major = 0, minor = 0, patch = 0] = (versionStr || '0.0.0').split('.').map((n) => Number(n));
 
     return { date, major, minor, patch };
   };
@@ -45,9 +40,5 @@ export async function changelogSidebarGenerator({
     return B.patch - A.patch;
   });
 
-  return [
-    ...(indexItem ? [indexItem] : []),
-    ...sortedReleaseItems,
-    ...(mainChangelogItem ? [mainChangelogItem] : []),
-  ];
-};
+  return [...(indexItem ? [indexItem] : []), ...sortedReleaseItems, ...(mainChangelogItem ? [mainChangelogItem] : [])];
+}

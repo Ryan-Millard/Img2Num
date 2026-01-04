@@ -4,10 +4,7 @@ import styles from './About.module.css';
 
 const NewGitHubTabAnchor = ({ path, projName }) => (
   <Tooltip content={`Visit the ${projName} GitHub repository`}>
-    <a
-      href={`https://github.com/${path}`}
-      target="_blank"
-      rel="noopener noreferrer">
+    <a href={`https://github.com/${path}`} target="_blank" rel="noopener noreferrer">
       {projName}
     </a>
   </Tooltip>

@@ -15,4 +15,3 @@ export default function ColorSwatch({ color, size = 24 }) {
     />
   );
 }
-

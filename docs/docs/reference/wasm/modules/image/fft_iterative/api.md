@@ -21,11 +21,11 @@ As a result:
 - `iterative_fft` and `fft_copy` may **resize the input vector**
 - `iterative_fft_2d` and `iterative_fft_2d_copy` may **resize the buffer and change the effective width/height**
 
-If you require strict *same-size in / same-size out* behavior, ensure your input dimensions are already powers of two before calling these functions.
+If you require strict _same-size in / same-size out_ behavior, ensure your input dimensions are already powers of two before calling these functions.
 :::
 
 | Function                |                                                                                                                Signature | Purpose                                                                                |
-| ----------------------- | -----------------------------------------------------------------------------------------------------------------------: | --------------------------------------------------------------------------------       |
+| ----------------------- | -----------------------------------------------------------------------------------------------------------------------: | -------------------------------------------------------------------------------------- |
 | `is_power_of_two`       |                                                                                         `bool is_power_of_two(size_t n)` | Check if `n` is a power of two.                                                        |
 | `next_power_of_two`     |                                                                                     `size_t next_power_of_two(size_t n)` | Return the next power of two $$\ge n$$.                                                |
 | `bit_reverse_permute`   |                                                                           `void bit_reverse_permute(std::vector<cd> &a)` | In-place bit-reversal permutation (required for DIT iterative FFT).                    |
@@ -36,6 +36,7 @@ If you require strict *same-size in / same-size out* behavior, ensure your input
 | `iterative_fft_2d_copy` | `std::vector<cd> iterative_fft_2d_copy(const std::vector<cd> &input, size_t width, size_t height, bool inverse = false)` | Returns a new vector with the 2D FFT result.                                           |
 
 :::info Notes
+
 - Sign convention: forward uses `-2πi`, inverse uses `+2πi` and divides by `N`.
 - Implementation uses `std::polar` to create stage primitive roots.
-:::
+  :::

@@ -9,8 +9,16 @@ vi.mock('@hooks/useTheme');
 
 // Mock lucide icons (Sun / Moon)
 vi.mock('lucide-react', () => ({
-  Moon: ({ className }) => <span data-testid="moon-icon" className={className}>Moon Icon</span>,
-  Sun: ({ className }) => <span data-testid="sun-icon" className={className}>Sun Icon</span>,
+  Moon: ({ className }) => (
+    <span data-testid="moon-icon" className={className}>
+      Moon Icon
+    </span>
+  ),
+  Sun: ({ className }) => (
+    <span data-testid="sun-icon" className={className}>
+      Sun Icon
+    </span>
+  ),
 }));
 
 // ✅ Correct Tooltip mock: return module object with default export (and __esModule for ESM interop)
