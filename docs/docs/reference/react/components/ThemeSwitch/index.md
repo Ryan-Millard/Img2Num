@@ -48,14 +48,14 @@ ThemeSwitch delegates styling to `GlassSwitch`, which provides glass-morphism vi
 
 ThemeSwitch uses `GlassSwitch`, which implements accessible switch semantics:
 
-| Feature          | Implementation                                                           |
-| ---------------- | ------------------------------------------------------------------------- |
-| Role             | `role="switch"` with `aria-checked` reflecting current theme            |
-| ARIA label       | `aria-label="switch to dark mode"` or `"switch to light mode"`         |
-| Button type      | `type="button"` to avoid form submission                               |
-| Keyboard support | Tab to focus; Enter/Space toggles                                        |
+| Feature          | Implementation                                                                       |
+| ---------------- | ------------------------------------------------------------------------------------ |
+| Role             | `role="switch"` with `aria-checked` reflecting current theme                         |
+| ARIA label       | `aria-label="switch to dark mode"` or `"switch to light mode"`                       |
+| Button type      | `type="button"` to avoid form submission                                             |
+| Keyboard support | Tab to focus; Enter/Space toggles                                                    |
 | Focus indicator  | Visible focus ring via `:focus-visible` with 2px outline and box-shadow (WCAG 2.4.7) |
-| Icon semantics   | Icons are decorative; meaning conveyed through the aria-label            |
+| Icon semantics   | Icons are decorative; meaning conveyed through the aria-label                        |
 
 ## Examples
 
@@ -152,10 +152,10 @@ export default function ThemeSwitch() {
 
 ## Visual behavior
 
-| Current Theme | Icon Displayed | aria-label                         | Next Theme on Toggle |
-| ------------- | -------------- | ---------------------------------- | ------------------- |
-| Light         | 🌙 Moon        | "switch to dark mode"              | Dark                |
-| Dark          | ☀️ Sun         | "switch to light mode"             | Light               |
+| Current Theme | Icon Displayed | aria-label             | Next Theme on Toggle |
+| ------------- | -------------- | ---------------------- | -------------------- |
+| Light         | 🌙 Moon        | "switch to dark mode"  | Dark                 |
+| Dark          | ☀️ Sun         | "switch to light mode" | Light                |
 
 ## Testing
 

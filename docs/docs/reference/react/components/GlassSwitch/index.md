@@ -18,6 +18,7 @@ description: A customizable glass-morphism toggle switch component with accessib
 
 :::tip Best Use Cases
 Perfect for:
+
 - **Theme toggles** - Light/dark mode switching
 - **Feature flags** - Enable/disable features
 - **Settings switches** - User preferences and configurations
@@ -30,11 +31,11 @@ See the [Examples](#examples) section for practical implementations.
 
 This component is part of the Img2Num component library. It depends on:
 
-| Dependency | Purpose |
-|------------|---------|
-| `@components/Tooltip` | Displays helpful tooltips on hover |
-| `prop-types` | Runtime prop type validation |
-| `lucide-react` | (Optional) For icon support in thumb content |
+| Dependency            | Purpose                                      |
+| --------------------- | -------------------------------------------- |
+| `@components/Tooltip` | Displays helpful tooltips on hover           |
+| `prop-types`          | Runtime prop type validation                 |
+| `lucide-react`        | (Optional) For icon support in thumb content |
 
 ## Quick Start
 
@@ -53,11 +54,7 @@ export default function Settings() {
     <div>
       <label>
         Enable notifications
-        <GlassSwitch
-          isOn={isEnabled}
-          onChange={() => setIsEnabled(!isEnabled)}
-          ariaLabel="Enable notifications"
-        />
+        <GlassSwitch isOn={isEnabled} onChange={() => setIsEnabled(!isEnabled)} ariaLabel="Enable notifications" />
       </label>
     </div>
   );
@@ -91,22 +88,24 @@ export default function NotificationToggle() {
 
 ### Props
 
-| Prop           | Type          | Required | Default    | Description                                          |
-| -------------- | ------------- | -------- | ---------- | ---------------------------------------------------- |
-| `isOn`         | `boolean`     | ✅ Yes   | -          | Controls the switch state (true = on, false = off)   |
-| `onChange`     | `function`    | ✅ Yes   | -          | Callback fired when the switch is toggled            |
-| `ariaLabel`    | `string`      | ✅ Yes   | -          | Accessible label for screen readers and tooltips     |
-| `thumbContent` | `React.node`  | No       | fallback   | Custom content inside the thumb (icons, text, etc.) |
-| `disabled`     | `boolean`     | No       | `false`    | Disables the switch and prevents interaction         |
+| Prop           | Type         | Required | Default  | Description                                         |
+| -------------- | ------------ | -------- | -------- | --------------------------------------------------- |
+| `isOn`         | `boolean`    | ✅ Yes   | -        | Controls the switch state (true = on, false = off)  |
+| `onChange`     | `function`   | ✅ Yes   | -        | Callback fired when the switch is toggled           |
+| `ariaLabel`    | `string`     | ✅ Yes   | -        | Accessible label for screen readers and tooltips    |
+| `thumbContent` | `React.node` | No       | fallback | Custom content inside the thumb (icons, text, etc.) |
+| `disabled`     | `boolean`    | No       | `false`  | Disables the switch and prevents interaction        |
 
 #### Prop Usage Guide
 
 **`isOn` (required)** - Boolean state controller
+
 ```jsx
 const [isOn, setIsOn] = useState(false);
 ```
 
 **`onChange` (required)** - Toggle handler
+
 ```jsx
 onChange={() => setIsOn(!isOn)}
 // or with custom logic
@@ -114,12 +113,14 @@ onChange={handleToggle}
 ```
 
 **`ariaLabel` (required)** - Accessibility label (also shown in tooltip)
+
 ```jsx
-ariaLabel="Toggle dark mode"
-ariaLabel="Enable push notifications"
+ariaLabel = 'Toggle dark mode';
+ariaLabel = 'Enable push notifications';
 ```
 
 **`thumbContent` (optional)** - Custom thumb visuals
+
 ```jsx
 // Icons
 thumbContent={<Moon size={16} />}
@@ -134,6 +135,7 @@ thumbContent={isDark ? <Moon /> : <Sun />}
 ```
 
 **`disabled` (optional)** - Prevent interaction
+
 ```jsx
 disabled={!isPremiumUser}
 disabled={isLoading}
@@ -143,18 +145,20 @@ disabled={isLoading}
 
 The component uses CSS modules for scoped styling:
 
-| Class                    | Applied To        | Purpose                                           |
-| ------------------------ | ----------------- | ------------------------------------------------- |
-| `switch`                 | Button element    | Main switch container and glass effect            |
-| `thumb`                  | Thumb span        | Sliding thumb element                             |
-| `checked`                | Button (when on)  | Added when `isOn={true}` to trigger animation     |
-| `fallbackThumbContentOn` | Thumb (default)   | On-state style (green tone) when no thumbContent  |
-| `fallbackThumbContentOff`| Thumb (default)   | Off-state style (gray tone) when no thumbContent  |
+| Class                     | Applied To       | Purpose                                          |
+| ------------------------- | ---------------- | ------------------------------------------------ |
+| `switch`                  | Button element   | Main switch container and glass effect           |
+| `thumb`                   | Thumb span       | Sliding thumb element                            |
+| `checked`                 | Button (when on) | Added when `isOn={true}` to trigger animation    |
+| `fallbackThumbContentOn`  | Thumb (default)  | On-state style (green tone) when no thumbContent |
+| `fallbackThumbContentOff` | Thumb (default)  | Off-state style (gray tone) when no thumbContent |
 
 **Global Classes:**
+
 - `.glass` - Provides glass-morphism effects (backdrop blur, transparency)
 
 **CSS Custom Properties:**
+
 - `--size: 32px` - Controls switch dimensions (width = 2× size)
 
 :::info Customization
@@ -166,20 +170,24 @@ To override styles, target these classes in your own CSS or use inline styles on
 GlassSwitch follows WCAG guidelines for accessible toggle switches:
 
 ### Semantic HTML
+
 - ✅ Uses `role="switch"` for proper assistive technology support
 - ✅ Renders as `<button>` with `type="button"`
 
 ### ARIA Attributes
+
 - ✅ `aria-checked="true"/"false"` - Announces current state
 - ✅ `aria-label` - Provides context to screen readers
 - ✅ `disabled` - Properly prevents interaction and indicates unavailability
 
 ### Keyboard Navigation
+
 - ✅ **Tab** - Focus the switch
 - ✅ **Enter** or **Space** - Toggle the switch
 - ✅ Visual focus indicators included
 
 ### Additional Features
+
 - ✅ Tooltip integration for visual context
 - ✅ Clear visual states (on/off/disabled)
 - ✅ Sufficient color contrast for visibility
@@ -187,6 +195,7 @@ GlassSwitch follows WCAG guidelines for accessible toggle switches:
 ## Animations & Interactions
 
 ### Transitions
+
 ```css
 /* Thumb slide animation */
 transition: transform 0.3s ease;
@@ -196,6 +205,7 @@ transform: translateX(var(--size)); /* Slides right */
 ```
 
 ### Visual Feedback
+
 - 🎯 Smooth thumb sliding (300ms ease)
 - 🎯 Glass effect on background
 - 🎯 Hover states (inherited from `.glass`)
@@ -250,7 +260,7 @@ export default function SettingsPanel() {
           thumbContent={<Bell size={14} />}
         />
       </div>
-      
+
       <div className="setting-row">
         <label>Email Alerts</label>
         <GlassSwitch
@@ -260,7 +270,7 @@ export default function SettingsPanel() {
           thumbContent={<Mail size={14} />}
         />
       </div>
-      
+
       <div className="setting-row">
         <label>Two-Factor Authentication</label>
         <GlassSwitch
@@ -302,7 +312,7 @@ export default function PremiumFeature({ isPremium }) {
 
 ## Testing
 
-The component has **comprehensive test coverage** with 11 passing tests. 
+The component has **comprehensive test coverage** with 11 passing tests.
 
 ### Running Tests
 
@@ -320,6 +330,7 @@ npm test -- --watch GlassSwitch.test.jsx
 ### Test Coverage
 
 ✅ **11 tests** covering:
+
 - Basic rendering and role attributes
 - Checked/unchecked state management
 - User interactions (click, keyboard)

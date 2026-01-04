@@ -27,38 +27,38 @@ npm test -- --watch GlassSwitch.test.jsx
 
 ### 1. Basic rendering (1 test)
 
-* Renders a switch button with the correct role
+- Renders a switch button with the correct role
 
 ### 2. Checked state management (2 tests)
 
-* Sets `aria-checked` to "true" when `isOn={true}`
-* Sets `aria-checked` to "false" when `isOn={false}`
+- Sets `aria-checked` to "true" when `isOn={true}`
+- Sets `aria-checked` to "false" when `isOn={false}`
 
 ### 3. User interaction (2 tests)
 
-* Calls `onChange` callback when clicked
-* Is keyboard accessible (focusable and responds to Enter key)
+- Calls `onChange` callback when clicked
+- Is keyboard accessible (focusable and responds to Enter key)
 
 ### 4. CSS class application (2 tests)
 
-* Applies correct CSS classes when checked (includes `checked` class)
-* Does not apply checked class when unchecked
+- Applies correct CSS classes when checked (includes `checked` class)
+- Does not apply checked class when unchecked
 
 ### 5. Thumb content (2 tests)
 
-* Renders custom `thumbContent` when provided
-* Renders fallback thumb content when `thumbContent` is not provided
+- Renders custom `thumbContent` when provided
+- Renders fallback thumb content when `thumbContent` is not provided
 
 ### 6. Component props (2 tests)
 
-* Can be disabled via `disabled` prop
-* Sets correct `aria-label` for accessibility
+- Can be disabled via `disabled` prop
+- Sets correct `aria-label` for accessibility
 
 ## Mocking strategy
 
-* **Tooltip component**: Mocked as a simple wrapper that renders children
-* **CSS modules**: Mocked to verify class name application and styling logic
-* **userEvent**: Used from `@testing-library/user-event` for realistic user interactions
+- **Tooltip component**: Mocked as a simple wrapper that renders children
+- **CSS modules**: Mocked to verify class name application and styling logic
+- **userEvent**: Used from `@testing-library/user-event` for realistic user interactions
 
 ## Example test snippets
 
@@ -97,7 +97,7 @@ it('is keyboard accessible', async () => {
 
   button.focus();
   expect(button).toHaveFocus();
-  
+
   await user.keyboard('{Enter}');
 
   expect(onChange).toHaveBeenCalled();
@@ -110,7 +110,7 @@ it('is keyboard accessible', async () => {
 it('applies correct CSS classes when checked', () => {
   render(<GlassSwitch isOn={true} onChange={() => {}} ariaLabel="Toggle" />);
   const switchButton = screen.getByRole('switch');
-  
+
   expect(switchButton).toHaveClass('mocked-switch-class');
   expect(switchButton).toHaveClass('mocked-checked-class');
 });
@@ -122,7 +122,7 @@ it('applies correct CSS classes when checked', () => {
 it('renders with thumbContent when provided', () => {
   const thumbContent = <span data-testid="custom-thumb">Custom</span>;
   render(<GlassSwitch isOn={false} onChange={() => {}} ariaLabel="Toggle" thumbContent={thumbContent} />);
-  
+
   expect(screen.getByTestId('custom-thumb')).toBeInTheDocument();
 });
 ```
@@ -134,7 +134,7 @@ it('can be disabled', () => {
   const onChange = vi.fn();
   render(<GlassSwitch isOn={false} onChange={onChange} ariaLabel="Toggle" disabled={true} />);
   const switchButton = screen.getByRole('switch');
-  
+
   expect(switchButton).toBeDisabled();
 });
 ```
@@ -144,16 +144,16 @@ it('can be disabled', () => {
 ```javascript
 it('sets correct aria-label', () => {
   render(<GlassSwitch isOn={false} onChange={() => {}} ariaLabel="My Custom Label" />);
-  
+
   expect(screen.getByLabelText('My Custom Label')).toBeInTheDocument();
 });
 ```
 
 ## Test utilities
 
-* **Vitest** - Test framework with mocking capabilities
-* **@testing-library/react** - Component rendering and querying
-* **@testing-library/user-event** - User interaction simulation
+- **Vitest** - Test framework with mocking capabilities
+- **@testing-library/react** - Component rendering and querying
+- **@testing-library/user-event** - User interaction simulation
 
 ## Test coverage areas
 
@@ -167,5 +167,5 @@ The test suite ensures:
 
 ## Related documentation
 
-* [GlassSwitch Component Overview](./index.md)
-* [Component Testing Guidelines](../../../guidelines/testing.md)
+- [GlassSwitch Component Overview](./index.md)
+- [Component Testing Guidelines](../../../guidelines/testing.md)

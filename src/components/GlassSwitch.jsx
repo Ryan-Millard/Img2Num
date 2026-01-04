@@ -13,11 +13,8 @@ const GlassSwitch = ({ onChange, isOn, ariaLabel, thumbContent, disabled = false
         aria-checked={isOn ? 'true' : 'false'}
         className={`glass ${styles.switch} ${isOn ? styles.checked : ''}`}
         aria-label={ariaLabel}
-        disabled={disabled}
-      >
-        <span className={`glass ${styles.thumb} ${!thumbContent ? fallbackContent : ''}`}>
-          {thumbContent}
-        </span>
+        disabled={disabled}>
+        <span className={`glass ${styles.thumb} ${!thumbContent ? fallbackContent : ''}`}>{thumbContent}</span>
       </button>
     </Tooltip>
   );

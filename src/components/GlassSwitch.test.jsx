@@ -55,7 +55,7 @@ describe('GlassSwitch', () => {
 
     button.focus();
     expect(button).toHaveFocus();
-    
+
     await user.keyboard('{Enter}');
 
     expect(onChange).toHaveBeenCalled();
@@ -64,7 +64,7 @@ describe('GlassSwitch', () => {
   it('applies correct CSS classes when checked', () => {
     render(<GlassSwitch isOn={true} onChange={() => {}} ariaLabel="Toggle" />);
     const switchButton = screen.getByRole('switch');
-    
+
     expect(switchButton).toHaveClass('mocked-switch-class');
     expect(switchButton).toHaveClass('mocked-checked-class');
   });
@@ -72,7 +72,7 @@ describe('GlassSwitch', () => {
   it('does not apply checked class when unchecked', () => {
     render(<GlassSwitch isOn={false} onChange={() => {}} ariaLabel="Toggle" />);
     const switchButton = screen.getByRole('switch');
-    
+
     expect(switchButton).toHaveClass('mocked-switch-class');
     expect(switchButton).not.toHaveClass('mocked-checked-class');
   });
@@ -80,7 +80,7 @@ describe('GlassSwitch', () => {
   it('renders with thumbContent when provided', () => {
     const thumbContent = <span data-testid="custom-thumb">Custom</span>;
     render(<GlassSwitch isOn={false} onChange={() => {}} ariaLabel="Toggle" thumbContent={thumbContent} />);
-    
+
     expect(screen.getByTestId('custom-thumb')).toBeInTheDocument();
   });
 
@@ -104,13 +104,13 @@ describe('GlassSwitch', () => {
     const onChange = vi.fn();
     render(<GlassSwitch isOn={false} onChange={onChange} ariaLabel="Toggle" disabled={true} />);
     const switchButton = screen.getByRole('switch');
-    
+
     expect(switchButton).toBeDisabled();
   });
 
   it('sets correct aria-label', () => {
     render(<GlassSwitch isOn={false} onChange={() => {}} ariaLabel="My Custom Label" />);
-    
+
     expect(screen.getByLabelText('My Custom Label')).toBeInTheDocument();
   });
 });

@@ -2,7 +2,6 @@
 title: ThemeSwitch Tests
 ---
 
-
 The ThemeSwitch component has 7 tests covering rendering, icon display, theme toggling, hook integration, and edge cases.
 
 ## Test file location
@@ -28,22 +27,22 @@ npm test -- --watch ThemeSwitch.test.jsx
 
 ### 1. Rendering & accessibility (2 tests)
 
-* Renders a switch with the correct aria-label based on the theme (light → "switch to dark mode", dark → "switch to light mode")
-* Uses `type="button"` and `role="switch"` with proper `aria-checked`
+- Renders a switch with the correct aria-label based on the theme (light → "switch to dark mode", dark → "switch to light mode")
+- Uses `type="button"` and `role="switch"` with proper `aria-checked`
 
 ### 2. Icon display based on theme (2 tests)
 
-* Shows Moon icon for light theme
-* Shows Sun icon for dark theme
+- Shows Moon icon for light theme
+- Shows Sun icon for dark theme
 
 ### 3. Theme toggling functionality (2 tests)
 
-* Calls `toggleTheme` when clicked
-* Is keyboard accessible (focusable)
+- Calls `toggleTheme` when clicked
+- Is keyboard accessible (focusable)
 
 ### 4. Integration with useTheme hook (1 test)
 
-* Uses the `toggleTheme` function provided by the hook
+- Uses the `toggleTheme` function provided by the hook
 
 ### 5. Edge cases (1 test)
 
@@ -51,8 +50,8 @@ npm test -- --watch ThemeSwitch.test.jsx
 
 ## Mocking strategy
 
-* **useTheme hook**: mocked with `vi.spyOn` to control theme and toggle function
-* **Lucide icons**: mocked with test spans for Moon/Sun icons (for easy querying)
+- **useTheme hook**: mocked with `vi.spyOn` to control theme and toggle function
+- **Lucide icons**: mocked with test spans for Moon/Sun icons (for easy querying)
 
 ## Example test snippets
 

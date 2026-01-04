@@ -1,5 +1,5 @@
 .switch {
-  --size:30px;
+  --size: 30px;
   display: flex;
   align-items: center;
   width: calc(var(--size) * 2);
@@ -8,7 +8,7 @@
   border-radius: 9999px;
   position: relative;
   cursor: pointer;
-  margin-right:15px;
+  margin-right: 15px;
 }
 
 /* WCAG 2.4.7 Compliant Focus Indicator */
@@ -32,7 +32,7 @@
 
 .thumb {
   position: absolute;
-  left:0;
+  left: 0;
   bottom: 1;
   width: calc(var(--size) - 4px);
   height: calc(var(--size) - 4px);
@@ -45,10 +45,10 @@
 .checked .thumb {
   transform: translateX(var(--size));
 }
-.fallbackThumbContentOff{
+.fallbackThumbContentOff {
   background-color: rgb(110, 110, 110);
 }
 
-.fallbackThumbContentOn{
+.fallbackThumbContentOn {
   background-color: var(--color-success);
 }
