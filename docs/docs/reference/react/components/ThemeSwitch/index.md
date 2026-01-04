@@ -4,15 +4,16 @@ title: ThemeSwitch
 
 **What this component provides:**
 
-- A toggle button to switch between light and dark themes
-- Visual feedback with Moon/Sun icons
-- Accessibility support with proper ARIA labels
+- A theme toggle built on `GlassSwitch`
+- Visual feedback with Moon/Sun icons via `lucide-react`
+- Accessibility-friendly `role="switch"` with clear aria-labels
 - Automatic theme persistence via the `useTheme` hook
 
 ## Dependencies
 
 - [`lucide-react`](https://lucide.dev/) - For Moon and Sun icons
 - `@hooks/useTheme` - Custom hook for theme management
+- `GlassSwitch` - Shared switch component (handles role/aria-checked and styles)
 
 ## Basic usage
 
@@ -29,11 +30,11 @@ export default function Navigation() {
 }
 ```
 
-The component renders a button that:
+The component renders a `GlassSwitch` that:
 
-- Displays a **Moon icon** in light mode (clicking switches to dark)
-- Displays a **Sun icon** in dark mode (clicking switches to light)
-- Persists the user's theme preference
+- Shows a **Moon icon** when the current theme is light (aria-label: "switch to dark mode")
+- Shows a **Sun icon** when the current theme is dark (aria-label: "switch to light mode")
+- Persists the user's theme preference via `useTheme`
 
 ## Props
 
@@ -41,60 +42,20 @@ This component accepts no props. It's a self-contained theme toggle that manages
 
 ## Styling
 
-The component uses CSS modules with two classes:
-
-| Class         | Purpose                                  |
-| ------------- | ---------------------------------------- |
-| `themeButton` | Applied to the `<button>` element        |
-| `icon`        | Applied to the icon (Moon or Sun) inside |
-
-### Custom styling
-
-To customize the appearance, import and override the CSS module:
-
-```css title="MyCustomStyles.module.css"
-.customThemeButton {
-  background: transparent;
-  border: 2px solid var(--color-primary);
-  border-radius: var(--radius-md);
-  padding: var(--spacing-sm);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.customThemeButton:hover {
-  background: var(--color-primary);
-  color: var(--color-bg);
-}
-
-.customIcon {
-  width: 20px;
-  height: 20px;
-}
-```
-
-```jsx
-import styles from './MyCustomStyles.module.css';
-
-// Note: You'll need to modify the component or wrap it
-// to use custom styles, as it's currently self-contained
-```
-
-:::tip
-Since ThemeSwitch doesn't accept className props, consider wrapping it in a container with your custom styles or creating a variant of the component for project-specific styling.
-:::
+ThemeSwitch delegates styling to `GlassSwitch`, which provides glass-morphism visuals, focus states, and thumb animations. To customize appearance, wrap ThemeSwitch in your own container and style the wrapper or fork `GlassSwitch` for deeper changes.
 
 ## Accessibility
 
-The component follows accessibility best practices:
+ThemeSwitch uses `GlassSwitch`, which implements accessible switch semantics:
 
-| Feature          | Implementation                                            |
-| ---------------- | --------------------------------------------------------- |
-| Button type      | `type="button"` to prevent form submission                |
-| ARIA label       | `aria-label="Toggle Dark Mode"` for screen readers        |
-| Keyboard support | Native button keyboard support (Enter, Space)             |
-| Focus indicator  | Browser default focus outline (can be styled with CSS)    |
-| Icon semantics   | Icons are decorative; meaning conveyed through aria-label |
+| Feature          | Implementation                                                                       |
+| ---------------- | ------------------------------------------------------------------------------------ |
+| Role             | `role="switch"` with `aria-checked` reflecting current theme                         |
+| ARIA label       | `aria-label="switch to dark mode"` or `"switch to light mode"`                       |
+| Button type      | `type="button"` to avoid form submission                                             |
+| Keyboard support | Tab to focus; Enter/Space toggles                                                    |
+| Focus indicator  | Visible focus ring via `:focus-visible` with 2px outline and box-shadow (WCAG 2.4.7) |
+| Icon semantics   | Icons are decorative; meaning conveyed through the aria-label                        |
 
 ## Examples
 
@@ -159,8 +120,8 @@ export default function ThemeControl() {
 The component:
 
 1. Calls `useTheme()` to get the current theme and toggle function
-2. Renders a button with an onClick handler that calls `toggleTheme()`
-3. Conditionally displays a Sun icon (dark mode) or Moon icon (light mode)
+2. Renders a `<button>` element with `role="switch"` and an `onChange` handler that calls `toggleTheme()`
+3. Conditionally displays a Sun icon (dark mode) or Moon icon (light mode) based on current theme
 4. The `useTheme` hook handles:
    - Reading the initial theme from localStorage or system preferences
    - Applying theme classes to `document.documentElement`
@@ -170,26 +131,31 @@ The component:
 
 ```jsx title="ThemeSwitch.jsx"
 import { Moon, Sun } from 'lucide-react';
+import GlassSwitch from './GlassSwitch';
 import { useTheme } from '@hooks/useTheme';
-import styles from './ThemeSwitch.module.css';
 
+// Theme toggle built on top of GlassSwitch
 export default function ThemeSwitch() {
   const { theme, toggleTheme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
-    <button aria-label="Toggle Dark Mode" type="button" className={styles.themeButton} onClick={toggleTheme}>
-      {theme === 'dark' ? <Sun className={styles.icon} /> : <Moon className={styles.icon} />}
-    </button>
+    <GlassSwitch
+      isOn={isDark}
+      onChange={toggleTheme}
+      thumbContent={isDark ? <Sun /> : <Moon />}
+      ariaLabel={`switch to ${isDark ? 'light' : 'dark'} mode`}
+    />
   );
 }
 ```
 
 ## Visual behavior
 
-| Current Theme | Icon Displayed | Next Theme on Click |
-| ------------- | -------------- | ------------------- |
-| Light         | 🌙 Moon        | Dark                |
-| Dark          | ☀️ Sun         | Light               |
+| Current Theme | Icon Displayed | aria-label             | Next Theme on Toggle |
+| ------------- | -------------- | ---------------------- | -------------------- |
+| Light         | 🌙 Moon        | "switch to dark mode"  | Dark                 |
+| Dark          | ☀️ Sun         | "switch to light mode" | Light                |
 
 ## Testing
 

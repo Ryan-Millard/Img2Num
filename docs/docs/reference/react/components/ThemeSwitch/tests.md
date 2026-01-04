@@ -2,7 +2,7 @@
 title: ThemeSwitch Tests
 ---
 
-The ThemeSwitch component has 7 updated tests covering rendering, icon display, theme toggling, hook integration, and edge cases.
+The ThemeSwitch component has 7 tests covering rendering, icon display, theme toggling, hook integration, and edge cases.
 
 ## Test file location
 
@@ -25,25 +25,24 @@ npm test -- --watch ThemeSwitch.test.jsx
 
 ## Test organization
 
-### 1. Rendering (2 tests)
+### 1. Rendering & accessibility (2 tests)
 
-- Renders a button with the correct aria-label based on the theme
-- Button has type="button" attribute and CSS class `themeButton`
+- Renders a switch with the correct aria-label based on the theme (light → "switch to dark mode", dark → "switch to light mode")
+- Uses `type="button"` and `role="switch"` with proper `aria-checked`
 
 ### 2. Icon display based on theme (2 tests)
 
 - Shows Moon icon for light theme
 - Shows Sun icon for dark theme
-- Applies `icon` CSS class correctly
 
 ### 3. Theme toggling functionality (2 tests)
 
-- Calls `toggleTheme` when button is clicked
+- Calls `toggleTheme` when clicked
 - Is keyboard accessible (focusable)
 
 ### 4. Integration with useTheme hook (1 test)
 
-- Uses `toggleTheme` function from hook
+- Uses the `toggleTheme` function provided by the hook
 
 ### 5. Edge cases (1 test)
 
@@ -52,21 +51,18 @@ npm test -- --watch ThemeSwitch.test.jsx
 ## Mocking strategy
 
 - **useTheme hook**: mocked with `vi.spyOn` to control theme and toggle function
-- **CSS modules**: mocked to check `className` usage
-- **Lucide icons**: mocked with test spans for Moon/Sun icons
-- **Tooltip**: mocked as a simple wrapper component
+- **Lucide icons**: mocked with test spans for Moon/Sun icons (for easy querying)
 
 ## Example test snippets
 
-### Rendering button with light theme
+### Rendering switch with light theme
 
 ```javascript
 vi.spyOn(useThemeModule, 'useTheme').mockReturnValue({ theme: 'light', toggleTheme: mockToggleTheme });
 render(<ThemeSwitch />);
-const button = screen.getByRole('button', { name: 'Switch to Dark Mode' });
+const button = screen.getByRole('switch', { name: 'switch to dark mode' });
 expect(button).toBeInTheDocument();
 expect(button).toHaveAttribute('type', 'button');
-expect(button).toHaveClass('mocked-theme-button-class');
 ```
 
 ### Testing icon display
@@ -74,14 +70,13 @@ expect(button).toHaveClass('mocked-theme-button-class');
 ```javascript
 const moonIcon = screen.getByTestId('moon-icon');
 expect(moonIcon).toBeInTheDocument();
-expect(moonIcon).toHaveClass('mocked-icon-class');
 expect(screen.queryByTestId('sun-icon')).not.toBeInTheDocument();
 ```
 
 ### Testing toggleTheme
 
 ```javascript
-const button = screen.getByRole('button', { name: 'Switch to Dark Mode' });
+const button = screen.getByRole('switch', { name: 'switch to dark mode' });
 fireEvent.click(button);
 expect(mockToggleTheme).toHaveBeenCalledTimes(1);
 ```
