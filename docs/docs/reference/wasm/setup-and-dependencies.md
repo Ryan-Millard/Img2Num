@@ -115,6 +115,7 @@ The repo ships npm scripts that use a cross-platform Node.js build script with C
 ```
 
 The build script:
+
 1. Verifies Emscripten is installed
 2. Runs `emcmake cmake` to configure the build
 3. Runs `cmake --build` to compile all WASM modules

@@ -16,6 +16,7 @@ We are actively looking for contributors to help document this component and its
 https://github.com/Ryan-Millard/Img2Num/issues/178
 
 That issue outlines exactly what is needed, including:
+
 - Component overview
 - Usage examples
 - Props reference

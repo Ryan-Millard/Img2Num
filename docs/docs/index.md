@@ -36,7 +36,8 @@ For issues or contributions, visit our
 If you spot something wrong in the documentation or elsewhere, please help the community by opening an issue for it!
 
 Issue links:
+
 - [Bug Report](https://github.com/Ryan-Millard/Img2Num/issues/new?template=bug_report.yml)
 - [Refactor / Code Quality Improvement](https://github.com/Ryan-Millard/Img2Num/issues/new?template=refactor.yml)
 - [Blank Issue](https://github.com/Ryan-Millard/Img2Num/issues/new)
-:::
+  :::

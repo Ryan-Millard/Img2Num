@@ -7,13 +7,14 @@ sidebar_position: 5
 To keep issues clear, actionable, and easy to triage, we provide templates for contributors. Always use the appropriate template when creating a new issue.
 
 ### Templates
-| Template                                 | Description                                                                                             | Labels |
-|------------------------------------------|---------------------------------------------------------------------------------------------------------|--------|
-| **Bug Report**                            | Report a bug in the code or functionality. Fill out all fields to help maintainers reproduce the issue. | bug |
-| **New Feature**                           | Request a new feature or enhancement. Provide clear motivation and expected behavior.                   | feature |
-| **Good First Issue**                      | Labelled issues ideal for new contributors. Great starting point to get familiar with the project.      | good first issue |
-| **Refactor or Code Quality Improvement**  | Request or suggest refactoring of existing code for maintainability or performance.                     | refactor |
-| **Blank Issue**                           | Use when the other templates don't fit your issue's description (try not to use this one).              | misc |
+
+| Template                                 | Description                                                                                             | Labels           |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------- | ---------------- |
+| **Bug Report**                           | Report a bug in the code or functionality. Fill out all fields to help maintainers reproduce the issue. | bug              |
+| **New Feature**                          | Request a new feature or enhancement. Provide clear motivation and expected behavior.                   | feature          |
+| **Good First Issue**                     | Labelled issues ideal for new contributors. Great starting point to get familiar with the project.      | good first issue |
+| **Refactor or Code Quality Improvement** | Request or suggest refactoring of existing code for maintainability or performance.                     | refactor         |
+| **Blank Issue**                          | Use when the other templates don't fit your issue's description (try not to use this one).              | misc             |
 
 ### Guidelines
 

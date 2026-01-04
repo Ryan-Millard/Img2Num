@@ -107,7 +107,7 @@ function safeRemoveDir(dir) {
     if (error.message) {
       console.error(`    Message: ${error.message}`);
     }
-    console.log("You may need to forcefully remove it.");
+    console.log('You may need to forcefully remove it.');
     return false;
   }
 }
@@ -206,12 +206,7 @@ function build() {
   const buildType = isDebug ? 'Debug' : 'Release';
   const emcmake = isWindows ? 'emcmake.bat' : 'emcmake';
 
-  run(emcmake, [
-    'cmake',
-    '-S', WASM_DIR,
-    '-B', BUILD_DIR,
-    `-DCMAKE_BUILD_TYPE=${buildType}`,
-  ]);
+  run(emcmake, ['cmake', '-S', WASM_DIR, '-B', BUILD_DIR, `-DCMAKE_BUILD_TYPE=${buildType}`]);
 
   // Build
   run('cmake', ['--build', BUILD_DIR, '--parallel', '--config', buildType]);

@@ -1,6 +1,6 @@
-import readline from "readline";
-import fuzzy from "fuzzy";
-import { Colors, colorText } from "./colors.js";
+import readline from 'readline';
+import fuzzy from 'fuzzy';
+import { Colors, colorText } from './colors.js';
 
 /**
  * Start an interactive fuzzy-search CLI for the provided script items.
@@ -36,7 +36,7 @@ export function runFuzzyCli({ items, basicItems, title, initialSearch = [] }) {
 
   // Run initial search terms if provided
   if (initialSearch.length > 0) {
-    initialSearch.forEach(term => runSearch(term, items));
+    initialSearch.forEach((term) => runSearch(term, items));
   }
 
   startInteractive(items, initialSearch.length > 0);
@@ -44,7 +44,7 @@ export function runFuzzyCli({ items, basicItems, title, initialSearch = [] }) {
 
 const HEADER_LINE_WIDTH = 80;
 const HEADER_INSTRUCTIONS = "Type 'a' to list all, 'q' to quit.";
-const HEADER_LINE = colorText("─".repeat(HEADER_LINE_WIDTH), Colors.BLUE);
+const HEADER_LINE = colorText('─'.repeat(HEADER_LINE_WIDTH), Colors.BLUE);
 /**
  * Prints a styled header block containing the provided title and header instructions.
  * @param {string} title - The header title displayed between decorative horizontal lines.
@@ -63,11 +63,11 @@ function printHeader(title) {
  * @param {string[]} basicItems - Ordered list of script names to include in the basic section.
  */
 function printBasics(items, basicItems) {
-  console.log("\nBasic scripts:");
+  console.log('\nBasic scripts:');
   for (const name of basicItems) {
     if (items[name]) printItem(name, items[name]);
   }
-  console.log("");
+  console.log('');
 }
 
 /**
@@ -88,12 +88,12 @@ function startInteractive(items, skipIfInitialSearch = false) {
     output: process.stdout,
     completer(line) {
       const names = Object.keys(items);
-      const hits = fuzzy.filter(line, names).map(x => x.original);
+      const hits = fuzzy.filter(line, names).map((x) => x.original);
       return [hits, line];
     },
   });
 
-  rl.setPrompt(colorText("> ", Colors.CYAN));
+  rl.setPrompt(colorText('> ', Colors.CYAN));
 
   // If initialSearch was provided, and we just want one-shot results, skip the interactive prompt
   if (skipIfInitialSearch) {
@@ -102,18 +102,18 @@ function startInteractive(items, skipIfInitialSearch = false) {
 
   rl.prompt();
 
-  rl.on("line", line => {
+  rl.on('line', (line) => {
     const input = line.trim();
-    if (input === "q") return rl.close();
-    if (input === "a") return printAll(items, rl);
+    if (input === 'q') return rl.close();
+    if (input === 'a') return printAll(items, rl);
 
     runSearch(input, items);
 
     rl.prompt();
   });
 
-  rl.on("close", () => {
-    console.log(colorText("Exiting.", Colors.MAGENTA));
+  rl.on('close', () => {
+    console.log(colorText('Exiting.', Colors.MAGENTA));
     process.exit(0);
   });
 }
@@ -127,9 +127,9 @@ function startInteractive(items, skipIfInitialSearch = false) {
  * @param {Object.<string, Object>} items - Mapping of item names to metadata used when printing matches.
  */
 function runSearch(input, items) {
-  const matches = fuzzy.filter(input, Object.keys(items)).map(x => x.original);
+  const matches = fuzzy.filter(input, Object.keys(items)).map((x) => x.original);
   if (!matches.length) {
-    console.log(colorText("No matches.", Colors.RED));
+    console.log(colorText('No matches.', Colors.RED));
     return;
   }
 
@@ -141,7 +141,9 @@ function runSearch(input, items) {
 /**
  * Print all scripts grouped by their `info.group` and re-prompt the given readline interface.
  *
- * Groups items by the `group` property on each info object (uses "Other" when absent), prints a blue header for each group, lists each script using `printItem`, and then calls `rl.prompt()` to resume the interactive prompt.
+ * Groups items by the `group` property on each info object (uses "Other" when absent),
+ * prints a blue header for each group, lists each script using `printItem`, and then
+ * calls `rl.prompt()` to resume the interactive prompt.
  *
  * @param {Object<string, Object>} items - Mapping of script names to their info objects.
  * @param {import('readline').Interface} rl - Readline interface used to re-prompt after listing.
@@ -150,7 +152,7 @@ function printAll(items, rl) {
   const groups = {};
 
   for (const [name, info] of Object.entries(items)) {
-    const group = info.group || "Other";
+    const group = info.group || 'Other';
     if (!groups[group]) groups[group] = [];
     groups[group].push([name, info]);
   }
@@ -175,8 +177,8 @@ function printAll(items, rl) {
  * @param {string} [info.command] - Optional command string displayed as a cyan-prefixed line.
  */
 function printItem(name, info) {
-  console.log(`\n\t${colorText(name, Colors.YELLOW)}${info.group ? ` (${info.group})` : ""}`);
-  const description = Array.isArray(info.desc) ? info.desc.join(" ") : info.desc;
+  console.log(`\n\t${colorText(name, Colors.YELLOW)}${info.group ? ` (${info.group})` : ''}`);
+  const description = Array.isArray(info.desc) ? info.desc.join(' ') : info.desc;
   if (description) {
     console.log(`\t\t- ${colorText(description, Colors.YELLOW)}`);
   }

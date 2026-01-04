@@ -6,5 +6,5 @@
     "title": "WebAssembly Image Module",
     "description": "Documentation for the Image WebAssembly (WASM) module in Img2Num.",
     "slug": "/reference/wasm/modules/image"
-  },
+  }
 }
