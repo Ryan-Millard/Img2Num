@@ -98,11 +98,11 @@ constexpr double inverse_xyz_to_lab(double t)
   return (t > DELTA) ? (t * t * t) : (3 * DELTA * DELTA * (t - EPSILON));
 }
 
-constexpr double gamma_encode(double u) {
+inline double gamma_encode(double u) {
   return (u <= SRGB_LINEAR_THRESHOLD / SRGB_LINEAR_FACTOR)
     ? SRGB_LINEAR_FACTOR * u
     : (1.0 + SRGB_GAMMA_OFFSET) * std::pow(u, SRGB_GAMMA_INV) - SRGB_GAMMA_OFFSET;
-};
+}
 
 void lab_to_rgb(const double L, const double A, const double B,
                 uint8_t& out_r_u8, uint8_t& out_g_u8, uint8_t& out_b_u8)
