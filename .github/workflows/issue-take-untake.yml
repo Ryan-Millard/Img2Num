@@ -57,11 +57,11 @@ jobs:
               return `
             ${BODY_START}
             > [!CAUTION]
-            > This issue has been claimed, so it is not recommended that you work on it.
+            > This issue has been claimed by **@${ownerName}**, so it is not recommended that you work on it.
             >
             > > For more information on how Img2Num's claim system works, please see #99.
             >
-            > > **For the owner of the claim:**
+            > > **For @${ownerName}:**
             > > If you would like to revoke your claim, comment \`/untake\`
             >
             > <sub>This edit was made by the [\`issue-take-untake\`](https://github.com/Ryan-Millard/Img2Num/blob/main/.github/workflows/issue-take-untake.yml) GitHub workflow</sub>
