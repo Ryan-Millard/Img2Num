@@ -93,13 +93,7 @@ All additional props are forwarded to the underlying element.
 | `children` | ReactNode | — | Content inside the component |
 | `...rest` | object | — | Any valid HTML attributes |
 
-That issue outlines exactly what is needed, including:
-
-- Component overview
-- Usage examples
-- Props reference
-- Styling notes
-- Test coverage explanation
+## Styling Notes
 
 GlassCard styles are defined in `GlassCard.module.css` and include:
 
