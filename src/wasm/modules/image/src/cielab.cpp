@@ -35,7 +35,7 @@ constexpr double SRGB_X_TO_G{-0.9689};
 constexpr double SRGB_Y_TO_G{1.8758};
 constexpr double SRGB_Z_TO_G{0.0415};
 constexpr double SRGB_X_TO_B{0.0557};
-constexpr double SRGB_Y_TO_B{0.2040};
+constexpr double SRGB_Y_TO_B{-0.2040};
 constexpr double SRGB_Z_TO_B{1.0570};
 
 // Reference white point for D65 illuminant
