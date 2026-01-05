@@ -1,6 +1,16 @@
-
+---
 title: GlassCard
 description: Reusable polymorphic UI container with glassmorphism styling
+keywords:
+  - GlassCard
+  - React component
+  - Polymorphic component
+  - Glassmorphism
+tags:
+  - react
+  - ui
+  - components
+---
 
 
 ## Overview
@@ -50,14 +60,14 @@ You can change the underlying HTML element without losing any styling.
 </GlassCard>
 
 ```
-Common values include:
-
+:::tip Common HTML elements that can be used
 * div (default)
 * section
 * article
 * nav
 * main
 * aside
+:::
 
 ## Passing Additional Props
 
@@ -90,7 +100,8 @@ GlassCard styles are defined in `GlassCard.module.css` and include:
 * Backdrop blur for a frosted-glass appearance
 * Semi-transparent background using RGBA
 * Subtle border for glass edge highlights
-* Text centering is applied via the global utility class `text-center` (for example, from Tailwind CSS or a global stylesheet), not from the CSS module.
+* Text centering is applied via the global utility class `text-center` (for example from Tailwind CSS or a global stylesheet), not from the CSS module.
+
 
 Custom styles passed via `className` are merged safely.
 
@@ -103,8 +114,3 @@ The component is covered by a test suite that verifies:
 * Proper forwarding of attributes and event handlers
 * Correct rendering and preservation of children across different element types and custom class usages
 * CSS module mocking in the test environment to ensure styles and class names are applied consistently
-
-
-
-
-
