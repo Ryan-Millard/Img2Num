@@ -1,40 +1,40 @@
-
+---
 title: GlassCard Tests
 description: Test coverage documentation for the GlassCard component
+keywords:
+  - GlassCard
+  - Testing
+  - Jest
+  - React Testing Library
+tags:
+  - documentation
+  - testing
+---
 
+# GlassCard Tests
 
-## Overview
+This document outlines the test cases covered for the `GlassCard` component.
 
-The `GlassCard` component includes a comprehensive test suite to ensure
-consistent behavior across different rendering modes and usage patterns.
+### Default Rendering
 
+Ensures the component renders as a `div` when no `as` prop is provided.
 
+### Polymorphic Rendering
 
-## Test Coverage
+Confirms the component renders the correct HTML element when the `as` prop is used (e.g., `section`, `article`).
 
-The test suite verifies the following scenarios:
+### Children Rendering
 
-- **Default Rendering**
-  - Ensures the component renders as a `div` when no `as` prop is provided.
+Verifies that child content is rendered and preserved across all polymorphic variants.
 
-- **Polymorphic Rendering**
-  - Confirms the component renders the correct HTML element when the `as` prop is used (e.g., `section`, `article`).
+### Prop Forwarding
 
-- **Children Rendering**
-  - Verifies that child content is rendered and preserved across all polymorphic variants.
+Ensures standard HTML attributes and event handlers (`id`, `onClick`, `aria-*`) are correctly passed to the DOM element.
 
-- **Prop Forwarding**
-  - Ensures standard HTML attributes and event handlers (`id`, `onClick`, `aria-*`) are correctly passed to the DOM element.
+### Class Name Merging
 
-- **Class Name Merging**
-  - Confirms custom `className` values are merged with default glass styles.
+Confirms custom `className` values are merged with default glass styles.
 
-- **CSS Module Handling**
-  - Verifies CSS modules are mocked or asserted correctly so styling class names remain consistent in the test environment.
+### CSS Module Handling
 
-
-
-## Purpose
-
-These tests help prevent regressions and ensure the component remains stable,
-accessible, and visually consistent as the codebase evolves.
+Verifies CSS modules are mocked or asserted correctly so styling class names remain consistent in the test environment.
