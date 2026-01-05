@@ -23,6 +23,12 @@ _When reporting issues, please:_
 - Attach screenshots or logs if applicable.
 - Specify your environment (OS, Node.js version, browser).
 
+## Claiming Issues
+
+- To claim an issue, comment: `/take`. This will assign the issue to you and add the `taken` label.
+- To release an issue, comment: `/untake`
+- Issues labeled `taken` are currently owned and being worked on.
+
 ## Development Setup
 
 The [Getting Started](../introduction/getting-started.md) section shows how to clone and run the application for the first time.
