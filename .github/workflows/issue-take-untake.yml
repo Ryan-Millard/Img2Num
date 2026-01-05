@@ -114,7 +114,7 @@ jobs:
               owner,
               repo,
               issue_number: issueNumber,
-              per_page: 200
+              per_page: 100
             });
 
             let meta = { owner: null, members: [], ts: 0 };
@@ -253,7 +253,7 @@ jobs:
                 owner,
                 repo,
                 issue_number: issue.number,
-                per_page: 200
+                per_page: 100
               });
 
               const metaComment = comments.data
