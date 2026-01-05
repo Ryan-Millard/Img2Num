@@ -7,7 +7,6 @@ keywords:
   - Jest
   - React Testing Library
 tags:
-  - documentation
   - testing
 ---
 
