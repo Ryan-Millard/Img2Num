@@ -307,5 +307,7 @@ jobs:
                     body: updated
                   });
                 }
-              } catch {}
+              } catch (e) {
+                console.error(`Failed to expire claim on issue #${issue.number}:`, e.message);
+              }
             }
