@@ -1,7 +1,7 @@
 ---
 id: explained
 title: Implementation Explained
-sidebar_position: 6
+sidebar_position: 5
 ---
 
 # Bilateral Filter — Implementation Explained
@@ -19,24 +19,37 @@ This prevents the "blurring" from crossing strong edges, where the color differe
 ## How It Works
 
 For each pixel in the image, we look at a local window (kernel) around it. The new pixel value is a weighted average of its neighbors:
-
 $$
 I_{new}(x) = \frac{1}{W_p} \sum_{x_i \in \Omega} I(x_i) \cdot w_{spatial}(\|x_i - x\|) \cdot w_{range}(|I(x_i) - I(x)|)
 $$
 
-Where:
-- $w_{spatial}$ is a Gaussian function of the distance.
-- $w_{range}$ is a Gaussian function of the intensity difference.
-- $W_p$ is the normalization factor (sum of all weights).
+Where each component means:
 
-
-
+- $x$: The coordinates of the **center pixel** being filtered.
+- $\Omega$: The set of **neighboring pixels** in the local kernel around $x$ (from `-radius` to `+radius`).
+- $I(x_i)$: The **color or intensity** of a neighbor pixel $x_i$.
+- $C(x_i)$: The **color vector** of pixel $x_i$.
+  - RGB: `[R, G, B]`
+  - CIELAB: `[L*, a*, b*]`
+- $w_{spatial}(|x_i - x|)$: A **Gaussian weight** based on the **spatial distance** between the neighbor and the center.
+  - Pixels closer to the center have **larger weights**.
+  - Formula: $\exp\Big(-\frac{\text{distance}^2}{2\sigma_s^2}\Big)$
+- $w_\text{range}(|C(x_i) - C(x)|)$: A **Gaussian weight** based on the **color difference** between neighbor and center.
+  - Pixels with **similar colors** have higher weights, preserving edges.
+  - Formula: $\exp\Big(-\frac{|C(x_i) - C(x)|^2}{2\sigma_r^2}\Big)$
+  - RGB: Precomputed via **LUT**
+  - CIELAB: Computed **on the fly**
+- $W_p = \sum_{x_i \in \Omega} w_{spatial} \cdot w_\text{range}$: **Normalization factor** to ensure the weighted average sums to a valid color.
+- **Result $I_\text{new}(x)$**: The **filtered color** of the center pixel after combining spatial and color-based weighting.
+- $|I(x_i) - I(x)|$: The Euclidean norm.
+  - **RGB**: $|I(x_i) - I(x)| = \sqrt{ \Delta R² + \Delta G² + \Delta B² }$
+  - **CIELAB**: $|I(x_i) - I(x)| = \sqrt{ \Delta L² + \Delta a² + \Delta b² }$
 
 :::info
 In this implementation, both weighting terms are **Gaussian kernels**:
 
 $$
-w_{\text{spatial}}(d) = \exp!\left(-\frac{d^2}{2\sigma_s^2}\right),
+w_{spatial}(d) = \exp!\left(-\frac{d^2}{2\sigma_s^2}\right),
 \quad
 w_{\text{range}}(d) = \exp!\left(-\frac{d^2}{2\sigma_r^2}\right)
 $$
@@ -45,7 +58,7 @@ where $ \sigma_s$ controls spatial smoothing and $\sigma_r$ controls edge sensit
 :::
 ## Implementation Details
 
-Our implementation uses a **naive sliding window** approach with **Look-Up Table (LUT) optimizations** to improve performance in WebAssembly.
+Our implementation uses a **naive sliding window** approach with **Look-Up Table (LUT) optimizations / "On the Fly" computations** to improve performance.
 
 ### 1. Precomputed Look-Up Tables (RGB color space)
 
@@ -62,7 +75,9 @@ for (int i = 0; i <= MAX_RGB_DIST_SQ; ++i) {
 
 ### 2. On-the-fly Range weights (CIE-LAB color space)
 
-When deriving range weights in the CIELAB color space, the LUT approach does not work. Instead range weights are computed on the fly using the `gaussian` function.
+When deriving range weights in the CIELAB color space, the LUT approach does not work
+(see the [Range Weights section in the implementation docs](../implementation/#range-weights) to understand why).
+Instead range weights are computed on the fly using the `gaussian` function.
 
 Since the RGB to CIELAB conversion is expensive, redundant computations are minimized by initially converting the full RGB image to CIELAB image.
 
@@ -76,7 +91,9 @@ dist = std::sqrt(dL * dL + dA * dA + dB * dB);
 w_range = gaussian(dist, sigma_range);
 ```
 
-NOTE: `gaussian` itself is expensive to run. Future optimizations include polynomial approximations of `exp(-x^2)` via Taylor expansion or Horner's method.
+:::note
+`gaussian` itself is expensive to run. Future optimizations will include polynomial approximations of `exp(-x^2)` via Taylor expansion or Horner's method.
+:::
 
 ### 3. The Loop
 

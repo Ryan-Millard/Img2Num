@@ -2,20 +2,20 @@
 id: api
 title: Bilateral Filter — API & Reference
 sidebar_label: API / Usage
-sidebar_position: 5
+sidebar_position: 4
 ---
 
 # Bilateral Filter — API & Reference
 
 Quick reference for the function implemented in the header.
 
-```cpp title="Applies a bilateral filter to an RGBA image (modified in-place)."
-void bilateral_filter(uint8_t *image,
-                      size_t width, size_t height,
-                      double sigma_spatial,
-                      double sigma_range,
-                      uint8_t color_space)
+```cpp title="Applies a bilateral filter to an RGBA uint8_t* image (modified in-place)."
+void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_spatial, double sigma_range, uint8_t color_space)
 ```
+
+:::important Alpha Channel Preservation
+The alpha channel, `image[i + 3]`, is left untouched - it is not part of the bilateral filter implementation.
+:::
 
 ## Parameters
 
