@@ -14,6 +14,7 @@ constexpr double SRGB_LINEAR_THRESHOLD{0.04045}; // linear segment boundary
 constexpr double SRGB_LINEAR_FACTOR{12.92};      // scale factor for linear segment
 constexpr double SRGB_GAMMA_OFFSET{0.055};       // offset for nonlinear segment
 constexpr double SRGB_GAMMA{2.4};                // gamma exponent for nonlinear segment
+constexpr double SRGB_GAMMA_INV{1.0 / 2.4};                // gamma exponent for nonlinear segment
 
 // ====== Used in rgb_to_lab ======
 // Multipliers for RGB to XYZ
@@ -26,6 +27,16 @@ constexpr double SRGB_B_TO_Y{0.0721750};
 constexpr double SRGB_R_TO_Z{0.0193339};
 constexpr double SRGB_G_TO_Z{0.1191920};
 constexpr double SRGB_B_TO_Z{0.9503041};
+
+constexpr double SRGB_X_TO_R{3.2406};
+constexpr double SRGB_Y_TO_R{-1.5372};
+constexpr double SRGB_Z_TO_R{-0.4986};
+constexpr double SRGB_X_TO_G{-0.9689};
+constexpr double SRGB_Y_TO_G{1.8758};
+constexpr double SRGB_Z_TO_G{0.0415};
+constexpr double SRGB_X_TO_B{0.0557};
+constexpr double SRGB_Y_TO_B{0.2040};
+constexpr double SRGB_Z_TO_B{1.0570};
 
 // Reference white point for D65 illuminant
 constexpr double D65_Xn = 0.95047;
@@ -81,4 +92,52 @@ void rgb_to_lab(const uint8_t r_u8, const uint8_t g_u8, const uint8_t b_u8,
     out_b = LAB_B_FACTOR * (fy - fz);
 
     out_l = std::clamp(out_l, 0.0, 100.0);
+}
+
+inline double finv(double t)
+{
+    if (t > DELTA)
+        return t * t * t;
+    else
+        return 3 * DELTA * DELTA * (t - EPSILON);
+}
+
+inline double clamp01(double v)
+{
+    return std::min(1.0, std::max(0.0, v));
+}
+
+void lab_to_rgb(const double L, const double A, const double B,
+                uint8_t& r_u8, uint8_t& g_u8, uint8_t& b_u8)
+{
+    // --- Lab → XYZ (D65 white point)
+    const double fy = (L + LAB_L_OFFSET) / LAB_L_FACTOR;
+    const double fx = fy + A / LAB_A_FACTOR;
+    const double fz = fy - B / LAB_B_FACTOR;
+
+    double X = D65_Xn * finv(fx);
+    double Y = D65_Yn * finv(fy);
+    double Z = D65_Zn * finv(fz);
+
+    // --- XYZ → linear RGB (sRGB)
+    double r{SRGB_X_TO_R * X + SRGB_Y_TO_R * Y + SRGB_Z_TO_R * Z};
+    double g{SRGB_X_TO_G * X + SRGB_Y_TO_G * Y + SRGB_Z_TO_G * Z};
+    double b{SRGB_X_TO_B * X + SRGB_Y_TO_B * Y + SRGB_Z_TO_B * Z};
+
+    // --- linear RGB → sRGB (gamma correction)
+    auto gamma_encode = [](double u) -> double {
+        if (u <= SRGB_LINEAR_THRESHOLD / SRGB_LINEAR_FACTOR)
+            return SRGB_LINEAR_FACTOR * u;
+        else
+            return (1.0 + SRGB_GAMMA_OFFSET) * std::pow(u, SRGB_GAMMA_INV) - SRGB_GAMMA_OFFSET;
+    };
+
+    r = gamma_encode(r);
+    g = gamma_encode(g);
+    b = gamma_encode(b);
+
+    // --- Clamp and convert to 8-bit
+    r_u8 = static_cast<uint8_t>(std::round(255.0 * clamp01(r)));
+    g_u8 = static_cast<uint8_t>(std::round(255.0 * clamp01(g)));
+    b_u8 = static_cast<uint8_t>(std::round(255.0 * clamp01(b)));
 }

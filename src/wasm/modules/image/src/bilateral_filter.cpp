@@ -46,6 +46,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
     const int raw_radius{static_cast<int>(std::ceil(SIGMA_RADIUS_FACTOR * sigma_spatial))};
     const int radius{std::min(raw_radius, MAX_KERNEL_RADIUS)};
     const int kernel_diameter{2 * radius + 1};
+    
     std::vector<uint8_t> result(width * height * 4);
 
     std::vector<double> spatial_weights(kernel_diameter * kernel_diameter);
@@ -114,7 +115,13 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
             }
             // ========= CIELAB-only section end =========
 
-            double r_acc{0.0}, g_acc{0.0}, b_acc{0.0}, weight_acc{0.0};
+            // double r_acc{0.0}, g_acc{0.0}, b_acc{0.0};
+            
+            // in RGB mode represents r,g,b accumulators
+            // in CIELAB mode represents L,A,B accumulators
+            double acc0{0.0}, acc1{0.0}, acc2{0.0};
+
+            double weight_acc{0.0};
             double w_space, w_range;
             double dL, dA, dB, dist;
 
@@ -130,6 +137,10 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
                     uint8_t g{image[neighbor_idx + 1]};
                     uint8_t b{image[neighbor_idx + 2]};
 
+                    double L{cie_image[neighbor_idx]};
+                    double A{cie_image[neighbor_idx + 1]};
+                    double B{cie_image[neighbor_idx + 2]};
+
                     w_space = spatial_weights[(ky + radius) * kernel_diameter + (kx + radius)];
                     
                     switch (color_space) {
@@ -142,9 +153,9 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
                           break;
                         }
                       case COLOR_SPACE_OPTION_CIELAB: {
-                        dL = cie_image[neighbor_idx] - L0;
-                        dA = cie_image[neighbor_idx + 1] - A0;
-                        dB = cie_image[neighbor_idx + 2] - B0;
+                        dL = L - L0;
+                        dA = A - A0;
+                        dB = B - B0;
 
                         dist = std::sqrt(dL * dL + dA * dA + dB * dB);
                         w_range = gaussian(dist, sigma_range);
@@ -152,20 +163,48 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
                       }
                     }
 
-                    r_acc += r * w_space * w_range;
-                    g_acc += g * w_space * w_range;
-                    b_acc += b * w_space * w_range;
+                    switch (color_space) {
+                        case COLOR_SPACE_OPTION_RGB: {
+                            acc0 += r * w_space * w_range;
+                            acc1 += g * w_space * w_range;
+                            acc2 += b * w_space * w_range;
+                            break;
+                        }
+                        case COLOR_SPACE_OPTION_CIELAB: {
+                            acc0 += L * w_space * w_range;
+                            acc1 += A * w_space * w_range;
+                            acc2 += B * w_space * w_range;
+                            break;
+                        }
+                    }
                     weight_acc += w_space * w_range;
                 }
             }
 
-            result[center_idx]     = static_cast<uint8_t>(std::clamp(r_acc / weight_acc, 0.0, 255.0));
-            result[center_idx + 1] = static_cast<uint8_t>(std::clamp(g_acc / weight_acc, 0.0, 255.0));
-            result[center_idx + 2] = static_cast<uint8_t>(std::clamp(b_acc / weight_acc, 0.0, 255.0));
-            result[center_idx + 3] = a0;
+            switch (color_space) {
+                case COLOR_SPACE_OPTION_RGB: {
+                    result[center_idx]     = static_cast<uint8_t>(std::clamp(acc0 / weight_acc, 0.0, 255.0));
+                    result[center_idx + 1] = static_cast<uint8_t>(std::clamp(acc1 / weight_acc, 0.0, 255.0));
+                    result[center_idx + 2] = static_cast<uint8_t>(std::clamp(acc2 / weight_acc, 0.0, 255.0));
+                    result[center_idx + 3] = a0;
+                    break;
+                }
+                case COLOR_SPACE_OPTION_CIELAB: {
+                    double L = acc0 / weight_acc;
+                    double A = acc1 / weight_acc;
+                    double B = acc2 / weight_acc;
+                    uint8_t r, g, b;
+                    lab_to_rgb(L, A, B, r, g, b);
+                    result[center_idx]     = r;
+                    result[center_idx + 1] = g;
+                    result[center_idx + 2] = b;
+                    result[center_idx + 3] = a0;
+                    break;
+                }
+            }
         }
     }
-
+    
     std::memcpy(image, result.data(), result.size());
 }
 
