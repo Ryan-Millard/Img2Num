@@ -7,6 +7,7 @@ sidebar_position: 1
 :::info Prerequisites
 
 This section assumes familiarity with the below:
+
 - `Complex numbers` (including Euler’s formula)
 - Basic `trigonometry and calculus`
 - Introductory concepts in `signals`

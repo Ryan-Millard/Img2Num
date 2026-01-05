@@ -26,10 +26,7 @@ export default function DependencyCreditsCard() {
       queryFn: async () => {
         const res = await fetch(`https://registry.npmjs.org/${name}`);
         const info = await res.json();
-        const url =
-          info.repository?.url?.replace(/^git\+/, '').replace(/\.git$/, '') ||
-          info.homepage ||
-          '';
+        const url = info.repository?.url?.replace(/^git\+/, '').replace(/\.git$/, '') || info.homepage || '';
         return { name, version, url };
       },
       staleTime: ONE_WEEK,

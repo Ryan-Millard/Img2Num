@@ -1,4 +1,5 @@
 <!--TODO: Remove the section below after #139 (which replaced #93) is merged on 22 Dec 2025 - wait 2 weeks, so remove this on 5 Jan 2026 -->
+
 > [!CAUTION]
 > ⚠️⚠️⚠️ **Breaking Change in [PR #93](https://github.com/Ryan-Millard/Img2Num/pull/93)** ⚠️⚠️⚠️
 >
@@ -10,8 +11,6 @@
 
 <div align="center">
 
-
-
 [![Site Badge](https://img.shields.io/badge/site-online-blue.svg)](https://ryan-millard.github.io/Img2Num/)
 [![Docs Badge](https://img.shields.io/badge/docs-online-blue.svg)](https://ryan-millard.github.io/Img2Num/info/)
 [![License Badge](https://img.shields.io/badge/license-AGPLv3-blue.svg)](LICENSE)
@@ -22,10 +21,7 @@
 [![Contributors](https://img.shields.io/github/contributors/Ryan-Millard/Img2Num)](https://ryan-millard.github.io/Img2Num/credits)
 [![GitHub issues](https://img.shields.io/github/issues/Ryan-Millard/Img2Num)](https://github.com/Ryan-Millard/Img2Num/issues)
 
-
-
 </div>
-
 
 **Img2Num** converts photos into printable, browser-colourable **colour-by-number** templates using a fast WebAssembly (C++) image pipeline.
 
@@ -69,12 +65,12 @@
 </table>
 
 ### What are you waiting for?
+
 Try it out now by [clicking here](https://ryan-millard.github.io/Img2Num/)!
 
 ## What this repository contains (short)
 
-<div align="center"
-
+<div align="center" />
 
 ![React](https://img.shields.io/badge/React-19-blue?logo=react&logoColor=61DAFB)
 ![C++](https://img.shields.io/badge/C++-Modern-blue?logo=c%2B%2B&logoColor=00599C)
@@ -84,10 +80,8 @@ Try it out now by [clicking here](https://ryan-millard.github.io/Img2Num/)!
 ![Vite](https://img.shields.io/badge/Vite-7-purple?logo=vite)
 ![CSS](https://img.shields.io/badge/CSS-Modern-blue?logo=css3)
 
-
 </div>
-<div align="center"
-
+<div align="center" />
 
 ![Prettier](https://img.shields.io/badge/Prettier-Code%20Formatter-brightgreen?logo=prettier&logoColor=F7B93E)
 ![ESLint](https://img.shields.io/badge/ESLint-Linted-yellow?logo=eslint)
@@ -97,12 +91,10 @@ Try it out now by [clicking here](https://ryan-millard.github.io/Img2Num/)!
 ![EditorConfig](https://img.shields.io/badge/EditorConfig-Style-blue?logo=editorconfig)
 ![Clang-Format](https://img.shields.io/badge/Clang%20Format-Formatted-blue?logo=clang)
 
-
-
 </div>
 
-* A React frontend that handles image input, preview and in-browser colouring.
-* A WebAssembly module (C++ → Emscripten) that performs image processing and colour quantisation.
+- A React frontend that handles image input, preview and in-browser colouring.
+- A WebAssembly module (C++ → Emscripten) that performs image processing and colour quantisation.
 
 This README is intentionally short — full installation steps, guides and references live in the docs site (see **Essential links** below).
 
@@ -110,11 +102,11 @@ This README is intentionally short — full installation steps, guides and refer
 
 Visit the docs site for full guides, API references and troubleshooting:
 
-* Quick start - [https://ryan-millard.github.io/Img2Num/info/docs/getting-started/](https://ryan-millard.github.io/Img2Num/info/docs/introduction/getting-started)
-* Guidelines - [https://ryan-millard.github.io/Img2Num/info/docs/category/-guidelines/](https://ryan-millard.github.io/Img2Num/info/docs/category/-guidelines)
-* Documentation - [https://ryan-millard.github.io/Img2Num/info/docs/](https://ryan-millard.github.io/Img2Num/info/docs/)
-* Reference & Advanced Guides - [https://ryan-millard.github.io/Img2Num/info/docs/reference/](https://ryan-millard.github.io/Img2Num/info/docs/reference/)
-* Changelog - [https://ryan-millard.github.io/Img2Num/info/docs/changelog/](https://ryan-millard.github.io/Img2Num/info/changelog)
+- Quick start - [https://ryan-millard.github.io/Img2Num/info/docs/getting-started/](https://ryan-millard.github.io/Img2Num/info/docs/introduction/getting-started)
+- Guidelines - [https://ryan-millard.github.io/Img2Num/info/docs/category/-guidelines/](https://ryan-millard.github.io/Img2Num/info/docs/category/-guidelines)
+- Documentation - [https://ryan-millard.github.io/Img2Num/info/docs/](https://ryan-millard.github.io/Img2Num/info/docs/)
+- Reference & Advanced Guides - [https://ryan-millard.github.io/Img2Num/info/docs/reference/](https://ryan-millard.github.io/Img2Num/info/docs/reference/)
+- Changelog - [https://ryan-millard.github.io/Img2Num/info/docs/changelog/](https://ryan-millard.github.io/Img2Num/info/changelog)
 
 (These replace long, duplicate instructions in this README to keep maintenance easier.)
 
@@ -124,9 +116,9 @@ We welcome contributions. Please read [CONTRIBUTING.md](https://ryan-millard.git
 
 **A few important points:**
 
-* **Add tests** with your PR — new features and bug fixes **must** include tests where appropriate. PRs without tests are unlikely to be approved.
-* Follow the repository's [coding style rules](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/coding-style) and [commit message rules](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/commits).
-* Use the issue and PR templates when filing issues or submitting code. Your PR will be rejected if you don't.
+- **Add tests** with your PR — new features and bug fixes **must** include tests where appropriate. PRs without tests are unlikely to be approved.
+- Follow the repository's [coding style rules](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/coding-style) and [commit message rules](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/commits).
+- Use the issue and PR templates when filing issues or submitting code. Your PR will be rejected if you don't.
 
 If you're unsure what to change, open an issue first and we can discuss scope.
 
@@ -136,18 +128,19 @@ If you're unsure what to change, open an issue first and we can discuss scope.
 
 ## What we intentionally keep out of this README
 
-* Long, step‑by‑step build instructions (moved to the [docs site](https://ryan-millard.github.io/Img2Num/info/docs/))
-* Full API reference (moved to the [docs site](https://ryan-millard.github.io/Img2Num/info/docs/reference))
-* Very large images or heavy explanations — use the [docs site](https://ryan-millard.github.io/Img2Num/info/docs/) for in-depth content
+- Long, step‑by‑step build instructions (moved to the [docs site](https://ryan-millard.github.io/Img2Num/info/docs/))
+- Full API reference (moved to the [docs site](https://ryan-millard.github.io/Img2Num/info/docs/reference))
+- Very large images or heavy explanations — use the [docs site](https://ryan-millard.github.io/Img2Num/info/docs/) for in-depth content
 
 ## Can't find something?
+
 Hopefully you understand by now that if you need something, it should be on the [docs site](https://ryan-millard.github.io/Img2Num/info/docs/).
 If it isn't, please open a ["New Feature" issue](https://github.com/Ryan-Millard/Img2Num/issues/new?template=feature_request.yml) to request its addition to the [docs site](https://ryan-millard.github.io/Img2Num/info/docs/).
 
 ## Maintainers
 
-* [Ryan](https://github.com/Ryan-Millard/)
-* [Hayden](https://github.com/hjmillard/) (temporarily unavailable)
+- [Ryan](https://github.com/Ryan-Millard/)
+- [Hayden](https://github.com/hjmillard/) (temporarily unavailable)
 
 > ⚠️ **Disclaimer:** Pull request reviews may take some time as we try to keep up with contributions.  
 > We highly encourage everyone to review each other's pull requests where possible — this helps the project move faster and benefits all contributors in the long run. Thank you for your support!

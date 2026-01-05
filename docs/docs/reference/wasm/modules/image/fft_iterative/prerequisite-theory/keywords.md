@@ -8,6 +8,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 ## Keywords
+
 - **Aliasing**: High-frequency components above the Nyquist frequency fold into lower frequencies when sampled.
 - **Angular frequency** ($\omega$): $\omega = 2\pi f$ radians per second.
 - **Circular Convolution**: Convolution implied by the DFT due to assumed periodicity.
@@ -17,7 +18,7 @@ import TabItem from '@theme/TabItem';
 - **DFT**: Discrete Fourier Transform
 - **FFT**: Fast Fourier Transform (efficient algorithm for computing the DFT)
 - **Frequency-domain signal**: $X(f)$ (continuous) or $X[k]$ (discrete)
-- **Fundamental Frequency** ($f_0$): The lowest frequency component of a periodic signal. 
+- **Fundamental Frequency** ($f_0$): The lowest frequency component of a periodic signal.
   Every other frequency component (harmonics) is an integer multiple of $f_0$:
   $$
   f_k = k \cdot f_0, \quad k = 1,2,3,\dots
@@ -48,11 +49,12 @@ this area of the project's code, please make sure to familiarise yourself with i
 :::
 
 <Tabs
-  defaultValue="engineering"
-  values={[
-    { label: 'Engineering', value: 'engineering' },
-    { label: 'Science', value: 'science' },
-  ]}
+defaultValue="engineering"
+values={[
+{ label: 'Engineering', value: 'engineering' },
+{ label: 'Science', value: 'science' },
+]}
+
 >
 
 <TabItem value="engineering">
@@ -63,24 +65,26 @@ this area of the project's code, please make sure to familiarise yourself with i
 - Common in **signal processing, numerical libraries (NumPy, MATLAB)**.
 
 #### Continuous Fourier Transform (CFT)
+
 - **Forward:**
-$$
-X(f) = \int_{-\infty}^{\infty} x(t) \, e^{-j 2\pi f t} \, dt
-$$
+  $$
+  X(f) = \int_{-\infty}^{\infty} x(t) \, e^{-j 2\pi f t} \, dt
+  $$
 - **Inverse:**
-$$
-x(t) = \int_{-\infty}^{\infty} X(f) \, e^{+j 2\pi f t} \, df
-$$
+  $$
+  x(t) = \int_{-\infty}^{\infty} X(f) \, e^{+j 2\pi f t} \, df
+  $$
 
 #### Discrete Fourier Transform (N-point DFT)
+
 - **Forward:**
-$$
-X[k] = \sum_{n=0}^{N-1} x[n] \, e^{-j \frac{2\pi}{N} k n}, \quad k=0,\dots,N-1
-$$
+  $$
+  X[k] = \sum_{n=0}^{N-1} x[n] \, e^{-j \frac{2\pi}{N} k n}, \quad k=0,\dots,N-1
+  $$
 - **Inverse:**
-$$
-x[n] = \frac{1}{N} \sum_{k=0}^{N-1} X[k] \, e^{+j \frac{2\pi}{N} k n}, \quad n=0,\dots,N-1
-$$
+  $$
+  x[n] = \frac{1}{N} \sum_{k=0}^{N-1} X[k] \, e^{+j \frac{2\pi}{N} k n}, \quad n=0,\dots,N-1
+  $$
 
 :::note
 This is the most commonly used convention, so you might see it more frequently.
@@ -94,28 +98,30 @@ Img2Num, NumPy, and MATLAB use the engineering convention.
 
 ### Science / Physics Convention
 
-- Forward transform uses **positive exponent**, inverse may include **$1/2\pi$ factor**. 
+- Forward transform uses **positive exponent**, inverse may include **$1/2\pi$ factor**.
 - Often seen in **physics, math textbooks**, and continuous analysis.
 
 #### Continuous Fourier Transform (CFT)
+
 - **Forward:**
-$$
-X(f) = \int_{-\infty}^{\infty} x(t) \, e^{+j 2\pi f t} \, dt
-$$
+  $$
+  X(f) = \int_{-\infty}^{\infty} x(t) \, e^{+j 2\pi f t} \, dt
+  $$
 - **Inverse:**
-$$
-x(t) = \int_{-\infty}^{\infty} X(f) \, e^{-j 2\pi f t} \, df
-$$
+  $$
+  x(t) = \int_{-\infty}^{\infty} X(f) \, e^{-j 2\pi f t} \, df
+  $$
 
 #### Discrete Fourier Transform (N-point DFT)
+
 - **Forward:**
-$$
-X[k] = \sum_{n=0}^{N-1} x[n] \, e^{+j \frac{2\pi}{N} k n}, \quad k=0,\dots,N-1
-$$
+  $$
+  X[k] = \sum_{n=0}^{N-1} x[n] \, e^{+j \frac{2\pi}{N} k n}, \quad k=0,\dots,N-1
+  $$
 - **Inverse:**
-$$
-x[n] = \frac{1}{N} \sum_{k=0}^{N-1} X[k] \, e^{-j \frac{2\pi}{N} k n}, \quad n=0,\dots,N-1
-$$
+  $$
+  x[n] = \frac{1}{N} \sum_{k=0}^{N-1} X[k] \, e^{-j \frac{2\pi}{N} k n}, \quad n=0,\dots,N-1
+  $$
 
 :::note
 Science convention flips the sign of the exponent in forward/inverse transforms compared to the engineering convention. Some libraries (scientific computing) may follow this.
@@ -126,6 +132,6 @@ Science convention flips the sign of the exponent in forward/inverse transforms 
 </Tabs>
 
 :::danger Don't get confused
-Both are simply *conventions*. It does not matter which one you follow (unless the convention is already established wherever you are working)
+Both are simply _conventions_. It does not matter which one you follow (unless the convention is already established wherever you are working)
 because they both achieve the same outcomes.
 :::

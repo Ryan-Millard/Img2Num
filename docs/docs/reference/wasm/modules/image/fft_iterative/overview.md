@@ -27,8 +27,8 @@ If you need the mathematical background before diving in, see the prerequisite p
 
 ## Pages in this mini-guide
 
-* **Overview** (this page)
-* **Implementation details** — step-by-step mapping between theory and the actual C++ code.
-* **API & reference** — brief function signatures and purpose for quick lookup.
+- **Overview** (this page)
+- **Implementation details** — step-by-step mapping between theory and the actual C++ code.
+- **API & reference** — brief function signatures and purpose for quick lookup.
 
 Jump to implementation: [Implementation details](../implementation/)

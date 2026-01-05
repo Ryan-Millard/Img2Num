@@ -6,5 +6,5 @@
     "title": "React Components & Hooks",
     "description": "Reference for React components, hooks, and context providers in Img2Num, including WASM integration.",
     "slug": "/reference/react"
-  },
+  }
 }
