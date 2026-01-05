@@ -148,6 +148,10 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
                           const int db{static_cast<int>(b) - b0};
                           const int dist_sq{dr*dr + dg*dg + db*db};
                           w_range = range_lut[dist_sq];
+
+                          weight_acc_channel_0 += r * w_space * w_range;
+                          weight_acc_channel_1 += g * w_space * w_range;
+                          weight_acc_channel_2 += b * w_space * w_range;
                           break;
                         }
                       case COLOR_SPACE_OPTION_CIELAB: {
@@ -157,24 +161,14 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
 
                         dist = std::sqrt(dL * dL + dA * dA + dB * dB);
                         w_range = gaussian(dist, sigma_range);
+
+                        weight_acc_channel_0 += L * w_space * w_range;
+                        weight_acc_channel_1 += A * w_space * w_range;
+                        weight_acc_channel_2 += B * w_space * w_range;
                         break;
                       }
                     }
-
-                    switch (color_space) {
-                        case COLOR_SPACE_OPTION_RGB: {
-                            weight_acc_channel_0 += r * w_space * w_range;
-                            weight_acc_channel_1 += g * w_space * w_range;
-                            weight_acc_channel_2 += b * w_space * w_range;
-                            break;
-                        }
-                        case COLOR_SPACE_OPTION_CIELAB: {
-                            weight_acc_channel_0 += L * w_space * w_range;
-                            weight_acc_channel_1 += A * w_space * w_range;
-                            weight_acc_channel_2 += B * w_space * w_range;
-                            break;
-                        }
-                    }
+                    
                     weight_acc += w_space * w_range;
                 }
             }
