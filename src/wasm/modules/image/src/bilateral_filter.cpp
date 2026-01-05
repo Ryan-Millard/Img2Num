@@ -18,7 +18,7 @@ static constexpr int MAX_RGB_DIST_SQ{255 * 255 * 3};
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB{0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
 
-double gaussian(double x, double sigma) {
+inline double gaussian(double x, double sigma) {
     return std::exp(-(x * x) / (2.0 * sigma * sigma));
 }
 
@@ -168,7 +168,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
                         break;
                       }
                     }
-                    
+
                     weight_acc += w_space * w_range;
                 }
             }
