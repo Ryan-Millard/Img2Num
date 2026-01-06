@@ -1,7 +1,6 @@
 ---
 id: keywords
 title: Keywords
-sidebar_position: 6
 ---
 
 - **spatial component**: The part of an image related to the **pixel positions** (x and y coordinates).  
