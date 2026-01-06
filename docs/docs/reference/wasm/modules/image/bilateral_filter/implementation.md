@@ -92,7 +92,7 @@ For the CIELAB color space, the range weights are computed "on the fly" to reduc
 
 :::info
 To calculate the weights, we use `gaussian`, a simple Gaussian function that performs the calculation:
-$\exp!\left(-\frac{x^2}{2\sigma_{spatial}^2}\right)$
+$\exp\left(-\frac{x^2}{2\sigma_{spatial}^2}\right)$
 
 ```cpp
 double gaussian(double x, double sigma) {
@@ -177,7 +177,7 @@ import RgbVsLabRangeKernel from '@site/src/components/docs/reference/wasm/module
 In the RGB color space, the maximum possible color difference is limited (0–255 per channel).
 This allows us to **precompute all possible weights** in a **Lookup Table (LUT)**.
 During filtering, we simply **look up the weight** instead of recomputing it with
-$\exp!\left(-\frac{x^2}{2\sigma_{spatial}^2}\right)$
+$\exp\left(-\frac{x^2}{2\sigma_{spatial}^2}\right)$
 for each neighbor.
 The discrete nature of the LUT is represented by the shaded area and the curve shows how weight decays with increasing &Delta;RGB.
 

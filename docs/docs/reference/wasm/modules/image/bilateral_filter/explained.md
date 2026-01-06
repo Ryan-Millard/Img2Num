@@ -51,9 +51,9 @@ Where each component means:
 In this implementation, both weighting terms are **Gaussian kernels**:
 
 $$
-w_{spatial}(d) = \exp!\left(-\frac{d^2}{2\sigma_s^2}\right),
+w_{spatial}(d) = \exp\left(-\frac{d^2}{2\sigma_s^2}\right),
 \quad
-w_{\text{range}}(d) = \exp!\left(-\frac{d^2}{2\sigma_r^2}\right)
+w_{\text{range}}(d) = \exp\left(-\frac{d^2}{2\sigma_r^2}\right)
 $$
 
 where $ \sigma_s$ controls spatial smoothing and $\sigma_r$ controls edge sensitivity.
@@ -87,7 +87,7 @@ Since the RGB to CIELAB conversion is expensive, redundant computations are mini
 
 In the convolution step LAB distance is computed by reading those values from the CIELAB image buffer, and the gaussian is then evaluated.
 
-```
+```cpp
 dL = cie_image[neighbor_idx] - L0;
 dA = cie_image[neighbor_idx + 1] - A0;
 dB = cie_image[neighbor_idx + 2] - B0;
