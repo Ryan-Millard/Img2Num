@@ -44,7 +44,8 @@ constexpr double SRGB_B_TO_Z{0.9503041};
  * ====== Used in lab_to_rgb ======
  *
  * sRGB Khronos/W3C Transformation Matrices (D65 illuminant)
- * Inverse transformation (XYZ → sRGB) per Khronos/W3C, D65 white, slightly different from original BT.709 inverse.
+ * Inverse transformation (XYZ → sRGB) per Khronos/W3C, D65 white, slightly
+ * different from original BT.709 inverse.
  *
  * CIE XYZ → sRGB (inverse):
  * ┌   ┐   ┌                               ┐ ┌   ┐
