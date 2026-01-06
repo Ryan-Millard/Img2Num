@@ -16,8 +16,20 @@ constexpr double SRGB_GAMMA{2.4}; // gamma exponent for nonlinear segment
 constexpr double SRGB_GAMMA_INV{
     1.0 / SRGB_GAMMA}; // gamma exponent for nonlinear segment
 
-// ====== Used in rgb_to_lab ======
-// Multipliers for RGB to XYZ
+/*
+ * ====== Used in rgb_to_lab ======
+ *
+ * sRGB Khronos/W3C Transformation Matrices (D65 illuminant)
+ *
+ * sRGB → CIE XYZ:
+ * ┌   ┐   ┌                                 ┐ ┌   ┐
+ * │ X │   │ 0.4124564  0.3575761  0.1804375 │ │ R │
+ * │ Y │ = │ 0.2126729  0.7151522  0.0721750 │ │ G │
+ * │ Z │   │ 0.0193339  0.1191920  0.9503041 │ │ B │
+ * └   ┘   └                                 ┘ └   ┘
+ *
+ * Reference: ITU-R BT.709 / sRGB standard (IEC 61966-2-1:1999)
+ */
 constexpr double SRGB_R_TO_X{0.4124564};
 constexpr double SRGB_G_TO_X{0.3575761};
 constexpr double SRGB_B_TO_X{0.1804375};
@@ -28,15 +40,30 @@ constexpr double SRGB_R_TO_Z{0.0193339};
 constexpr double SRGB_G_TO_Z{0.1191920};
 constexpr double SRGB_B_TO_Z{0.9503041};
 
-constexpr double SRGB_X_TO_R{3.2406};
-constexpr double SRGB_Y_TO_R{-1.5372};
-constexpr double SRGB_Z_TO_R{-0.4986};
-constexpr double SRGB_X_TO_G{-0.9689};
-constexpr double SRGB_Y_TO_G{1.8758};
-constexpr double SRGB_Z_TO_G{0.0415};
-constexpr double SRGB_X_TO_B{0.0557};
-constexpr double SRGB_Y_TO_B{-0.2040};
-constexpr double SRGB_Z_TO_B{1.0570};
+/*
+ * ====== Used in lab_to_rgb ======
+ *
+ * sRGB Khronos/W3C Transformation Matrices (D65 illuminant)
+ * Inverse transformation (XYZ → sRGB) per Khronos/W3C, D65 white, slightly different from original BT.709 inverse.
+ *
+ * CIE XYZ → sRGB (inverse):
+ * ┌   ┐   ┌                               ┐ ┌   ┐
+ * │ R │   │  3.240970 -1.537383 -0.498611 │ │ X │
+ * │ G │ = │ -0.969244  1.875968  0.041555 │ │ Y │
+ * │ B │   │  0.055630 -0.203977  1.056972 │ │ Z │
+ * └   ┘   └                               ┘ └   ┘
+ *
+ * Reference: ITU-R BT.709 / sRGB standard (IEC 61966-2-1:1999)
+ */
+constexpr double SRGB_X_TO_R{3.240970};
+constexpr double SRGB_Y_TO_R{-1.537383};
+constexpr double SRGB_Z_TO_R{-0.498611};
+constexpr double SRGB_X_TO_G{-0.969244};
+constexpr double SRGB_Y_TO_G{1.875968};
+constexpr double SRGB_Z_TO_G{0.041555};
+constexpr double SRGB_X_TO_B{0.055630};
+constexpr double SRGB_Y_TO_B{-0.203977};
+constexpr double SRGB_Z_TO_B{1.056972};
 
 // Reference white point for D65 illuminant
 constexpr double D65_Xn{0.95047};

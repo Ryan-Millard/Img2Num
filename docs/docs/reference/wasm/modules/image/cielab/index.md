@@ -8,11 +8,16 @@ sidebar_position: 2
 
 This explains the full mathematical conversion pipeline between **sRGB** and **CIELAB (Lab)** color spaces.
 
----
-
 # 1. Conversion Pipeline Overview
 
 ## RGB → CIELAB
+
+```mermaid
+flowchart LR
+    A[sRGB] --> B[Linear RGB]
+    B --> C["XYZ (D65)"]
+    C --> D[CIELAB]
+```
 
 1. sRGB → Linear RGB
 2. Linear RGB → XYZ
@@ -20,11 +25,16 @@ This explains the full mathematical conversion pipeline between **sRGB** and **C
 
 ## CIELAB → RGB
 
+```mermaid
+flowchart LR
+    A[CIELAB] --> B["XYZ (D65)"]
+    B --> C[Linear RGB]
+    C --> D[sRGB]
+```
+
 1. CIELAB → XYZ
 2. XYZ → Linear RGB
 3. Linear RGB → sRGB
-
----
 
 # 2. sRGB to Linear RGB
 
@@ -41,8 +51,6 @@ C_\text{lin} =
 ```
 
 This is applied independently to \(R\), \(G\), and \(B\).
-
----
 
 # 3. Linear RGB to XYZ
 
@@ -64,8 +72,6 @@ R_\text{lin} \\ G_\text{lin} \\ B_\text{lin}
 \end{bmatrix}
 
 ```
-
----
 
 # 4. XYZ to CIELAB
 
@@ -103,8 +109,6 @@ a^* = 500 \left[f(x) - f(y)\right]
 b^* = 200 \left[f(y) - f(z)\right]
 ```
 
----
-
 # 5. CIELAB to XYZ
 
 The inverse of \(f(t)\):
@@ -131,8 +135,6 @@ Y = Y_n f^{-1}(f_y),\quad
 Z = Z_n f^{-1}(f_z)
 ```
 
----
-
 # 6. XYZ to Linear RGB
 
 ```math
@@ -141,16 +143,14 @@ R_\text{lin} \\ G_\text{lin} \\ B_\text{lin}
 \end{bmatrix}
 =
 \begin{bmatrix}
- 3.2406 & -1.5372 & -0.4986 \\
--0.9689 &  1.8758 &  0.0415 \\
- 0.0557 & -0.2040 &  1.0570
+ 3.240970 & -1.537383 & -0.498611 \\
+-0.969244 &  1.875968 &  0.041555 \\
+ 0.055630 & -0.203977 &  1.056972
 \end{bmatrix}
 \begin{bmatrix}
 X \\ Y \\ Z
 \end{bmatrix}
 ```
-
----
 
 # 7. Linear RGB to sRGB
 
@@ -163,8 +163,6 @@ C_\text{srgb} =
 ```
 
 Clamp results to \([0,1]\) and scaled by 255 before converting to 8‑bit.
-
----
 
 # 8. Summary
 
@@ -182,8 +180,6 @@ Clamp results to \([0,1]\) and scaled by 255 before converting to 8‑bit.
 - XYZ → linear RGB
 - Linear RGB → sRGB (gamma)
 - Clamp to valid output
-
----
 
 # 9. References
 
