@@ -66,13 +66,22 @@
     },
     "Formatting": {
       "format": {
-        "desc": "Format all files with Prettier and clang-format"
+        "desc": "Format all files with Prettier and clang-format (modifies files)"
+      },
+      "format:check": {
+        "desc": "Check all files with Prettier and clang-format without modifying them (files untouched)"
       },
       "format-js": {
-        "desc": "Format all non-C++ files with Prettier"
+        "desc": "Format all non-C++ files with Prettier (modifies files)"
+      },
+      "format-js:check": {
+        "desc": "Check all non-C++ files with Prettier without modifying them (files untouched)"
       },
       "format-wasm": {
-        "desc": "Format all C++ files with clang-format"
+        "desc": "Format all C++ files with clang-format (modifies files)"
+      },
+      "format-wasm:check": {
+        "desc": "Check all C++ files with clang-format without modifying them (files untouched)"
       }
     },
     "Linting": {
@@ -137,8 +146,11 @@
     "clean-js": "rimraf dist",
     "clean-wasm": "node scripts/build-wasm.js --clean",
     "format": "npm run format-js && npm run format-wasm",
+    "format:check": "npm run format-js:check && npm run format-wasm:check",
     "format-js": "prettier --write .",
+    "format-js:check": "prettier --check .",
     "format-wasm": "node scripts/format-wasm.js",
+    "format-wasm:check": "node scripts/format-wasm.js --check",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:style": "editorconfig-checker",
@@ -149,8 +161,10 @@
     "validate-scripts": "node scripts/validate-scripts.js"
   },
   "dependencies": {
+    "html-react-parser": "^5.2.11",
     "imagetracerjs": "^1.2.6",
     "lucide-react": "^0.562.0",
+    "prop-types": "^15.8.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-helmet": "^6.1.0",
@@ -159,7 +173,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
-    "@tanstack/react-query": "^5.90.14",
+    "@tanstack/react-query": "^5.90.12",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",

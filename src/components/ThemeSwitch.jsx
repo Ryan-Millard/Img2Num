@@ -1,10 +1,9 @@
 import { Moon, Sun } from 'lucide-react';
+import GlassSwitch from './GlassSwitch';
 import { useTheme } from '@hooks/useTheme';
-import styles from './ThemeSwitch.module.css';
-import Tooltip from '@components/Tooltip';
 
-/**
- * ThemeSwitch component
+/*
+ * ThemeSwitch
  *
  * A toggle button that allows users to switch between light and dark themes.
  * The button displays a moon icon in light mode and a sun icon in dark mode.
@@ -15,13 +14,14 @@ import Tooltip from '@components/Tooltip';
 export default function ThemeSwitch() {
   // Get current theme and toggle function from the theme hook
   const { theme, toggleTheme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
-    <Tooltip content={`Switch to ${ theme === 'dark' ? "Light" : "Dark" } Mode`}>
-      <button aria-label={`Switch to ${ theme === 'dark' ? "Light" : "Dark" } Mode`} type="button" className={`glass ${styles.themeButton}`} onClick={toggleTheme}>
-        {/* Show Sun icon in dark mode, Moon icon in light mode */}
-        {theme === 'dark' ? <Sun className={styles.icon} /> : <Moon className={styles.icon} />}
-      </button>
-    </Tooltip>
+    <GlassSwitch
+      isOn={isDark}
+      onChange={toggleTheme}
+      thumbContent={isDark ? <Sun /> : <Moon />}
+      ariaLabel={`switch to ${isDark ? 'light' : 'dark'} mode`}
+    />
   );
 }

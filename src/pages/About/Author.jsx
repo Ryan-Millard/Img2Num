@@ -33,8 +33,6 @@ const Author = () => (
       </Tooltip>
       &nbsp;for details.
     </p>
-
-
   </GlassCard>
 );
 

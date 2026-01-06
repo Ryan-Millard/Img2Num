@@ -41,21 +41,22 @@ An example: a cellphone from 2013.
 ## Bit-Reversal Permutation
 
 ### Purpose
+
 Before applying the iterative butterfly operations, the input array must be **reordered so that the indices correspond to the bit-reversed order**
 of their original index.
 
 - **Example:** For $N=8$, binary indices:
 
-    | Original Index (decimal) | Original Index (binary) | Bit-Reversed Index (binary) | Bit-Reversed Index (decimal) |
-    | ------------------------ | ----------------------- | --------------------------- | ---------------------------- |
-    |                        0 | 000                     |                         000 | 0                            |
-    |                        1 | 001                     |                         100 | 4                            |
-    |                        2 | 010                     |                         010 | 2                            |
-    |                        3 | 011                     |                         110 | 6                            |
-    |                        4 | 100                     |                         001 | 1                            |
-    |                        5 | 101                     |                         101 | 5                            |
-    |                        6 | 110                     |                         011 | 3                            |
-    |                        7 | 111                     |                         111 | 7                            |
+  | Original Index (decimal) | Original Index (binary) | Bit-Reversed Index (binary) | Bit-Reversed Index (decimal) |
+  | ------------------------ | ----------------------- | --------------------------- | ---------------------------- |
+  | 0                        | 000                     | 000                         | 0                            |
+  | 1                        | 001                     | 100                         | 4                            |
+  | 2                        | 010                     | 010                         | 2                            |
+  | 3                        | 011                     | 110                         | 6                            |
+  | 4                        | 100                     | 001                         | 1                            |
+  | 5                        | 101                     | 101                         | 5                            |
+  | 6                        | 110                     | 011                         | 3                            |
+  | 7                        | 111                     | 111                         | 7                            |
 
 - Reordering ensures that the iterative algorithm can **process butterflies in a linear pass** without recursion.
 - Each butterfly stage combines elements separated by certain distances; bit-reversal guarantees that the data for each stage are contiguous in memory.
@@ -92,6 +93,7 @@ $$
   - Half of the elements are combined with the other half using the corresponding twiddle factor.
 
 ### Visualization
+
 ```mermaid
 %% N=8 FFT Butterfly Diagram (Textbook-Accurate, Domain-Neutral)
 flowchart LR

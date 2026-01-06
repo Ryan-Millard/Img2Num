@@ -19,20 +19,21 @@ for the full source listing. Here we explain the important parts.
 
 - `struct Pixel { int x,y; };` — small POD for BFS queue.
 - `inline int idx(int x, int y, int width)` — maps (x,y) to a linear index into `labels` (not into pixel bytes; bytes index uses `*4`).
-This makes it simpler to index 2D data in a 1D array.
+  This makes it simpler to index 2D data in a 1D array.
 - `sameColor(...)` — compares 4 bytes (in RGBA form) at two pixel coordinates for exact equality.
-    :::caution It uses *exact* equality
-    Compression or anti-aliased edges will produce many colors that are visually similar but not equal.
-    :::
+  :::caution It uses _exact_ equality
+  Compression or anti-aliased edges will produce many colors that are visually similar but not equal.
+  :::
 - `struct Region` — collects `size`, `minX`, `maxX`, `minY`, `maxY`, provides convenience `width()`, `height()`, and `isBigEnough(...)`.
 - **Flood-fill labeling loop** — For every unlabeled pixel, perform a BFS:
-    <Tabs
-      defaultValue="list"
-      values={[
-        { label: 'List', value: 'list' },
-        { label: 'Flowchart', value: 'flowchart' },
-      ]}
-    >
+  <Tabs
+  defaultValue="list"
+  values={[
+  { label: 'List', value: 'list' },
+  { label: 'Flowchart', value: 'flowchart' },
+  ]}
+
+  >
 
     <TabItem value="list">
     1. Push initial pixel
@@ -67,13 +68,15 @@ This makes it simpler to index 2D data in a 1D array.
         L --> M[Push neighbour to queue]
         M --> F
 
-    ```
-    </TabItem>
-    </Tabs>
+  ```
+  </TabItem>
+  </Tabs>
+
+  ```
 
 - **Merge phase**: iterate every pixel; if its region is too small (`isBigEnough(...) == false`),
-check the 4 immediate neighbours; if any neighbour is in a different label `nl` and `regions[nl].isBigEnough(...)`
-is true, copy the neighbour's color bytes into the small pixel and set its label to `nl`.
+  check the 4 immediate neighbours; if any neighbour is in a different label `nl` and `regions[nl].isBigEnough(...)`
+  is true, copy the neighbour's color bytes into the small pixel and set its label to `nl`.
   :::note
   The merge phase uses the `labels` array to pick neighbour region IDs and the `regions` metadata to determine which regions are "big".
   :::
@@ -98,7 +101,7 @@ int main() {
   return 0;
 }
 ```
+
 :::tip
 Tweak the thresholds to match your use-case.
 :::
-
