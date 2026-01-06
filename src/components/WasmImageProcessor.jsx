@@ -123,7 +123,7 @@ const WasmImageProcessor = () => {
       step(100);
 
       navigate('/editor', {
-        state: { svg, imgData: { pixels: merged, width, height } },
+        state: { svg },
       });
     } catch (err) {
       console.error(err);
