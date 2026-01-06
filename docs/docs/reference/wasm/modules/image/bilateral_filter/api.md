@@ -48,6 +48,6 @@ $$
 $$
 
 > The factor **4.18** is empirically derived for natural images and equalizes bilateral
-range weights across color spaces. Any value in the range **[4.1, 4.3]** will typically
-produce comparable results. This is a recommended default, not a universal constant.
-:::
+> range weights across color spaces. Any value in the range **[4.1, 4.3]** will typically
+> produce comparable results. This is a recommended default, not a universal constant.
+> :::
