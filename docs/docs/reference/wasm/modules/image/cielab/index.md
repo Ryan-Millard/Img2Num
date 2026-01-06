@@ -1,9 +1,8 @@
 ---
 id: explained
 title: Implementation Explained
-sidebar_position: 5
+sidebar_position: 2
 ---
-
 
 # RGB ↔ CIELAB Conversion Guide
 
