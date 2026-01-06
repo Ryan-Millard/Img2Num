@@ -128,7 +128,7 @@ The scaling factor of **~4.18** is empirically derived and works well for natura
 - It's **not universal** — depends on image statistics
 - It's **not mandatory** — the different behaviors are valid features of each color space
 - **Advanced users** may want different sigma_range values for each space
-  :::
+:::
 
 ### Visual Example
 
@@ -139,6 +139,98 @@ Using the same `sigma_range = 50`:
 | **CIELAB**       | Stronger smoothing, better edge preservation in perceptually uniform manner |
 | **RGB**          | Moderate smoothing, adequate edge preservation for most use cases           |
 | **RGB (scaled)** | Similar smoothing to CIELAB when `sigma_range ≈ 209`                        |
+
+
+## Why the Scaling Factor Exists (and Why ~4.18 Works)
+
+RGB and CIELAB do **not** measure color differences on the same numeric scale. As a result, identical `sigma_range` values will generally not produce equivalent range weights or visual results.
+
+### What “equivalent behavior” means mathematically
+
+The bilateral filter’s range weight is defined as:
+
+$$
+w_{\text{range}} = \exp!\left(-\frac{d^2}{2\sigma_{\text{range}}^2}\right)
+$$
+
+For RGB and CIELAB to behave equivalently, they must produce **the same range weight** for corresponding color differences:
+
+$$
+\exp\left(-\frac{d_{\text{RGB}}^2}{2\sigma_{\text{RGB}}^2}\right)
+\approx
+\exp\left(-\frac{d_{\text{LAB}}^2}{2\sigma_{\text{LAB}}^2}\right)
+$$
+
+Taking the logarithm and simplifying yields:
+
+$$
+\frac{d_{\text{RGB}}}{\sigma_{\text{RGB}}}
+\approx
+\frac{d_{\text{LAB}}}{\sigma_{\text{LAB}}}
+$$
+
+This implies the required relationship:
+
+$$
+\sigma_{RGB} \approx
+\frac{d_{\text{RGB}}}{d_{\text{LAB}}}
+\sigma_{LAB}
+$$
+
+So the scaling factor is **not arbitrary** — it is the **ratio of typical RGB distances to LAB distances** for the same pixel differences.
+
+### Where the value ~4.18 comes from
+
+For natural images (photographic content, sRGB, D65):
+
+1. Sample many *local* pixel pairs (neighbors).
+2. Measure:
+
+   * $$d_{\text{RGB}} = \sqrt{\Delta R^2 + \Delta G^2 + \Delta B^2}$$
+   * $$d_{\text{LAB}} = \sqrt{\Delta L^2 + \Delta a^2 + \Delta b^2}$$
+3. Compute the ratio $\frac{d_{RGB}}{d_{LAB}}$.
+4. Aggregate (mean or median).
+
+Across a wide range of natural images, this ratio consistently clusters around:
+
+$$
+\boxed{4.1 \text{ to } 4.3}
+$$
+
+The value **4.18** lies near the center of this empirical range and provides a strong default for matching bilateral range behavior between RGB and CIELAB.
+
+### Why this ratio is stable (but not universal)
+
+The factor remains stable for natural images because:
+
+* **LAB compresses perceptual differences**
+  Equal perceived color changes produce smaller numeric deltas than in RGB.
+* **RGB channels are highly correlated**
+  Euclidean RGB distance accumulates redundant energy across channels.
+* **Bilateral filters operate locally**
+  In the small-delta regime, the RGB→LAB transform is locally quasi-linear.
+
+However, the factor may vary if:
+
+* Images are synthetic or heavily quantized
+* A different RGB color space or white point is used
+* LAB components are re-weighted or normalized differently
+
+### Practical guidance
+
+* **Recommended default**
+
+  For visually comparable smoothing on natural images, use:
+  $$
+  \sigma_{range_{RGB}} \approx 4.18 \times \sigma_{range_{CIELAB}}
+  $$
+
+* **Advanced usage**
+  For strict equivalence, compute the ratio
+  $$
+  k = \frac{\mathbb{E}[d_{RGB}]}{\mathbb{E}[d_{LAB}]}
+  $$
+  on your image set and scale `sigma_range` accordingly.
 
 ## Performance Considerations
 

@@ -33,3 +33,21 @@ The alpha channel, `image[i + 3]`, is left untouched - it is not part of the bil
 - **Namespace**: `bilateral` (C++)
 - **Export**: Exposed to WASM via `extern "C"` wrapper as `bilateral_filter`.
   :::
+
+:::tip Color Space Discrepancies
+As noted on the
+[Color Space Selection page](../color-spaces/#why-the-scaling-factor-exists-and-why-418-works),
+the bilateral filter will produce **different results** depending on the selected
+`color_space`, even with identical parameters.
+
+To achieve **visually equivalent filtering behavior** between CIELAB and RGB,
+treat CIELAB as the reference space and scale `sigma_range` for RGB:
+
+$$
+\sigma_{\text{range, RGB}} \approx 4.18 \times \sigma_{\text{range, CIELAB}}
+$$
+
+> The factor **4.18** is empirically derived for natural images and equalizes bilateral
+range weights across color spaces. Any value in the range **[4.1, 4.3]** will typically
+produce comparable results. This is a recommended default, not a universal constant.
+:::

@@ -2,7 +2,7 @@
 id: cielab-api
 title: CIELAB Color Space API
 sidebar_label: API Reference
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 # CIELAB Color Space Conversion API
