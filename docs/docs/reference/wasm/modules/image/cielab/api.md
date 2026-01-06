@@ -30,14 +30,14 @@ void rgb_to_lab(
 
 #### Parameters
 
-| Parameter | Type | Range | Description |
-|:---|:---|:---|:---|
-| `r_u8` | `uint8_t` | [0, 255] | Red channel (input) |
-| `g_u8` | `uint8_t` | [0, 255] | Green channel (input) |
-| `b_u8` | `uint8_t` | [0, 255] | Blue channel (input) |
-| `out_l` | `double&` | [0, 100] | L\* lightness (output, clamped) |
-| `out_a` | `double&` | ~[-128, 127] | a\* green-red axis (output) |
-| `out_b` | `double&` | ~[-128, 127] | b\* blue-yellow axis (output) |
+| Parameter | Type      | Range        | Description                     |
+| :-------- | :-------- | :----------- | :------------------------------ |
+| `r_u8`    | `uint8_t` | [0, 255]     | Red channel (input)             |
+| `g_u8`    | `uint8_t` | [0, 255]     | Green channel (input)           |
+| `b_u8`    | `uint8_t` | [0, 255]     | Blue channel (input)            |
+| `out_l`   | `double&` | [0, 100]     | L\* lightness (output, clamped) |
+| `out_a`   | `double&` | ~[-128, 127] | a\* green-red axis (output)     |
+| `out_b`   | `double&` | ~[-128, 127] | b\* blue-yellow axis (output)   |
 
 #### Transformation Pipeline
 
@@ -84,14 +84,14 @@ void lab_to_rgb(
 
 #### Parameters
 
-| Parameter | Type | Range | Description |
-|:---|:---|:---|:---|
-| `L` | `double` | [0, 100] | L\* lightness (input) |
-| `A` | `double` | ~[-128, 127] | a\* green-red axis (input) |
-| `B` | `double` | ~[-128, 127] | b\* blue-yellow axis (input) |
-| `r_u8` | `uint8_t&` | [0, 255] | Red channel (output, clamped) |
-| `g_u8` | `uint8_t&` | [0, 255] | Green channel (output, clamped) |
-| `b_u8` | `uint8_t&` | [0, 255] | Blue channel (output, clamped) |
+| Parameter | Type       | Range        | Description                     |
+| :-------- | :--------- | :----------- | :------------------------------ |
+| `L`       | `double`   | [0, 100]     | L\* lightness (input)           |
+| `A`       | `double`   | ~[-128, 127] | a\* green-red axis (input)      |
+| `B`       | `double`   | ~[-128, 127] | b\* blue-yellow axis (input)    |
+| `r_u8`    | `uint8_t&` | [0, 255]     | Red channel (output, clamped)   |
+| `g_u8`    | `uint8_t&` | [0, 255]     | Green channel (output, clamped) |
+| `b_u8`    | `uint8_t&` | [0, 255]     | Blue channel (output, clamped)  |
 
 #### Transformation Pipeline
 
@@ -130,13 +130,13 @@ lab_to_rgb(L, a, b, r, g, b_rgb);
 
 ### Color Space Standards
 
-| Property | Value |
-|:---|:---|
-| **Color space** | sRGB (IEC 61966-2-1:1999) |
-| **Illuminant** | D65 (6500K daylight) |
-| **Observer** | CIE 1931 2° Standard Observer |
-| **Gamma** | 2.4 (sRGB standard) |
-| **RGB primaries** | ITU-R BT.709 |
+| Property          | Value                         |
+| :---------------- | :---------------------------- |
+| **Color space**   | sRGB (IEC 61966-2-1:1999)     |
+| **Illuminant**    | D65 (6500K daylight)          |
+| **Observer**      | CIE 1931 2° Standard Observer |
+| **Gamma**         | 2.4 (sRGB standard)           |
+| **RGB primaries** | ITU-R BT.709                  |
 
 ### CIELAB Coordinate System
 
@@ -144,12 +144,10 @@ lab_to_rgb(L, a, b, r, g, b_rgb);
   - 0 = black
   - 100 = white
   - 50 ≈ mid-gray
-  
 - **a\* (Green-Red)**: Color opponent dimension
   - Negative values = green
   - Positive values = red
   - 0 = neutral (gray axis)
-  
 - **b\* (Blue-Yellow)**: Color opponent dimension
   - Negative values = blue
   - Positive values = yellow
@@ -164,6 +162,7 @@ $$
 $$
 
 **Interpretation**:
+
 - ΔE < 1: Imperceptible difference
 - ΔE < 2: Perceptible with close observation
 - ΔE < 10: Noticeable at a glance
@@ -192,12 +191,13 @@ This produces more perceptually consistent smoothing compared to RGB Euclidean d
 
 ### Computational Cost
 
-| Operation | Complexity |
-|:---|:---|
+| Operation    | Complexity                       |
+| :----------- | :------------------------------- |
 | `rgb_to_lab` | ~20-30 floating-point operations |
 | `lab_to_rgb` | ~25-35 floating-point operations |
 
 **Key operations**:
+
 - Gamma correction: piecewise with `pow()` for nonlinear segment
 - Matrix multiplication: 3×3 matrix
 - XYZ transform: `cbrt()` or linear approximation

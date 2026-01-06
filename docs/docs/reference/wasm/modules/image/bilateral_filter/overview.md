@@ -17,12 +17,13 @@ and where the corresponding code lives so you can jump straight into the impleme
 In Img2Num, the bilateral filter is used to **reduce noise while preserving edges**, which is critical for accurate image
 segmentation (via methods like K-Means clustering), contour extraction and vectorization.
 
-Similarly to Gaussian blurs, it acts as a *low-pass filter* that reduces noise.
-Conversely, it is *less aggressive than Gaussian blurs, since it takes spatial position (x & y coordinates) into account* -
+Similarly to Gaussian blurs, it acts as a _low-pass filter_ that reduces noise.
+Conversely, it is _less aggressive than Gaussian blurs, since it takes spatial position (x & y coordinates) into account_ -
 allowing it to preserve sharp edges.
 :::
 
 ## At a glance
+
 - **Algorithm:** Bilateral Filter (Non-linear, edge-preserving).
 - **Input/Output image data types:** `uint8_t` (8-bit unsigned integer channels).
 - **Color spaces:** RGB & CIELAB can be chosen (see `color_space` in the [**API / Usage** section](../api/)).

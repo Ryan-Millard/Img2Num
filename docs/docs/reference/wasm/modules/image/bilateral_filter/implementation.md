@@ -73,11 +73,12 @@ We primarily use $\sigma_{spatial} \approx 3.0$, which results in a kernel radiu
 
     {/* center pixel */}
     <rect x="9" y="9" width="1" height="1" fill="black" />
+
   </svg>
 </div>
 
 :::important Kernel Dimensions
-The filter kernel is always square; width = height = 2 * radius + 1.
+The filter kernel is always square; width = height = 2 \* radius + 1.
 :::
 
 ## 2. Computing Weights
@@ -98,6 +99,7 @@ double gaussian(double x, double sigma) {
     return std::exp(-(x * x) / (2.0 * sigma * sigma));
 }
 ```
+
 :::
 
 ### Spatial Weights (constant per kernel)
@@ -143,19 +145,21 @@ w_range = gaussian(dist, sigma_range);
 
 :::important "On the fly" vs. LUT
 In **CIELAB**, the pixels are not bounded 0–255 per channel in the same way:
+
 - L: $[0,100]$
 - a: roughly $[−128,127]$
 - b: roughly $[−128,127]$
 
 But more importantly:
+
 1. **Continuous values:** After conversion from RGB, the values are floating-point.
-The differences ($|L^*a^*b^* - L^*a^*b^*|^2$) are continuous, not integers.
-So the LUT would need to store **all possible floating-point differences**, which is essentially impossible.
+   The differences ($|L^*a^*b^* - L^*a^*b^*|^2$) are continuous, not integers.
+   So the LUT would need to store **all possible floating-point differences**, which is essentially impossible.
 2. **Large dynamic range:** The squared Euclidean distance in Lab can be **much larger than in 8-bit RGB**, especially when using floating-point precision.
-Precomputing a LUT with sufficient precision would be huge.
+   Precomputing a LUT with sufficient precision would be huge.
 3. **Precision matters:** Small errors in range weights in Lab are more noticeable because the filter is very sensitive to perceptual color distances.
-A coarse LUT could lead to visible artifacts.
-:::
+   A coarse LUT could lead to visible artifacts.
+   :::
 
 <details open>
 <summary>
@@ -178,6 +182,7 @@ for each neighbor.
 The discrete nature of the LUT is represented by the shaded area and the curve shows how weight decays with increasing &Delta;RGB.
 
 ##### CIELAB (Blue curve and shaded area)
+
 In the CIELAB color space, the number of possible differences is much larger and continuous.
 Precomputing a LUT would require enormous memory, so weights are **computed on-the-fly**.
 The curve represents the weight for a given color difference &Delta;LAB, and the shaded area illustrates the range of influence.
@@ -197,10 +202,10 @@ The core processing happens in a nested loop over every pixel $(y, x)$. For each
 2. **Fetch** neighbor RGB values.
 3. **Calculate** color difference using squared Euclidean distance.
 4. **Lookup weights:**
-    - **Spatial weights:** Precomputed at the start of the bilateral filter.
-    - **Range weights:**
-      - *RGB*: From LUT (precomputed at the start of the bilateral filter).
-      - *CIELAB*: Calculate "on the fly".
+   - **Spatial weights:** Precomputed at the start of the bilateral filter.
+   - **Range weights:**
+     - _RGB_: From LUT (precomputed at the start of the bilateral filter).
+     - _CIELAB_: Calculate "on the fly".
 5. **Accumulate** the weighted sum and the sum of weights.
 
 ## 4. Normalization

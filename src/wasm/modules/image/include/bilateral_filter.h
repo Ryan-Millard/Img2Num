@@ -11,8 +11,10 @@ namespace bilateral {
 // Parameters:
 //  - image: Pointer to RGBA pixel buffer
 //  - width, height: Image dimensions (px)
-//  - sigma_spatial: Gaussian standard deviation for spatial proximity (spatial decay)
-//  - sigma_range: Gaussian standard deviation for intensity difference (radiometric decay)
+//  - sigma_spatial: Gaussian standard deviation for spatial proximity (spatial
+//  decay)
+//  - sigma_range: Gaussian standard deviation for intensity difference
+//  (radiometric decay)
 void bilateral_filter(uint8_t *image, size_t width, size_t height,
                       double sigma_spatial, double sigma_range,
                       uint8_t color_space);

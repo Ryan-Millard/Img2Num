@@ -125,13 +125,12 @@ void kmeans_clustering_spatial(uint8_t *data, int width, int height, int k,
   for (int i = 0; i < height; ++i) {
     for (int j = 0; j < width; ++j) {
       int idx = i * width + j;
-      pixels[idx] = RGBXY{
-          .r = static_cast<float>(data[idx * 4 + 0]) / 255, // normalize 0 -1
-          .g = static_cast<float>(data[idx * 4 + 1]) / 255,
-          .b = static_cast<float>(data[idx * 4 + 2]) / 255,
-          .x = static_cast<float>(j) / width, // normalize 0 - 1
-          .y = static_cast<float>(i) / height
-      };
+      pixels[idx] = RGBXY{.r = static_cast<float>(data[idx * 4 + 0]) /
+                               255, // normalize 0 -1
+                          .g = static_cast<float>(data[idx * 4 + 1]) / 255,
+                          .b = static_cast<float>(data[idx * 4 + 2]) / 255,
+                          .x = static_cast<float>(j) / width, // normalize 0 - 1
+                          .y = static_cast<float>(i) / height};
     }
   }
 

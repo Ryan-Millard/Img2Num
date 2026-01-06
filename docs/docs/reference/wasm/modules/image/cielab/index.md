@@ -6,27 +6,30 @@ sidebar_position: 2
 
 # RGB ↔ CIELAB Conversion Guide
 
-This explains the full mathematical conversion pipeline between **sRGB** and **CIELAB (Lab)** color spaces.  
+This explains the full mathematical conversion pipeline between **sRGB** and **CIELAB (Lab)** color spaces.
 
 ---
 
 # 1. Conversion Pipeline Overview
 
 ## RGB → CIELAB
-1. sRGB → Linear RGB  
-2. Linear RGB → XYZ  
-3. XYZ → CIELAB  
+
+1. sRGB → Linear RGB
+2. Linear RGB → XYZ
+3. XYZ → CIELAB
 
 ## CIELAB → RGB
-1. CIELAB → XYZ  
-2. XYZ → Linear RGB  
-3. Linear RGB → sRGB  
+
+1. CIELAB → XYZ
+2. XYZ → Linear RGB
+3. Linear RGB → sRGB
 
 ---
 
 # 2. sRGB to Linear RGB
 
 sRGB values are gamma‑compressed. Convert them to linear light:
+
 ```math
 
 C_\text{lin} =
@@ -44,6 +47,7 @@ This is applied independently to \(R\), \(G\), and \(B\).
 # 3. Linear RGB to XYZ
 
 Using the sRGB color space matrix with a D65 white point:
+
 ```math
 
 \begin{bmatrix}
@@ -60,6 +64,7 @@ R_\text{lin} \\ G_\text{lin} \\ B_\text{lin}
 \end{bmatrix}
 
 ```
+
 ---
 
 # 4. XYZ to CIELAB
@@ -69,6 +74,7 @@ Normalize XYZ by the D65 reference white:
 ```math
 X_n = 0.95047,\quad Y_n = 1.00000,\quad Z_n = 1.08883
 ```
+
 ```math
 x = \frac{X}{X_n},\quad y = \frac{Y}{Y_n},\quad z = \frac{Z}{Z_n}
 ```
@@ -163,20 +169,23 @@ Clamp results to \([0,1]\) and scaled by 255 before converting to 8‑bit.
 # 8. Summary
 
 ## RGB → Lab
-- Remove gamma (sRGB → linear)  
-- Convert to XYZ  
-- Normalize by D65  
-- Apply nonlinear transform  
-- Produce L\*, a\*, b\*  
+
+- Remove gamma (sRGB → linear)
+- Convert to XYZ
+- Normalize by D65
+- Apply nonlinear transform
+- Produce L\*, a\*, b\*
 
 ## Lab → RGB
-- Convert Lab → XYZ via inverse nonlinear transform  
-- XYZ → linear RGB  
-- Linear RGB → sRGB (gamma)  
-- Clamp to valid output  
+
+- Convert Lab → XYZ via inverse nonlinear transform
+- XYZ → linear RGB
+- Linear RGB → sRGB (gamma)
+- Clamp to valid output
 
 ---
 
 # 9. References
-- CIE 1976 L\*a\*b\* Specification  
-- IEC 61966‑2‑1 sRGB Standard  
+
+- CIE 1976 L\*a\*b\* Specification
+- IEC 61966‑2‑1 sRGB Standard

@@ -11,6 +11,7 @@ This section explains the inner workings of the **bilateral filter** implementat
 ## Overview
 
 The bilateral filter smoothes an image while **preserving edges**. It achieves this by weighting neighboring pixels based on two criteria:
+
 1.  **Spatial Distance**: Pixels closer to the center have higher weight.
 2.  **Range (Color) Difference**: Pixels with similar colors to the center have higher weight.
 
@@ -19,6 +20,7 @@ This prevents the "blurring" from crossing strong edges, where the color differe
 ## How It Works
 
 For each pixel in the image, we look at a local window (kernel) around it. The new pixel value is a weighted average of its neighbors:
+
 $$
 I_{new}(x) = \frac{1}{W_p} \sum_{x_i \in \Omega} I(x_i) \cdot w_{spatial}(\|x_i - x\|) \cdot w_{range}(|I(x_i) - I(x)|)
 $$
@@ -56,6 +58,7 @@ $$
 
 where $ \sigma_s$ controls spatial smoothing and $\sigma_r$ controls edge sensitivity.
 :::
+
 ## Implementation Details
 
 Our implementation uses a **naive sliding window** approach with **Look-Up Table (LUT) optimizations / "On the Fly" computations** to improve performance.
@@ -63,6 +66,7 @@ Our implementation uses a **naive sliding window** approach with **Look-Up Table
 ### 1. Precomputed Look-Up Tables (RGB color space)
 
 Calculating `std::exp()` inside the inner loop is expensive. We precompute the two Gaussian functions:
+
 - **Spatial Weights**: A 2D grid of weights based on the kernel radius. Since the spatial distance between a neighbor and the center never changes, this is calculated once per filter application.
 - **Range Weights**: A 1D array mapping squared color distance ($0$ to $255^2 \times 3$) to a weight. This allows O(1) lookups for the "edge preservation" factor.
 
@@ -82,6 +86,7 @@ Instead range weights are computed on the fly using the `gaussian` function.
 Since the RGB to CIELAB conversion is expensive, redundant computations are minimized by initially converting the full RGB image to CIELAB image.
 
 In the convolution step LAB distance is computed by reading those values from the CIELAB image buffer, and the gaussian is then evaluated.
+
 ```
 dL = cie_image[neighbor_idx] - L0;
 dA = cie_image[neighbor_idx + 1] - A0;
