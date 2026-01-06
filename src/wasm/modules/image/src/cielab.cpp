@@ -131,6 +131,8 @@ constexpr double inverse_xyz_to_lab(double t) {
 }
 
 inline double gamma_encode(double u) {
+  // Guard against negative values from out-of-gamut colors
+  u = std::max(0.0, u);
   return (u <= SRGB_LINEAR_THRESHOLD / SRGB_LINEAR_FACTOR)
              ? SRGB_LINEAR_FACTOR * u
              : (1.0 + SRGB_GAMMA_OFFSET) * std::pow(u, SRGB_GAMMA_INV) -
@@ -154,9 +156,9 @@ void lab_to_rgb(const double L, const double A, const double B,
   double b{SRGB_X_TO_B * X + SRGB_Y_TO_B * Y + SRGB_Z_TO_B * Z};
 
   // --- linear RGB → sRGB (gamma correction)
-  r = gamma_encode(r);
-  g = gamma_encode(g);
-  b = gamma_encode(b);
+  r = gamma_encode(std::clamp(r, 0.0, 1.0));
+  g = gamma_encode(std::clamp(g, 0.0, 1.0));
+  b = gamma_encode(std::clamp(b, 0.0, 1.0));
 
   // --- Clamp and convert to 8-bit
   out_r_u8 = static_cast<uint8_t>(std::round(255.0 * std::clamp(r, 0.0, 1.0)));
