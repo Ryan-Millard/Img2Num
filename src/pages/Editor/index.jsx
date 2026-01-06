@@ -13,7 +13,7 @@ const SHAPE_SELECTOR = 'path,rect,circle,polygon,ellipse';
 export default function Editor() {
   const { state } = useLocation();
   const { svg } = state || {};
-  const [svgElements] = useState(() => parse(svg));
+  const [svgElements] = useState(() => (svg ? parse(svg) : null));
   const [isColorMode, setIsColorMode] = useState(true);
   const viewportRef = useRef(null);
   const innerRef = useRef(null);
@@ -38,8 +38,10 @@ export default function Editor() {
     pointerState.current.moved = false;
     pointerState.current.lastX = e.clientX;
     pointerState.current.lastY = e.clientY;
-    try { viewportRef.current.setPointerCapture(e.pointerId); } catch {}
-    viewportRef.current.classList.add('grabbing');
+    try {
+      viewportRef.current.setPointerCapture(e.pointerId);
+    } catch {}
+    viewportRef.current.classList.add(styles.grabbing);
   };
 
   const onPointerMove = (e) => {
@@ -63,8 +65,10 @@ export default function Editor() {
   const onPointerUp = (e) => {
     const moved = pointerState.current.moved;
     pointerState.current.dragging = false;
-    try { viewportRef.current.releasePointerCapture(e.pointerId); } catch {}
-    viewportRef.current?.classList.remove('grabbing');
+    try {
+      viewportRef.current.releasePointerCapture(e.pointerId);
+    } catch {}
+    viewportRef.current?.classList.remove(styles.grabbing);
 
     // Only treat as click if user didn't drag
     if (!moved && isColorMode) {
@@ -76,7 +80,7 @@ export default function Editor() {
       if (!shape || !svgRoot.contains(shape)) return;
 
       // Apply your color class
-      shape.id = styles.coloredRegion;
+      shape.classList.add(styles.coloredRegion);
     }
   };
 
@@ -102,7 +106,9 @@ export default function Editor() {
         <div className="controls" style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <GlassSwitch
             isOn={isColorMode}
-            onChange={() => { setIsColorMode((prev) => !prev); }}
+            onChange={() => {
+              setIsColorMode((prev) => !prev);
+            }}
             ariaLabel={`Switch to ${isColorMode ? 'preview' : 'color'} mode`}
             thumbContent={isColorMode ? <Eye /> : <Brush />}
           />
@@ -115,19 +121,15 @@ export default function Editor() {
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}
-        >
-          <div
-            ref={innerRef}
-            className={styles.inner}
-            style={transformStyle}
-          >
+          onPointerCancel={onPointerUp}>
+          <div ref={innerRef} className={styles.inner} style={transformStyle}>
             {svgElements}
           </div>
         </GlassCard>
 
         <div className={styles.hint}>
-          Click shapes to reveal their original colour. Use mouse wheel to zoom, drag to pan. Switching modes preserves fills.
+          Click shapes to reveal their original colour. Use mouse wheel to zoom, drag to pan. Switching modes preserves
+          fills.
         </div>
       </GlassCard>
     </>
