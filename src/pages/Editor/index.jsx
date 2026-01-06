@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import parse from 'html-react-parser';
 import { useLocation } from 'react-router-dom';
 import { Eye, Brush } from 'lucide-react';
 import GlassCard from '@components/GlassCard';
@@ -12,6 +13,16 @@ const SHAPE_SELECTOR = 'path,rect,circle,polygon,ellipse';
 export default function Editor() {
   const { state } = useLocation();
   const { svg } = state || {};
+  if (!svg) {
+    return (
+      <GlassCard className="text-center p-8">
+        <h2>No SVG data found</h2>
+        <p>Please upload an image first.</p>
+      </GlassCard>
+    );
+  }
+
+  const [svgElements] = useState(() => parse(svg));
   const [isColorMode, setIsColorMode] = useState(true);
   const viewportRef = useRef(null);
   const innerRef = useRef(null);
@@ -31,7 +42,6 @@ export default function Editor() {
 
   // Wheel zoom (keeps tx/ty; can be improved later to zoom to pointer)
   const handleWheel = (e) => {
-    e.preventDefault();
     const delta = Math.sign(e.deltaY);
     setTransform((t) => {
       const step = 1.12;
@@ -95,15 +105,6 @@ export default function Editor() {
     transform: `translate(${transform.tx}px, ${transform.ty}px) scale(${transform.scale})`,
   };
 
-  if (!svg) {
-    return (
-      <GlassCard className="text-center p-8">
-        <h2>No SVG data found</h2>
-        <p>Please upload an image first.</p>
-      </GlassCard>
-    );
-  }
-
   return (
     <>
       <EditorHelmet />
@@ -131,8 +132,9 @@ export default function Editor() {
             ref={innerRef}
             className={styles.inner}
             style={transformStyle}
-            dangerouslySetInnerHTML={{ __html: svg }}
-          />
+          >
+            {svgElements}
+          </div>
         </GlassCard>
 
         <div className={styles.hint}>

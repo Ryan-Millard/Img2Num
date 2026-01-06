@@ -161,6 +161,7 @@
     "validate-scripts": "node scripts/validate-scripts.js"
   },
   "dependencies": {
+    "html-react-parser": "^5.2.11",
     "imagetracerjs": "^1.2.6",
     "lucide-react": "^0.562.0",
     "prop-types": "^15.8.1",
