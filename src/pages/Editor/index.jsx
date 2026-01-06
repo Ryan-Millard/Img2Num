@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import parse from 'html-react-parser';
 import { useLocation } from 'react-router-dom';
 import { Eye, Brush } from 'lucide-react';
@@ -13,32 +13,12 @@ const SHAPE_SELECTOR = 'path,rect,circle,polygon,ellipse';
 export default function Editor() {
   const { state } = useLocation();
   const { svg } = state || {};
-  if (!svg) {
-    return (
-      <GlassCard className="text-center p-8">
-        <h2>No SVG data found</h2>
-        <p>Please upload an image first.</p>
-      </GlassCard>
-    );
-  }
-
   const [svgElements] = useState(() => parse(svg));
   const [isColorMode, setIsColorMode] = useState(true);
   const viewportRef = useRef(null);
   const innerRef = useRef(null);
   const [transform, setTransform] = useState({ scale: 1, tx: 0, ty: 0 });
   const pointerState = useRef({ dragging: false, lastX: 0, lastY: 0, moving: false });
-
-  // Handle clicks: robustly find the nearest shape (in case the user clicks a child or <g>)
-  const handleSvgClick = (e) => {
-    if (!innerRef.current) return;
-    const svgRoot = innerRef.current.querySelector('svg');
-    if (!svgRoot) return;
-
-    if (e.target.tagName === 'path' || e.target.tagName === 'PATH') {
-      e.target.id = styles.coloredRegion;
-    }
-  };
 
   // Wheel zoom (keeps tx/ty; can be improved later to zoom to pointer)
   const handleWheel = (e) => {
@@ -104,6 +84,15 @@ export default function Editor() {
   const transformStyle = {
     transform: `translate(${transform.tx}px, ${transform.ty}px) scale(${transform.scale})`,
   };
+
+  if (!svg) {
+    return (
+      <GlassCard className="text-center p-8">
+        <h2>No SVG data found</h2>
+        <p>Please upload an image first.</p>
+      </GlassCard>
+    );
+  }
 
   return (
     <>
