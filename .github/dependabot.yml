@@ -34,4 +34,4 @@ updates:
       - 'github-actions'
     open-pull-requests-limit: 5
     commit-message:
-      prefix: 'chore(workflow: deps)'
+      prefix: 'chore(deps):'
