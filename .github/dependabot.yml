@@ -16,7 +16,7 @@ updates:
       - 'npm'
     open-pull-requests-limit: 5
     commit-message:
-      prefix: 'chore(react: deps)'
+      prefix: 'chore(deps):'
 
   # GitHub Actions
   - package-ecosystem: 'github-actions'
