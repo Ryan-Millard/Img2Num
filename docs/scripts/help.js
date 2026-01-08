@@ -1,13 +1,12 @@
-import { runFuzzyCli } from "../../scripts/lib/cli-fuzzy.js";
-import { readPackageJsonScripts } from "../../scripts/lib/read-packageJson-scripts.js";
+import { runFuzzyCli } from '../../scripts/lib/cli-fuzzy.js';
+import { readPackageJsonScripts } from '../../scripts/lib/read-packageJson-scripts.js';
 
-const title =
-`Img2Num Docs CLI Scripts
+const title = `Img2Num Docs CLI Scripts
 Also see: https://ryan-millard.github.io/Img2Num/info/docs/category/-project-scripts
 `;
 
 try {
-  const { flat: items, basicItems } = readPackageJsonScripts(new URL("../package.json", import.meta.url));
+  const { flat: items, basicItems } = readPackageJsonScripts(new URL('../package.json', import.meta.url));
 
   // Grab all CLI args after `npm run help --`
   const initialSearch = process.argv.slice(2);
@@ -19,6 +18,6 @@ try {
     initialSearch,
   });
 } catch (error) {
-  console.error("Failed to read docs package.json scripts:", error.message);
+  console.error('Failed to read docs package.json scripts:', error.message);
   process.exit(1);
 }

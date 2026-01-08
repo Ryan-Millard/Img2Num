@@ -13,7 +13,7 @@ const WasmImageProcessor = () => {
   const inputId = useId();
   const inputRef = useRef(null);
 
-  const { gaussianBlur, blackThreshold, kmeans, mergeSmallRegionsInPlace } = useWasmWorker();
+  const { bilateralFilter, blackThreshold, kmeans, mergeSmallRegionsInPlace } = useWasmWorker();
 
   const [originalSrc, setOriginalSrc] = useState(null);
   const [fileData, setFileData] = useState(null);
@@ -62,10 +62,7 @@ const WasmImageProcessor = () => {
     [loadOriginal]
   );
 
-  const handleSelect = useCallback(
-    (e) => loadOriginal(e.target.files[0]),
-    [loadOriginal]
-  );
+  const handleSelect = useCallback((e) => loadOriginal(e.target.files[0]), [loadOriginal]);
 
   /* Hashed steps to keep pipeline aligned */
   const step = useCallback((p) => setProgress(p), []);
@@ -81,12 +78,17 @@ const WasmImageProcessor = () => {
       const { width, height } = fileData;
 
       step(20);
-      const blurred = await gaussianBlur(fileData);
+      // NOTE: Gaussian blur destroys the sharp outlines first, preventing the Bilateral filter from detecting and preserving them
+      const imgBilateralFiltered = await bilateralFilter({
+        pixels: fileData.pixels,
+        width,
+        height,
+      });
 
       step(45);
       const thresholded = await blackThreshold({
         ...fileData,
-        pixels: blurred,
+        pixels: imgBilateralFiltered,
         num_colors: 8,
       });
 
@@ -104,10 +106,7 @@ const WasmImageProcessor = () => {
 
       const area = width * height;
       // Prevents minArea from being too small
-      const minimumAllowedMinArea =
-        area > 100_000_000 ? 25 :
-          area > 10_000_000 ? 20 :
-            area > 1_000_000 ? 15 : 10;
+      const minimumAllowedMinArea = area > 100_000_000 ? 25 : area > 10_000_000 ? 20 : area > 1_000_000 ? 15 : 10;
       const minArea = Math.ceil(Math.max(area / 10_000, minimumAllowedMinArea));
 
       const merged = await mergeSmallRegionsInPlace({
@@ -129,7 +128,7 @@ const WasmImageProcessor = () => {
       step(100);
 
       navigate('/editor', {
-        state: { svg, imgData: { pixels: merged, width, height } },
+        state: { svg },
       });
     } catch (err) {
       console.error(err);
@@ -139,7 +138,7 @@ const WasmImageProcessor = () => {
         step(0);
       }, 800);
     }
-  }, [fileData, gaussianBlur, blackThreshold, kmeans, mergeSmallRegionsInPlace, navigate, step]);
+  }, [fileData, bilateralFilter, blackThreshold, kmeans, mergeSmallRegionsInPlace, navigate, step]);
 
   /* Memo'd UI fragments */
   const EmptyState = useMemo(
@@ -152,9 +151,7 @@ const WasmImageProcessor = () => {
         <p className={`text-center ${styles.dragDropText}`}>
           Drag & Drop or{' '}
           <Tooltip content="Select an image file from your computer">
-            <span className={`anchor-style ${styles.noTextWrap}`}>
-              Choose File
-            </span>
+            <span className={`anchor-style ${styles.noTextWrap}`}>Choose File</span>
           </Tooltip>
         </p>
       </>
@@ -167,11 +164,7 @@ const WasmImageProcessor = () => {
 
     return (
       <>
-        <img
-          src={originalSrc}
-          alt="Original"
-          className={styles.preview}
-        />
+        <img src={originalSrc} alt="Original" className={styles.preview} />
 
         {!isProcessing ? (
           <Tooltip content="Process the image and convert it to numbers">
@@ -180,16 +173,12 @@ const WasmImageProcessor = () => {
               onClick={(e) => {
                 e.stopPropagation();
                 processImage();
-              }}
-            >
+              }}>
               Ok
             </button>
           </Tooltip>
         ) : (
-          <LoadingHedgehog
-            progress={progress}
-            text={`Processing — ${Math.round(progress)}%`}
-          />
+          <LoadingHedgehog progress={progress} text={`Processing — ${Math.round(progress)}%`} />
         )}
       </>
     );
@@ -203,18 +192,10 @@ const WasmImageProcessor = () => {
       onClick={() => {
         if (!originalSrc) inputRef.current?.click();
       }}
-      data-image-loaded={!!originalSrc}
-    >
+      data-image-loaded={!!originalSrc}>
       {originalSrc ? LoadedState : EmptyState}
 
-      <input
-        ref={inputRef}
-        id={inputId}
-        type="file"
-        accept="image/*"
-        hidden
-        onChange={handleSelect}
-      />
+      <input ref={inputRef} id={inputId} type="file" accept="image/*" hidden onChange={handleSelect} />
     </GlassCard>
   );
 };
