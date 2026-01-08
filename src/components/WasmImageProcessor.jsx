@@ -13,7 +13,7 @@ const WasmImageProcessor = () => {
   const inputId = useId();
   const inputRef = useRef(null);
 
-  const { gaussianBlur, blackThreshold, kmeans, mergeSmallRegionsInPlace } = useWasmWorker();
+  const { bilateralFilter, blackThreshold, kmeans, mergeSmallRegionsInPlace } = useWasmWorker();
 
   const [originalSrc, setOriginalSrc] = useState(null);
   const [fileData, setFileData] = useState(null);
@@ -78,12 +78,17 @@ const WasmImageProcessor = () => {
       const { width, height } = fileData;
 
       step(20);
-      const blurred = await gaussianBlur(fileData);
+      // NOTE: Gaussian blur destroys the sharp outlines first, preventing the Bilateral filter from detecting and preserving them
+      const imgBilateralFiltered = await bilateralFilter({
+        pixels: fileData.pixels,
+        width,
+        height,
+      });
 
       step(45);
       const thresholded = await blackThreshold({
         ...fileData,
-        pixels: blurred,
+        pixels: imgBilateralFiltered,
         num_colors: 8,
       });
 
@@ -123,7 +128,7 @@ const WasmImageProcessor = () => {
       step(100);
 
       navigate('/editor', {
-        state: { svg, imgData: { pixels: merged, width, height } },
+        state: { svg },
       });
     } catch (err) {
       console.error(err);
@@ -133,7 +138,7 @@ const WasmImageProcessor = () => {
         step(0);
       }, 800);
     }
-  }, [fileData, gaussianBlur, blackThreshold, kmeans, mergeSmallRegionsInPlace, navigate, step]);
+  }, [fileData, bilateralFilter, blackThreshold, kmeans, mergeSmallRegionsInPlace, navigate, step]);
 
   /* Memo'd UI fragments */
   const EmptyState = useMemo(
