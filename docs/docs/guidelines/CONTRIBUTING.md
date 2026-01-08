@@ -46,10 +46,10 @@ You can manage issue claims using the following commands in issue comments:
 - **`/untake`**  
   Release your own claim on an issue.
 
-- **`/take @user`** *(triage+ only)*  
+- **`/take @user`** _(triage+ only)_  
   Claim an issue on behalf of another user.
 
-- **`/untake @user`** *(triage+ only)*  
+- **`/untake @user`** _(triage+ only)_  
   Remove another user’s claim (e.g. for stale or incorrect claims).
 
 ### Permissions
@@ -72,7 +72,6 @@ When a claim expires:
 - The `taken` label is removed.
 - The hidden metadata is cleared.
 - The issue banner is updated to show the issue as unclaimed.
-
 
 ## Development Setup
 
