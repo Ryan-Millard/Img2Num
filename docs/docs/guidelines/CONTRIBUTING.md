@@ -25,15 +25,54 @@ _When reporting issues, please:_
 
 ## Claiming Issues
 
-### Commands
+### Claim State Storage
 
-- Comment `/take`: to claim an issue, this will assign the issue to you and add the `taken` label.
-- Comment `/untake`: to release your claim
-- Comment `/take @user`: to claim on behalf of another user (for triage+)
-- Comment `/untake @user`: to remove another user’s claim (for triage+)
+Claim state is stored directly in the issue body inside a hidden, structured metadata block managed by the `issue-take-untake` workflow.
 
-Issues labeled `taken` are currently owned and being worked on.
-Claims automatically expire after 21 days of inactivity.
+- This hidden block is the **single source of truth** for claim ownership and timestamps.
+- No bot comments are used to store internal state.
+- Updating the issue body avoids unnecessary notifications and keeps the issue timeline clean.
+
+A visible banner is rendered from this metadata to clearly show whether an issue is claimed or unclaimed.
+
+### Claim Commands
+
+You can manage issue claims using the following commands in issue comments:
+
+- **`/take`**  
+  Claim an unclaimed issue for yourself.  
+  Adds the `taken` label and updates the issue banner.
+
+- **`/untake`**  
+  Release your own claim on an issue.
+
+- **`/take @user`** *(triage+ only)*  
+  Claim an issue on behalf of another user.
+
+- **`/untake @user`** *(triage+ only)*  
+  Remove another user’s claim (e.g. for stale or incorrect claims).
+
+### Permissions
+
+Claim behavior respects GitHub permission levels:
+
+- **All users** may claim an unclaimed issue for themselves.
+- **Users with triage, write, maintain, or admin permissions** may:
+  - Remove someone else’s claim.
+  - Claim an issue on behalf of another user.
+
+This allows maintainers to resolve stale or incorrect claims while keeping the contributor workflow simple.
+
+### Claim Expiry
+
+Claims automatically expire after **21 days of inactivity**.
+
+When a claim expires:
+
+- The `taken` label is removed.
+- The hidden metadata is cleared.
+- The issue banner is updated to show the issue as unclaimed.
+
 
 ## Development Setup
 
