@@ -88,13 +88,19 @@ jobs:
             }
 
             async function getPermission(username) {
-              const res = await github.rest.repos.getCollaboratorPermissionLevel({
-                owner,
-                repo,
-                username
-              });
-              return res.data.permission;
+              try {
+                const res = await github.rest.repos.getCollaboratorPermissionLevel({
+                  owner,
+                  repo,
+                  username
+                });
+                return res.data.permission;
+              } catch (e) {
+                // Non-collaborators (external contributors) have no explicit permission
+                return 'none';
+              }
             }
+
 
             let meta = extractMeta(body);
 
@@ -142,17 +148,28 @@ jobs:
 
             // UNTAKE
             if (untakeMatch) {
-              if (meta.owner !== targetUser && !isPrivileged) return;
+              // Non-privileged users can only release their own claim
+              if (!isPrivileged && meta.owner !== commenter) return;
 
               meta = { owner: null, ts: 0 };
               body = writeMeta(body, meta);
               body = updateBanner(body, buildUntakenBanner());
 
               try {
-                await github.rest.issues.removeLabel({ owner, repo, issue_number: issueNumber, name: takenLabel });
+                await github.rest.issues.removeLabel({
+                  owner,
+                  repo,
+                  issue_number: issueNumber,
+                  name: takenLabel
+                });
               } catch {}
 
-              await github.rest.issues.update({ owner, repo, issue_number: issueNumber, body });
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: issueNumber,
+                body
+              });
             }
 
   cleanup:
@@ -181,15 +198,19 @@ jobs:
             `.trim();
             }
 
-            const issues = await github.rest.issues.listForRepo({
-              owner,
-              repo,
-              labels: 'taken',
-              state: 'open',
-              per_page: 100
-            });
+            const issues = await github.paginate(
+              github.rest.issues.listForRepo,
+              {
+                owner,
+                repo,
+                labels: 'taken',
+                state: 'open',
+                per_page: 100
+              }
+            );
 
-            for (const issue of issues.data) {
+
+            for (const issue of issues) {
               let body = issue.body || '';
               const start = body.indexOf(META_START);
               if (start === -1) continue;
