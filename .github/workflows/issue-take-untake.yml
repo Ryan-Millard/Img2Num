@@ -45,7 +45,6 @@ jobs:
             function extractMeta(body) {
               const start = body.indexOf(META_START);
               if (start === -1) return { owner: null, ts: 0 };
-
               const end = body.indexOf(META_END, start);
               try {
                 return JSON.parse(body.slice(start + META_START.length, end).trim());
@@ -66,7 +65,6 @@ jobs:
             ${BODY_START}
             > [!TIP]
             > This issue hasn't been claimed yet. Comment \`/take\` if you'd like to work on it!
-
             ${BODY_END}
             `.trim();
             }
@@ -168,8 +166,20 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
             const EXPIRE_MS = 21 * 24 * 60 * 60 * 1000;
+
             const META_START = '<!-- issue-take-untake:meta';
             const META_END = '-->';
+            const BODY_START = '<!-- issue-take-untake:start -->';
+            const BODY_END = '<!-- issue-take-untake:end -->';
+
+            function buildUntakenBanner() {
+              return `
+            ${BODY_START}
+            > [!TIP]
+            > This issue hasn't been claimed yet. Comment \`/take\` if you'd like to work on it!
+            ${BODY_END}
+            `.trim();
+            }
 
             const issues = await github.rest.issues.listForRepo({
               owner,
@@ -180,7 +190,7 @@ jobs:
             });
 
             for (const issue of issues.data) {
-              const body = issue.body || '';
+              let body = issue.body || '';
               const start = body.indexOf(META_START);
               if (start === -1) continue;
 
@@ -193,15 +203,29 @@ jobs:
               }
 
               if (meta.ts && Date.now() - meta.ts > EXPIRE_MS) {
-                const cleaned = body.replace(new RegExp(`${META_START}[\\s\\S]*?${META_END}`), '');
+                body = body.replace(new RegExp(`${META_START}[\\s\\S]*?${META_END}`), '');
+
+                body = body.includes(BODY_START)
+                  ? body.replace(
+                      new RegExp(`${BODY_START}[\\s\\S]*?${BODY_END}`),
+                      buildUntakenBanner()
+                    )
+                  : `${buildUntakenBanner()}\n\n---\n\n${body}`;
+
                 await github.rest.issues.update({
                   owner,
                   repo,
                   issue_number: issue.number,
-                  body: cleaned
+                  body
                 });
+
                 try {
-                  await github.rest.issues.removeLabel({ owner, repo, issue_number: issue.number, name: 'taken' });
+                  await github.rest.issues.removeLabel({
+                    owner,
+                    repo,
+                    issue_number: issue.number,
+                    name: 'taken'
+                  });
                 } catch {}
               }
             }
