@@ -18,7 +18,7 @@
 <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-C7LD33MNTX",{anonymize_ip:!0})</script>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css" integrity="sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM" crossorigin="anonymous"><link rel="stylesheet" href="/Img2Num/info/assets/css/styles.f20cef5c.css">
-<script src="/Img2Num/info/assets/js/runtime~main.1660524a.js" defer="defer"></script>
+<script src="/Img2Num/info/assets/js/runtime~main.6a3ed39e.js" defer="defer"></script>
 <script src="/Img2Num/info/assets/js/main.bd4c00c1.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -38,6 +38,56 @@
 <li class="">Attach screenshots or logs if applicable.</li>
 <li class="">Specify your environment (OS, Node.js version, browser).</li>
 </ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="claiming-issues">Claiming Issues<a href="#claiming-issues" class="hash-link" aria-label="Direct link to Claiming Issues" title="Direct link to Claiming Issues" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="claim-state-storage">Claim State Storage<a href="#claim-state-storage" class="hash-link" aria-label="Direct link to Claim State Storage" title="Direct link to Claim State Storage" translate="no">​</a></h3>
+<p>Claim state is stored directly in the issue body inside a hidden, structured metadata block managed by the <code>issue-take-untake</code> workflow.</p>
+<ul>
+<li class="">This hidden block is the <strong>single source of truth</strong> for claim ownership and timestamps.</li>
+<li class="">No bot comments are used to store internal state.</li>
+<li class="">Updating the issue body avoids unnecessary notifications and keeps the issue timeline clean.</li>
+</ul>
+<p>A visible banner is rendered from this metadata to clearly show whether an issue is claimed or unclaimed.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="claim-commands">Claim Commands<a href="#claim-commands" class="hash-link" aria-label="Direct link to Claim Commands" title="Direct link to Claim Commands" translate="no">​</a></h3>
+<p>You can manage issue claims using the following commands in issue comments:</p>
+<ul>
+<li class="">
+<p><strong><code>/take</code></strong><br>
+<!-- -->Claim an unclaimed issue for yourself.<br>
+<!-- -->Adds the <code>taken</code> label and updates the issue banner.</p>
+</li>
+<li class="">
+<p><strong><code>/untake</code></strong><br>
+<!-- -->Release your own claim on an issue.</p>
+</li>
+<li class="">
+<p><strong><code>/take @user</code></strong> <em>(triage+ only)</em><br>
+<!-- -->Claim an issue on behalf of another user.</p>
+</li>
+<li class="">
+<p><strong><code>/untake @user</code></strong> <em>(triage+ only)</em><br>
+<!-- -->Remove another user&#x27;s claim (e.g. for stale or incorrect claims).</p>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="permissions">Permissions<a href="#permissions" class="hash-link" aria-label="Direct link to Permissions" title="Direct link to Permissions" translate="no">​</a></h3>
+<p>Claim behavior respects GitHub permission levels:</p>
+<ul>
+<li class=""><strong>All users</strong> may claim an unclaimed issue for themselves.</li>
+<li class=""><strong>Users with triage, write, maintain, or admin permissions</strong> may:<!-- -->
+<ul>
+<li class="">Remove someone else&#x27;s claim.</li>
+<li class="">Claim an issue on behalf of another user.</li>
+</ul>
+</li>
+</ul>
+<p>This allows maintainers to resolve stale or incorrect claims while keeping the contributor workflow simple.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="claim-expiry">Claim Expiry<a href="#claim-expiry" class="hash-link" aria-label="Direct link to Claim Expiry" title="Direct link to Claim Expiry" translate="no">​</a></h3>
+<p>Claims automatically expire after <strong>21 days of inactivity</strong>.</p>
+<p>When a claim expires:</p>
+<ul>
+<li class="">The <code>taken</code> label is removed.</li>
+<li class="">The hidden metadata is cleared.</li>
+<li class="">The issue banner is updated to show the issue as unclaimed.</li>
+</ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="development-setup">Development Setup<a href="#development-setup" class="hash-link" aria-label="Direct link to Development Setup" title="Direct link to Development Setup" translate="no">​</a></h2>
 <p>The <a class="" href="/Img2Num/info/docs/introduction/getting-started/">Getting Started</a> section shows how to clone and run the application for the first time.</p>
 <p>The <a class="" href="/Img2Num/info/docs/project-scripts/overview/">Project Scripts</a> section shows all of the available scripts you may find useful whilst working on Img2Num&#x27;s source code as well as a helful way to find specific scripts if you have forgotten one.</p>
@@ -48,6 +98,6 @@
 <li class=""><a href="https://github.com/Ryan-Millard/Img2Num/blob/main/vite.config.js" target="_blank" rel="noopener noreferrer" class="">Vite Config</a></li>
 <li class=""><a href="https://github.com/Ryan-Millard/Img2Num/blob/main/eslint.config.js" target="_blank" rel="noopener noreferrer" class="">ESLint Config</a></li>
 </ul>
-<p>Thank you for improving Img2Num! 🎨🚀</p></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/Ryan-Millard/Img2Num/edit/main/docs/docs/guidelines/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/Img2Num/info/docs/category/guidelines/"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Guidelines</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/Img2Num/info/docs/guidelines/CODE_OF_CONDUCT.md/"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">📰 Code of Conduct</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#code-of-conduct" class="table-of-contents__link toc-highlight">Code of Conduct</a></li><li><a href="#reporting-issues" class="table-of-contents__link toc-highlight">Reporting Issues</a></li><li><a href="#development-setup" class="table-of-contents__link toc-highlight">Development Setup</a></li><li><a href="#additional-resources" class="table-of-contents__link toc-highlight">Additional Resources</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Documentation</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/Img2Num/info/docs/">Documentation</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Ryan-Millard/Img2Num/discussions" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub Discussions<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/Img2Num/info/blog/">Blog</a></li><li class="footer__item"><a href="https://github.com/Ryan-Millard/Img2Num" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Img2Num.</div></div></div></footer></div>
+<p>Thank you for improving Img2Num! 🎨🚀</p></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/Ryan-Millard/Img2Num/edit/main/docs/docs/guidelines/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/Img2Num/info/docs/category/guidelines/"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Guidelines</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/Img2Num/info/docs/guidelines/CODE_OF_CONDUCT.md/"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">📰 Code of Conduct</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#code-of-conduct" class="table-of-contents__link toc-highlight">Code of Conduct</a></li><li><a href="#reporting-issues" class="table-of-contents__link toc-highlight">Reporting Issues</a></li><li><a href="#claiming-issues" class="table-of-contents__link toc-highlight">Claiming Issues</a><ul><li><a href="#claim-state-storage" class="table-of-contents__link toc-highlight">Claim State Storage</a></li><li><a href="#claim-commands" class="table-of-contents__link toc-highlight">Claim Commands</a></li><li><a href="#permissions" class="table-of-contents__link toc-highlight">Permissions</a></li><li><a href="#claim-expiry" class="table-of-contents__link toc-highlight">Claim Expiry</a></li></ul></li><li><a href="#development-setup" class="table-of-contents__link toc-highlight">Development Setup</a></li><li><a href="#additional-resources" class="table-of-contents__link toc-highlight">Additional Resources</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Documentation</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/Img2Num/info/docs/">Documentation</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Community</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Ryan-Millard/Img2Num/discussions" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub Discussions<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/Img2Num/info/blog/">Blog</a></li><li class="footer__item"><a href="https://github.com/Ryan-Millard/Img2Num" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Img2Num.</div></div></div></footer></div>
 </body>
 </html>
