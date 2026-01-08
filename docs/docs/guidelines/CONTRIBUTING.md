@@ -26,6 +26,7 @@ _When reporting issues, please:_
 ## Claiming Issues
 
 #### Commands
+
 - Comment `/take`: to claim an issue, this will assign the issue to you and add the `taken` label.
 - Comment `/untake`: to release your claim
 - Comment `/take @user`: to claim on behalf of another user (for triage+)
