@@ -72,6 +72,7 @@ When a claim expires:
 - The `taken` label is removed.
 - The hidden metadata is cleared.
 - The issue banner is updated to show the issue as unclaimed.
+
 ## Development Setup
 
 The [Getting Started](../introduction/getting-started.md) section shows how to clone and run the application for the first time.
