@@ -50,7 +50,7 @@ You can manage issue claims using the following commands in issue comments:
   Claim an issue on behalf of another user.
 
 - **`/untake @user`** _(triage+ only)_  
-  Remove another user’s claim (e.g. for stale or incorrect claims).
+  Remove another user's claim (e.g. for stale or incorrect claims).
 
 ### Permissions
 
@@ -58,7 +58,7 @@ Claim behavior respects GitHub permission levels:
 
 - **All users** may claim an unclaimed issue for themselves.
 - **Users with triage, write, maintain, or admin permissions** may:
-  - Remove someone else’s claim.
+  - Remove someone else's claim.
   - Claim an issue on behalf of another user.
 
 This allows maintainers to resolve stale or incorrect claims while keeping the contributor workflow simple.
@@ -72,7 +72,6 @@ When a claim expires:
 - The `taken` label is removed.
 - The hidden metadata is cleared.
 - The issue banner is updated to show the issue as unclaimed.
-
 ## Development Setup
 
 The [Getting Started](../introduction/getting-started.md) section shows how to clone and run the application for the first time.
