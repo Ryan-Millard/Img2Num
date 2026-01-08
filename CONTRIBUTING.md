@@ -16,6 +16,7 @@ We wrote a [contribution guide](https://ryan-millard.github.io/Img2Num/info/docs
 Before submitting a PR, ensure your code passes all checks:
 
 **With Docker:**
+
 ```bash
 ./img2num npm ci                # Install dependencies
 ./img2num lint                  # Check JavaScript/React code
@@ -24,6 +25,7 @@ Before submitting a PR, ensure your code passes all checks:
 ```
 
 **Local Dev:**
+
 ```bash
 npm ci                # Install dependencies
 npm run lint          # Check JavaScript/React code
