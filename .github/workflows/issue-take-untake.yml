@@ -117,8 +117,8 @@ jobs:
             const commenter = comment.user.login;
             const text = (comment.body || '').trim();
 
-            const takeMatch = text.match(/^\/take(?:\s+@(\w+))?/i);
-            const untakeMatch = text.match(/^\/untake(?:\s+@(\w+))?/i);
+            const takeMatch = text.match(/^\/take(?:\s+@([\w-]+))?/i);
+            const untakeMatch = text.match(/^\/untake(?:\s+@([\w-]+))?/i);
 
             if (!takeMatch && !untakeMatch) return;
 
