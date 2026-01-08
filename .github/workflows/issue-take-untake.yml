@@ -6,7 +6,7 @@ on:
   issue_comment:
     types: [created]
   schedule:
-    - cron: '0 0 * * 0' # weekly cleanup (UTC)
+    - cron: "0 0 * * 0" # weekly cleanup (UTC)
 
 permissions:
   contents: read
@@ -21,82 +21,95 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: Handle issue take/untake and body status
+      - name: Handle issue take/untake
         uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
-            const BOT_LOGIN = 'github-actions[bot]';
+            const { owner, repo } = context.repo;
+            const issueNumber = context.payload.issue.number;
             const takenLabel = 'taken';
-            const MARKER_PREFIX = '<!-- take-meta:';
+            const EXPIRE_MS = 21 * 24 * 60 * 60 * 1000;
+
+            const META_START = '<!-- issue-take-untake:meta';
+            const META_END = '-->';
             const BODY_START = '<!-- issue-take-untake:start -->';
             const BODY_END = '<!-- issue-take-untake:end -->';
-            const EXPIRE_MS = 21 * 24 * 60 * 60 * 1000; // Claims expire after 21 days
 
             const isIssueOpen = context.eventName === 'issues';
             const isComment = context.eventName === 'issue_comment';
 
-            const issueNumber = context.payload.issue.number;
+            const issue = await github.rest.issues.get({ owner, repo, issue_number: issueNumber });
+            let body = issue.data.body || '';
 
-            function buildUntakenBody() {
+            function extractMeta(body) {
+              const start = body.indexOf(META_START);
+              if (start === -1) return { owner: null, ts: 0 };
+
+              const end = body.indexOf(META_END, start);
+              try {
+                return JSON.parse(body.slice(start + META_START.length, end).trim());
+              } catch {
+                return { owner: null, ts: 0 };
+              }
+            }
+
+            function writeMeta(body, meta) {
+              const block = `\n${META_START}\n${JSON.stringify(meta)}\n${META_END}\n`;
+              return body.includes(META_START)
+                ? body.replace(new RegExp(`${META_START}[\\s\\S]*?${META_END}`), block.trim())
+                : block + body;
+            }
+
+            function buildUntakenBanner() {
               return `
             ${BODY_START}
             > [!TIP]
             > This issue hasn't been claimed yet. Comment \`/take\` if you'd like to work on it!
-            >
-            > > For more information on how Img2Num's claim system works, please see #99.
-            >
-            > <sub>This edit was made by the [\`issue-take-untake\`](https://github.com/Ryan-Millard/Img2Num/blob/main/.github/workflows/issue-take-untake.yml) GitHub workflow</sub>
+     
             ${BODY_END}
             `.trim();
             }
 
-            function buildTakenBody(ownerName) {
+            function buildTakenBanner(user) {
               return `
             ${BODY_START}
             > [!CAUTION]
-            > This issue has been claimed by **@${ownerName}**, so it is not recommended that you work on it.
-            >
-            > > For more information on how Img2Num's claim system works, please see #99.
+            > This issue has been claimed by **@${user}**, so it is not recommended that you work on it.
             >
             > > **For @${ownerName}:**
             > > If you would like to revoke your claim, comment \`/untake\`
-            >
-            > <sub>This edit was made by the [\`issue-take-untake\`](https://github.com/Ryan-Millard/Img2Num/blob/main/.github/workflows/issue-take-untake.yml) GitHub workflow</sub>
             ${BODY_END}
             `.trim();
             }
 
-            async function updateIssueBody(newBanner) {
-              const issue = await github.rest.issues.get({ owner, repo, issue_number: issueNumber });
-              const body = issue.data.body || '';
-
-              const updated = body.includes(BODY_START)
-                ? body.replace(new RegExp(`${BODY_START}[\\s\\S]*?${BODY_END}`), newBanner)
-                : `${newBanner}\n\n---\n\n${body}`;
-
-              await github.rest.issues.update({
-                owner,
-                repo,
-                issue_number: issueNumber,
-                body: updated
-              });
+            function updateBanner(body, banner) {
+              return body.includes(BODY_START)
+                ? body.replace(new RegExp(`${BODY_START}[\\s\\S]*?${BODY_END}`), banner)
+                : `${banner}\n\n---\n\n${body}`;
             }
 
-            if (isIssueOpen) {
-              try {
-                await github.rest.issues.createLabel({
-                  owner,
-                  repo,
-                  name: takenLabel,
-                  color: 'ff0000',
-                  description: 'Issue is currently claimed'
-                });
-              } catch (e) {}
+            async function getPermission(username) {
+              const res = await github.rest.repos.getCollaboratorPermissionLevel({
+                owner,
+                repo,
+                username
+              });
+              return res.data.permission;
+            }
 
-              await updateIssueBody(buildUntakenBody());
+            let meta = extractMeta(body);
+
+            // Normalize expired claim
+            if (meta.owner && meta.ts && Date.now() - meta.ts > EXPIRE_MS) {
+              meta = { owner: null, ts: 0 };
+            }
+
+            // Issue opened → initialize
+            if (isIssueOpen) {
+              body = writeMeta(body, meta);
+              body = updateBanner(body, buildUntakenBanner());
+              await github.rest.issues.update({ owner, repo, issue_number: issueNumber, body });
               return;
             }
 
@@ -104,110 +117,44 @@ jobs:
 
             const comment = context.payload.comment;
             const commenter = comment.user.login;
-            const bodyText = (comment.body || '').trim();
+            const text = (comment.body || '').trim();
 
-            const isTake = /^\/take(\s|$)/i.test(bodyText);
-            const isUntake = /^\/untake(\s|$)/i.test(bodyText);
-            if (!isTake && !isUntake) return;
+            const takeMatch = text.match(/^\/take(?:\s+@(\w+))?/i);
+            const untakeMatch = text.match(/^\/untake(?:\s+@(\w+))?/i);
 
-            const commentsResp = await github.rest.issues.listComments({
-              owner,
-              repo,
-              issue_number: issueNumber,
-              per_page: 100
-            });
+            if (!takeMatch && !untakeMatch) return;
 
-            let meta = { owner: null, members: [], ts: 0 };
-            const latestMeta = commentsResp.data
-              .filter(c => c.user?.login === BOT_LOGIN && c.body?.includes(MARKER_PREFIX))
-              .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
-              .pop();
+            const targetUser = (takeMatch || untakeMatch)?.[1] || commenter;
+            const perm = await getPermission(commenter);
+            const isPrivileged = ['triage', 'write', 'maintain', 'admin'].includes(perm);
 
-            if (latestMeta) {
+            // TAKE
+            if (takeMatch) {
+              if (meta.owner) return;
+              if (targetUser !== commenter && !isPrivileged) return;
+
+              meta = { owner: targetUser, ts: Date.now() };
+              body = writeMeta(body, meta);
+              body = updateBanner(body, buildTakenBanner(targetUser));
+
+              await github.rest.issues.addLabels({ owner, repo, issue_number: issueNumber, labels: [takenLabel] });
+              await github.rest.issues.update({ owner, repo, issue_number: issueNumber, body });
+              return;
+            }
+
+            // UNTAKE
+            if (untakeMatch) {
+              if (meta.owner !== targetUser && !isPrivileged) return;
+
+              meta = { owner: null, ts: 0 };
+              body = writeMeta(body, meta);
+              body = updateBanner(body, buildUntakenBanner());
+
               try {
-                const body = latestMeta.body;
-                const start = body.indexOf(MARKER_PREFIX);
-                const end = body.indexOf('-->', start);
-                if (start !== -1 && end !== -1) {
-                  meta = JSON.parse(
-                    body.slice(start + MARKER_PREFIX.length, end).trim()
-                  );
-                }
-              } catch {
-                meta = { owner: null, members: [], ts: 0 };
-              }
-            }
+                await github.rest.issues.removeLabel({ owner, repo, issue_number: issueNumber, name: takenLabel });
+              } catch {}
 
-            async function persistMeta(metaObj, claimed) {
-              // Find existing meta comments
-              const commentsResp = await github.rest.issues.listComments({
-                owner,
-                repo,
-                issue_number: issueNumber,
-                per_page: 100
-              });
-
-              const metaComments = commentsResp.data.filter(
-                c => c.user?.login === BOT_LOGIN && c.body?.includes(MARKER_PREFIX)
-              );
-
-              // Delete all previous meta comments (keep state clean)
-              for (const c of metaComments) {
-                try {
-                  await github.rest.issues.deleteComment({
-                    owner,
-                    repo,
-                    comment_id: c.id
-                  });
-                } catch {}
-              }
-
-              // Create the new meta comment
-              await github.rest.issues.createComment({
-                owner,
-                repo,
-                issue_number: issueNumber,
-                body: `${MARKER_PREFIX}${JSON.stringify(metaObj)} -->`
-              });
-
-              if (claimed) {
-                await github.rest.issues.addLabels({
-                  owner,
-                  repo,
-                  issue_number: issueNumber,
-                  labels: [takenLabel]
-                });
-                await updateIssueBody(buildTakenBody(metaObj.owner));
-              } else {
-                try {
-                  await github.rest.issues.removeLabel({
-                    owner,
-                    repo,
-                    issue_number: issueNumber,
-                    name: takenLabel
-                  });
-                } catch {}
-                await updateIssueBody(buildUntakenBody());
-              }
-            }
-
-            // Normalize expired claims before handling commands
-            if (meta.owner && meta.ts && Date.now() - meta.ts > EXPIRE_MS) {
-              meta = { owner: null, members: [], ts: 0 };
-            }
-
-
-            if (isTake && !meta.owner) {
-              meta.owner = commenter;
-              meta.ts = Date.now();
-              await persistMeta(meta, true);
-              return;
-            }
-
-            if (isUntake && meta.owner === commenter) {
-              meta = { owner: null, members: [], ts: 0 };
-              await persistMeta(meta, false);
-              return;
+              await github.rest.issues.update({ owner, repo, issue_number: issueNumber, body });
             }
 
   cleanup:
@@ -219,95 +166,42 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
-            const takenLabel = 'taken';
-            const MARKER_PREFIX = '<!-- take-meta:';
-            const BODY_START = '<!-- issue-take-untake:start -->';
-            const BODY_END = '<!-- issue-take-untake:end -->';
+            const { owner, repo } = context.repo;
             const EXPIRE_MS = 21 * 24 * 60 * 60 * 1000;
-
-            function buildUntakenBody() {
-              return `
-            ${BODY_START}
-            > [!TIP]
-            > This issue hasn't been claimed yet. Comment \`/take\` if you'd like to work on it!
-            >
-            > > For more information on how Img2Num's claim system works, please see #99.
-            >
-            > <sub>This edit was made by the [\`issue-take-untake\`](https://github.com/Ryan-Millard/Img2Num/blob/main/.github/workflows/issue-take-untake.yml) GitHub workflow</sub>
-            ${BODY_END}
-            `.trim();
-            }
+            const META_START = '<!-- issue-take-untake:meta';
+            const META_END = '-->';
 
             const issues = await github.rest.issues.listForRepo({
               owner,
               repo,
-              labels: takenLabel,
+              labels: 'taken',
               state: 'open',
               per_page: 100
             });
 
             for (const issue of issues.data) {
-              const comments = await github.rest.issues.listComments({
-                owner,
-                repo,
-                issue_number: issue.number,
-                per_page: 100
-              });
+              const body = issue.body || '';
+              const start = body.indexOf(META_START);
+              if (start === -1) continue;
 
-              const metaComment = comments.data
-              .filter(c => c.body?.includes(MARKER_PREFIX))
-              .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
-              .pop();
+              const end = body.indexOf(META_END, start);
+              let meta;
+              try {
+                meta = JSON.parse(body.slice(start + META_START.length, end).trim());
+              } catch {
+                continue;
+              }
 
-
-              if (!metaComment) continue;
-
-               try {
-                const body = metaComment.body;
-                const start = body.indexOf(MARKER_PREFIX);
-                const end = body.indexOf('-->', start);
-                if (start === -1 || end === -1) continue;
-
-                const meta = JSON.parse(
-                  body.slice(start + MARKER_PREFIX.length, end).trim()
-                );
-
-                if (meta.ts && Date.now() - meta.ts > EXPIRE_MS) {
-                  await github.rest.issues.removeLabel({
-                    owner,
-                    repo,
-                    issue_number: issue.number,
-                    name: takenLabel
-                  });
-
-                  for (const c of comments.data.filter(c => c.body?.includes(MARKER_PREFIX))) {
-                    try {
-                      await github.rest.issues.deleteComment({
-                        owner,
-                        repo,
-                        comment_id: c.id
-                      });
-                    } catch {}
-                  }
-
-                  const currentBody = issue.body || '';
-                  const updated = currentBody.includes(BODY_START)
-                    ? currentBody.replace(
-                        new RegExp(`${BODY_START}[\\s\\S]*?${BODY_END}`),
-                        buildUntakenBody()
-                      )
-                    : `${buildUntakenBody()}\n\n---\n\n${currentBody}`;
-
-                  await github.rest.issues.update({
-                    owner,
-                    repo,
-                    issue_number: issue.number,
-                    body: updated
-                  });
-                }
-              } catch (e) {
-                console.error(`Failed to expire claim on issue #${issue.number}:`, e.message);
+              if (meta.ts && Date.now() - meta.ts > EXPIRE_MS) {
+                const cleaned = body.replace(new RegExp(`${META_START}[\\s\\S]*?${META_END}`), '');
+                await github.rest.issues.update({
+                  owner,
+                  repo,
+                  issue_number: issue.number,
+                  body: cleaned
+                });
+                try {
+                  await github.rest.issues.removeLabel({ owner, repo, issue_number: issue.number, name: 'taken' });
+                } catch {}
               }
             }

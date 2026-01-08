@@ -25,9 +25,14 @@ _When reporting issues, please:_
 
 ## Claiming Issues
 
-- To claim an issue, comment: `/take`. This will assign the issue to you and add the `taken` label.
-- To release an issue, comment: `/untake`
-- Issues labeled `taken` are currently owned and being worked on.
+#### Commands
+- Comment `/take`: to claim an issue, this will assign the issue to you and add the `taken` label.
+- Comment `/untake`: to release your claim
+- Comment `/take @user`: to claim on behalf of another user (for triage+)
+- Comment `/untake @user`: to remove another user’s claim (for triage+)
+
+Issues labeled `taken` are currently owned and being worked on.
+Claims automatically expire after 21 days of inactivity.
 
 ## Development Setup
 
