@@ -77,7 +77,7 @@ jobs:
             > [!CAUTION]
             > This issue has been claimed by **@${user}**, so it is not recommended that you work on it.
             >
-            > > **For @${ownerName}:**
+            > > **For @${user}:**
             > > If you would like to revoke your claim, comment \`/untake\`
             ${BODY_END}
             `.trim();
