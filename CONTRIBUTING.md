@@ -15,6 +15,17 @@ We wrote a [contribution guide](https://ryan-millard.github.io/Img2Num/info/docs
 
 Before submitting a PR, ensure your code passes all checks:
 
+**With Docker:**
+
+```bash
+./img2num npm ci                # Install dependencies
+./img2num lint                  # Check JavaScript/React code
+./img2num lint:style            # Check code style
+./img2num npm run format:check  # Verify formatting
+```
+
+**Local Dev:**
+
 ```bash
 npm ci                # Install dependencies
 npm run lint          # Check JavaScript/React code
@@ -22,7 +33,8 @@ npm run lint:style    # Check code style
 npm run format:check  # Verify formatting
 ```
 
-For detailed information about linting, formatting, and fixing issues, see our [Coding Style Guidelines](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/coding-style).
+For detailed information about linting, formatting, and fixing issues, see our
+[Coding Style Guidelines](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/coding-style).
 
 ## Questions?
 
