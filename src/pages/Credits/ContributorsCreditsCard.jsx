@@ -46,7 +46,7 @@ export default function ContributorsCreditsCard() {
                   </td>
 
                   <td>
-                    {c.contributions} {c.contributions > 1 ? 'commits' : 'commit'}
+                    {c.contributions} {c.contributions === 1 ? 'commit' : 'commits'}
                   </td>
                 </tr>
               ))}
