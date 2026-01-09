@@ -45,7 +45,9 @@ export default function ContributorsCreditsCard() {
                     </Tooltip>
                   </td>
 
-                  <td>{c.contributions} commits</td>
+                  <td>
+                    {c.contributions} {c.contributions > 1 ? 'commits' : 'commit'}
+                  </td>
                 </tr>
               ))}
             </tbody>
