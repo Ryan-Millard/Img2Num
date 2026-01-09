@@ -30,36 +30,21 @@ jobs:
         id: check_changes
         shell: bash
         run: |
-          echo "Checking for changed scripts..."
+          # Find merge base with main (safe for force pushes)
+          BASE=$(git merge-base HEAD origin/main)
+          echo "Merge base: $BASE"
 
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          # List added/renamed scripts
+          matches=$(git diff --name-status "$BASE" HEAD | grep -E '^[AR]\s+(scripts/|docs/scripts/).+\.js$' || true)
+
+          if [ -n "$matches" ]; then
+            echo "Changed scripts:"
+            echo "$matches"
+            echo "scripts_changed=true" >> "$GITHUB_OUTPUT"
           else
-            BASE_SHA="${{ github.event.before }}"
+            echo "No added or renamed scripts detected"
+            echo "scripts_changed=false" >> "$GITHUB_OUTPUT"
           fi
-
-          HEAD_SHA="${{ github.sha }}"
-
-          # Ensure a valid common ancestor (handles force-pushes)
-          BASE_SHA=$(git merge-base "$BASE_SHA" "$HEAD_SHA")
-
-          files=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
-          echo "Changed files: $files"
-
-          match=false
-          for file in $files; do
-            if [[ "$file" == "package.json" || "$file" == "docs/package.json" ]]; then
-              if git diff "$BASE_SHA" "$HEAD_SHA" -- "$file" | grep -q '"scriptsInfo"'; then
-                match=true
-                break
-              fi
-            elif [[ "$file" == scripts/* || "$file" == docs/scripts/* ]]; then
-              match=true
-              break
-            fi
-          done
-
-          echo "scripts_changed=$match" >> "$GITHUB_OUTPUT"
 
       # Run script validation if scripts changed
       - name: Run script validation
