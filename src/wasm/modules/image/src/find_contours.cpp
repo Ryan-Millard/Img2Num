@@ -12,7 +12,7 @@ inline void log(std::string s) {
 }
 
 namespace contours {
-  // 8-neighbor offsets (dx, dy), clockwise order
+  // Moore 8-Neighbor offsets (dx, dy), clockwise order
   // 0   1   2
   // 7 [x,y] 3 <- [x,y]: param coordinates of reference pixel
   // 6   5   4
@@ -27,6 +27,31 @@ namespace contours {
     {{-1,  0}}  // 7: left
   }};
 
+  std::vector<std::vector<bool>> compute_border_mask(
+      const ImageLib::Image<ImageLib::RGBAPixel<uint8_t>>& image
+      ) {
+    int width  = static_cast<int>(image.getWidth());
+    int height = static_cast<int>(image.getHeight());
+
+    std::vector<std::vector<bool>> border_mask(height, std::vector<bool>(width, false));
+
+    for (int y = 0; y < height; ++y) {
+      for (int x = 0; x < width; ++x) {
+        const auto& px = image(x, y);
+        for (auto& offset : neighbor_offsets) {
+          int nx = x + offset[0];
+          int ny = y + offset[1];
+          if (nx < 0 || nx >= width || ny < 0 || ny >= height) continue;
+          if (image(nx, ny) != px) {
+            border_mask[y][x] = true;
+            break;
+          }
+        }
+      }
+    }
+
+    return border_mask;
+  }
 
   static inline bool is_border_pixel(const ImageLib::Image<ImageLib::RGBAPixel<uint8_t>>& image, int x, int y) {
     const auto& px = image(x, y);
@@ -129,60 +154,72 @@ namespace contours {
     return std::nullopt;
   }
 
-  static Contour trace_contour(const int x, const int y, std::vector<std::vector<int>>& labels, const ImageLib::Image<ImageLib::RGBAPixel<uint8_t>>& image) {
-    if (!is_border_pixel(image, x, y)) {
-      labels[y][x] = 3; // mark visited interior
-      return Contour{};  // empty contour
-    }
-
-    const int& start_label{labels[y][x]};
-
+  Contour trace_contour(
+      int start_x, int start_y,
+      std::vector<std::vector<int>>& labels,
+      const ImageLib::Image<ImageLib::RGBAPixel<uint8_t>>& image,
+      const std::vector<std::vector<bool>>& border_mask,
+      int current_label
+      ) {
     Contour contour;
-    contour.set_inner_pixel(image(x, y));
+    contour.set_inner_pixel(image(start_x, start_y));
 
-    // Default previous offsets: top-left of 8 neighbor region
-    std::pair<int, int> prev_dxy{0, -1};
-    std::pair<int, int> prev_xy{x, y};
+    int width  = static_cast<int>(image.getWidth());
+    int height = static_cast<int>(image.getHeight());
 
-    while (true) {
-        // Back at starting pixel
-        if (labels[prev_xy.second][prev_xy.first] != -1) break;
+    std::pair<int, int> current = {start_x, start_y};
+    int prev_dir = 7; // start from "left" in Moore-Neighborhood
 
-        const std::optional<std::pair<std::pair<int,int>, std::pair<int,int>>> next_contour_pixel = find_next_contour_pixel(image, prev_xy, prev_dxy);
-        // No contour sibling pixel found
-        if (next_contour_pixel == std::nullopt) break;
+    do {
+      int found_dir = -1;
+      for (int i = 0; i < 8; ++i) {
+        int idx = (prev_dir + 1 + i) % 8;
+        int nx = current.first + neighbor_offsets[idx][0];
+        int ny = current.second + neighbor_offsets[idx][1];
 
-        auto& [current_xy, current_dxy] = next_contour_pixel.value();
-        auto& [current_x, current_y] = current_xy;
-        update_label(current_x, current_y, labels[current_y][current_x], image);
+        if (nx < 0 || nx >= width || ny < 0 || ny >= height) continue;
+        if (!border_mask[ny][nx]) continue;
+        if (labels[ny][nx] != -1) continue;
 
-        contour.points.push_back(current_xy);
-
-        prev_xy = current_xy;
-        prev_dxy = current_dxy;
+        // Move to next border pixel
+        labels[ny][nx] = current_label;
+        contour.points.push_back({nx, ny});
+        current = {nx, ny};
+        prev_dir = (idx + 4) % 8; // opposite direction for next search
+        found_dir = idx;
+        break;
       }
 
+      if (found_dir == -1) break; // contour fully traced
+    } while (current != std::make_pair(start_x, start_y));
+
     return contour;
-    }
+  }
 
-    void find_contours(const uint8_t* pixels, size_t width, size_t height, std::vector<Contour>& contours) {
-      ImageLib::Image<ImageLib::RGBAPixel<uint8_t>>image;
-      image.loadFromBuffer(pixels, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
+  void find_contours(const uint8_t* pixels, size_t width, size_t height, std::vector<Contour>& contours) {
+    ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> image;
+    image.loadFromBuffer(pixels, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
-      int image_width{static_cast<int>(width)};
-      int image_height{static_cast<int>(height)};
+    int image_width  = static_cast<int>(width);
+    int image_height = static_cast<int>(height);
 
-      // 2D vector labels represent visited pixels in image (-1: unvisited)
-      std::vector<std::vector<int>> labels(image_height, std::vector<int>(image_width, -1));
+    // 2D labels (-1 = unvisited)
+    std::vector<std::vector<int>> labels(image_height, std::vector<int>(image_width, -1));
 
-      // Flood-fill
-      for (int y{0}; y < image_height; ++y) {
-        for (int x{0}; x < image_width; ++x) {
-          // Skip visited labels
-          if (labels[y][x] != -1) continue;
+    // Precompute border pixels
+    auto border_mask = compute_border_mask(image);
 
-          contours.push_back(trace_contour(x, y, labels, image));
-        }
+    int label_counter = 0;
+
+    for (int y = 0; y < image_height; ++y) {
+      for (int x = 0; x < image_width; ++x) {
+        if (!border_mask[y][x] || labels[y][x] != -1) continue;
+
+        label_counter++;
+        labels[y][x] = label_counter;
+
+        contours.push_back(trace_contour(x, y, labels, image, border_mask, label_counter));
       }
     }
   }
+}
