@@ -23,36 +23,38 @@ float colorDistance(const ImageLib::RGBAPixel<float> &a,
 
 void kmeans_clustering(uint8_t *data, int width, int height, int k,
                        int max_iter) {
-  int num_pixels = width * height;
   ImageLib::Image<ImageLib::RGBAPixel<float>> pixels;
   pixels.loadFromBuffer(data, width, height, ImageLib::RGBA_CONVERTER<float>);
+  const int num_pixels{pixels.getSize()};
 
-  // 1-D image (height = 1)
-  ImageLib::Image<ImageLib::RGBAPixel<float>> centroids(
-      k, 1); // k centroids, initialized to rgba(0,0,0,255)
-             // Init of each pixel is from default in Image constructor
+  // width = k, height = 1
+  // k centroids, initialized to rgba(0,0,0,255)
+  // Init of each pixel is from default in Image constructor
+  ImageLib::Image<ImageLib::RGBAPixel<float>> centroids{k, 1};
   std::vector<int> labels(num_pixels, 0);
 
   // Step 2: Initialize centroids randomly
   srand(static_cast<unsigned int>(time(nullptr)));
-  for (int i = 0; i < k; ++i) {
+  for (int i{0}; i < k; ++i) {
     int idx = rand() % num_pixels;
     centroids[i] = pixels[idx];
   }
 
   // Step 3: Run k-means iterations
-  for (int iter = 0; iter < max_iter; ++iter) {
-    bool changed = false;
+  for (int iter{0}; iter < max_iter; ++iter) {
+    bool changed{false};
 
     // Assignment step
-    for (int i = 0; i < num_pixels; ++i) {
-      float min_dist = std::numeric_limits<float>::max();
-      int best_cluster = 0;
+    // Iterate over pixels
+    for (int i{0}; i < num_pixels; ++i) {
+      float min_color_dist{std::numeric_limits<float>::max()};
+      int best_cluster{0};
 
-      for (int j = 0; j < k; ++j) {
-        float dist = colorDistance(pixels[i], centroids[j]);
-        if (dist < min_dist) {
-          min_dist = dist;
+      // Iterate over centroids to find centroid with most similar color to pixels[i]
+      for (int j{0}; j < k; ++j) {
+        float dist{colorDistance(pixels[i], centroids[j])};
+        if (dist < min_color_dist) {
+          min_color_dist = dist;
           best_cluster = j;
         }
       }
@@ -64,8 +66,9 @@ void kmeans_clustering(uint8_t *data, int width, int height, int k,
     }
 
     // Stop if no changes
-    if (!changed)
+    if (!changed) {
       break;
+    }
 
     // Update step
     // std::vector<RGB> new_centroids(k, { 0, 0, 0 });
@@ -84,7 +87,7 @@ void kmeans_clustering(uint8_t *data, int width, int height, int k,
       /*
          A centroid may become a dead centroid if it never gets pixels assigned
          to it. May be good idea to reinitialize these dead centroids.
-         */
+      */
       if (counts[j] > 0) {
         centroids[j].red = new_centroids[j].red / counts[j];
         centroids[j].green = new_centroids[j].green / counts[j];
@@ -94,10 +97,8 @@ void kmeans_clustering(uint8_t *data, int width, int height, int k,
   }
 
   // Write the final centroid values to each pixel in the cluster
-  // std::cout << "centroids.size() = " << centroids.size() <<
-  // "new_centroids.size() = " << new_centroids.size() <<
   for (int i = 0; i < num_pixels; ++i) {
-    int cluster = labels[i];
+    const int cluster = labels[i];
     data[i * 4 + 0] = static_cast<uint8_t>(centroids[cluster].red);
     data[i * 4 + 1] = static_cast<uint8_t>(centroids[cluster].green);
     data[i * 4 + 2] = static_cast<uint8_t>(centroids[cluster].blue);
