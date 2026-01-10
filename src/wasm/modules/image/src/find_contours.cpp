@@ -12,22 +12,49 @@ inline void log(std::string s) {
 }
 
 namespace contours {
-  static inline void update_label(const int x, const int y, int& label, const ImageLib::Image<ImageLib::RGBAPixel<uint8_t>>& image) {
-    const ImageLib::RGBAPixel<uint8_t>& pixel{image(x, y)};
+  // 8-neighbor offsets (dx, dy), clockwise order
+  // 0   1   2
+  // 7 [x,y] 3 <- [x,y]: param coordinates of reference pixel
+  // 6   5   4
+  constexpr std::array<std::array<int, 2>, 8> neighbor_offsets{{
+    {{-1, -1}}, // 0: top-left
+    {{ 0, -1}}, // 1: top
+    {{ 1, -1}}, // 2: top-right
+    {{ 1,  0}}, // 3: right
+    {{ 1,  1}}, // 4: bottom-right
+    {{ 0,  1}}, // 5: bottom
+    {{-1,  1}}, // 6: bottom-left
+    {{-1,  0}}  // 7: left
+  }};
 
-    // Outer contour: pixel value v and left neighbor ≠ v (or out of bounds).
-    if (x != 0 && pixel != image(x - 1, y)) {
-      // Mark as outer
-      label = 1;
+
+  static inline bool is_border_pixel(const ImageLib::Image<ImageLib::RGBAPixel<uint8_t>>& image, int x, int y) {
+    const auto& px = image(x, y);
+    int width  = static_cast<int>(image.getWidth());
+    int height = static_cast<int>(image.getHeight());
+
+    for (auto& offset : neighbor_offsets) {
+      int nx = x + offset[0];
+      int ny = y + offset[1];
+
+      if (nx < 0 || nx >= width || ny < 0 || ny >= height) continue;
+
+      if (image(nx, ny) != px) return true; // neighbor differs → border
     }
-    // Inner contour (hole): pixel value v and right neighbor ≠ v.
-    else if (x < (image.getWidth() - 1) && pixel != image(x + 1, y)) {
-      // Mark as inner
-      label = 2;
-    }
-    // Just visited, nothing special
-    else {
-      label = 3;
+
+    return false; // all neighbors same → interior pixel
+  }
+
+  static inline void update_label(int x, int y, int& label,
+      const ImageLib::Image<ImageLib::RGBAPixel<uint8_t>>& image) {
+    const auto& px = image(x, y);
+
+    if (!is_border_pixel(image, x, y)) {
+      label = 3; // interior
+    } else if (x != 0 && px != image(x - 1, y)) {
+      label = 1; // outer
+    } else {
+      label = 2; // inner/hole
     }
   }
 
@@ -39,21 +66,6 @@ namespace contours {
     const auto& [x, y] = current_contour_xy;
     const auto& [prev_dx, prev_dy] = prev_offset;
     const ImageLib::RGBAPixel<uint8_t>& reference_pixel{image(x, y)};
-
-    // 8-neighbor offsets (dx, dy), clockwise order
-    // 0   1   2
-    // 7 [x,y] 3 <- [x,y]: param coordinates of reference pixel
-    // 6   5   4
-    constexpr std::array<std::array<int, 2>, 8> neighbor_offsets{{
-      {{-1, -1}}, // 0: top-left
-      {{ 0, -1}}, // 1: top
-      {{ 1, -1}}, // 2: top-right
-      {{ 1,  0}}, // 3: right
-      {{ 1,  1}}, // 4: bottom-right
-      {{ 0,  1}}, // 5: bottom
-      {{-1,  1}}, // 6: bottom-left
-      {{-1,  0}}  // 7: left
-    }};
 
     int width{static_cast<int>(image.getWidth())};
     int height{static_cast<int>(image.getHeight())};
@@ -97,15 +109,16 @@ namespace contours {
       }
 
       bool current_pixel_same_as_reference{current_pixel == reference_pixel};
-      // Found sibling contour pixel
-      if (!prev_pixel_same_as_reference && current_pixel_same_as_reference) {
-        log("3. correct at " + std::to_string(nx) + "," + std::to_string(ny));
+
+      // Only consider pixels that are on the border
+      if (current_pixel_same_as_reference && is_border_pixel(image, nx, ny)) {
+        log("3. border pixel at " + std::to_string(nx) + "," + std::to_string(ny));
         return std::make_optional(
-          std::make_pair(
-            std::make_pair(x + neighbor_offsets[idx][0], y + neighbor_offsets[idx][1]),
-            std::make_pair(neighbor_offsets[idx][0], neighbor_offsets[idx][1])
-            )
-          );
+            std::make_pair(
+              std::make_pair(nx, ny),
+              std::make_pair(neighbor_offsets[idx][0], neighbor_offsets[idx][1])
+              )
+            );
       }
 
       log("4. incorrect at " + std::to_string(nx) + "," + std::to_string(ny));
@@ -117,6 +130,11 @@ namespace contours {
   }
 
   static Contour trace_contour(const int x, const int y, std::vector<std::vector<int>>& labels, const ImageLib::Image<ImageLib::RGBAPixel<uint8_t>>& image) {
+    if (!is_border_pixel(image, x, y)) {
+      labels[y][x] = 3; // mark visited interior
+      return Contour{};  // empty contour
+    }
+
     const int& start_label{labels[y][x]};
 
     Contour contour;
