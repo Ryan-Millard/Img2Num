@@ -19,11 +19,7 @@ export default function Pagination({ page, totalPages, onChange }) {
     const handler = (e) => {
       // Ignore keyboard navigation when user is typing in input fields
       const target = e.target;
-      if (
-        target.tagName === 'INPUT' ||
-        target.tagName === 'TEXTAREA' ||
-        target.isContentEditable
-      ) {
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
         return;
       }
 
