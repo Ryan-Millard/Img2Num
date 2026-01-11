@@ -42,7 +42,6 @@ export default function ContributorsCreditsCard() {
                           </a>
                         </Tooltip>
                       </td>
-
                       <td>
                         <Tooltip content={`Visit ${c.login}'s GitHub profile`}>
                           <a href={c.html_url} target="_blank" rel="noopener noreferrer">
@@ -50,8 +49,9 @@ export default function ContributorsCreditsCard() {
                           </a>
                         </Tooltip>
                       </td>
-
-                      <td>{c.contributions === 1 ? 'commit' : 'commits'}</td>
+                      <td>
+                        {c.contributions} {c.contributions === 1 ? 'commit' : 'commits'}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
