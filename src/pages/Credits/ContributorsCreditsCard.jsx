@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import GlassCard from '@components/GlassCard';
 import contributors from '@data/contributor-credits.json';
 import styles from './ContributorsCreditsCard.module.css';
