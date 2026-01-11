@@ -17,6 +17,16 @@ export default function Pagination({ page, totalPages, onChange }) {
   // ⌨️ keyboard navigation
   useEffect(() => {
     const handler = (e) => {
+      // Ignore keyboard navigation when user is typing in input fields
+      const target = e.target;
+      if (
+        target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.isContentEditable
+      ) {
+        return;
+      }
+
       if (e.key === 'ArrowRight' && page < totalPages - 1) {
         onChange(page + 1);
       }
