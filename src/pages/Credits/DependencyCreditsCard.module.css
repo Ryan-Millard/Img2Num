@@ -12,7 +12,6 @@
   text-overflow: ellipsis;
 }
 
-/* Package name */
 .table td:first-child {
   white-space: nowrap;
   overflow: hidden;
@@ -20,13 +19,12 @@
   width: 35%;
 }
 
-/* Version */
+
 .table td:nth-child(2) {
   white-space: nowrap;
   width: 15%;
 }
 
-/* URL column */
 .table td:nth-child(3) {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -34,12 +32,12 @@
   width: 50%;
 }
 
-/* Full URL - show on desktop */
+
 .fullUrl {
   display: inline;
 }
 
-/* Icon - hide on desktop */
+
 .iconUrl {
   display: none;
 }
@@ -51,29 +49,29 @@
     table-layout: fixed;
   }
 
-  /* Package name - truncate if too long on mobile */
+  
   .table td:first-child {
     width: 50%;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  /* Version - auto width on mobile */
+  
   .table td:nth-child(2) {
     width: auto;
   }
 
-  /* URL column - small width for icon on mobile */
+  
   .table td:nth-child(3) {
     width: 40px;
   }
 
-  /* Hide full URL on mobile */
+  
   .fullUrl {
     display: none;
   }
 
-  /* Show icon on mobile */
+  
   .iconUrl {
     display: inline;
     vertical-align: middle;
