@@ -193,8 +193,6 @@ void region_labeling(const uint8_t *data, std::vector<int>& labels, std::vector<
                 int num_pixels = p_ptr->size();
                 if (counts == num_pixels) {
                     // should always be true
-                    std::cout << "Counts: " << counts << std::endl;
-
                     Node_ptr n_ptr = std::make_shared<Node>(r_lbl, p_ptr);
                     nodes.push_back(n_ptr);
                 }

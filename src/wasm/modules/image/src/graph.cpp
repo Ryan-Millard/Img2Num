@@ -196,10 +196,10 @@ void discover_edges(Graph& G, const std::vector<int>& region_labels, size_t widt
 void mergeSmallAreaNodes(Graph& G, int min_area) {
     int counter = 0;
     while(!G.allAreasBiggerThan(min_area)) {
-        std::cout << "Graph has " << G.size() << " nodes" << std::endl;
+        // std::cout << "Graph has " << G.size() << " nodes" << std::endl;
         for (const Node_ptr& n : G.get_nodes()) {
             if ((n->area() < min_area) && (n->area() > 0)) {
-                std::cout << "Node " << n->id() << " has area " << n->area() << std::endl;
+                // std::cout << "Node " << n->id() << " has area " << n->area() << std::endl;
 
                 std::vector<Node_ptr> neighbors(n->num_edges());
                 std::copy(n->edges().begin(), n->edges().end(), std::back_inserter(neighbors));
@@ -227,7 +227,6 @@ void mergeSmallAreaNodes(Graph& G, int min_area) {
 
         // G.clear_unconnected_nodes();
         counter++;
-        std::cout << counter << std::endl;
     }
     std::cout << "Done merging after " << counter << " iterations" << std::endl;
 }
