@@ -17,6 +17,7 @@ const WasmImageProcessor = () => {
     bilateralFilter,
     blackThreshold,
     kmeans,
+    kmeans2,
     mergeSmallRegionsInPlace,
     findContours,
   } = useWasmWorker();
@@ -102,11 +103,11 @@ const WasmImageProcessor = () => {
       });
 
       step(70);
-      const kmeansed = await kmeans({
-        ...fileData,
-        pixels: thresholded,
-        num_colors: 8,
-      });
+      // const kmeansed = await kmeans({
+      //   ...fileData,
+      //   pixels: thresholded,
+      //   num_colors: 8,
+      // });
 
       const twoPercentOrOne = (dimension) =>
         Math.ceil(Math.max(dimension * 0.02, 1));
@@ -128,22 +129,30 @@ const WasmImageProcessor = () => {
         Math.max(area / 10_000, minimumAllowedMinArea)
       );
 
-      step(75);
-      const merged = await mergeSmallRegionsInPlace({
-        pixels: kmeansed,
-        width,
-        height,
-        minArea,
-        minWidth,
-        minHeight,
+      // step(75);
+      // const merged = await mergeSmallRegionsInPlace({
+      //   pixels: kmeansed,
+      //   width,
+      //   height,
+      //   minArea,
+      //   minWidth,
+      //   minHeight,
+      // });
+
+      const kmeansed = await kmeans2({
+        ...fileData,
+        pixels: thresholded,
+        num_colors: 16,
+        min_area: minArea,
+        max_iter: 100,
       });
 
       // Save merged image for display
-      setMergedData({ pixels: merged, width, height });
+      setMergedData({ pixels: kmeansed, width, height });
 
       step(90);
       const contours = await findContours({
-        pixels: merged,
+        pixels: kmeansed,
         width,
         height,
       });
