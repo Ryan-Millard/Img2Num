@@ -98,10 +98,10 @@ class Graph {
 
         void clear_unconnected_nodes(void);
 
-        std::vector<Node_ptr>& get_nodes() const;
+        const std::vector<Node_ptr>& get_nodes() const;
 
         bool allAreasBiggerThan(int min_area);
-        int size();
+        const int size();
 };
 
 EXPORTED void kmeans_clustering_graph(uint8_t *data, int width, int height, int k,

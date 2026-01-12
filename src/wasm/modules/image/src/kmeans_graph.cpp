@@ -115,7 +115,7 @@ void Node::add_colors(std::vector<RGB>& new_colors) {
 */
 void Node::add_pixels(const std::vector<RGBXY>& new_pixels) {
     for (auto &c : new_pixels) {
-        m_pixels->push_back(std::move(c));
+        m_pixels->push_back(c);
     }
 }
 
@@ -140,13 +140,14 @@ void Graph::hash_node_ids() {
     }
 }
 
-std::vector<Node_ptr>& Graph::get_nodes() const {
+const std::vector<Node_ptr>& Graph::get_nodes() const {
     return *m_nodes;
 }
 
 bool Graph::allAreasBiggerThan(int min_area) {
     for (auto &n : *m_nodes) {
-        if (n->area() < min_area) {
+        // ignore if area > 0 bc that will be removed
+        if ((n->area() < min_area) && (n->area() > 0)) {
             return false;
         }
     }
@@ -154,7 +155,7 @@ bool Graph::allAreasBiggerThan(int min_area) {
     return true;
 }
 
-int Graph::size() {
+const int Graph::size() {
     return m_nodes->size();
 }
 
@@ -195,9 +196,12 @@ void Graph::merge_nodes(const Node_ptr& node_to_keep, const Node_ptr& node_to_re
 
     // transfer edges from node_to_remove to node_to_keep
     for (Node_ptr n : m_nodes->at(idx_r)->edges()) {
-        // Node_ptr n = m_nodes->at(idx_r).edges[i];
-        n->add_edge(node_to_keep);
-        node_to_keep->add_edge(n);
+        if (n->id() != node_to_keep->id()) {
+            // prevents self referencing
+            n->add_edge(node_to_keep);
+            node_to_keep->add_edge(n);
+            std::cout << "Added edge between node " << node_to_keep->id() << " and " << n->id() << std::endl;
+        }
     }
     
     // node_to_remove.remove_all_edges();
@@ -207,19 +211,22 @@ void Graph::merge_nodes(const Node_ptr& node_to_keep, const Node_ptr& node_to_re
     node_to_keep->add_pixels(node_to_remove->get_pixels());
 
     node_to_remove->clear_all();
+
+    std::cout << "Merge node " << node_to_remove->id() << " into " << node_to_keep->id() << std::endl;
 }
 
 void Graph::clear_unconnected_nodes() {
-    std::vector<Node_ptr> filtered_nodes;
+    // std::vector<Node_ptr> filtered_nodes;
+    std::unique_ptr<std::vector<Node_ptr>> ptr;
     for (auto &n : *m_nodes){
         if (n->area() > 0) {
-            filtered_nodes.push_back(std::move(n));
+            ptr->push_back(std::move(n));
         }
     }
 
-    std::unique_ptr<std::vector<Node_ptr>> ptr = std::make_unique<std::vector<Node_ptr>>(filtered_nodes);
+    // std::unique_ptr<std::vector<Node_ptr>> ptr = std::make_unique<std::vector<Node_ptr>>(filtered_nodes);
 
-    m_nodes = std::move(ptr);
+    m_nodes.swap(ptr);
     hash_node_ids();
 }
 
@@ -453,9 +460,13 @@ void kmeans_clustering_graph(uint8_t *data, int width, int height, int k,
     }
     std::cout << "Done edge discovery" << std::endl;
     // 5. Merge small area nodes until all nodes are minArea or larger
-    while(G.allAreasBiggerThan(min_area)) {
+    int counter = 0;
+    while(!G.allAreasBiggerThan(min_area)) {
+        std::cout << "Graph has " << G.size() << " nodes" << std::endl;
         for (const Node_ptr& n : G.get_nodes()) {
-            if ((n->area() < min_area) && (n->area() < 0)) {
+            if ((n->area() < min_area) && (n->area() > 0)) {
+                std::cout << "Node " << n->id() << " has area " << n->area() << std::endl;
+
                 std::vector<Node_ptr> neighbors(n->num_edges());
                 std::copy(n->edges().begin(), n->edges().end(), std::back_inserter(neighbors));
 
@@ -480,12 +491,17 @@ void kmeans_clustering_graph(uint8_t *data, int width, int height, int k,
             }
         }
 
-        G.clear_unconnected_nodes();
+        // G.clear_unconnected_nodes();
+        counter++;
+        std::cout << counter << std::endl;
     }
-    std::cout << "Done merging" << std::endl;
+    std::cout << "Done merging after " << counter << " iterations" << std::endl;
     // 6. recolor image on new regions
     std::vector<uint8_t> results(4 * width * height);
     for (auto &n : G.get_nodes()) {
+        if (n->area() == 0) {
+            continue;
+        }
         RGB col = n->color();
         for (auto &p : n->get_pixels()) {
             results[4 * size_t(index(p.x, p.y))] = col.r;

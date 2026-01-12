@@ -110,7 +110,7 @@ const WasmImageProcessor = () => {
       // });
 
       const twoPercentOrOne = (dimension) =>
-        Math.ceil(Math.max(dimension * 0.02, 1));
+        Math.ceil(Math.max(dimension * 0.0005, 1));
 
       const minWidth = twoPercentOrOne(width);
       const minHeight = twoPercentOrOne(height);
