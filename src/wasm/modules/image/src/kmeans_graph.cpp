@@ -55,9 +55,9 @@ int flood_fill(std::vector<int>& label_array, std::vector<int>& region_array, co
             // check conditions
             if (
                 (x1 >= 0) &&
-                (x1 < int(width) - 1) &&
+                (x1 < int(width)) &&
                 (y1 >= 0) &&
-                (y1 < int(height) - 1) &&
+                (y1 < int(height)) &&
                 (label_array[size_t(index(x1, y1))] == target_value) &&
                 (region_array[size_t(index(x1, y1))] == -1)
             )
@@ -175,14 +175,9 @@ void region_labeling(const uint8_t *data, std::vector<int>& labels, std::vector<
     regions.resize(height * width, -1);
     int r_lbl = -1;
 
-    for (int i=0; i < width; i++) {
-        for (int j=0; j < height; j ++) {
-            /*RGBXY pix = RGBXY{
-                .r = data[4 * index(i, j)],
-                .g = data[4 * index(i, j) + 1],
-                .b = data[4 * index(i, j) + 2],
-                .x = i, .y = j
-            }*/
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
+            
             int label = labels[size_t(index(i, j))];
             int rlab = regions[size_t(index(i, j))];
 
@@ -272,11 +267,14 @@ void kmeans_clustering_graph(uint8_t *data, int width, int height, int k,
         int xmax = 0;
         int ymax = 0;
         for (auto &p : n->get_pixels()) {
-            if (p.x < xmin) xmin = p.x;
-            if (p.x > xmax) xmax = p.x;
-            if (p.y < ymin) ymin = p.y;
-            if (p.y > ymax) ymax = p.y;
+            if (p.x < xmin) { xmin = p.x; }
+            if (p.x > xmax) { xmax = p.x; }
+            if (p.y < ymin) { ymin = p.y; }
+            if (p.y > ymax) { ymax = p.y; }
         }
+
+        if ((xmax == xmin) || (ymax == ymin)) { continue; }
+
         int _w = xmax - xmin + 1; 
         int _h = ymax - ymin + 1;
 
