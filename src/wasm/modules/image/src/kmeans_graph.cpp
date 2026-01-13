@@ -2,6 +2,8 @@
 // should actually be taken into account.
 
 #include "kmeans_graph.h"
+#include "contours.h"
+#include <random>
 
 inline float colorDistance(const RGB &a, const RGB &b) {
   return std::sqrt((a.r - b.r) * (a.r - b.r) + (a.g - b.g) * (a.g - b.g) +
@@ -254,6 +256,69 @@ void kmeans_clustering_graph(uint8_t *data, int width, int height, int k,
         }
     }
     std::cout << "Done coloring" << std::endl;
+
+    // 7. Contours
+    // std::vector<suzuki::ContoursResult> contours;
+    for (auto &n : G.get_nodes()) {
+        // for each node collect pixels, convert to binary image, find contours
+        if (n->area() == 0) {
+            continue;
+        }
+
+        // std::array<int, 4> xyxy; // bounding box xmin, ymin, xmax, ymax
+        std::vector<uint8_t> binary;
+        
+        int xmin = (int)width; int ymin = (int)height;
+        int xmax = 0;
+        int ymax = 0;
+        for (auto &p : n->get_pixels()) {
+            if (p.x < xmin) xmin = p.x;
+            if (p.x > xmax) xmax = p.x;
+            if (p.y < ymin) ymin = p.y;
+            if (p.y > ymax) ymax = p.y;
+        }
+        int _w = xmax - xmin + 1; 
+        int _h = ymax - ymin + 1;
+
+        std::cout << "xmin: " << xmin;
+        std::cout << ", ymin: " << ymin;
+        std::cout << ", width: " << _w;
+        std::cout << ", height: " << _h << std::endl;
+
+        binary.resize(_w * _h, 0);
+
+        for (auto &p : n->get_pixels()) {
+            int _x = p.x - xmin;
+            int _y = p.y - ymin;
+            binary[_y * _w + _x] = 1;
+        }
+
+        ContoursResult contour_res = suzuki::findContoursSuzuki(binary, _w, _h);
+        for (auto &c: contour_res.contours) {
+            // contours.push_back(std::move(c));
+
+            // generate random color
+            static std::mt19937 rng(std::random_device{}());
+            static std::uniform_int_distribution<int> dist(0, 255);
+            uint8_t color[4] = {
+                static_cast<uint8_t>(dist(rng)),
+                static_cast<uint8_t>(dist(rng)),
+                static_cast<uint8_t>(dist(rng)),
+                255
+            };
+
+            for (auto &p : c) {
+                int _x = p.x + xmin;
+                int _y = p.y + ymin;
+                results[4 * size_t(index(_x, _y))] = color[0];
+                results[4 * size_t(index(_x, _y)) + 1] = color[1];
+                results[4 * size_t(index(_x, _y)) + 2] = color[2];
+                results[4 * size_t(index(_x, _y)) + 3] = color[3];
+            }
+        }
+
+    }
+
     std::memcpy(data, results.data(), results.size());
 
 }
