@@ -53,9 +53,9 @@ export function useWasmWorker() {
   const kmeans = async ({
     pixels,
     out_pixels = new Uint8ClampedArray(pixels.length),
-    out_labels = new Uint8ClampedArray(pixels.length),
     width,
     height,
+    out_labels = new Int32Array(width * height),
     num_colors,
     max_iter = 100,
   }) => {
