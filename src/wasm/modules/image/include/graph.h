@@ -11,6 +11,7 @@
 #include <set>
 #include <map>
 #include <memory>
+#include "node.h"
 
 /*
 Graph and Node classes support conversion of a region divided image into a graph structure.
@@ -35,72 +36,19 @@ discover_edges(G, region_labels, width, height);
 
 */
 
-struct RGB {
-  float r, g, b;
-};
-
-struct XY {
-    int x, y;
-};
-
-struct RGBXY {
-    float r, g, b;
-    int x, y;
-};
-
-class Node;
-typedef std::shared_ptr<Node> Node_ptr;
-
-/*
-Node represents a region - collection of pixels, and their neighboring regions (edges)
-*/
-
-class Node {
-    protected:
-        int m_id;
-        std::unique_ptr<std::vector<RGBXY>> m_pixels;
-        std::set<Node_ptr> m_edges {};
-
-    public:
-        Node(
-            int id, 
-            std::unique_ptr<std::vector<RGBXY>>& pixels
-        );
-        ~Node();
-
-        XY centroid(void);
-        RGB color(void);
-
-        /* access member variables */
-        int id() const;
-        int area() const;
-        const std::set<Node_ptr>& edges() const;
-        int num_edges() const;
-        std::vector<RGBXY>& get_pixels() const;
-
-        /* modify member variables */
-        void add_pixels(const std::vector<RGBXY>& new_pixels);
-
-        void clear_all();
-
-        void add_edge(const Node_ptr& node);
-        void remove_edge(const Node_ptr& node);
-        void remove_all_edges();
-};
-
 class Graph {
     protected:
         std::unique_ptr<std::vector<Node_ptr>> m_nodes;
-        std::map<int, int> m_node_ids;
+        std::unordered_map<int, int> m_node_ids;
 
         void hash_node_ids(void);
 
     public:
         Graph(std::unique_ptr<std::vector<Node_ptr>>& nodes);
-        ~Graph();
+        ~Graph() = default;
 
-        void add_edge(int node_id1, int node_id2);
-        void merge_nodes(const Node_ptr& node_to_keep, const Node_ptr& node_to_remove);
+        bool add_edge(int node_id1, int node_id2);
+        bool merge_nodes(const Node_ptr& node_to_keep, const Node_ptr& node_to_remove);
 
         void clear_unconnected_nodes(void);
 

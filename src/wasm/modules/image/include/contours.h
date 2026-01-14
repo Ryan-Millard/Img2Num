@@ -25,7 +25,7 @@ struct ContoursResult {
     std::vector<bool> is_hole;
 };
 
-namespace suzuki {
-    ContoursResult findContoursSuzuki(const std::vector<uint8_t>& binary, int width, int height);
+namespace contours {
+    ContoursResult find_contours(const std::vector<uint8_t>& binary, int width, int height);
 }
 #endif

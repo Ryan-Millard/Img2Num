@@ -188,16 +188,11 @@ void region_labeling(const uint8_t *data, std::vector<int>& labels, std::vector<
                 std::unique_ptr<std::vector<RGBXY>> p_ptr = std::make_unique<std::vector<RGBXY>>();
                 int counts = flood_fill(labels, regions, data, i, j, label, r_lbl, width, height, p_ptr);
                 int num_pixels = p_ptr->size();
-                if (counts == num_pixels) {
-                    // should always be true
-                    Node_ptr n_ptr = std::make_shared<Node>(r_lbl, p_ptr);
-                    nodes.push_back(n_ptr);
-                }
-                else {
-                    std::cout << "Floodfill error!!" << std::endl;
-                    std::cout << "Counts: " << counts << std::endl;
-                    std::cout << "Num pixels: " << num_pixels << std::endl;
-                }
+
+                // num_pixels == counts always
+                Node_ptr n_ptr = std::make_shared<Node>(r_lbl, p_ptr);
+                nodes.push_back(n_ptr);
+                
             }
         }
     }
@@ -244,16 +239,16 @@ void kmeans_clustering_graph(uint8_t *data, int width, int height, int k,
         }
         RGB col = n->color();
         for (auto &p : n->get_pixels()) {
-            results[4 * size_t(index(p.x, p.y))] = col.r;
-            results[4 * size_t(index(p.x, p.y)) + 1] = col.g;
-            results[4 * size_t(index(p.x, p.y)) + 2] = col.b;
-            results[4 * size_t(index(p.x, p.y)) + 3] = data[4 * size_t(index(p.x, p.y)) + 3]; 
+            size_t idx{4 * static_cast<size_t>(index(p.x, p.y))};
+            results[idx] = col.r;
+            results[idx + 1] = col.g;
+            results[idx + 2] = col.b;
+            results[idx + 3] = data[idx + 3]; 
         }
     }
     std::cout << "Done coloring" << std::endl;
 
     // 7. Contours
-    // std::vector<suzuki::ContoursResult> contours;
     for (auto &n : G.get_nodes()) {
         // for each node collect pixels, convert to binary image, find contours
         if (n->area() == 0) {
@@ -278,10 +273,10 @@ void kmeans_clustering_graph(uint8_t *data, int width, int height, int k,
         int _w = xmax - xmin + 1; 
         int _h = ymax - ymin + 1;
 
-        std::cout << "xmin: " << xmin;
-        std::cout << ", ymin: " << ymin;
-        std::cout << ", width: " << _w;
-        std::cout << ", height: " << _h << std::endl;
+        // std::cout << "xmin: " << xmin;
+        // std::cout << ", ymin: " << ymin;
+        // std::cout << ", width: " << _w;
+        // std::cout << ", height: " << _h << std::endl;
 
         binary.resize(_w * _h, 0);
 
@@ -291,7 +286,7 @@ void kmeans_clustering_graph(uint8_t *data, int width, int height, int k,
             binary[_y * _w + _x] = 1;
         }
 
-        ContoursResult contour_res = suzuki::findContoursSuzuki(binary, _w, _h);
+        ContoursResult contour_res = contours::find_contours(binary, _w, _h);
         for (auto &c: contour_res.contours) {
             // contours.push_back(std::move(c));
 
@@ -308,10 +303,11 @@ void kmeans_clustering_graph(uint8_t *data, int width, int height, int k,
             for (auto &p : c) {
                 int _x = p.x + xmin;
                 int _y = p.y + ymin;
-                results[4 * size_t(index(_x, _y))] = color[0];
-                results[4 * size_t(index(_x, _y)) + 1] = color[1];
-                results[4 * size_t(index(_x, _y)) + 2] = color[2];
-                results[4 * size_t(index(_x, _y)) + 3] = color[3];
+                size_t idx{4 * static_cast<size_t>(index(_x, _y))};
+                results[idx] = color[0];
+                results[idx + 1] = color[1];
+                results[idx + 2] = color[2];
+                results[idx + 3] = color[3];
             }
         }
 

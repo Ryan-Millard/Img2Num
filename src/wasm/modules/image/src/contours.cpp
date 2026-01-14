@@ -1,7 +1,7 @@
 
 #include "contours.h"
 
-namespace suzuki {
+namespace contours {
 
 // 8-neighborhood, clockwise order starting from "right" (dx=+1,dy=0).
 // (y increases downward)
@@ -35,7 +35,7 @@ static std::vector<Point> traceBorder(std::vector<int>& f, int paddedW,
                                       int sy, int sx, int py, int px,
                                       int nbd)
 {
-    auto at = [&](int y, int x) -> int& { return f[y * paddedW + x]; };
+    auto set = [&](int y, int x) -> int& { return f[y * paddedW + x]; };
     auto get = [&](int y, int x) -> int  { return f[y * paddedW + x]; };
 
     std::vector<Point> pts;
@@ -60,7 +60,7 @@ static std::vector<Point> traceBorder(std::vector<int>& f, int paddedW,
 
     // If isolated pixel: set f(sy,sx) = -NBD and return single-point contour
     if (!found) {
-        at(sy, sx) = -nbd;
+        set(sy, sx) = -nbd;
         pts.push_back(Point{sx - 1, sy - 1});
         return pts;
     }
@@ -99,10 +99,10 @@ static std::vector<Point> traceBorder(std::vector<int>& f, int paddedW,
 
         // (3.4) Marking policy
         if (rightZeroExamined) {
-            at(y3, x3) = -nbd;
+            set(y3, x3) = -nbd;
         } else {
-            if (at(y3, x3) == 1) {
-                at(y3, x3) = nbd;
+            if (set(y3, x3) == 1) {
+                set(y3, x3) = nbd;
             }
         }
 
@@ -122,7 +122,7 @@ static std::vector<Point> traceBorder(std::vector<int>& f, int paddedW,
     return pts;
 }
 
-ContoursResult findContoursSuzuki(const std::vector<uint8_t>& binary, int width, int height)
+ContoursResult find_contours(const std::vector<uint8_t>& binary, int width, int height)
 {
     if (width <= 0 || height <= 0) {
         return {};
@@ -136,12 +136,12 @@ ContoursResult findContoursSuzuki(const std::vector<uint8_t>& binary, int width,
     const int paddedH = height + 2;
     std::vector<int> f(paddedW * paddedH, 0);
 
-    auto at = [&](int y, int x) -> int& { return f[y * paddedW + x]; };
+    auto set = [&](int y, int x) -> int& { return f[y * paddedW + x]; };
     auto get = [&](int y, int x) -> int  { return f[y * paddedW + x]; };
 
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
-            at(y + 1, x + 1) = (binary[y * width + x] != 0) ? 1 : 0;
+            set(y + 1, x + 1) = (binary[y * width + x] != 0) ? 1 : 0;
         }
     }
 
@@ -260,4 +260,4 @@ ContoursResult findContoursSuzuki(const std::vector<uint8_t>& binary, int width,
     return out;
 }
 
-} // namespace suzuki
+} // namespace contours
