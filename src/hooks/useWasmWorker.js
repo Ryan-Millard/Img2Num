@@ -73,14 +73,20 @@ export function useWasmWorker() {
     return (await call('mergeSmallRegionsInPlace', { pixels, width, height, minArea, minWidth, minHeight }, ['pixels']))
       .output.pixels;
   };
-  const kmeans2 = async ({ pixels, width, height, num_colors, max_iter, min_area }) => {
-    return (await call('kmeans_clustering_graph', { pixels, width, height, num_colors, max_iter, min_area }, ['pixels'])).output.pixels;
-  };
-
-  const findContours = async ({ pixels, width, height }) => {
-    return (await call('visualize_contours', { pixels, width, height }, ['pixels']))
-      .output.pixels;
+  const findContours = async ({
+    pixels,
+    labels,
+    width,
+    height,
+    min_area = 100,
+  }) => {
+    return (
+      await call(
+        'kmeans_clustering_graph',
+        { pixels, labels, width, height, min_area },
+        ['pixels', 'labels'])
+    ).output.pixels;
   }
 
-  return { call, gaussianBlur, bilateralFilter, blackThreshold, kmeans, kmeans2, mergeSmallRegionsInPlace, findContours };
+  return { call, gaussianBlur, bilateralFilter, blackThreshold, kmeans, mergeSmallRegionsInPlace, findContours };
 }

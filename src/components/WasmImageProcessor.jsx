@@ -13,9 +13,11 @@ const WasmImageProcessor = () => {
   const inputId = useId();
   const inputRef = useRef(null);
 
-  const { bilateralFilter, blackThreshold, kmeans, mergeSmallRegionsInPlace } = useWasmWorker();
+  const { bilateralFilter, blackThreshold, kmeans, mergeSmallRegionsInPlace, findContours } = useWasmWorker();
 
   const [originalSrc, setOriginalSrc] = useState(null);
+  const [kmeansSrc, setKmeansSrc] = useState(null);
+  const [contoursSrc, setContoursSrc] = useState(null);
   const [fileData, setFileData] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -24,8 +26,10 @@ const WasmImageProcessor = () => {
   useEffect(() => {
     return () => {
       if (originalSrc) URL.revokeObjectURL(originalSrc);
+      if (kmeansSrc) URL.revokeObjectURL(kmeansSrc);
+      if (contoursSrc) URL.revokeObjectURL(contoursSrc);
     };
-  }, [originalSrc]);
+  }, [originalSrc, kmeansSrc, contoursSrc]);
 
   /* Stable loader for images */
   const loadOriginal = useCallback(async (file) => {
@@ -155,7 +159,7 @@ const WasmImageProcessor = () => {
 
         labeled[j + 3] = 255; // Alpha
       }
-      setOriginalSrc(( (pixels, width, height) => {
+      const uint8clampedarraytoimage = (pixels, width, height) => {
         const canvas = document.createElement('canvas');
         canvas.width = width;
         canvas.height = height;
@@ -163,7 +167,19 @@ const WasmImageProcessor = () => {
         const imageData = new ImageData(pixels, width, height);
         ctx.putImageData(imageData, 0, 0);
         return canvas.toDataURL(); // or URL.createObjectURL(blob)
-      } )(labeled, fileData.width, fileData.height));
+      };
+      setKmeansSrc(uint8clampedarraytoimage(labeled, fileData.width, fileData.height));
+
+      const contours = await findContours({
+        pixels: kmeansed,
+        labels,
+        width,
+        height,
+      });
+      console.log(1);
+
+      setContoursSrc(uint8clampedarraytoimage(contours, fileData.width, fileData.height));
+      console.log(2);
 
       //// Get 2% of the input dimension (width / height), but default to 1 pixel
       //const twoPercentOrOne = (dimension) => Math.ceil(Math.max(dimension * 0.02, 1));
@@ -204,7 +220,7 @@ const WasmImageProcessor = () => {
         step(0);
       }, 800);
     }
-  }, [fileData, bilateralFilter, blackThreshold, kmeans, mergeSmallRegionsInPlace, navigate, step]);
+  }, [fileData, bilateralFilter, blackThreshold, kmeans, findContours, mergeSmallRegionsInPlace, navigate, step]);
 
   /* Memo'd UI fragments */
   const EmptyState = useMemo(
@@ -231,6 +247,8 @@ const WasmImageProcessor = () => {
     return (
       <>
         <img src={originalSrc} alt="Original" className={styles.preview} />
+        {kmeansSrc && <img src={kmeansSrc} alt="Kmeans" className={styles.preview} />}
+        {contoursSrc && <img src={contoursSrc} alt="Kmeans" className={styles.preview} />}
 
         {!isProcessing ? (
           <Tooltip content="Process the image and convert it to numbers">
@@ -248,7 +266,7 @@ const WasmImageProcessor = () => {
         )}
       </>
     );
-  }, [originalSrc, isProcessing, progress, processImage]);
+  }, [originalSrc, kmeansSrc, contoursSrc, isProcessing, progress, processImage]);
 
   return (
     <GlassCard

@@ -19,6 +19,5 @@
 #include "RGBAPixel.h"
 #include "graph.h"
 
-EXPORTED void kmeans_clustering_graph(uint8_t *data, int width, int height, int k,
-                                int max_iter, int min_area);
+EXPORTED void kmeans_clustering_graph(uint8_t* data, int32_t* labels, int width, int height, int min_area);
 #endif
