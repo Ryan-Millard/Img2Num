@@ -108,7 +108,6 @@ If it isn't there, please open a ["New Feature" issue](https://github.com/Ryan-M
 - [<img src="https://github.com/hjmillard.png" width="20" height="20" valign="middle"> @hjmillard](https://github.com/hjmillard)
 - [<img src="https://github.com/krasner.png" width="20" height="20" valign="middle"> @krasner](https://github.com/krasner)
 
-
 ## Contributors & Credits
 
 Thanks to all of our contributors - your impact on this project has been greatly appreciated!
