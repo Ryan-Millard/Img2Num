@@ -253,42 +253,24 @@ void kmeans_clustering_graph(uint8_t *data, int width, int height, int k,
         // for each node collect pixels, convert to binary image, find contours
         if (n->area() == 0) {
             continue;
-        }
+        }        
 
-        // std::array<int, 4> xyxy; // bounding box xmin, ymin, xmax, ymax
+        /*
+        get tight bounding box the encapsulates 
+        all pixels held by node.
+        returns in format xmin, ymin, width, height
+        return a binary image - pixel present = 1, pixel absent = 0
+        */
+        std::array<int, 4> xywh;
         std::vector<uint8_t> binary;
-        
-        int xmin = (int)width; int ymin = (int)height;
-        int xmax = 0;
-        int ymax = 0;
-        for (auto &p : n->get_pixels()) {
-            if (p.x < xmin) { xmin = p.x; }
-            if (p.x > xmax) { xmax = p.x; }
-            if (p.y < ymin) { ymin = p.y; }
-            if (p.y > ymax) { ymax = p.y; }
-        }
 
-        if ((xmax == xmin) || (ymax == ymin)) { continue; }
+        xywh = n->create_binary_image(binary);
 
-        int _w = xmax - xmin + 1; 
-        int _h = ymax - ymin + 1;
+        int xmin = xywh[0]; int ymin = xywh[1];
+        int bw = xywh[2]; int bh = xywh[3];
 
-        // std::cout << "xmin: " << xmin;
-        // std::cout << ", ymin: " << ymin;
-        // std::cout << ", width: " << _w;
-        // std::cout << ", height: " << _h << std::endl;
-
-        binary.resize(_w * _h, 0);
-
-        for (auto &p : n->get_pixels()) {
-            int _x = p.x - xmin;
-            int _y = p.y - ymin;
-            binary[_y * _w + _x] = 1;
-        }
-
-        ContoursResult contour_res = contours::find_contours(binary, _w, _h);
+        ContoursResult contour_res = contours::find_contours(binary, bw, bh);
         for (auto &c: contour_res.contours) {
-            // contours.push_back(std::move(c));
 
             // generate random color
             static std::mt19937 rng(std::random_device{}());
@@ -312,6 +294,7 @@ void kmeans_clustering_graph(uint8_t *data, int width, int height, int k,
         }
 
     }
+    std::cout << "Done contouring" << std::endl;
 
     std::memcpy(data, results.data(), results.size());
 

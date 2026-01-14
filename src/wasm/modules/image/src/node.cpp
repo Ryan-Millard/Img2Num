@@ -34,6 +34,38 @@ RGB Node::color() {
     return mean_col;
 }
 
+std::array<int, 4> Node::bounding_box_xywh() {
+    int xmin = INT_MAX; int ymin = INT_MAX;
+    int xmax = 0;
+    int ymax = 0;
+    for (auto &p : *m_pixels) {
+        if (p.x < xmin) { xmin = p.x; }
+        if (p.x > xmax) { xmax = p.x; }
+        if (p.y < ymin) { ymin = p.y; }
+        if (p.y > ymax) { ymax = p.y; }
+    }
+
+    int w = xmax - xmin + 1;
+    int h = ymax - ymin + 1;
+
+    return std::array<int, 4>{xmin, ymin, w, h};
+}
+
+std::array<int, 4> Node::create_binary_image(std::vector<uint8_t>& binary) {
+    std::array<int, 4> xywh;
+    xywh = bounding_box_xywh();
+
+    binary.resize(xywh[2] * xywh[3], 0);
+
+    for (auto &p : *m_pixels) {
+        int _x = p.x - xywh[0];
+        int _y = p.y - xywh[1];
+        binary[_y * xywh[2] + _x] = 1;
+    }
+
+    return xywh;
+}
+
 int Node::id() const { return m_id; };
 int Node::area() const { return m_pixels->size(); };
 

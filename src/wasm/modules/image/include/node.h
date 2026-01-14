@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <ctime>
+#include <climits>
 #include <iostream>
 #include <limits>
 #include <vector>
@@ -70,6 +71,8 @@ class Node {
 
         XY centroid(void);
         RGB color(void);
+        std::array<int, 4> bounding_box_xywh(void);
+        std::array<int, 4> create_binary_image(std::vector<uint8_t>& binary);
 
         /* access member variables */
         int id() const;
