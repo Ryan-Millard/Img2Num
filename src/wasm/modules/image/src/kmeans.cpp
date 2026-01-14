@@ -21,8 +21,11 @@ float colorDistance(const ImageLib::RGBAPixel<float> &a,
                    (a.blue - b.blue) * (a.blue - b.blue));
 }
 
-void kmeans_clustering(uint8_t *data, int width, int height, int k,
-                       int max_iter) {
+void kmeans(
+    const uint8_t *data, uint8_t* out_data,
+    int* out_labels,
+    const int width, const int height, const int k,
+    const int max_iter) {
   ImageLib::Image<ImageLib::RGBAPixel<float>> pixels;
   pixels.loadFromBuffer(data, width, height, ImageLib::RGBA_CONVERTER<float>);
   const int num_pixels{pixels.getSize()};
@@ -99,10 +102,14 @@ void kmeans_clustering(uint8_t *data, int width, int height, int k,
   // Write the final centroid values to each pixel in the cluster
   for (int i = 0; i < num_pixels; ++i) {
     const int cluster = labels[i];
-    data[i * 4 + 0] = static_cast<uint8_t>(centroids[cluster].red);
-    data[i * 4 + 1] = static_cast<uint8_t>(centroids[cluster].green);
-    data[i * 4 + 2] = static_cast<uint8_t>(centroids[cluster].blue);
+    out_data[i * 4 + 0] = static_cast<uint8_t>(centroids[cluster].red);
+    out_data[i * 4 + 1] = static_cast<uint8_t>(centroids[cluster].green);
+    out_data[i * 4 + 2] = static_cast<uint8_t>(centroids[cluster].blue);
+    out_data[i * 4 + 3] = 255;
   }
+
+  // Write labels to out_labels
+  std::memcpy(out_labels, labels.data(), labels.size());
 }
 
 float colorSpatialDistance(const RGBXY &a, const RGBXY &b,

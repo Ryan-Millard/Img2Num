@@ -50,8 +50,24 @@ export function useWasmWorker() {
   const blackThreshold = async ({ pixels, width, height, num_colors }) => {
     return (await call('black_threshold_image', { pixels, width, height, num_colors }, ['pixels'])).output.pixels;
   };
-  const kmeans = async ({ pixels, width, height, num_colors, max_iter = 100 }) => {
-    return (await call('kmeans_clustering', { pixels, width, height, num_colors, max_iter }, ['pixels'])).output.pixels;
+  const kmeans = async ({
+    pixels,
+    out_pixels = new Uint8ClampedArray(pixels.length),
+    out_labels = new Uint8ClampedArray(pixels.length),
+    width,
+    height,
+    num_colors,
+    max_iter = 100,
+  }) => {
+    const result = (await call(
+      'kmeans',
+      { pixels, out_pixels, out_labels, width, height, num_colors, max_iter },
+      ['pixels', 'out_pixels', 'out_labels']
+    )).output;
+    return {
+      pixels: result.out_pixels,
+      labels: result.out_labels,
+    };
   };
   const mergeSmallRegionsInPlace = async ({ pixels, width, height, minArea, minWidth, minHeight }) => {
     return (await call('mergeSmallRegionsInPlace', { pixels, width, height, minArea, minWidth, minHeight }, ['pixels']))
