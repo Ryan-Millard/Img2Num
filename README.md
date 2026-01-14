@@ -104,9 +104,9 @@ If it isn't there, please open a ["New Feature" issue](https://github.com/Ryan-M
 
 ## Maintainers
 
-- [<img src="https://github.com/Ryan-Millard.png" width="20" height="20" valign="middle"> @Ryan-Millard](https://github.com/Ryan-Millard)
-- [<img src="https://github.com/hjmillard.png" width="20" height="20" valign="middle"> @hjmillard](https://github.com/hjmillard)
-- [<img src="https://github.com/krasner.png" width="20" height="20" valign="middle"> @krasner](https://github.com/krasner)
+- [<img src="https://github.com/Ryan-Millard.png" width="20" height="20" valign="middle" alt="Ryan-Millard avatar"> `@Ryan-Millard`](https://github.com/Ryan-Millard)
+- [<img src="https://github.com/hjmillard.png" width="20" height="20" valign="middle" alt="hjmillard avatar"> `@hjmillard`](https://github.com/hjmillard)
+- [<img src="https://github.com/krasner.png" width="20" height="20" valign="middle" alt="krasner avatar"> `@krasner`](https://github.com/krasner)
 
 ## Contributors & Credits
 
