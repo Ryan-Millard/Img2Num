@@ -69,10 +69,6 @@ export function useWasmWorker() {
       labels: result.out_labels,
     };
   };
-  const mergeSmallRegionsInPlace = async ({ pixels, width, height, minArea, minWidth, minHeight }) => {
-    return (await call('mergeSmallRegionsInPlace', { pixels, width, height, minArea, minWidth, minHeight }, ['pixels']))
-      .output.pixels;
-  };
   const findContours = async ({
     pixels,
     labels,
@@ -88,5 +84,5 @@ export function useWasmWorker() {
     ).output.pixels;
   }
 
-  return { call, gaussianBlur, bilateralFilter, blackThreshold, kmeans, mergeSmallRegionsInPlace, findContours };
+  return { call, gaussianBlur, bilateralFilter, blackThreshold, kmeans, findContours };
 }

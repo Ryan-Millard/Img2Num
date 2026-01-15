@@ -13,7 +13,7 @@ const WasmImageProcessor = () => {
   const inputId = useId();
   const inputRef = useRef(null);
 
-  const { bilateralFilter, blackThreshold, kmeans, mergeSmallRegionsInPlace, findContours } = useWasmWorker();
+  const { bilateralFilter, blackThreshold, kmeans, findContours } = useWasmWorker();
 
   const [originalSrc, setOriginalSrc] = useState(null);
   const [kmeansSrc, setKmeansSrc] = useState(null);
@@ -191,15 +191,6 @@ const WasmImageProcessor = () => {
       //const minimumAllowedMinArea = area > 100_000_000 ? 25 : area > 10_000_000 ? 20 : area > 1_000_000 ? 15 : 10;
       //const minArea = Math.ceil(Math.max(area / 10_000, minimumAllowedMinArea));
 
-      //const merged = await mergeSmallRegionsInPlace({
-        //pixels: kmeansed,
-        //width,
-        //height,
-        //minArea,
-        //minWidth,
-        //minHeight,
-      //});
-
       //step(95);
       //const svg = await uint8ClampedArrayToSVG({
         //pixels: merged,
@@ -220,7 +211,7 @@ const WasmImageProcessor = () => {
         step(0);
       }, 800);
     }
-  }, [fileData, bilateralFilter, blackThreshold, kmeans, findContours, mergeSmallRegionsInPlace, navigate, step]);
+  }, [fileData, bilateralFilter, blackThreshold, kmeans, findContours, navigate, step]);
 
   /* Memo'd UI fragments */
   const EmptyState = useMemo(
