@@ -13,9 +13,11 @@ const WasmImageProcessor = () => {
   const inputId = useId();
   const inputRef = useRef(null);
 
-  const { bilateralFilter, blackThreshold, kmeans, mergeSmallRegionsInPlace } = useWasmWorker();
+  const { bilateralFilter, blackThreshold, kmeans, findContours } = useWasmWorker();
 
   const [originalSrc, setOriginalSrc] = useState(null);
+  const [kmeansSrc, setKmeansSrc] = useState(null);
+  const [contoursSrc, setContoursSrc] = useState(null);
   const [fileData, setFileData] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -24,8 +26,10 @@ const WasmImageProcessor = () => {
   useEffect(() => {
     return () => {
       if (originalSrc) URL.revokeObjectURL(originalSrc);
+      if (kmeansSrc) URL.revokeObjectURL(kmeansSrc);
+      if (contoursSrc) URL.revokeObjectURL(contoursSrc);
     };
-  }, [originalSrc]);
+  }, [originalSrc, kmeansSrc, contoursSrc]);
 
   /* Stable loader for images */
   const loadOriginal = useCallback(async (file) => {
@@ -93,43 +97,112 @@ const WasmImageProcessor = () => {
       });
 
       step(70);
-      const kmeansed = await kmeans({
+      const { pixels: kmeansed, labels } = await kmeans({
         ...fileData,
         pixels: thresholded,
         num_colors: 8,
       });
 
-      // Get 2% of the input dimension (width / height), but default to 1 pixel
-      const twoPercentOrOne = (dimension) => Math.ceil(Math.max(dimension * 0.02, 1));
-      const minWidth = twoPercentOrOne(width);
-      const minHeight = twoPercentOrOne(height);
+      const labeled = new Uint8ClampedArray(labels.length * 4);
 
-      const area = width * height;
-      // Prevents minArea from being too small
-      const minimumAllowedMinArea = area > 100_000_000 ? 25 : area > 10_000_000 ? 20 : area > 1_000_000 ? 15 : 10;
-      const minArea = Math.ceil(Math.max(area / 10_000, minimumAllowedMinArea));
+      // TODO: Remove the below and uncomment the code underneath
+      // This lets us visualise labels
+      for (let i = 0, j = 0; i < labels.length; i++, j += 4) {
+        switch (labels[i]) {
+          case 0:
+            labeled[j]     = 255; // R
+            labeled[j + 1] = 0;   // G
+            labeled[j + 2] = 0;   // B
+            break;
+          case 1:
+            labeled[j]     = 0;
+            labeled[j + 1] = 255;
+            labeled[j + 2] = 0;
+            break;
+          case 2:
+            labeled[j]     = 0;
+            labeled[j + 1] = 0;
+            labeled[j + 2] = 255;
+            break;
+          case 3:
+            labeled[j]     = 255;
+            labeled[j + 1] = 255;
+            labeled[j + 2] = 0;
+            break;
+          case 4:
+            labeled[j]     = 255;
+            labeled[j + 1] = 0;
+            labeled[j + 2] = 255;
+            break;
+          case 5:
+            labeled[j]     = 0;
+            labeled[j + 1] = 255;
+            labeled[j + 2] = 255;
+            break;
+          case 6:
+            labeled[j]     = 255;
+            labeled[j + 1] = 128;
+            labeled[j + 2] = 0;
+            break;
+          case 7:
+            labeled[j]     = 128;
+            labeled[j + 1] = 0;
+            labeled[j + 2] = 255;
+            break;
+          default:
+            // Safety for unexpected labels
+            labeled[j]     = 0;
+            labeled[j + 1] = 0;
+            labeled[j + 2] = 0;
+            break;
+        }
 
-      const merged = await mergeSmallRegionsInPlace({
+        labeled[j + 3] = 255; // Alpha
+      }
+      const uint8clampedarraytoimage = (pixels, width, height) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        const imageData = new ImageData(pixels, width, height);
+        ctx.putImageData(imageData, 0, 0);
+        return canvas.toDataURL(); // or URL.createObjectURL(blob)
+      };
+      setKmeansSrc(uint8clampedarraytoimage(labeled, fileData.width, fileData.height));
+
+      const contours = await findContours({
         pixels: kmeansed,
-        width,
-        height,
-        minArea,
-        minWidth,
-        minHeight,
-      });
-
-      step(95);
-      const svg = await uint8ClampedArrayToSVG({
-        pixels: merged,
+        labels,
         width,
         height,
       });
+      console.log(1);
 
-      step(100);
+      setContoursSrc(uint8clampedarraytoimage(contours, fileData.width, fileData.height));
+      console.log(2);
 
-      navigate('/editor', {
-        state: { svg },
-      });
+      //// Get 2% of the input dimension (width / height), but default to 1 pixel
+      //const twoPercentOrOne = (dimension) => Math.ceil(Math.max(dimension * 0.02, 1));
+      //const minWidth = twoPercentOrOne(width);
+      //const minHeight = twoPercentOrOne(height);
+
+      //const area = width * height;
+      //// Prevents minArea from being too small
+      //const minimumAllowedMinArea = area > 100_000_000 ? 25 : area > 10_000_000 ? 20 : area > 1_000_000 ? 15 : 10;
+      //const minArea = Math.ceil(Math.max(area / 10_000, minimumAllowedMinArea));
+
+      //step(95);
+      //const svg = await uint8ClampedArrayToSVG({
+        //pixels: merged,
+        //width,
+        //height,
+      //});
+
+      //step(100);
+
+      //navigate('/editor', {
+        //state: { svg },
+      //});
     } catch (err) {
       console.error(err);
     } finally {
@@ -138,7 +211,7 @@ const WasmImageProcessor = () => {
         step(0);
       }, 800);
     }
-  }, [fileData, bilateralFilter, blackThreshold, kmeans, mergeSmallRegionsInPlace, navigate, step]);
+  }, [fileData, bilateralFilter, blackThreshold, kmeans, findContours, navigate, step]);
 
   /* Memo'd UI fragments */
   const EmptyState = useMemo(
@@ -165,6 +238,8 @@ const WasmImageProcessor = () => {
     return (
       <>
         <img src={originalSrc} alt="Original" className={styles.preview} />
+        {kmeansSrc && <img src={kmeansSrc} alt="Kmeans" className={styles.preview} />}
+        {contoursSrc && <img src={contoursSrc} alt="Kmeans" className={styles.preview} />}
 
         {!isProcessing ? (
           <Tooltip content="Process the image and convert it to numbers">
@@ -182,7 +257,7 @@ const WasmImageProcessor = () => {
         )}
       </>
     );
-  }, [originalSrc, isProcessing, progress, processImage]);
+  }, [originalSrc, kmeansSrc, contoursSrc, isProcessing, progress, processImage]);
 
   return (
     <GlassCard

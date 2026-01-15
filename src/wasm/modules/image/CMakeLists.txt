@@ -37,7 +37,7 @@ set(COMMON_FLAGS
     "SHELL:-s EXIT_RUNTIME=1"
     "SHELL:-s ENVIRONMENT=web"
     "SHELL:-s EXPORTED_FUNCTIONS=['_malloc','_free']"
-    "SHELL:-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPU8']"
+    "SHELL:-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPU8','HEAP32']"
     "SHELL:-s INITIAL_MEMORY=1024MB"
     "SHELL:-s MAXIMUM_MEMORY=2048MB"
     "SHELL:-s ALLOW_MEMORY_GROWTH=1"

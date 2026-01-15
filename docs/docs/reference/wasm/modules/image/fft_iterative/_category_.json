@@ -1,6 +1,5 @@
 {
   "label": "fft_iterative.h",
-  "position": 2,
   "link": {
     "type": "generated-index",
     "title": "Iterative Radix-2 Cooley-Tukey Fast Fourier Transform",
