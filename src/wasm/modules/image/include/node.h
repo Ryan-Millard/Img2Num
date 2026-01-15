@@ -6,6 +6,7 @@
 #include <vector>
 #include <set>
 #include <array>
+#include <RGBPixel.h>
 
 /*
    Graph and Node classes support conversion of a region divided image into a graph structure.
@@ -30,25 +31,24 @@ discover_edges(G, region_labels, width, height);
 
 */
 
-struct RGB {
-  float r, g, b;
-};
-
 struct XY {
   int32_t x, y;
 };
 
 struct RGBXY {
-  float r, g, b;
-  int32_t x, y;
+  ImageLib::RGBPixel<uint8_t> color;
+  XY position;
+
+  RGBXY(uint8_t r, uint8_t g, uint8_t b, int32_t x, int32_t y)
+        : color(r, g, b), position{x, y} {}
 };
 
 class Node;
 typedef std::shared_ptr<Node> Node_ptr;
 
 /*
-   Node represents a region - collection of pixels, and their neighboring regions (edges)
-   */
+ *Node represents a region - collection of pixels, and their neighboring regions (edges)
+ */
 
 class Node {
   protected:
@@ -59,9 +59,9 @@ class Node {
   public:
     inline Node(int32_t id, std::unique_ptr<std::vector<RGBXY>>& pixels) : m_id(id), m_pixels(std::move(pixels)) {}
 
-    XY centroid(void) const;
-    RGB color(void) const;
-    std::array<int32_t, 4> bounding_box_xywh(void) const;
+    XY centroid() const;
+    ImageLib::RGBPixel<uint8_t> color() const;
+    std::array<int32_t, 4> bounding_box_xywh() const;
     std::array<int, 4> create_binary_image(std::vector<uint8_t>& binary) const;
 
     /* access member variables */

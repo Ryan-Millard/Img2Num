@@ -15,13 +15,13 @@ int flood_fill(std::vector<int>& label_array, std::vector<int>& region_array, co
   int dirs[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
   RGBXY pix = RGBXY{
-    .r=(float)color_array[4 * size_t(index(x, y))],
-    .g=(float)color_array[4 * size_t(index(x, y)) + 1],
-    .b=(float)color_array[4 * size_t(index(x, y)) + 2],
-    .x=x, .y=y
+    color_array[4 * size_t(index(x, y))],
+    color_array[4 * size_t(index(x, y)) + 1],
+    color_array[4 * size_t(index(x, y)) + 2],
+    x, y
   };
 
-  queue.push(XY{.x=x, .y=y});
+  queue.push({x, y});
 
   region_array[size_t(index(x, y))] = label_value;
 
@@ -46,16 +46,16 @@ int flood_fill(std::vector<int>& label_array, std::vector<int>& region_array, co
          )
       {
         RGBXY pix1 = RGBXY{
-          .r=(float)color_array[4 * size_t(index(x1, y1))],
-          .g=(float)color_array[4 * size_t(index(x1, y1)) + 1],
-          .b=(float)color_array[4 * size_t(index(x1, y1)) + 2],
-          .x=x1, .y=y1
+          color_array[4 * size_t(index(x1, y1))],
+          color_array[4 * size_t(index(x1, y1)) + 1],
+          color_array[4 * size_t(index(x1, y1)) + 2],
+          x1, y1
         };
         region_array[size_t(index(x1, y1))] = label_value;
         out_pixels->push_back(pix1);
         count++;
 
-        queue.push(XY{.x=x1, .y=y1});
+        queue.push({x1, y1});
       }
     }
   }
@@ -135,12 +135,12 @@ void kmeans_clustering_graph(uint8_t* data, int32_t* labels, int width, int heig
     if (n->area() == 0) {
       continue;
     }
-    RGB col = n->color();
-    for (auto &p : n->get_pixels()) {
+    ImageLib::RGBPixel<uint8_t> col = n->color();
+    for (auto &[_, p] : n->get_pixels()) {
       size_t idx{4 * static_cast<size_t>(index(p.x, p.y))};
-      results[idx] = col.r;
-      results[idx + 1] = col.g;
-      results[idx + 2] = col.b;
+      results[idx] = col.red;
+      results[idx + 1] = col.green;
+      results[idx + 2] = col.blue;
       results[idx + 3] = data[idx + 3];
     }
   }
