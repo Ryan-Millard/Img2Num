@@ -1,20 +1,6 @@
-// TODO: The kmeans algorithm actually ignores the values of alpha where it
-// should actually be taken into account.
-
 #include "kmeans.h"
 
-float colorDistance(const RGB &a, const RGB &b) {
-  return std::sqrt((a.r - b.r) * (a.r - b.r) + (a.g - b.g) * (a.g - b.g) +
-                   (a.b - b.b) * (a.b - b.b));
-}
-
-float colorDistance(const ImageLib::RGBAPixel<float> &a, const RGB &b) {
-  return std::sqrt((a.red - b.r) * (a.red - b.r) +
-                   (a.green - b.g) * (a.green - b.g) +
-                   (a.blue - b.b) * (a.blue - b.b));
-}
-
-float colorDistance(const ImageLib::RGBAPixel<float> &a,
+static inline float colorDistance(const ImageLib::RGBAPixel<float> &a,
                     const ImageLib::RGBAPixel<float> &b) {
   return std::sqrt((a.red - b.red) * (a.red - b.red) +
                    (a.green - b.green) * (a.green - b.green) +
@@ -74,7 +60,6 @@ void kmeans(
     }
 
     // Update step
-    // std::vector<RGB> new_centroids(k, { 0, 0, 0 });
     ImageLib::Image<ImageLib::RGBAPixel<float>> new_centroids(k, 1, 0);
     std::vector<int> counts(k, 0);
 
@@ -111,6 +96,17 @@ void kmeans(
   // Write labels to out_labels
   std::memcpy(out_labels, labels.data(), labels.size() * sizeof(int));
 }
+
+/*
+ *BUGGY CODE BELOW - one of the channels is poorly indexed
+ *
+ * TODO: The kmeans algorithm actually ignores the values of alpha where it should actually be taken into account.
+ */
+
+struct RGBXY {
+  float r, g, b;
+  float x, y;
+};
 
 float colorSpatialDistance(const RGBXY &a, const RGBXY &b,
                            float spatial_weight) {
