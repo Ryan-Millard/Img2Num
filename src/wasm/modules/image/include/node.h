@@ -1,21 +1,15 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include <cmath>
 #include <cstdint>
-#include <cstdlib>
-#include <ctime>
-#include <climits>
-#include <iostream>
-#include <limits>
+#include <memory>
 #include <vector>
 #include <set>
-#include <map>
-#include <memory>
+#include <array>
 
 /*
-Graph and Node classes support conversion of a region divided image into a graph structure.
-Each Node represents a region of pixels which tracks the color and coordinates (RGBXY) of belonging pixels, and its neighbors as edges.
+   Graph and Node classes support conversion of a region divided image into a graph structure.
+   Each Node represents a region of pixels which tracks the color and coordinates (RGBXY) of belonging pixels, and its neighbors as edges.
 
 usage:
 
@@ -41,54 +35,50 @@ struct RGB {
 };
 
 struct XY {
-    int x, y;
+  int32_t x, y;
 };
 
 struct RGBXY {
-    float r, g, b;
-    int x, y;
+  float r, g, b;
+  int32_t x, y;
 };
 
 class Node;
 typedef std::shared_ptr<Node> Node_ptr;
 
 /*
-Node represents a region - collection of pixels, and their neighboring regions (edges)
-*/
+   Node represents a region - collection of pixels, and their neighboring regions (edges)
+   */
 
 class Node {
-    protected:
-        int m_id;
-        std::unique_ptr<std::vector<RGBXY>> m_pixels;
-        std::set<Node_ptr> m_edges {};
+  protected:
+    int32_t m_id;
+    std::unique_ptr<std::vector<RGBXY>> m_pixels;
+    std::set<Node_ptr> m_edges {};
 
-    public:
-        Node(
-            int id, 
-            std::unique_ptr<std::vector<RGBXY>>& pixels
-        );
-        ~Node() = default;
+  public:
+    inline Node(int32_t id, std::unique_ptr<std::vector<RGBXY>>& pixels) : m_id(id), m_pixels(std::move(pixels)) {}
 
-        XY centroid(void);
-        RGB color(void);
-        std::array<int, 4> bounding_box_xywh(void);
-        std::array<int, 4> create_binary_image(std::vector<uint8_t>& binary);
+    XY centroid(void) const;
+    RGB color(void) const;
+    std::array<int32_t, 4> bounding_box_xywh(void) const;
+    std::array<int, 4> create_binary_image(std::vector<uint8_t>& binary) const;
 
-        /* access member variables */
-        int id() const;
-        int area() const;
-        const std::set<Node_ptr>& edges() const;
-        int num_edges() const;
-        std::vector<RGBXY>& get_pixels() const;
+    /* access member variables */
+    inline int32_t id() const { return m_id; };
+    inline size_t area() const { return m_pixels->size(); };
+    inline const std::set<Node_ptr>& edges() const { return m_edges; }
+    inline size_t num_edges() const { return m_edges.size(); }
+    inline const std::vector<RGBXY>& get_pixels() const { return *m_pixels; }
 
-        /* modify member variables */
-        void add_pixels(const std::vector<RGBXY>& new_pixels);
+    /* modify member variables */
+    void add_pixels(const std::vector<RGBXY>& new_pixels);
 
-        void clear_all();
+    void clear_all();
 
-        void add_edge(const Node_ptr& node);
-        void remove_edge(const Node_ptr& node);
-        void remove_all_edges();
+    inline void add_edge(const Node_ptr& node) { m_edges.insert(node); }
+    inline void remove_edge(const Node_ptr& node) { m_edges.erase(node); }
+    inline void remove_all_edges() { m_edges.clear(); }
 };
 
 #endif

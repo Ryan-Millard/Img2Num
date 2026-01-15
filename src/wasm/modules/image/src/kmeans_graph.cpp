@@ -120,11 +120,11 @@ void kmeans_clustering_graph(uint8_t* data, int32_t* labels, int width, int heig
   std::cout << "Init graph" << std::endl;
 
   // 3. Discover node adjancencies - add edges to Graph
-  discover_edges(G, region_labels, width, height);
+  G.discover_edges(region_labels, width, height);
   std::cout << "Done edge discovery" << std::endl;
 
   // 4. Merge small area nodes until all nodes are minArea or larger
-  mergeSmallAreaNodes(G, min_area);
+  G.merge_small_area_nodes(min_area);
   std::cout << "Done merging small nodes" << std::endl;
 
   // 5. recolor image on new regions

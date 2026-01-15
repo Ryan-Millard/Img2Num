@@ -1,21 +1,12 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include <cmath>
-#include <cstdint>
-#include <cstdlib>
-#include <ctime>
-#include <iostream>
-#include <limits>
-#include <vector>
-#include <set>
-#include <map>
-#include <memory>
 #include "node.h"
+#include <unordered_map>
 
 /*
-Graph and Node classes support conversion of a region divided image into a graph structure.
-Each Node represents a region of pixels which tracks the color and coordinates (RGBXY) of belonging pixels, and its neighbors as edges.
+   Graph and Node classes support conversion of a region divided image into a graph structure.
+   Each Node represents a region of pixels which tracks the color and coordinates (RGBXY) of belonging pixels, and its neighbors as edges.
 
 usage:
 
@@ -37,28 +28,29 @@ discover_edges(G, region_labels, width, height);
 */
 
 class Graph {
-    protected:
-        std::unique_ptr<std::vector<Node_ptr>> m_nodes;
-        std::unordered_map<int, int> m_node_ids;
+  protected:
+    std::unique_ptr<std::vector<Node_ptr>> m_nodes;
+    std::unordered_map<int32_t, int32_t> m_node_ids;
 
-        void hash_node_ids(void);
+    void hash_node_ids(void);
 
-    public:
-        Graph(std::unique_ptr<std::vector<Node_ptr>>& nodes);
-        ~Graph() = default;
+  public:
+    inline Graph(std::unique_ptr<std::vector<Node_ptr>>& nodes) : m_nodes(std::move(nodes)) {
+      hash_node_ids();
+    }
 
-        bool add_edge(int node_id1, int node_id2);
-        bool merge_nodes(const Node_ptr& node_to_keep, const Node_ptr& node_to_remove);
+    bool add_edge(int32_t node_id1, int32_t node_id2);
+    bool merge_nodes(const Node_ptr& node_to_keep, const Node_ptr& node_to_remove);
 
-        void clear_unconnected_nodes(void);
+    void clear_unconnected_nodes();
 
-        const std::vector<Node_ptr>& get_nodes() const;
+    inline const std::vector<Node_ptr>& get_nodes() const { return *m_nodes; }
 
-        bool allAreasBiggerThan(int min_area);
-        const int size();
+    bool all_areas_bigger_than(int32_t min_area);
+    inline const size_t size() { return m_nodes->size(); }
+
+    void discover_edges(const std::vector<int32_t>& region_labels, const int32_t width, const int32_t height);
+    void merge_small_area_nodes(const int32_t min_area);
 };
-
-void discover_edges(Graph& G, const std::vector<int>& region_labels, size_t width, size_t height);
-void mergeSmallAreaNodes(Graph& G, int min_area);
 
 #endif
