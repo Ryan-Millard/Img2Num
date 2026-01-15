@@ -1,0 +1,13 @@
+.table {
+  margin-left: auto;
+  margin-right: auto;
+  width: auto !important;
+}
+
+.table td {
+  text-align: center;
+}
+
+.table td:first-child {
+  white-space: nowrap;
+}
