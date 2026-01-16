@@ -64,7 +64,7 @@ export default function NavBar() {
                   role="menuitem"
                   className={`${styles.navLink} ${pathname === path ? styles.active : ''}`}
                   onClick={closeMenu}>
-                  {/* Supress eslint "no-unused-vars" rule */}
+                  {/* Suppress eslint "no-unused-vars" rule */}
                   {React.createElement(icon, { size: 16 })}
                   <span>{label}</span>
                 </Link>
@@ -76,7 +76,7 @@ export default function NavBar() {
             <li key={href} role="none">
               <Tooltip content={`${tooltip} (opens in a new tab)`}>
                 <a href={href} target="_blank" rel="noopener noreferrer" role="menuitem" className={styles.navLink}>
-                  {/* Supress eslint "no-unused-vars" rule */}
+                  {/* Suppress eslint "no-unused-vars" rule */}
                   {React.createElement(icon, { size: 16 })}
                   <span>{label}</span>
                   <SquareArrowOutUpRight size={12} className={styles.externalIcon} />
