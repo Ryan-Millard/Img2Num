@@ -9,7 +9,7 @@ description: Code walkthrough of mergeSmallRegionsInPlace and how it can be used
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## Line-by-line code walk-through
+## Line-by-line code walkthrough
 
 :::tip
 See the source code ([mergeSmallRegionsInPlace.h](https://github.com/Ryan-Millard/Img2Num/blob/main/src/wasm/modules/image/include/mergeSmallRegionsInPlace.h) and
