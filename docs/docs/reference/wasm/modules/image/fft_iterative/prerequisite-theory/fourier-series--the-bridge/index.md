@@ -118,7 +118,7 @@ Think of $X_k$ as a **vector in the complex plane**:
    $$
    \arg(X_k) = \theta = \tan^{-1}\left(\frac{b}{a}\right)
    $$
-   This is the angle the vector makes with the real axis — the **phase shift** of the sinusoid.
+   This is the angle that the vector makes with the real axis — the **phase shift** of the sinusoid.
 3. **Trigonometric intuition**:
    Using SOH CAH TOA:
    - Opposite side → $b$ (imaginary / sine)
