@@ -20,8 +20,11 @@ const getViewport = (container) => container.querySelector('.flex-center');
 const withElementFromPoint = async (element, fn) => {
   const original = document.elementFromPoint;
   document.elementFromPoint = vi.fn(() => element);
-  await fn();
-  document.elementFromPoint = original;
+  try {
+    await fn();
+  } finally {
+    document.elementFromPoint = original;
+  }
 };
 
 afterEach(() => {
