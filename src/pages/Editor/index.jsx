@@ -151,7 +151,6 @@ export default function Editor() {
       const remaining = Array.from(activePointersRef.current.values())[0];
       pointerState.current.lastX = remaining.x;
       pointerState.current.lastY = remaining.y;
-      pointerState.current.moved = false;
     }
 
     try {
