@@ -49,7 +49,7 @@ const codes = Object.freeze({
  *
  * @param {*} text - The value to colorize. If `null` or `undefined`, an empty string is returned.
  * @param {string} colorEnum - A color token from the exported `Colors` set (e.g., `"red"`, `"bgBlue"`); if unrecognized the original `text` is returned unchanged.
- * @returns {string} The text wrapped with the color's ANSI code and a reset code when applied, otherwise the original text (or empty string for `null`/`undefined`).
+ * @returns {string} The text wrapped with the color's ANSI code and a reset code when applied; otherwise, the original text (or empty string for `null`/`undefined`).
  */
 export function colorText(text, colorEnum) {
   if (text == null) return '';
