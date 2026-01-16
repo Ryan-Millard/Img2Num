@@ -278,7 +278,7 @@ You can choose to only install the dependencies for one portion of the app, but 
 
             :::info
             ```bash title="Try passing -h or --help as an argument to see the list of available script arguments"
-            ./img2num -h    # or --help (they are are the same)
+            ./img2num -h    # or --help (they are the same)
             ```
             :::
           </TabItem>
@@ -293,7 +293,7 @@ You can choose to only install the dependencies for one portion of the app, but 
 
             :::info
             ```bat title="Try passing -h or --help as an argument to see the list of available script arguments"
-            .\img2num.bat -h    REM or --help (they are are the same)
+            .\img2num.bat -h    REM or --help (they are the same)
             ```
             :::
           </TabItem>
@@ -308,7 +308,7 @@ You can choose to only install the dependencies for one portion of the app, but 
 
             :::info
             ```ps1 title="Try passing -h or --help as an argument to see the list of available script arguments"
-            .\img2num.ps1 -h    # or --help (they are are the same)
+            .\img2num.ps1 -h    # or --help (they are the same)
             ```
             :::
           </TabItem>
