@@ -32,8 +32,6 @@ export default function Editor() {
 
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
-
-
   // Wheel zoom (keeps tx/ty; can be improved later to zoom to pointer)
   const handleWheel = (e) => {
     const delta = Math.sign(e.deltaY);
@@ -44,8 +42,6 @@ export default function Editor() {
       return { ...t, scale: nextScale };
     });
   };
-
-
 
   // Panning handlers (pointer events)
   const onPointerDown = (e) => {
@@ -214,8 +210,7 @@ export default function Editor() {
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}
-          >
+          onPointerCancel={onPointerUp}>
           <div ref={innerRef} className={styles.inner} style={transformStyle}>
             {svgElements}
           </div>
