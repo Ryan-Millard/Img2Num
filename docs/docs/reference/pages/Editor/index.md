@@ -113,7 +113,7 @@ The page uses Pointer Events to support mouse, touch, and pen:
 This is the key idea:
 
 $$
-  ext{nextTx} = m_x - c_x \cdot \text{nextScale},\quad \text{nextTy} = m_y - c_y \cdot \text{nextScale}
+ \text{nextTx} = m_x - c_x \cdot \text{nextScale},\quad \text{nextTy} = m_y - c_y \cdot \text{nextScale}
 $$
 
 where $(m_x, m_y)$ is the midpoint in screen coordinates and $(c_x, c_y)$ is the original content coordinate under that midpoint.
