@@ -134,7 +134,7 @@ ContoursResult find_contours(const std::vector<uint8_t>& binary, int width, int 
     // Pad image with a 1-pixel 0-frame
     const int paddedW = width + 2;
     const int paddedH = height + 2;
-    std::vector<int> f(paddedW * paddedH, 0);
+    std::vector<int> f(static_cast<std::size_t>(paddedW) * static_cast<std::size_t>(paddedH), 0);
 
     auto set = [&](int y, int x) -> int& { return f[y * paddedW + x]; };
     auto get = [&](int y, int x) -> int  { return f[y * paddedW + x]; };
