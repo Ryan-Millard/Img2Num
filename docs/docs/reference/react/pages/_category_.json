@@ -1,0 +1,10 @@
+{
+  "label": "Pages",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "title": "React Pages",
+    "description": "Reference for route-level React pages (screens) in Img2Num",
+    "slug": "/reference/react/pages"
+  }
+}
