@@ -1,4 +1,12 @@
+#include "Image.h"
+#include "PixelConverters.h"
+#include "RGBAPixel.h"
 #include "kmeans.h"
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
+#include <limits>
+#include <vector>
 
 static inline float colorDistance(const ImageLib::RGBAPixel<float> &a,
                     const ImageLib::RGBAPixel<float> &b) {

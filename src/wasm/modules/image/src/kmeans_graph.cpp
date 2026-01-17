@@ -107,25 +107,19 @@ void kmeans_clustering_graph(uint8_t* data, int32_t* labels, int width, int heig
   std::vector<int32_t> kmeans_labels{labels, labels + num_pixels};
   std::vector<int> region_labels;
 
-  std::cout << "Start kmeans_clustering_graph" << std::endl;
-
   // 1. enumerate regions and convert to Nodes
   std::vector<Node_ptr> nodes;
   region_labeling(data, kmeans_labels, region_labels, width, height, nodes);
-  std::cout << "Done region labels" << std::endl;
 
   // 2. initialize Graph from all Nodes
   std::unique_ptr<std::vector<Node_ptr>> node_ptr = std::make_unique<std::vector<Node_ptr>>(std::move(nodes));
   Graph G(node_ptr);
-  std::cout << "Init graph" << std::endl;
 
   // 3. Discover node adjancencies - add edges to Graph
   G.discover_edges(region_labels, width, height);
-  std::cout << "Done edge discovery" << std::endl;
 
   // 4. Merge small area nodes until all nodes are minArea or larger
   G.merge_small_area_nodes(min_area);
-  std::cout << "Done merging small nodes" << std::endl;
 
   // 5. recolor image on new regions
   std::vector<uint8_t> results(4 * width * height);
@@ -144,7 +138,6 @@ void kmeans_clustering_graph(uint8_t* data, int32_t* labels, int width, int heig
       results[idx + 3] = data[idx + 3];
     }
   }
-  std::cout << "Done coloring" << std::endl;
 
   // 6. Contours
   for (auto &n : G.get_nodes()) {
@@ -192,7 +185,6 @@ void kmeans_clustering_graph(uint8_t* data, int32_t* labels, int width, int heig
     }
 
   }
-  std::cout << "Done contouring" << std::endl;
 
   std::memcpy(data, results.data(), results.size());
 }

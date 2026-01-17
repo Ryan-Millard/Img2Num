@@ -3,16 +3,7 @@
 
 #include "exported.h" // EXPORTED macro
 
-#include <cmath>
 #include <cstdint>
-#include <cstdlib>
-#include <ctime>
-#include <limits>
-#include <vector>
-
-#include "Image.h"
-#include "PixelConverters.h"
-#include "RGBAPixel.h"
 
 EXPORTED void kmeans(
     const uint8_t *data, uint8_t* out_data,
