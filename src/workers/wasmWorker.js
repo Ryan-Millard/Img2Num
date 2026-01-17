@@ -56,15 +56,64 @@ self.onmessage = async ({ data }) => {
       throw new Error(`WASM export not found: ${exportName}`);
     }
 
-    // Call the function
-    const targetFunction = wasmModule[exportName];
-    const targetFunctionArgs = funcName && args ? Object.values(args) : [];
-    const result = targetFunction(...targetFunctionArgs);
+    if (funcName === 'bilateral_filter_gpu') {
+      // 1. Define the specific signature for your bilateral filter
+      // You must map these types carefully.
+      // Pointers = 'number', size_t/int = 'number', double/float = 'number'
+      const cArgTypes = ["number", "number", "number", "number", "number", "number"];
+      
+      // 2. Build the argument list explicitly to ensure order
+      // Do NOT rely on Object.values(args)
+      const cArgs = [
+          args.pixels,       // uint8_t* image
+          args.width,        // size_t width
+          args.height,       // size_t height
+          args.sigma_spatial,// double sigma_spatial
+          args.sigma_range,  // double sigma_range
+          args.color_space   // uint8_t color_space
+      ];
+
+      console.log("Calling C++ with:", cArgs);
+
+      // 3. Use ccall with async: true
+      // This wrapper ensures that if C++ sleeps, you get a Promise back.
+      const result = wasmModule.ccall(
+          funcName,          // Name WITHOUT the underscore (e.g. "bilateral_filter_gpu")
+          "void",            // Return type
+          cArgTypes,         // Argument types
+          cArgs,             // Arguments
+          { async: true }    // <--- This works here!
+      );
+
+      // 4. Handle the result
+      if (result && typeof result.then === 'function') {
+          console.log("Asyncify: Pausing JS for C++...");
+          await result;
+          console.log(result);
+          console.log("Asyncify: Resumed!");
+      }
+    }
+    else {
+      // Call the function
+      let targetFunction = wasmModule[exportName];
+      let targetFunctionArgs = funcName && args ? Object.values(args) : [];
+      let result = targetFunction(...targetFunctionArgs, { async: true });
+      
+      console.log(targetFunction);
+      console.log(result);
+    
+      // CRITICAL FIX: Check if it returned a Promise (Asyncify)
+      if (result && typeof result.then === 'function') {
+          // Wait for the C++ function to wake up, finish the loop, and return for real
+          await result;
+      }
+    }
 
     // Retrieve buffers back
     const outputs = {};
     if (bufferKeys) {
       for (const key of bufferKeys) {
+        console.log(key);
         const { ptr, sizeInBytes, type } = pointers[key];
         if (type === Int32Array) {
           outputs[key] = new Int32Array(
@@ -87,7 +136,7 @@ self.onmessage = async ({ data }) => {
     }
 
     // Post back results
-    self.postMessage({ id, output: outputs, returnValue: result });
+    self.postMessage({ id, output: outputs}); // , returnValue: result });
   } catch (error) {
     self.postMessage({ id, error: error.message });
   } finally {

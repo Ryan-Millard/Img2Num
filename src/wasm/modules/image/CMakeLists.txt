@@ -42,6 +42,8 @@ set(COMMON_FLAGS
     "SHELL:-s MAXIMUM_MEMORY=2048MB"
     "SHELL:-s ALLOW_MEMORY_GROWTH=1"
     "SHELL:-s EXPORT_NAME=create${CAP_MODULE_NAME}Module"
+    "SHELL:-s ASYNCIFY=1"
+    "SHELL:--use-port=emdawnwebgpu"
 )
 
 # Apply common flags
@@ -49,15 +51,19 @@ target_link_options(${MODULE_NAME}_wasm PRIVATE ${COMMON_FLAGS})
 
 # Build-type specific flags
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_options(${MODULE_NAME}_wasm PRIVATE -O0 -g4)
+    target_compile_options(${MODULE_NAME}_wasm PRIVATE -O0 -g4 "--use-port=emdawnwebgpu")
     target_link_options(${MODULE_NAME}_wasm PRIVATE
         "SHELL:-s ASSERTIONS=2"
+        "SHELL:-s ASYNCIFY=1"
+        "--use-port=emdawnwebgpu"
         -g4
     )
 else()
-    target_compile_options(${MODULE_NAME}_wasm PRIVATE -O3)
+    target_compile_options(${MODULE_NAME}_wasm PRIVATE -O3 "--use-port=emdawnwebgpu")
     target_link_options(${MODULE_NAME}_wasm PRIVATE
         "SHELL:-s SINGLE_FILE=0"
+        "SHELL:-s ASYNCIFY=1"
+        "--use-port=emdawnwebgpu"
     )
 endif()
 

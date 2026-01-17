@@ -78,7 +78,7 @@ const WasmImageProcessor = () => {
     setIsProcessing(true);
     step(5);
 
-    try {
+    //try {
       const { width, height } = fileData;
 
       step(20);
@@ -100,7 +100,7 @@ const WasmImageProcessor = () => {
       const { pixels: kmeansed, labels } = await kmeans({
         ...fileData,
         pixels: thresholded,
-        num_colors: 8,
+        num_colors: 16,
       });
 
       const labeled = new Uint8ClampedArray(labels.length * 4);
@@ -108,7 +108,7 @@ const WasmImageProcessor = () => {
       // TODO: Remove the below and uncomment the code underneath
       // This lets us visualise labels
       for (let i = 0, j = 0; i < labels.length; i++, j += 4) {
-        switch (labels[i]) {
+        switch (labels[i] % 8) {
           case 0:
             labeled[j]     = 255; // R
             labeled[j + 1] = 0;   // G
@@ -175,6 +175,7 @@ const WasmImageProcessor = () => {
         labels,
         width,
         height,
+        min_area: 100,
       });
       console.log(1);
 
@@ -212,14 +213,14 @@ const WasmImageProcessor = () => {
       //navigate('/editor', {
         //state: { svg },
       //});
-    } catch (err) {
+    /*} catch (err) {
       console.error(err);
     } finally {
       setTimeout(() => {
         setIsProcessing(false);
         step(0);
       }, 800);
-    }
+    }*/
   }, [fileData, bilateralFilter, blackThreshold, kmeans, findContours, mergeSmallRegionsInPlace, navigate, step]);
 
   /* Memo'd UI fragments */
