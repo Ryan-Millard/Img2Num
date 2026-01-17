@@ -27,7 +27,7 @@ self.onmessage = async ({ data }) => {
 
   const { id, funcName, args, bufferKeys } = data;
 
-  const pointers = {}; // Keep track of mallocs for freeing
+  const pointers = Object.create(null); // Keep track of mallocs for freeing
   try {
     // Allocate buffers for any Array payloads
     if (bufferKeys) {
@@ -64,7 +64,7 @@ self.onmessage = async ({ data }) => {
     const result = targetFunction(...targetFunctionArgs);
 
     // Retrieve buffers back
-    const outputs = {};
+    const outputs = Object.create(null);
     if (bufferKeys) {
       for (const key of bufferKeys) {
         const { ptr, sizeInBytes, type } = pointers[key];
