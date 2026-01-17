@@ -80,7 +80,7 @@ int flood_fill(std::vector<int>& label_array, std::vector<int>& region_array, co
 void region_labeling(const uint8_t *data, std::vector<int>& labels, std::vector<int>& regions, int width, int height, std::vector<Node_ptr>& nodes) {
   auto index = [width](int x, int y){ return y * width + x; };
 
-  regions.resize(height * width, -1);
+  regions.resize(static_cast<size_t>(height) * static_cast<size_t>(width), -1);
   int r_lbl = -1;
 
   for (int i = 0; i < width; i++) {
@@ -168,7 +168,7 @@ void kmeans_clustering_graph(uint8_t* data, int32_t* labels,
   G.merge_small_area_nodes(min_area);
 
   // 5. recolor image on new regions
-  std::vector<uint8_t> results(4 * width * height);
+  std::vector<uint8_t> results(4 * static_cast<size_t>(width) * static_cast<size_t>(height));
   auto index = [width](int x, int y){ return y * width + x; };
 
   for (auto &n : G.get_nodes()) {
