@@ -3,7 +3,20 @@
 
 #include "kmeans_graph.h"
 #include "contours.h"
+#include "Image.h"
+#include "PixelConverters.h"
+#include "RGBAPixel.h"
+#include "graph.h"
 #include <random>
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
+#include <iostream>
+#include <limits>
+#include <vector>
+#include <set>
+#include <map>
+#include <memory>
 #include <cstdint>
 
 /* Flood fill */
@@ -94,15 +107,48 @@ void region_labeling(const uint8_t *data, std::vector<int>& labels, std::vector<
 
 }
 
+void visualize_contours(const std::vector<std::vector<Point>>& contours, std::vector<uint8_t>& results, int width, int height, int xmin = 0, int ymin = 0) {
+  auto index = [width](int x, int y) { return y * width + x; };
+
+  // Random generator for colors
+  static std::mt19937 rng(std::random_device{}());
+  static std::uniform_int_distribution<int> dist(0, 255);
+
+  for (const auto &c : contours) {
+    uint8_t color[4] = {
+      static_cast<uint8_t>(dist(rng)),
+      static_cast<uint8_t>(dist(rng)),
+      static_cast<uint8_t>(dist(rng)),
+      255
+    };
+
+    for (const auto &p : c) {
+      int _x = p.x + xmin;
+      int _y = p.y + ymin;
+
+      // Ensure within bounds
+      if (_x < 0 || _x >= width || _y < 0 || _y >= height) continue;
+
+      size_t idx = 4 * static_cast<size_t>(index(_x, _y));
+      results[idx] = color[0];
+      results[idx + 1] = color[1];
+      results[idx + 2] = color[2];
+      results[idx + 3] = color[3];
+    }
+  }
+}
+
 /*
-*Parameters:
-*data: uint8_t* -> output image from K-Means in RGBA repeating format ([r,g,b,a, r,g,b,a, ...])
-*labels: int32_t* -> output of labelled regions from K-Means, should be 1/4 the size of data since data is RGBA
-*width, height: int -> dimensions of image data represents (1/4 of the dimension data holds since each pixel is RGBA)
-*
-* labels : width * height : number of pixels in image = 1 : 1 : 1
-*/
-void kmeans_clustering_graph(uint8_t* data, int32_t* labels, int width, int height, int min_area) {
+ *Parameters:
+ *data: uint8_t* -> output image from K-Means in RGBA repeating format ([r,g,b,a, r,g,b,a, ...])
+ *labels: int32_t* -> output of labelled regions from K-Means, should be 1/4 the size of data since data is RGBA
+ *width, height: int -> dimensions of image data represents (1/4 of the dimension data holds since each pixel is RGBA)
+ *
+ * labels : width * height : number of pixels in image = 1 : 1 : 1
+ */
+void kmeans_clustering_graph(uint8_t* data, int32_t* labels,
+    const int width, const int height, const int min_area,
+    const bool draw_contour_borders) {
   const int32_t num_pixels{width*height};
   std::vector<int32_t> kmeans_labels{labels, labels + num_pixels};
   std::vector<int> region_labels;
@@ -161,29 +207,10 @@ void kmeans_clustering_graph(uint8_t* data, int32_t* labels, int width, int heig
     int bw = xywh[2]; int bh = xywh[3];
 
     ContoursResult contour_res = contours::find_contours(binary, bw, bh);
-    for (auto &c: contour_res.contours) {
 
-      // generate random color
-      static std::mt19937 rng(std::random_device{}());
-      static std::uniform_int_distribution<int> dist(0, 255);
-      uint8_t color[4] = {
-        static_cast<uint8_t>(dist(rng)),
-        static_cast<uint8_t>(dist(rng)),
-        static_cast<uint8_t>(dist(rng)),
-        255
-      };
-
-      for (auto &p : c) {
-        int _x = p.x + xmin;
-        int _y = p.y + ymin;
-        size_t idx{4 * static_cast<size_t>(index(_x, _y))};
-        results[idx] = color[0];
-        results[idx + 1] = color[1];
-        results[idx + 2] = color[2];
-        results[idx + 3] = color[3];
-      }
+    if (draw_contour_borders) {
+      visualize_contours(contour_res.contours, results, width, height, xmin, ymin);
     }
-
   }
 
   std::memcpy(data, results.data(), results.size());

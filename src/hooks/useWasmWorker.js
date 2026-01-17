@@ -75,11 +75,12 @@ export function useWasmWorker() {
     width,
     height,
     min_area = 100,
+    draw_contour_borders = false,
   }) => {
     return (
       await call(
         'kmeans_clustering_graph',
-        { pixels, labels, width, height, min_area },
+        { pixels, labels, width, height, min_area, draw_contour_borders },
         ['pixels', 'labels'])
     ).output.pixels;
   }
