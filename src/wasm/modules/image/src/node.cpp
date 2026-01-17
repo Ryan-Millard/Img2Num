@@ -68,7 +68,7 @@ std::array<int, 4>
 Node::create_binary_image(std::vector<uint8_t> &binary) const {
   std::array<int, 4> xywh{bounding_box_xywh()};
 
-  binary.resize(xywh[2] * xywh[3], 0);
+  binary.resize(static_cast<size_t>(xywh[2]) * static_cast<size_t>(xywh[3]), 0);
 
   for (auto &[_, p] : *m_pixels) {
     int32_t _x = p.x - xywh[0];
