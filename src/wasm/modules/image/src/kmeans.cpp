@@ -1,7 +1,7 @@
+#include "kmeans.h"
 #include "Image.h"
 #include "PixelConverters.h"
 #include "RGBAPixel.h"
-#include "kmeans.h"
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
@@ -9,17 +9,15 @@
 #include <vector>
 
 static inline float colorDistance(const ImageLib::RGBAPixel<float> &a,
-                    const ImageLib::RGBAPixel<float> &b) {
+                                  const ImageLib::RGBAPixel<float> &b) {
   return std::sqrt((a.red - b.red) * (a.red - b.red) +
                    (a.green - b.green) * (a.green - b.green) +
                    (a.blue - b.blue) * (a.blue - b.blue));
 }
 
-void kmeans(
-    const uint8_t *data, uint8_t* out_data,
-    int* out_labels,
-    const int32_t width, const int32_t height, const int32_t k,
-    const int32_t max_iter) {
+void kmeans(const uint8_t *data, uint8_t *out_data, int *out_labels,
+            const int32_t width, const int32_t height, const int32_t k,
+            const int32_t max_iter) {
   ImageLib::Image<ImageLib::RGBAPixel<float>> pixels;
   pixels.loadFromBuffer(data, width, height, ImageLib::RGBA_CONVERTER<float>);
   const int32_t num_pixels{pixels.getSize()};
@@ -47,7 +45,8 @@ void kmeans(
       float min_color_dist{std::numeric_limits<float>::max()};
       int32_t best_cluster{0};
 
-      // Iterate over centroids to find centroid with most similar color to pixels[i]
+      // Iterate over centroids to find centroid with most similar color to
+      // pixels[i]
       for (int32_t j{0}; j < k; ++j) {
         float dist{colorDistance(pixels[i], centroids[j])};
         if (dist < min_color_dist) {
@@ -108,7 +107,8 @@ void kmeans(
 /*
  *BUGGY CODE BELOW - one of the channels is poorly indexed
  *
- * TODO: The kmeans algorithm actually ignores the values of alpha where it should actually be taken into account.
+ * TODO: The kmeans algorithm actually ignores the values of alpha where it
+ *should actually be taken into account.
  */
 
 struct RGBXY {
@@ -126,8 +126,9 @@ float colorSpatialDistance(const RGBXY &a, const RGBXY &b,
   return std::sqrt(color_dist + spatial_weight * spatial_dist);
 }
 
-void kmeans_clustering_spatial(uint8_t *data, int32_t width, int32_t height, int32_t k,
-                               int32_t max_iter, float spatial_weight) {
+void kmeans_clustering_spatial(uint8_t *data, int32_t width, int32_t height,
+                               int32_t k, int32_t max_iter,
+                               float spatial_weight) {
   int32_t num_pixels = width * height;
   std::vector<RGBXY> pixels(num_pixels);
   std::vector<RGBXY> centroids(k);

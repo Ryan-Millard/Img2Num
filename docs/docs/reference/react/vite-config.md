@@ -9,18 +9,19 @@ sidebar_position: 2
 This file defines the Vite configuration for the **Img2Num** project. It handles React setup, WebAssembly modules, sitemap generation, and custom build workflows. The configuration ensures smooth development and production environments.
 
 ## Imports
-| Import | Explanation |
-| -----: | ----------- |
-| `defineConfig` | Helper for strongly typed Vite configuration. |
-| `react` | React plugin using SWC for faster builds. |
-| `exec` | Node.js method to run shell commands, used for building WASM modules. |
-| `path` | Node.js path utility. |
-| `fast-glob (fg)` | Glob pattern matching for adding custom files to the watcher. |
-| `fs` | Node.js filesystem API. |
-| `promisify` | Converts callback-based functions to promises for `async/await`. |
-| `imagetools` | Vite plugin for on-the-fly image transformations. |
-| `generateContributorCreditsPlugin` | Custom plugin that generates contributor credits JSON. |
-| `VitePluginSitemap` | Generates sitemap for SEO and deployment to GitHub Pages. |
+
+|                             Import | Explanation                                                           |
+| ---------------------------------: | --------------------------------------------------------------------- |
+|                     `defineConfig` | Helper for strongly typed Vite configuration.                         |
+|                            `react` | React plugin using SWC for faster builds.                             |
+|                             `exec` | Node.js method to run shell commands, used for building WASM modules. |
+|                             `path` | Node.js path utility.                                                 |
+|                   `fast-glob (fg)` | Glob pattern matching for adding custom files to the watcher.         |
+|                               `fs` | Node.js filesystem API.                                               |
+|                        `promisify` | Converts callback-based functions to promises for `async/await`.      |
+|                       `imagetools` | Vite plugin for on-the-fly image transformations.                     |
+| `generateContributorCreditsPlugin` | Custom plugin that generates contributor credits JSON.                |
+|                `VitePluginSitemap` | Generates sitemap for SEO and deployment to GitHub Pages.             |
 
 ## Utility Functions
 
@@ -41,9 +42,9 @@ function generateWasmAliases() {
 }
 ```
 
-* Dynamically creates module aliases for all WASM modules in `src/wasm/modules`.
-* Example: `@wasm-image` → `src/wasm/modules/image/build`.
-* Allows importing WASM modules in JS/TS files using concise aliases.
+- Dynamically creates module aliases for all WASM modules in `src/wasm/modules`.
+- Example: `@wasm-image` → `src/wasm/modules/image/build`.
+- Allows importing WASM modules in JS/TS files using concise aliases.
 
 ### `buildWasmModules()`
 
@@ -62,10 +63,10 @@ async function buildWasmModules() {
 }
 ```
 
-* Executes `npm run build-wasm` asynchronously.
-* Logs build output and warnings.
-* Provides instructions if the build fails.
-* Ensures WASM modules are ready before development or production builds.
+- Executes `npm run build-wasm` asynchronously.
+- Logs build output and warnings.
+- Provides instructions if the build fails.
+- Ensures WASM modules are ready before development or production builds.
 
 ## Vite Configuration
 
@@ -112,11 +113,11 @@ export default defineConfig({
 ### Base URL
 
 ```javascript
-base: '/Img2Num/'
+base: '/Img2Num/';
 ```
 
-* Necessary for deploying the project to GitHub Pages.
-* All paths will be resolved relative to `/Img2Num/`.
+- Necessary for deploying the project to GitHub Pages.
+- All paths will be resolved relative to `/Img2Num/`.
 
 ### Server Options
 
@@ -130,18 +131,18 @@ server: {
 },
 ```
 
-* `host: '0.0.0.0'` allows connections from external devices (useful in Docker).
-* `port: 5173` matches the Docker Compose and default configuration (explicit for Docker).
-* `watch.ignored` prevents Vite from watching unnecessary files, improving performance.
+- `host: '0.0.0.0'` allows connections from external devices (useful in Docker).
+- `port: 5173` matches the Docker Compose and default configuration (explicit for Docker).
+- `watch.ignored` prevents Vite from watching unnecessary files, improving performance.
 
 ### Assets Include
 
 ```javascript
-assetsInclude: ['**/*.wasm']
+assetsInclude: ['**/*.wasm'];
 ```
 
-* Ensures `.wasm` files are copied to the build output.
-* Necessary because WASM files are loaded at runtime.
+- Ensures `.wasm` files are copied to the build output.
+- Necessary because WASM files are loaded at runtime.
 
 ### Module Aliases
 
@@ -157,20 +158,20 @@ import processWasm from '@wasm-image'; // imports WASM code from /src/wasm/modul
 #### React SWC Plugin
 
 ```javascript
-react()
+react();
 ```
 
-* Provides fast JSX/TSX compilation with SWC.
-* Replaces slower Babel-based React plugin.
+- Provides fast JSX/TSX compilation with SWC.
+- Replaces slower Babel-based React plugin.
 
 #### Image Tools
 
 ```javascript
-imagetools()
+imagetools();
 ```
 
-* Allows importing images with transformations directly in code.
-* Example: resizing, format conversion, or optimization at build time.
+- Allows importing images with transformations directly in code.
+- Example: resizing, format conversion, or optimization at build time.
 
 #### Sitemap
 
@@ -178,20 +179,20 @@ imagetools()
 VitePluginSitemap({
   hostname: 'https://ryan-millard.github.io/Img2Num',
   dynamicRoutes: ['/', '/credits'],
-})
+});
 ```
 
-* Automatically generates `sitemap.xml` for SEO and GitHub Pages.
-* Supports dynamic routes.
+- Automatically generates `sitemap.xml` for SEO and GitHub Pages.
+- Supports dynamic routes.
 
 #### Contributor Credits Generator
 
 ```javascript
-generateContributorCreditsPlugin()
+generateContributorCreditsPlugin();
 ```
 
-* Custom plugin that scans the repo and generates a JSON file listing contributors.
-* Useful for `/credits` page or open-source acknowledgments.
+- Custom plugin that scans the repo and generates a JSON file listing contributors.
+- Useful for `/credits` page or open-source acknowledgments.
 
 #### WASM Build on Startup
 
@@ -209,8 +210,8 @@ generateContributorCreditsPlugin()
 }
 ```
 
-* Builds all WASM modules at the start of development or production build.
-* Ensures WASM modules are always up-to-date before usage.
+- Builds all WASM modules at the start of development or production build.
+- Ensures WASM modules are always up-to-date before usage.
 
 #### Watch C++ and Build WASM
 
@@ -234,17 +235,17 @@ generateContributorCreditsPlugin()
 }
 ```
 
-* Watches all `.cpp` and `.h` files for changes.
-* Automatically rebuilds WASM modules when C++ source files are modified.
-* Prevents simultaneous builds with `__isBuilding` flag.
-* Adds all WASM source files to Vite’s watcher manually.
+- Watches all `.cpp` and `.h` files for changes.
+- Automatically rebuilds WASM modules when C++ source files are modified.
+- Prevents simultaneous builds with `__isBuilding` flag.
+- Adds all WASM source files to Vite’s watcher manually.
 
 This configuration ensures:
 
-* Efficient development with hot reloading of WASM modules.
-* Optimized production builds with prebuilt WASM modules.
-* Easy imports using aliases for React components, hooks, utils, and WASM modules.
-* Automatic sitemap generation and contributor credit management.
+- Efficient development with hot reloading of WASM modules.
+- Optimized production builds with prebuilt WASM modules.
+- Easy imports using aliases for React components, hooks, utils, and WASM modules.
+- Automatic sitemap generation and contributor credit management.
 
 ### WASM Build/Watch Flow
 

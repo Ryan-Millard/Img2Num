@@ -26,13 +26,13 @@ All functions exported from the WASM module are available via the hook’s **gen
 const { call } = useWasmWorker();
 
 const result = await call('myWasmFunction', { arg1, arg2 }, ['arg1', 'arg2']);
-````
+```
 
-* `'myWasmFunction'` is the **exact name of the C++ function** (without the `_` prefix added by Emscripten internally).
-* The **second argument** is an object mapping argument names to values.
+- `'myWasmFunction'` is the **exact name of the C++ function** (without the `_` prefix added by Emscripten internally).
+- The **second argument** is an object mapping argument names to values.
+  - For TypedArrays (e.g., `Uint8ClampedArray`, `Int32Array`), the corresponding keys should be included in the **`bufferKeys` array** (third argument).
 
-  * For TypedArrays (e.g., `Uint8ClampedArray`, `Int32Array`), the corresponding keys should be included in the **`bufferKeys` array** (third argument).
-* The **order of arguments in the object must match the order in the C++ function signature**. WASM functions are strict about argument order.
+- The **order of arguments in the object must match the order in the C++ function signature**. WASM functions are strict about argument order.
 
 ### Example
 
@@ -46,12 +46,12 @@ Calling from React:
 
 ```js
 const result = await call(
-  'add_arrays',           // must match the function's name
+  'add_arrays', // must match the function's name
   {
-    a: arrayA,            // must match the first argument
-    b: arrayB,            // must match the second argument
-    out: outputArray,     // must match the third argument
-    length: arrayA.length // must match the last argument
+    a: arrayA, // must match the first argument
+    b: arrayB, // must match the second argument
+    out: outputArray, // must match the third argument
+    length: arrayA.length, // must match the last argument
   },
   ['a', 'b', 'out'] // keys that are TypedArrays (pointers)
 );
@@ -62,18 +62,20 @@ const result = await call(
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-1. **Add the function in your C++ module** and ensure it is exported in the build:
+1.  **Add the function in your C++ module** and ensure it is exported in the build:
     <Tabs>
-      <TabItem value="img2num-method" label="Img2Num Method (EXPORTED Macro)">
-        :::tip This is the preferred method
-        Use this method instead of the Emscripten method because it reduces bloat in the CMake file and minimizes boilerplate code.
-        :::
-        Import and use the `EXPORTED` macro from `exported.h` in your header file (make sure the function is not in a namespace):
-        ```cpp
-        #include "exported.h"
+    <TabItem value="img2num-method" label="Img2Num Method (EXPORTED Macro)">
+    :::tip This is the preferred method
+    Use this method instead of the Emscripten method because it reduces bloat in the CMake file and minimizes boilerplate code.
+    :::
+    Import and use the `EXPORTED` macro from `exported.h` in your header file (make sure the function is not in a namespace):
+
+    ````cpp
+    #include "exported.h"
 
         EXPORTED void add_arrays(int* a, int* b, int* out, int length);
         ```
+
       </TabItem>
 
       <TabItem value="emscripten-method" label="Emscripten Method">
@@ -86,19 +88,22 @@ import TabItem from '@theme/TabItem';
         ```cmake
         "SHELL:-s EXPORTED_FUNCTIONS=['_malloc','_free','_add_arrays']"
         ```
+
       </TabItem>
     </Tabs>
 
-2. **Call it via the hook** using the `call` method, providing:
-   * An object mapping argument names to values **in the same order as the C++ function signature**.
-   * A `bufferKeys` array for all `TypedArrays` (pointers) that need WASM memory allocation.
+    ````
 
-3. The hook will handle:
-   * Allocating WASM memory.
-   * Copying TypedArrays into WASM memory.
-   * Calling the function.
-   * Copying modified buffers back.
-   * Freeing WASM memory.
+2.  **Call it via the hook** using the `call` method, providing:
+    - An object mapping argument names to values **in the same order as the C++ function signature**.
+    - A `bufferKeys` array for all `TypedArrays` (pointers) that need WASM memory allocation.
+
+3.  The hook will handle:
+    - Allocating WASM memory.
+    - Copying TypedArrays into WASM memory.
+    - Calling the function.
+    - Copying modified buffers back.
+    - Freeing WASM memory.
 
 ## Potential Pitfalls
 
@@ -108,10 +113,11 @@ WASM functions **require arguments to be in the exact order declared in C++**.
 Passing an object with keys in the wrong order may result in unexpected behavior or crashes.
 
 ```js title="❌ Wrong order"
-await call('add_arrays', { b: arrayB, a: arrayA, out: outputArray, length: arrayA.length }, ['a','b','out']);
+await call('add_arrays', { b: arrayB, a: arrayA, out: outputArray, length: arrayA.length }, ['a', 'b', 'out']);
 ```
+
 ```js title="✅ Correct order"
-await call('add_arrays', { a: arrayA, b: arrayB, out: outputArray, length: arrayA.length }, ['a','b','out']);
+await call('add_arrays', { a: arrayA, b: arrayB, out: outputArray, length: arrayA.length }, ['a', 'b', 'out']);
 ```
 
 ### 2. Missing TypedArray Keys
@@ -137,8 +143,8 @@ See the [documentation for `wasmWorker.js`](../../workers/wasm-worker/) before a
 
 ### 5. Memory Management
 
-* The hook and worker automatically allocate and free WASM memory for TypedArrays.
-* Avoid manually managing WASM pointers outside this mechanism to prevent memory leaks or crashes.
+- The hook and worker automatically allocate and free WASM memory for TypedArrays.
+- Avoid manually managing WASM pointers outside this mechanism to prevent memory leaks or crashes.
 
 ## Diagram: React → Worker → WASM Flow
 
@@ -153,12 +159,12 @@ flowchart TD
     G --> H["Hook resolves promise and returns output to component"]
 ```
 
-* Demonstrates the **end-to-end flow** of calling any WASM function via the hook.
+- Demonstrates the **end-to-end flow** of calling any WASM function via the hook.
 
 ## Summary
 
-* `useWasmWorker` exposes **all WASM functions dynamically** through the generic `call` method.
-* TypedArrays must be specified in `bufferKeys` and argument **order must match C++ signature**.
-* New functions require both **C++ export** and proper handling in `wasmWorker.js`.
-* Handles memory allocation, result copying, and cleanup automatically.
-* Provides safe, asynchronous access to WASM from React.
+- `useWasmWorker` exposes **all WASM functions dynamically** through the generic `call` method.
+- TypedArrays must be specified in `bufferKeys` and argument **order must match C++ signature**.
+- New functions require both **C++ export** and proper handling in `wasmWorker.js`.
+- Handles memory allocation, result copying, and cleanup automatically.
+- Provides safe, asynchronous access to WASM from React.

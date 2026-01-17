@@ -59,31 +59,26 @@ export function useWasmWorker() {
     num_colors,
     max_iter = 100,
   }) => {
-    const result = (await call(
-      'kmeans',
-      { pixels, out_pixels, out_labels, width, height, num_colors, max_iter },
-      ['pixels', 'out_pixels', 'out_labels']
-    )).output;
+    const result = (
+      await call('kmeans', { pixels, out_pixels, out_labels, width, height, num_colors, max_iter }, [
+        'pixels',
+        'out_pixels',
+        'out_labels',
+      ])
+    ).output;
     return {
       pixels: result.out_pixels,
       labels: result.out_labels,
     };
   };
-  const findContours = async ({
-    pixels,
-    labels,
-    width,
-    height,
-    min_area = 100,
-    draw_contour_borders = false,
-  }) => {
+  const findContours = async ({ pixels, labels, width, height, min_area = 100, draw_contour_borders = false }) => {
     return (
-      await call(
-        'kmeans_clustering_graph',
-        { pixels, labels, width, height, min_area, draw_contour_borders },
-        ['pixels', 'labels'])
+      await call('kmeans_clustering_graph', { pixels, labels, width, height, min_area, draw_contour_borders }, [
+        'pixels',
+        'labels',
+      ])
     ).output.pixels;
-  }
+  };
 
   return { call, gaussianBlur, bilateralFilter, blackThreshold, kmeans, findContours };
 }

@@ -46,7 +46,8 @@ bool Graph::add_edge(int32_t node_id1, int32_t node_id2) {
   return true;
 }
 
-bool Graph::merge_nodes(const Node_ptr& node_to_keep, const Node_ptr& node_to_remove){
+bool Graph::merge_nodes(const Node_ptr &node_to_keep,
+                        const Node_ptr &node_to_remove) {
   auto end_node_ids{m_node_ids.end()};
   auto node1_it{m_node_ids.find(node_to_keep->id())};
   auto node2_it{m_node_ids.find(node_to_remove->id())};
@@ -75,24 +76,19 @@ bool Graph::merge_nodes(const Node_ptr& node_to_keep, const Node_ptr& node_to_re
 }
 
 void Graph::clear_unconnected_nodes() {
-  std::vector<Node_ptr>& nodes{*m_nodes};
+  std::vector<Node_ptr> &nodes{*m_nodes};
 
-  nodes.erase(
-    std::remove_if(nodes.begin(), nodes.end(), [](const Node_ptr &n) { return n->area() == 0; }),
-    nodes.end()
-  );
+  nodes.erase(std::remove_if(nodes.begin(), nodes.end(),
+                             [](const Node_ptr &n) { return n->area() == 0; }),
+              nodes.end());
 
   hash_node_ids();
 }
 
-void Graph::discover_edges(const std::vector<int32_t>& region_labels, const int32_t width, const int32_t height) {
+void Graph::discover_edges(const std::vector<int32_t> &region_labels,
+                           const int32_t width, const int32_t height) {
   // Moore 4-connected neighbourhood
-  constexpr int8_t dirs[4][2]{
-    { 1,  0},
-    {-1,  0},
-    { 0,  1},
-    { 0, -1}
-  };
+  constexpr int8_t dirs[4][2]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
   int32_t rneigh[4];
 
@@ -123,19 +119,21 @@ void Graph::discover_edges(const std::vector<int32_t>& region_labels, const int3
 
 void Graph::merge_small_area_nodes(const int32_t min_area) {
   int32_t counter{0};
-  while(!all_areas_bigger_than(min_area)) {
-    for (const Node_ptr& n : get_nodes()) {
+  while (!all_areas_bigger_than(min_area)) {
+    for (const Node_ptr &n : get_nodes()) {
       if (n->area() < min_area) {
-        std::vector<Node_ptr> neighbors{ n->num_edges() };
-        std::copy(n->edges().begin(), n->edges().end(), std::back_inserter(neighbors));
+        std::vector<Node_ptr> neighbors{n->num_edges()};
+        std::copy(n->edges().begin(), n->edges().end(),
+                  std::back_inserter(neighbors));
 
         // Sort by size -> a.area < b.area
-        std::sort(neighbors.begin(), neighbors.end(), [](Node_ptr a, Node_ptr b) { return a->area() < b->area(); });
+        std::sort(neighbors.begin(), neighbors.end(),
+                  [](Node_ptr a, Node_ptr b) { return a->area() < b->area(); });
 
         int32_t idx{0};
         // find first non-zero area neighbor
         for (Node_ptr &ne : neighbors) {
-          if (ne->area() > 0){
+          if (ne->area() > 0) {
             break;
           }
           ++idx;
@@ -143,8 +141,7 @@ void Graph::merge_small_area_nodes(const int32_t min_area) {
 
         if (neighbors[idx]->area() >= n->area()) {
           merge_nodes(neighbors[idx], n);
-        }
-        else {
+        } else {
           merge_nodes(n, neighbors[idx]);
         }
       }

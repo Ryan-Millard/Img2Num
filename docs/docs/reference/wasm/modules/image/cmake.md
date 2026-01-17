@@ -22,16 +22,15 @@ string(SUBSTRING ${MODULE_NAME} 0 1 FIRST_LETTER)
 string(TOUPPER ${FIRST_LETTER} FIRST_LETTER_UPPER)
 string(SUBSTRING ${MODULE_NAME} 1 -1 REST_OF_NAME)
 set(CAP_MODULE_NAME "${FIRST_LETTER_UPPER}${REST_OF_NAME}")
-````
+```
 
-* **`MODULE_NAME`** is derived from the current directory name.
-* **`CAP_MODULE_NAME`** capitalizes the first letter of the module name.
-* This is used for the exported JS module name: `create{CAP_MODULE_NAME}Module`.
-* Example:
-
-  * Directory name: `image`
-  * `CAP_MODULE_NAME`: `Image`
-  * Export function: `createImageModule()`
+- **`MODULE_NAME`** is derived from the current directory name.
+- **`CAP_MODULE_NAME`** capitalizes the first letter of the module name.
+- This is used for the exported JS module name: `create{CAP_MODULE_NAME}Module`.
+- Example:
+  - Directory name: `image`
+  - `CAP_MODULE_NAME`: `Image`
+  - Export function: `createImageModule()`
 
 ## Source Files
 
@@ -41,8 +40,8 @@ file(GLOB_RECURSE SRC_FILES
 )
 ```
 
-* Collects all C++ source files recursively from `src/`.
-* Ensures that new `.cpp` files are automatically included without updating CMake manually.
+- Collects all C++ source files recursively from `src/`.
+- Ensures that new `.cpp` files are automatically included without updating CMake manually.
 
 ## Output Configuration
 
@@ -51,8 +50,8 @@ set(BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/build")
 set(OUT_JS "${BUILD_DIR}/index.js")
 ```
 
-* **`BUILD_DIR`** is where the compiled `.wasm` and `.js` files will be placed.
-* **`OUT_JS`** is the path to the generated JavaScript loader file.
+- **`BUILD_DIR`** is where the compiled `.wasm` and `.js` files will be placed.
+- **`OUT_JS`** is the path to the generated JavaScript loader file.
 
 ## Executable Target
 
@@ -60,8 +59,8 @@ set(OUT_JS "${BUILD_DIR}/index.js")
 add_executable(${MODULE_NAME}_wasm ${SRC_FILES})
 ```
 
-* Creates an **Emscripten executable target** that produces both `.wasm` and `.js`.
-* The target is named `{MODULE_NAME}_wasm`.
+- Creates an **Emscripten executable target** that produces both `.wasm` and `.js`.
+- The target is named `{MODULE_NAME}_wasm`.
 
 ## Include Directories
 
@@ -71,8 +70,8 @@ target_include_directories(${MODULE_NAME}_wasm PRIVATE
 )
 ```
 
-* Adds the `include/` folder for header files.
-* Only visible to this target (`PRIVATE`).
+- Adds the `include/` folder for header files.
+- Only visible to this target (`PRIVATE`).
 
 ## Shared Emscripten Flags
 
@@ -91,18 +90,18 @@ set(COMMON_FLAGS
 )
 ```
 
-* **`MODULARIZE=1`**: Wraps the module in a function instead of polluting the global scope.
-* **`EXPORT_ES6=1`**: Produces ES6 module syntax for imports.
-* **`EXIT_RUNTIME=1`**: Ensures runtime exits cleanly when finished.
-* **`ENVIRONMENT=web`**: Targets browser environment.
-* **`EXPORTED_FUNCTIONS`**: Functions accessible from JS (`_malloc`, `_free`).
-* **`EXPORTED_RUNTIME_METHODS`**: Provides Emscripten utilities like `ccall`, `cwrap`, and memory views.
-* **Memory settings**:
+- **`MODULARIZE=1`**: Wraps the module in a function instead of polluting the global scope.
+- **`EXPORT_ES6=1`**: Produces ES6 module syntax for imports.
+- **`EXIT_RUNTIME=1`**: Ensures runtime exits cleanly when finished.
+- **`ENVIRONMENT=web`**: Targets browser environment.
+- **`EXPORTED_FUNCTIONS`**: Functions accessible from JS (`_malloc`, `_free`).
+- **`EXPORTED_RUNTIME_METHODS`**: Provides Emscripten utilities like `ccall`, `cwrap`, and memory views.
+- **Memory settings**:
+  - Initial: 1 GB
+  - Max: 2 GB
+  - Memory growth allowed
 
-  * Initial: 1 GB
-  * Max: 2 GB
-  * Memory growth allowed
-* **`EXPORT_NAME`**: JS module factory function, e.g., `createImageModule`.
+- **`EXPORT_NAME`**: JS module factory function, e.g., `createImageModule`.
 
 ## Applying Common Flags
 
@@ -110,8 +109,8 @@ set(COMMON_FLAGS
 target_link_options(${MODULE_NAME}_wasm PRIVATE ${COMMON_FLAGS})
 ```
 
-* Applies the shared flags to the link step.
-* Ensures consistent WASM output across all modules.
+- Applies the shared flags to the link step.
+- Ensures consistent WASM output across all modules.
 
 ## Build-Type Specific Flags
 
@@ -130,16 +129,14 @@ else()
 endif()
 ```
 
-* **Debug**:
+- **Debug**:
+  - No optimizations (`-O0`)
+  - Full debug info (`-g4`)
+  - Emscripten runtime assertions enabled (`ASSERTIONS=2`)
 
-  * No optimizations (`-O0`)
-  * Full debug info (`-g4`)
-  * Emscripten runtime assertions enabled (`ASSERTIONS=2`)
-
-* **Release**:
-
-  * Optimized (`-O3`)
-  * `SINGLE_FILE=0` to allow separate `.js` and `.wasm` files.
+- **Release**:
+  - Optimized (`-O3`)
+  - `SINGLE_FILE=0` to allow separate `.js` and `.wasm` files.
 
 This ensures **fast builds for development** and **optimized output for production**.
 
@@ -153,26 +150,26 @@ set_target_properties(${MODULE_NAME}_wasm PROPERTIES
 )
 ```
 
-* Compiled `.js` and `.wasm` files are placed in `build/`.
-* JS loader is always named `index.js`.
-* WASM module is automatically named `index.wasm`.
+- Compiled `.js` and `.wasm` files are placed in `build/`.
+- JS loader is always named `index.js`.
+- WASM module is automatically named `index.wasm`.
 
 ## Summary
 
 This CMake configuration provides a **self-contained build system for a single WASM module**:
 
-* Automatically determines module name and export function.
-* Collects all source files recursively.
-* Configures Emscripten for browser-friendly ES6 modules.
-* Handles memory allocation, runtime methods, and modularization.
-* Supports both **Debug** and **Release** builds.
-* Produces outputs compatible with **Vite** and the main Img2Num workflow.
+- Automatically determines module name and export function.
+- Collects all source files recursively.
+- Configures Emscripten for browser-friendly ES6 modules.
+- Handles memory allocation, runtime methods, and modularization.
+- Supports both **Debug** and **Release** builds.
+- Produces outputs compatible with **Vite** and the main Img2Num workflow.
 
 ```cmake
 message(STATUS "Module '${MODULE_NAME}' configured (export: create${CAP_MODULE_NAME}Module)")
 ```
 
-* Prints the module configuration at CMake configure time for developer visibility.
+- Prints the module configuration at CMake configure time for developer visibility.
 
 ```mermaid
 flowchart TD
