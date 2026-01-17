@@ -45,6 +45,19 @@ export function useWasmWorker() {
     color_space = 0,
   }) => {
     return (
+      await call('bilateral_filter', { pixels, width, height, sigma_spatial, sigma_range, color_space }, ['pixels'])
+    ).output.pixels;
+  };
+
+  const bilateralFilterGpu = async ({
+    pixels,
+    width,
+    height,
+    sigma_spatial = 3.0,
+    sigma_range = 50.0,
+    color_space = 1, // rgb onlu for now
+  }) => {
+    return (
       await call('bilateral_filter_gpu', { pixels, width, height, sigma_spatial, sigma_range, color_space }, ['pixels'])
     ).output.pixels;
   };
@@ -90,5 +103,5 @@ export function useWasmWorker() {
     ).output.pixels;
   }
 
-  return { call, gaussianBlur, bilateralFilter, blackThreshold, kmeans, mergeSmallRegionsInPlace, findContours };
+  return { call, gaussianBlur, bilateralFilter, bilateralFilterGpu, blackThreshold, kmeans, mergeSmallRegionsInPlace, findContours };
 }
