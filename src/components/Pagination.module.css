@@ -34,8 +34,8 @@
 
 /* active page */
 .active {
-  background: var(--color-accent);
-  color: var(--color-text-dark);
+  background: var(--color-primary);
+  color: var(--color-text-border);
 }
 
 /* disabled */
