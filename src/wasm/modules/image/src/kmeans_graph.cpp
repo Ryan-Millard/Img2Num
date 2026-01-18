@@ -7,26 +7,26 @@
 #include "RGBAPixel.h"
 #include "contours.h"
 #include "graph.h"
+#include <array>
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
-#include <ctime>
-#include <array>
 #include <cstring>
-#include <queue>
+#include <ctime>
 #include <iostream>
 #include <limits>
 #include <map>
 #include <memory>
+#include <queue>
 #include <random>
 #include <set>
 #include <vector>
 
 /* Flood fill */
-int flood_fill(std::vector<int32_t> &label_array, std::vector<int32_t> &region_array,
-               const uint8_t *color_array, int x, int y, int target_value,
-               int label_value, size_t width, size_t height,
-               std::unique_ptr<std::vector<RGBXY>> &out_pixels) {
+int flood_fill(std::vector<int32_t> &label_array,
+               std::vector<int32_t> &region_array, const uint8_t *color_array,
+               int x, int y, int target_value, int label_value, size_t width,
+               size_t height, std::unique_ptr<std::vector<RGBXY>> &out_pixels) {
   std::queue<XY> queue;
   auto index = [width](int x, int y) { return y * width + x; };
 
@@ -81,8 +81,8 @@ void region_labeling(const uint8_t *data, std::vector<int32_t> &labels,
   for (int i = 0; i < width; i++) {
     for (int j = 0; j < height; j++) {
 
-      int label{labels[size_t(index(i,j))] };
-      int rlab{regions[size_t(index(i,j))]};
+      int label{labels[size_t(index(i, j))]};
+      int rlab{regions[size_t(index(i, j))]};
 
       if (rlab == -1) {
         r_lbl++;

@@ -30,7 +30,7 @@ ImageLib::RGBPixel<uint8_t> Node::color() const {
 
   // Guard against division by zero after loop
   if (m_pixels_size == 0) {
-    return {0,0,0};
+    return {0, 0, 0};
   }
 
   float r{0};
