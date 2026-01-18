@@ -7,6 +7,9 @@
 #include <cmath>
 #include <cstring>
 #include <vector>
+#include <thread>
+#include <mutex>
+#include <functional>
 
 namespace bilateral {
 
@@ -22,6 +25,8 @@ static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
 inline double gaussian(double x, double sigma) {
   return std::exp(-(x * x) / (2.0 * sigma * sigma));
 }
+
+std::mutex write_mutex;
 
 /*
 The Bilateral Filter applies a composite weight based on both spatial distance
@@ -40,74 +45,27 @@ decay)
   ├── 0: CIELAB
   └── 1: RGB
 */
-void bilateral_filter(uint8_t *image, size_t width, size_t height,
-                      double sigma_spatial, double sigma_range,
-                      uint8_t color_space) {
-  // bad data -> return
-  if (sigma_spatial <= 0.0 || sigma_range <= 0.0 || width <= 0 || height <= 0)
-    return;
-  if (color_space != COLOR_SPACE_OPTION_CIELAB &&
-      color_space != COLOR_SPACE_OPTION_RGB)
-    return;
 
-  const int raw_radius{
-      static_cast<int>(std::ceil(SIGMA_RADIUS_FACTOR * sigma_spatial))};
-  const int radius{std::min(raw_radius, MAX_KERNEL_RADIUS)};
-  const int kernel_diameter{2 * radius + 1};
-
-  std::vector<uint8_t> result(width * height * 4);
-
-  std::vector<double> spatial_weights(kernel_diameter * kernel_diameter);
-
-  // Precompute Spatial Weights (Gaussian Kernel)
-  for (int ky{-radius}; ky <= radius; ++ky) {
-    for (int kx{-radius}; kx <= radius; ++kx) {
-      const double dist{static_cast<double>(std::sqrt(kx * kx + ky * ky))};
-      spatial_weights[(ky + radius) * kernel_diameter + (kx + radius)] =
-          gaussian(dist, sigma_spatial);
-    }
-  }
-
-  // ========= RGB-only section start =========
-  // Precompute Range Weights
-  std::vector<double> range_lut;
-  if (color_space == COLOR_SPACE_OPTION_RGB) {
-    range_lut.resize(MAX_RGB_DIST_SQ + 1);
-    for (int i{0}; i <= MAX_RGB_DIST_SQ; ++i) {
-      range_lut[i] = gaussian(static_cast<double>(std::sqrt(i)), sigma_range);
-    }
-  }
-  // ========= RGB-only section end =========
-
-  // ========= CIELAB section start =========
-  // Compute full image RGB - CIELAB conversion
-  std::vector<double> cie_image;
-  if (color_space == COLOR_SPACE_OPTION_CIELAB) {
-    cie_image.resize(width * height * 4);
-
-    for (int y{0}; y < height; y++) {
-      for (int x{0}; x < width; x++) {
-        int center_idx{(y * static_cast<int>(width) + x) * 4};
-        uint8_t r0{image[center_idx]};
-        uint8_t g0{image[center_idx + 1]};
-        uint8_t b0{image[center_idx + 2]};
-        uint8_t a0{image[center_idx + 3]};
-        double L0, A0, B0;
-        rgb_to_lab(r0, g0, b0, L0, A0, B0);
-
-        cie_image[center_idx] = L0;
-        cie_image[center_idx + 1] = A0;
-        cie_image[center_idx + 2] = B0;
-        cie_image[center_idx + 3] =
-            0.0; // unused but keep for indexing purposes
-      }
-    }
-  }
-  // ========= CIELAB section end =========
-
+void _process(
+  const uint8_t* image, 
+  const std::vector<double>& cie_image, 
+  std::vector<uint8_t>& result, 
+  const std::vector<double>& spatial_weights,
+  const std::vector<double>& range_lut,
+  int radius,
+  double sigma_range,
+  int start_row, 
+  int end_row, 
+  size_t height, 
+  size_t width, 
+  uint8_t color_space, 
+  int n_threads
+) {
   int h{static_cast<int>(height)};
   int w{static_cast<int>(width)};
-  for (int y{0}; y < h; ++y) {
+  const int kernel_diameter{2 * radius + 1};
+
+  for (int y{start_row}; y < end_row; ++y) {
     for (int x{0}; x < w; ++x) {
       size_t center_idx{(y * width + x) * 4};
 
@@ -184,32 +142,132 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
           weight_acc += w_space * w_range;
         }
       }
-
+      // writing - must grab mutex
+      std::unique_lock<std::mutex> lock(write_mutex);
+      
       switch (color_space) {
-      case COLOR_SPACE_OPTION_RGB: {
-        result[center_idx] = static_cast<uint8_t>(
-            std::clamp(weight_acc_channel_0 / weight_acc, 0.0, 255.0));
-        result[center_idx + 1] = static_cast<uint8_t>(
-            std::clamp(weight_acc_channel_1 / weight_acc, 0.0, 255.0));
-        result[center_idx + 2] = static_cast<uint8_t>(
-            std::clamp(weight_acc_channel_2 / weight_acc, 0.0, 255.0));
-        result[center_idx + 3] = a0;
-        break;
+        case COLOR_SPACE_OPTION_RGB: {
+          result[center_idx] = static_cast<uint8_t>(
+              std::clamp(weight_acc_channel_0 / weight_acc, 0.0, 255.0));
+          result[center_idx + 1] = static_cast<uint8_t>(
+              std::clamp(weight_acc_channel_1 / weight_acc, 0.0, 255.0));
+          result[center_idx + 2] = static_cast<uint8_t>(
+              std::clamp(weight_acc_channel_2 / weight_acc, 0.0, 255.0));
+          result[center_idx + 3] = a0;
+          break;
+        }
+        case COLOR_SPACE_OPTION_CIELAB: {
+          double L{weight_acc_channel_0 / weight_acc};
+          double A{weight_acc_channel_1 / weight_acc};
+          double B{weight_acc_channel_2 / weight_acc};
+          uint8_t r, g, b;
+          lab_to_rgb(L, A, B, r, g, b);
+          result[center_idx] = r;
+          result[center_idx + 1] = g;
+          result[center_idx + 2] = b;
+          result[center_idx + 3] = a0;
+          break;
+        }
       }
-      case COLOR_SPACE_OPTION_CIELAB: {
-        double L{weight_acc_channel_0 / weight_acc};
-        double A{weight_acc_channel_1 / weight_acc};
-        double B{weight_acc_channel_2 / weight_acc};
-        uint8_t r, g, b;
-        lab_to_rgb(L, A, B, r, g, b);
-        result[center_idx] = r;
-        result[center_idx + 1] = g;
-        result[center_idx + 2] = b;
-        result[center_idx + 3] = a0;
-        break;
-      }
+      // done writing
+      lock.unlock();
+      
+    }
+  }
+}
+
+void bilateral_filter(uint8_t *image, size_t width, size_t height,
+                      double sigma_spatial, double sigma_range,
+                      uint8_t color_space, int n_threads) {
+  // bad data -> return
+  if (sigma_spatial <= 0.0 || sigma_range <= 0.0 || width <= 0 || height <= 0)
+    return;
+  if (color_space != COLOR_SPACE_OPTION_CIELAB &&
+      color_space != COLOR_SPACE_OPTION_RGB)
+    return;
+
+  std::vector<std::thread> threads;
+
+  int rows_per_thread = static_cast<int>(height) / n_threads;
+
+  const int raw_radius{
+      static_cast<int>(std::ceil(SIGMA_RADIUS_FACTOR * sigma_spatial))};
+  const int radius{std::min(raw_radius, MAX_KERNEL_RADIUS)};
+  const int kernel_diameter{2 * radius + 1};
+
+  std::vector<uint8_t> result(width * height * 4);
+
+  std::vector<double> spatial_weights(kernel_diameter * kernel_diameter);
+
+  // Precompute Spatial Weights (Gaussian Kernel)
+  for (int ky{-radius}; ky <= radius; ++ky) {
+    for (int kx{-radius}; kx <= radius; ++kx) {
+      const double dist{static_cast<double>(std::sqrt(kx * kx + ky * ky))};
+      spatial_weights[(ky + radius) * kernel_diameter + (kx + radius)] =
+          gaussian(dist, sigma_spatial);
+    }
+  }
+
+  // ========= RGB-only section start =========
+  // Precompute Range Weights
+  std::vector<double> range_lut;
+  if (color_space == COLOR_SPACE_OPTION_RGB) {
+    range_lut.resize(MAX_RGB_DIST_SQ + 1);
+    for (int i{0}; i <= MAX_RGB_DIST_SQ; ++i) {
+      range_lut[i] = gaussian(static_cast<double>(std::sqrt(i)), sigma_range);
+    }
+  }
+  // ========= RGB-only section end =========
+
+  // ========= CIELAB section start =========
+  // Compute full image RGB - CIELAB conversion
+  std::vector<double> cie_image;
+  if (color_space == COLOR_SPACE_OPTION_CIELAB) {
+    cie_image.resize(width * height * 4);
+
+    for (int y{0}; y < height; y++) {
+      for (int x{0}; x < width; x++) {
+        int center_idx{(y * static_cast<int>(width) + x) * 4};
+        uint8_t r0{image[center_idx]};
+        uint8_t g0{image[center_idx + 1]};
+        uint8_t b0{image[center_idx + 2]};
+        uint8_t a0{image[center_idx + 3]};
+        double L0, A0, B0;
+        rgb_to_lab(r0, g0, b0, L0, A0, B0);
+
+        cie_image[center_idx] = L0;
+        cie_image[center_idx + 1] = A0;
+        cie_image[center_idx + 2] = B0;
+        cie_image[center_idx + 3] =
+            0.0; // unused but keep for indexing purposes
       }
     }
+  }
+  // ========= CIELAB section end =========
+  if (n_threads > 1){
+    for (unsigned int i = 0; i < n_threads; ++i) {
+        int start_row = i * rows_per_thread;
+        int end_row = (i == n_threads - 1) ? height : (i + 1) * rows_per_thread;
+        // Launch a thread and add to vector
+        threads.emplace_back(
+          _process,
+          std::cref(image),
+          std::cref(cie_image),
+          std::ref(result),
+          std::cref(spatial_weights),
+          std::cref(range_lut),
+          radius,
+          sigma_range,
+          start_row, end_row, height, width, color_space, n_threads);
+    }
+
+    // wait for threads to finish
+    for (auto& thread : threads) {
+        thread.join();
+    }
+  }
+  else { 
+    _process(image, cie_image, result, spatial_weights, range_lut, radius, sigma_range, 0, static_cast<int>(height), height, width, color_space, n_threads);
   }
 
   std::memcpy(image, result.data(), result.size());
@@ -220,7 +278,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
 // Global wrapper for WASM export
 EXPORTED void bilateral_filter(uint8_t *image, size_t width, size_t height,
                                double sigma_spatial, double sigma_range,
-                               uint8_t color_space) {
+                               uint8_t color_space, int n_threads) {
   bilateral::bilateral_filter(image, width, height, sigma_spatial, sigma_range,
-                              color_space);
+                              color_space, n_threads);
 }
