@@ -11,6 +11,7 @@
 #include <functional>
 #include <iostream>
 #include <algorithm>
+#include <atomic>
 
 static inline float colorDistance(const ImageLib::RGBAPixel<float> &a,
                                   const ImageLib::RGBAPixel<float> &b) {
@@ -44,7 +45,8 @@ void _apply_labels(
   std::vector<int>& labels,
   int start_pixel, 
   int end_pixel,
-  int k
+  int k,
+  std::atomic<bool>& changed
 )
 {
   float min_color_dist{std::numeric_limits<float>::max()};
@@ -59,9 +61,10 @@ void _apply_labels(
       }
     }
     if (labels[i] != best_cluster) {
-      std::unique_lock<std::mutex> lock(write_mutex);
+      //std::unique_lock<std::mutex> lock(write_mutex);
       labels[i] = best_cluster;
-      lock.unlock();
+      changed.store(true, std::memory_order_relaxed);
+      //lock.unlock();
     }
   }
 }
@@ -129,6 +132,7 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int *out_labels,
       threads.clear();
 
       // assign labels
+      std::atomic<bool> changed_atomic{false};
       for (unsigned int i = 0; i < n_threads; ++i) {
         int start_pixel = i * pixels_per_thread;
         int end_pixel = (i == n_threads - 1 ) ? num_pixels : (i + 1) * pixels_per_thread;
@@ -140,7 +144,8 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int *out_labels,
           std::ref(labels),
           start_pixel,
           end_pixel,
-          k
+          k,
+          std::ref(changed_atomic)
         );
       }
       // wait for threads to finish
@@ -148,7 +153,7 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int *out_labels,
           thread.join();
       }
 
-      changed = true;
+      changed = changed_atomic.load();
       threads.clear();
     }
 

@@ -79,11 +79,13 @@ const WasmImageProcessor = () => {
 
       step(20);
       // NOTE: Gaussian blur destroys the sharp outlines first, preventing the Bilateral filter from detecting and preserving them
+      console.time("bilateralFilter")
       const imgBilateralFiltered = await bilateralFilter({
         pixels: fileData.pixels,
         width,
         height,
       });
+      console.timeEnd("bilateralFilter")
 
       step(45);
       const thresholded = await blackThreshold({
@@ -93,11 +95,13 @@ const WasmImageProcessor = () => {
       });
 
       step(70);
+      console.time("kmeans")
       const { pixels: kmeansed, labels } = await kmeans({
         ...fileData,
         pixels: thresholded,
         num_colors: 16,
       });
+      console.timeEnd("kmeans")
 
       const contours = await findContours({
         pixels: kmeansed,
