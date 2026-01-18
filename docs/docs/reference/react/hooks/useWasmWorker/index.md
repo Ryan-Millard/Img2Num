@@ -70,11 +70,11 @@ import TabItem from '@theme/TabItem';
     :::
     Import and use the `EXPORTED` macro from `exported.h` in your header file (make sure the function is not in a namespace):
 
-    ````cpp
+    ```cpp
     #include "exported.h"
 
-        EXPORTED void add_arrays(int* a, int* b, int* out, int length);
-        ```
+    EXPORTED void add_arrays(int* a, int* b, int* out, int length);
+    ```
 
       </TabItem>
 
@@ -91,8 +91,6 @@ import TabItem from '@theme/TabItem';
 
       </TabItem>
     </Tabs>
-
-    ````
 
 2.  **Call it via the hook** using the `call` method, providing:
     - An object mapping argument names to values **in the same order as the C++ function signature**.

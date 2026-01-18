@@ -1,7 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include <RGBPixel.h>
+#include "RGBPixel.h"
 #include <array>
 #include <cstdint>
 #include <memory>

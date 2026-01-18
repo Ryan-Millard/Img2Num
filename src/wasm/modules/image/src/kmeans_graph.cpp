@@ -11,6 +11,9 @@
 #include <cstdint>
 #include <cstdlib>
 #include <ctime>
+#include <array>
+#include <cstring>
+#include <queue>
 #include <iostream>
 #include <limits>
 #include <map>
@@ -20,7 +23,7 @@
 #include <vector>
 
 /* Flood fill */
-int flood_fill(std::vector<int> &label_array, std::vector<int> &region_array,
+int flood_fill(std::vector<int32_t> &label_array, std::vector<int32_t> &region_array,
                const uint8_t *color_array, int x, int y, int target_value,
                int label_value, size_t width, size_t height,
                std::unique_ptr<std::vector<RGBXY>> &out_pixels) {
@@ -67,8 +70,8 @@ int flood_fill(std::vector<int> &label_array, std::vector<int> &region_array,
   return count;
 }
 
-void region_labeling(const uint8_t *data, std::vector<int> &labels,
-                     std::vector<int> &regions, int width, int height,
+void region_labeling(const uint8_t *data, std::vector<int32_t> &labels,
+                     std::vector<int32_t> &regions, int width, int height,
                      std::vector<Node_ptr> &nodes) {
   auto index = [width](int x, int y) { return y * width + x; };
 
@@ -78,8 +81,8 @@ void region_labeling(const uint8_t *data, std::vector<int> &labels,
   for (int i = 0; i < width; i++) {
     for (int j = 0; j < height; j++) {
 
-      int label = labels[size_t(index(i, j))];
-      int rlab = regions[size_t(index(i, j))];
+      int label{labels[size_t(index(i,j))] };
+      int rlab{regions[size_t(index(i,j))]};
 
       if (rlab == -1) {
         r_lbl++;
@@ -106,7 +109,7 @@ void visualize_contours(const std::vector<std::vector<Point>> &contours,
 
   // Random generator for colors
   static std::mt19937 rng(std::random_device{}());
-  static std::uniform_int_distribution<int> dist(0, 255);
+  static std::uniform_int_distribution<int32_t> dist(0, 255);
 
   for (const auto &c : contours) {
     uint8_t color[4] = {static_cast<uint8_t>(dist(rng)),
@@ -114,8 +117,8 @@ void visualize_contours(const std::vector<std::vector<Point>> &contours,
                         static_cast<uint8_t>(dist(rng)), 255};
 
     for (const auto &p : c) {
-      int _x = p.x + xmin;
-      int _y = p.y + ymin;
+      int32_t _x = p.x + xmin;
+      int32_t _y = p.y + ymin;
 
       // Ensure within bounds
       if (_x < 0 || _x >= width || _y < 0 || _y >= height)
@@ -145,7 +148,7 @@ void kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
                              const bool draw_contour_borders) {
   const int32_t num_pixels{width * height};
   std::vector<int32_t> kmeans_labels{labels, labels + num_pixels};
-  std::vector<int> region_labels;
+  std::vector<int32_t> region_labels;
 
   // 1. enumerate regions and convert to Nodes
   std::vector<Node_ptr> nodes;
@@ -194,7 +197,7 @@ void kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
        returns in format xmin, ymin, width, height
        return a binary image - pixel present = 1, pixel absent = 0
        */
-    std::array<int, 4> xywh;
+    std::array<int32_t, 4> xywh;
     std::vector<uint8_t> binary;
 
     xywh = n->create_binary_image(binary);

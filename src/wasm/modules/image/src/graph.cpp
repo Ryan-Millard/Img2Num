@@ -63,6 +63,7 @@ bool Graph::merge_nodes(const Node_ptr &node_to_keep,
   for (Node_ptr n : m_nodes->at(idx_r)->edges()) {
     if (n->id() != node_to_keep->id()) {
       // prevents self referencing
+      n->remove_edge(node_to_remove);
       n->add_edge(node_to_keep);
       node_to_keep->add_edge(n);
     }
@@ -122,7 +123,8 @@ void Graph::merge_small_area_nodes(const int32_t min_area) {
   while (!all_areas_bigger_than(min_area)) {
     for (const Node_ptr &n : get_nodes()) {
       if (n->area() < min_area) {
-        std::vector<Node_ptr> neighbors{n->num_edges()};
+        std::vector<Node_ptr> neighbors;
+        neighbors.reserve(n->num_edges());
         std::copy(n->edges().begin(), n->edges().end(),
                   std::back_inserter(neighbors));
 
@@ -137,6 +139,11 @@ void Graph::merge_small_area_nodes(const int32_t min_area) {
             break;
           }
           ++idx;
+        }
+
+        // no valid neighbor found, skip this node
+        if (idx >= static_cast<int32_t>(neighbors.size())) {
+          continue;
         }
 
         if (neighbors[idx]->area() >= n->area()) {

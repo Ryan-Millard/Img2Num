@@ -7,12 +7,18 @@
 
 XY Node::centroid() const {
   XY centroid{0, 0};
+  const int32_t m_pixels_size{static_cast<int32_t>(m_pixels->size())};
+
+  // Guard against division by zero after loop
+  if (m_pixels_size == 0) {
+    return centroid;
+  }
+
   for (auto &[_, pos] : *m_pixels) {
     centroid.x += pos.x;
     centroid.y += pos.y;
   }
 
-  const int32_t m_pixels_size{static_cast<int32_t>(m_pixels->size())};
   centroid.x /= m_pixels_size;
   centroid.y /= m_pixels_size;
 
@@ -20,6 +26,13 @@ XY Node::centroid() const {
 }
 
 ImageLib::RGBPixel<uint8_t> Node::color() const {
+  const int32_t m_pixels_size{static_cast<int32_t>(m_pixels->size())};
+
+  // Guard against division by zero after loop
+  if (m_pixels_size == 0) {
+    return {0,0,0};
+  }
+
   float r{0};
   float g{0};
   float b{0};
@@ -29,16 +42,20 @@ ImageLib::RGBPixel<uint8_t> Node::color() const {
     b += color.blue;
   }
 
-  const int32_t m_pixels_size{static_cast<int32_t>(m_pixels->size())};
   r /= m_pixels_size;
   g /= m_pixels_size;
   b /= m_pixels_size;
 
+  // Accept lossy conversion - the difference is very minimal
   return {static_cast<uint8_t>(r), static_cast<uint8_t>(g),
           static_cast<uint8_t>(b)};
 }
 
 std::array<int32_t, 4> Node::bounding_box_xywh() const {
+  if (m_pixels->empty()) {
+    return {0, 0, 0, 0};
+  }
+
   int32_t x_min{INT_MAX};
   int32_t y_min{INT_MAX};
   int32_t x_max{0};
