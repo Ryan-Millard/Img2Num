@@ -18,7 +18,7 @@ All of the commands below can be run using the command below (e.g., `npm run doc
 
 ## Docusaurus-Only Commands
 
-These commands can ony be run from the `/docs` folder unless you use the exception mentioned above.
+These commands can only be run from the `/docs` folder unless you use the exception mentioned above.
 
 ### `npm run start`
 
