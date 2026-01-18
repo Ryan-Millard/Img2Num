@@ -17,7 +17,7 @@ namespace bilateral {
 //  (radiometric decay)
 void bilateral_filter(uint8_t *image, size_t width, size_t height,
                       double sigma_spatial, double sigma_range,
-                      uint8_t color_space, int n_threads=8);
+                      uint8_t color_space, int n_threads = 8);
 
 } // namespace bilateral
 

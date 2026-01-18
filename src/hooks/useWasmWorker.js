@@ -45,7 +45,9 @@ export function useWasmWorker() {
     n_threads = 8,
   }) => {
     return (
-      await call('bilateral_filter', { pixels, width, height, sigma_spatial, sigma_range, color_space, n_threads }, ['pixels'])
+      await call('bilateral_filter', { pixels, width, height, sigma_spatial, sigma_range, color_space, n_threads }, [
+        'pixels',
+      ])
     ).output.pixels;
   };
   const blackThreshold = async ({ pixels, width, height, num_colors }) => {

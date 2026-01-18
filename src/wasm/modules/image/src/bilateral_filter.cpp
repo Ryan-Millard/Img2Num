@@ -6,10 +6,10 @@
 #include <climits>
 #include <cmath>
 #include <cstring>
-#include <vector>
-#include <thread>
-#include <mutex>
 #include <functional>
+#include <mutex>
+#include <thread>
+#include <vector>
 
 namespace bilateral {
 
@@ -46,21 +46,12 @@ decay)
   └── 1: RGB
 */
 
-void _process(
-  const uint8_t* image, 
-  const std::vector<double>& cie_image, 
-  std::vector<uint8_t>& result, 
-  const std::vector<double>& spatial_weights,
-  const std::vector<double>& range_lut,
-  int radius,
-  double sigma_range,
-  int start_row, 
-  int end_row, 
-  size_t height, 
-  size_t width, 
-  uint8_t color_space, 
-  int n_threads
-) {
+void _process(const uint8_t *image, const std::vector<double> &cie_image,
+              std::vector<uint8_t> &result,
+              const std::vector<double> &spatial_weights,
+              const std::vector<double> &range_lut, int radius,
+              double sigma_range, int start_row, int end_row, size_t height,
+              size_t width, uint8_t color_space, int n_threads) {
   int h{static_cast<int>(height)};
   int w{static_cast<int>(width)};
   const int kernel_diameter{2 * radius + 1};
@@ -144,34 +135,33 @@ void _process(
       }
       // writing - must grab mutex
       std::unique_lock<std::mutex> lock(write_mutex);
-      
+
       switch (color_space) {
-        case COLOR_SPACE_OPTION_RGB: {
-          result[center_idx] = static_cast<uint8_t>(
-              std::clamp(weight_acc_channel_0 / weight_acc, 0.0, 255.0));
-          result[center_idx + 1] = static_cast<uint8_t>(
-              std::clamp(weight_acc_channel_1 / weight_acc, 0.0, 255.0));
-          result[center_idx + 2] = static_cast<uint8_t>(
-              std::clamp(weight_acc_channel_2 / weight_acc, 0.0, 255.0));
-          result[center_idx + 3] = a0;
-          break;
-        }
-        case COLOR_SPACE_OPTION_CIELAB: {
-          double L{weight_acc_channel_0 / weight_acc};
-          double A{weight_acc_channel_1 / weight_acc};
-          double B{weight_acc_channel_2 / weight_acc};
-          uint8_t r, g, b;
-          lab_to_rgb(L, A, B, r, g, b);
-          result[center_idx] = r;
-          result[center_idx + 1] = g;
-          result[center_idx + 2] = b;
-          result[center_idx + 3] = a0;
-          break;
-        }
+      case COLOR_SPACE_OPTION_RGB: {
+        result[center_idx] = static_cast<uint8_t>(
+            std::clamp(weight_acc_channel_0 / weight_acc, 0.0, 255.0));
+        result[center_idx + 1] = static_cast<uint8_t>(
+            std::clamp(weight_acc_channel_1 / weight_acc, 0.0, 255.0));
+        result[center_idx + 2] = static_cast<uint8_t>(
+            std::clamp(weight_acc_channel_2 / weight_acc, 0.0, 255.0));
+        result[center_idx + 3] = a0;
+        break;
+      }
+      case COLOR_SPACE_OPTION_CIELAB: {
+        double L{weight_acc_channel_0 / weight_acc};
+        double A{weight_acc_channel_1 / weight_acc};
+        double B{weight_acc_channel_2 / weight_acc};
+        uint8_t r, g, b;
+        lab_to_rgb(L, A, B, r, g, b);
+        result[center_idx] = r;
+        result[center_idx + 1] = g;
+        result[center_idx + 2] = b;
+        result[center_idx + 3] = a0;
+        break;
+      }
       }
       // done writing
       lock.unlock();
-      
     }
   }
 }
@@ -244,30 +234,25 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
     }
   }
   // ========= CIELAB section end =========
-  if (n_threads > 1){
+  if (n_threads > 1) {
     for (unsigned int i = 0; i < n_threads; ++i) {
-        int start_row = i * rows_per_thread;
-        int end_row = (i == n_threads - 1) ? height : (i + 1) * rows_per_thread;
-        // Launch a thread and add to vector
-        threads.emplace_back(
-          _process,
-          std::cref(image),
-          std::cref(cie_image),
-          std::ref(result),
-          std::cref(spatial_weights),
-          std::cref(range_lut),
-          radius,
-          sigma_range,
-          start_row, end_row, height, width, color_space, n_threads);
+      int start_row = i * rows_per_thread;
+      int end_row = (i == n_threads - 1) ? height : (i + 1) * rows_per_thread;
+      // Launch a thread and add to vector
+      threads.emplace_back(_process, std::cref(image), std::cref(cie_image),
+                           std::ref(result), std::cref(spatial_weights),
+                           std::cref(range_lut), radius, sigma_range, start_row,
+                           end_row, height, width, color_space, n_threads);
     }
 
     // wait for threads to finish
-    for (auto& thread : threads) {
-        thread.join();
+    for (auto &thread : threads) {
+      thread.join();
     }
-  }
-  else { 
-    _process(image, cie_image, result, spatial_weights, range_lut, radius, sigma_range, 0, static_cast<int>(height), height, width, color_space, n_threads);
+  } else {
+    _process(image, cie_image, result, spatial_weights, range_lut, radius,
+             sigma_range, 0, static_cast<int>(height), height, width,
+             color_space, n_threads);
   }
 
   std::memcpy(image, result.data(), result.size());
