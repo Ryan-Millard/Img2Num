@@ -59,9 +59,10 @@ export function useWasmWorker() {
     out_labels = new Int32Array(width * height),
     num_colors,
     max_iter = 100,
+    n_threads = 8,
   }) => {
     const result = (
-      await call('kmeans', { pixels, out_pixels, out_labels, width, height, num_colors, max_iter }, [
+      await call('kmeans', { pixels, out_pixels, out_labels, width, height, num_colors, max_iter, n_threads }, [
         'pixels',
         'out_pixels',
         'out_labels',
