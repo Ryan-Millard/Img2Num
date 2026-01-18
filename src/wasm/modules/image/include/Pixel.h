@@ -6,7 +6,7 @@
 namespace ImageLib {
 template <typename NumberT> struct Pixel {
   static_assert(std::is_arithmetic<NumberT>::value,
-                "RGBPixel<NumberT>: NumberT must be a numeric type");
+                "Pixel<NumberT>: NumberT must be a numeric type");
 
   using value_type = NumberT;
 

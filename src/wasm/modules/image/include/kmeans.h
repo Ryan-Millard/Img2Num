@@ -3,34 +3,16 @@
 
 #include "exported.h" // EXPORTED macro
 
-#include <cmath>
 #include <cstdint>
-#include <cstdlib>
-#include <ctime>
-#include <iostream>
-#include <limits>
-#include <vector>
 
-#include "Image.h"
-#include "PixelConverters.h"
-#include "RGBAPixel.h"
+EXPORTED void kmeans(const uint8_t *data, uint8_t *out_data,
+                     int32_t *out_labels, const int32_t width,
+                     const int32_t height, const int32_t k,
+                     const int32_t max_iter);
 
-struct RGB {
-  float r, g, b;
-};
-struct RGBXY {
-  float r, g, b;
-  float x, y;
-};
-
-float colorDistance(const RGB &a, const RGB &b);
-float colorSpatialDistance(const RGBXY &a, const RGBXY &b,
-                           float spatial_weight);
-
-EXPORTED void kmeans_clustering(uint8_t *data, int width, int height, int k,
-                                int max_iter);
-EXPORTED void kmeans_clustering_spatial(uint8_t *data, int width, int height,
-                                        int k, int max_iter,
+EXPORTED void kmeans_clustering_spatial(uint8_t *data, int32_t width,
+                                        int32_t height, int32_t k,
+                                        int32_t max_iter,
                                         float spatial_weight = 1.0);
 
 #endif
