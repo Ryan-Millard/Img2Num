@@ -42,9 +42,10 @@ export function useWasmWorker() {
     sigma_spatial = 3.0,
     sigma_range = 50.0,
     color_space = 0,
+    n_threads = 8,
   }) => {
     return (
-      await call('bilateral_filter', { pixels, width, height, sigma_spatial, sigma_range, color_space }, ['pixels'])
+      await call('bilateral_filter', { pixels, width, height, sigma_spatial, sigma_range, color_space, n_threads }, ['pixels'])
     ).output.pixels;
   };
   const blackThreshold = async ({ pixels, width, height, num_colors }) => {
@@ -71,7 +72,7 @@ export function useWasmWorker() {
       labels: result.out_labels,
     };
   };
-  const findContours = async ({ pixels, labels, width, height, min_area = 100, draw_contour_borders = false }) => {
+  const findContours = async ({ pixels, labels, width, height, min_area = 10, draw_contour_borders = false }) => {
     return (
       await call('kmeans_clustering_graph', { pixels, labels, width, height, min_area, draw_contour_borders }, [
         'pixels',

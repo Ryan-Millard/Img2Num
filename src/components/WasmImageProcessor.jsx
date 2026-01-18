@@ -96,7 +96,7 @@ const WasmImageProcessor = () => {
       const { pixels: kmeansed, labels } = await kmeans({
         ...fileData,
         pixels: thresholded,
-        num_colors: 8,
+        num_colors: 16,
       });
 
       const contours = await findContours({
