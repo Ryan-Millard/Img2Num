@@ -61,6 +61,9 @@ Try it out now by [clicking here](https://ryan-millard.github.io/Img2Num/)!
 
 ---
 
+> [!IMPORTANT]
+> We're in the process of converting the C++ into a self-contained library that is separate from the React app. Stay tuned by watching this repo!
+
 ## What this repository contains (short)
 
 - A React frontend that handles image input, preview and in-browser colouring.
@@ -101,13 +104,14 @@ If it isn't there, please open a ["New Feature" issue](https://github.com/Ryan-M
 
 ## Maintainers
 
-- [Ryan](https://github.com/Ryan-Millard/)
-- [Hayden](https://github.com/hjmillard/)
+- [<img src="https://github.com/Ryan-Millard.png" width="20" height="20" valign="middle" alt="Ryan-Millard avatar"> `@Ryan-Millard`](https://github.com/Ryan-Millard)
+- [<img src="https://github.com/hjmillard.png" width="20" height="20" valign="middle" alt="hjmillard avatar"> `@hjmillard`](https://github.com/hjmillard)
+- [<img src="https://github.com/krasner.png" width="20" height="20" valign="middle" alt="krasner avatar"> `@krasner`](https://github.com/krasner)
 
 ## Contributors & Credits
 
-Thanks to all project contributors!
+Thanks to all of our contributors - your impact on this project has been greatly appreciated!
 
 [![GitHub Contributors Image](https://contrib.rocks/image?repo=Ryan-Millard/Img2Num)](https://github.com/Ryan-Millard/Img2Num/graphs/contributors)
 
-See the detailed list on [our site](https://ryan-millard.github.io/Img2Num/credits) or on [GitHub](https://github.com/Ryan-Millard/Img2Num/graphs/contributors).
+See the detailed list on [our site](https://ryan-millard.github.io/Img2Num/credits).
