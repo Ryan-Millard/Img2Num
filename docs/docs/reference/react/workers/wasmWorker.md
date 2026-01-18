@@ -61,7 +61,7 @@ self.onmessage = async ({ data }) => {
   await readyPromise;
 
   const { id, funcName, args, bufferKeys } = data;
-  const pointers = {}; // Track malloc pointers
+  const pointers = Object.create(null); // Track malloc pointers
   try {
     // Allocate buffers for Array payloads
     ...
