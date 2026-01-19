@@ -214,9 +214,9 @@ export default function Editor() {
             {svgElements}
           </div>
         </GlassCard>
-
         <div className={styles.hint}>
-          Click shapes to reveal their original colour. Use mouse wheel to zoom, drag to pan. Switching modes preserves fills.
+          Click shapes to reveal their original colour. Use mouse wheel to zoom, drag to pan. Switching modes preserves
+          fills.
         </div>
       </GlassCard>
     </>
