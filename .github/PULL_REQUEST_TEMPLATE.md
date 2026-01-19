@@ -1,59 +1,31 @@
-⚠️ **Are you using the correct pull request template?**
-Please choose one of the following:
+<!--
+Thanks for contributing to Img2Num!
 
-- ✨ [Feature PR Template](?expand=1&template=feature.md)
-- 🐛 [Bugfix PR Template](?expand=1&template=bugfix.md)
-- 🧹 [Chore PR Template](?expand=1&template=chore.md)
-- 📚 [Docs PR Template](?expand=1&template=docs.md)
+Please note that by submitting this pull request to **Img2Num**, you confirm that:
+1. You have read and agree to the contribution guidelines.
+2. Your submission complies with our licensing, including attribution and redistribution rules.
+3. All code, documentation, and other contributions are your original work or you have permission to submit them.
+4. You understand that your contributions may be reviewed and edited for consistency and quality before merging.
+ -->
 
-If none of these fit, you may use this default to describe your change manually.
+## What was changed & why
 
-If this **is** the right template, go ahead and complete it below 👇
+<!-- A sentence or two describing the change. -->
+<!-- A brief motivation for this change -->
 
----
+<!-- Use the fixes keyword below and the issue related to this PR to link them. -->
 
-# 📌 Description
+Fixes:
 
-Please describe the changes made in this PR and why they are necessary.
+## Changes
 
-Fixes #issue-number (if applicable)
+<!-- A list of important changes -->
 
-<!-- e.g. Fixes #17 -->
+## Testing & Verification
 
-## ✅ Type of Change
+<!-- If there are tests, explain how you wrote them. Otherwise, explain how you know this works.  -->
+<!-- This doesn't apply to docs -->
 
-Place an "x" in the brackets below:
+## Additional Resources
 
-<!-- e.g. [x] Bug fix 🐛 -->
-
-- [ ] Bug fix 🐛
-- [ ] New feature ✨
-- [ ] Refactor 🔧
-- [ ] Documentation 📚
-- [ ] Build/dependency update 🧱
-- [ ] Other (describe): <!-- Describe the change here -->
-
-## 🧪 How Has This Been Tested?
-
-Please describe how you tested your changes (e.g., unit tests, manual testing, screenshots, etc.)
-
-## 🧩 Checklist
-
-Place an "x" in the brackets below:
-
-<!-- e.g. [x] Bug fix 🐛 -->
-
-- [ ] I’ve followed the contribution guidelines.
-- [ ] My code follows the code style of this project.
-- [ ] I’ve added tests where necessary.
-- [ ] I’ve updated the documentation where applicable.
-- [ ] I’ve linked related issues or discussions (if any).
-- [ ] I’ve checked for breaking changes and backwards compatibility.
-
-## 📸 Screenshots / Demo (if applicable)
-
-Paste images, GIFs, or demo links here.
-
-## 💬 Additional Context
-
-Anything else relevant to the PR.
+<!-- Extra information, e.g. screenshots -->
