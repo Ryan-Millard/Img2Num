@@ -9,91 +9,110 @@ Notes:
   5. Free the allocated memory.
 This ensures JS arrays correctly map to WASM memory.
 */
+/*
+ *IMPORTANT:
+ *The args array to all convenience wrapper functions passed to call()
+ *must match the order of the arguments defined in C++ exactly.
+ *  e.g.,
+ *  ```js
+ *  args = [a, b];
+ *  ```
+ *  ```cpp
+ *  int add(int a, int b);
+ *  ```
+ */
+
 import createImageModule from '@wasm-image';
 
 let wasmModule;
 let readyResolve;
-const readyPromise = new Promise((res) => (readyResolve = res));
+const readyPromise = new Promise(res => (readyResolve = res));
 
-// Initialize the module once
-createImageModule().then((mod) => {
+createImageModule().then(mod => {
   wasmModule = mod;
   readyResolve();
 });
 
+// Define a generic type handler
+const WASM_TYPES = {
+  void: {
+  },
+  Int32Array: {
+    alloc: (arr) => {
+      const ptr = wasmModule._malloc(arr.byteLength);
+      wasmModule.HEAP32.set(arr, ptr / 4);
+      return ptr;
+    },
+    read: (ptr, length) => new Int32Array(wasmModule.HEAP32.buffer, ptr, length).slice(),
+  },
+  Uint8Array: {
+    alloc: (arr) => {
+      const ptr = wasmModule._malloc(arr.byteLength);
+      wasmModule.HEAPU8.set(arr, ptr);
+      return ptr;
+    },
+    read: (ptr, length) => new Uint8Array(wasmModule.HEAPU8.subarray(ptr, ptr + length)).slice(),
+  },
+  Uint8ClampedArray: {
+    alloc: (arr) => {
+      const ptr = wasmModule._malloc(arr.byteLength);
+      wasmModule.HEAPU8.set(arr, ptr);
+      return ptr;
+    },
+    read: (ptr, length) => new Uint8ClampedArray(wasmModule.HEAPU8.subarray(ptr, ptr + length)).slice(),
+  },
+  string: {
+    alloc: (str) => {
+      const len = wasmModule.lengthBytesUTF8(str) + 1;
+      const ptr = wasmModule._malloc(len);
+      wasmModule.stringToUTF8(str, ptr, len);
+      return ptr;
+    },
+    read: (ptr) => wasmModule.UTF8ToString(ptr),
+  }
+};
+
 self.onmessage = async ({ data }) => {
-  // Wait until module is ready
   await readyPromise;
 
-  const { id, funcName, args, bufferKeys } = data;
+  const { id, funcName, args = undefined, bufferKeys = undefined, returnType = 'void' } = data;
+  if (bufferKeys?.length && !args) {
+    throw new Error(
+      `WASM call "${funcName}" has bufferKeys defined but no args object provided. ` +
+      `Each bufferKey must correspond to a key in args.`
+    );
+  }
 
-  const pointers = Object.create(null); // Keep track of mallocs for freeing
+  const pointers = {};
   try {
-    // Allocate buffers for any Array payloads
-    if (bufferKeys) {
-      for (const key of bufferKeys) {
-        const arr = args[key]; // Original JS array
-        const sizeInBytes = arr.byteLength; // Correct byte size for any TypedArray
+    // Allocate inputs / out params
+    bufferKeys?.forEach(({ key, type }) => {
+      if (!(type in WASM_TYPES)) throw new Error(`Unsupported type (${type}) in wasmWorker.js\nSee WASM_TYPES for the supported types`);
+      const ptr = WASM_TYPES[type].alloc(args[key]);
+      pointers[key] = { ptr, type, length: args[key].length || undefined };
+      args[key] = ptr;
+    });
 
-        const ptr = wasmModule._malloc(sizeInBytes); // Allocate memory
-        // Copy contents into WASM heap
-        if (arr instanceof Int32Array) {
-          wasmModule.HEAP32.set(arr, ptr / Int32Array.BYTES_PER_ELEMENT);
-        } else if (arr instanceof Uint8ClampedArray || arr instanceof Uint8Array) {
-          wasmModule.HEAPU8.set(arr, ptr);
-        } else {
-          throw new Error(
-            `Unsupported TypedArray type for key: ${key}\nIf you added a new data type to useWasmWorker, please make sure to handle its type in wasmWorker`
-          );
-        }
-
-        pointers[key] = { ptr, sizeInBytes, type: arr.constructor }; // store type for reading back
-        args[key] = ptr; // pass pointer to WASM
-      }
-    }
-
-    // Dynamic function lookup (Emscripten exports are prefixed with '_')
+    // Call the WASM function
     const exportName = `_${funcName}`;
-    if (typeof wasmModule[exportName] !== 'function') {
-      throw new Error(`WASM export not found: ${exportName}`);
-    }
+    if (typeof wasmModule[exportName] !== 'function') throw new Error(`Export not found: ${exportName}`);
+    const result = wasmModule[exportName](...Object.values(args ?? {}));
 
-    // Call the function
-    const targetFunction = wasmModule[exportName];
-    const targetFunctionArgs = funcName && args ? Object.values(args) : [];
-    const result = targetFunction(...targetFunctionArgs);
+    // Read back buffers
+    const output = {};
+    bufferKeys?.forEach(({ key, type }) => {
+      output[key] = WASM_TYPES[type].read(pointers[key].ptr, pointers[key].length);
+    });
 
-    // Retrieve buffers back
-    const outputs = Object.create(null);
-    if (bufferKeys) {
-      for (const key of bufferKeys) {
-        const { ptr, sizeInBytes, type } = pointers[key];
-        if (type === Int32Array) {
-          outputs[key] = new Int32Array(
-            wasmModule.HEAP32.buffer,
-            ptr,
-            sizeInBytes / Int32Array.BYTES_PER_ELEMENT
-          ).slice(); // slice to detach from WASM memory
-        } else if (type === Uint8ClampedArray) {
-          outputs[key] = new Uint8ClampedArray(wasmModule.HEAPU8.subarray(ptr, ptr + sizeInBytes)).slice();
-        } else if (type === Uint8Array) {
-          outputs[key] = new Uint8Array(wasmModule.HEAPU8.subarray(ptr, ptr + sizeInBytes)).slice();
-        } else {
-          throw new Error(
-            `Unsupported TypedArray type for output key: ${key}\nIf you added a new data type to useWasmWorker, please make sure to handle its type in wasmWorker`
-          );
-        }
-      }
-    }
+    // Handle return value
+    let returnValue = result;
+    if (returnType && WASM_TYPES[returnType] !== WASM_TYPES['void']) returnValue = WASM_TYPES[returnType].read(result);
 
-    // Post back results
-    self.postMessage({ id, output: outputs, returnValue: result });
+    self.postMessage({ id, output, returnValue });
   } catch (error) {
     self.postMessage({ id, error: error.message });
   } finally {
-    // Always free allocated memory
-    for (const { ptr } of Object.values(pointers)) {
-      wasmModule._free(ptr);
-    }
+    // Free memory
+    Object.values(pointers).forEach(({ ptr }) => wasmModule._free(ptr));
   }
 };

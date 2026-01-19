@@ -13,7 +13,7 @@ const WasmImageProcessor = () => {
   const inputId = useId();
   const inputRef = useRef(null);
 
-  const { bilateralFilter, blackThreshold, kmeans, findContours } = useWasmWorker();
+  const { bilateralFilter, blackThreshold, kmeans, findContours, testSvg } = useWasmWorker();
 
   const [originalSrc, setOriginalSrc] = useState(null);
   const [fileData, setFileData] = useState(null);
@@ -77,41 +77,43 @@ const WasmImageProcessor = () => {
     try {
       const { width, height } = fileData;
 
+      const svg = await testSvg();
+
       step(20);
-      // NOTE: Gaussian blur destroys the sharp outlines first, preventing the Bilateral filter from detecting and preserving them
-      const imgBilateralFiltered = await bilateralFilter({
-        pixels: fileData.pixels,
-        width,
-        height,
-      });
+      //// NOTE: Gaussian blur destroys the sharp outlines first, preventing the Bilateral filter from detecting and preserving them
+      //const imgBilateralFiltered = await bilateralFilter({
+        //pixels: fileData.pixels,
+        //width,
+        //height,
+      //});
 
-      step(45);
-      const thresholded = await blackThreshold({
-        ...fileData,
-        pixels: imgBilateralFiltered,
-        num_colors: 8,
-      });
+      //step(45);
+      //const thresholded = await blackThreshold({
+        //...fileData,
+        //pixels: imgBilateralFiltered,
+        //num_colors: 8,
+      //});
 
-      step(70);
-      const { pixels: kmeansed, labels } = await kmeans({
-        ...fileData,
-        pixels: thresholded,
-        num_colors: 8,
-      });
+      //step(70);
+      //const { pixels: kmeansed, labels } = await kmeans({
+        //...fileData,
+        //pixels: thresholded,
+        //num_colors: 8,
+      //});
 
-      const contours = await findContours({
-        pixels: kmeansed,
-        labels,
-        width,
-        height,
-      });
+      //const contours = await findContours({
+        //pixels: kmeansed,
+        //labels,
+        //width,
+        //height,
+      //});
 
-      step(95);
-      const svg = await uint8ClampedArrayToSVG({
-        pixels: contours,
-        width,
-        height,
-      });
+      //step(95);
+      //const svg = await uint8ClampedArrayToSVG({
+        //pixels: contours,
+        //width,
+        //height,
+      //});
 
       step(100);
 
@@ -126,7 +128,7 @@ const WasmImageProcessor = () => {
         step(0);
       }, 800);
     }
-  }, [fileData, bilateralFilter, blackThreshold, kmeans, findContours, navigate, step]);
+  }, [fileData, bilateralFilter, blackThreshold, kmeans, findContours, testSvg, navigate, step]);
 
   /* Memo'd UI fragments */
   const EmptyState = useMemo(
