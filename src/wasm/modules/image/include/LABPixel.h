@@ -3,8 +3,8 @@
 
 #include "Pixel.h"
 
-/* 
-can support signed data types 
+/*
+can support signed data types
 preferrably float or double
 */
 

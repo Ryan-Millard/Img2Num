@@ -96,8 +96,8 @@ inline double srgb_to_linear(const double c) {
 }
 
 template <typename Tin, typename Tout>
-void rgb_to_lab(const Tin r_u8, const Tin g_u8, const Tin b_u8,
-                Tout &out_l, Tout &out_a, Tout &out_b) {
+void rgb_to_lab(const Tin r_u8, const Tin g_u8, const Tin b_u8, Tout &out_l,
+                Tout &out_a, Tout &out_b) {
   // 1. Convert 8-bit RGB [0, 255] to linear RGB [0.0, 1.0]
 
   double _r = static_cast<double>(r_u8);
@@ -146,8 +146,8 @@ inline double gamma_encode(double u) {
 }
 
 template <typename Tin, typename Tout>
-void lab_to_rgb(const Tin L, const Tin A, const Tin B,
-                Tout &out_r_u8, Tout &out_g_u8, Tout &out_b_u8) {
+void lab_to_rgb(const Tin L, const Tin A, const Tin B, Tout &out_r_u8,
+                Tout &out_g_u8, Tout &out_b_u8) {
 
   const double _L = static_cast<double>(L);
   const double _A = static_cast<double>(A);
@@ -179,28 +179,33 @@ void lab_to_rgb(const Tin L, const Tin A, const Tin B,
 }
 
 template <typename Tin, typename Tout>
-void rgb_to_lab(const ImageLib::RGBAPixel<Tin>& rgba, ImageLib::LABAPixel<Tout>& laba) {
-    
-    rgb_to_lab<Tin, Tout>(rgba.red, rgba.green, rgba.blue, laba.l, laba.a, laba.b);
-    laba.alpha = static_cast<Tout>(rgba.alpha);
+void rgb_to_lab(const ImageLib::RGBAPixel<Tin> &rgba,
+                ImageLib::LABAPixel<Tout> &laba) {
+
+  rgb_to_lab<Tin, Tout>(rgba.red, rgba.green, rgba.blue, laba.l, laba.a,
+                        laba.b);
+  laba.alpha = static_cast<Tout>(rgba.alpha);
 }
 
 template <typename Tin, typename Tout>
-void rgb_to_lab(const ImageLib::RGBPixel<Tin>& rgb, ImageLib::LABPixel<Tout>& lab) {
-    
-    rgb_to_lab<Tin, Tout>(rgb.red, rgb.green, rgb.blue, lab.l, lab.a, lab.b);
-}
+void rgb_to_lab(const ImageLib::RGBPixel<Tin> &rgb,
+                ImageLib::LABPixel<Tout> &lab) {
 
-
-template <typename Tin, typename Tout>
-void lab_to_rgb(const ImageLib::LABAPixel<Tin>& laba, ImageLib::RGBAPixel<Tout>& rgba) {
-    
-    lab_to_rgb<Tin, Tout>(laba.l, laba.a, laba.b, rgba.red, rgba.green, rgba.blue);
-    rgba.alpha = static_cast<Tout>(laba.alpha);
+  rgb_to_lab<Tin, Tout>(rgb.red, rgb.green, rgb.blue, lab.l, lab.a, lab.b);
 }
 
 template <typename Tin, typename Tout>
-void lab_to_rgb(const ImageLib::LABPixel<Tin>& lab, ImageLib::RGBPixel<Tout>& rgb) {
-    
-    lab_to_rgb<Tin, Tout>(lab.l, lab.a, lab.b, rgb.red, rgb.green, rgb.blue);
+void lab_to_rgb(const ImageLib::LABAPixel<Tin> &laba,
+                ImageLib::RGBAPixel<Tout> &rgba) {
+
+  lab_to_rgb<Tin, Tout>(laba.l, laba.a, laba.b, rgba.red, rgba.green,
+                        rgba.blue);
+  rgba.alpha = static_cast<Tout>(laba.alpha);
+}
+
+template <typename Tin, typename Tout>
+void lab_to_rgb(const ImageLib::LABPixel<Tin> &lab,
+                ImageLib::RGBPixel<Tout> &rgb) {
+
+  lab_to_rgb<Tin, Tout>(lab.l, lab.a, lab.b, rgb.red, rgb.green, rgb.blue);
 }

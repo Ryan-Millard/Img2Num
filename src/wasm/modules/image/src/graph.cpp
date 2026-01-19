@@ -7,18 +7,18 @@
  *Graph class - manages Node class
  */
 
- static inline float colorDistance(const ImageLib::RGBPixel<uint8_t> &a,
+static inline float colorDistance(const ImageLib::RGBPixel<uint8_t> &a,
                                   const ImageLib::RGBPixel<uint8_t> &b) {
-  
-  ImageLib::RGBPixel<float> af {
-    static_cast<float>(a.red), static_cast<float>(a.green), static_cast<float>(a.blue)
-  };
-  ImageLib::RGBPixel<float> bf {
-    static_cast<float>(b.red), static_cast<float>(b.green), static_cast<float>(b.blue)
-  };
+
+  ImageLib::RGBPixel<float> af{static_cast<float>(a.red),
+                               static_cast<float>(a.green),
+                               static_cast<float>(a.blue)};
+  ImageLib::RGBPixel<float> bf{static_cast<float>(b.red),
+                               static_cast<float>(b.green),
+                               static_cast<float>(b.blue)};
   return std::sqrt((af.red - bf.red) * (af.red - bf.red) +
-         (af.green - bf.green) * (af.green - bf.green) +
-         (af.blue - bf.blue) * (af.blue - bf.blue));
+                   (af.green - bf.green) * (af.green - bf.green) +
+                   (af.blue - bf.blue) * (af.blue - bf.blue));
 }
 
 /*
@@ -145,17 +145,18 @@ void Graph::merge_small_area_nodes(const int32_t min_area) {
 
         ImageLib::RGBPixel<uint8_t> col = n->color();
         // Sort by size -> a.area < b.area
-        //std::sort(neighbors.begin(), neighbors.end(),
-        //          [](Node_ptr a, Node_ptr b) { return a->area() < b->area(); });
+        // std::sort(neighbors.begin(), neighbors.end(),
+        //          [](Node_ptr a, Node_ptr b) { return a->area() < b->area();
+        //          });
 
         // sort by size and color similarity
         std::sort(neighbors.begin(), neighbors.end(),
                   [col](Node_ptr a, Node_ptr b) {
                     float cdista = colorDistance(a->color(), col);
                     float cdistb = colorDistance(b->color(), col);
-                    return (static_cast<float>(a->area()) + 10.f * cdista) < (static_cast<float>(b->area()) + 10.f * cdistb); 
-                  }
-        );
+                    return (static_cast<float>(a->area()) + 10.f * cdista) <
+                           (static_cast<float>(b->area()) + 10.f * cdistb);
+                  });
 
         int32_t idx{0};
         // find first non-zero area neighbor

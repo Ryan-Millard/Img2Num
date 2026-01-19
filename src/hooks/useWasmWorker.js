@@ -65,11 +65,11 @@ export function useWasmWorker() {
     n_threads = 8,
   }) => {
     const result = (
-      await call('kmeans', { pixels, out_pixels, out_labels, width, height, num_colors, max_iter, color_space, n_threads }, [
-        'pixels',
-        'out_pixels',
-        'out_labels',
-      ])
+      await call(
+        'kmeans',
+        { pixels, out_pixels, out_labels, width, height, num_colors, max_iter, color_space, n_threads },
+        ['pixels', 'out_pixels', 'out_labels']
+      )
     ).output;
     return {
       pixels: result.out_pixels,
