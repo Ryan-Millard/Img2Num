@@ -167,8 +167,8 @@ export default function Editor() {
       const shape = document.elementFromPoint(e.clientX, e.clientY)?.closest(SHAPE_SELECTOR);
       if (!shape || !svgRoot.contains(shape)) return;
 
-      // Toggle original colour reveal on each tap/click
-      shape.classList.toggle(styles.coloredRegion);
+      // Adds original colour on tap/click
+      shape.classList.add(styles.coloredRegion);
     }
   };
 
@@ -216,8 +216,7 @@ export default function Editor() {
         </GlassCard>
 
         <div className={styles.hint}>
-          Tap/click shapes to toggle their original colour. Use mouse wheel to zoom, drag to pan. Switching modes
-          preserves fills.
+         Click shapes to reveal their original colour. Use mouse wheel to zoom, drag to pan. Switching modes preserves fills.
         </div>
       </GlassCard>
     </>

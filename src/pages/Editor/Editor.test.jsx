@@ -46,7 +46,7 @@ describe('Editor page', () => {
     expect(screen.getByTestId('shape')).toBeInTheDocument();
   });
 
-  it('toggles original colour for a shape when tapping in color mode', async () => {
+  it('reveals original colour once and keeps it on repeated taps in color mode', async () => {
     const { container } = renderEditor(svgSample);
     const shape = screen.getByTestId('shape');
     const viewport = getViewport(container);
@@ -70,12 +70,29 @@ describe('Editor page', () => {
           clientY: 10,
         });
       });
+
+      await act(async () => {
+        fireEvent.pointerDown(viewport, {
+          pointerId: 1,
+          button: 0,
+          pointerType: 'mouse',
+          clientX: 12,
+          clientY: 12,
+        });
+
+        fireEvent.pointerUp(viewport, {
+          pointerId: 1,
+          pointerType: 'mouse',
+          clientX: 12,
+          clientY: 12,
+        });
+      });
     });
 
     expect(shape.classList.contains(styles.coloredRegion)).toBe(true);
   });
 
-  it('enters preview mode via switch and skips color toggling', async () => {
+  it('enters preview mode via switch and skips color reveal', async () => {
     const { container } = renderEditor(svgSample);
     const viewport = getViewport(container);
     const shape = screen.getByTestId('shape');
