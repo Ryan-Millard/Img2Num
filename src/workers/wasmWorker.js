@@ -26,7 +26,7 @@ import createImageModule from "@wasm-image";
 
 let wasmModule;
 let readyResolve;
-const readyPromise = new Promise((res) => (readyResolve = res));
+const readyPromise = new Promise(res => (readyResolve = res));
 
 createImageModule().then((mod) => {
   wasmModule = mod;
