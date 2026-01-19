@@ -51,7 +51,7 @@ void _process(const uint8_t *image, const std::vector<double> &cie_image,
               const std::vector<double> &spatial_weights,
               const std::vector<double> &range_lut, int radius,
               double sigma_range, int start_row, int end_row, size_t height,
-              size_t width, uint8_t color_space, int n_threads) {
+              size_t width, uint8_t color_space, const uint8_t n_threads) {
   int h{static_cast<int>(height)};
   int w{static_cast<int>(width)};
   const int kernel_diameter{2 * radius + 1};
@@ -134,7 +134,7 @@ void _process(const uint8_t *image, const std::vector<double> &cie_image,
         }
       }
       // writing - must grab mutex
-      std::unique_lock<std::mutex> lock(write_mutex);
+      std::unique_lock<std::mutex> lock{write_mutex};
 
       switch (color_space) {
       case COLOR_SPACE_OPTION_RGB: {
@@ -168,7 +168,7 @@ void _process(const uint8_t *image, const std::vector<double> &cie_image,
 
 void bilateral_filter(uint8_t *image, size_t width, size_t height,
                       double sigma_spatial, double sigma_range,
-                      uint8_t color_space, int n_threads) {
+                      uint8_t color_space, const uint8_t n_threads) {
   // bad data -> return
   if (sigma_spatial <= 0.0 || sigma_range <= 0.0 || width <= 0 || height <= 0)
     return;
@@ -178,7 +178,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
 
   std::vector<std::thread> threads;
 
-  int rows_per_thread = static_cast<int>(height) / n_threads;
+  int rows_per_thread = static_cast<int>(height) / static_cast<int>(n_threads);
 
   const int raw_radius{
       static_cast<int>(std::ceil(SIGMA_RADIUS_FACTOR * sigma_spatial))};
@@ -235,9 +235,9 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
   }
   // ========= CIELAB section end =========
   if (n_threads > 1) {
-    for (unsigned int i = 0; i < n_threads; ++i) {
-      int start_row = i * rows_per_thread;
-      int end_row = (i == n_threads - 1) ? height : (i + 1) * rows_per_thread;
+    for (int i = 0; i < n_threads; ++i) {
+      int start_row{i * rows_per_thread};
+      int end_row{(i == n_threads - 1) ? static_cast<int>(height) : (i + 1) * rows_per_thread};
       // Launch a thread and add to vector
       threads.emplace_back(_process, std::cref(image), std::cref(cie_image),
                            std::ref(result), std::cref(spatial_weights),
@@ -247,7 +247,9 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
 
     // wait for threads to finish
     for (auto &thread : threads) {
-      thread.join();
+      if (thread.joinable()) {
+        thread.join();
+      }
     }
   } else {
     _process(image, cie_image, result, spatial_weights, range_lut, radius,
@@ -263,7 +265,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
 // Global wrapper for WASM export
 EXPORTED void bilateral_filter(uint8_t *image, size_t width, size_t height,
                                double sigma_spatial, double sigma_range,
-                               uint8_t color_space, int n_threads) {
+                               uint8_t color_space, const uint8_t n_threads) {
   bilateral::bilateral_filter(image, width, height, sigma_spatial, sigma_range,
                               color_space, n_threads);
 }

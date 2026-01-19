@@ -8,34 +8,33 @@
 #include <cstdlib>
 #include <ctime>
 #include <functional>
-#include <iostream>
 #include <limits>
 #include <thread>
 #include <vector>
 
 static inline float colorDistance(const ImageLib::RGBAPixel<float> &a,
                                   const ImageLib::RGBAPixel<float> &b) {
-  return std::sqrt((a.red - b.red) * (a.red - b.red) +
-                   (a.green - b.green) * (a.green - b.green) +
-                   (a.blue - b.blue) * (a.blue - b.blue));
+  // sqrt un-necessary
+  return (a.red - b.red) * (a.red - b.red) +
+         (a.green - b.green) * (a.green - b.green) +
+         (a.blue - b.blue) * (a.blue - b.blue);
 }
 
-std::mutex write_mutex;
+// std::mutex write_mutex;
 
 void _process_dist_per_centroid(
     const ImageLib::Image<ImageLib::RGBAPixel<float>> &pixels,
     const ImageLib::Image<ImageLib::RGBAPixel<float>> &centroids,
     std::vector<std::vector<float>> &output, int start_centroid,
     int end_centroid) {
+  // threads will not overlap - no need for mutex
   std::vector<float> _res(pixels.getPixelCount());
   for (int j{start_centroid}; j < end_centroid; ++j) {
     std::transform(pixels.begin(), pixels.end(), _res.begin(),
                    [&centroids, j](const ImageLib::RGBAPixel<float> &p) {
                      return colorDistance(p, centroids[j]);
                    });
-    std::unique_lock<std::mutex> lock(write_mutex);
     std::copy(_res.begin(), _res.end(), output[j].begin());
-    lock.unlock();
   }
 }
 
@@ -43,6 +42,7 @@ void _apply_labels(const ImageLib::Image<ImageLib::RGBAPixel<float>> &pixels,
                    const std::vector<std::vector<float>> &distances,
                    std::vector<int> &labels, int start_pixel, int end_pixel,
                    int k, std::atomic<bool> &changed) {
+  // threads don't overlap
   float min_color_dist{std::numeric_limits<float>::max()};
   int32_t best_cluster{0};
   for (int i{start_pixel}; i < end_pixel; ++i) {
@@ -55,17 +55,15 @@ void _apply_labels(const ImageLib::Image<ImageLib::RGBAPixel<float>> &pixels,
       }
     }
     if (labels[i] != best_cluster) {
-      // std::unique_lock<std::mutex> lock(write_mutex);
       labels[i] = best_cluster;
       changed.store(true, std::memory_order_relaxed);
-      // lock.unlock();
     }
   }
 }
 
 void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
             const int32_t width, const int32_t height, const int32_t k,
-            const int32_t max_iter, const int n_threads) {
+            const int32_t max_iter, const uint8_t n_threads) {
   ImageLib::Image<ImageLib::RGBAPixel<float>> pixels;
   pixels.loadFromBuffer(data, width, height, ImageLib::RGBA_CONVERTER<float>);
   const int32_t num_pixels{pixels.getSize()};
@@ -77,8 +75,11 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   std::vector<int32_t> labels(num_pixels, 0);
 
   std::vector<std::thread> threads;
-  int pixels_per_thread = num_pixels / n_threads;
-  int centroids_per_thread = k / n_threads;
+
+  int nthreads = std::clamp(static_cast<int>(n_threads), 1, k);
+
+  int pixels_per_thread{num_pixels / nthreads};
+  int centroids_per_thread{k / nthreads};
 
   // Step 2: Initialize centroids randomly
   srand(static_cast<uint32_t>(time(nullptr)));
@@ -89,10 +90,8 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
 
   // Step 3: Run k-means iterations
 
-  std::vector<std::vector<float>>
-      distances; //(k, std::vector<float>(num_pixels,
-                 //std::numeric_limits<float>::max()));
-  if (n_threads > 1) {
+  std::vector<std::vector<float>> distances;
+  if (nthreads > 1) {
     distances.resize(k);
     for (auto &d : distances) {
       d.resize(num_pixels, std::numeric_limits<float>::max());
@@ -103,11 +102,11 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   for (int32_t iter{0}; iter < max_iter; ++iter) {
     bool changed{false};
 
-    if (n_threads > 1) {
-      for (unsigned int i = 0; i < n_threads; ++i) {
+    if (nthreads > 1) {
+      for (int i = 0; i < nthreads; ++i) {
 
-        int start_c = i * centroids_per_thread;
-        int end_c = (i == n_threads - 1) ? k : (i + 1) * centroids_per_thread;
+        int start_c{i * centroids_per_thread};
+        int end_c{(i == nthreads - 1) ? k : (i + 1) * centroids_per_thread};
 
         threads.emplace_back(_process_dist_per_centroid, // _process_dist,
                              std::cref(pixels), std::cref(centroids),
@@ -116,17 +115,20 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
 
       // wait for threads to finish
       for (auto &thread : threads) {
-        thread.join();
+        if (thread.joinable()) {
+          thread.join();
+        }
       }
       // std::cout << "Computed distances" << std::endl;
       threads.clear();
 
       // assign labels
       std::atomic<bool> changed_atomic{false};
-      for (unsigned int i = 0; i < n_threads; ++i) {
-        int start_pixel = i * pixels_per_thread;
-        int end_pixel =
-            (i == n_threads - 1) ? num_pixels : (i + 1) * pixels_per_thread;
+      for (int i = 0; i < nthreads; ++i) {
+        int start_pixel{i * pixels_per_thread};
+        int end_pixel{
+          (i == nthreads - 1) ? num_pixels : (i + 1) * pixels_per_thread
+        };
 
         threads.emplace_back(_apply_labels, std::cref(pixels),
                              std::cref(distances), std::ref(labels),
@@ -135,7 +137,9 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
       }
       // wait for threads to finish
       for (auto &thread : threads) {
-        thread.join();
+        if (thread.joinable()) {
+          thread.join();
+        }
       }
 
       changed = changed_atomic.load();
