@@ -95,12 +95,18 @@ inline double srgb_to_linear(const double c) {
                         SRGB_GAMMA);
 }
 
-void rgb_to_lab(const uint8_t r_u8, const uint8_t g_u8, const uint8_t b_u8,
-                double &out_l, double &out_a, double &out_b) {
+template <typename Tin, typename Tout>
+void rgb_to_lab(const Tin r_u8, const Tin g_u8, const Tin b_u8,
+                Tout &out_l, Tout &out_a, Tout &out_b) {
   // 1. Convert 8-bit RGB [0, 255] to linear RGB [0.0, 1.0]
-  double r{srgb_to_linear(r_u8 / 255.0)};
-  double g{srgb_to_linear(g_u8 / 255.0)};
-  double b{srgb_to_linear(b_u8 / 255.0)};
+
+  double _r = static_cast<double>(r_u8);
+  double _g = static_cast<double>(g_u8);
+  double _b = static_cast<double>(b_u8);
+
+  double r{srgb_to_linear(_r / 255.0)};
+  double g{srgb_to_linear(_g / 255.0)};
+  double b{srgb_to_linear(_b / 255.0)};
 
   // 2. Convert linear RGB to CIE XYZ (using D65 white point reference)
   // The matrix below is for sRGB to XYZ (D65)
@@ -119,11 +125,11 @@ void rgb_to_lab(const uint8_t r_u8, const uint8_t g_u8, const uint8_t b_u8,
   const double fz{xyz_to_lab(Zr)};
 
   // 4. Output values
-  out_l = LAB_L_FACTOR * fy - LAB_L_OFFSET;
-  out_a = LAB_A_FACTOR * (fx - fy);
-  out_b = LAB_B_FACTOR * (fy - fz);
+  out_l = static_cast<Tout>(LAB_L_FACTOR * fy - LAB_L_OFFSET);
+  out_a = static_cast<Tout>(LAB_A_FACTOR * (fx - fy));
+  out_b = static_cast<Tout>(LAB_B_FACTOR * (fy - fz));
 
-  out_l = std::clamp(out_l, 0.0, 100.0);
+  out_l = std::clamp(out_l, static_cast<Tout>(0.0), static_cast<Tout>(100.0));
 }
 
 constexpr double inverse_xyz_to_lab(double t) {
@@ -139,12 +145,18 @@ inline double gamma_encode(double u) {
                    SRGB_GAMMA_OFFSET;
 }
 
-void lab_to_rgb(const double L, const double A, const double B,
-                uint8_t &out_r_u8, uint8_t &out_g_u8, uint8_t &out_b_u8) {
+template <typename Tin, typename Tout>
+void lab_to_rgb(const Tin L, const Tin A, const Tin B,
+                Tout &out_r_u8, Tout &out_g_u8, Tout &out_b_u8) {
+
+  const double _L = static_cast<double>(L);
+  const double _A = static_cast<double>(A);
+  const double _B = static_cast<double>(B);
+
   // --- Lab → XYZ (D65 white point)
-  const double fy{(L + LAB_L_OFFSET) / LAB_L_FACTOR};
-  const double fx{fy + A / LAB_A_FACTOR};
-  const double fz{fy - B / LAB_B_FACTOR};
+  const double fy{(_L + LAB_L_OFFSET) / LAB_L_FACTOR};
+  const double fx{fy + _A / LAB_A_FACTOR};
+  const double fz{fy - _B / LAB_B_FACTOR};
 
   const double X{D65_Xn * inverse_xyz_to_lab(fx)};
   const double Y{D65_Yn * inverse_xyz_to_lab(fy)};
@@ -161,7 +173,34 @@ void lab_to_rgb(const double L, const double A, const double B,
   b = gamma_encode(std::clamp(b, 0.0, 1.0));
 
   // --- Clamp and convert to 8-bit
-  out_r_u8 = static_cast<uint8_t>(std::round(255.0 * std::clamp(r, 0.0, 1.0)));
-  out_g_u8 = static_cast<uint8_t>(std::round(255.0 * std::clamp(g, 0.0, 1.0)));
-  out_b_u8 = static_cast<uint8_t>(std::round(255.0 * std::clamp(b, 0.0, 1.0)));
+  out_r_u8 = static_cast<Tout>(std::round(255.0 * std::clamp(r, 0.0, 1.0)));
+  out_g_u8 = static_cast<Tout>(std::round(255.0 * std::clamp(g, 0.0, 1.0)));
+  out_b_u8 = static_cast<Tout>(std::round(255.0 * std::clamp(b, 0.0, 1.0)));
+}
+
+template <typename Tin, typename Tout>
+void rgb_to_lab(const ImageLib::RGBAPixel<Tin>& rgba, ImageLib::LABAPixel<Tout>& laba) {
+    
+    rgb_to_lab<Tin, Tout>(rgba.red, rgba.green, rgba.blue, laba.l, laba.a, laba.b);
+    laba.alpha = static_cast<Tout>(rgba.alpha);
+}
+
+template <typename Tin, typename Tout>
+void rgb_to_lab(const ImageLib::RGBPixel<Tin>& rgb, ImageLib::LABPixel<Tout>& lab) {
+    
+    rgb_to_lab<Tin, Tout>(rgb.red, rgb.green, rgb.blue, lab.l, lab.a, lab.b);
+}
+
+
+template <typename Tin, typename Tout>
+void lab_to_rgb(const ImageLib::LABAPixel<Tin>& laba, ImageLib::RGBAPixel<Tout>& rgba) {
+    
+    lab_to_rgb<Tin, Tout>(laba.l, laba.a, laba.b, rgba.red, rgba.green, rgba.blue);
+    rgba.alpha = static_cast<Tout>(laba.alpha);
+}
+
+template <typename Tin, typename Tout>
+void lab_to_rgb(const ImageLib::LABPixel<Tin>& lab, ImageLib::RGBPixel<Tout>& rgb) {
+    
+    lab_to_rgb<Tin, Tout>(lab.l, lab.a, lab.b, rgb.red, rgb.green, rgb.blue);
 }

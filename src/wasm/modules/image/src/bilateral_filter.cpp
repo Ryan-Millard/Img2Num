@@ -152,7 +152,7 @@ void _process(const uint8_t *image, const std::vector<double> &cie_image,
         double A{weight_acc_channel_1 / weight_acc};
         double B{weight_acc_channel_2 / weight_acc};
         uint8_t r, g, b;
-        lab_to_rgb(L, A, B, r, g, b);
+        lab_to_rgb<double, uint8_t>(L, A, B, r, g, b);
         result[center_idx] = r;
         result[center_idx + 1] = g;
         result[center_idx + 2] = b;
@@ -223,7 +223,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
         uint8_t b0{image[center_idx + 2]};
         uint8_t a0{image[center_idx + 3]};
         double L0, A0, B0;
-        rgb_to_lab(r0, g0, b0, L0, A0, B0);
+        rgb_to_lab<uint8_t, double>(r0, g0, b0, L0, A0, B0);
 
         cie_image[center_idx] = L0;
         cie_image[center_idx + 1] = A0;
