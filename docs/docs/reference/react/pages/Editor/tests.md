@@ -14,7 +14,7 @@ The Editor page ([`src/pages/Editor/index.jsx`](https://github.com/Ryan-Millard/
 - [src/pages/Editor/Editor.test.jsx](../../../../src/pages/Editor/Editor.test.jsx):
   - renders fallback when `location.state.svg` is missing
   - renders provided SVG content
-  - toggles `coloredRegion` on tap in color mode
+  - adds `coloredRegion` on tap in color mode (one-way reveal)
   - switches to preview mode (disables toggling) via the `GlassSwitch`
 - [src/pages/Editor/EditorHelmet.test.jsx](../../../../src/pages/Editor/EditorHelmet.test.jsx): title, robots, description, and canonical meta.
 
@@ -22,7 +22,7 @@ The Editor page ([`src/pages/Editor/index.jsx`](https://github.com/Ryan-Millard/
 
 - Empty state: direct navigation shows the “No SVG data found” panel.
 - Mode switch: `aria-label` flips and the container class toggles between `colorMode` and `previewMode`.
-- Shape reveal: tapping a supported primitive (`path`, `rect`, `circle`, `polygon`, `ellipse`) toggles `coloredRegion`.
+- Shape reveal: tapping a supported primitive (`path`, `rect`, `circle`, `polygon`, `ellipse`) adds `coloredRegion` and keeps it applied on repeat taps (no toggle-off).
 
 ## Supplying SVG in tests
 
