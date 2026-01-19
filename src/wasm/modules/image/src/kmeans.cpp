@@ -126,9 +126,8 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
       std::atomic<bool> changed_atomic{false};
       for (int i = 0; i < nthreads; ++i) {
         int start_pixel{i * pixels_per_thread};
-        int end_pixel{
-          (i == nthreads - 1) ? num_pixels : (i + 1) * pixels_per_thread
-        };
+        int end_pixel{(i == nthreads - 1) ? num_pixels
+                                          : (i + 1) * pixels_per_thread};
 
         threads.emplace_back(_apply_labels, std::cref(pixels),
                              std::cref(distances), std::ref(labels),

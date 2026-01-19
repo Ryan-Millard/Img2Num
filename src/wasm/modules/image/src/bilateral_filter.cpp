@@ -237,7 +237,8 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
   if (n_threads > 1) {
     for (int i = 0; i < n_threads; ++i) {
       int start_row{i * rows_per_thread};
-      int end_row{(i == n_threads - 1) ? static_cast<int>(height) : (i + 1) * rows_per_thread};
+      int end_row{(i == n_threads - 1) ? static_cast<int>(height)
+                                       : (i + 1) * rows_per_thread};
       // Launch a thread and add to vector
       threads.emplace_back(_process, std::cref(image), std::cref(cie_image),
                            std::ref(result), std::cref(spatial_weights),
