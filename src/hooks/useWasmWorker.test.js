@@ -62,14 +62,12 @@ describe('useWasmWorker', () => {
     expect(result.current).toHaveProperty('bilateralFilter');
     expect(result.current).toHaveProperty('blackThreshold');
     expect(result.current).toHaveProperty('kmeans');
-    expect(result.current).toHaveProperty('mergeSmallRegionsInPlace');
 
     expect(typeof result.current.call).toBe('function');
     expect(typeof result.current.gaussianBlur).toBe('function');
     expect(typeof result.current.bilateralFilter).toBe('function');
     expect(typeof result.current.blackThreshold).toBe('function');
     expect(typeof result.current.kmeans).toBe('function');
-    expect(typeof result.current.mergeSmallRegionsInPlace).toBe('function');
   });
 
   describe('call function', () => {
@@ -313,40 +311,6 @@ describe('useWasmWorker', () => {
           args: expect.objectContaining({
             max_iter: 50,
           }),
-        })
-      );
-    });
-  });
-
-  describe('mergeSmallRegionsInPlace', () => {
-    it('should call worker with mergeSmallRegionsInPlace function', async () => {
-      const { result } = renderHook(() => useWasmWorker());
-
-      const pixels = new Uint8ClampedArray([255, 0, 0, 255]);
-
-      act(() => {
-        result.current.mergeSmallRegionsInPlace({
-          pixels,
-          width: 10,
-          height: 10,
-          minArea: 100,
-          minWidth: 5,
-          minHeight: 5,
-        });
-      });
-
-      expect(mockWorkerInstance.postMessage).toHaveBeenCalledWith(
-        expect.objectContaining({
-          funcName: 'mergeSmallRegionsInPlace',
-          args: {
-            pixels,
-            width: 10,
-            height: 10,
-            minArea: 100,
-            minWidth: 5,
-            minHeight: 5,
-          },
-          bufferKeys: ['pixels'],
         })
       );
     });
