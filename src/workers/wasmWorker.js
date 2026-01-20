@@ -83,7 +83,7 @@ self.onmessage = async ({ data }) => {
     );
   }
 
-  const pointers = {};
+  const pointers = Object.create(null);
   try {
     // Allocate inputs / out params
     bufferKeys?.forEach(({ key, type }) => {
@@ -96,10 +96,10 @@ self.onmessage = async ({ data }) => {
     // Call the WASM function
     const exportName = `_${funcName}`;
     if (typeof wasmModule[exportName] !== 'function') throw new Error(`Export not found: ${exportName}`);
-    const result = wasmModule[exportName](...Object.values(args ?? {}));
+    const result = wasmModule[exportName](...Object.values(args ?? Object.create(null)));
 
     // Read back buffers
-    const output = {};
+    const output = Object.create(null).
     bufferKeys?.forEach(({ key, type }) => {
       output[key] = WASM_TYPES[type].read(pointers[key].ptr, pointers[key].length);
     });
