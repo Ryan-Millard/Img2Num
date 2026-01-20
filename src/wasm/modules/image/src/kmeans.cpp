@@ -35,8 +35,6 @@ static inline float colorDistance(const ImageLib::LABAPixel<float> &a,
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB{0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
 
-// std::mutex write_mutex;
-
 template <typename PixelT>
 void _process_dist_per_centroid(const ImageLib::Image<PixelT> &pixels,
                                 const ImageLib::Image<PixelT> &centroids,

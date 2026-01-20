@@ -25,7 +25,11 @@ template <typename NumberT> struct LABPixel : public Pixel<NumberT> {
   }
 
   // ----- Utilities -----
-  inline void setGray(NumberT gray) { a = b = static_cast<NumberT>(0); }
+  inline void setGray(NumberT new_luma) { 
+    l = new_luma;
+    a = b = 0; 
+  }
+  
 } __attribute__((packed));
 } // namespace ImageLib
 
