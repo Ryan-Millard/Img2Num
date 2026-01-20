@@ -82,7 +82,6 @@ void kMeansPlusPlusInit(const ImageLib::Image<PixelT> &pixels,
   std::vector<PixelT> centroids;
 
   int num_pixels = pixels.getSize();
-  int c_idx{0}; // centroid index
   // Random number generator setup
   std::random_device rd;
   std::mt19937 gen(rd());
