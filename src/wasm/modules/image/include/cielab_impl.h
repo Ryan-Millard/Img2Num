@@ -1,4 +1,6 @@
-#include "cielab.h"
+#ifndef CIELAB_IMPL_H
+#define CIELAB_IMPL_H
+
 #include <algorithm>
 #include <cmath>
 
@@ -209,3 +211,5 @@ void lab_to_rgb(const ImageLib::LABPixel<Tin> &lab,
 
   lab_to_rgb<Tin, Tout>(lab.l, lab.a, lab.b, rgb.red, rgb.green, rgb.blue);
 }
+
+#endif
