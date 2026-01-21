@@ -2,167 +2,378 @@
 id: use-wasm-worker
 title: useWasmWorker
 hide_title: false
-description: A custom React hook for asynchronously calling functions exported by the Image WASM module via a web worker.
+description: A custom React hook for calling Image WASM functions via a web worker, with generic calls and convenience wrappers.
 ---
 
 # useWasmWorker Hook
 
-The `useWasmWorker` hook provides a **React-friendly interface** to the [**WASM Web Worker**](../../workers/wasm-worker) ([`wasmWorker.js`](https://github.com/Ryan-Millard/Img2Num/blob/main/src/workers/wasmWorker.js)).
-It allows you to asynchronously invoke any **function exported by the WASM module** from your React components while keeping heavy computation off the main thread.
+This hook provides a **React-friendly interface** to [`wasmWorker.js`](../../workers/wasm-worker) for calling functions exported by the Image WASM module.
 
-This hook abstracts:
+It keeps **all heavy computation off the main thread** by delegating work to a Web Worker, while abstracting away memory management and WASM interop.
 
-- Posting messages to the worker.
-- Allocating memory for `TypedArrays`.
-- Calling WASM functions dynamically.
-- Retrieving results.
-- Cleaning up memory.
+:::important What this hook abstracts
 
-## How WASM Functions Are Exposed
+* Worker lifecycle and messaging
+* WASM module initialization
+* Memory allocation (`_malloc`) and cleanup (`_free`)
+* TypedArray ↔ WASM heap copying
+* WASM function invocation
+* Return value and output buffer handling
 
-All functions exported from the WASM module are available via the hook’s **generic `call` method**:
+:::
+
+## Two Layers of the API
+
+`useWasmWorker` exposes **two levels of interaction**:
+
+1. **A generic `call` method** – low-level, flexible, mirrors raw WASM exports
+2. **Convenience wrapper functions** – high-level, ergonomic, domain-specific helpers
+
+Most application code should use the **convenience wrappers**. The generic `call` method exists for extensibility and advanced use cases.
+
+## Generic `call` Method
+
+### Signature
+
+```ts
+call({
+  funcName: string,
+  args?: Record<string, any>,
+  bufferKeys?: { key: string; type: keyof WASM_TYPES }[],
+  returnType?: 'void' | 'string' | 'Int32Array' | 'Uint8Array' | 'Uint8ClampedArray'
+}) => Promise<{ output: Record<string, TypedArray>; returnValue: any }>
+```
+
+:::tip
+Also see the [`WASM_TYPES` documentation](../../workers/wasm-worker/#typedarray-and-value-handling-wasm_types) to understand the supported `bufferKeys` types.
+
+`void` is a supported `returnType` but not `bufferKeys` type.
+:::
+
+### Example
 
 ```js
 const { call } = useWasmWorker();
 
-const result = await call('myWasmFunction', { arg1, arg2 }, ['arg1', 'arg2']);
+const { output } = await call({
+  funcName: 'add_arrays',
+  args: {
+    a: arrayA,
+    b: arrayB,
+    out: outputArray,
+    length: arrayA.length,
+  },
+  bufferKeys: [
+    { key: 'a', type: 'Int32Array' },
+    { key: 'b', type: 'Int32Array' },
+    { key: 'out', type: 'Int32Array' },
+  ],
+});
+
+console.log(output.out);
 ```
 
-- `'myWasmFunction'` is the **exact name of the C++ function** (without the `_` prefix added by Emscripten internally).
-- The **second argument** is an object mapping argument names to values.
-  - For TypedArrays (e.g., `Uint8ClampedArray`, `Int32Array`), the corresponding keys should be included in the **`bufferKeys` array** (third argument).
+### Key Rules (Very Important)
 
-- The **order of arguments in the object must match the order in the C++ function signature**. WASM functions are strict about argument order.
+:::danger Argument order is strict
+The **order of arguments passed to WASM must exactly match the C++ function signature**.
 
-### Example
-
-C++ function:
-
-```cpp
-void add_arrays(int* a, int* b, int* out, int length);
-```
-
-Calling from React:
+Although `args` is an object, the worker calls the WASM function using:
 
 ```js
-const result = await call(
-  'add_arrays', // must match the function's name
-  {
-    a: arrayA, // must match the first argument
-    b: arrayB, // must match the second argument
-    out: outputArray, // must match the third argument
-    length: arrayA.length, // must match the last argument
-  },
-  ['a', 'b', 'out'] // keys that are TypedArrays (pointers)
-);
+wasmModule[`_${funcName}`](...Object.values(args))
 ```
+
+That means:
+
+```cpp
+int add(int a, int b);
+```
+
+**Must be called as:**
+
+```js
+args = { a, b } // correct
+```
+
+```js
+args = { b, a } // ❌ wrong
+```
+
+:::
+
+## Convenience Wrapper Functions
+
+The hook exposes several **predefined helpers** that wrap `call()` with the correct argument order, buffer configuration, and defaults.
+
+These functions:
+
+* Hide `bufferKeys` and `returnType`
+* Enforce correct argument ordering
+* Return clean JS values instead of raw WASM outputs
+
+### `gaussianBlur`
+
+Calls the Gaussian blur from the [Image WASM module](../../../wasm/modules/image/).
+
+#### Signature
+
+```ts
+gaussianBlur(params: {
+  pixels: Uint8ClampedArray;
+  width: number;
+  height: number;
+  /**
+   * @default width * 0.005
+   */
+  sigma_pixels?: number;
+}): Promise<Uint8ClampedArray>
+```
+
+#### Example Usage
+
+```ts
+const { gaussianBlur } = useWasmWorker();
+
+const blurredPixels = await gaussianBlur({
+  pixels,
+  width,
+  height,
+  sigma_pixels: width * percentageOfWidth,
+});
+```
+
+### `bilateralFilter`
+
+Calls the [`bilateral filter`](../../../wasm/modules/image/bilateral_filter/) from the [Image WASM module](../../../wasm/modules/image/).
+
+#### Signature
+
+```ts
+bilateralFilter(params: {
+  pixels: Uint8ClampedArray;
+  width: number;
+  height: number;
+  /**
+   * @default 3
+   */
+  sigma_spatial?: number;
+  /**
+   * @default 50
+   */
+  sigma_range?: number;
+  /**
+   * @default 0
+   */
+  color_space?: number;
+}): Promise<Uint8ClampedArray>
+```
+
+:::note `color_space` parameter
+
+Possible values:
+- **0**: CIE La\*b\* (closer to human perception)
+- **1**: sRGB (the default color space for computers)
+
+The default for this parameter is CIE LAB because it closer to human perception and bilateral filters are usually 
+
+:::
+
+#### Example Usage
+
+```ts
+const { bilateralFilter } = useWasmWorker();
+
+const filteredPixels = await bilateralFilter({
+  pixels,
+  width,
+  height,
+  sigma_spatial: 2,
+  sigma_range: 30,
+  color_space: 1,
+});
+```
+
+### `blackThreshold`
+
+Calls the black threshold function from the [Image WASM module](../../../wasm/modules/image/).
+
+#### Signature
+
+```ts
+blackThreshold(params: {
+  pixels: Uint8ClampedArray;
+  width: number;
+  height: number;
+  num_colors: number;
+}): Promise<Uint8ClampedArray>
+```
+
+#### Example Usage
+
+```ts
+const { blackThreshold } = useWasmWorker();
+
+const thresholdedPixels = await blackThreshold({
+  pixels,
+  width,
+  height,
+  num_colors: 8,
+});
+```
+
+### `kmeans`
+
+Calls the K-Means clustering function from the [Image WASM module](../../../wasm/modules/image/).
+
+#### Signature
+
+```ts
+kmeans(params: {
+  pixels: Uint8ClampedArray;
+  width: number;
+  height: number;
+  num_colors: number;
+  /**
+   * @default 100
+   */
+  max_iter?: number;
+}): Promise<{ pixels: Uint8ClampedArray; labels: Int32Array }>
+```
+
+#### Example Usage
+
+```ts
+const { kmeans } = useWasmWorker();
+
+const { pixels: clusteredPixels, labels } = await kmeans({
+  pixels,
+  width,
+  height,
+  num_colors: 8,
+});
+```
+
+### `findContours`
+
+Finds contours after K-Means clustering from the [Image WASM module](../../../wasm/modules/image/).
+
+#### Signature
+
+```ts
+findContours(params: {
+  pixels: Uint8ClampedArray;
+  labels: Int32Array;
+  width: number;
+  height: number;
+  /**
+   * @default 100
+   */
+  min_area?: number;
+  /**
+   * @default false
+   */
+  draw_contour_borders?: boolean;
+}): Promise<Uint8ClampedArray>
+```
+
+#### Example Usage
+
+```ts
+const { findContours } = useWasmWorker();
+
+const contouredPixels = await findContours({
+  pixels,
+  labels,
+  width,
+  height,
+  min_area: 100,
+  draw_contour_borders: false,
+});
+```
+
+## TypedArray Handling
+
+All TypedArrays passed to WASM must be declared in `bufferKeys`.
+
+Each entry specifies:
+
+```ts
+{ key: string; type: 'Int32Array' | 'Uint8Array' | 'Uint8ClampedArray' }
+```
+
+The worker will:
+
+1. Allocate memory with `_malloc`
+2. Copy the JS array into the correct HEAP view
+3. Pass the pointer to WASM
+4. Read the buffer back after execution
+5. Free the memory
+
+## Supported Types
+
+The worker currently supports:
+
+* `Int32Array` → `HEAP32`
+* `Uint8Array` → `HEAPU8`
+* `Uint8ClampedArray` → `HEAPU8`
+* `string` (UTF-8)
+* `void` (only for returned values)
 
 ## Adding New WASM Functions
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-1.  **Add the function in your C++ module** and ensure it is exported in the build:
-    <Tabs>
-    <TabItem value="img2num-method" label="Img2Num Method (EXPORTED Macro)">
-    :::tip This is the preferred method
-    Use this method instead of the Emscripten method because it reduces bloat in the CMake file and minimizes boilerplate code.
-    :::
-    Import and use the `EXPORTED` macro from `exported.h` in your header file (make sure the function is not in a namespace):
+1. **Export the function from C++** using the Img2Num `EXPORTED` macro (preferred):
 
     ```cpp
     #include "exported.h"
 
-    EXPORTED void add_arrays(int* a, int* b, int* out, int length);
+    EXPORTED void my_function(int* data, int length);
     ```
 
-      </TabItem>
+2. **Ensure argument order is final** – JS must match it exactly.
 
-      <TabItem value="emscripten-method" label="Emscripten Method">
-        :::caution Don't use this method in Img2Num!
-        This method leads to bloat in the CMake file, is difficult to maintain and tough to debug.
+3. **Add a convenience wrapper** in `useWasmWorker`:
 
-        Use the Img2Num method instead because it provides convenience, reduces boilerplate, and saves you from numerous possible bugs.
-        :::
-        Add the function to the CMake file's `EXPORTED_FUNCTIONS` flag:
-        ```cmake
-        "SHELL:-s EXPORTED_FUNCTIONS=['_malloc','_free','_add_arrays']"
-        ```
+    ```js
+    myFunction: async ({ data, length }) => {
+      const result = await call({
+        funcName: 'my_function',
+        args: { data, length },
+        bufferKeys: [{ key: 'data', type: 'Int32Array' }],
+      });
+      return result.output.data;
+    }
+    ```
 
-      </TabItem>
-    </Tabs>
+## Adding New TypedArray Types
 
-2.  **Call it via the hook** using the `call` method, providing:
-    - An object mapping argument names to values **in the same order as the C++ function signature**.
-    - A `bufferKeys` array for all `TypedArrays` (pointers) that need WASM memory allocation.
+If you add a new TypedArray type (e.g. `Float32Array`):
 
-3.  The hook will handle:
-    - Allocating WASM memory.
-    - Copying TypedArrays into WASM memory.
-    - Calling the function.
-    - Copying modified buffers back.
-    - Freeing WASM memory.
+1. Export the corresponding HEAP view via `EXPORTED_RUNTIME_METHODS` in the module's `CMakeLists.txt`.
+2. Add an entry to `WASM_TYPES` in `wasmWorker.js`
+3. Implement `alloc` and `read`
 
-## Potential Pitfalls
-
-### 1. Incorrect Argument Order
-
-WASM functions **require arguments to be in the exact order declared in C++**.
-Passing an object with keys in the wrong order may result in unexpected behavior or crashes.
-
-```js title="❌ Wrong order"
-await call('add_arrays', { b: arrayB, a: arrayA, out: outputArray, length: arrayA.length }, ['a', 'b', 'out']);
-```
-
-```js title="✅ Correct order"
-await call('add_arrays', { a: arrayA, b: arrayB, out: outputArray, length: arrayA.length }, ['a', 'b', 'out']);
-```
-
-### 2. Missing TypedArray Keys
-
-All TypedArrays that are modified by the WASM function **must be included in `bufferKeys`**.
-Otherwise, the worker will treat them as simple values, and the function may crash or produce invalid output.
-
-### 3. Worker Not Initialized
-
-Always ensure the WASM worker is **fully initialized** before calling any function.
-`useWasmWorker` handles this internally, but calling functions **immediately on render without waiting for the hook** may fail.
-
-### 4. Adding New TypedArray Types
-
-If you want to pass a new TypedArray type (e.g., `Float32Array`), you must:
-
-1. Add support in `wasmWorker.js` for copying the new type into WASM memory.
-2. Ensure the corresponding **HEAP view** is exported from the C++ module in `EXPORTED_RUNTIME_METHODS` in the CMake file.
-
-:::tip
-See the [documentation for `wasmWorker.js`](../../workers/wasm-worker/) before adding new types.
-:::
-
-### 5. Memory Management
-
-- The hook and worker automatically allocate and free WASM memory for TypedArrays.
-- Avoid manually managing WASM pointers outside this mechanism to prevent memory leaks or crashes.
+Failing to do this will cause memory corruption or crashes.
 
 ## Diagram: React → Worker → WASM Flow
 
 ```mermaid
 flowchart TD
-    A["React component calls hook function"] --> B["useWasmWorker posts message to wasmWorker"]
-    B --> C["Worker allocates WASM memory for TypedArrays"]
-    C --> D["Worker calls WASM function dynamically"]
-    D --> E["Worker reads back modified buffers"]
-    E --> F["Worker frees allocated memory"]
-    F --> G["Worker posts result back to hook"]
-    G --> H["Hook resolves promise and returns output to component"]
+  A[React calls hook] --> B[useWasmWorker posts message]
+  B --> C[Worker waits for WASM ready]
+  C --> D[Allocate WASM memory]
+  D --> E[Call WASM export]
+  E --> F[Read back buffers / return value]
+  F --> G[Free memory]
+  G --> H[Post result back]
+  H --> I[Promise resolves in React]
 ```
-
-- Demonstrates the **end-to-end flow** of calling any WASM function via the hook.
 
 ## Summary
 
-- `useWasmWorker` exposes **all WASM functions dynamically** through the generic `call` method.
-- TypedArrays must be specified in `bufferKeys` and argument **order must match C++ signature**.
-- New functions require both **C++ export** and proper handling in `wasmWorker.js`.
-- Handles memory allocation, result copying, and cleanup automatically.
-- Provides safe, asynchronous access to WASM from React.
+* `useWasmWorker` provides **safe, async WASM access from React**
+* Argument order **must exactly match C++ signatures**
+* TypedArrays require explicit declaration via `bufferKeys`
+* Convenience wrappers are the preferred API
+* Memory allocation and cleanup are fully automatic
+
