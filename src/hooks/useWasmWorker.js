@@ -60,7 +60,7 @@ export function useWasmWorker() {
     height,
     out_labels = new Int32Array(width * height),
     num_colors,
-    max_iter = 250,
+    max_iter = 100,
     color_space = 0,
     n_threads = 8,
   }) => {

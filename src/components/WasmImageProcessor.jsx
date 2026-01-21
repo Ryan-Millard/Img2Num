@@ -85,7 +85,7 @@ const WasmImageProcessor = () => {
         height,
       });
 
-      step(45);
+      // step(45);
       // is this needed? num_colors is incorrect should be num_threshold
       /*const thresholded = await blackThreshold({
         ...fileData,
@@ -127,7 +127,7 @@ const WasmImageProcessor = () => {
         step(0);
       }, 800);
     }
-  }, [fileData, bilateralFilter, blackThreshold, kmeans, findContours, navigate, step]);
+  }, [fileData, bilateralFilter, kmeans, findContours, navigate, step]);
 
   /* Memo'd UI fragments */
   const EmptyState = useMemo(

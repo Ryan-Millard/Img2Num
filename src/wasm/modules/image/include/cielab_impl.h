@@ -1,6 +1,10 @@
 #ifndef CIELAB_IMPL_H
 #define CIELAB_IMPL_H
 
+#ifndef CIELAB_H
+#error "cielab_impl.h should not be included directly; include cielab.h instead"
+#endif
+
 #include <algorithm>
 #include <cmath>
 
