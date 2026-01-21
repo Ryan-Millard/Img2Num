@@ -1,5 +1,4 @@
 import ImageTracer from 'imagetracerjs';
-import { number } from 'prop-types';
 
 export function loadImageToUint8Array(file) {
   return new Promise((resolve) => {
@@ -36,7 +35,7 @@ export const uint8ClampedArrayToSVG = async ({ pixels, width, height }) => {
     let svgString = ImageTracer.imagedataToSVG(imageData, {
       ltres: 0,
       rightangleenhance: false,
-      numberofcolors: 128,
+      // numberofcolors: 128,
     });
 
     // Inject viewBox

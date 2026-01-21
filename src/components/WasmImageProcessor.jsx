@@ -101,7 +101,7 @@ const WasmImageProcessor = () => {
       });
 
       const contours = await findContours({
-        pixels: imgBilateralFiltered,
+        pixels: kmeansed,
         labels,
         width,
         height,
