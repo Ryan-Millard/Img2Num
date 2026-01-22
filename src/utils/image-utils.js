@@ -35,6 +35,7 @@ export const uint8ClampedArrayToSVG = async ({ pixels, width, height }) => {
     let svgString = ImageTracer.imagedataToSVG(imageData, {
       ltres: 0,
       rightangleenhance: false,
+      // numberofcolors: 128,
     });
 
     // Inject viewBox

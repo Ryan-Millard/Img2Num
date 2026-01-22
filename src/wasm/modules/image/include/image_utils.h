@@ -3,7 +3,6 @@
 
 #include "exported.h" // EXPORTED macro
 
-#include <iostream>
 #include <stdint.h>
 
 #include "Image.h"

@@ -42,9 +42,12 @@ export function useWasmWorker() {
     sigma_spatial = 3.0,
     sigma_range = 50.0,
     color_space = 0,
+    n_threads = 8,
   }) => {
     return (
-      await call('bilateral_filter', { pixels, width, height, sigma_spatial, sigma_range, color_space }, ['pixels'])
+      await call('bilateral_filter', { pixels, width, height, sigma_spatial, sigma_range, color_space, n_threads }, [
+        'pixels',
+      ])
     ).output.pixels;
   };
   const blackThreshold = async ({ pixels, width, height, num_colors }) => {
@@ -58,13 +61,15 @@ export function useWasmWorker() {
     out_labels = new Int32Array(width * height),
     num_colors,
     max_iter = 100,
+    color_space = 0,
+    n_threads = 8,
   }) => {
     const result = (
-      await call('kmeans', { pixels, out_pixels, out_labels, width, height, num_colors, max_iter }, [
-        'pixels',
-        'out_pixels',
-        'out_labels',
-      ])
+      await call(
+        'kmeans',
+        { pixels, out_pixels, out_labels, width, height, num_colors, max_iter, color_space, n_threads },
+        ['pixels', 'out_pixels', 'out_labels']
+      )
     ).output;
     return {
       pixels: result.out_pixels,

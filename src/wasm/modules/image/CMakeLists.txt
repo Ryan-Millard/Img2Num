@@ -35,21 +35,24 @@ set(COMMON_FLAGS
     "SHELL:-s MODULARIZE=1"
     "SHELL:-s EXPORT_ES6=1"
     "SHELL:-s EXIT_RUNTIME=1"
-    "SHELL:-s ENVIRONMENT=web"
+    "SHELL:-s ENVIRONMENT=web,worker"
     "SHELL:-s EXPORTED_FUNCTIONS=['_malloc','_free']"
     "SHELL:-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPU8','HEAP32']"
     "SHELL:-s INITIAL_MEMORY=1024MB"
     "SHELL:-s MAXIMUM_MEMORY=2048MB"
     "SHELL:-s ALLOW_MEMORY_GROWTH=1"
     "SHELL:-s EXPORT_NAME=create${CAP_MODULE_NAME}Module"
+    "SHELL:-s USE_PTHREADS=1"
+    "SHELL:-s PTHREAD_POOL_SIZE=8"
 )
 
 # Apply common flags
-target_link_options(${MODULE_NAME}_wasm PRIVATE ${COMMON_FLAGS})
+target_compile_options(${MODULE_NAME}_wasm PRIVATE -pthread -msimd128)
+target_link_options(${MODULE_NAME}_wasm PRIVATE ${COMMON_FLAGS} -pthread -msimd128)
 
 # Build-type specific flags
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_options(${MODULE_NAME}_wasm PRIVATE -O0 -g4)
+    target_compile_options(${MODULE_NAME}_wasm PRIVATE -O2 -g4)
     target_link_options(${MODULE_NAME}_wasm PRIVATE
         "SHELL:-s ASSERTIONS=2"
         -g4
