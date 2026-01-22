@@ -23,6 +23,13 @@
 #include <vector>
 #include <iomanip>
 #include <sstream>
+#include <set>
+
+struct ColoredContours : ContoursResult {
+  // inherits: contours, hierarchy, is_hole
+
+  std::vector<ImageLib::RGBAPixel<uint8_t>> colors;
+};
 
 /* Flood fill */
 int flood_fill(std::vector<int32_t> &label_array,
@@ -152,17 +159,23 @@ std::string contourToSVGPath(const std::vector<Point>& contour) {
     return path.str();
 }
 
-std::string contoursResultToSVG(const ContoursResult& result) {
+std::string contoursResultToSVG(const ColoredContours& result, const int width, const int height) {
     std::ostringstream svg;
-    svg << "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"black\" fill-rule=\"evenodd\">\n";
+    svg << "<svg xmlns=\"http://www.w3.org/2000/svg\" fill-rule=\"evenodd\" width=\"" << width << "\" height=\"" << height << "\">\n";
 
     for (size_t i = 0; i < result.contours.size(); ++i) {
-        const auto& contour = result.contours[i];
+        std::string pathData = contourToSVGPath(result.contours[i]);
 
-        std::string pathData = contourToSVGPath(contour);
+        const auto& px = result.colors[i];
+        std::ostringstream oss;
+        oss << "#"
+          << std::hex << std::uppercase
+          << std::setw(2) << std::setfill('0') << static_cast<int>(px.red)
+          << std::setw(2) << std::setfill('0') << static_cast<int>(px.green)
+          << std::setw(2) << std::setfill('0') << static_cast<int>(px.blue);
 
         // You can optionally style holes differently or rely on fill-rule
-        svg << "  <path d=\"" << pathData << "\" />\n";
+        svg << "  <path d=\"" << pathData << "\" fill=\"" << oss.str() << "\" />\n";
     }
 
     svg << "</svg>\n";
@@ -213,7 +226,7 @@ char* kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
   }
 
   // 6. Contours
-  ContoursResult all_contours; // <-- accumulate all nodes here
+  ColoredContours all_contours;
 
   for (auto &n : G.get_nodes()) {
     if (n->area() == 0) continue;
@@ -234,21 +247,22 @@ char* kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
       visualize_contours(contour_res.contours, results, width, height, xmin, ymin);
     } else {
       // shift contour coordinates to image space
-      for (auto &contour : contour_res.contours) {
+      for (size_t cidx = 0; cidx < contour_res.contours.size(); ++cidx) {
+        auto &contour = contour_res.contours[cidx];
         for (auto &p : contour) {
           p.x += xmin;
           p.y += ymin;
         }
+
+        // pick the color from the first pixel of the contour in the recolored image
+        const auto &first_px = contour[0];
+        ImageLib::RGBAPixel<uint8_t> col = results(first_px.x, first_px.y);
+
+        all_contours.contours.push_back(contour);
+        all_contours.hierarchy.push_back(contour_res.hierarchy[cidx]);
+        all_contours.is_hole.push_back(contour_res.is_hole[cidx]);
+        all_contours.colors.push_back(col);
       }
-      all_contours.contours.insert(all_contours.contours.end(),
-          contour_res.contours.begin(),
-          contour_res.contours.end());
-      all_contours.hierarchy.insert(all_contours.hierarchy.end(),
-          contour_res.hierarchy.begin(),
-          contour_res.hierarchy.end());
-      all_contours.is_hole.insert(all_contours.is_hole.end(),
-          contour_res.is_hole.begin(),
-          contour_res.is_hole.end());
     }
   }
 
@@ -258,7 +272,7 @@ char* kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
 
   // 8. Return SVG if requested
   if (!draw_contour_borders) {
-    std::string svg = contoursResultToSVG(all_contours);
+    std::string svg = contoursResultToSVG(all_contours, width, height);
     // allocate char* dynamically
     char* res_svg = new char[svg.size() + 1];
     std::memcpy(res_svg, svg.c_str(), svg.size() + 1);
