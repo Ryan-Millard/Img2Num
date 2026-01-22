@@ -2,6 +2,8 @@
 .viewport {
   position: relative;
   overflow: hidden;
+  touch-action: none;
+  user-select: none;
   transition:
     transform 180ms ease,
     box-shadow 180ms ease;
@@ -12,15 +14,19 @@
   cursor: grab;
   background: transparent;
 }
-/* Default path appearance */
-.colorMode .viewport svg path:not(.coloredRegion) {
+/* Default shape appearance in color mode: hide original fills until revealed */
+.colorMode .viewport svg path:not(.coloredRegion),
+.colorMode .viewport svg rect:not(.coloredRegion),
+.colorMode .viewport svg circle:not(.coloredRegion),
+.colorMode .viewport svg polygon:not(.coloredRegion),
+.colorMode .viewport svg ellipse:not(.coloredRegion) {
   fill: white;
   cursor: pointer;
   transition: 150ms ease;
 }
 
-/* while dragging */
-.viewport.grabbing {
+/* while dragging (added via JS: styles.grabbing) */
+.grabbing {
   cursor: grabbing;
 }
 
@@ -83,6 +89,9 @@
 
 /* responsiveness */
 @media (max-width: 800px) {
+  .grabbing {
+    cursor: move;
+  }
   .viewport {
     min-height: 240px;
   }

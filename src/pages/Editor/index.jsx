@@ -18,7 +18,19 @@ export default function Editor() {
   const viewportRef = useRef(null);
   const innerRef = useRef(null);
   const [transform, setTransform] = useState({ scale: 1, tx: 0, ty: 0 });
-  const pointerState = useRef({ dragging: false, lastX: 0, lastY: 0, moving: false });
+  const pointerState = useRef({ dragging: false, lastX: 0, lastY: 0, moved: false });
+  const activePointersRef = useRef(new Map());
+  const pinchRef = useRef({
+    active: false,
+    startDist: 0,
+    startScale: 1,
+    startTx: 0,
+    startTy: 0,
+    startCx: 0,
+    startCy: 0,
+  });
+
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
   // Wheel zoom (keeps tx/ty; can be improved later to zoom to pointer)
   const handleWheel = (e) => {
@@ -34,10 +46,38 @@ export default function Editor() {
   // Panning handlers (pointer events)
   const onPointerDown = (e) => {
     if (!viewportRef.current) return;
+
+    // Only start a drag for primary button on mouse.
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+
+    activePointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
     pointerState.current.dragging = true;
     pointerState.current.moved = false;
     pointerState.current.lastX = e.clientX;
     pointerState.current.lastY = e.clientY;
+
+    // Pinch start when second pointer goes down
+    if (activePointersRef.current.size === 2) {
+      const points = Array.from(activePointersRef.current.values());
+      const p1 = points[0];
+      const p2 = points[1];
+      const midX = (p1.x + p2.x) / 2;
+      const midY = (p1.y + p2.y) / 2;
+      pinchRef.current.active = true;
+      pinchRef.current.startDist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+      pinchRef.current.startScale = transform.scale;
+      pinchRef.current.startTx = transform.tx;
+      pinchRef.current.startTy = transform.ty;
+
+      // content coordinate under the pinch midpoint at start
+      pinchRef.current.startCx = (midX - transform.tx) / transform.scale;
+      pinchRef.current.startCy = (midY - transform.ty) / transform.scale;
+
+      // don't treat pinch as a tap
+      pointerState.current.moved = true;
+    }
+
     try {
       viewportRef.current.setPointerCapture(e.pointerId);
     } catch {}
@@ -46,6 +86,37 @@ export default function Editor() {
 
   const onPointerMove = (e) => {
     if (!pointerState.current.dragging) return;
+
+    // Keep active pointer positions updated
+    if (activePointersRef.current.has(e.pointerId)) {
+      activePointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    }
+
+    // Pinch zoom: when two pointers are active
+    if (pinchRef.current.active && activePointersRef.current.size === 2) {
+      const points = Array.from(activePointersRef.current.values());
+      const p1 = points[0];
+      const p2 = points[1];
+      const midX = (p1.x + p2.x) / 2;
+      const midY = (p1.y + p2.y) / 2;
+      const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+
+      if (pinchRef.current.startDist > 0) {
+        const scaleFactor = dist / pinchRef.current.startDist;
+        const nextScale = clamp(pinchRef.current.startScale * scaleFactor, 0.25, 6);
+
+        // Keep the content point under the pinch midpoint anchored under the fingers.
+        const nextTx = midX - pinchRef.current.startCx * nextScale;
+        const nextTy = midY - pinchRef.current.startCy * nextScale;
+
+        setTransform((t) => ({ ...t, scale: nextScale, tx: nextTx, ty: nextTy }));
+      }
+      return;
+    }
+
+    // Pan only when exactly one pointer is active
+    if (activePointersRef.current.size !== 1) return;
+
     const dx = e.clientX - pointerState.current.lastX;
     const dy = e.clientY - pointerState.current.lastY;
 
@@ -64,7 +135,24 @@ export default function Editor() {
 
   const onPointerUp = (e) => {
     const moved = pointerState.current.moved;
-    pointerState.current.dragging = false;
+
+    // Remove pointer from active set first
+    activePointersRef.current.delete(e.pointerId);
+
+    if (activePointersRef.current.size < 2) {
+      pinchRef.current.active = false;
+    }
+
+    // Keep dragging true if another pointer remains down
+    pointerState.current.dragging = activePointersRef.current.size > 0;
+
+    // If exactly one pointer remains, reset lastX/lastY so pan can continue smoothly
+    if (activePointersRef.current.size === 1) {
+      const remaining = Array.from(activePointersRef.current.values())[0];
+      pointerState.current.lastX = remaining.x;
+      pointerState.current.lastY = remaining.y;
+    }
+
     try {
       viewportRef.current.releasePointerCapture(e.pointerId);
     } catch {}
@@ -79,7 +167,7 @@ export default function Editor() {
       const shape = document.elementFromPoint(e.clientX, e.clientY)?.closest(SHAPE_SELECTOR);
       if (!shape || !svgRoot.contains(shape)) return;
 
-      // Apply your color class
+      // Adds original colour on tap/click
       shape.classList.add(styles.coloredRegion);
     }
   };
@@ -126,7 +214,6 @@ export default function Editor() {
             {svgElements}
           </div>
         </GlassCard>
-
         <div className={styles.hint}>
           Click shapes to reveal their original colour. Use mouse wheel to zoom, drag to pan. Switching modes preserves
           fills.
