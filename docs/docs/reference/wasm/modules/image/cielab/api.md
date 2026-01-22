@@ -12,6 +12,7 @@ sidebar_position: 2
 The CIELAB module provides bidirectional conversion between sRGB and CIELAB (CIE L\*a\*b\*) color spaces. CIELAB is a perceptually uniform color space designed to approximate human vision, where equal Euclidean distances correspond to roughly equal perceived color differences.
 
 Functions are templated to accept arbitrary input and output datatypes:
+
 ```cpp
 template <typename Tin, typename Tout>
 ```
@@ -50,11 +51,11 @@ void rgb_to_lab(
 
 #### Parameters
 
-| Parameter | Type      | Range        | Description                     |
-| :-------- | :-------- | :----------- | :------------------------------ |
-| `r_u8`    | `Tin` | [0, 255]     | Red channel (input)             |
-| `g_u8`    | `Tin` | [0, 255]     | Green channel (input)           |
-| `b_u8`    | `Tin` | [0, 255]     | Blue channel (input)            |
+| Parameter | Type    | Range        | Description                     |
+| :-------- | :------ | :----------- | :------------------------------ |
+| `r_u8`    | `Tin`   | [0, 255]     | Red channel (input)             |
+| `g_u8`    | `Tin`   | [0, 255]     | Green channel (input)           |
+| `b_u8`    | `Tin`   | [0, 255]     | Blue channel (input)            |
 | `out_l`   | `Tout&` | [0, 100]     | L\* lightness (output, clamped) |
 | `out_a`   | `Tout&` | ~[-128, 127] | a\* green-red axis (output)     |
 | `out_b`   | `Tout&` | ~[-128, 127] | b\* blue-yellow axis (output)   |
@@ -117,11 +118,11 @@ void lab_to_rgb(
 
 #### Parameters
 
-| Parameter | Type       | Range        | Description                     |
-| :-------- | :--------- | :----------- | :------------------------------ |
-| `L`       | `Tout`   | [0, 100]     | L\* lightness (input)           |
-| `A`       | `Tout`   | ~[-128, 127] | a\* green-red axis (input)      |
-| `B`       | `Tout`   | ~[-128, 127] | b\* blue-yellow axis (input)    |
+| Parameter | Type   | Range        | Description                     |
+| :-------- | :----- | :----------- | :------------------------------ |
+| `L`       | `Tout` | [0, 100]     | L\* lightness (input)           |
+| `A`       | `Tout` | ~[-128, 127] | a\* green-red axis (input)      |
+| `B`       | `Tout` | ~[-128, 127] | b\* blue-yellow axis (input)    |
 | `r_u8`    | `Tin&` | [0, 255]     | Red channel (output, clamped)   |
 | `g_u8`    | `Tin&` | [0, 255]     | Green channel (output, clamped) |
 | `b_u8`    | `Tin&` | [0, 255]     | Blue channel (output, clamped)  |
