@@ -104,9 +104,10 @@ export function useWasmWorker() {
         bufferKeys: [
           { key: 'pixels', type: 'Uint8ClampedArray' },
           { key: 'labels', type: 'Int32Array' }
-        ]
+        ],
+        returnType: 'string'
       });
-      return result.output.pixels;
+      return { svg: result.returnValue, visualization: result.output.pixels };
     },
 
     testSvg: async () => {
