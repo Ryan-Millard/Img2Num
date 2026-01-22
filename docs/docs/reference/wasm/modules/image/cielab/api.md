@@ -118,11 +118,11 @@ void lab_to_rgb(
 
 #### Parameters
 
-| Parameter | Type   | Range        | Description                     |
-| :-------- | :----- | :----------- | :------------------------------ |
-| `L`       | `Tin` | [0, 100]     | L\* lightness (input)           |
-| `A`       | `Tin` | ~[-128, 127] | a\* green-red axis (input)      |
-| `B`       | `Tin` | ~[-128, 127] | b\* blue-yellow axis (input)    |
+| Parameter | Type    | Range        | Description                     |
+| :-------- | :------ | :----------- | :------------------------------ |
+| `L`       | `Tin`   | [0, 100]     | L\* lightness (input)           |
+| `A`       | `Tin`   | ~[-128, 127] | a\* green-red axis (input)      |
+| `B`       | `Tin`   | ~[-128, 127] | b\* blue-yellow axis (input)    |
 | `r_u8`    | `Tout&` | [0, 255]     | Red channel (output, clamped)   |
 | `g_u8`    | `Tout&` | [0, 255]     | Green channel (output, clamped) |
 | `b_u8`    | `Tout&` | [0, 255]     | Blue channel (output, clamped)  |
