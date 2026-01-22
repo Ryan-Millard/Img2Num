@@ -99,7 +99,7 @@ self.onmessage = async ({ data }) => {
     const result = wasmModule[exportName](...Object.values(args ?? Object.create(null)));
 
     // Read back buffers
-    const output = Object.create(null).
+    const output = Object.create(null);
     bufferKeys?.forEach(({ key, type }) => {
       output[key] = WASM_TYPES[type].read(pointers[key].ptr, pointers[key].length);
     });
