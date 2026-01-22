@@ -13,7 +13,7 @@ const WasmImageProcessor = () => {
   const inputId = useId();
   const inputRef = useRef(null);
 
-  const { bilateralFilter, blackThreshold, kmeans, findContours } = useWasmWorker();
+  const { bilateralFilter, kmeans, findContours } = useWasmWorker();
 
   const [originalSrc, setOriginalSrc] = useState(null);
   const [fileData, setFileData] = useState(null);

@@ -10,7 +10,6 @@
 #include <cstdlib>
 #include <ctime>
 #include <functional>
-#include <iostream>
 #include <limits>
 #include <numeric>
 #include <random>
@@ -163,7 +162,6 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   ImageLib::Image<ImageLib::LABAPixel<float>> lab(pixels.getWidth(),
                                                   pixels.getHeight());
   if (color_space == COLOR_SPACE_OPTION_CIELAB) {
-    std::cout << "KMeans using CIELAB" << std::endl;
     for (int i{0}; i < pixels.getSize(); ++i) {
       rgb_to_lab<float, float>(pixels[i], lab[i]);
     }
