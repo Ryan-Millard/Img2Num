@@ -68,7 +68,7 @@ const WASM_TYPES = {
       wasmModule.stringToUTF8(str, ptr, len);
       return ptr;
     },
-    read: (ptr) => wasmModule.UTF8ToString(ptr),
+    read: (ptr) => ptr ? wasmModule.UTF8ToString(ptr) : null,
   }
 };
 

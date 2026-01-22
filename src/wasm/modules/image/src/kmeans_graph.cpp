@@ -105,32 +105,30 @@ void region_labeling(const uint8_t *data, std::vector<int32_t> &labels,
 }
 
 void visualize_contours(const std::vector<std::vector<Point>> &contours,
-                        std::vector<uint8_t> &results, int width, int height,
+                        ImageLib::Image<ImageLib::RGBAPixel<uint8_t>>& results, int width, int height,
                         int xmin = 0, int ymin = 0) {
   auto index = [width](int x, int y) { return y * width + x; };
 
   // Random generator for colors
   static std::mt19937 rng(std::random_device{}());
   static std::uniform_int_distribution<int32_t> dist(0, 255);
-
   for (const auto &c : contours) {
-    uint8_t color[4] = {static_cast<uint8_t>(dist(rng)),
-                        static_cast<uint8_t>(dist(rng)),
-                        static_cast<uint8_t>(dist(rng)), 255};
+    ImageLib::RGBAPixel<uint8_t> rand_color{
+      static_cast<uint8_t>(dist(rng)),
+      static_cast<uint8_t>(dist(rng)),
+      static_cast<uint8_t>(dist(rng)),
+      255
+    };
 
     for (const auto &p : c) {
-      int32_t _x = p.x + xmin;
-      int32_t _y = p.y + ymin;
+      int32_t _x{p.x + xmin};
+      int32_t _y{p.y + ymin};
 
       // Ensure within bounds
       if (_x < 0 || _x >= width || _y < 0 || _y >= height)
         continue;
 
-      size_t idx = 4 * static_cast<size_t>(index(_x, _y));
-      results[idx] = color[0];
-      results[idx + 1] = color[1];
-      results[idx + 2] = color[2];
-      results[idx + 3] = color[3];
+      results(_x, _y) = rand_color;
     }
   }
 }
@@ -204,20 +202,13 @@ char* kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
   G.merge_small_area_nodes(min_area);
 
   // 5. recolor image on new regions
-  std::vector<uint8_t> results(4 * static_cast<size_t>(width) *
-      static_cast<size_t>(height));
-  auto index = [width](int x, int y) { return y * width + x; };
-
+  ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> results{width, height};
   for (auto &n : G.get_nodes()) {
     if (n->area() == 0) continue;
 
-    ImageLib::RGBPixel<uint8_t> col = n->color();
+    auto [r, g, b] = n->color();
     for (auto &[_, p] : n->get_pixels()) {
-      size_t idx{4 * static_cast<size_t>(index(p.x, p.y))};
-      results[idx] = col.red;
-      results[idx + 1] = col.green;
-      results[idx + 2] = col.blue;
-      results[idx + 3] = data[idx + 3]; // preserve alpha
+      results(p.x, p.y) = {r, g, b};
     }
   }
 
@@ -262,7 +253,8 @@ char* kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
   }
 
   // 7. Copy recolored image back
-  std::memcpy(data, results.data(), results.size());
+  const auto &modified = results.getData();
+  std::memcpy(data, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
 
   // 8. Return SVG if requested
   if (!draw_contour_borders) {

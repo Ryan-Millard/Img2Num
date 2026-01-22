@@ -1,6 +1,6 @@
 import { useEffect, useState, useId, useRef, useCallback, useMemo } from 'react';
 import { Upload } from 'lucide-react';
-import { loadImageToUint8Array, uint8ClampedArrayToSVG } from '@utils/image-utils';
+import { loadImageToUint8Array } from '@utils/image-utils';
 import { useWasmWorker } from '@hooks/useWasmWorker';
 import GlassCard from '@components/GlassCard';
 import styles from './WasmImageProcessor.module.css';
@@ -99,22 +99,16 @@ const WasmImageProcessor = () => {
         num_colors: 8,
       });
 
+      step(95);
+
       const { svg } = await findContours({
         pixels: kmeansed,
         labels,
         width,
         height,
       });
-      console.log(svg);
 
-      step(95);
-      //const svg = await uint8ClampedArrayToSVG({
-        //pixels: contours,
-        //width,
-        //height,
-      //});
-
-      //step(100);
+      step(100);
 
       navigate('/editor', {
         state: { svg },
