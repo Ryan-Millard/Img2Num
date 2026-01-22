@@ -77,15 +77,13 @@ const WasmImageProcessor = () => {
     try {
       const { width, height } = fileData;
 
-      const svg = await testSvg();
-
       step(20);
-      //// NOTE: Gaussian blur destroys the sharp outlines first, preventing the Bilateral filter from detecting and preserving them
-      //const imgBilateralFiltered = await bilateralFilter({
-        //pixels: fileData.pixels,
-        //width,
-        //height,
-      //});
+      // NOTE: Gaussian blur destroys the sharp outlines first, preventing the Bilateral filter from detecting and preserving them
+      const imgBilateralFiltered = await bilateralFilter({
+        pixels: fileData.pixels,
+        width,
+        height,
+      });
 
       step(70);
       // kmeansed pixels are unused - filtered pixels are better for findContours
@@ -104,7 +102,7 @@ const WasmImageProcessor = () => {
         height,
       });
 
-      step(100);
+      //step(100);
 
       navigate("/editor", {
         state: { svg },
