@@ -46,6 +46,10 @@ export default defineConfig({
     watch: {
       ignored: ['**/docs/**', 'src/wasm/**/*.js', 'src/wasm/**/*.wasm'],
     },
+    headers: {
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      'Cross-Origin-Embedder-Policy': 'require-corp',
+    },
   },
 
   // Ensure Vite copies .wasm files
@@ -107,6 +111,17 @@ export default defineConfig({
       configureServer(server) {
         const files = fg.sync('src/wasm/**/*.{cpp,h}').map((f) => path.resolve(f));
         files.forEach((file) => server.watcher.add(file));
+      },
+    },
+    // for multithreading
+    {
+      name: 'force-security-headers',
+      configureServer(server) {
+        server.middlewares.use((_req, res, next) => {
+          res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+          res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+          next();
+        });
       },
     },
   ],
