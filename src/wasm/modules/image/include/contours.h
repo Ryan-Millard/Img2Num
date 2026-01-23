@@ -1,6 +1,9 @@
 #ifndef CONTOURS_H
 #define CONTOURS_H
 
+#include "Image.h"
+#include "PixelConverters.h"
+#include "RGBAPixel.h"
 #include <array>
 #include <cmath>
 #include <cstdint>
@@ -8,9 +11,10 @@
 #include <stdexcept>
 #include <vector>
 
+// will start as integer values but can be adjusted to subpixel positions
 struct Point {
-  int x = 0;
-  int y = 0;
+  float x = 0;
+  float y = 0;
 };
 
 struct ContoursResult {
@@ -24,6 +28,12 @@ struct ContoursResult {
 
   // is_hole[k] == true if contour k is a hole border
   std::vector<bool> is_hole;
+};
+
+struct ColoredContours : ContoursResult {
+  // inherits: contours, hierarchy, is_hole
+
+  std::vector<ImageLib::RGBAPixel<uint8_t>> colors;
 };
 
 namespace contours {

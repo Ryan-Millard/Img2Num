@@ -2,6 +2,7 @@
 #define NODE_H
 
 #include "RGBPixel.h"
+#include "contours.h"
 #include <array>
 #include <cstdint>
 #include <memory>
@@ -68,12 +69,18 @@ public:
   std::array<int32_t, 4> bounding_box_xywh() const;
   std::array<int, 4> create_binary_image(std::vector<uint8_t> &binary) const;
 
+  // keep track of its own contour points
+  // only filled in when compute_contour() is called
+  ColoredContours m_contours;
+  void compute_contour();
+
   /* access member variables */
   inline int32_t id() const { return m_id; };
   inline size_t area() const { return m_pixels->size(); };
   inline const std::set<Node_ptr> &edges() const { return m_edges; }
   inline size_t num_edges() const { return m_edges.size(); }
   inline const std::vector<RGBXY> &get_pixels() const { return *m_pixels; }
+  inline ColoredContours &get_contours() { return m_contours; }
 
   /* modify member variables */
   void add_pixels(const std::vector<RGBXY> &new_pixels);

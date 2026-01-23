@@ -71,7 +71,7 @@ static std::vector<Point> traceBorder(std::vector<int> &f, int paddedW, int sy,
   // If isolated pixel: set f(sy,sx) = -NBD and return single-point contour
   if (!found) {
     set(sy, sx) = -nbd;
-    pts.push_back(Point{sx - 1, sy - 1});
+    pts.push_back(Point{static_cast<float>(sx - 1), static_cast<float>(sy - 1)});
     return pts;
   }
 
@@ -119,7 +119,7 @@ static std::vector<Point> traceBorder(std::vector<int> &f, int paddedW, int sy,
     }
 
     // Record current point in unpadded coordinates
-    pts.push_back(Point{x3 - 1, y3 - 1});
+    pts.push_back(Point{static_cast<float>(x3 - 1), static_cast<float>(y3 - 1)});
 
     // (3.5) Termination check
     if (y4 == sy && x4 == sx && y3 == firstY && x3 == firstX) {

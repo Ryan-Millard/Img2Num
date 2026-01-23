@@ -96,6 +96,42 @@ Node::create_binary_image(std::vector<uint8_t> &binary) const {
   return xywh;
 }
 
+void Node::compute_contour(void) {
+  // return list of all contours present in Node.
+  // usually 1 sometimes more if holes are present
+
+  m_contours.contours.clear();
+  m_contours.hierarchy.clear();
+  m_contours.is_hole.clear();
+  m_contours.colors.clear();
+
+  std::vector<uint8_t> binary;
+  std::array<int, 4> xywh{create_binary_image(binary)};
+
+  int xmin = xywh[0];
+  int ymin = xywh[1];
+  int bw = xywh[2];
+  int bh = xywh[3];
+
+  ContoursResult contour_res = contours::find_contours(binary, bw, bh);
+
+  for (size_t cidx = 0; cidx < contour_res.contours.size(); ++cidx) {
+    auto &contour = contour_res.contours[cidx];
+    for (auto &p : contour) {
+      p.x += xmin;
+      p.y += ymin;
+    }
+
+    ImageLib::RGBPixel<uint8_t> _col = color();
+    ImageLib::RGBAPixel<uint8_t> col{_col.red, _col.green, _col.blue, 255};
+    m_contours.contours.push_back(contour);
+    m_contours.hierarchy.push_back(contour_res.hierarchy[cidx]);
+    m_contours.is_hole.push_back(contour_res.is_hole[cidx]);
+    m_contours.colors.push_back(col);
+  }
+  
+}
+
 void Node::add_pixels(const std::vector<RGBXY> &new_pixels) {
   for (auto &c : new_pixels) {
     m_pixels->push_back(c);

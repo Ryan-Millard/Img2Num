@@ -2,9 +2,6 @@
 // should actually be taken into account.
 
 #include "kmeans_graph.h"
-#include "Image.h"
-#include "PixelConverters.h"
-#include "RGBAPixel.h"
 #include "contours.h"
 #include "graph.h"
 #include <array>
@@ -24,12 +21,6 @@
 #include <iomanip>
 #include <sstream>
 #include <set>
-
-struct ColoredContours : ContoursResult {
-  // inherits: contours, hierarchy, is_hole
-
-  std::vector<ImageLib::RGBAPixel<uint8_t>> colors;
-};
 
 /* Flood fill */
 int flood_fill(std::vector<int32_t> &label_array,
@@ -128,8 +119,8 @@ void visualize_contours(const std::vector<std::vector<Point>> &contours,
     };
 
     for (const auto &p : c) {
-      int32_t _x{p.x + xmin};
-      int32_t _y{p.y + ymin};
+      int32_t _x{static_cast<int32_t>(p.x) + xmin};
+      int32_t _y{static_cast<int32_t>(p.y) + ymin};
 
       // Ensure within bounds
       if (_x < 0 || _x >= width || _y < 0 || _y >= height)
@@ -144,7 +135,7 @@ std::string contourToSVGPath(const std::vector<Point>& contour) {
     if (contour.empty()) return "";
 
     std::ostringstream path;
-    path << std::fixed << std::setprecision(0);
+    path << std::fixed << std::setprecision(2);
 
     // Move to the first point
     path << "M " << contour[0].x << " " << contour[0].y << " ";
@@ -228,7 +219,7 @@ char* kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
   // 6. Contours
   ColoredContours all_contours;
 
-  for (auto &n : G.get_nodes()) {
+  /*for (auto &n : G.get_nodes()) {
     if (n->area() == 0) continue;
 
     std::array<int32_t, 4> xywh;
@@ -264,8 +255,33 @@ char* kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
         all_contours.colors.push_back(col);
       }
     }
-  }
+  }*/
 
+  G.compute_contours();
+  // int count = 0;
+  for (auto &n : G.get_nodes()) {
+    if (n->area() == 0) continue;
+    ColoredContours node_contours = n->get_contours();
+    for (auto &c : node_contours.contours) {
+      // for (auto &p : c) {
+      //   std::cout << "(" << p.x << ", " << p.y << "), ";
+      // }
+      // std::cout << std::endl;
+
+      all_contours.contours.push_back(c);
+    }
+    for (auto &c : node_contours.hierarchy) {
+      all_contours.hierarchy.push_back(c);
+    }
+    for (bool b : node_contours.is_hole) {
+      all_contours.is_hole.push_back(b);
+    }
+    for (auto &c : node_contours.colors) {
+      all_contours.colors.push_back(c);
+    }
+    // count++;
+    //if (count == 2) { break; }
+  }
   // 7. Copy recolored image back
   const auto &modified = results.getData();
   std::memcpy(data, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));

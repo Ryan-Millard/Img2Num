@@ -56,6 +56,7 @@ public:
   void discover_edges(const std::vector<int32_t> &region_labels,
                       const int32_t width, const int32_t height);
   void merge_small_area_nodes(const int32_t min_area);
+  void compute_contours();
 };
 
 #endif
