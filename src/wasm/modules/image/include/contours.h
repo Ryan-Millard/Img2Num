@@ -11,6 +11,10 @@
 #include <cstdlib>
 #include <stdexcept>
 #include <vector>
+#include <algorithm>
+#include <iterator>
+#include <map>
+#include <utility>
 
 struct QuadBezier {
   Point p0{0, 0}; // Start
