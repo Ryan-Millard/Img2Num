@@ -1,5 +1,6 @@
 
 #include "contours.h"
+#include <iostream>
 
 namespace contours {
 
@@ -283,6 +284,437 @@ ContoursResult find_contours(const std::vector<uint8_t> &binary, int width,
   }
 
   return out;
+}
+
+
+float distance(const Point& p1, const Point& p2) {
+    return std::sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
+}
+
+// Helper: 2D integer coordinate for map keys
+struct Coord {
+    int x, y;
+    bool operator<(const Coord& other) const {
+        return std::tie(x, y) < std::tie(other.x, other.y);
+    }
+};
+
+// Helper: Normalize a vector
+Point normalize(Point p) {
+    float len = std::sqrt(p.x * p.x + p.y * p.y);
+    if (len == 0) return {0, 0};
+    return {p.x / len, p.y / len};
+}
+
+// Helper: Calculate Tangent of A at index i using neighbors
+Point getTangent(const std::vector<Point>& vec, int i) {
+    int n = vec.size();
+    if (n < 2) return {0, 0};
+    
+    // Use previous and next points to determine the "flow" of the line
+    int prev = (i == 0) ? 0 : i - 1;
+    int next = (i == n - 1) ? n - 1 : i + 1;
+    
+    return normalize({vec[next].x - vec[prev].x, vec[next].y - vec[prev].y});
+}
+
+void stitchIntegerGrid(std::vector<Point>& vecA, std::vector<Point>& vecB) {
+    // 1. Spatial Map for Vector B (Unique coordinates assumption)
+    std::map<Coord, int> mapB;
+    for (size_t i = 0; i < vecB.size(); ++i) {
+        // Round to int safe-guards against floating point drift
+        mapB[{ (int)std::round(vecB[i].x), (int)std::round(vecB[i].y) }] = i;
+    }
+
+    // Store matches to update later: Pairs of (Index A, Index B)
+    std::vector<std::pair<int, int>> matches;
+
+    // 2. Iterate Vector A
+    for (size_t i = 0; i < vecA.size(); ++i) {
+        int ax = (int)std::round(vecA[i].x);
+        int ay = (int)std::round(vecA[i].y);
+        
+        Point tangentA = getTangent(vecA, i);
+
+        int bestB = -1;
+        float minTangentProj = std::numeric_limits<float>::max();
+        float minDistSq = std::numeric_limits<float>::max();
+
+        // Check 3x3 neighborhood
+        bool foundAny = false;
+        
+        for (int dy = -1; dy <= 1; ++dy) {
+            for (int dx = -1; dx <= 1; ++dx) {
+                // Skip self-check if vectors effectively overlap
+                if (dx == 0 && dy == 0) {
+                   if (mapB.count({ax, ay})) { /* overlap handled as valid candidate */ } 
+                   else continue;
+                }
+
+                auto it = mapB.find({ax + dx, ay + dy});
+                if (it != mapB.end()) {
+                    foundAny = true;
+                    int idxB = it->second;
+                    Point pB = vecB[idxB];
+                    
+                    // Vector from A to candidate B
+                    Point dirToB = { pB.x - vecA[i].x, pB.y - vecA[i].y };
+                    float dSq = dirToB.x*dirToB.x + dirToB.y*dirToB.y;
+                    
+                    // Project "Direction to B" onto "Tangent of A"
+                    // Ideally, the partner point lies on the Normal, so dot product with Tangent should be 0.
+                    // We minimize this projection to find the point "directly across".
+                    float proj = std::abs(dirToB.x * tangentA.x + dirToB.y * tangentA.y);
+
+                    // Selection Logic:
+                    // Priority 1: Pick point most perpendicular to flow (smallest projection)
+                    // Priority 2: If projections are similar (within epsilon), pick closest distance
+                    if (proj < minTangentProj - 1e-5) {
+                        minTangentProj = proj;
+                        minDistSq = dSq;
+                        bestB = idxB;
+                    } else if (std::abs(proj - minTangentProj) < 1e-5) {
+                        if (dSq < minDistSq) {
+                            minDistSq = dSq;
+                            bestB = idxB;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (foundAny && bestB != -1) {
+            matches.push_back({ (int)i, bestB });
+        }
+    }
+
+    // 3. Apply Updates (Subpixel averaging)
+    // We use a temporary buffer to ensure calculations don't affect subsequent points
+    // (though in this specific logic, dependencies are minimal).
+    std::vector<Point> newA(vecA.size());
+    std::vector<Point> newB(vecB.size());
+
+    std::copy(vecA.begin(), vecA.end(), newA.begin());
+    std::copy(vecB.begin(), vecB.end(), newB.begin());
+
+    for (const auto& m : matches) {
+        int idxA = m.first;
+        int idxB = m.second;
+
+        Point pA = vecA[idxA];
+        Point pB = vecB[idxB];
+
+        // Midpoint
+        Point mid = { (pA.x + pB.x) / 2.f, (pA.y + pB.y) / 2.f };
+
+        // Snap both to the exact midpoint
+        newA[idxA] = mid;
+        newB[idxB] = mid;
+    }
+
+    std::copy(newA.begin(), newA.end(), vecA.begin());
+    std::copy(newB.begin(), newB.end(), vecB.begin());
+    
+    std::cout << "Stitched " << matches.size() << " pairs.\n";
+}
+
+struct MatchCandidate {
+    int idxA;
+    int idxB;
+    double alignmentError; // Projection onto tangent (lower is better)
+    double distSq;         // Euclidean distance squared (lower is better)
+
+    // Sorting: Primary = Alignment (geometry), Secondary = Distance
+    bool operator<(const MatchCandidate& other) const {
+        if (std::abs(alignmentError - other.alignmentError) > 1e-6) {
+            return alignmentError < other.alignmentError;
+        }
+        return distSq < other.distSq;
+    }
+};
+
+Point getSmoothedTangent(const std::vector<Point>& vec, int i) {
+    int n = vec.size();
+    if (n < 2) return {0, 0};
+
+    float sumX = 0, sumY = 0;
+    int count = 0;
+
+    // Look at previous 2 and next 2 points
+    for (int offset = -2; offset <= 2; ++offset) {
+        if (offset == 0) continue; // Skip self
+        int idx = i + offset;
+        
+        // Handle boundaries (clamp or skip? skipping maintains direction better)
+        if (idx >= 0 && idx < n) {
+            // Add vector from i to neighbor
+            // We flip the sign for previous points so all vectors point "forward"
+            float sign = (offset > 0) ? 1.0 : -1.0;
+            sumX += (vec[idx].x - vec[i].x) * sign;
+            sumY += (vec[idx].y - vec[i].y) * sign;
+            count++;
+        }
+    }
+    
+    return normalize({sumX, sumY});
+}
+
+void stitchUnique(std::vector<Point>& vecA, std::vector<Point>& vecB) {
+    // 1. Index Vector B for O(1) spatial lookup
+    std::map<Coord, int> mapB;
+    for (size_t i = 0; i < vecB.size(); ++i) {
+        mapB[{ (int)std::round(vecB[i].x), (int)std::round(vecB[i].y) }] = i;
+    }
+
+    // 2. Gather ALL possible valid connections (not just best per point)
+    std::vector<MatchCandidate> allCandidates;
+    allCandidates.reserve(vecA.size() * 3); // Approximate reservation
+
+    for (size_t i = 0; i < vecA.size(); ++i) {
+        int ax = (int)std::round(vecA[i].x);
+        int ay = (int)std::round(vecA[i].y);
+        
+        Point tangentA = getTangent(vecA, i);
+
+        // Search 3x3 Grid
+        for (int dy = -1; dy <= 1; ++dy) {
+            for (int dx = -1; dx <= 1; ++dx) {
+                // If the points are literally on top of each other (0,0 offset),
+                // we consider that a candidate too.
+                
+                auto it = mapB.find({ax + dx, ay + dy});
+                if (it != mapB.end()) {
+                    int idxB = it->second;
+                    Point pB = vecB[idxB];
+                    
+                    // Score this candidate
+                    // Metric: How perpendicular is the jump to the flow of the line?
+                    Point dirToB = { pB.x - vecA[i].x, pB.y - vecA[i].y };
+                    float dSq = dirToB.x*dirToB.x + dirToB.y*dirToB.y;
+                    
+                    // Projection error (0.0 means perfectly perpendicular/normal match)
+                    float projError = std::abs(dirToB.x * tangentA.x + dirToB.y * tangentA.y);
+                    
+                    allCandidates.push_back({ (int)i, idxB, projError, dSq });
+                }
+            }
+        }
+    }
+
+    // 3. Sort candidates globally (Best matches first)
+    std::sort(allCandidates.begin(), allCandidates.end());
+
+    // 4. Resolve Matches (Greedy selection on sorted list)
+    std::vector<bool> usedA(vecA.size(), false);
+    std::vector<bool> usedB(vecB.size(), false);
+    std::vector<std::pair<int, int>> finalMatches;
+
+    for (const auto& cand : allCandidates) {
+        // If neither point has been used yet, accept this match
+        if (!usedA[cand.idxA] && !usedB[cand.idxB]) {
+            usedA[cand.idxA] = true;
+            usedB[cand.idxB] = true;
+            finalMatches.push_back({ cand.idxA, cand.idxB });
+        }
+    }
+
+    // 5. Apply Adjustments (Subpixel Averaging)
+    std::vector<Point> newA = vecA;
+    std::vector<Point> newB = vecB;
+
+    for (const auto& pair : finalMatches) {
+        int idxA = pair.first;
+        int idxB = pair.second;
+
+        Point pA = vecA[idxA];
+        Point pB = vecB[idxB];
+
+        // Midpoint
+        Point mid = { (pA.x + pB.x) / 2.f, (pA.y + pB.y) / 2.f };
+
+        newA[idxA] = mid;
+        newB[idxB] = mid;
+    }
+
+    vecA = newA;
+    vecB = newB;
+
+    std::cout << "Stitched " << finalMatches.size() << " unique pairs.\n";
+}
+
+float distSq(Point a, Point b) {
+    return (a.x - b.x)*(a.x - b.x) + (a.y - b.y)*(a.y - b.y);
+}
+// Calculate the closest point on the segment V -> W from point P
+// Returns {ClosestPoint, DistanceSquared}
+std::pair<Point, float> getClosestPointOnSegment(Point p, Point v, Point w) {
+    float l2 = distSq(v, w);
+    if (l2 == 0.0) return {v, distSq(p, v)};
+
+    // Project p onto line v-w
+    // t is the parameterized distance along the line (0.0 to 1.0)
+    float t = ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2;
+    
+    // Clamp to segment
+    t = std::max(0.0f, std::min(1.0f, t));
+    
+    Point projection = { v.x + t * (w.x - v.x), v.y + t * (w.y - v.y) };
+    return { projection, distSq(p, projection) };
+}
+
+void stitchSmooth(std::vector<Point>& vecA, std::vector<Point>& vecB) {
+    // 1. Map Vector B indices to Grid (Optimization)
+    // We map a coordinate to the INDEX in vector B
+    std::map<Coord, int> mapB;
+    for (size_t i = 0; i < vecB.size(); ++i) {
+        mapB[{ (int)std::round(vecB[i].x), (int)std::round(vecB[i].y) }] = i;
+    }
+
+    // We store the calculated "Target Positions" here.
+    // We do NOT update in place immediately, or the math for the next point will be wrong.
+    struct Update {
+        int index;
+        Point newPos;
+    };
+    std::vector<Update> updatesA;
+    std::vector<Update> updatesB;
+
+    // --- Process Vector A (Snap to B's Geometry) ---
+    for (size_t i = 0; i < vecA.size(); ++i) {
+        int ax = (int)std::round(vecA[i].x);
+        int ay = (int)std::round(vecA[i].y);
+        
+        float minDst = std::numeric_limits<float>::max();
+        Point bestTarget = vecA[i];
+        bool foundMatch = false;
+
+        // Search 3x3 Neighborhood
+        for (int dy = -1; dy <= 1; ++dy) {
+            for (int dx = -1; dx <= 1; ++dx) {
+                auto it = mapB.find({ax + dx, ay + dy});
+                if (it != mapB.end()) {
+                    int bIdx = it->second;
+
+                    // CHECK FORWARD SEGMENT: B[bIdx] -> B[bIdx+1]
+                    if (bIdx < (int)vecB.size() - 1) {
+                        auto res = getClosestPointOnSegment(vecA[i], vecB[bIdx], vecB[bIdx+1]);
+                        if (res.second < minDst) {
+                            minDst = res.second;
+                            bestTarget = res.first;
+                            foundMatch = true;
+                        }
+                    }
+                    
+                    // CHECK BACKWARD SEGMENT: B[bIdx-1] -> B[bIdx]
+                    if (bIdx > 0) {
+                        auto res = getClosestPointOnSegment(vecA[i], vecB[bIdx-1], vecB[bIdx]);
+                        if (res.second < minDst) {
+                            minDst = res.second;
+                            bestTarget = res.first;
+                            foundMatch = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (foundMatch) {
+            // Move A to the midpoint between itself and the closest spot on B's line
+            Point mid = { (vecA[i].x + bestTarget.x) / 2.f, (vecA[i].y + bestTarget.y) / 2.f };
+            updatesA.push_back({ (int)i, mid });
+        }
+    }
+
+    // --- Process Vector B (Snap to A's Geometry) ---
+    // (We need a map for A now to do the reverse)
+    std::map<Coord, int> mapA;
+    for (size_t i = 0; i < vecA.size(); ++i) {
+        mapA[{ (int)std::round(vecA[i].x), (int)std::round(vecA[i].y) }] = i;
+    }
+
+    for (size_t i = 0; i < vecB.size(); ++i) {
+        int bx = (int)std::round(vecB[i].x);
+        int by = (int)std::round(vecB[i].y);
+        
+        float minDst = std::numeric_limits<float>::max();
+        Point bestTarget = vecB[i];
+        bool foundMatch = false;
+
+        for (int dy = -1; dy <= 1; ++dy) {
+            for (int dx = -1; dx <= 1; ++dx) {
+                auto it = mapA.find({bx + dx, by + dy});
+                if (it != mapA.end()) {
+                    int aIdx = it->second;
+
+                    // Check Forward Segment A
+                    if (aIdx < (int)vecA.size() - 1) {
+                        auto res = getClosestPointOnSegment(vecB[i], vecA[aIdx], vecA[aIdx+1]);
+                        if (res.second < minDst) {
+                            minDst = res.second;
+                            bestTarget = res.first;
+                            foundMatch = true;
+                        }
+                    }
+                    // Check Backward Segment A
+                    if (aIdx > 0) {
+                        auto res = getClosestPointOnSegment(vecB[i], vecA[aIdx-1], vecA[aIdx]);
+                        if (res.second < minDst) {
+                            minDst = res.second;
+                            bestTarget = res.first;
+                            foundMatch = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (foundMatch) {
+            Point mid = { (vecB[i].x + bestTarget.x) / 2.0f, (vecB[i].y + bestTarget.y) / 2.0f };
+            updatesB.push_back({ (int)i, mid });
+        }
+    }
+
+    if ((updatesA.size() == 0) | (updatesB.size() == 0)) { return; }
+
+    // --- Apply Updates ---
+    for (const auto& u : updatesA) vecA[u.index] = u.newPos;
+    for (const auto& u : updatesB) vecB[u.index] = u.newPos;
+
+    // --- OPTIONAL FINAL POLISH: Laplacian Smooth ---
+    // This removes any remaining high-frequency noise from the seam
+    // Only run this on the points that were actually touched/updated
+    // Formula: P_i = 0.25*P_prev + 0.5*P_curr + 0.25*P_next
+    
+    auto smoothVector = [](std::vector<Point>& pts, const std::vector<Update>& updates) {
+        std::vector<Point> original = pts;
+        for (const auto& u : updates) {
+            int i = u.index;
+            if (i > 0 && i < (int)pts.size() - 1) {
+                pts[i].x = 0.25f * original[i-1].x + 0.5f * original[i].x + 0.25f * original[i+1].x;
+                pts[i].y = 0.25f * original[i-1].y + 0.5f * original[i].y + 0.25f * original[i+1].y;
+            }
+        }
+    };
+
+    auto laplacianSmooth = [](std::vector<Point>& pts, const std::vector<Update>& updates) {
+        std::vector<Point> original = pts;
+        for (const auto& u : updates) {
+            int i = u.index;
+            if (i > 0 && i < (int)pts.size() - 1) {
+                // Heavier weight on self (0.6) to preserve shape, but smooth noise (0.2 neighbors)
+                pts[i].x = 0.2f * original[i-1].x + 0.6f * original[i].x + 0.2f * original[i+1].x;
+                pts[i].y = 0.2f * original[i-1].y + 0.6f * original[i].y + 0.2f * original[i+1].y;
+            }
+        }
+    };
+
+    //laplacianSmooth(vecA, updatesA);
+    //laplacianSmooth(vecB, updatesB);
+    
+    smoothVector(vecA, updatesA);
+    smoothVector(vecB, updatesB);
+
+    std::cout << "Smoothly stitched " << updatesA.size() << " pts on A and " << updatesB.size() << " pts on B.\n";
 }
 
 } // namespace contours

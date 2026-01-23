@@ -10,6 +10,10 @@
 #include <cstdlib>
 #include <stdexcept>
 #include <vector>
+#include <algorithm>
+#include <iterator>
+#include <map>
+#include <utility>
 
 // will start as integer values but can be adjusted to subpixel positions
 struct Point {
@@ -39,5 +43,9 @@ struct ColoredContours : ContoursResult {
 namespace contours {
 ContoursResult find_contours(const std::vector<uint8_t> &binary, int width,
                              int height);
+
+void stitchIntegerGrid(std::vector<Point>& vecA, std::vector<Point>& vecB);
+void stitchUnique(std::vector<Point>& vecA, std::vector<Point>& vecB);
+void stitchSmooth(std::vector<Point>& vecA, std::vector<Point>& vecB);
 }
 #endif
