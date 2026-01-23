@@ -255,8 +255,33 @@ char *labels_to_svg(uint8_t *data, int32_t *labels, const int width,
     for (auto &c : node_contours.curves) {
       all_contours.curves.push_back(c);
     }
-  }
+  }*/
 
+  G.compute_contours();
+  // int count = 0;
+  for (auto &n : G.get_nodes()) {
+    if (n->area() == 0) continue;
+    ColoredContours node_contours = n->get_contours();
+    for (auto &c : node_contours.contours) {
+      // for (auto &p : c) {
+      //   std::cout << "(" << p.x << ", " << p.y << "), ";
+      // }
+      // std::cout << std::endl;
+
+      all_contours.contours.push_back(c);
+    }
+    for (auto &c : node_contours.hierarchy) {
+      all_contours.hierarchy.push_back(c);
+    }
+    for (bool b : node_contours.is_hole) {
+      all_contours.is_hole.push_back(b);
+    }
+    for (auto &c : node_contours.colors) {
+      all_contours.colors.push_back(c);
+    }
+    // count++;
+    //if (count == 2) { break; }
+  }
   // 7. Copy recolored image back
   const auto &modified = results.getData();
   std::memcpy(data, modified.data(),
