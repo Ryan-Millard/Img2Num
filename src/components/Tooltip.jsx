@@ -17,6 +17,7 @@ export default function Tooltip({ content, children, id, dynamicPositioning = tr
       }
     };
   }, []);
+
   // Detect touch devices only on the client, after mount
   useEffect(() => {
     let mediaQuery;
@@ -56,7 +57,7 @@ export default function Tooltip({ content, children, id, dynamicPositioning = tr
         mediaQuery.removeEventListener("change", handleChange);
       }
     };
-  }, []); // Run once after mount
+  }, []); 
 
   //onTouch open Tooltip
   const showTooltip = (e) => {
