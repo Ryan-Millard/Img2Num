@@ -43,7 +43,7 @@ export default function Pagination({ page, totalPages, onChange }) {
     <nav className={styles.pagination} aria-label="Pagination">
       {/* Previous */}
       <button
-        className={styles.arrow}
+        className={`${styles.arrow} glass`}
         onClick={() => onChange(page - 1)}
         disabled={page === 0}
         aria-label="Previous page">
@@ -53,7 +53,7 @@ export default function Pagination({ page, totalPages, onChange }) {
       {/* First page */}
       {visiblePages[0] > 0 && (
         <>
-          <button className={styles.page} onClick={() => onChange(0)}>
+          <button className={`${styles.page} glass`} onClick={() => onChange(0)}>
             1
           </button>
           <span className={styles.ellipsis}>…</span>
@@ -65,7 +65,7 @@ export default function Pagination({ page, totalPages, onChange }) {
         <button
           key={p}
           onClick={() => onChange(p)}
-          className={`${styles.page} ${p === page ? styles.active : ''}`}
+          className={`${styles.page} glass ${p === page ? styles.active : ''}`}
           aria-current={p === page ? 'page' : undefined}>
           {p + 1}
         </button>
@@ -75,7 +75,7 @@ export default function Pagination({ page, totalPages, onChange }) {
       {visiblePages.at(-1) < totalPages - 1 && (
         <>
           <span className={styles.ellipsis}>…</span>
-          <button className={styles.page} onClick={() => onChange(totalPages - 1)}>
+          <button className={`${styles.page} glass`} onClick={() => onChange(totalPages - 1)}>
             {totalPages}
           </button>
         </>
@@ -83,7 +83,7 @@ export default function Pagination({ page, totalPages, onChange }) {
 
       {/* Next */}
       <button
-        className={styles.arrow}
+        className={`${styles.arrow} glass`}
         onClick={() => onChange(page + 1)}
         disabled={page === totalPages - 1}
         aria-label="Next page">
