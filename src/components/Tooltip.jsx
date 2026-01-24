@@ -1,13 +1,22 @@
 import PropTypes from "prop-types";
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import { useState, useEffect, useId, cloneElement, isValidElement } from "react";
+import { useState, useEffect, useRef, useId, cloneElement, isValidElement } from "react";
 
 export default function Tooltip({ content, children, id, dynamicPositioning = true }) {
   const reactId = useId();
   const tooltipId = id || `tooltip-${reactId}`;
   const [isOpen, setIsOpen] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const hideTimeoutRef = useRef(null);
 
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (hideTimeoutRef.current) {
+        clearTimeout(hideTimeoutRef.current);
+      }
+    };
+  }, []);
   // Detect touch devices only on the client, after mount
   useEffect(() => {
     let mediaQuery;
@@ -50,12 +59,25 @@ export default function Tooltip({ content, children, id, dynamicPositioning = tr
   }, []); // Run once after mount
 
   //onTouch open Tooltip
-  const showTooltip = () => {
+  const showTooltip = (e) => {
     if (!isTouchDevice) return;
-
+    
+    // Prevent event bubbling
+    e?.stopPropagation?.();
+    
+    // Clear any existing timeout
+    if(hideTimeoutRef.current){
+      clearTimeout(hideTimeoutRef.current);
+    }
+    
+    // If already open, don't re-open (prevents unnecessary re-render)
+    setIsOpen((prev) => {
+      if (prev) return prev; // Already open, don't update
+      return true;
+    });
+    
     //auto hides after 1 sec.
-    setIsOpen(true);
-    setTimeout(() => {
+    hideTimeoutRef.current = setTimeout(() => {
       setIsOpen(false);
     }, 1000);
   };

@@ -82,6 +82,20 @@ describe("Tooltip component", () => {
   });
 
   describe("Touch device behavior", () => {
+    let originalMaxTouchPoints;
+
+    beforeEach(() => {
+      originalMaxTouchPoints = navigator.maxTouchPoints;
+    });
+
+    afterEach(() => {
+      Object.defineProperty(navigator, "maxTouchPoints", {
+        writable: true,
+        configurable: true,
+        value: originalMaxTouchPoints,
+      });
+    });
+
     test("detects touch device and shows tooltip on click", async () => {
       // Mock touch device
       Object.defineProperty(navigator, "maxTouchPoints", {
@@ -227,6 +241,20 @@ describe("Tooltip component", () => {
   });
 
   describe("Preserving existing onClick handlers", () => {
+    let originalMaxTouchPoints;
+
+    beforeEach(() => {
+      originalMaxTouchPoints = navigator.maxTouchPoints;
+    });
+
+    afterEach(() => {
+      Object.defineProperty(navigator, "maxTouchPoints", {
+        writable: true,
+        configurable: true,
+        value: originalMaxTouchPoints,
+      });
+    });
+
     test("calls both existing onClick and showTooltip on touch devices", async () => {
       // Mock touch device
       Object.defineProperty(navigator, "maxTouchPoints", {
