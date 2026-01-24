@@ -4,7 +4,7 @@ export function useTheme() {
   const [theme, setTheme] = useState(() => {
     // Guard for SSR
     if (typeof window === 'undefined') {
-      return 'light'; // default fallback for SSR
+      return 'light'; // fallback for SSR
     }
 
     // Check localStorage first
