@@ -57,27 +57,32 @@ export default function Tooltip({ content, children, id, dynamicPositioning = tr
         mediaQuery.removeEventListener("change", handleChange);
       }
     };
-  }, []); 
+  }, []);
 
   //onTouch open Tooltip
   const showTooltip = (e) => {
     if (!isTouchDevice) return;
-    
+
     // Prevent event bubbling
     e?.stopPropagation?.();
-    
+
+    // Bail if ref is not a valid ref object (defensive in hot-reload scenarios)
+    if (!hideTimeoutRef || typeof hideTimeoutRef !== "object") {
+      return;
+    }
+
     // Clear any existing timeout
-    if(hideTimeoutRef.current){
+    if (hideTimeoutRef.current) {
       clearTimeout(hideTimeoutRef.current);
     }
-    
+
     // If already open, don't re-open (prevents unnecessary re-render)
     setIsOpen((prev) => {
       if (prev) return prev; // Already open, don't update
       return true;
     });
-    
-    //auto hides after 1 sec.
+
+    // auto hides after 1 sec.
     hideTimeoutRef.current = setTimeout(() => {
       setIsOpen(false);
     }, 1000);
