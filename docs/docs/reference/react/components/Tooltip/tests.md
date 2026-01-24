@@ -27,15 +27,18 @@ including for keyboard accessibility and portal behavior.
    - Mocks `navigator.maxTouchPoints` to simulate a touch device.
    - Verifies that clicking/tapping the trigger element shows the tooltip.
 7. **auto-hides tooltip after 1 second on touch devices**
-   - Uses real timers with `setTimeout` to wait for auto-hide.
-   - Verifies tooltip appears on click, then disappears after 1 second.
+   - Uses real timers with `setTimeout` and `new Promise` to wait for the 1-second auto-hide.
+   - Verifies tooltip appears on click, then disappears after 1 second (1100ms wait with 100ms buffer).
+   - Test timeout set to 7000ms to accommodate the real timer wait.
 8. **does not show tooltip on click for non-touch devices**
    - Mocks `navigator.maxTouchPoints = 0` to simulate a desktop device.
    - Confirms that clicking doesn't automatically show the tooltip (hover/focus still work).
 9. **shows tooltip on focus for touch devices**
    - Verifies that focusing an element (e.g., via Tab key) shows the tooltip on touch devices.
 10. **auto-hides tooltip after 1 second on focus for touch devices**
-    - Verifies that tooltips triggered by focus also auto-hide after 1 second on touch devices.
+    - Uses real timers with `setTimeout` to verify auto-hide after focus.
+    - Tooltip triggered by focus also auto-hides after 1 second on touch devices.
+    - Test timeout set to 7000ms to accommodate the real timer wait.
 
 ### Event Handler Preservation Tests
 
@@ -74,9 +77,11 @@ including for keyboard accessibility and portal behavior.
 5. **React strict mode / act warnings**
    - Vitest + Testing Library usually handles `act()` automatically. Ensure `globals: true` in your test setup and keep dependencies updated.
 6. **Timer-based behavior (touch device auto-hide)**
-   - Use `vi.useFakeTimers()` in `beforeEach` and `vi.useRealTimers()` in `afterEach` for deterministic timer testing.
-   - Advance timers with `vi.advanceTimersByTime(1000)` to test the 1-second auto-hide behavior.
-   - Always clean up timers with `vi.clearAllTimers()` to prevent cross-test interference.
+   - The tests use **real timers** with `setTimeout` and `new Promise` for waiting (not fake timers).
+   - For auto-hide assertions, wait with `await new Promise((resolve) => setTimeout(resolve, 1100))` (1 second timeout + 100ms buffer).
+   - Set test timeout to at least 7000ms (`test(..., 7000)`) to accommodate real timer waits.
+   - This approach avoids complexity with fake timer setup and queryClient/React re-renders.
+   - If you prefer fake timers, you can use `vi.useFakeTimers()`, `vi.advanceTimersByTime(1000)`, and `vi.useRealTimers()`, but ensure proper cleanup to avoid affecting other tests.
 7. **Mocking navigator properties**
    - Mock `navigator.maxTouchPoints` using `Object.defineProperty` with `configurable: true` and `writable: true`.
    - Set value to `1` or higher for touch devices, `0` for non-touch devices.
@@ -89,11 +94,11 @@ including for keyboard accessibility and portal behavior.
 - Use `findBy*` for asserting tooltip visibility; it retries until the tooltip appears.
 - Wrap hide assertions in `waitFor()` to accommodate CSS transitions or delayed unmounts.
 - **For touch device tests:**
-  - Always use fake timers (`vi.useFakeTimers()`) to test auto-hide behavior.
-  - Mock `navigator.maxTouchPoints` appropriately for each test case.
-  - Use `userEvent.setup({ delay: null })` with fake timers to avoid timing conflicts.
-  - Remember to advance timers with `vi.advanceTimersByTime(1000)` to test the 1-second auto-hide.
-  - Clean up with `vi.useRealTimers()` and `vi.restoreAllMocks()` in `afterEach`.
+  - Use real timers with `setTimeout` and `new Promise` for auto-hide testing (simpler and more reliable).
+  - Wait for auto-hide with: `await new Promise((resolve) => setTimeout(resolve, 1100))` (1 second timeout + 100ms buffer).
+  - Set test timeout to 7000ms or higher: `test("test name", async () => {...}, 7000)` to allow time for real timer waits.
+  - Mock `navigator.maxTouchPoints` appropriately for each test case (saved/restored via `beforeEach`/`afterEach`).
+  - Alternative: Use fake timers (`vi.useFakeTimers()`, `vi.advanceTimersByTime()`, `vi.useRealTimers()`) if you prefer deterministic time control.
 - **For event handler preservation:**
   - Use `vi.fn()` to create mock handlers and verify they're called.
   - Test both `onClick` and `onFocus` handlers to ensure they're preserved.
