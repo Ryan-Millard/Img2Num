@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from "react";
 
 // React hook for interacting with the wasmWorker (a web worker)
 export function useWasmWorker() {
@@ -8,7 +8,7 @@ export function useWasmWorker() {
 
   // initialize once
   useEffect(() => {
-    workerRef.current = new Worker(new URL('@workers/wasmWorker.js', import.meta.url), { type: 'module' });
+    workerRef.current = new Worker(new URL("@workers/wasmWorker.js", import.meta.url), { type: "module" });
 
     // Listen to messages from web worker
     workerRef.current.onmessage = ({ data }) => {
@@ -33,25 +33,13 @@ export function useWasmWorker() {
     });
   }, []);
   const gaussianBlur = async ({ pixels, width, height, sigma_pixels = width * 0.005 }) => {
-    return (await call('gaussian_blur_fft', { pixels, width, height, sigma_pixels }, ['pixels'])).output.pixels;
+    return (await call("gaussian_blur_fft", { pixels, width, height, sigma_pixels }, ["pixels"])).output.pixels;
   };
-  const bilateralFilter = async ({
-    pixels,
-    width,
-    height,
-    sigma_spatial = 3.0,
-    sigma_range = 50.0,
-    color_space = 0,
-    n_threads = 8,
-  }) => {
-    return (
-      await call('bilateral_filter', { pixels, width, height, sigma_spatial, sigma_range, color_space, n_threads }, [
-        'pixels',
-      ])
-    ).output.pixels;
+  const bilateralFilter = async ({ pixels, width, height, sigma_spatial = 3.0, sigma_range = 50.0, color_space = 0, n_threads = 8 }) => {
+    return (await call("bilateral_filter", { pixels, width, height, sigma_spatial, sigma_range, color_space, n_threads }, ["pixels"])).output.pixels;
   };
   const blackThreshold = async ({ pixels, width, height, num_colors }) => {
-    return (await call('black_threshold_image', { pixels, width, height, num_colors }, ['pixels'])).output.pixels;
+    return (await call("black_threshold_image", { pixels, width, height, num_colors }, ["pixels"])).output.pixels;
   };
   const kmeans = async ({
     pixels,
@@ -64,25 +52,14 @@ export function useWasmWorker() {
     color_space = 0,
     n_threads = 8,
   }) => {
-    const result = (
-      await call(
-        'kmeans',
-        { pixels, out_pixels, out_labels, width, height, num_colors, max_iter, color_space, n_threads },
-        ['pixels', 'out_pixels', 'out_labels']
-      )
-    ).output;
+    const result = (await call("kmeans", { pixels, out_pixels, out_labels, width, height, num_colors, max_iter, color_space, n_threads }, ["pixels", "out_pixels", "out_labels"])).output;
     return {
       pixels: result.out_pixels,
       labels: result.out_labels,
     };
   };
   const findContours = async ({ pixels, labels, width, height, min_area = 100, draw_contour_borders = false }) => {
-    return (
-      await call('kmeans_clustering_graph', { pixels, labels, width, height, min_area, draw_contour_borders }, [
-        'pixels',
-        'labels',
-      ])
-    ).output.pixels;
+    return (await call("kmeans_clustering_graph", { pixels, labels, width, height, min_area, draw_contour_borders }, ["pixels", "labels"])).output.pixels;
   };
 
   return { call, gaussianBlur, bilateralFilter, blackThreshold, kmeans, findContours };

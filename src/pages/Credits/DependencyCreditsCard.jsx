@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import GlassCard from '@components/GlassCard';
-import { useQueries } from '@tanstack/react-query';
-import Tooltip from '@components/Tooltip';
+import { useState, useEffect } from "react";
+import GlassCard from "@components/GlassCard";
+import { useQueries } from "@tanstack/react-query";
+import Tooltip from "@components/Tooltip";
 
 const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // milliseconds
 
@@ -10,7 +10,7 @@ export default function DependencyCreditsCard() {
   const [devDeps, setDevDeps] = useState([]);
 
   useEffect(() => {
-    const url = 'https://raw.githubusercontent.com/Ryan-Millard/Img2Num/main/package.json';
+    const url = "https://raw.githubusercontent.com/Ryan-Millard/Img2Num/main/package.json";
 
     fetch(url)
       .then((res) => res.json())
@@ -22,11 +22,11 @@ export default function DependencyCreditsCard() {
 
   const createQueries = (items) =>
     items.map(([name, version]) => ({
-      queryKey: ['dependency', name],
+      queryKey: ["dependency", name],
       queryFn: async () => {
         const res = await fetch(`https://registry.npmjs.org/${name}`);
         const info = await res.json();
-        const url = info.repository?.url?.replace(/^git\+/, '').replace(/\.git$/, '') || info.homepage || '';
+        const url = info.repository?.url?.replace(/^git\+/, "").replace(/\.git$/, "") || info.homepage || "";
         return { name, version, url };
       },
       staleTime: ONE_WEEK,
@@ -49,7 +49,7 @@ export default function DependencyCreditsCard() {
               <td>{version}</td>
               <td>
                 {query?.isLoading ? (
-                  'Loading...'
+                  "Loading..."
                 ) : data?.url ? (
                   <Tooltip content={`Open ${name} homepage`}>
                     <a href={data.url} target="_blank" rel="noopener noreferrer">
@@ -57,7 +57,7 @@ export default function DependencyCreditsCard() {
                     </a>
                   </Tooltip>
                 ) : (
-                  'No URL'
+                  "No URL"
                 )}
               </td>
             </tr>

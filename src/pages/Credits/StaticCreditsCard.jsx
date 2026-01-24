@@ -1,5 +1,5 @@
-import GlassCard from '@components/GlassCard';
-import Tooltip from '@components/Tooltip.jsx';
+import GlassCard from "@components/GlassCard";
+import Tooltip from "@components/Tooltip.jsx";
 
 export default function StaticCreditsCard() {
   return (
@@ -41,19 +41,19 @@ export default function StaticCreditsCard() {
             <td>Media</td>
             <td>Pixel Art Hedgehog</td>
             <td>
-              By{' '}
+              By{" "}
               <Tooltip content="View artist profile on OpenGameArt">
                 <a href="https://opengameart.org/users/dustdfg" target="_blank" rel="noopener noreferrer">
                   dustdfg
                 </a>
               </Tooltip>
-              , used under{' '}
+              , used under{" "}
               <Tooltip content="View Creative Commons BY-SA 4.0 license">
                 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">
                   CC BY-SA 4.0
                 </a>
               </Tooltip>
-              . No modifications. Source:{' '}
+              . No modifications. Source:{" "}
               <Tooltip content="View asset source on OpenGameArt">
                 <a href="https://opengameart.org/content/pixel-art-hedgehog" target="_blank" rel="noopener noreferrer">
                   opengameart.org

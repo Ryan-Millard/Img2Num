@@ -1,13 +1,12 @@
-import GlassCard from '@components/GlassCard';
-import contributors from '@data/contributor-credits.json';
-import styles from './ContributorsCreditsCard.module.css';
-import FallbackImage from '@components/FallbackImage';
-import Tooltip from '@components/Tooltip';
-import { User } from 'lucide-react';
+import GlassCard from "@components/GlassCard";
+import contributors from "@data/contributor-credits.json";
+import styles from "./ContributorsCreditsCard.module.css";
+import FallbackImage from "@components/FallbackImage";
+import Tooltip from "@components/Tooltip";
+import { User } from "lucide-react";
 
 export default function ContributorsCreditsCard() {
-  const chunk = (arr, size) =>
-    Array.from({ length: Math.ceil(arr.length / size) }, (_, i) => arr.slice(i * size, i * size + size));
+  const chunk = (arr, size) => Array.from({ length: Math.ceil(arr.length / size) }, (_, i) => arr.slice(i * size, i * size + size));
 
   const chunkSize = 13;
   const tables = chunk(contributors, chunkSize);
@@ -25,14 +24,7 @@ export default function ContributorsCreditsCard() {
                   <td>
                     <Tooltip content={`Open ${c.login}'s GitHub profile`}>
                       <a href={c.html_url} target="_blank" rel="noopener noreferrer">
-                        <FallbackImage
-                          src={c.avatar_url}
-                          fallback={<User color="var(--color-text-light)" />}
-                          alt={c.login}
-                          width="28"
-                          height="28"
-                          className={styles.avatar}
-                        />
+                        <FallbackImage src={c.avatar_url} fallback={<User color="var(--color-text-light)" />} alt={c.login} width="28" height="28" className={styles.avatar} />
                       </a>
                     </Tooltip>
                   </td>

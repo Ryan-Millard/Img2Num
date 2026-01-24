@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 /**
  * Image with a fallback.
@@ -9,13 +9,9 @@ import { useState } from 'react';
  */
 const FallbackImage = ({ src, fallback, ...rest }) => {
   const [hasError, setHasError] = useState(false);
-  const FallbackComponent = typeof fallback === 'function' ? fallback : () => fallback;
+  const FallbackComponent = typeof fallback === "function" ? fallback : () => fallback;
 
-  return !src || hasError ? (
-    <FallbackComponent {...rest} />
-  ) : (
-    <img src={src} onError={() => setHasError(true)} {...rest} />
-  );
+  return !src || hasError ? <FallbackComponent {...rest} /> : <img src={src} onError={() => setHasError(true)} {...rest} />;
 };
 
 export default FallbackImage;

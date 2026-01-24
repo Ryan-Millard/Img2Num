@@ -1,17 +1,17 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { loadImageToUint8Array, uint8ClampedArrayToSVG } from './image-utils';
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { loadImageToUint8Array, uint8ClampedArrayToSVG } from "./image-utils";
 
 // Mock imagetracerjs
-vi.mock('imagetracerjs', () => ({
+vi.mock("imagetracerjs", () => ({
   default: {
     imagedataToSVG: vi.fn(() => '<svg width="100" height="100"></svg>'),
   },
 }));
 
-import ImageTracer from 'imagetracerjs';
+import ImageTracer from "imagetracerjs";
 
-describe('image-utils', () => {
-  describe('loadImageToUint8Array', () => {
+describe("image-utils", () => {
+  describe("loadImageToUint8Array", () => {
     let mockCanvas;
     let mockContext;
     let originalCreateElement;
@@ -38,7 +38,7 @@ describe('image-utils', () => {
       // Store original and mock document.createElement
       originalCreateElement = document.createElement.bind(document);
       document.createElement = vi.fn((tag) => {
-        if (tag === 'canvas') {
+        if (tag === "canvas") {
           return mockCanvas;
         }
         return originalCreateElement(tag);
@@ -49,8 +49,8 @@ describe('image-utils', () => {
       document.createElement = originalCreateElement;
     });
 
-    it('should load an image file and return pixel data with dimensions', async () => {
-      const mockFile = new Blob(['fake-image-data'], { type: 'image/png' });
+    it("should load an image file and return pixel data with dimensions", async () => {
+      const mockFile = new Blob(["fake-image-data"], { type: "image/png" });
 
       // Mock Image class
       class MockImage {
@@ -58,7 +58,7 @@ describe('image-utils', () => {
           this.width = 2;
           this.height = 1;
           this.onload = null;
-          this.src = '';
+          this.src = "";
 
           // Trigger onload after src is set
           setTimeout(() => {
@@ -67,19 +67,19 @@ describe('image-utils', () => {
         }
       }
 
-      vi.stubGlobal('Image', MockImage);
+      vi.stubGlobal("Image", MockImage);
 
       const result = await loadImageToUint8Array(mockFile);
 
-      expect(result).toHaveProperty('pixels');
-      expect(result).toHaveProperty('width', 2);
-      expect(result).toHaveProperty('height', 1);
+      expect(result).toHaveProperty("pixels");
+      expect(result).toHaveProperty("width", 2);
+      expect(result).toHaveProperty("height", 1);
       expect(result.pixels).toBeInstanceOf(Uint8ClampedArray);
       expect(result.pixels.length).toBe(8); // 2 pixels * 4 channels (RGBA)
     });
 
-    it('should create a canvas with the image dimensions', async () => {
-      const mockFile = new Blob(['fake-image-data'], { type: 'image/png' });
+    it("should create a canvas with the image dimensions", async () => {
+      const mockFile = new Blob(["fake-image-data"], { type: "image/png" });
 
       class MockImage {
         constructor() {
@@ -92,7 +92,7 @@ describe('image-utils', () => {
         }
       }
 
-      vi.stubGlobal('Image', MockImage);
+      vi.stubGlobal("Image", MockImage);
 
       await loadImageToUint8Array(mockFile);
 
@@ -100,8 +100,8 @@ describe('image-utils', () => {
       expect(mockCanvas.height).toBe(50);
     });
 
-    it('should draw the image onto the canvas', async () => {
-      const mockFile = new Blob(['fake-image-data'], { type: 'image/png' });
+    it("should draw the image onto the canvas", async () => {
+      const mockFile = new Blob(["fake-image-data"], { type: "image/png" });
 
       let imageInstance;
       class MockImage {
@@ -116,15 +116,15 @@ describe('image-utils', () => {
         }
       }
 
-      vi.stubGlobal('Image', MockImage);
+      vi.stubGlobal("Image", MockImage);
 
       await loadImageToUint8Array(mockFile);
 
       expect(mockContext.drawImage).toHaveBeenCalledWith(imageInstance, 0, 0);
     });
 
-    it('should call URL.createObjectURL with the file', async () => {
-      const mockFile = new Blob(['fake-image-data'], { type: 'image/png' });
+    it("should call URL.createObjectURL with the file", async () => {
+      const mockFile = new Blob(["fake-image-data"], { type: "image/png" });
 
       class MockImage {
         constructor() {
@@ -137,7 +137,7 @@ describe('image-utils', () => {
         }
       }
 
-      vi.stubGlobal('Image', MockImage);
+      vi.stubGlobal("Image", MockImage);
 
       await loadImageToUint8Array(mockFile);
 
@@ -145,7 +145,7 @@ describe('image-utils', () => {
     });
   });
 
-  describe('uint8ClampedArrayToSVG', () => {
+  describe("uint8ClampedArrayToSVG", () => {
     let mockCanvas;
     let mockContext;
     let originalCreateElement;
@@ -169,7 +169,7 @@ describe('image-utils', () => {
 
       originalCreateElement = document.createElement.bind(document);
       document.createElement = vi.fn((tag) => {
-        if (tag === 'canvas') {
+        if (tag === "canvas") {
           return mockCanvas;
         }
         return originalCreateElement(tag);
@@ -180,20 +180,20 @@ describe('image-utils', () => {
       document.createElement = originalCreateElement;
     });
 
-    it('should convert pixel data to SVG string', async () => {
+    it("should convert pixel data to SVG string", async () => {
       const pixels = new Uint8ClampedArray([255, 0, 0, 128, 0, 255, 0, 128]); // 2 pixels
       const width = 2;
       const height = 1;
 
       const result = await uint8ClampedArrayToSVG({ pixels, width, height });
 
-      expect(result).toContain('<svg');
+      expect(result).toContain("<svg");
       expect(result).toContain('viewBox="0 0 2 1"');
       expect(result).toContain('width="100%"');
       expect(result).toContain('height="auto"');
     });
 
-    it('should force alpha channel to 255 for all pixels', async () => {
+    it("should force alpha channel to 255 for all pixels", async () => {
       const pixels = new Uint8ClampedArray([255, 0, 0, 0, 0, 255, 0, 0]); // 2 pixels with 0 alpha
       const width = 2;
       const height = 1;
@@ -205,7 +205,7 @@ describe('image-utils', () => {
       expect(pixels[7]).toBe(255);
     });
 
-    it('should create a canvas with correct dimensions', async () => {
+    it("should create a canvas with correct dimensions", async () => {
       const pixels = new Uint8ClampedArray(400); // 10x10 image * 4 channels
       const width = 10;
       const height = 10;
@@ -216,7 +216,7 @@ describe('image-utils', () => {
       expect(mockCanvas.height).toBe(10);
     });
 
-    it('should call ImageTracer.imagedataToSVG', async () => {
+    it("should call ImageTracer.imagedataToSVG", async () => {
       const pixels = new Uint8ClampedArray([255, 0, 0, 255]);
       const width = 1;
       const height = 1;
@@ -228,28 +228,28 @@ describe('image-utils', () => {
         expect.objectContaining({
           ltres: 0,
           rightangleenhance: false,
-        })
+        }),
       );
     });
 
-    it('should return null and log error when conversion fails', async () => {
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    it("should return null and log error when conversion fails", async () => {
+      const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
       // Create a scenario that causes an error by making createElement throw
       document.createElement = vi.fn(() => {
-        throw new Error('Canvas creation failed');
+        throw new Error("Canvas creation failed");
       });
 
       const pixels = new Uint8ClampedArray([255, 0, 0, 255]);
       const result = await uint8ClampedArrayToSVG({ pixels, width: 1, height: 1 });
 
       expect(result).toBeNull();
-      expect(consoleSpy).toHaveBeenCalledWith('Error in SVG conversion:', expect.any(Error));
+      expect(consoleSpy).toHaveBeenCalledWith("Error in SVG conversion:", expect.any(Error));
 
       consoleSpy.mockRestore();
     });
 
-    it('should inject viewBox attribute into SVG', async () => {
+    it("should inject viewBox attribute into SVG", async () => {
       const pixels = new Uint8ClampedArray(160); // 5x8 image * 4 channels
       const width = 5;
       const height = 8;
@@ -259,7 +259,7 @@ describe('image-utils', () => {
       expect(result).toContain('viewBox="0 0 5 8"');
     });
 
-    it('should put ImageData onto the canvas', async () => {
+    it("should put ImageData onto the canvas", async () => {
       const pixels = new Uint8ClampedArray([255, 0, 0, 255]);
       const width = 1;
       const height = 1;

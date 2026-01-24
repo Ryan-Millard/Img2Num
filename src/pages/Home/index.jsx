@@ -1,19 +1,16 @@
-import WasmImageProcessor from '@components/WasmImageProcessor';
-import Hero from '@components/Hero';
-import GlassCard from '@components/GlassCard';
-import Tooltip from '@components/Tooltip';
-import styles from './Home.module.css';
-import HomeHelmet from './HomeHelmet';
+import WasmImageProcessor from "@components/WasmImageProcessor";
+import Hero from "@components/Hero";
+import GlassCard from "@components/GlassCard";
+import Tooltip from "@components/Tooltip";
+import styles from "./Home.module.css";
+import HomeHelmet from "./HomeHelmet";
 
 const Home = () => (
   <>
     <HomeHelmet />
 
     <div className="flex-column gap-md">
-      <Hero
-        header="Img2Num"
-        description="Upload an image to convert it into a color-by-number template to color in directly in your browser!"
-      />
+      <Hero header="Img2Num" description="Upload an image to convert it into a color-by-number template to color in directly in your browser!" />
 
       <WasmImageProcessor />
 

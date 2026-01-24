@@ -72,11 +72,12 @@ export function CustomCard({ children }) {
   return (
     <div
       style={{
-        padding: 'var(--spacing-lg)',
-        background: 'var(--glass-bg)',
-        borderRadius: 'var(--radius-md)',
-        border: '1px solid var(--glass-border)',
-      }}>
+        padding: "var(--spacing-lg)",
+        background: "var(--glass-bg)",
+        borderRadius: "var(--radius-md)",
+        border: "1px solid var(--glass-border)",
+      }}
+    >
       {children}
     </div>
   );

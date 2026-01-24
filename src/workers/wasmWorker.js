@@ -9,7 +9,7 @@ Notes:
   5. Free the allocated memory.
 This ensures JS arrays correctly map to WASM memory.
 */
-import createImageModule from '@wasm-image';
+import createImageModule from "@wasm-image";
 
 let wasmModule;
 let readyResolve;
@@ -42,9 +42,7 @@ self.onmessage = async ({ data }) => {
         } else if (arr instanceof Uint8ClampedArray || arr instanceof Uint8Array) {
           wasmModule.HEAPU8.set(arr, ptr);
         } else {
-          throw new Error(
-            `Unsupported TypedArray type for key: ${key}\nIf you added a new data type to useWasmWorker, please make sure to handle its type in wasmWorker`
-          );
+          throw new Error(`Unsupported TypedArray type for key: ${key}\nIf you added a new data type to useWasmWorker, please make sure to handle its type in wasmWorker`);
         }
 
         pointers[key] = { ptr, sizeInBytes, type: arr.constructor }; // store type for reading back
@@ -54,7 +52,7 @@ self.onmessage = async ({ data }) => {
 
     // Dynamic function lookup (Emscripten exports are prefixed with '_')
     const exportName = `_${funcName}`;
-    if (typeof wasmModule[exportName] !== 'function') {
+    if (typeof wasmModule[exportName] !== "function") {
       throw new Error(`WASM export not found: ${exportName}`);
     }
 
@@ -69,19 +67,13 @@ self.onmessage = async ({ data }) => {
       for (const key of bufferKeys) {
         const { ptr, sizeInBytes, type } = pointers[key];
         if (type === Int32Array) {
-          outputs[key] = new Int32Array(
-            wasmModule.HEAP32.buffer,
-            ptr,
-            sizeInBytes / Int32Array.BYTES_PER_ELEMENT
-          ).slice(); // slice to detach from WASM memory
+          outputs[key] = new Int32Array(wasmModule.HEAP32.buffer, ptr, sizeInBytes / Int32Array.BYTES_PER_ELEMENT).slice(); // slice to detach from WASM memory
         } else if (type === Uint8ClampedArray) {
           outputs[key] = new Uint8ClampedArray(wasmModule.HEAPU8.subarray(ptr, ptr + sizeInBytes)).slice();
         } else if (type === Uint8Array) {
           outputs[key] = new Uint8Array(wasmModule.HEAPU8.subarray(ptr, ptr + sizeInBytes)).slice();
         } else {
-          throw new Error(
-            `Unsupported TypedArray type for output key: ${key}\nIf you added a new data type to useWasmWorker, please make sure to handle its type in wasmWorker`
-          );
+          throw new Error(`Unsupported TypedArray type for output key: ${key}\nIf you added a new data type to useWasmWorker, please make sure to handle its type in wasmWorker`);
         }
       }
     }

@@ -1,8 +1,8 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
-const owner = 'Ryan-Millard';
-const repo = 'Img2Num';
+const owner = "Ryan-Millard";
+const repo = "Img2Num";
 
 async function fetchContributors() {
   const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contributors`);
@@ -20,17 +20,17 @@ async function fetchContributors() {
 
 export default function generateContributorCreditsPlugin() {
   return {
-    name: 'vite:generate-credits-json',
+    name: "vite:generate-credits-json",
     async buildStart() {
       try {
-        console.log('⏳ Generating credits.json...');
+        console.log("⏳ Generating credits.json...");
         const contributors = await fetchContributors();
 
-        const filePath = path.resolve('src/data/contributor-credits.json');
+        const filePath = path.resolve("src/data/contributor-credits.json");
         fs.writeFileSync(filePath, JSON.stringify(contributors, null, 2));
-        console.log('✅ contributor-credits.json generated!');
+        console.log("✅ contributor-credits.json generated!");
       } catch (err) {
-        console.error('❌ Failed to generate contributor-credits.json:', err);
+        console.error("❌ Failed to generate contributor-credits.json:", err);
       }
     },
   };

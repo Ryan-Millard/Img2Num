@@ -1,90 +1,86 @@
-import PropTypes from 'prop-types';
-import { Tooltip as ReactTooltip } from 'react-tooltip';
-import {useState,useEffect, useId, cloneElement, isValidElement } from 'react';
+import PropTypes from "prop-types";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import { useState, useEffect, useId, cloneElement, isValidElement } from "react";
 
 export default function Tooltip({ content, children, id, dynamicPositioning = true }) {
   const reactId = useId();
   const tooltipId = id || `tooltip-${reactId}`;
-const [isOpen,setIsOpen] = useState(false)
-const [isTouchDevice,setIsTouchDevice] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
-
- // Detect touch devices only on the client, after mount
+  // Detect touch devices only on the client, after mount
   useEffect(() => {
     let mediaQuery;
-    
+
     const detectTouch = () => {
       // Method 1: Check touch points (most reliable)
       if (navigator.maxTouchPoints > 0) {
         return true;
       }
-      
+
       // Method 2: Check pointer media query
-      if (window.matchMedia('(any-pointer: coarse)').matches) {
+      if (window.matchMedia("(any-pointer: coarse)").matches) {
         return true;
       }
-      
+
       // Method 3: Fallback for older browsers
-      if ('ontouchstart' in window) {
+      if ("ontouchstart" in window) {
         return true;
       }
-      
+
       return false;
     };
-    
+
     setIsTouchDevice(detectTouch());
-    
+
     // Optional: Listen for input changes (e.g., plugging in a mouse)
-    mediaQuery = window.matchMedia('(any-pointer: coarse)');
+    mediaQuery = window.matchMedia("(any-pointer: coarse)");
     const handleChange = () => setIsTouchDevice(detectTouch());
-    
+
     if (mediaQuery.addEventListener) {
-      mediaQuery.addEventListener('change', handleChange);
+      mediaQuery.addEventListener("change", handleChange);
     }
-    
+
     // Cleanup listener on unmount
     return () => {
       if (mediaQuery?.removeEventListener) {
-        mediaQuery.removeEventListener('change', handleChange);
+        mediaQuery.removeEventListener("change", handleChange);
       }
     };
   }, []); // Run once after mount
 
+  //onTouch open Tooltip
+  const showTooltip = () => {
+    if (!isTouchDevice) return;
 
-//onTouch open Tooltip
-const showTooltip = () => {
-  if(!isTouchDevice) return;
+    //auto hides after 1 sec.
+    setIsOpen(true);
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 1000);
+  };
 
-//auto hides after 1 sec.
-  setIsOpen(true)
-  setTimeout(() => {
-    setIsOpen(false)
-  }, 1000);
-}
-
-const handleFocus = () =>{
-  if(isTouchDevice){
-    showTooltip();
-  }
-}
+  const handleFocus = () => {
+    if (isTouchDevice) {
+      showTooltip();
+    }
+  };
   // If child is a single valid React element, attach tooltip attributes
   const childWithTooltip = isValidElement(children) ? (
     cloneElement(children, {
-      'data-tooltip-id': tooltipId,
-      'data-tooltip-content': content,
-      onClick:(e) => { 
-        children.props.onClick?.(e)
-        showTooltip(e)
+      "data-tooltip-id": tooltipId,
+      "data-tooltip-content": content,
+      onClick: (e) => {
+        children.props.onClick?.(e);
+        showTooltip(e);
       },
-      onFocus:(e) => { 
-        children.props.onFocus?.(e)
-        handleFocus(e)
-      }
+      onFocus: (e) => {
+        children.props.onFocus?.(e);
+        handleFocus(e);
+      },
     })
   ) : (
-    <span data-tooltip-id={tooltipId} data-tooltip-content={content} tabIndex={0}
-    onClick = {showTooltip} onFocus={handleFocus} 
-    >
+    <span data-tooltip-id={tooltipId} data-tooltip-content={content} tabIndex={0} onClick={showTooltip} onFocus={handleFocus}>
       {children}
     </span>
   );
@@ -92,16 +88,15 @@ const handleFocus = () =>{
   return (
     <>
       {childWithTooltip}
-       <ReactTooltip
-         id={tooltipId}
-         place="right"
-         appendTo={document.body}
-         positionStrategy="fixed"
-         fallbackPlacements={dynamicPositioning ? ['bottom', 'top', 'left'] : []}
-         openOnFocus
-         isOpen={isTouchDevice ? isOpen : undefined} 
-       />
-
+      <ReactTooltip
+        id={tooltipId}
+        place="right"
+        appendTo={document.body}
+        positionStrategy="fixed"
+        fallbackPlacements={dynamicPositioning ? ["bottom", "top", "left"] : []}
+        openOnFocus
+        isOpen={isTouchDevice ? isOpen : undefined}
+      />
     </>
   );
 }

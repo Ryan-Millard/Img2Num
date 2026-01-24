@@ -20,7 +20,7 @@ sidebar_label: useTheme
 ## Basic usage
 
 ```jsx
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from "@hooks/useTheme";
 
 export default function ThemeAwareComponent() {
   const { theme, toggleTheme } = useTheme();
@@ -92,15 +92,15 @@ See [CSS Theme Variables](../../css/global/variables/theme/) for a complete list
 ### Simple theme toggle button
 
 ```jsx
-import { useTheme } from '@hooks/useTheme';
-import { Moon, Sun } from 'lucide-react';
+import { useTheme } from "@hooks/useTheme";
+import { Moon, Sun } from "lucide-react";
 
 function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
 
   return (
     <button onClick={toggleTheme} aria-label="Toggle theme">
-      {theme === 'dark' ? <Sun /> : <Moon />}
+      {theme === "dark" ? <Sun /> : <Moon />}
     </button>
   );
 }
@@ -109,19 +109,19 @@ function ThemeToggle() {
 ### Conditional rendering based on theme
 
 ```jsx
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from "@hooks/useTheme";
 
 function ThemedLogo() {
   const { theme } = useTheme();
 
-  return <img src={theme === 'dark' ? '/logo-dark.svg' : '/logo-light.svg'} alt="Logo" />;
+  return <img src={theme === "dark" ? "/logo-dark.svg" : "/logo-light.svg"} alt="Logo" />;
 }
 ```
 
 ### Reading current theme without toggling
 
 ```jsx
-import { useTheme } from '@hooks/useTheme';
+import { useTheme } from "@hooks/useTheme";
 
 function ThemeInfo() {
   const { theme } = useTheme();
@@ -136,16 +136,16 @@ function ThemeInfo() {
 
 ```javascript
 const [theme, setTheme] = useState(() => {
-  if (typeof window === 'undefined') {
-    return 'light'; // SSR fallback
+  if (typeof window === "undefined") {
+    return "light"; // SSR fallback
   }
 
-  const savedTheme = localStorage.getItem('theme');
+  const savedTheme = localStorage.getItem("theme");
   if (savedTheme) {
     return savedTheme;
   }
 
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 });
 ```
 
@@ -153,7 +153,7 @@ const [theme, setTheme] = useState(() => {
 
 ```javascript
 const toggleTheme = () => {
-  setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+  setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
 };
 ```
 
@@ -161,20 +161,20 @@ const toggleTheme = () => {
 
 ```javascript
 useEffect(() => {
-  if (typeof window === 'undefined' || typeof document === 'undefined') {
+  if (typeof window === "undefined" || typeof document === "undefined") {
     return;
   }
 
   const root = document.documentElement;
 
   // Remove both theme classes
-  root.classList.remove('light', 'dark');
+  root.classList.remove("light", "dark");
 
   // Add current theme class
   root.classList.add(theme);
 
   // Persist to localStorage
-  localStorage.setItem('theme', theme);
+  localStorage.setItem("theme", theme);
 }, [theme]);
 ```
 
@@ -183,12 +183,12 @@ useEffect(() => {
 The hook can be mocked in tests:
 
 ```jsx
-import { vi } from 'vitest';
-import * as useThemeModule from '@hooks/useTheme';
+import { vi } from "vitest";
+import * as useThemeModule from "@hooks/useTheme";
 
 // Mock the hook
-vi.spyOn(useThemeModule, 'useTheme').mockReturnValue({
-  theme: 'dark',
+vi.spyOn(useThemeModule, "useTheme").mockReturnValue({
+  theme: "dark",
   toggleTheme: vi.fn(),
 });
 ```

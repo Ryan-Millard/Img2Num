@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import { Helmet } from "react-helmet";
 
 // Although this page shouldn't be indexed, bots may still disregard no-index rules
 const EditorHelmet = () => (

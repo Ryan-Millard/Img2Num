@@ -25,7 +25,7 @@ All functions exported from the WASM module are available via the hook’s **gen
 ```js
 const { call } = useWasmWorker();
 
-const result = await call('myWasmFunction', { arg1, arg2 }, ['arg1', 'arg2']);
+const result = await call("myWasmFunction", { arg1, arg2 }, ["arg1", "arg2"]);
 ```
 
 - `'myWasmFunction'` is the **exact name of the C++ function** (without the `_` prefix added by Emscripten internally).
@@ -46,14 +46,14 @@ Calling from React:
 
 ```js
 const result = await call(
-  'add_arrays', // must match the function's name
+  "add_arrays", // must match the function's name
   {
     a: arrayA, // must match the first argument
     b: arrayB, // must match the second argument
     out: outputArray, // must match the third argument
     length: arrayA.length, // must match the last argument
   },
-  ['a', 'b', 'out'] // keys that are TypedArrays (pointers)
+  ["a", "b", "out"], // keys that are TypedArrays (pointers)
 );
 ```
 
@@ -111,11 +111,11 @@ WASM functions **require arguments to be in the exact order declared in C++**.
 Passing an object with keys in the wrong order may result in unexpected behavior or crashes.
 
 ```js title="❌ Wrong order"
-await call('add_arrays', { b: arrayB, a: arrayA, out: outputArray, length: arrayA.length }, ['a', 'b', 'out']);
+await call("add_arrays", { b: arrayB, a: arrayA, out: outputArray, length: arrayA.length }, ["a", "b", "out"]);
 ```
 
 ```js title="✅ Correct order"
-await call('add_arrays', { a: arrayA, b: arrayB, out: outputArray, length: arrayA.length }, ['a', 'b', 'out']);
+await call("add_arrays", { a: arrayA, b: arrayB, out: outputArray, length: arrayA.length }, ["a", "b", "out"]);
 ```
 
 ### 2. Missing TypedArray Keys

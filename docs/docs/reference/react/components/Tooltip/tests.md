@@ -60,8 +60,8 @@ including for keyboard accessibility and portal behavior.
    - `react-tooltip` may delay mounting/unmounting for animations.
      Wrap visibility assertions in `await waitFor()` or use `findBy*` queries to retry until the tooltip appears/disappears:
      ```js
-     expect(await screen.findByText('Hello tooltip')).toBeVisible();
-     await waitFor(() => expect(screen.queryByText('Hello tooltip')).not.toBeInTheDocument());
+     expect(await screen.findByText("Hello tooltip")).toBeVisible();
+     await waitFor(() => expect(screen.queryByText("Hello tooltip")).not.toBeInTheDocument());
      ```
    - You can also disable CSS transitions in test setup for deterministic results.
 2. **Missing jsdom environment**

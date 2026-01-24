@@ -13,7 +13,7 @@ sidebar_position: 6
 4. `vite.config.js` will automatically find the module and create an alias `@wasm-<module-name>` on next `vite` start (or rebuild of the config). Example usage:
 
    ```js
-   import init from '@wasm-<module-name>/index.js';
+   import init from "@wasm-<module-name>/index.js";
    await init();
    ```
 

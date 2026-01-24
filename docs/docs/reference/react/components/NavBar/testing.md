@@ -20,10 +20,10 @@ src/components/NavBar.test.jsx
 The tests use the following testing utilities:
 
 ```jsx
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import NavBar from './NavBar';
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
+import NavBar from "./NavBar";
 ```
 
 ### Mocked Dependencies
@@ -35,7 +35,7 @@ The following dependencies are mocked for testing:
 | `lucide-react` | Icon components return spans with `data-testid` |
 
 ```jsx
-vi.mock('lucide-react', () => ({
+vi.mock("lucide-react", () => ({
   Home: () => <span data-testid="home-icon">Home</span>,
   Users: () => <span data-testid="users-icon">Users</span>,
   Info: () => <span data-testid="info-icon">Info</span>,
@@ -53,7 +53,7 @@ vi.mock('lucide-react', () => ({
 A helper function wraps components with the router provider:
 
 ```jsx
-const renderWithRouter = (component, { route = '/' } = {}) => {
+const renderWithRouter = (component, { route = "/" } = {}) => {
   return render(<MemoryRouter initialEntries={[route]}>{component}</MemoryRouter>);
 };
 ```
@@ -75,12 +75,12 @@ Verify that all elements render correctly:
 **Example:**
 
 ```jsx
-it('should render all internal navigation links', () => {
+it("should render all internal navigation links", () => {
   renderWithRouter(<NavBar />);
 
-  expect(screen.getByRole('menuitem', { name: /home/i })).toBeInTheDocument();
-  expect(screen.getByRole('menuitem', { name: /credits/i })).toBeInTheDocument();
-  expect(screen.getByRole('menuitem', { name: /about/i })).toBeInTheDocument();
+  expect(screen.getByRole("menuitem", { name: /home/i })).toBeInTheDocument();
+  expect(screen.getByRole("menuitem", { name: /credits/i })).toBeInTheDocument();
+  expect(screen.getByRole("menuitem", { name: /about/i })).toBeInTheDocument();
 });
 ```
 
@@ -98,10 +98,10 @@ Verify route-based styling:
 **Example:**
 
 ```jsx
-it('should mark the home link as active when on home page', () => {
-  renderWithRouter(<NavBar />, { route: '/' });
+it("should mark the home link as active when on home page", () => {
+  renderWithRouter(<NavBar />, { route: "/" });
 
-  const homeLink = screen.getByRole('menuitem', { name: /home/i });
+  const homeLink = screen.getByRole("menuitem", { name: /home/i });
   expect(homeLink.className).toMatch(/active/);
 });
 ```
@@ -126,21 +126,21 @@ Verify hamburger menu functionality:
 **Example:**
 
 ```jsx
-it('should open mobile menu when toggle is clicked', async () => {
+it("should open mobile menu when toggle is clicked", async () => {
   renderWithRouter(<NavBar />);
 
-  const menuToggle = screen.getByRole('button', { name: /open menu/i });
-  const navList = screen.getByRole('menubar');
+  const menuToggle = screen.getByRole("button", { name: /open menu/i });
+  const navList = screen.getByRole("menubar");
 
   // Initially closed
-  expect(menuToggle).toHaveAttribute('aria-expanded', 'false');
+  expect(menuToggle).toHaveAttribute("aria-expanded", "false");
   expect(navList.className).not.toMatch(/open/);
 
   // Click to open
   fireEvent.click(menuToggle);
 
   await waitFor(() => {
-    expect(menuToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(menuToggle).toHaveAttribute("aria-expanded", "true");
     expect(navList.className).toMatch(/open/);
   });
 });
@@ -162,14 +162,14 @@ Verify ARIA compliance:
 **Example:**
 
 ```jsx
-it('should have proper ARIA attributes on menu toggle', () => {
+it("should have proper ARIA attributes on menu toggle", () => {
   renderWithRouter(<NavBar />);
 
-  const menuToggle = screen.getByRole('button', { name: /open menu/i });
+  const menuToggle = screen.getByRole("button", { name: /open menu/i });
 
-  expect(menuToggle).toHaveAttribute('aria-expanded', 'false');
-  expect(menuToggle).toHaveAttribute('aria-controls', 'nav-menu');
-  expect(menuToggle).toHaveAttribute('aria-label', 'Open menu');
+  expect(menuToggle).toHaveAttribute("aria-expanded", "false");
+  expect(menuToggle).toHaveAttribute("aria-controls", "nav-menu");
+  expect(menuToggle).toHaveAttribute("aria-label", "Open menu");
 });
 ```
 
@@ -184,15 +184,13 @@ Verify secure external link handling:
 **Example:**
 
 ```jsx
-it('should have proper security attributes on external links', () => {
+it("should have proper security attributes on external links", () => {
   renderWithRouter(<NavBar />);
 
-  const externalLinks = screen
-    .getAllByRole('menuitem')
-    .filter((link) => link.hasAttribute('target') && link.getAttribute('target') === '_blank');
+  const externalLinks = screen.getAllByRole("menuitem").filter((link) => link.hasAttribute("target") && link.getAttribute("target") === "_blank");
 
   externalLinks.forEach((link) => {
-    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    expect(link).toHaveAttribute("rel", "noopener noreferrer");
   });
 });
 ```

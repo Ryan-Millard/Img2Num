@@ -37,7 +37,7 @@ This pattern avoids bugs that could occur if JS arrays directly referenced WASM 
 ## WASM Module Initialization
 
 ```js
-import createImageModule from '@wasm-image';
+import createImageModule from "@wasm-image";
 
 let wasmModule;
 let readyResolve;
@@ -118,7 +118,7 @@ For example, an `Int32Array` cannot be read if `HEAP32` is not exported from WAS
 
 ```js
 const exportName = `_${funcName}`;
-if (typeof wasmModule[exportName] !== 'function') {
+if (typeof wasmModule[exportName] !== "function") {
   throw new Error(`WASM export not found: ${exportName}`);
 }
 

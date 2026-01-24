@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
-import styles from './ProcessedImageDisplay.module.css';
+import { useEffect, useRef } from "react";
+import styles from "./ProcessedImageDisplay.module.css";
 
-const ProcessedImageDisplay = ({ data, className = '' }) => {
+const ProcessedImageDisplay = ({ data, className = "" }) => {
   const { pixels, width, height } = data;
   const canvasRef = useRef(null);
 
@@ -10,7 +10,7 @@ const ProcessedImageDisplay = ({ data, className = '' }) => {
     if (!canvas) return;
     canvas.width = width;
     canvas.height = height;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     const imageData = new ImageData(pixels, width, height);
     ctx.putImageData(imageData, 0, 0);
   }, [pixels, width, height]);

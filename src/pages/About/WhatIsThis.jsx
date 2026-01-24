@@ -1,7 +1,7 @@
-import GlassCard from '@components/GlassCard';
-import styles from './About.module.css';
-import coverHedge from '@assets/pixel_art_hedgehog/cover/cover.gif';
-import Tooltip from '@components/Tooltip';
+import GlassCard from "@components/GlassCard";
+import styles from "./About.module.css";
+import coverHedge from "@assets/pixel_art_hedgehog/cover/cover.gif";
+import Tooltip from "@components/Tooltip";
 
 const WhatIsThis = () => {
   return (
@@ -12,24 +12,20 @@ const WhatIsThis = () => {
         <Tooltip content="Visit the Img2Num GitHub repository">
           <a href="https://github.com/Ryan-Millard/Img2Num" target="_blank" rel="noopener noreferrer">
             Img2Num
-          </a>{' '}
+          </a>{" "}
         </Tooltip>
         is a web-based tool that transforms any image into a <strong>colour-by-number template</strong>.
       </p>
 
-      <p>
-        Using advanced image processing, the website analyses the colours in your image and breaks it down into a
-        numbered palette.
-      </p>
+      <p>Using advanced image processing, the website analyses the colours in your image and breaks it down into a numbered palette.</p>
 
       <img src={coverHedge} alt="hedgehog" className={styles.coverImage} />
 
       <p>Img2Num is designed for everyone—friends, family, or solo users who enjoy colouring.</p>
 
       <p>
-        Beyond being a creative tool, Img2Num also carries a personal touch. The hedgehog-themed UI is a tribute to
-        Joan, the hedgehog who inspired many of the design elements on this site. It’s a blend of{' '}
-        <strong>technology, art, and memory</strong>, offering a unique colouring experience unlike any other.
+        Beyond being a creative tool, Img2Num also carries a personal touch. The hedgehog-themed UI is a tribute to Joan, the hedgehog who inspired many of the design elements on this site. It’s a
+        blend of <strong>technology, art, and memory</strong>, offering a unique colouring experience unlike any other.
       </p>
     </GlassCard>
   );

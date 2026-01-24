@@ -8,7 +8,7 @@ label * {
   padding: 2%;
   gap: 1em;
 }
-.dropZone[data-image-loaded='false'] {
+.dropZone[data-image-loaded="false"] {
   padding: 5%;
   gap: 2em;
 }

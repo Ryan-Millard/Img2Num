@@ -16,7 +16,7 @@ title: Tooltip
 ## Basic usage
 
 ```jsx
-import Tooltip from '@components/Tooltip';
+import Tooltip from "@components/Tooltip";
 
 export default function Example() {
   return (
@@ -140,17 +140,17 @@ On touch devices, users can tap elements to reveal tooltips, providing an equiva
   Wrap assertions in `await waitFor()` or use `findBy*` queries which retry until the element appears. Example patterns:
 
   ```js title="Hover"
-  await user.hover(screen.getByText('Hover me'));
-  expect(await screen.findByText('Hello tooltip')).toBeVisible();
+  await user.hover(screen.getByText("Hover me"));
+  expect(await screen.findByText("Hello tooltip")).toBeVisible();
   ```
 
   ```js title="Focus"
   await user.tab();
-  expect(await screen.findByText('Hello tooltip')).toBeVisible();
+  expect(await screen.findByText("Hello tooltip")).toBeVisible();
   ```
 
   ```js title="Hide with waitFor to accommodate transition"
-  await waitFor(() => expect(screen.queryByText('Hello tooltip')).not.toBeInTheDocument());
+  await waitFor(() => expect(screen.queryByText("Hello tooltip")).not.toBeInTheDocument());
   ```
 
 - In tests prefer passing an actual element as `children` (button, Link, or anchor)

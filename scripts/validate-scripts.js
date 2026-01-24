@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
 /**
  * Load and parse a package.json (or other JSON) file from disk.
@@ -11,7 +11,7 @@ import path from 'path';
  */
 function loadPackageJson(filePath) {
   try {
-    return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    return JSON.parse(fs.readFileSync(filePath, "utf-8"));
   } catch (error) {
     console.error(`❌ Failed to load ${filePath}: ${error.message}`);
     process.exit(1);
@@ -27,7 +27,7 @@ function loadPackageJson(filePath) {
 function flattenScriptsInfo(scriptsInfo) {
   const flat = {};
   for (const [group, entries] of Object.entries(scriptsInfo)) {
-    if (group === '_meta') continue;
+    if (group === "_meta") continue;
     for (const [name] of Object.entries(entries)) {
       flat[name] = true;
     }
@@ -80,7 +80,7 @@ function validateScripts(pkgPath) {
 }
 
 // Validate main project
-validateScripts(path.resolve('./package.json'));
+validateScripts(path.resolve("./package.json"));
 
 // Validate docs project
-validateScripts(path.resolve('./docs/package.json'));
+validateScripts(path.resolve("./docs/package.json"));
