@@ -5,7 +5,6 @@ import {useState,useEffect, useId, cloneElement, isValidElement } from 'react';
 export default function Tooltip({ content, children, id, dynamicPositioning = true }) {
   const reactId = useId();
   const tooltipId = id || `tooltip-${reactId}`;
-  //new change start here
 const [isOpen,setIsOpen] = useState(false)
 const [isTouchDevice,setIsTouchDevice] = useState(false)
 
@@ -63,7 +62,6 @@ const showTooltip = () => {
   }, 1000);
 }
 
-//new change above ends here
 const handleFocus = () =>{
   if(isTouchDevice){
     showTooltip();
@@ -74,18 +72,18 @@ const handleFocus = () =>{
     cloneElement(children, {
       'data-tooltip-id': tooltipId,
       'data-tooltip-content': content,
-      onClick:(e) => { //new change
+      onClick:(e) => { 
         children.props.onClick?.(e)
         showTooltip(e)
       },
-      onFocus:(e) => { //new change
+      onFocus:(e) => { 
         children.props.onFocus?.(e)
         handleFocus(e)
       }
     })
   ) : (
     <span data-tooltip-id={tooltipId} data-tooltip-content={content} tabIndex={0}
-    onClick = {showTooltip} onFocus={handleFocus} //new change
+    onClick = {showTooltip} onFocus={handleFocus} 
     >
       {children}
     </span>
@@ -101,7 +99,7 @@ const handleFocus = () =>{
          positionStrategy="fixed"
          fallbackPlacements={dynamicPositioning ? ['bottom', 'top', 'left'] : []}
          openOnFocus
-         isOpen={isTouchDevice ? isOpen : undefined} //new change
+         isOpen={isTouchDevice ? isOpen : undefined} 
        />
 
     </>
