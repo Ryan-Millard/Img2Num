@@ -13,7 +13,7 @@ const WasmImageProcessor = () => {
   const inputId = useId();
   const inputRef = useRef(null);
 
-  const { bilateralFilter, blackThreshold, kmeans, mergeSmallRegionsInPlace } = useWasmWorker();
+  const { bilateralFilter, kmeans, findContours } = useWasmWorker();
 
   const [originalSrc, setOriginalSrc] = useState(null);
   const [fileData, setFileData] = useState(null);
@@ -85,42 +85,31 @@ const WasmImageProcessor = () => {
         height,
       });
 
-      step(45);
-      const thresholded = await blackThreshold({
+      // step(45);
+      // is this needed? num_colors is incorrect should be num_threshold
+      /*const thresholded = await blackThreshold({
         ...fileData,
         pixels: imgBilateralFiltered,
         num_colors: 8,
-      });
+      });*/
 
       step(70);
-      const kmeansed = await kmeans({
+      const { pixels: kmeansed, labels } = await kmeans({
         ...fileData,
-        pixels: thresholded,
-        num_colors: 8,
+        pixels: imgBilateralFiltered,
+        num_colors: 16,
       });
 
-      // Get 2% of the input dimension (width / height), but default to 1 pixel
-      const twoPercentOrOne = (dimension) => Math.ceil(Math.max(dimension * 0.02, 1));
-      const minWidth = twoPercentOrOne(width);
-      const minHeight = twoPercentOrOne(height);
-
-      const area = width * height;
-      // Prevents minArea from being too small
-      const minimumAllowedMinArea = area > 100_000_000 ? 25 : area > 10_000_000 ? 20 : area > 1_000_000 ? 15 : 10;
-      const minArea = Math.ceil(Math.max(area / 10_000, minimumAllowedMinArea));
-
-      const merged = await mergeSmallRegionsInPlace({
+      const contours = await findContours({
         pixels: kmeansed,
+        labels,
         width,
         height,
-        minArea,
-        minWidth,
-        minHeight,
       });
 
       step(95);
       const svg = await uint8ClampedArrayToSVG({
-        pixels: merged,
+        pixels: contours,
         width,
         height,
       });
@@ -138,7 +127,7 @@ const WasmImageProcessor = () => {
         step(0);
       }, 800);
     }
-  }, [fileData, bilateralFilter, blackThreshold, kmeans, mergeSmallRegionsInPlace, navigate, step]);
+  }, [fileData, bilateralFilter, kmeans, findContours, navigate, step]);
 
   /* Memo'd UI fragments */
   const EmptyState = useMemo(
