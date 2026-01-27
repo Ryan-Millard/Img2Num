@@ -14,11 +14,16 @@
 #include <iterator>
 #include <map>
 #include <utility>
+#include <set>
 
 // will start as integer values but can be adjusted to subpixel positions
 struct Point {
   float x = 0;
   float y = 0;
+};
+
+struct Rect {
+    float x, y, width, height;
 };
 
 struct ContoursResult {
@@ -47,5 +52,36 @@ ContoursResult find_contours(const std::vector<uint8_t> &binary, int width,
 void stitchIntegerGrid(std::vector<Point>& vecA, std::vector<Point>& vecB);
 void stitchUnique(std::vector<Point>& vecA, std::vector<Point>& vecB);
 void stitchSmooth(std::vector<Point>& vecA, std::vector<Point>& vecB);
+void stitchGapCloser(std::vector<Point>& vecA, std::vector<Point>& vecB);
+void stitchMLS(std::vector<Point>& vecA, std::vector<Point>& vecB, int iterations = 5);
+void tightlyPackContours(std::vector<std::vector<Point>>& contours, int iterations=10);
+void packWithBoundaryConstraints(std::vector<std::vector<Point>>& contours, Rect bounds, int iterations=15);
+}
+
+namespace contours2 {
+  void packFinal(std::vector<std::vector<Point>>& contours, Rect bounds, int iterations=15);
+  void packTethered(std::vector<std::vector<Point>>& contours, Rect bounds, int iterations=20);
+}
+
+namespace contours3 {
+  void zipperSpline(std::vector<Point>& contourA, std::vector<Point>& contourB);
+}
+
+namespace contours4 {
+  void zipperSpline(std::vector<Point>& contourA, std::vector<Point>& contourB);
+}
+
+namespace contours5 {
+  void applyCyclicZippering(std::vector<Point>& contourA, std::vector<Point>& contourB);
+}
+
+namespace contours6 {
+  void snapToCenterline(std::vector<Point>& contour, std::vector<std::vector<Point>>& centerlines, float width, float height, float threshold = 1.0f);
+  void snapToCenterline2(std::vector<Point>& contour, const std::vector<std::vector<Point>>& centerlines, float width, float height, float distThreshSq = 1.0f);
+  void snapToCenterlineNeighbors(std::vector<Point>& contourA, std::vector<Point>& contourB, std::vector<std::vector<Point>>& centerlines, float width, float height, float threshold = 1.0f);
+
+  void orderCenterlines(const std::vector<Point>& contour, const std::vector<std::vector<Point>>& candidates, std::vector<Point>& results, float distThreshSq=1.0f);
+  void orderAndTrimCenterlines(const std::vector<Point>& contour, const std::vector<std::vector<Point>>& candidates, std::vector<Point>& results, float distThreshSq=1.0f);
+  void orderAndTrimCenterlines2(const std::vector<Point>& contour, const std::vector<std::vector<Point>>& candidates, std::vector<Point>& results, float distThreshSq=1.0f);
 }
 #endif

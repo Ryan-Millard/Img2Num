@@ -30,6 +30,8 @@ target_include_directories(${MODULE_NAME}_wasm PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lidbfs.js")
+
 # Shared Emscripten options
 set(COMMON_FLAGS
     "SHELL:-s MODULARIZE=1"
@@ -44,6 +46,7 @@ set(COMMON_FLAGS
     "SHELL:-s EXPORT_NAME=create${CAP_MODULE_NAME}Module"
     "SHELL:-s USE_PTHREADS=1"
     "SHELL:-s PTHREAD_POOL_SIZE=8"
+    "SHELL:-s FORCE_FILESYSTEM=1"
 )
 
 # Apply common flags

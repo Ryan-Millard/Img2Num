@@ -2,6 +2,7 @@
 #define GRAPH_H
 
 #include "node.h"
+#include "morphology.h"
 #include <unordered_map>
 
 /*
@@ -31,14 +32,15 @@ discover_edges(G, region_labels, width, height);
 
 class Graph {
 protected:
+  int m_width, m_height;
   std::unique_ptr<std::vector<Node_ptr>> m_nodes;
   std::unordered_map<int32_t, int32_t> m_node_ids;
 
   void hash_node_ids(void);
 
 public:
-  inline Graph(std::unique_ptr<std::vector<Node_ptr>> &nodes)
-      : m_nodes(std::move(nodes)) {
+  inline Graph(std::unique_ptr<std::vector<Node_ptr>> &nodes, int width, int height)
+      : m_nodes(std::move(nodes)), m_width(width), m_height(height) {
     hash_node_ids();
   }
 
@@ -57,6 +59,8 @@ public:
                       const int32_t width, const int32_t height);
   void merge_small_area_nodes(const int32_t min_area);
   void compute_contours();
+  void compute_contours2();
+  void compute_contours3();
 };
 
 #endif

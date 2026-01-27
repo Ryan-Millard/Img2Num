@@ -197,7 +197,7 @@ char* kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
   // 2. initialize Graph from all Nodes
   std::unique_ptr<std::vector<Node_ptr>> node_ptr =
     std::make_unique<std::vector<Node_ptr>>(std::move(nodes));
-  Graph G(node_ptr);
+  Graph G(node_ptr, width, height);
 
   // 3. Discover node adjacencies - add edges to Graph
   G.discover_edges(region_labels, width, height);
@@ -257,7 +257,7 @@ char* kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
     }
   }*/
 
-  G.compute_contours();
+  G.compute_contours3();
   // int count = 0;
   for (auto &n : G.get_nodes()) {
     if (n->area() == 0) continue;
