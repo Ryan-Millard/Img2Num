@@ -4,17 +4,17 @@
 #include "Image.h"
 #include "PixelConverters.h"
 #include "RGBAPixel.h"
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
-#include <stdexcept>
-#include <vector>
-#include <algorithm>
 #include <iterator>
 #include <map>
-#include <utility>
 #include <set>
+#include <stdexcept>
+#include <utility>
+#include <vector>
 
 // will start as integer values but can be adjusted to subpixel positions
 struct Point {
@@ -23,7 +23,7 @@ struct Point {
 };
 
 struct Rect {
-    float x, y, width, height;
+  float x, y, width, height;
 };
 
 struct ContoursResult {
@@ -49,10 +49,11 @@ namespace contours {
 ContoursResult find_contours(const std::vector<uint8_t> &binary, int width,
                              int height);
 
-void stitchSmooth(std::vector<Point>& vecA, std::vector<Point>& vecB);
+void stitchSmooth(std::vector<Point> &vecA, std::vector<Point> &vecB);
 
-void packWithBoundaryConstraints(std::vector<std::vector<Point>>& contours, Rect bounds, int iterations=15);
+void packWithBoundaryConstraints(std::vector<std::vector<Point>> &contours,
+                                 Rect bounds, int iterations = 15);
 
-}
+} // namespace contours
 
 #endif

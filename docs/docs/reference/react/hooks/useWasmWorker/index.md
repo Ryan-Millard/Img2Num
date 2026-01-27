@@ -13,12 +13,12 @@ It keeps **all heavy computation off the main thread** by delegating work to a W
 
 :::important What this hook abstracts
 
-* Worker lifecycle and messaging
-* WASM module initialization
-* Memory allocation (`_malloc`) and cleanup (`_free`)
-* TypedArray ↔ WASM heap copying
-* WASM function invocation
-* Return value and output buffer handling
+- Worker lifecycle and messaging
+- WASM module initialization
+- Memory allocation (`_malloc`) and cleanup (`_free`)
+- TypedArray ↔ WASM heap copying
+- WASM function invocation
+- Return value and output buffer handling
 
 :::
 
@@ -81,7 +81,7 @@ The **order of arguments passed to WASM must exactly match the C++ function sign
 Although `args` is an object, the worker calls the WASM function using:
 
 ```js
-wasmModule[`_${funcName}`](...Object.values(args))
+wasmModule[`_${funcName}`](...Object.values(args));
 ```
 
 That means:
@@ -93,11 +93,11 @@ int add(int a, int b);
 **Must be called as:**
 
 ```js
-args = { a, b } // correct
+args = { a, b }; // correct
 ```
 
 ```js
-args = { b, a } // ❌ wrong
+args = { b, a }; // ❌ wrong
 ```
 
 :::
@@ -108,9 +108,9 @@ The hook exposes several **predefined helpers** that wrap `call()` with the corr
 
 These functions:
 
-* Hide `bufferKeys` and `returnType`
-* Enforce correct argument ordering
-* Return clean JS values instead of raw WASM outputs
+- Hide `bufferKeys` and `returnType`
+- Enforce correct argument ordering
+- Return clean JS values instead of raw WASM outputs
 
 ### `gaussianBlur`
 
@@ -172,10 +172,11 @@ bilateralFilter(params: {
 :::note `color_space` parameter
 
 Possible values:
+
 - **0**: CIE La\*b\* (closer to human perception)
 - **1**: sRGB (the default color space for computers)
 
-The default for this parameter is CIE LAB because it closer to human perception and bilateral filters are usually 
+The default for this parameter is CIE LAB because it closer to human perception and bilateral filters are usually
 
 :::
 
@@ -299,7 +300,10 @@ All TypedArrays passed to WASM must be declared in `bufferKeys`.
 Each entry specifies:
 
 ```ts
-{ key: string; type: 'Int32Array' | 'Uint8Array' | 'Uint8ClampedArray' }
+{
+  key: string;
+  type: 'Int32Array' | 'Uint8Array' | 'Uint8ClampedArray';
+}
 ```
 
 The worker will:
@@ -314,36 +318,36 @@ The worker will:
 
 The worker currently supports:
 
-* `Int32Array` → `HEAP32`
-* `Uint8Array` → `HEAPU8`
-* `Uint8ClampedArray` → `HEAPU8`
-* `string` (UTF-8)
-* `void` (only for returned values)
+- `Int32Array` → `HEAP32`
+- `Uint8Array` → `HEAPU8`
+- `Uint8ClampedArray` → `HEAPU8`
+- `string` (UTF-8)
+- `void` (only for returned values)
 
 ## Adding New WASM Functions
 
 1. **Export the function from C++** using the Img2Num `EXPORTED` macro (preferred):
 
-    ```cpp
-    #include "exported.h"
+   ```cpp
+   #include "exported.h"
 
-    EXPORTED void my_function(int* data, int length);
-    ```
+   EXPORTED void my_function(int* data, int length);
+   ```
 
 2. **Ensure argument order is final** – JS must match it exactly.
 
 3. **Add a convenience wrapper** in `useWasmWorker`:
 
-    ```js
-    myFunction: async ({ data, length }) => {
-      const result = await call({
-        funcName: 'my_function',
-        args: { data, length },
-        bufferKeys: [{ key: 'data', type: 'Int32Array' }],
-      });
-      return result.output.data;
-    }
-    ```
+   ```js
+   myFunction: async ({ data, length }) => {
+     const result = await call({
+       funcName: 'my_function',
+       args: { data, length },
+       bufferKeys: [{ key: 'data', type: 'Int32Array' }],
+     });
+     return result.output.data;
+   };
+   ```
 
 ## Adding New TypedArray Types
 
@@ -371,9 +375,8 @@ flowchart TD
 
 ## Summary
 
-* `useWasmWorker` provides **safe, async WASM access from React**
-* Argument order **must exactly match C++ signatures**
-* TypedArrays require explicit declaration via `bufferKeys`
-* Convenience wrappers are the preferred API
-* Memory allocation and cleanup are fully automatic
-
+- `useWasmWorker` provides **safe, async WASM access from React**
+- Argument order **must exactly match C++ signatures**
+- TypedArrays require explicit declaration via `bufferKeys`
+- Convenience wrappers are the preferred API
+- Memory allocation and cleanup are fully automatic

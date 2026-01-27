@@ -26,17 +26,16 @@ import createImageModule from '@wasm-image';
 
 let wasmModule;
 let readyResolve;
-const readyPromise = new Promise(res => (readyResolve = res));
+const readyPromise = new Promise((res) => (readyResolve = res));
 
-createImageModule().then(mod => {
+createImageModule().then((mod) => {
   wasmModule = mod;
   readyResolve();
 });
 
 // Define a generic type handler
 const WASM_TYPES = {
-  void: {
-  },
+  void: {},
   Int32Array: {
     alloc: (arr) => {
       const ptr = wasmModule._malloc(arr.byteLength);
@@ -68,8 +67,8 @@ const WASM_TYPES = {
       wasmModule.stringToUTF8(str, ptr, len);
       return ptr;
     },
-    read: (ptr) => ptr ? wasmModule.UTF8ToString(ptr) : null,
-  }
+    read: (ptr) => (ptr ? wasmModule.UTF8ToString(ptr) : null),
+  },
 };
 
 self.onmessage = async ({ data }) => {
@@ -79,7 +78,7 @@ self.onmessage = async ({ data }) => {
   if (bufferKeys?.length && !args) {
     throw new Error(
       `WASM call "${funcName}" has bufferKeys defined but no args object provided. ` +
-      `Each bufferKey must correspond to a key in args.`
+        `Each bufferKey must correspond to a key in args.`
     );
   }
 
@@ -87,7 +86,8 @@ self.onmessage = async ({ data }) => {
   try {
     // Allocate inputs / out params
     bufferKeys?.forEach(({ key, type }) => {
-      if (!(type in WASM_TYPES)) throw new Error(`Unsupported type (${type}) in wasmWorker.js\nSee WASM_TYPES for the supported types`);
+      if (!(type in WASM_TYPES))
+        throw new Error(`Unsupported type (${type}) in wasmWorker.js\nSee WASM_TYPES for the supported types`);
       const ptr = WASM_TYPES[type].alloc(args[key]);
       pointers[key] = { ptr, type, length: args[key].length || undefined };
       args[key] = ptr;

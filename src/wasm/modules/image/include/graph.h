@@ -1,8 +1,8 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include "node.h"
 #include "morphology.h"
+#include "node.h"
 #include <unordered_map>
 
 /*
@@ -39,7 +39,8 @@ protected:
   void hash_node_ids(void);
 
 public:
-  inline Graph(std::unique_ptr<std::vector<Node_ptr>> &nodes, int width, int height)
+  inline Graph(std::unique_ptr<std::vector<Node_ptr>> &nodes, int width,
+               int height)
       : m_nodes(std::move(nodes)), m_width(width), m_height(height) {
     hash_node_ids();
   }

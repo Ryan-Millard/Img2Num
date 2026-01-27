@@ -123,7 +123,7 @@ void Node::compute_contour(void) {
     }
 
     // if (contour_res.is_hole[cidx]) { continue; }
-    
+
     ImageLib::RGBPixel<uint8_t> _col = color();
     ImageLib::RGBAPixel<uint8_t> col{_col.red, _col.green, _col.blue, 255};
     m_contours.contours.push_back(contour);
@@ -131,7 +131,6 @@ void Node::compute_contour(void) {
     m_contours.is_hole.push_back(contour_res.is_hole[cidx]);
     m_contours.colors.push_back(col);
   }
-  
 }
 
 void Node::add_pixels(const std::vector<RGBXY> &new_pixels) {
