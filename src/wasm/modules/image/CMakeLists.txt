@@ -46,7 +46,6 @@ set(COMMON_FLAGS
     "SHELL:-s EXPORT_NAME=create${CAP_MODULE_NAME}Module"
     "SHELL:-s USE_PTHREADS=1"
     "SHELL:-s PTHREAD_POOL_SIZE=8"
-    "SHELL:-s FORCE_FILESYSTEM=1"
 )
 
 # Apply common flags
