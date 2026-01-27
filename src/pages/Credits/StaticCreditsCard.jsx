@@ -1,16 +1,17 @@
-import GlassCard from "@components/GlassCard";
-import Tooltip from "@components/Tooltip.jsx";
+import GlassCard from '@components/GlassCard';
+import Tooltip from '@components/Tooltip.jsx';
+import styles from './StaticCreditsCard.module.css';
 
 export default function StaticCreditsCard() {
   return (
     <GlassCard>
       <h2>Project Credits</h2>
 
-      <table>
+      <table className={styles.table}>
         <tbody>
           <tr>
             <td>Created by</td>
-            <td colSpan="2">
+            <td>
               <Tooltip content="Open creator's GitHub profile">
                 <a href="https://github.com/Ryan-Millard" target="_blank" rel="noopener noreferrer">
                   Ryan Millard
@@ -27,8 +28,7 @@ export default function StaticCreditsCard() {
                   GitHub Repository
                 </a>
               </Tooltip>
-            </td>
-            <td>
+              {' · '}
               <Tooltip content="Open the Img2Num website">
                 <a href="https://ryan-millard.github.io/Img2Num/" target="_blank" rel="noopener noreferrer">
                   Website on GitHub Pages
@@ -39,15 +39,14 @@ export default function StaticCreditsCard() {
 
           <tr>
             <td>Media</td>
-            <td>Pixel Art Hedgehog</td>
             <td>
-              By{" "}
+              Pixel Art Hedgehog- By{' '}
               <Tooltip content="View artist profile on OpenGameArt">
                 <a href="https://opengameart.org/users/dustdfg" target="_blank" rel="noopener noreferrer">
                   dustdfg
                 </a>
               </Tooltip>
-              , used under{" "}
+              , licensed under{' '}
               <Tooltip content="View Creative Commons BY-SA 4.0 license">
                 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">
                   CC BY-SA 4.0
