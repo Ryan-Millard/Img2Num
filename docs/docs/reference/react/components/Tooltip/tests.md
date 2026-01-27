@@ -78,7 +78,7 @@ including for keyboard accessibility and portal behavior.
    - Vitest + Testing Library usually handles `act()` automatically. Ensure `globals: true` in your test setup and keep dependencies updated.
 6. **Timer-based behavior (touch device auto-hide)**
    - The tests use **real timers** with `setTimeout` and `new Promise` for waiting (not fake timers).
-   - For auto-hide assertions, wait with `await new Promise((resolve) => setTimeout(resolve, 1100))` (1 second timeout + 100ms buffer).
+   - For auto-hide assertions, wait with `await new Promise((resolve) => setTimeout(resolve, 1100))` (1-second timeout + 100ms buffer).
    - Set test timeout to at least 7000ms (`test(..., 7000)`) to accommodate real timer waits.
    - This approach avoids complexity with fake timer setup and queryClient/React re-renders.
    - If you prefer fake timers, you can use `vi.useFakeTimers()`, `vi.advanceTimersByTime(1000)`, and `vi.useRealTimers()`, but ensure proper cleanup to avoid affecting other tests.
