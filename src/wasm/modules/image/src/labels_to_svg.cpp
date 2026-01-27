@@ -257,7 +257,7 @@ char *labels_to_svg(uint8_t *data, int32_t *labels, const int width,
     }
   }*/
 
-  G.compute_contours();
+  G.compute_contours3();
   // int count = 0;
   for (auto &n : G.get_nodes()) {
     if (n->area() == 0) continue;

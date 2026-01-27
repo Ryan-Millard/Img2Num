@@ -15,6 +15,7 @@
 #include <iterator>
 #include <map>
 #include <utility>
+#include <set>
 
 struct QuadBezier {
   Point p0{0, 0}; // Start
@@ -24,6 +25,10 @@ struct QuadBezier {
 
 struct Rect {
   float x, y, width, height;
+};
+
+struct Rect {
+    float x, y, width, height;
 };
 
 struct ContoursResult {
