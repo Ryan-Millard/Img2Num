@@ -63,7 +63,6 @@ export default function Tooltip({ content, children, id, dynamicPositioning = tr
   const showTooltip = () => {
     if (!isTouchDevice) return;
 
-
     // Bail if ref is not a valid ref object (defensive in hot-reload scenarios)
     if (!hideTimeoutRef || typeof hideTimeoutRef !== "object") {
       return;
@@ -117,7 +116,7 @@ export default function Tooltip({ content, children, id, dynamicPositioning = tr
       <ReactTooltip
         id={tooltipId}
         place="right"
-        appendTo={document.body}
+        appendTo={typeof document !== "undefined" ? document.body : undefined}
         positionStrategy="fixed"
         fallbackPlacements={dynamicPositioning ? ["bottom", "top", "left"] : []}
         openOnFocus
