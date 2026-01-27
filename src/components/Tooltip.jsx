@@ -60,7 +60,7 @@ export default function Tooltip({ content, children, id, dynamicPositioning = tr
   }, []);
 
   //onTouch open Tooltip
-  const showTooltip = (e) => {
+  const showTooltip = () => {
     if (!isTouchDevice) return;
 
 
