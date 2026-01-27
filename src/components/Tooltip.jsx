@@ -63,8 +63,6 @@ export default function Tooltip({ content, children, id, dynamicPositioning = tr
   const showTooltip = (e) => {
     if (!isTouchDevice) return;
 
-    // Prevent event bubbling
-    e?.stopPropagation?.();
 
     // Bail if ref is not a valid ref object (defensive in hot-reload scenarios)
     if (!hideTimeoutRef || typeof hideTimeoutRef !== "object") {
