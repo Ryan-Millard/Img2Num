@@ -58,7 +58,15 @@ export function useWasmWorker() {
       return result.output.pixels;
     },
 
-    bilateralFilter: async ({ pixels, width, height, sigma_spatial = 3, sigma_range = 50, color_space = 0, n_threads = 8 }) => {
+    bilateralFilter: async ({
+      pixels,
+      width,
+      height,
+      sigma_spatial = 3,
+      sigma_range = 50,
+      color_space = 0,
+      n_threads = 8,
+    }) => {
       const result = await call({
         funcName: "bilateral_filter",
         args: { pixels, width, height, sigma_spatial, sigma_range, color_space, n_threads },

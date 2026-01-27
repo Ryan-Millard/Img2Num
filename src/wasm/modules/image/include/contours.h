@@ -9,13 +9,12 @@
 #include <array>
 #include <cstdint>
 #include <cstdlib>
-#include <stdexcept>
-#include <vector>
-#include <algorithm>
 #include <iterator>
 #include <map>
-#include <utility>
 #include <set>
+#include <stdexcept>
+#include <utility>
+#include <vector>
 
 struct QuadBezier {
   Point p0{0, 0}; // Start
@@ -28,7 +27,7 @@ struct Rect {
 };
 
 struct Rect {
-    float x, y, width, height;
+  float x, y, width, height;
 };
 
 struct ContoursResult {

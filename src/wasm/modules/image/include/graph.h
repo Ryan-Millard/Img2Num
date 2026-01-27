@@ -1,8 +1,8 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include "node.h"
 #include "morphology.h"
+#include "node.h"
 #include <unordered_map>
 
 /*
