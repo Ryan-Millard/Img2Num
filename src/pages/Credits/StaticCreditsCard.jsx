@@ -1,6 +1,6 @@
-import GlassCard from '@components/GlassCard';
-import Tooltip from '@components/Tooltip.jsx';
-import styles from './StaticCreditsCard.module.css';
+import GlassCard from "@components/GlassCard";
+import Tooltip from "@components/Tooltip.jsx";
+import styles from "./StaticCreditsCard.module.css";
 
 export default function StaticCreditsCard() {
   return (
@@ -28,7 +28,7 @@ export default function StaticCreditsCard() {
                   GitHub Repository
                 </a>
               </Tooltip>
-              {' · '}
+              {" · "}
               <Tooltip content="Open the Img2Num website">
                 <a href="https://ryan-millard.github.io/Img2Num/" target="_blank" rel="noopener noreferrer">
                   Website on GitHub Pages
@@ -40,13 +40,13 @@ export default function StaticCreditsCard() {
           <tr>
             <td>Media</td>
             <td>
-              Pixel Art Hedgehog- By{' '}
+              Pixel Art Hedgehog- By{" "}
               <Tooltip content="View artist profile on OpenGameArt">
                 <a href="https://opengameart.org/users/dustdfg" target="_blank" rel="noopener noreferrer">
                   dustdfg
                 </a>
               </Tooltip>
-              , licensed under{' '}
+              , licensed under{" "}
               <Tooltip content="View Creative Commons BY-SA 4.0 license">
                 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">
                   CC BY-SA 4.0
