@@ -217,57 +217,15 @@ char* kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
   }
 
   // 6. Contours
+  // graph will manage computing contours
+  G.compute_contours();
+
+  // accumulate all contours for svg export
   ColoredContours all_contours;
-
-  /*for (auto &n : G.get_nodes()) {
-    if (n->area() == 0) continue;
-
-    std::array<int32_t, 4> xywh;
-    std::vector<uint8_t> binary;
-
-    xywh = n->create_binary_image(binary);
-
-    int xmin = xywh[0];
-    int ymin = xywh[1];
-    int bw = xywh[2];
-    int bh = xywh[3];
-
-    ContoursResult contour_res = contours::find_contours(binary, bw, bh);
-
-    if (draw_contour_borders) {
-      visualize_contours(contour_res.contours, results, width, height, xmin, ymin);
-    } else {
-      // shift contour coordinates to image space
-      for (size_t cidx = 0; cidx < contour_res.contours.size(); ++cidx) {
-        auto &contour = contour_res.contours[cidx];
-        for (auto &p : contour) {
-          p.x += xmin;
-          p.y += ymin;
-        }
-
-        // pick the color from the first pixel of the contour in the recolored image
-        const auto &first_px = contour[0];
-        ImageLib::RGBAPixel<uint8_t> col = results(first_px.x, first_px.y);
-
-        all_contours.contours.push_back(contour);
-        all_contours.hierarchy.push_back(contour_res.hierarchy[cidx]);
-        all_contours.is_hole.push_back(contour_res.is_hole[cidx]);
-        all_contours.colors.push_back(col);
-      }
-    }
-  }*/
-
-  G.compute_contours3();
-  // int count = 0;
   for (auto &n : G.get_nodes()) {
     if (n->area() == 0) continue;
     ColoredContours node_contours = n->get_contours();
     for (auto &c : node_contours.contours) {
-      // for (auto &p : c) {
-      //   std::cout << "(" << p.x << ", " << p.y << "), ";
-      // }
-      // std::cout << std::endl;
-
       all_contours.contours.push_back(c);
     }
     for (auto &c : node_contours.hierarchy) {
@@ -279,9 +237,8 @@ char* kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
     for (auto &c : node_contours.colors) {
       all_contours.colors.push_back(c);
     }
-    // count++;
-    //if (count == 2) { break; }
   }
+
   // 7. Copy recolored image back
   const auto &modified = results.getData();
   std::memcpy(data, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));

@@ -135,81 +135,6 @@ void Graph::discover_edges(const std::vector<int32_t> &region_labels,
 }
 
 void Graph::compute_contours() {
-
-  // ask each Node to compute contours
-  for (const Node_ptr &n : get_nodes()) {
-    if (n->area() == 0) continue;
-    n->compute_contour();
-  }
-
-
-  /*std::vector<std::vector<Point>> all_contours;
-  for (const Node_ptr &n : get_nodes()) {
-    if (n->area() == 0) continue;
-
-    ColoredContours* c0 = &n->m_contours;
-    for (size_t i = 0; i < c0->contours.size(); ++i) {
-      all_contours.push_back(c0->contours[i]);
-    }
-  }
-
-  contours2::packTethered(all_contours, Rect{0.0f, 0.0f, static_cast<float>(m_width), static_cast<float>(m_height)});
-
-  int j = 0;
-  for (const Node_ptr &n : get_nodes()) {
-    if (n->area() == 0) continue;
-
-    ColoredContours* c0 = &n->m_contours;
-    for (size_t i = 0; i < c0->contours.size(); ++i) {
-      std::copy(all_contours[j].begin(), all_contours[j].end(), c0->contours[i].begin());
-      j++;
-    }
-  }*/
-
-  std::set<std::pair<int, int>> adjusted_neighbors {};
-  
-
-  for (const Node_ptr &n : get_nodes()) {
-    if (n->area() == 0) continue;
-
-    ColoredContours* c0 = &n->m_contours; //->get_contours();
-    // c0.contours -> list of contours
-
-    // for each neighbor to this node
-    // check their contour and adjust contours to just overlap
-    for (const auto &neighbor: n->edges()) {
-      if (neighbor->area() == 0) continue;
-
-      // check if this neighbor pairing has already been addressed
-      std::pair<int, int> id1 = std::make_pair(n->id(), neighbor->id());
-      std::pair<int, int> id2 = std::make_pair(neighbor->id(), n->id());
-      auto _end{adjusted_neighbors.end()};
-      auto _it1{adjusted_neighbors.find(id1)};
-      auto _it2{adjusted_neighbors.find(id2)};
-
-      if (_it1 != _end || _it2 != _end) {
-        continue;
-      }
-
-      ColoredContours* cn = &neighbor->m_contours; // ->get_contours();
-
-      for (size_t i = 0; i < c0->contours.size(); ++i) {
-        
-        for (size_t j = 0; j < cn->contours.size(); ++j) {
-          // identify tangent contours and stitch to subpixel accuracy
-          // stitchIntegerGrid(c0->contours[i], cn->contours[j]);
-          contours5::applyCyclicZippering(c0->contours[i], cn->contours[j]);
-        }
-      }
-
-      adjusted_neighbors.insert(id1);
-
-    }
-  }
-
-}
-
-void Graph::compute_contours3() {
   // ask each Node to compute contours
   for (const Node_ptr &n : get_nodes()) {
     if (n->area() == 0) continue;
@@ -347,9 +272,6 @@ void Graph::compute_contours3() {
                   updated_binary[ny * bwpad + nx] = 1;
                   found_new = true;
                 }
-                /*if (diff_subset[ny * bwpad + nx] == 1) {
-                    updated_binary[ny * bwpad + nx] = 1;
-                  }*/
               }
               // nothing found then fill with ones and keep searching
               if (!found_new) {
@@ -370,9 +292,6 @@ void Graph::compute_contours3() {
                     updated_binary[ny * bwpad + nx] = 1;
                     found_new = true;
                   }
-                  /*if (diff_subset[ny * bwpad + nx] == 1) {
-                    updated_binary[ny * bwpad + nx] = 1;
-                  }*/
                 }
               }
               if (!found_new) {
@@ -394,9 +313,6 @@ void Graph::compute_contours3() {
                     updated_binary[ny * bwpad + nx] = 1;
                     found_new = true;
                   }
-                  /*if (diff_subset[ny * bwpad + nx] == 1) {
-                    updated_binary[ny * bwpad + nx] = 1;
-                  }*/
                 }
               }
               if (!found_new) {
@@ -418,22 +334,11 @@ void Graph::compute_contours3() {
                     updated_binary[ny * bwpad + nx] = 1;
                     found_new = true;
                   }
-                  /*if (diff_subset[ny * bwpad + nx] == 1) {
-                    updated_binary[ny * bwpad + nx] = 1;
-                  }*/
                 }
               }
             } // endif (removed == 1)
-            
-            // else {
             // border hasn't changed
             updated_binary[y * bwpad + x] = 1;
-            //}
-          //}
-          //else {
-            // not boundary but we still need it
-          //  updated_binary[y * bwpad + x] = 1;
-          //}
         }
       }
     }
@@ -529,237 +434,6 @@ void Graph::compute_contours3() {
         
         for (size_t j = 0; j < cn->contours.size(); ++j) {
           // identify tangent contours and stitch to subpixel accuracy
-          contours::stitchSmooth(c0->contours[i], cn->contours[j]);
-        }
-      }
-
-      adjusted_neighbors.insert(id1);
-
-    }
-  }*/
-
-}
-
-void Graph::compute_contours2() {
-
-  auto smoothVector = [](std::vector<Point>& pts) {
-    std::vector<Point> original = pts;
-
-    // forwards pass
-    for (int i = 0; i < (int)pts.size(); ++i) {
-      int previ = i > 0 ? i - 1 : pts.size() - 1;
-      int nexti = i < (int)pts.size() - 1 ? i + 1 : 0;
-      pts[i].x = 0.25f * original[previ].x + 0.5f * original[i].x + 0.25f * original[nexti].x;
-      pts[i].y = 0.25f * original[previ].y + 0.5f * original[i].y + 0.25f * original[nexti].y;
-    }
-
-    //backwards pass
-
-    for (int i = (int)pts.size() - 1; i >0 ; --i) {
-      int previ = i > 0 ? i - 1 : pts.size() - 1;
-      int nexti = i < (int)pts.size() - 1 ? i + 1 : 0;
-      pts[i].x = 0.25f * original[previ].x + 0.5f * original[i].x + 0.25f * original[nexti].x;
-      pts[i].y = 0.25f * original[previ].y + 0.5f * original[i].y + 0.25f * original[nexti].y;
-    }
-
-  };
-
-  // ask each Node to compute contours
-  for (const Node_ptr &n : get_nodes()) {
-    if (n->area() == 0) continue;
-    n->compute_contour();
-  }
-
-  std::vector<uint8_t> binary(m_width * m_height, 0);
-
-  for (const Node_ptr &n : get_nodes()) {
-    if (n->area() == 0) continue;
-
-    ColoredContours* c0 = &n->m_contours;
-    for (size_t i = 0; i < c0->contours.size(); ++i) {
-      for (auto &p : c0->contours[i]){
-        int px = static_cast<int>(p.x);
-        int py = static_cast<int>(p.y);
-
-        binary[py * m_width + px] = 1;
-      }
-    }
-  }
-
-  // --- DEBUG: PRINT BINARY ---
-  std::cout << "\n--- BINARY MAP ---\n";
-  for (int y = 0; y < m_height; ++y) {
-      for (int x = 0; x < m_width; ++x) {
-          uint8_t val = binary[y * m_width + x];
-          char c;
-          if (val == 1) c = '1';       // Line
-          else c = '0';
-          std::cout << c;
-      }
-      std::cout << "\n";
-  }
-  std::cout << "---------------------------------------------\n\n";
-    
-
-  // apply skeletonization
-  skeletonize(binary, m_width, m_height);
-
-  // centerline computation
-  // std::vector<Point> centerPts;
-  
-  std::cout << "3. Computing Subpixel Centerlines...\n";
-  std::vector<std::vector<Point>> centerlines = computeSubpixelCenterlines(binary, m_width, m_height);
-  std::cout << "   Extracted " << centerlines.size() << " chains.\n";
-    
-  auto loops = getAtomicRegions(centerlines);
-  std::cout << "   Found " << loops.size() << " closed loops.\n";
-  std::cout << "   Number of nodes " << size() << " \n";
-
-  int contour_count = 0;
-  for (const Node_ptr &n : get_nodes()) {
-    if (n->area() == 0) continue;
-
-    ColoredContours* c0 = &n->m_contours;
-    contour_count += static_cast<int>(c0->contours.size());
-  }
-  std::cout << "   Number of nodes contours " << contour_count << " \n";
-
-  saveSVG("output.svg", m_width, m_height, centerlines, loops);
-
-  std::vector<Point> loopCentroids;
-  for (auto &c : loops) {
-    Point centroid{0, 0};
-    for (auto &p : c) {
-      centroid.x += p.x;
-      centroid.y += p.y;
-    }
-    centroid.x /= c.size();
-    centroid.y /= c.size();
-
-    // std::cout << "Loop centroid: " << centroid.x <<", " << centroid.y << std::endl;
-    loopCentroids.push_back(centroid);
-  }
-
-  // for (auto & cc: centerlines) {
-  //   for (auto &p : cc) {
-  //     centerPts.push_back(p);
-  //   }
-  // }
-  // centerlines.clear();
-
-  // check which points got removed
-  /*for (const Node_ptr &n : get_nodes()) {
-    if (n->area() == 0) continue;
-
-    ColoredContours* c0 = &n->m_contours;
-    for (size_t i = 0; i < c0->contours.size(); ++i) {
-      c0->contours[i].erase(
-        std::remove_if(
-          c0->contours[i].begin(), c0->contours[i].end(),
-          [&](const Point &p) { 
-            int px = static_cast<int>(p.x);
-            int py = static_cast<int>(p.y);
-            return binary[py * m_width + px] == 0; 
-          }
-        ),
-        c0->contours[i].end()
-      );
-    }
-  }*/
-
-  // centerline computation
-  /*std::vector<std::vector<Point>> centerlines = computeSubpixelCenterlines(binary, m_width, m_height);
-
-  for (size_t i = 0; i < centerlines.size(); ++i) {
-      std::cout << "Chain " << i << ":\n";
-      for (const auto& p : centerlines[i]) {
-          std::cout << "  (" << p.x << ", " << p.y << ")\n";
-      }
-  }
-  std::cout << std::endl;
-  */
-
-  // snap contours to nearest centerlines
-  for (const Node_ptr &n : get_nodes()) {
-    if (n->area() == 0) continue;
-
-    ColoredContours* c0 = &n->m_contours;
-    /*for (size_t i = 0; i < c0->contours.size(); ++i) {
-      // contours6::snapToCenterline2(c0->contours[i], centerlines, (float)m_width, (float)m_height, 2.0f);
-      std::vector<Point> results;
-      contours6::orderAndTrimCenterlines2(c0->contours[i], centerlines, results, 1.0f);
-      c0->contours[i].clear();
-      c0->contours[i].resize(results.size());
-      std::copy(results.begin(), results.end(), c0->contours[i].begin());
-    }*/
-
-    for (size_t i = 0; i < c0->contours.size(); ++i) {
-      Point c{0, 0};
-      for (auto &p : c0->contours[i]) {
-        c.x += p.x;
-        c.y += p.y;
-      }
-      c.x /= c0->contours[i].size();
-      c.y /= c0->contours[i].size();
-      
-      //Point c{static_cast<float>(n->centroid().x), static_cast<float>(n->centroid().y)};
-      // std::cout << "Node centroid: " << c.x <<", " << c.y << std::endl;
-
-      // find nearest loop
-      int bestIdx = -1;
-      float bestDist = std::numeric_limits<float>::max();
-      for (int j=0; j<loopCentroids.size(); ++j) {
-        Point a = loopCentroids[j];
-        float dist = ((a.x - c.x) * (a.x - c.x) + (a.y - c.y) * (a.y - c.y));
-        if (dist < bestDist) {
-            bestDist = dist;
-            bestIdx = j;
-        }
-      }
-      std::cout << "<" << loopCentroids[bestIdx].x << ", " << loopCentroids[bestIdx].y << ">";
-      std::cout << " matched with " << "<" << c.x << ", " << c.y << ">" << std::endl;
-      // std::cout << "bestIdx: " << bestIdx << std::endl;
-      std::cout << "Loop size: "<< loops[bestIdx].size() << std::endl;
-
-      c0->contours[i].clear();
-      c0->contours[i].resize(loops[bestIdx].size());
-      std::copy(loops[bestIdx].begin(), loops[bestIdx].end(), c0->contours[i].begin());
-      
-    }
-  }
-
-  /*std::set<std::pair<int, int>> adjusted_neighbors {};
-  
-
-  for (const Node_ptr &n : get_nodes()) {
-    if (n->area() == 0) continue;
-
-    ColoredContours* c0 = &n->m_contours; //->get_contours();
-    // c0.contours -> list of contours
-
-    // for each neighbor to this node
-    // check their contour and adjust contours to just overlap
-    for (const auto &neighbor: n->edges()) {
-      if (neighbor->area() == 0) continue;
-
-      // check if this neighbor pairing has already been addressed
-      std::pair<int, int> id1 = std::make_pair(n->id(), neighbor->id());
-      std::pair<int, int> id2 = std::make_pair(neighbor->id(), n->id());
-      auto _end{adjusted_neighbors.end()};
-      auto _it1{adjusted_neighbors.find(id1)};
-      auto _it2{adjusted_neighbors.find(id2)};
-
-      if (_it1 != _end || _it2 != _end) {
-        continue;
-      }
-
-      ColoredContours* cn = &neighbor->m_contours; // ->get_contours();
-
-      for (size_t i = 0; i < c0->contours.size(); ++i) {
-        
-        for (size_t j = 0; j < cn->contours.size(); ++j) {
-          // identify tangent contours and stitch to subpixel accuracy
-          // stitchIntegerGrid(c0->contours[i], cn->contours[j]);
           contours::stitchSmooth(c0->contours[i], cn->contours[j]);
         }
       }
