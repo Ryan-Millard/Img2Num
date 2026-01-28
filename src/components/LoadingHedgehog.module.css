@@ -15,9 +15,9 @@
     Inter,
     system-ui,
     -apple-system,
-    'Segoe UI',
+    "Segoe UI",
     Roboto,
-    'Helvetica Neue',
+    "Helvetica Neue",
     Arial;
   user-select: none;
 }
@@ -50,7 +50,7 @@
 
 /* low-contrast texture for seriousness */
 .grass::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;

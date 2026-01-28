@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import styles from './Pagination.module.css';
+import { useEffect } from "react";
+import styles from "./Pagination.module.css";
 
 function getVisiblePages(current, total, delta = 1) {
   const pages = [];
@@ -19,20 +19,20 @@ export default function Pagination({ page, totalPages, onChange }) {
     const handler = (e) => {
       // Ignore keyboard navigation when user is typing in input fields
       const target = e.target;
-      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+      if (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable) {
         return;
       }
 
-      if (e.key === 'ArrowRight' && page < totalPages - 1) {
+      if (e.key === "ArrowRight" && page < totalPages - 1) {
         onChange(page + 1);
       }
-      if (e.key === 'ArrowLeft' && page > 0) {
+      if (e.key === "ArrowLeft" && page > 0) {
         onChange(page - 1);
       }
     };
 
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
   }, [page, totalPages, onChange]);
 
   if (totalPages <= 1) return null;
@@ -42,11 +42,7 @@ export default function Pagination({ page, totalPages, onChange }) {
   return (
     <nav className={styles.pagination} aria-label="Pagination">
       {/* Previous */}
-      <button
-        className={`${styles.arrow} glass`}
-        onClick={() => onChange(page - 1)}
-        disabled={page === 0}
-        aria-label="Previous page">
+      <button className={`${styles.arrow} glass`} onClick={() => onChange(page - 1)} disabled={page === 0} aria-label="Previous page">
         ‹
       </button>
 
@@ -62,11 +58,7 @@ export default function Pagination({ page, totalPages, onChange }) {
 
       {/* Visible pages */}
       {visiblePages.map((p) => (
-        <button
-          key={p}
-          onClick={() => onChange(p)}
-          className={`${styles.page} glass ${p === page ? styles.active : ''}`}
-          aria-current={p === page ? 'page' : undefined}>
+        <button key={p} onClick={() => onChange(p)} className={`${styles.page} glass ${p === page ? styles.active : ""}`} aria-current={p === page ? "page" : undefined}>
           {p + 1}
         </button>
       ))}
@@ -82,11 +74,7 @@ export default function Pagination({ page, totalPages, onChange }) {
       )}
 
       {/* Next */}
-      <button
-        className={`${styles.arrow} glass`}
-        onClick={() => onChange(page + 1)}
-        disabled={page === totalPages - 1}
-        aria-label="Next page">
+      <button className={`${styles.arrow} glass`} onClick={() => onChange(page + 1)} disabled={page === totalPages - 1} aria-label="Next page">
         ›
       </button>
     </nav>

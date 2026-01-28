@@ -51,9 +51,9 @@ These tests verify the `useTheme` hook's behavior across different environments 
 
 ```jsx
 // src/hooks/useTheme.test.jsx — excerpt
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { useTheme } from './useTheme';
+import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { useTheme } from "./useTheme";
 
 function TestComponent() {
   const { theme, toggleTheme } = useTheme();
@@ -68,7 +68,7 @@ function TestComponent() {
 }
 
 // Example test
-it('defaults to system preference when no localStorage value exists (prefers dark)', () => {
+it("defaults to system preference when no localStorage value exists (prefers dark)", () => {
   window.matchMedia = vi.fn().mockImplementation(() => ({
     matches: true,
     addListener: vi.fn(),
@@ -79,9 +79,9 @@ it('defaults to system preference when no localStorage value exists (prefers dar
 
   render(<TestComponent />);
 
-  expect(screen.getByTestId('theme-value').textContent).toBe('dark');
-  expect(document.documentElement.classList.contains('dark')).toBe(true);
-  expect(localStorage.getItem('theme')).toBe('dark');
+  expect(screen.getByTestId("theme-value").textContent).toBe("dark");
+  expect(document.documentElement.classList.contains("dark")).toBe(true);
+  expect(localStorage.getItem("theme")).toBe("dark");
 });
 ```
 

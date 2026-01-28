@@ -25,7 +25,7 @@ keywords: [navbar, navigation, responsive, mobile menu, react component]
 ## Basic Usage
 
 ```jsx
-import NavBar from '@components/NavBar';
+import NavBar from "@components/NavBar";
 
 export default function App() {
   return (
@@ -145,11 +145,11 @@ The component follows accessibility best practices:
 ### Standard Usage (in App.jsx)
 
 ```jsx
-import { Routes, Route } from 'react-router-dom';
-import NavBar from '@components/NavBar';
-import Home from '@pages/Home';
-import About from '@pages/About';
-import Credits from '@pages/Credits';
+import { Routes, Route } from "react-router-dom";
+import NavBar from "@components/NavBar";
+import Home from "@pages/Home";
+import About from "@pages/About";
+import Credits from "@pages/Credits";
 
 export default function App() {
   return (
@@ -193,27 +193,27 @@ className={`${styles.navLink} ${pathname === path ? styles.active : ''}`}
 ## Implementation
 
 ```jsx title="NavBar.jsx"
-import { useState } from 'react';
-import { Home, Users, Info, Github, SquareArrowOutUpRight, Menu, X } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
-import styles from './NavBar.module.css';
-import GlassCard from '@components/GlassCard';
-import ThemeSwitch from '@components/ThemeSwitch';
-import Tooltip from '@components/Tooltip';
+import { useState } from "react";
+import { Home, Users, Info, Github, SquareArrowOutUpRight, Menu, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import styles from "./NavBar.module.css";
+import GlassCard from "@components/GlassCard";
+import ThemeSwitch from "@components/ThemeSwitch";
+import Tooltip from "@components/Tooltip";
 
 const INTERNAL_LINKS = [
-  { path: '/', label: 'Home', icon: Home, tooltip: 'Go to the home page' },
-  { path: '/credits', label: 'Credits', icon: Users, tooltip: 'View project credits' },
-  { path: '/about', label: 'About', icon: Info, tooltip: 'Learn more about Img2Num' },
+  { path: "/", label: "Home", icon: Home, tooltip: "Go to the home page" },
+  { path: "/credits", label: "Credits", icon: Users, tooltip: "View project credits" },
+  { path: "/about", label: "About", icon: Info, tooltip: "Learn more about Img2Num" },
 ];
 
 const EXTERNAL_LINKS = [
-  { href: 'https://ryan-millard.github.io/Img2Num/info/', label: 'Docs', icon: Info, tooltip: 'View documentation' },
+  { href: "https://ryan-millard.github.io/Img2Num/info/", label: "Docs", icon: Info, tooltip: "View documentation" },
   {
-    href: 'https://github.com/Ryan-Millard/Img2Num',
-    label: 'GitHub',
+    href: "https://github.com/Ryan-Millard/Img2Num",
+    label: "GitHub",
     icon: Github,
-    tooltip: 'Open the project on GitHub',
+    tooltip: "Open the project on GitHub",
   },
 ];
 

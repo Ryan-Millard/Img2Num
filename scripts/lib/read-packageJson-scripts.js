@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from "fs";
 
 /**
  * Load and normalize script metadata from a package-style JSON file.
@@ -22,9 +22,9 @@ export function readPackageJsonScripts(fileUrl) {
   for (const [group, entries] of Object.entries(groups)) {
     for (const [name, desc] of Object.entries(entries)) {
       flat[name] = {
-        desc: desc.desc || '', // take the actual string description
+        desc: desc.desc || "", // take the actual string description
         args: desc.args || [], // optional, if you want to show CLI args
-        command: scripts[name] || 'No command defined',
+        command: scripts[name] || "No command defined",
         group,
       };
     }

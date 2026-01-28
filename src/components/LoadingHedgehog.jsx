@@ -1,10 +1,10 @@
-import { useRef, useState, useEffect } from 'react';
-import styles from './LoadingHedgehog.module.css';
+import { useRef, useState, useEffect } from "react";
+import styles from "./LoadingHedgehog.module.css";
 
-import hedgeMove from '@assets/pixel_art_hedgehog/move/move.gif';
+import hedgeMove from "@assets/pixel_art_hedgehog/move/move.gif";
 //import hedgeIdle from '@assets/pixel_art_hedgehog/idle/idle.gif';
-import hedgeSleep from '@assets/pixel_art_hedgehog/sleep/sleep.gif';
-import hedgeSleepTransition from '@assets/pixel_art_hedgehog/sleep_transition/hedgehog.gif';
+import hedgeSleep from "@assets/pixel_art_hedgehog/sleep/sleep.gif";
+import hedgeSleepTransition from "@assets/pixel_art_hedgehog/sleep_transition/hedgehog.gif";
 
 const clamp = (v, a = 0, b = 100) => Math.min(b, Math.max(a, v));
 
@@ -13,7 +13,7 @@ const STALL_MS = 700; // how long without progress before we start sleeping
 const TRANSITION_MS = 900; // transition GIF duration (before switching to looped sleep)
 const POSITION_LERP = 0.12; // how quickly the hedgehog position eases toward target
 
-const LoadingHedgehog = ({ progress = 0, text = 'Processing image...' }) => {
+const LoadingHedgehog = ({ progress = 0, text = "Processing image..." }) => {
   // animation sources + visual states
   const [src, setSrc] = useState(hedgeMove);
   const [isSleeping, setIsSleeping] = useState(false);
@@ -188,14 +188,7 @@ const LoadingHedgehog = ({ progress = 0, text = 'Processing image...' }) => {
       <div className={styles.barWrap}>
         <div className={styles.grass} aria-hidden="true">
           {/* progress fill is inside the grass */}
-          <div
-            className={styles.fill}
-            role="progressbar"
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={Math.round(clamp(progress))}
-            style={{ width: `${clamp(progress)}%` }}
-          />
+          <div className={styles.fill} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(clamp(progress))} style={{ width: `${clamp(progress)}%` }} />
         </div>
 
         {/* hedgehog is a sibling overlay positioned on top of the grass (not inside) */}
@@ -203,7 +196,7 @@ const LoadingHedgehog = ({ progress = 0, text = 'Processing image...' }) => {
           <img
             src={src}
             alt="hedgehog"
-            className={`${styles.hedgehog} ${isSleeping ? styles.sleeping : ''}`}
+            className={`${styles.hedgehog} ${isSleeping ? styles.sleeping : ""}`}
             // use displayedProgress for hedgehog position so it can be frozen while sleeping
             style={{ left: `${clamp(displayedProgress)}%` }}
           />

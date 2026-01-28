@@ -32,7 +32,7 @@ By default, `GlassCard` renders a `div`, but this can be customized using the
 ## 🛠 Basic Usage
 
 ```jsx
-import { GlassCard } from './components/GlassCard';
+import { GlassCard } from "./components/GlassCard";
 
 const MyComponent = () => (
   <GlassCard>
@@ -71,11 +71,7 @@ You can change the underlying HTML element without losing any styling.
 All additional props are forwarded to the underlying element.
 
 ```jsx
-<GlassCard
-  id="main-card"
-  aria-label="Main featured card"
-  onClick={() => alert('Card clicked!')}
-  className="hover-effect">
+<GlassCard id="main-card" aria-label="Main featured card" onClick={() => alert("Card clicked!")} className="hover-effect">
   Interactive Card
 </GlassCard>
 ```

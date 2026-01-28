@@ -1,15 +1,15 @@
-import { Link } from 'react-router-dom';
-import GlassCard from '@components/GlassCard';
-import styles from './About.module.css';
-import Tooltip from '@components/Tooltip';
+import { Link } from "react-router-dom";
+import GlassCard from "@components/GlassCard";
+import styles from "./About.module.css";
+import Tooltip from "@components/Tooltip";
 
 const Author = () => (
   <GlassCard className={styles.container}>
     <h2>About the Author</h2>
 
     <p>
-      Hi, I’m Ryan! I’m a software developer passionate about image processing, web tools, and creative coding. Img2Num
-      started as a learning experiment and evolved into a tribute to Joan, my hedgehog.
+      Hi, I’m Ryan! I’m a software developer passionate about image processing, web tools, and creative coding. Img2Num started as a learning experiment and evolved into a tribute to Joan, my
+      hedgehog.
     </p>
 
     <div className="flex-space-evenly">

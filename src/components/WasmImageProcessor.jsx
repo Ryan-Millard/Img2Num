@@ -1,12 +1,12 @@
-import { useEffect, useState, useId, useRef, useCallback, useMemo } from 'react';
-import { Upload } from 'lucide-react';
-import { loadImageToUint8Array, uint8ClampedArrayToSVG } from '@utils/image-utils';
-import { useWasmWorker } from '@hooks/useWasmWorker';
-import GlassCard from '@components/GlassCard';
-import styles from './WasmImageProcessor.module.css';
-import { useNavigate } from 'react-router-dom';
-import LoadingHedgehog from '@components/LoadingHedgehog';
-import Tooltip from '@components/Tooltip';
+import { useEffect, useState, useId, useRef, useCallback, useMemo } from "react";
+import { Upload } from "lucide-react";
+import { loadImageToUint8Array, uint8ClampedArrayToSVG } from "@utils/image-utils";
+import { useWasmWorker } from "@hooks/useWasmWorker";
+import GlassCard from "@components/GlassCard";
+import styles from "./WasmImageProcessor.module.css";
+import { useNavigate } from "react-router-dom";
+import LoadingHedgehog from "@components/LoadingHedgehog";
+import Tooltip from "@components/Tooltip";
 
 const WasmImageProcessor = () => {
   const navigate = useNavigate();
@@ -42,15 +42,15 @@ const WasmImageProcessor = () => {
   useEffect(() => {
     const handlePaste = (e) => {
       for (const item of e.clipboardData?.items || []) {
-        if (item.type.startsWith('image/')) {
+        if (item.type.startsWith("image/")) {
           loadOriginal(item.getAsFile());
           break;
         }
       }
     };
 
-    document.addEventListener('paste', handlePaste);
-    return () => document.removeEventListener('paste', handlePaste);
+    document.addEventListener("paste", handlePaste);
+    return () => document.removeEventListener("paste", handlePaste);
   }, [loadOriginal]);
 
   /* Drag & drop */
@@ -59,7 +59,7 @@ const WasmImageProcessor = () => {
       e.preventDefault();
       loadOriginal(e.dataTransfer.files[0]);
     },
-    [loadOriginal]
+    [loadOriginal],
   );
 
   const handleSelect = useCallback((e) => loadOriginal(e.target.files[0]), [loadOriginal]);
@@ -116,7 +116,7 @@ const WasmImageProcessor = () => {
 
       step(100);
 
-      navigate('/editor', {
+      navigate("/editor", {
         state: { svg },
       });
     } catch (err) {
@@ -138,14 +138,14 @@ const WasmImageProcessor = () => {
         </Tooltip>
 
         <p className={`text-center ${styles.dragDropText}`}>
-          Drag & Drop or{' '}
+          Drag & Drop or{" "}
           <Tooltip content="Select an image file from your computer">
             <span className={`anchor-style ${styles.noTextWrap}`}>Choose File</span>
           </Tooltip>
         </p>
       </>
     ),
-    []
+    [],
   );
 
   const LoadedState = useMemo(() => {
@@ -162,7 +162,8 @@ const WasmImageProcessor = () => {
               onClick={(e) => {
                 e.stopPropagation();
                 processImage();
-              }}>
+              }}
+            >
               Ok
             </button>
           </Tooltip>
@@ -181,7 +182,8 @@ const WasmImageProcessor = () => {
       onClick={() => {
         if (!originalSrc) inputRef.current?.click();
       }}
-      data-image-loaded={!!originalSrc}>
+      data-image-loaded={!!originalSrc}
+    >
       {originalSrc ? LoadedState : EmptyState}
 
       <input ref={inputRef} id={inputId} type="file" accept="image/*" hidden onChange={handleSelect} />

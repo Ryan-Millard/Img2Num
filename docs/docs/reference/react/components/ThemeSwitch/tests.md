@@ -58,25 +58,25 @@ npm test -- --watch ThemeSwitch.test.jsx
 ### Rendering switch with light theme
 
 ```javascript
-vi.spyOn(useThemeModule, 'useTheme').mockReturnValue({ theme: 'light', toggleTheme: mockToggleTheme });
+vi.spyOn(useThemeModule, "useTheme").mockReturnValue({ theme: "light", toggleTheme: mockToggleTheme });
 render(<ThemeSwitch />);
-const button = screen.getByRole('switch', { name: 'switch to dark mode' });
+const button = screen.getByRole("switch", { name: "switch to dark mode" });
 expect(button).toBeInTheDocument();
-expect(button).toHaveAttribute('type', 'button');
+expect(button).toHaveAttribute("type", "button");
 ```
 
 ### Testing icon display
 
 ```javascript
-const moonIcon = screen.getByTestId('moon-icon');
+const moonIcon = screen.getByTestId("moon-icon");
 expect(moonIcon).toBeInTheDocument();
-expect(screen.queryByTestId('sun-icon')).not.toBeInTheDocument();
+expect(screen.queryByTestId("sun-icon")).not.toBeInTheDocument();
 ```
 
 ### Testing toggleTheme
 
 ```javascript
-const button = screen.getByRole('switch', { name: 'switch to dark mode' });
+const button = screen.getByRole("switch", { name: "switch to dark mode" });
 fireEvent.click(button);
 expect(mockToggleTheme).toHaveBeenCalledTimes(1);
 ```
@@ -84,9 +84,9 @@ expect(mockToggleTheme).toHaveBeenCalledTimes(1);
 ### Edge case: undefined theme
 
 ```javascript
-vi.spyOn(useThemeModule, 'useTheme').mockReturnValue({ theme: undefined, toggleTheme: mockToggleTheme });
+vi.spyOn(useThemeModule, "useTheme").mockReturnValue({ theme: undefined, toggleTheme: mockToggleTheme });
 render(<ThemeSwitch />);
-expect(screen.getByTestId('moon-icon')).toBeInTheDocument();
+expect(screen.getByTestId("moon-icon")).toBeInTheDocument();
 ```
 
 ## Test utilities

@@ -16,7 +16,7 @@ title: Tooltip
 ## Basic usage
 
 ```jsx
-import Tooltip from '@components/Tooltip';
+import Tooltip from "@components/Tooltip";
 
 export default function Example() {
   return (
@@ -45,6 +45,21 @@ so keyboard users can discover the tooltip. The actual tooltip element is render
 but the component behaves best when given **a single element** so attributes can be attached directly.
 :::
 
+## Touch Device Support
+
+The component automatically detects touch devices and provides enhanced behavior:
+
+- **Touch detection:** Uses multiple detection methods (`navigator.maxTouchPoints`, media queries, and `ontouchstart`) for reliable cross-device detection.
+- **Click to reveal:** On touch devices, clicking/tapping the trigger element shows the tooltip.
+- **Focus to reveal:** On touch devices, focusing the trigger element (e.g., via keyboard) also shows the tooltip.
+- **Auto-hide:** Tooltips automatically hide after 1 second on touch devices (since hover isn't available).
+- **Dynamic detection:** The component listens for input changes (e.g., when a mouse is plugged into a tablet) and updates behavior accordingly.
+- **Preserved handlers:** Any existing `onClick` and `onFocus` handlers on child elements are preserved and called before the tooltip logic runs.
+
+:::tip
+On touch devices, users can tap elements to reveal tooltips, providing an equivalent experience to hover on desktop.
+:::
+
 ## Accessibility & Link behaviour
 
 - `react-tooltip` renders a node with `role="tooltip"`; screen-readers can discover the tooltip content through that node.
@@ -56,6 +71,7 @@ but the component behaves best when given **a single element** so attributes can
 - **Important:** Do **not** wrap a focusable child inside an extra `tabIndex={0}` element - this creates two tab stops (double focus).
   Prefer giving the tooltip attributes directly to the interactive element.
   For example, wrap the `<a>` with `Tooltip` rather than putting `Tooltip` inside the `<a>` with a nested focusable wrapper.
+- **Touch accessibility:** Touch device users can tap to reveal tooltips, which auto-hide after 1 second.
 
 ### Good: attach tooltip to the interactive element
 
@@ -82,8 +98,9 @@ but the component behaves best when given **a single element** so attributes can
 
 - The component tries to attach `data-tooltip-id` and `data-tooltip-content` directly to the single React child you pass by cloning it.
   This preserves semantics for `<a>`, `<button>` and `<Link>` components and avoids double tab stops.
-  If `children` is not a valid single element, the component renders a `<span tabIndex={0}>` wrapper and attaches the attributes there.
-- `appendTo={document.body}` and `positionStrategy="fixed"` - the tooltip is rendered as a portal to the document body so it sits above layout and isn’t clipped by scroll/overflow.
+  If `children` is not a valid single element, the component renders a `<span tabIndex={0}>` wrapper and attaches the attributes there.- **Touch device detection:** Uses a `useEffect` hook to detect touch devices on mount and listens for input changes (e.g., mouse being plugged in).
+- **onClick handler preservation:** When cloning child elements, the component merges any existing `onClick` handler with the touch tooltip logic, ensuring both are called.
+- **Controlled tooltip state:** On touch devices, uses `isOpen` state with `isOpen` prop on `ReactTooltip` to manually control visibility (show on click, auto-hide after 1 second).- `appendTo={document.body}` and `positionStrategy="fixed"` - the tooltip is rendered as a portal to the document body so it sits above layout and isn’t clipped by scroll/overflow.
 - `useId()` is used to generate a stable id at runtime; you can pass your own `id` prop if you need deterministic IDs.
 - `dynamicPositioning` default `true` provides fallback placements when the preferred placement doesn't fit. Set to `false` to force a single placement.
 - `openOnFocus` is enabled so keyboard users can open the tooltip when the trigger element receives focus. Make sure the trigger element is focusable (native element or wrapper with `tabIndex={0}`).
@@ -123,17 +140,17 @@ but the component behaves best when given **a single element** so attributes can
   Wrap assertions in `await waitFor()` or use `findBy*` queries which retry until the element appears. Example patterns:
 
   ```js title="Hover"
-  await user.hover(screen.getByText('Hover me'));
-  expect(await screen.findByText('Hello tooltip')).toBeVisible();
+  await user.hover(screen.getByText("Hover me"));
+  expect(await screen.findByText("Hello tooltip")).toBeVisible();
   ```
 
   ```js title="Focus"
   await user.tab();
-  expect(await screen.findByText('Hello tooltip')).toBeVisible();
+  expect(await screen.findByText("Hello tooltip")).toBeVisible();
   ```
 
   ```js title="Hide with waitFor to accommodate transition"
-  await waitFor(() => expect(screen.queryByText('Hello tooltip')).not.toBeInTheDocument());
+  await waitFor(() => expect(screen.queryByText("Hello tooltip")).not.toBeInTheDocument());
   ```
 
 - In tests prefer passing an actual element as `children` (button, Link, or anchor)

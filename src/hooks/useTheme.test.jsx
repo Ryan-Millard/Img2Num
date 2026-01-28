@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import React from 'react';
-import { useTheme } from './useTheme'; // adjust path if needed
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import React from "react";
+import { useTheme } from "./useTheme"; // adjust path if needed
 
 // A small test component that exposes the hook for testing
 function TestComponent() {
@@ -16,7 +16,7 @@ function TestComponent() {
   );
 }
 
-describe('useTheme hook', () => {
+describe("useTheme hook", () => {
   let originalMatchMedia;
 
   beforeEach(() => {
@@ -41,18 +41,18 @@ describe('useTheme hook', () => {
     });
 
     // Clean documentElement classes
-    document.documentElement.className = '';
+    document.documentElement.className = "";
   });
 
   afterEach(() => {
     // Restore matchMedia
     window.matchMedia = originalMatchMedia;
     localStorage.clear();
-    document.documentElement.className = '';
+    document.documentElement.className = "";
     vi.clearAllMocks();
   });
 
-  it('defaults to system preference when no localStorage value exists (prefers dark)', () => {
+  it("defaults to system preference when no localStorage value exists (prefers dark)", () => {
     // Simulate system preference = dark
     window.matchMedia = vi.fn().mockImplementation(() => ({
       matches: true,
@@ -64,16 +64,16 @@ describe('useTheme hook', () => {
 
     render(<TestComponent />);
 
-    const themeSpan = screen.getByTestId('theme-value');
-    expect(themeSpan.textContent).toBe('dark');
+    const themeSpan = screen.getByTestId("theme-value");
+    expect(themeSpan.textContent).toBe("dark");
 
     // documentElement should have 'dark' class and localStorage should be set
-    expect(document.documentElement.classList.contains('dark')).toBe(true);
-    expect(localStorage.getItem('theme')).toBe('dark');
+    expect(document.documentElement.classList.contains("dark")).toBe(true);
+    expect(localStorage.getItem("theme")).toBe("dark");
   });
 
-  it('uses localStorage value when present', () => {
-    localStorage.setItem('theme', 'light'); // preexisting preference
+  it("uses localStorage value when present", () => {
+    localStorage.setItem("theme", "light"); // preexisting preference
 
     // Even if system prefers dark, localStorage should win
     window.matchMedia = vi.fn().mockImplementation(() => ({
@@ -86,49 +86,49 @@ describe('useTheme hook', () => {
 
     render(<TestComponent />);
 
-    const themeSpan = screen.getByTestId('theme-value');
-    expect(themeSpan.textContent).toBe('light');
+    const themeSpan = screen.getByTestId("theme-value");
+    expect(themeSpan.textContent).toBe("light");
 
-    expect(document.documentElement.classList.contains('light')).toBe(true);
-    expect(localStorage.getItem('theme')).toBe('light');
+    expect(document.documentElement.classList.contains("light")).toBe(true);
+    expect(localStorage.getItem("theme")).toBe("light");
   });
 
-  it('toggleTheme toggles theme and updates document class & localStorage', () => {
+  it("toggleTheme toggles theme and updates document class & localStorage", () => {
     // Start with light
-    localStorage.setItem('theme', 'light');
+    localStorage.setItem("theme", "light");
     render(<TestComponent />);
 
-    const themeSpan = screen.getByTestId('theme-value');
-    const btn = screen.getByTestId('toggle-btn');
+    const themeSpan = screen.getByTestId("theme-value");
+    const btn = screen.getByTestId("toggle-btn");
 
-    expect(themeSpan.textContent).toBe('light');
-    expect(document.documentElement.classList.contains('light')).toBe(true);
-    expect(localStorage.getItem('theme')).toBe('light');
+    expect(themeSpan.textContent).toBe("light");
+    expect(document.documentElement.classList.contains("light")).toBe(true);
+    expect(localStorage.getItem("theme")).toBe("light");
 
     // Toggle to dark
     fireEvent.click(btn);
 
     // After toggle, hook state should have updated
-    expect(screen.getByTestId('theme-value').textContent).toBe('dark');
-    expect(document.documentElement.classList.contains('dark')).toBe(true);
-    expect(localStorage.getItem('theme')).toBe('dark');
+    expect(screen.getByTestId("theme-value").textContent).toBe("dark");
+    expect(document.documentElement.classList.contains("dark")).toBe(true);
+    expect(localStorage.getItem("theme")).toBe("dark");
 
     // Toggle back to light
     fireEvent.click(btn);
-    expect(screen.getByTestId('theme-value').textContent).toBe('light');
-    expect(document.documentElement.classList.contains('light')).toBe(true);
-    expect(localStorage.getItem('theme')).toBe('light');
+    expect(screen.getByTestId("theme-value").textContent).toBe("light");
+    expect(document.documentElement.classList.contains("light")).toBe(true);
+    expect(localStorage.getItem("theme")).toBe("light");
   });
 
-  it('handles unexpected / falsy stored theme gracefully', () => {
+  it("handles unexpected / falsy stored theme gracefully", () => {
     // store null-like string or unexpected value
-    localStorage.setItem('theme', 'unexpected-theme');
+    localStorage.setItem("theme", "unexpected-theme");
 
     render(<TestComponent />);
     // The hook will still set the class to the stored value (so document class will match),
     // but your app logic might treat non 'dark' as light when rendering icons/components.
-    expect(screen.getByTestId('theme-value').textContent).toBe('unexpected-theme');
-    expect(document.documentElement.classList.contains('unexpected-theme')).toBe(true);
-    expect(localStorage.getItem('theme')).toBe('unexpected-theme');
+    expect(screen.getByTestId("theme-value").textContent).toBe("unexpected-theme");
+    expect(document.documentElement.classList.contains("unexpected-theme")).toBe(true);
+    expect(localStorage.getItem("theme")).toBe("unexpected-theme");
   });
 });

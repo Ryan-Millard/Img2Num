@@ -130,13 +130,13 @@ Tests for proper React lifecycle handling:
 ### CSS Module Mock
 
 ```jsx
-vi.mock('./Pagination.module.css', () => ({
+vi.mock("./Pagination.module.css", () => ({
   default: {
-    pagination: 'mocked-pagination-class',
-    arrow: 'mocked-arrow-class',
-    page: 'mocked-page-class',
-    active: 'mocked-active-class',
-    ellipsis: 'mocked-ellipsis-class',
+    pagination: "mocked-pagination-class",
+    arrow: "mocked-arrow-class",
+    page: "mocked-page-class",
+    active: "mocked-active-class",
+    ellipsis: "mocked-ellipsis-class",
   },
 }));
 ```

@@ -4,19 +4,18 @@
 // There are various equivalent ways to declare your Docusaurus config.
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
-import { createRequire } from 'module';
-import { themes as prismThemes } from 'prism-react-renderer';
-import path from 'path';
-import webpackAliasPlugin from './plugins/webpack-alias/index.js';
-import { changelogSidebarGenerator } from './changelogSidebarGenerator.js';
-import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
+import { createRequire } from "module";
+import { themes as prismThemes } from "prism-react-renderer";
+import path from "path";
+import webpackAliasPlugin from "./plugins/webpack-alias/index.js";
+import { changelogSidebarGenerator } from "./changelogSidebarGenerator.js";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 
 const require = createRequire(import.meta.url);
-require('dotenv').config();
+require("dotenv").config();
 
-const hasAlgoliaEnvDefined =
-  process.env.ALGOLIA_APP_ID && process.env.ALGOLIA_API_KEY && process.env.ALGOLIA_INDEX_NAME;
+const hasAlgoliaEnvDefined = process.env.ALGOLIA_APP_ID && process.env.ALGOLIA_API_KEY && process.env.ALGOLIA_INDEX_NAME;
 const algolia = hasAlgoliaEnvDefined
   ? {
       appId: process.env.ALGOLIA_APP_ID,
@@ -26,16 +25,15 @@ const algolia = hasAlgoliaEnvDefined
     }
   : undefined;
 const algoliaHeadTag = {
-  name: 'algolia-site-verification',
-  content: 'DB4B5FEC1545D32B',
+  name: "algolia-site-verification",
+  content: "DB4B5FEC1545D32B",
 };
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Img2Num',
-  tagline:
-    'Transforms any image into a printable or digital colour-by-number template using WebAssembly-powered C++ image processing.',
-  favicon: 'img/favicon.svg',
+  title: "Img2Num",
+  tagline: "Transforms any image into a printable or digital colour-by-number template using WebAssembly-powered C++ image processing.",
+  favicon: "img/favicon.svg",
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -46,54 +44,54 @@ const config = {
     mermaid: true,
   },
 
-  themes: ['@docusaurus/theme-mermaid'],
+  themes: ["@docusaurus/theme-mermaid"],
 
   // Set the production url of your site here
-  url: 'https://ryan-millard.github.io/',
+  url: "https://ryan-millard.github.io/",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/Img2Num/info/',
+  baseUrl: "/Img2Num/info/",
 
   // GitHub Pages fix: canonical URL with trailing slash
   trailingSlash: true,
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'Ryan-Millard', // Usually your GitHub org/user name.
-  projectName: 'Img2Num', // Usually your repo name.
+  organizationName: "Ryan-Millard", // Usually your GitHub org/user name.
+  projectName: "Img2Num", // Usually your repo name.
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: "throw",
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+    defaultLocale: "en",
+    locales: ["en"],
   },
 
   // Folders with static resources
   staticDirectories: [
-    path.resolve(__dirname, 'static'), // default docusaurus folder
-    path.resolve(__dirname, '..', 'public'), // main app's public folder
+    path.resolve(__dirname, "static"), // default docusaurus folder
+    path.resolve(__dirname, "..", "public"), // main app's public folder
   ],
 
   plugins: [
     [
-      '@docusaurus/plugin-content-docs',
+      "@docusaurus/plugin-content-docs",
       {
-        id: 'changelog',
-        path: 'changelog',
-        routeBasePath: 'changelog',
-        sidebarPath: require.resolve('./sidebars.js'),
+        id: "changelog",
+        path: "changelog",
+        routeBasePath: "changelog",
+        sidebarPath: require.resolve("./sidebars.js"),
         sidebarItemsGenerator: changelogSidebarGenerator,
       },
     ],
     webpackAliasPlugin,
     [
-      '@docusaurus/plugin-google-gtag',
+      "@docusaurus/plugin-google-gtag",
       {
-        trackingID: 'G-C7LD33MNTX',
+        trackingID: "G-C7LD33MNTX",
         anonymizeIP: true,
       },
     ],
@@ -101,44 +99,44 @@ const config = {
 
   presets: [
     [
-      'classic',
+      "classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: './sidebars.js',
+          sidebarPath: "./sidebars.js",
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: 'https://github.com/Ryan-Millard/Img2Num/edit/main/docs/',
-          routeBasePath: 'docs',
+          editUrl: "https://github.com/Ryan-Millard/Img2Num/edit/main/docs/",
+          routeBasePath: "docs",
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
         },
         blog: {
           showReadingTime: true,
           feedOptions: {
-            type: ['rss', 'atom'],
+            type: ["rss", "atom"],
             xslt: true,
           },
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: 'https://github.com/Ryan-Millard/Img2Num/edit/main/docs/',
+          editUrl: "https://github.com/Ryan-Millard/Img2Num/edit/main/docs/",
           // Useful options to enforce blogging best practices
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
+          onInlineTags: "warn",
+          onInlineAuthors: "warn",
+          onUntruncatedBlogPosts: "warn",
         },
         theme: {
-          customCss: './src/css/custom.css',
+          customCss: "./src/css/custom.css",
         },
       }),
     ],
   ],
   stylesheets: [
     {
-      href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
-      type: 'text/css',
-      integrity: 'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
-      crossorigin: 'anonymous',
+      href: "https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css",
+      type: "text/css",
+      integrity: "sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM",
+      crossorigin: "anonymous",
     },
   ],
 
@@ -146,7 +144,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       // Replace with your project's social card
-      image: 'img/docusaurus-social-card.jpg',
+      image: "img/docusaurus-social-card.jpg",
       colorMode: {
         respectPrefersColorScheme: true,
       },
@@ -156,59 +154,59 @@ const config = {
       algolia,
 
       navbar: {
-        title: 'Img2Num',
+        title: "Img2Num",
         logo: {
-          alt: 'Img2Num Logo',
-          src: 'img/favicon.svg',
+          alt: "Img2Num Logo",
+          src: "img/favicon.svg",
         },
         items: [
           {
-            type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
-            position: 'left',
-            label: 'Documentation',
-            to: '/docs',
+            type: "docSidebar",
+            sidebarId: "tutorialSidebar",
+            position: "left",
+            label: "Documentation",
+            to: "/docs",
           },
-          { to: '/blog', label: 'Blog', position: 'left' },
-          { to: '/changelog', label: 'Changelog', position: 'left' },
+          { to: "/blog", label: "Blog", position: "left" },
+          { to: "/changelog", label: "Changelog", position: "left" },
           {
-            href: 'https://github.com/Ryan-Millard/Img2Num',
-            label: 'GitHub',
-            position: 'right',
+            href: "https://github.com/Ryan-Millard/Img2Num",
+            label: "GitHub",
+            position: "right",
           },
         ],
       },
       footer: {
-        style: 'dark',
+        style: "dark",
         links: [
           {
-            title: 'Documentation',
+            title: "Documentation",
             items: [
               {
-                label: 'Documentation',
-                to: '/docs',
+                label: "Documentation",
+                to: "/docs",
               },
             ],
           },
           {
-            title: 'Community',
+            title: "Community",
             items: [
               {
-                label: 'GitHub Discussions',
-                href: 'https://github.com/Ryan-Millard/Img2Num/discussions',
+                label: "GitHub Discussions",
+                href: "https://github.com/Ryan-Millard/Img2Num/discussions",
               },
             ],
           },
           {
-            title: 'More',
+            title: "More",
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
+                label: "Blog",
+                to: "/blog",
               },
               {
-                label: 'GitHub',
-                href: 'https://github.com/Ryan-Millard/Img2Num',
+                label: "GitHub",
+                href: "https://github.com/Ryan-Millard/Img2Num",
               },
             ],
           },

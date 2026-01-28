@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import { Home, Users, Info, Github, SquareArrowOutUpRight, Menu, X } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
-import styles from './NavBar.module.css';
-import GlassCard from '@components/GlassCard';
-import ThemeSwitch from '@components/ThemeSwitch';
-import Tooltip from '@components/Tooltip';
+import React, { useState } from "react";
+import { Home, Users, Info, Github, SquareArrowOutUpRight, Menu, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import styles from "./NavBar.module.css";
+import GlassCard from "@components/GlassCard";
+import ThemeSwitch from "@components/ThemeSwitch";
+import Tooltip from "@components/Tooltip";
 
 const INTERNAL_LINKS = [
-  { path: '/', label: 'Home', icon: Home, tooltip: 'Go to the home page' },
-  { path: '/credits', label: 'Credits', icon: Users, tooltip: 'View project credits' },
-  { path: '/about', label: 'About', icon: Info, tooltip: 'Learn more about Img2Num' },
+  { path: "/", label: "Home", icon: Home, tooltip: "Go to the home page" },
+  { path: "/credits", label: "Credits", icon: Users, tooltip: "View project credits" },
+  { path: "/about", label: "About", icon: Info, tooltip: "Learn more about Img2Num" },
 ];
 
 const EXTERNAL_LINKS = [
-  { href: 'https://ryan-millard.github.io/Img2Num/info/', label: 'Docs', icon: Info, tooltip: 'View documentation' },
+  { href: "https://ryan-millard.github.io/Img2Num/info/", label: "Docs", icon: Info, tooltip: "View documentation" },
   {
-    href: 'https://github.com/Ryan-Millard/Img2Num',
-    label: 'GitHub',
+    href: "https://github.com/Ryan-Millard/Img2Num",
+    label: "GitHub",
     icon: Github,
-    tooltip: 'Open the project on GitHub',
+    tooltip: "Open the project on GitHub",
   },
 ];
 
@@ -43,27 +43,18 @@ export default function NavBar() {
         </Tooltip>
 
         {/* Mobile Toggle */}
-        <Tooltip content={isOpen ? 'Close menu' : 'Open menu'}>
-          <button
-            className={styles.menuToggle}
-            onClick={() => setIsOpen(!isOpen)}
-            aria-expanded={isOpen}
-            aria-controls="nav-menu"
-            aria-label={isOpen ? 'Close menu' : 'Open menu'}>
+        <Tooltip content={isOpen ? "Close menu" : "Open menu"}>
+          <button className={styles.menuToggle} onClick={() => setIsOpen(!isOpen)} aria-expanded={isOpen} aria-controls="nav-menu" aria-label={isOpen ? "Close menu" : "Open menu"}>
             {isOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </Tooltip>
 
         {/* Navigation */}
-        <ul id="nav-menu" className={`${styles.navList} ${isOpen ? styles.open : ''}`} role="menubar">
+        <ul id="nav-menu" className={`${styles.navList} ${isOpen ? styles.open : ""}`} role="menubar">
           {INTERNAL_LINKS.map(({ path, label, icon, tooltip }) => (
             <li key={path} role="none">
               <Tooltip content={tooltip}>
-                <Link
-                  to={path}
-                  role="menuitem"
-                  className={`${styles.navLink} ${pathname === path ? styles.active : ''}`}
-                  onClick={closeMenu}>
+                <Link to={path} role="menuitem" className={`${styles.navLink} ${pathname === path ? styles.active : ""}`} onClick={closeMenu}>
                   {/* Supress eslint "no-unused-vars" rule */}
                   {React.createElement(icon, { size: 16 })}
                   <span>{label}</span>
