@@ -13,6 +13,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
+#include <iomanip>
 #include <iostream>
 #include <limits>
 #include <map>
@@ -20,7 +21,14 @@
 #include <queue>
 #include <random>
 #include <set>
+#include <sstream>
 #include <vector>
+
+struct ColoredContours : ContoursResult {
+  // inherits: contours, hierarchy, is_hole
+
+  std::vector<ImageLib::RGBAPixel<uint8_t>> colors;
+};
 
 /* Flood fill */
 int flood_fill(std::vector<int32_t> &label_array,
@@ -103,34 +111,74 @@ void region_labeling(const uint8_t *data, std::vector<int32_t> &labels,
 }
 
 void visualize_contours(const std::vector<std::vector<Point>> &contours,
-                        std::vector<uint8_t> &results, int width, int height,
-                        int xmin = 0, int ymin = 0) {
+                        ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> &results,
+                        int width, int height, int xmin = 0, int ymin = 0) {
   auto index = [width](int x, int y) { return y * width + x; };
 
   // Random generator for colors
   static std::mt19937 rng(std::random_device{}());
   static std::uniform_int_distribution<int32_t> dist(0, 255);
-
   for (const auto &c : contours) {
-    uint8_t color[4] = {static_cast<uint8_t>(dist(rng)),
-                        static_cast<uint8_t>(dist(rng)),
-                        static_cast<uint8_t>(dist(rng)), 255};
+    ImageLib::RGBAPixel<uint8_t> rand_color{
+        static_cast<uint8_t>(dist(rng)), static_cast<uint8_t>(dist(rng)),
+        static_cast<uint8_t>(dist(rng)), 255};
 
     for (const auto &p : c) {
-      int32_t _x = p.x + xmin;
-      int32_t _y = p.y + ymin;
+      int32_t _x{p.x + xmin};
+      int32_t _y{p.y + ymin};
 
       // Ensure within bounds
       if (_x < 0 || _x >= width || _y < 0 || _y >= height)
         continue;
 
-      size_t idx = 4 * static_cast<size_t>(index(_x, _y));
-      results[idx] = color[0];
-      results[idx + 1] = color[1];
-      results[idx + 2] = color[2];
-      results[idx + 3] = color[3];
+      results(_x, _y) = rand_color;
     }
   }
+}
+
+std::string contourToSVGPath(const std::vector<Point> &contour) {
+  if (contour.empty())
+    return "";
+
+  std::ostringstream path;
+  path << std::fixed << std::setprecision(0);
+
+  // Move to the first point
+  path << "M " << contour[0].x << " " << contour[0].y << " ";
+
+  // Draw lines to the remaining points
+  for (size_t i = 1; i < contour.size(); ++i) {
+    path << "L " << contour[i].x << " " << contour[i].y << " ";
+  }
+
+  // Close the path
+  path << "Z";
+  return path.str();
+}
+
+std::string contoursResultToSVG(const ColoredContours &result, const int width,
+                                const int height) {
+  std::ostringstream svg;
+  svg << "<svg xmlns=\"http://www.w3.org/2000/svg\" fill-rule=\"evenodd\" "
+         "width=\""
+      << width << "\" height=\"" << height << "\">\n";
+
+  for (size_t i = 0; i < result.contours.size(); ++i) {
+    std::string pathData = contourToSVGPath(result.contours[i]);
+
+    const auto &px = result.colors[i];
+    std::ostringstream oss;
+    oss << "#" << std::hex << std::uppercase << std::setw(2)
+        << std::setfill('0') << static_cast<int>(px.red) << std::setw(2)
+        << std::setfill('0') << static_cast<int>(px.green) << std::setw(2)
+        << std::setfill('0') << static_cast<int>(px.blue);
+
+    // You can optionally style holes differently or rely on fill-rule
+    svg << "  <path d=\"" << pathData << "\" fill=\"" << oss.str() << "\" />\n";
+  }
+
+  svg << "</svg>\n";
+  return svg.str();
 }
 
 /*
@@ -143,9 +191,9 @@ void visualize_contours(const std::vector<std::vector<Point>> &contours,
  *
  * labels : width * height : number of pixels in image = 1 : 1 : 1
  */
-void kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
-                             const int height, const int min_area,
-                             const bool draw_contour_borders) {
+char *kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
+                              const int height, const int min_area,
+                              const bool draw_contour_borders) {
   const int32_t num_pixels{width * height};
   std::vector<int32_t> kmeans_labels{labels, labels + num_pixels};
   std::vector<int32_t> region_labels;
@@ -159,44 +207,31 @@ void kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
       std::make_unique<std::vector<Node_ptr>>(std::move(nodes));
   Graph G(node_ptr);
 
-  // 3. Discover node adjancencies - add edges to Graph
+  // 3. Discover node adjacencies - add edges to Graph
   G.discover_edges(region_labels, width, height);
 
   // 4. Merge small area nodes until all nodes are minArea or larger
   G.merge_small_area_nodes(min_area);
 
   // 5. recolor image on new regions
-  std::vector<uint8_t> results(4 * static_cast<size_t>(width) *
-                               static_cast<size_t>(height));
-  auto index = [width](int x, int y) { return y * width + x; };
-
+  ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> results{width, height};
   for (auto &n : G.get_nodes()) {
-    if (n->area() == 0) {
+    if (n->area() == 0)
       continue;
-    }
-    ImageLib::RGBPixel<uint8_t> col = n->color();
+
+    auto [r, g, b] = n->color();
     for (auto &[_, p] : n->get_pixels()) {
-      size_t idx{4 * static_cast<size_t>(index(p.x, p.y))};
-      results[idx] = col.red;
-      results[idx + 1] = col.green;
-      results[idx + 2] = col.blue;
-      results[idx + 3] = data[idx + 3];
+      results(p.x, p.y) = {r, g, b};
     }
   }
 
   // 6. Contours
-  for (auto &n : G.get_nodes()) {
-    // for each node collect pixels, convert to binary image, find contours
-    if (n->area() == 0) {
-      continue;
-    }
+  ColoredContours all_contours;
 
-    /*
-       get tight bounding box the encapsulates
-       all pixels held by node.
-       returns in format xmin, ymin, width, height
-       return a binary image - pixel present = 1, pixel absent = 0
-       */
+  for (auto &n : G.get_nodes()) {
+    if (n->area() == 0)
+      continue;
+
     std::array<int32_t, 4> xywh;
     std::vector<uint8_t> binary;
 
@@ -212,8 +247,41 @@ void kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
     if (draw_contour_borders) {
       visualize_contours(contour_res.contours, results, width, height, xmin,
                          ymin);
+    } else {
+      // shift contour coordinates to image space
+      for (size_t cidx = 0; cidx < contour_res.contours.size(); ++cidx) {
+        auto &contour = contour_res.contours[cidx];
+        for (auto &p : contour) {
+          p.x += xmin;
+          p.y += ymin;
+        }
+
+        // pick the color from the first pixel of the contour in the recolored
+        // image
+        const auto &first_px = contour[0];
+        ImageLib::RGBAPixel<uint8_t> col = results(first_px.x, first_px.y);
+
+        all_contours.contours.push_back(contour);
+        all_contours.hierarchy.push_back(contour_res.hierarchy[cidx]);
+        all_contours.is_hole.push_back(contour_res.is_hole[cidx]);
+        all_contours.colors.push_back(col);
+      }
     }
   }
 
-  std::memcpy(data, results.data(), results.size());
+  // 7. Copy recolored image back
+  const auto &modified = results.getData();
+  std::memcpy(data, modified.data(),
+              modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
+
+  // 8. Return SVG if requested
+  if (!draw_contour_borders) {
+    std::string svg = contoursResultToSVG(all_contours, width, height);
+    // allocate char* dynamically
+    char *res_svg = new char[svg.size() + 1];
+    std::memcpy(res_svg, svg.c_str(), svg.size() + 1);
+    return res_svg;
+  }
+
+  return nullptr; // no SVG
 }
