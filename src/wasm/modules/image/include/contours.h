@@ -1,16 +1,29 @@
 #ifndef CONTOURS_H
 #define CONTOURS_H
 
+#include "Image.h"
+#include "PixelConverters.h"
+#include "RGBAPixel.h"
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
+#include <iterator>
+#include <map>
+#include <set>
 #include <stdexcept>
+#include <utility>
 #include <vector>
 
+// will start as integer values but can be adjusted to subpixel positions
 struct Point {
-  int x = 0;
-  int y = 0;
+  float x = 0;
+  float y = 0;
+};
+
+struct Rect {
+  float x, y, width, height;
 };
 
 struct ContoursResult {
@@ -26,8 +39,21 @@ struct ContoursResult {
   std::vector<bool> is_hole;
 };
 
+struct ColoredContours : ContoursResult {
+  // inherits: contours, hierarchy, is_hole
+
+  std::vector<ImageLib::RGBAPixel<uint8_t>> colors;
+};
+
 namespace contours {
 ContoursResult find_contours(const std::vector<uint8_t> &binary, int width,
                              int height);
-}
+
+void stitchSmooth(std::vector<Point> &vecA, std::vector<Point> &vecB);
+
+void packWithBoundaryConstraints(std::vector<std::vector<Point>> &contours,
+                                 Rect bounds, int iterations = 15);
+
+} // namespace contours
+
 #endif

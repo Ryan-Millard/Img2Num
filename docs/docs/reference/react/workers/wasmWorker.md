@@ -13,10 +13,11 @@ It allows expensive WASM computations to run independently from the main thread,
 :::tip JS-to-WASM Memory
 All data is copied between JavaScript and WASM - this avoids unexpected use-after-free bugs in JS.
 
-| Language    | Memory type                    | Data supplier                                                                                                                                        | Who manages it                |
-|-------------|--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------|
-| JavaScript  | Detached Copy of WASM data     | [`wasmWorker.js`](https://github.com/Ryan-Millard/Img2Num/tree/main/src/workers/wasmWorker.js): copies return & out parameter values to JS variables | Garbage Collector (automatic) |
-| WASM (C++)  | Linear Independent WASM memory | [`wasmWorker.js`](https://github.com/Ryan-Millard/Img2Num/tree/main/src/workers/wasmWorker.js): copies args & bufferKeys to WASM memory              | Programmer (manual)           |
+| Language   | Memory type                    | Data supplier                                                                                                                                        | Who manages it                |
+| ---------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| JavaScript | Detached Copy of WASM data     | [`wasmWorker.js`](https://github.com/Ryan-Millard/Img2Num/tree/main/src/workers/wasmWorker.js): copies return & out parameter values to JS variables | Garbage Collector (automatic) |
+| WASM (C++) | Linear Independent WASM memory | [`wasmWorker.js`](https://github.com/Ryan-Millard/Img2Num/tree/main/src/workers/wasmWorker.js): copies args & bufferKeys to WASM memory              | Programmer (manual)           |
+
 :::
 
 ## Overview
@@ -71,43 +72,40 @@ const WASM_TYPES = {
   void: {},
 
   Int32Array: {
-    alloc: arr => {
+    alloc: (arr) => {
       const ptr = wasmModule._malloc(arr.byteLength);
       wasmModule.HEAP32.set(arr, ptr / 4);
       return ptr;
     },
-    read: (ptr, length) =>
-      new Int32Array(wasmModule.HEAP32.buffer, ptr, length).slice(),
+    read: (ptr, length) => new Int32Array(wasmModule.HEAP32.buffer, ptr, length).slice(),
   },
 
   Uint8Array: {
-    alloc: arr => {
+    alloc: (arr) => {
       const ptr = wasmModule._malloc(arr.byteLength);
       wasmModule.HEAPU8.set(arr, ptr);
       return ptr;
     },
-    read: (ptr, length) =>
-      new Uint8Array(wasmModule.HEAPU8.subarray(ptr, ptr + length)).slice(),
+    read: (ptr, length) => new Uint8Array(wasmModule.HEAPU8.subarray(ptr, ptr + length)).slice(),
   },
 
   Uint8ClampedArray: {
-    alloc: arr => {
+    alloc: (arr) => {
       const ptr = wasmModule._malloc(arr.byteLength);
       wasmModule.HEAPU8.set(arr, ptr);
       return ptr;
     },
-    read: (ptr, length) =>
-      new Uint8ClampedArray(wasmModule.HEAPU8.subarray(ptr, ptr + length)).slice(),
+    read: (ptr, length) => new Uint8ClampedArray(wasmModule.HEAPU8.subarray(ptr, ptr + length)).slice(),
   },
 
   string: {
-    alloc: str => {
+    alloc: (str) => {
       const len = wasmModule.lengthBytesUTF8(str) + 1;
       const ptr = wasmModule._malloc(len);
       wasmModule.stringToUTF8(str, ptr, len);
       return ptr;
     },
-    read: ptr => wasmModule.UTF8ToString(ptr),
+    read: (ptr) => wasmModule.UTF8ToString(ptr),
   },
 };
 ```
@@ -133,21 +131,23 @@ See the [Adding New WASM_TYPES](#adding-new-wasm_types) section below to learn h
 Messages **optionally** specify bufferKeys as structured descriptors:
 
 ```js title="Arguments passed to WASM function"
-args: { pixels, labels, width, height, min_area, draw_contour_borders }
+args: {
+  (pixels, labels, width, height, min_area, draw_contour_borders);
+}
 ```
 
 ```js title="Arguments that represent buffers (C++ arrays)"
 bufferKeys: [
   { key: 'pixels', type: 'Uint8ClampedArray' },
-  { key: 'labels', type: 'Int32Array' }
-]
+  { key: 'labels', type: 'Int32Array' },
+];
 ```
 
 :::important
 The `key` values in `bufferKeys` must exactly match the name of the argument given in JS.
 
 > The names given to `args` do not need to match the names in the definition of the C++ function.
-:::
+> :::
 
 ### Allocation Flow
 
@@ -201,10 +201,7 @@ Int32Array: {
 
 ```js title="Suppose bufferKey[i].type = Int32Array"
 bufferKeys?.forEach(({ key, type }) => {
-  output[key] = WASM_TYPES[type].read(
-    pointers[key].ptr,
-    pointers[key].length
-  );
+  output[key] = WASM_TYPES[type].read(pointers[key].ptr, pointers[key].length);
 });
 ```
 

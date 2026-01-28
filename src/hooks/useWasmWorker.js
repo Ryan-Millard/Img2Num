@@ -58,11 +58,19 @@ export function useWasmWorker() {
       return result.output.pixels;
     },
 
-    bilateralFilter: async ({ pixels, width, height, sigma_spatial = 3, sigma_range = 50, color_space = 0 }) => {
+    bilateralFilter: async ({
+      pixels,
+      width,
+      height,
+      sigma_spatial = 3,
+      sigma_range = 50,
+      color_space = 0,
+      n_threads = 8,
+    }) => {
       const result = await call({
         funcName: 'bilateral_filter',
-        args: { pixels, width, height, sigma_spatial, sigma_range, color_space },
-        bufferKeys: [{ key: 'pixels', type: 'Uint8ClampedArray' }]
+        args: { pixels, width, height, sigma_spatial, sigma_range, color_space, n_threads },
+        bufferKeys: [{ key: 'pixels', type: 'Uint8ClampedArray' }],
       });
       return result.output.pixels;
     },
@@ -71,7 +79,7 @@ export function useWasmWorker() {
       const result = await call({
         funcName: 'black_threshold_image',
         args: { pixels, width, height, num_colors },
-        bufferKeys: [{ key: 'pixels', type: 'Uint8ClampedArray' }]
+        bufferKeys: [{ key: 'pixels', type: 'Uint8ClampedArray' }],
       });
       return result.output.pixels;
     },
@@ -83,16 +91,18 @@ export function useWasmWorker() {
       width,
       height,
       num_colors,
-      max_iter = 100
+      max_iter = 100,
+      color_space = 0,
+      n_threads = 8,
     }) => {
       const result = await call({
         funcName: 'kmeans',
-        args: { pixels, out_pixels, out_labels, width, height, num_colors, max_iter },
+        args: { pixels, out_pixels, out_labels, width, height, num_colors, max_iter, color_space, n_threads },
         bufferKeys: [
           { key: 'pixels', type: 'Uint8ClampedArray' },
           { key: 'out_pixels', type: 'Uint8ClampedArray' },
-          { key: 'out_labels', type: 'Int32Array' }
-        ]
+          { key: 'out_labels', type: 'Int32Array' },
+        ],
       });
       return { pixels: result.output.out_pixels, labels: result.output.out_labels };
     },
@@ -103,9 +113,9 @@ export function useWasmWorker() {
         args: { pixels, labels, width, height, min_area, draw_contour_borders },
         bufferKeys: [
           { key: 'pixels', type: 'Uint8ClampedArray' },
-          { key: 'labels', type: 'Int32Array' }
+          { key: 'labels', type: 'Int32Array' },
         ],
-        returnType: 'string'
+        returnType: 'string',
       });
       return { svg: result.returnValue, visualization: result.output.pixels };
     },
@@ -113,7 +123,7 @@ export function useWasmWorker() {
     testSvg: async () => {
       const result = await call({
         funcName: 'test_svg',
-        returnType: 'string'
+        returnType: 'string',
       });
       return result.returnValue;
     },
