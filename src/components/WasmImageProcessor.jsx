@@ -13,7 +13,7 @@ const WasmImageProcessor = () => {
   const inputId = useId();
   const inputRef = useRef(null);
 
-  const { bilateralFilter, blackThreshold, kmeans, findContours } = useWasmWorker();
+  const { bilateralFilter, kmeans, findContours } = useWasmWorker();
 
   const [originalSrc, setOriginalSrc] = useState(null);
   const [fileData, setFileData] = useState(null);
@@ -85,18 +85,19 @@ const WasmImageProcessor = () => {
         height,
       });
 
-      step(45);
-      const thresholded = await blackThreshold({
+      // step(45);
+      // is this needed? num_colors is incorrect should be num_threshold
+      /*const thresholded = await blackThreshold({
         ...fileData,
         pixels: imgBilateralFiltered,
         num_colors: 8,
-      });
+      });*/
 
       step(70);
       const { pixels: kmeansed, labels } = await kmeans({
         ...fileData,
-        pixels: thresholded,
-        num_colors: 8,
+        pixels: imgBilateralFiltered,
+        num_colors: 16,
       });
 
       step(95);
@@ -121,7 +122,7 @@ const WasmImageProcessor = () => {
         step(0);
       }, 800);
     }
-  }, [fileData, bilateralFilter, blackThreshold, kmeans, findContours, navigate, step]);
+  }, [fileData, bilateralFilter, kmeans, findContours, navigate, step]);
 
   /* Memo'd UI fragments */
   const EmptyState = useMemo(

@@ -9,35 +9,56 @@ sidebar_position: 2
 
 ## Overview
 
-The CIELAB module provides bidirectional conversion between 8-bit sRGB and CIELAB (CIE L\*a\*b\*) color spaces. CIELAB is a perceptually uniform color space designed to approximate human vision, where equal Euclidean distances correspond to roughly equal perceived color differences.
+The CIELAB module provides bidirectional conversion between sRGB and CIELAB (CIE L\*a\*b\*) color spaces. CIELAB is a perceptually uniform color space designed to approximate human vision, where equal Euclidean distances correspond to roughly equal perceived color differences.
+
+Functions are templated to accept arbitrary input and output datatypes:
+
+```cpp
+template <typename Tin, typename Tout>
+```
+
+NOTE: Data types for CIELAB color space should support signed values. Suggest using `float` or `double`.
 
 ## Functions
 
 ### `rgb_to_lab`
 
-Convert 8-bit sRGB to CIELAB color space.
+Convert sRGB to CIELAB color space.
 
 ```cpp
+template <typename Tin, typename Tout>
 void rgb_to_lab(
-    const uint8_t r_u8,
-    const uint8_t g_u8,
-    const uint8_t b_u8,
-    double& out_l,
-    double& out_a,
-    double& out_b
+    const Tin r_u8,
+    const Tin g_u8,
+    const Tin b_u8,
+    Tout& out_l,
+    Tout& out_a,
+    Tout& out_b
+);
+
+template <typename Tin, typename Tout>
+void rgb_to_lab(
+   const ImageLib::RGBPixel<Tin> &rgb,
+   ImageLib::LABPixel<Tout> &lab
+);
+
+template <typename Tin, typename Tout>
+void rgb_to_lab(
+   const ImageLib::RGBAPixel<Tin> &rgba,
+   ImageLib::LABAPixel<Tout> &laba
 );
 ```
 
 #### Parameters
 
-| Parameter | Type      | Range        | Description                     |
-| :-------- | :-------- | :----------- | :------------------------------ |
-| `r_u8`    | `uint8_t` | [0, 255]     | Red channel (input)             |
-| `g_u8`    | `uint8_t` | [0, 255]     | Green channel (input)           |
-| `b_u8`    | `uint8_t` | [0, 255]     | Blue channel (input)            |
-| `out_l`   | `double&` | [0, 100]     | L\* lightness (output, clamped) |
-| `out_a`   | `double&` | ~[-128, 127] | a\* green-red axis (output)     |
-| `out_b`   | `double&` | ~[-128, 127] | b\* blue-yellow axis (output)   |
+| Parameter | Type    | Range        | Description                     |
+| :-------- | :------ | :----------- | :------------------------------ |
+| `r_u8`    | `Tin`   | [0, 255]     | Red channel (input)             |
+| `g_u8`    | `Tin`   | [0, 255]     | Green channel (input)           |
+| `b_u8`    | `Tin`   | [0, 255]     | Blue channel (input)            |
+| `out_l`   | `Tout&` | [0, 100]     | L\* lightness (output, clamped) |
+| `out_a`   | `Tout&` | ~[-128, 127] | a\* green-red axis (output)     |
+| `out_b`   | `Tout&` | ~[-128, 127] | b\* blue-yellow axis (output)   |
 
 #### Transformation Pipeline
 
@@ -69,29 +90,42 @@ rgb_to_lab(r, g, b, L, a, b_lab);
 
 ### `lab_to_rgb`
 
-Convert CIELAB to 8-bit sRGB color space.
+Convert CIELAB to sRGB color space.
 
 ```cpp
+template <typename Tin, typename Tout>
 void lab_to_rgb(
-    const double L,
-    const double A,
-    const double B,
-    uint8_t& r_u8,
-    uint8_t& g_u8,
-    uint8_t& b_u8
+    const Tin L,
+    const Tin A,
+    const Tin B,
+    Tout& r_u8,
+    Tout& g_u8,
+    Tout& b_u8
+);
+
+template <typename Tin, typename Tout>
+void lab_to_rgb(
+   const ImageLib::LABPixel<Tin> &lab,
+   ImageLib::RGBPixel<Tout> &rgb
+);
+
+template <typename Tin, typename Tout>
+void lab_to_rgb(
+   const ImageLib::LABAPixel<Tin> &laba,
+   ImageLib::RGBAPixel<Tout> &rgba
 );
 ```
 
 #### Parameters
 
-| Parameter | Type       | Range        | Description                     |
-| :-------- | :--------- | :----------- | :------------------------------ |
-| `L`       | `double`   | [0, 100]     | L\* lightness (input)           |
-| `A`       | `double`   | ~[-128, 127] | a\* green-red axis (input)      |
-| `B`       | `double`   | ~[-128, 127] | b\* blue-yellow axis (input)    |
-| `r_u8`    | `uint8_t&` | [0, 255]     | Red channel (output, clamped)   |
-| `g_u8`    | `uint8_t&` | [0, 255]     | Green channel (output, clamped) |
-| `b_u8`    | `uint8_t&` | [0, 255]     | Blue channel (output, clamped)  |
+| Parameter | Type    | Range        | Description                     |
+| :-------- | :------ | :----------- | :------------------------------ |
+| `L`       | `Tin`   | [0, 100]     | L\* lightness (input)           |
+| `A`       | `Tin`   | ~[-128, 127] | a\* green-red axis (input)      |
+| `B`       | `Tin`   | ~[-128, 127] | b\* blue-yellow axis (input)    |
+| `r_u8`    | `Tout&` | [0, 255]     | Red channel (output, clamped)   |
+| `g_u8`    | `Tout&` | [0, 255]     | Green channel (output, clamped) |
+| `b_u8`    | `Tout&` | [0, 255]     | Blue channel (output, clamped)  |
 
 #### Transformation Pipeline
 
