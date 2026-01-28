@@ -3,6 +3,6 @@
 
 #include "exported.h"
 
-EXPORTED constexpr char* test_svg();
+EXPORTED constexpr char *test_svg();
 
 #endif // TEST_SVG_H
