@@ -26,6 +26,12 @@ struct Rect {
   float x, y, width, height;
 };
 
+struct QuadBezier {
+  Point p0; // Start
+  Point p1; // Control
+  Point p2; // End
+};
+
 struct Rect {
   float x, y, width, height;
 };
