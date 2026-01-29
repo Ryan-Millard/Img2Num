@@ -75,6 +75,21 @@ std::array<int32_t, 4> Node::bounding_box_xywh() const {
     }
   }
 
+  for (auto &p : m_edge_pixels) {
+    if (p.x < x_min) {
+      x_min = p.x;
+    }
+    if (p.x > x_max) {
+      x_max = p.x;
+    }
+    if (p.y < y_min) {
+      y_min = p.y;
+    }
+    if (p.y > y_max) {
+      y_max = p.y;
+    }
+  }
+
   const int32_t w{x_max - x_min + 1};
   const int32_t h{y_max - y_min + 1};
 
@@ -88,6 +103,13 @@ Node::create_binary_image(std::vector<uint8_t> &binary) const {
   binary.resize(static_cast<size_t>(xywh[2]) * static_cast<size_t>(xywh[3]), 0);
 
   for (auto &[_, p] : *m_pixels) {
+    int32_t _x = p.x - xywh[0];
+    int32_t _y = p.y - xywh[1];
+    binary[_y * xywh[2] + _x] = 1;
+  }
+
+  // include the edge pixels to ensure contour overlap with neighbor
+  for (auto &p : m_edge_pixels) {
     int32_t _x = p.x - xywh[0];
     int32_t _y = p.y - xywh[1];
     binary[_y * xywh[2] + _x] = 1;
@@ -139,7 +161,16 @@ void Node::add_pixels(const std::vector<RGBXY> &new_pixels) {
   }
 }
 
+void Node::add_edge_pixel(const XY edge_pixel) {
+  m_edge_pixels.insert(edge_pixel);
+}
+
+void Node::clear_edge_pixels() {
+  m_edge_pixels.clear();
+}
+
 void Node::clear_all() {
   m_edges.clear();
   m_pixels->clear();
+  m_edge_pixels.clear();
 }

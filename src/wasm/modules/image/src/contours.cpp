@@ -718,7 +718,7 @@ void selectiveSmooth(std::vector<Point> &pts,
 }
 
 void coupledSmooth(std::vector<std::vector<Point>> &contours,
-                   const std::vector<std::vector<bool>> &lockedMasks) {
+                   const std::vector<std::vector<bool>> &lockedMasks, float pairRadiusSq=2.25f) {
 
   // 1. Build Spatial Grid to find partners quickly
   std::map<Coord, std::vector<PointID>> grid;
@@ -732,7 +732,7 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
 
   // We calculate ALL targets before applying any updates to maintain stability
   std::vector<std::vector<Point>> targetPos = contours;
-  float pairRadiusSq = 1.5f * 1.5f; // Radius to define "Connected/Paired"
+  // float pairRadiusSq = 1.5f * 1.5f; // Radius to define "Connected/Paired"
 
   for (int c = 0; c < (int)contours.size(); ++c) {
     for (int p = 1; p < (int)contours[c].size() - 1; ++p) {
@@ -822,6 +822,11 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
   contours = targetPos;
 }
 
+void coupledSmooth(std::vector<std::vector<Point>> &contours, Rect bounds) {
+  auto lockedMasks = createBoundaryMask(contours, bounds);
+  coupledSmooth(contours, lockedMasks, 0.25f);
+}
+
 // --- Main Solver ---
 void packWithBoundaryConstraints(std::vector<std::vector<Point>> &contours,
                                  Rect bounds, int iterations) {
@@ -833,7 +838,7 @@ void packWithBoundaryConstraints(std::vector<std::vector<Point>> &contours,
   // std::vector<std::vector<bool>> cornerMasks;
   // for (const auto& c : contours) cornerMasks.push_back(detectCorners(c));
 
-  float radiusSq = 1.5f * 1.5f; // Search radius
+  float radiusSq = 3.0f * 3.0f; // Search radius
 
   for (int iter = 0; iter < iterations; ++iter) {
 
@@ -910,7 +915,7 @@ void packWithBoundaryConstraints(std::vector<std::vector<Point>> &contours,
     // for (int c = 0; c < (int)contours.size(); ++c) {
     //     selectiveSmooth(contours[c], lockedMasks[c]);
     //}
-    coupledSmooth(contours, lockedMasks);
+    // coupledSmooth(contours, lockedMasks);
   }
 
   std::cout << "Packed with locked boundaries.\n";

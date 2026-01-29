@@ -36,6 +36,12 @@ discover_edges(G, region_labels, width, height);
 
 struct XY {
   int32_t x, y;
+  std::pair<int32_t, int32_t> xy;
+  XY(int32_t x_, int32_t y_): x(x_), y(y_) {
+    xy = std::make_pair(x, y);
+  };
+  bool operator<(const XY& rhs) const
+  { return xy < rhs.xy; };
 };
 
 struct RGBXY {
@@ -59,6 +65,10 @@ protected:
   int32_t m_id;
   std::unique_ptr<std::vector<RGBXY>> m_pixels;
   std::set<Node_ptr> m_edges{};
+
+  // pixels considered for contour tracing but not influencing other
+  // node properties such as color
+  std::set<XY> m_edge_pixels{};
 
 public:
   inline Node(int32_t id, std::unique_ptr<std::vector<RGBXY>> &pixels)
@@ -84,6 +94,8 @@ public:
 
   /* modify member variables */
   void add_pixels(const std::vector<RGBXY> &new_pixels);
+  void add_edge_pixel(const XY edge_pixel);
+  void clear_edge_pixels();
 
   void clear_all();
 

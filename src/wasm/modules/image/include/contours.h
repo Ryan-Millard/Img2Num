@@ -50,6 +50,7 @@ ContoursResult find_contours(const std::vector<uint8_t> &binary, int width,
                              int height);
 
 void stitchSmooth(std::vector<Point> &vecA, std::vector<Point> &vecB);
+void coupledSmooth(std::vector<std::vector<Point>> &contours, Rect bounds);
 
 void packWithBoundaryConstraints(std::vector<std::vector<Point>> &contours,
                                  Rect bounds, int iterations = 15);
