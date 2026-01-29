@@ -303,8 +303,16 @@ void Graph::compute_contours() {
   }
 
   contours::coupledSmooth(all_contours,
-                          Rect{0.0f, 0.0f, static_cast<float>(m_width),
-                               static_cast<float>(m_height)});
+      Rect{0.0f, 0.0f, static_cast<float>(m_width),
+            static_cast<float>(m_height)});
+
+  std::cout << "Fitting bezier" << std::endl;
+  std::vector<std::vector<QuadBezier>> all_curves;
+  fitCurveReduction(all_contours, all_curves, 0.5f);
+  std::cout << "Done fitting bezier" << std::endl;
+
+  std::cout << "Num contours " << all_contours.size() << std::endl;
+  std::cout << "Num curves " << all_curves.size() << std::endl;
 
   int j = 0;
   for (const Node_ptr &n : get_nodes()) {
@@ -315,6 +323,14 @@ void Graph::compute_contours() {
     for (size_t i = 0; i < c0->contours.size(); ++i) {
       std::copy(all_contours[j].begin(), all_contours[j].end(),
                 c0->contours[i].begin());
+
+      // c0->curves[i].clear();
+      // c0->curves[i].resize(all_curves[j].size());
+      std::cout << "Curve size " << all_curves[j].size() << std::endl;
+
+      c0->curves[i].resize(all_curves[j].size());
+      std::copy(all_curves[j].begin(), all_curves[j].end(),
+                c0->curves[i].begin());
       j++;
     }
   }

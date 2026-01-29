@@ -126,6 +126,7 @@ void Node::compute_contour(void) {
   m_contours.hierarchy.clear();
   m_contours.is_hole.clear();
   m_contours.colors.clear();
+  m_contours.curves.clear();
 
   std::vector<uint8_t> binary;
   std::array<int, 4> xywh{create_binary_image(binary)};
@@ -153,6 +154,8 @@ void Node::compute_contour(void) {
     m_contours.is_hole.push_back(contour_res.is_hole[cidx]);
     m_contours.colors.push_back(col);
   }
+
+  m_contours.curves.resize(m_contours.contours.size());
 }
 
 void Node::add_pixels(const std::vector<RGBXY> &new_pixels) {

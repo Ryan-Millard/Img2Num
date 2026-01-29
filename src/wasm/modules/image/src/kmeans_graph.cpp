@@ -2,6 +2,7 @@
 // should actually be taken into account.
 
 #include "kmeans_graph.h"
+#include "bezier.h"
 #include "contours.h"
 #include "graph.h"
 #include <array>
@@ -147,6 +148,28 @@ std::string contourToSVGPath(const std::vector<Point> &contour) {
   return path.str();
 }
 
+std::string contourToSVGCurve(const std::vector<QuadBezier>& curves) {
+  
+  std::cout << "writing bezier svg" << std::endl;
+
+  if (curves.empty())
+    return "";
+  
+  std::ostringstream path;
+  path << std::fixed << std::setprecision(2);
+
+  for(size_t i=0; i<curves.size(); ++i) {
+      const auto& c = curves[i];
+      if (i==0) path << "M " << c.p0.x << " " << c.p0.y << " ";
+      path << "Q " << c.p1.x << " " << c.p1.y << " " << c.p2.x << " " << c.p2.y << " ";
+  }
+  
+  //  Close the path
+  path << "Z";
+  return path.str();
+
+}
+
 std::string contoursResultToSVG(const ColoredContours &result, const int width,
                                 const int height) {
   std::ostringstream svg;
@@ -154,8 +177,12 @@ std::string contoursResultToSVG(const ColoredContours &result, const int width,
          "width=\""
       << width << "\" height=\"" << height << "\">\n";
 
-  for (size_t i = 0; i < result.contours.size(); ++i) {
-    std::string pathData = contourToSVGPath(result.contours[i]);
+  // for (size_t i = 0; i < result.contours.size(); ++i) {
+    // std::string pathData = contourToSVGPath(result.contours[i]);
+
+  std::cout << "result.curves.size() " << result.curves.size() << std::endl;
+  for (size_t i = 0; i < result.curves.size(); ++i) {
+    std::string pathData = contourToSVGCurve(result.curves[i]);
 
     const auto &px = result.colors[i];
     std::ostringstream oss;
@@ -237,6 +264,9 @@ char *kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
     }
     for (auto &c : node_contours.colors) {
       all_contours.colors.push_back(c);
+    }
+    for (auto &c : node_contours.curves) {
+      all_contours.curves.push_back(c);
     }
   }
 
