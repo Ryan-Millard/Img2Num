@@ -15,6 +15,7 @@
 #include <random>
 #include <thread>
 #include <vector>
+#include <cstring>
 
 static inline float colorDistance(const ImageLib::RGBAPixel<float> &a,
                                   const ImageLib::RGBAPixel<float> &b) {

@@ -18,3 +18,5 @@ logs
 *:Zone.Identifier
 
 .env
+
+build*

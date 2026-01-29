@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <limits>
 #include <vector>
+#include <cstring>
 
 // image: pointer to RGBA data
 // width, height: dimensions

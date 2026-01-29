@@ -188,8 +188,16 @@ template <typename Tin, typename Tout>
 void rgb_to_lab(const ImageLib::RGBAPixel<Tin> &rgba,
                 ImageLib::LABAPixel<Tout> &laba) {
 
-  rgb_to_lab<Tin, Tout>(rgba.red, rgba.green, rgba.blue, laba.l, laba.a,
-                        laba.b);
+  Tout l{laba.l};
+  Tout a{laba.a};
+  Tout b{laba.b};
+
+  rgb_to_lab(rgba.red, rgba.green, rgba.blue, l, a, b);
+
+  laba.l = l;
+  laba.a = a;
+  laba.b = b;
+
   laba.alpha = static_cast<Tout>(rgba.alpha);
 }
 
@@ -203,9 +211,11 @@ void rgb_to_lab(const ImageLib::RGBPixel<Tin> &rgb,
 template <typename Tin, typename Tout>
 void lab_to_rgb(const ImageLib::LABAPixel<Tin> &laba,
                 ImageLib::RGBAPixel<Tout> &rgba) {
+  Tout r{rgba.red};
+  Tout g{rgba.green};
+  Tout b{rgba.blue};
 
-  lab_to_rgb<Tin, Tout>(laba.l, laba.a, laba.b, rgba.red, rgba.green,
-                        rgba.blue);
+  lab_to_rgb<Tin, Tout>(laba.l, laba.a, laba.b, r, g, b);
   rgba.alpha = static_cast<Tout>(laba.alpha);
 }
 

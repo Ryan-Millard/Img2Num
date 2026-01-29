@@ -2,6 +2,7 @@
 #include "Pixel.h"
 #include <algorithm>
 #include <iterator>
+#include <cmath>
 
 /*
  *Graph class - manages Node class
