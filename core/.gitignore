@@ -1,5 +1,5 @@
-# WASM build directory
 build/
+cmake-build/
 
 # C++ object and binary files
 *.o
