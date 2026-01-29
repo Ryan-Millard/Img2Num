@@ -193,8 +193,6 @@ void Graph::compute_contours() {
       adjusted_neighbors.insert(id1);
     }
     
-    std::cout << "Node " << n->id() << " number of neighboords " << full_neighborhood.size() << std::endl;
-
     // address overlaps
     std::vector<uint8_t> neighborhood;
     std::array<int32_t, 4> bounds = {
@@ -228,13 +226,15 @@ void Graph::compute_contours() {
         }
       }
     }
-    for(int y=0; y < bounds[3]; ++y){
+
+    // DEBUG PRINT
+    /*for(int y=0; y < bounds[3]; ++y){
       for(int x=0; x < bounds[2]; ++x){
         uint8_t val = neighborhood[y * bounds[2] + x];
         std::cout << std::to_string(val);
       }
       std::cout<<std::endl;
-    }
+    }*/
 
     // 0 = background, 1 = this node, 2+ = neighboring nodes
 
@@ -266,22 +266,8 @@ void Graph::compute_contours() {
                   is_too_thin = true;
                 }
               }
-              /*for (int32_t k{0}; k < 16; ++k) {
-                int32_t mx{nx + dirs5[k][0]};
-                int32_t my{ny + dirs5[k][1]};
-                mx = std::clamp(mx, 0, bounds[2] - 1);
-                my = std::clamp(my, 0, bounds[3] - 1);
-                uint8_t m_val = neighborhood[my * bounds[2] + mx];
-
-                if ((m_val != val) & (m_val != n_val)) {
-                  is_too_thin = true;
-                }
-              }*/
 
               if (is_too_thin) {
-                std::cout << "number considered neigbors " << considered_neigbors.size() << std::endl;
-                std::cout << "nval: " << std::to_string(n_val) << std::endl;
-
                 considered_neigbors[n_val - 2]->add_edge_pixel(
                   XY{
                     x + bounds[0], 
