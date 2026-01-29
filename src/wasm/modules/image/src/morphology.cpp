@@ -123,6 +123,53 @@ void skeletonize(std::vector<uint8_t> &img, int width, int height) {
   }
 }
 
+void convertStaircaseToDiagonal(std::vector<uint8_t> &img, int width, int height) {
+  // Helper lambda to get pixel safely (0 if out of bounds)
+  auto get = [&](int x, int y) -> bool {
+      if (x < 0 || x >= width || y < 0 || y >= height) return false;
+      return img[y * width + x] != 0;
+  };
+
+  bool pixelRemoved = true;
+
+  // We loop until no more pixels are removed to handle long staircases 
+  // and 2x2 blocks completely.
+  while (pixelRemoved) {
+      pixelRemoved = false;
+
+      // Iterate over every pixel
+      for (int y = 0; y < height; ++y) {
+          for (int x = 0; x < width; ++x) {
+              // Skip background pixels
+              if (img[y * width + x] == 0) continue;
+
+              // Check the 4 orthogonal neighbors
+              bool n = get(x, y - 1); // North
+              bool s = get(x, y + 1); // South
+              bool e = get(x + 1, y); // East
+              bool w = get(x - 1, y); // West
+
+              int n4_count = (n ? 1 : 0) + (s ? 1 : 0) + (e ? 1 : 0) + (w ? 1 : 0);
+
+              // A "Staircase Corner" is defined by:
+              // 1. Exactly 2 orthogonal neighbors.
+              // 2. The neighbors are NOT opposite (i.e., not a straight vertical/horizontal line).
+              if (n4_count == 2) {
+                  bool isStraight = (n && s) || (e && w);
+                  
+                  if (!isStraight) {
+                      // It is a corner (e.g., North and East).
+                      // In 8-connectivity, removing this pixel leaves N and E 
+                      // connected diagonally.
+                      img[y * width + x] = 0;
+                      pixelRemoved = true;
+                  }
+              }
+          }
+      }
+  }
+}
+
 std::vector<uint8_t> analyzeTopology(const std::vector<uint8_t> &skel, int w,
                                      int h) {
   std::vector<uint8_t> map(w * h, 0);

@@ -11,6 +11,11 @@
 #include <cstdint>
 
 void skeletonize(std::vector<uint8_t> &img, int width, int height);
+void convertStaircaseToDiagonal(std::vector<uint8_t> &img, int width, int height);
+
+std::vector<uint8_t> 
+analyzeTopology(const std::vector<uint8_t> &skel, int w, int h);
+
 std::vector<std::vector<Point>>
 computeSubpixelCenterlines(const std::vector<uint8_t> &skelImg, int width,
                            int height);
