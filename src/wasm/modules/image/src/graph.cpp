@@ -303,8 +303,8 @@ void Graph::compute_contours() {
   }
 
   contours::coupledSmooth(all_contours,
-      Rect{0.0f, 0.0f, static_cast<float>(m_width),
-            static_cast<float>(m_height)});
+                          Rect{0.0f, 0.0f, static_cast<float>(m_width),
+                               static_cast<float>(m_height)});
 
   std::cout << "Fitting bezier" << std::endl;
   std::vector<std::vector<QuadBezier>> all_curves;

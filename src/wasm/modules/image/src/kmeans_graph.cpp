@@ -148,26 +148,27 @@ std::string contourToSVGPath(const std::vector<Point> &contour) {
   return path.str();
 }
 
-std::string contourToSVGCurve(const std::vector<QuadBezier>& curves) {
-  
+std::string contourToSVGCurve(const std::vector<QuadBezier> &curves) {
+
   std::cout << "writing bezier svg" << std::endl;
 
   if (curves.empty())
     return "";
-  
+
   std::ostringstream path;
   path << std::fixed << std::setprecision(2);
 
-  for(size_t i=0; i<curves.size(); ++i) {
-      const auto& c = curves[i];
-      if (i==0) path << "M " << c.p0.x << " " << c.p0.y << " ";
-      path << "Q " << c.p1.x << " " << c.p1.y << " " << c.p2.x << " " << c.p2.y << " ";
+  for (size_t i = 0; i < curves.size(); ++i) {
+    const auto &c = curves[i];
+    if (i == 0)
+      path << "M " << c.p0.x << " " << c.p0.y << " ";
+    path << "Q " << c.p1.x << " " << c.p1.y << " " << c.p2.x << " " << c.p2.y
+         << " ";
   }
-  
+
   //  Close the path
   path << "Z";
   return path.str();
-
 }
 
 std::string contoursResultToSVG(const ColoredContours &result, const int width,
@@ -178,7 +179,7 @@ std::string contoursResultToSVG(const ColoredContours &result, const int width,
       << width << "\" height=\"" << height << "\">\n";
 
   // for (size_t i = 0; i < result.contours.size(); ++i) {
-    // std::string pathData = contourToSVGPath(result.contours[i]);
+  // std::string pathData = contourToSVGPath(result.contours[i]);
 
   std::cout << "result.curves.size() " << result.curves.size() << std::endl;
   for (size_t i = 0; i < result.curves.size(); ++i) {

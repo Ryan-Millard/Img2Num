@@ -1,10 +1,10 @@
 #ifndef BEZIER_H
 #define BEZIER_H
 
-#include <vector>
+#include "contours.h"
 #include <cmath>
 #include <limits>
-#include "contours.h"
+#include <vector>
 
 // defined in contours.h
 /*struct QuadBezier {
@@ -13,5 +13,7 @@
     Point p2; // End
 };*/
 
-void fitCurveReduction(const std::vector<std::vector<Point>>& chains, std::vector<std::vector<QuadBezier>>& results, float tolerance);
+void fitCurveReduction(const std::vector<std::vector<Point>> &chains,
+                       std::vector<std::vector<QuadBezier>> &results,
+                       float tolerance);
 #endif
