@@ -718,7 +718,8 @@ void selectiveSmooth(std::vector<Point> &pts,
 }
 
 void coupledSmooth(std::vector<std::vector<Point>> &contours,
-                   const std::vector<std::vector<bool>> &lockedMasks, float pairRadiusSq=2.25f) {
+                   const std::vector<std::vector<bool>> &lockedMasks,
+                   float pairRadiusSq = 2.25f) {
 
   // 1. Build Spatial Grid to find partners quickly
   std::map<Coord, std::vector<PointID>> grid;

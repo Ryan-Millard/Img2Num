@@ -165,9 +165,7 @@ void Node::add_edge_pixel(const XY edge_pixel) {
   m_edge_pixels.insert(edge_pixel);
 }
 
-void Node::clear_edge_pixels() {
-  m_edge_pixels.clear();
-}
+void Node::clear_edge_pixels() { m_edge_pixels.clear(); }
 
 void Node::clear_all() {
   m_edges.clear();

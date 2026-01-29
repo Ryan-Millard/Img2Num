@@ -106,10 +106,8 @@ void Graph::clear_unconnected_nodes() {
 void Graph::discover_edges(const std::vector<int32_t> &region_labels,
                            const int32_t width, const int32_t height) {
   // Moore 8-connected neighbourhood
-  constexpr int8_t dirs[8][2]{
-    {1, 0}, {-1, 0}, {0, 1}, {0, -1},
-    {1, 1}, {-1, -1}, {-1, 1}, {1, -1}
-  };
+  constexpr int8_t dirs[8][2]{{1, 0}, {-1, 0},  {0, 1},  {0, -1},
+                              {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};
 
   int32_t rneigh[4];
 
@@ -141,36 +139,34 @@ void Graph::discover_edges(const std::vector<int32_t> &region_labels,
 void Graph::compute_contours() {
   // overlap edge pixels
   // then compute contours
-  
-  std::set<std::pair<int, int>> adjusted_neighbors {};
 
-  constexpr int8_t dirs[8][2]{
-    {1, 0}, {-1, 0}, {0, 1}, {0, -1},
-    {1, 1}, {-1, -1}, {-1, 1}, {1, -1}
-  };
+  std::set<std::pair<int, int>> adjusted_neighbors{};
 
-  constexpr int8_t dirs5[16][2]{
-    {0, -2}, {1, -2}, {2, -2}, {2, -1},
-    {2, 0}, {2, 1}, {2, 2}, {1, 2},
-    {0, 2}, {-1, 2}, {-2, 2}, {-2, 1},
-    {-2, 0}, {-2, -1}, {-2, -2}, {-1, -2}
-  };
+  constexpr int8_t dirs[8][2]{{1, 0}, {-1, 0},  {0, 1},  {0, -1},
+                              {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};
+
+  constexpr int8_t dirs5[16][2]{{0, -2}, {1, -2},  {2, -2},  {2, -1},
+                                {2, 0},  {2, 1},   {2, 2},   {1, 2},
+                                {0, 2},  {-1, 2},  {-2, 2},  {-2, 1},
+                                {-2, 0}, {-2, -1}, {-2, -2}, {-1, -2}};
 
   for (const Node_ptr &n : get_nodes()) {
-    if (n->area() == 0) continue;
+    if (n->area() == 0)
+      continue;
 
     std::vector<std::vector<uint8_t>> full_neighborhood;
     std::vector<std::array<int32_t, 4>> xywh;
 
     std::vector<uint8_t> node_binary;
     std::array<int32_t, 4> xywh0 = n->create_binary_image(node_binary);
-    
+
     full_neighborhood.push_back(node_binary);
     xywh.push_back(xywh0);
 
     std::vector<Node_ptr> considered_neigbors;
-    for (const auto &neighbor: n->edges()) {
-      if (neighbor->area() == 0) continue;
+    for (const auto &neighbor : n->edges()) {
+      if (neighbor->area() == 0)
+        continue;
 
       // check if this neighbor pairing has already been addressed
       std::pair<int, int> id1 = std::make_pair(n->id(), neighbor->id());
@@ -186,42 +182,48 @@ void Graph::compute_contours() {
       considered_neigbors.push_back(neighbor);
 
       std::vector<uint8_t> neighbor_binary;
-      std::array<int32_t, 4> xywh1 = neighbor->create_binary_image(neighbor_binary);
+      std::array<int32_t, 4> xywh1 =
+          neighbor->create_binary_image(neighbor_binary);
       full_neighborhood.push_back(neighbor_binary);
       xywh.push_back(xywh1);
 
       adjusted_neighbors.insert(id1);
     }
-    
+
     // address overlaps
     std::vector<uint8_t> neighborhood;
-    std::array<int32_t, 4> bounds = {
-      std::numeric_limits<int>::max(),
-      std::numeric_limits<int>::max(),
-      -1,
-      -1
-    };
+    std::array<int32_t, 4> bounds = {std::numeric_limits<int>::max(),
+                                     std::numeric_limits<int>::max(), -1, -1};
     for (auto &_xywh : xywh) {
-      if (_xywh[0] < bounds[0]) { bounds[0] = _xywh[0]; } // xmin
-      if (_xywh[1] < bounds[1]) { bounds[1] = _xywh[1]; } // ymin
-      if (_xywh[2] + _xywh[0] - 1 > bounds[2]) { bounds[2] = _xywh[2] + _xywh[0] - 1; } // xmax
-      if (_xywh[3] + _xywh[1] - 1 > bounds[3]) { bounds[3] = _xywh[3] + _xywh[1] - 1; } // ymax
+      if (_xywh[0] < bounds[0]) {
+        bounds[0] = _xywh[0];
+      } // xmin
+      if (_xywh[1] < bounds[1]) {
+        bounds[1] = _xywh[1];
+      } // ymin
+      if (_xywh[2] + _xywh[0] - 1 > bounds[2]) {
+        bounds[2] = _xywh[2] + _xywh[0] - 1;
+      } // xmax
+      if (_xywh[3] + _xywh[1] - 1 > bounds[3]) {
+        bounds[3] = _xywh[3] + _xywh[1] - 1;
+      } // ymax
     }
 
     bounds[2] = bounds[2] - bounds[0] + 1; // w
     bounds[3] = bounds[3] - bounds[1] + 1; // h
-    
+
     // build joined neighborhood map
     neighborhood.resize(bounds[2] * bounds[3], 0);
 
     for (int i = 0; i < full_neighborhood.size(); ++i) {
-      for(int y = 0; y < xywh[i][3]; ++y){
-        for(int x = 0; x < xywh[i][2]; ++x){
+      for (int y = 0; y < xywh[i][3]; ++y) {
+        for (int x = 0; x < xywh[i][2]; ++x) {
           int global_y = y + xywh[i][1] - bounds[1];
           int global_x = x + xywh[i][0] - bounds[0];
           uint8_t val = full_neighborhood[i][y * xywh[i][2] + x];
           if (val != 0) {
-            neighborhood[global_y * bounds[2] + global_x] = (i+1); // full_neighborhood[i][y * xywh[i][2] + x];
+            neighborhood[global_y * bounds[2] + global_x] =
+                (i + 1); // full_neighborhood[i][y * xywh[i][2] + x];
           }
         }
       }
@@ -240,8 +242,8 @@ void Graph::compute_contours() {
 
     // find touching edges
     // std::vector<bool> addressed_pixels(neighborhood.size, false);
-    for(int y=0; y < bounds[3]; ++y){
-      for(int x=0; x < bounds[2]; ++x){
+    for (int y = 0; y < bounds[3]; ++y) {
+      for (int x = 0; x < bounds[2]; ++x) {
         uint8_t val = neighborhood[y * bounds[2] + x];
         // check neighbors
         if (val == 1) {
@@ -251,10 +253,11 @@ void Graph::compute_contours() {
             nx = std::clamp(nx, 0, bounds[2] - 1);
             ny = std::clamp(ny, 0, bounds[3] - 1);
             uint8_t n_val = neighborhood[ny * bounds[2] + nx];
-            if ((n_val!= val) & (n_val != 0)) {
+            if ((n_val != val) & (n_val != 0)) {
               // need a smarter approach to prevent pinching
               bool is_too_thin = false;
-              // check around (nx,ny) if we can stretch into another region, then it's too thin
+              // check around (nx,ny) if we can stretch into another region,
+              // then it's too thin
               for (int32_t k{0}; k < 8; ++k) {
                 int32_t mx{nx + dirs[k][0]};
                 int32_t my{ny + dirs[k][1]};
@@ -269,18 +272,9 @@ void Graph::compute_contours() {
 
               if (is_too_thin) {
                 considered_neigbors[n_val - 2]->add_edge_pixel(
-                  XY{
-                    x + bounds[0], 
-                    y + bounds[1]
-                  }
-                );
+                    XY{x + bounds[0], y + bounds[1]});
               } else {
-                n->add_edge_pixel(
-                  XY{
-                    nx + bounds[0],
-                    ny + bounds[1]
-                  }
-                );
+                n->add_edge_pixel(XY{nx + bounds[0], ny + bounds[1]});
               }
             }
           }
@@ -308,9 +302,9 @@ void Graph::compute_contours() {
     }
   }
 
-  contours::coupledSmooth(
-      all_contours, Rect{0.0f, 0.0f, static_cast<float>(m_width),
-                         static_cast<float>(m_height)});
+  contours::coupledSmooth(all_contours,
+                          Rect{0.0f, 0.0f, static_cast<float>(m_width),
+                               static_cast<float>(m_height)});
 
   int j = 0;
   for (const Node_ptr &n : get_nodes()) {
@@ -324,7 +318,6 @@ void Graph::compute_contours() {
       j++;
     }
   }
-
 }
 
 void Graph::merge_small_area_nodes(const int32_t min_area) {

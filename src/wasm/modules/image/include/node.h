@@ -37,11 +37,8 @@ discover_edges(G, region_labels, width, height);
 struct XY {
   int32_t x, y;
   std::pair<int32_t, int32_t> xy;
-  XY(int32_t x_, int32_t y_): x(x_), y(y_) {
-    xy = std::make_pair(x, y);
-  };
-  bool operator<(const XY& rhs) const
-  { return xy < rhs.xy; };
+  XY(int32_t x_, int32_t y_) : x(x_), y(y_) { xy = std::make_pair(x, y); };
+  bool operator<(const XY &rhs) const { return xy < rhs.xy; };
 };
 
 struct RGBXY {
