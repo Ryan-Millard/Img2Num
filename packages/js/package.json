@@ -1,0 +1,27 @@
+{
+  "name": "img2num",
+  "version": "0.0.0",
+  "description": "Img2Num is a raster vectorization library - it converts images to SVGs",
+  "keywords": [
+    "img2num",
+    "computer-vision",
+    "computer-vision",
+    "vectorization",
+    "image-to-svg"
+  ],
+  "homepage": "https://github.com/Ryan-Millard/Img2Num#readme",
+  "bugs": {
+    "url": "https://github.com/Ryan-Millard/Img2Num/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ryan-Millard/Img2Num.git"
+  },
+  "license": "MIT",
+  "author": "Ryan-Millard",
+  "type": "esm",
+  "main": "./index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

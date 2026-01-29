@@ -5,10 +5,9 @@ if(NOT EMSCRIPTEN)
     message(FATAL_ERROR "WASM build requires Emscripten")
 endif()
 
-# Link WASM wrapper to object library
 add_executable(img2num_wasm
     src/wasm_wrapper.cpp
-    $<TARGET_OBJECTS:img2num_core_wasm>  # now exists because defined in core
+    $<TARGET_OBJECTS:img2num_core>
 )
 
 # Include core headers

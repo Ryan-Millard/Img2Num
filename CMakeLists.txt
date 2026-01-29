@@ -19,9 +19,10 @@ add_subdirectory(core)
 # ---------------------------
 # Build targets
 # ---------------------------
-if(BUILD_NATIVE)
+if(BUILD_NATIVE AND NOT EMSCRIPTEN)
     message(STATUS "Building native shared library...")
-    add_library(img2num_native ALIAS img2num_core)
+    add_library(img2num_native SHARED $<TARGET_OBJECTS:img2num_core>)
+    target_include_directories(img2num_native PUBLIC "${CMAKE_SOURCE_DIR}/core/include")
 endif()
 
 if(BUILD_PYTHON)

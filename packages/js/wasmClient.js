@@ -1,0 +1,57 @@
+// wasmClient.js
+// Vanilla JS interface for communicating with wasmWorker
+
+let worker;
+let idCounter = 0;
+const callbacks = new Map();
+let initialized = false;
+
+/**
+ * Initialize the WASM worker once.
+ * Safe to call multiple times.
+ */
+export function initWasmWorker() {
+  if (initialized) return;
+
+  worker = new Worker(
+    new URL("@workers/wasmWorker.js", import.meta.url),
+    { type: "module" }
+  );
+
+  worker.onmessage = ({ data }) => {
+    const { id, error, output, returnValue } = data;
+    const cb = callbacks.get(id);
+    if (!cb) return;
+
+    error ? cb.reject(error) : cb.resolve({ output, returnValue });
+    callbacks.delete(id);
+  };
+
+  initialized = true;
+}
+
+/**
+ * Low-level call into WASM
+ */
+export function callWasm(funcName, args = {}, bufferKeys = []) {
+  if (!initialized) {
+    throw new Error("WASM worker not initialized. Call initWasmWorker() first.");
+  }
+
+  const id = idCounter++;
+
+  return new Promise((resolve, reject) => {
+    callbacks.set(id, { resolve, reject });
+    worker.postMessage({ id, funcName, args, bufferKeys });
+  });
+}
+
+/**
+ * Optional cleanup
+ */
+export function terminateWasmWorker() {
+  if (!worker) return;
+  worker.terminate();
+  callbacks.clear();
+  initialized = false;
+}
