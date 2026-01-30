@@ -36,6 +36,26 @@ _Figure 3: Step-by-step visualization of node merging_
 
 ## Example
 
+## Diagram
+Assume a region partition image as shown. Each partition (and the pixels contained within) are represented as a Node. Nodes exist in the heap. A Graph is a collection of shared_ptr(s) to these Nodes. A Graph has unique ownership over these Nodes pointers.
+![slide1](./diagrams/Slide1.SVG)
+
+This is how one would imagine the Graph to be connected forming a undirected graph(a). In reality each Node contains a list of pointer to their neighbors, represented as edges (b). Note that adjacent nodes point to each other. Edge management is handled by the Graph.
+![slide2](./diagrams/Slide2.SVG)
+
+One of the Graph's main operations is Node merging. Suppose we want to absorb/merge region 0 (Node 0) into region 2 (Node 2). Node 2 will assume ownership of Nodes 0's pixels and neighbors. The following figure shows the step-by-step process that happens in Graph.
+![slide3](./diagrams/Slide3.SVG)
+ **a**. Consider merging Node 0 into Node 2 
+
+ **b**. Disconnect edges to Node 0 neighbors. This requires iterating over Nodes 1, 2, and 3, and removing Node 0 from their edge set.
+
+ **c**. Transferring edges to absorbing node (Node 2). Again, iterate over Nodes 1 and 3 to assign Node 2 as an edge. Similarily Node 2 adds Node 1 and 3 as edges. In this case Node 2 and Node 3 already share an edge, but Node 1 gets a new edge.
+
+ **d**. Pixels owned by Node 0 are passed to Node 2. Node 0 is removed from the graph.
+
+ **e**. In image space, Node 2 (region 2) now contains the area that used to be Node 0's.
+
+## Example
 1. Consider starting from an image (after bilateral-filtering).
 
 ![Image](./img/image.png)
