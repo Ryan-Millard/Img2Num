@@ -140,7 +140,7 @@ const WasmImageProcessor = () => {
         <Tooltip content="Choose an image">
           <p className={`text-center ${styles.dragDropText}`}>
             Drag & Drop or&nbsp;
-          <span className={`anchor-style ${styles.noTextWrap}`}>Choose Image</span>
+            <span className={`anchor-style ${styles.noTextWrap}`}>Choose Image</span>
           </p>
         </Tooltip>
       </>

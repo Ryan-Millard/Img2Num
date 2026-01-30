@@ -2,13 +2,10 @@ import PropTypes from "prop-types";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useState, useEffect, useRef, useId, cloneElement, isValidElement } from "react";
 
-export default function Tooltip({
-  children,
-  content = "Tooltip content",
-  id = `tooltip-${useId()}`,
-  position = "right",
-  dynamicPositioning = true,
-}) {
+export default function Tooltip({ children, content = "Tooltip content", id = undefined, position = "right", dynamicPositioning = true }) {
+  const reactId = useId();
+  const tooltipId = id ?? `tooltip-${reactId}`;
+
   const [isOpen, setIsOpen] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const hideTimeoutRef = useRef(null);
@@ -97,7 +94,7 @@ export default function Tooltip({
   // If child is a single valid React element, attach tooltip attributes
   const childWithTooltip = isValidElement(children) ? (
     cloneElement(children, {
-      "data-tooltip-id": id,
+      "data-tooltip-id": tooltipId,
       "data-tooltip-content": content,
       onClick: (e) => {
         children.props.onClick?.(e);
@@ -109,7 +106,7 @@ export default function Tooltip({
       },
     })
   ) : (
-    <span data-tooltip-id={id} data-tooltip-content={content} tabIndex={0} onClick={showTooltip} onFocus={handleFocus}>
+    <span data-tooltip-id={tooltipId} data-tooltip-content={content} tabIndex={0} onClick={showTooltip} onFocus={handleFocus}>
       {children}
     </span>
   );
@@ -118,7 +115,7 @@ export default function Tooltip({
     <>
       {childWithTooltip}
       <ReactTooltip
-        id={id}
+        id={tooltipId}
         place={position}
         appendTo={typeof document !== "undefined" ? document.body : undefined}
         positionStrategy="absolute"
