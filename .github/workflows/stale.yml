@@ -26,4 +26,5 @@ jobs:
           stale-pr-label: "no-pr-activity"
           days-before-stale: 60
           days-before-close: 14
-          exempt-labels: "pinned,important"
+          exempt-issue-labels: "pinned,important"
+          exempt-pr-labels: "pinned,important"
