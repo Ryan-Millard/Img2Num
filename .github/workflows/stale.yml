@@ -6,7 +6,7 @@ name: Mark stale issues and pull requests
 
 on:
   schedule:
-    - cron: '0 2 * * *' # every day at 02:00 UTC
+    - cron: "0 2 * * *" # every day at 02:00 UTC
   workflow_dispatch:
 
 jobs:
@@ -20,10 +20,10 @@ jobs:
       - uses: actions/stale@v5
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          stale-issue-message: 'This issue has been inactive for 60 days. Please comment if it is still relevant or it will be closed in 14 days.'
-          stale-pr-message: 'This pull request has been inactive for 60 days. Please update it or it will be closed in 14 days.'
-          stale-issue-label: 'no-issue-activity'
-          stale-pr-label: 'no-pr-activity'
+          stale-issue-message: "This issue has been inactive for 60 days. Please comment if it is still relevant or it will be closed in 14 days."
+          stale-pr-message: "This pull request has been inactive for 60 days. Please update it or it will be closed in 14 days."
+          stale-issue-label: "no-issue-activity"
+          stale-pr-label: "no-pr-activity"
           days-before-stale: 60
           days-before-close: 14
-          exempt-labels: 'pinned,important'
+          exempt-labels: "pinned,important"
