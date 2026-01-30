@@ -16,14 +16,14 @@ const Home = () => (
 
       <div className={styles.featureContainer}>
         <GlassCard>
-          <Tooltip content="Performance feature">
+          <Tooltip content="Performance feature" position="top">
             <h3>⚡ Fast & Lightweight</h3>
           </Tooltip>
           <p>Compiled C++ runs in your browser via WebAssembly with near-native speed.</p>
         </GlassCard>
 
         <GlassCard>
-          <Tooltip content="Integration feature">
+          <Tooltip content="Integration feature" position="top">
             <h3>🛠️ Easy to Integrate</h3>
           </Tooltip>
           <p>Minimal dependencies, works with any project or workflow.</p>
