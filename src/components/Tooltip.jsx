@@ -128,9 +128,9 @@ export default function Tooltip({ children, content = "Tooltip content", id = un
 }
 
 Tooltip.propTypes = {
-  content: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
-  id: PropTypes.string.isRequired,
-  dynamicPositioning: PropTypes.bool.isRequired,
-  position: PropTypes.string.isRequired,
+  content: PropTypes.string,
+  id: PropTypes.string,
+  dynamicPositioning: PropTypes.bool,
+  position: PropTypes.string,
 };
