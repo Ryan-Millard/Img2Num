@@ -15,8 +15,8 @@ js/ts:
   - "**/*.jsx"
   - "**/*.ts"
   - "**/*.tsx"
-  - "vite.config.*"       # Vite config files
-  - "vite.*.js"          # optional extra patterns
-  - "package.json"       # package manifest changes
+  - "vite.config.*" # Vite config files
+  - "vite.*.js" # optional extra patterns
+  - "package.json" # package manifest changes
   - "package-lock.json"
   - "yarn.lock"

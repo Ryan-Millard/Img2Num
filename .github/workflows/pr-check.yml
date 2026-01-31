@@ -8,7 +8,6 @@ on:
     types: [opened, edited, reopened, synchronize]
 
 jobs:
-
   title-check:
     runs-on: ubuntu-latest
     steps:
