@@ -15,7 +15,7 @@ Please note that by submitting this pull request to **Img2Num**, you confirm tha
 
 <!-- Use the fixes keyword below and the issue related to this PR to link them. -->
 
-Fixes:
+Fixes: #<issue-number> <!-- use "Fixes: none" if no related issue -->
 
 ## Changes
 
