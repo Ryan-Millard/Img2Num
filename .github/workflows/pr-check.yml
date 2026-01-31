@@ -1,0 +1,104 @@
+name: PR Validation
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+jobs:
+
+  title-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR title
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const title = pr.title;
+
+            const isWip = title.startsWith("WIP:");
+            const isDraft = pr.draft;
+
+            const conventionalRegex =
+              /^(build|ci|chore|docs|feat|fix|perf|refactor|revert|style|test)(\([^)]+\))?(!)?: .+/;
+
+            if (isDraft || isWip) {
+              core.info("Draft or WIP PR detected — skipping title enforcement.");
+              return;
+            }
+
+            if (!conventionalRegex.test(title)) {
+              core.setFailed(
+                `Invalid PR title.\n\n` +
+                `Expected:\n` +
+                `type(scope)!: description\n\n` +
+                `Allowed types:\n` +
+                `build, ci, chore, docs, feat, fix, perf, refactor, revert, style, test\n\n` +
+                `Examples:\n` +
+                `- feat: new feature\n` +
+                `- fix(scope): bug in scope\n` +
+                `- feat!: breaking change\n` +
+                `- chore(deps): update dependencies\n\n` +
+                `If this is WIP, prefix the title with "WIP:" or convert the PR to Draft.`
+              );
+            }
+
+  body-check:
+    needs: title-check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR body
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const body = pr.body || "";
+            const title = pr.title || "";
+
+            const isDraft = pr.draft;
+            const isWip = title.startsWith("WIP:");
+
+            if (isDraft || isWip) {
+              core.info("Draft or WIP PR — skipping body enforcement.");
+              return;
+            }
+
+            const requiredSections = [
+              "## What was changed & why",
+              "## Changes",
+              "## Testing & Verification"
+            ];
+
+            const missingSections = requiredSections.filter(
+              section => !body.includes(section)
+            );
+
+            if (missingSections.length > 0) {
+              core.setFailed(
+                `PR body is missing the following required sections:\n` +
+                missingSections.join("\n") +
+                `\n\nPlease add these sections to your PR body.`
+              );
+            }
+
+            // Check for multiple issue references like "fixes #2" or "fixes: #2"
+            const issueReferences = [...body.matchAll(/(fixes|closes|resolves)\s*:?\s*#\d+/gi)];
+
+            const hasNone = /\bnone\b/i.test(body);
+
+            // Convert matchAll result to boolean
+            const hasIssueKeyword = issueReferences.length > 0;
+
+            // Fail only if neither issue references nor "none" exists
+            if (!hasIssueKeyword && !hasNone) {
+              core.setFailed(
+                `PR must reference an issue or explicitly state "none".\n\n` +
+                `Use one or more of the following keywords:\n` +
+                `- Fixes #<issue-number>\n` +
+                `- Closes #<issue-number>\n` +
+                `- Resolves #<issue-number>\n\n` +
+                `You can list multiple issues:\n` +
+                `fixes #2\nfixes: #3\n\n` +
+                `If no issue applies, write "none" in the PR body.`
+              );
+            }
