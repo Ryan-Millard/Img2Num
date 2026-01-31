@@ -1,6 +1,6 @@
 ---
 id: explained
-title: Graph Explained
+title: Graph and Node Explained
 sidebar_position: 3
 ---
 
