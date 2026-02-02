@@ -1,15 +1,14 @@
 #include "bezier.h"
-#include <iostream>
 
 // --- Vector Math Helpers ---
-inline Point sub(Point a, Point b) { return {a.x - b.x, a.y - b.y}; }
-inline Point add(Point a, Point b) { return {a.x + b.x, a.y + b.y}; }
-inline Point mul(Point a, float s) { return {a.x * s, a.y * s}; }
 inline float dot(Point a, Point b) { return a.x * b.x + a.y * b.y; }
 inline float distSq(Point a, Point b) {
   return (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
 }
-inline float len(Point a) { return std::sqrt(a.x * a.x + a.y * a.y); }
+inline float len(Point a, Point b) { 
+  Point c = a - b;
+  return std::sqrt(c.x * c.x + c.y * c.y); 
+}
 
 // --- Evaluate Quadratic Bezier at t ---
 Point evalBezier(const QuadBezier &b, float t) {
@@ -18,8 +17,9 @@ Point evalBezier(const QuadBezier &b, float t) {
   float c0 = invT * invT;
   float c1 = 2.0f * t * invT;
   float c2 = t * t;
-  return {c0 * b.p0.x + c1 * b.p1.x + c2 * b.p2.x,
-          c0 * b.p0.y + c1 * b.p1.y + c2 * b.p2.y};
+
+  return c0 * b.p0 + c1 * b.p1 + c2 * b.p2;
+
 }
 
 // --- Chord Length Parameterization ---
@@ -31,7 +31,7 @@ std::vector<float> chordLengthParameterize(const std::vector<Point> &points,
   u.push_back(0.0f);
 
   for (int i = first + 1; i <= last; ++i) {
-    float dist = len(sub(points[i], points[i - 1]));
+    float dist = len(points[i], points[i - 1]);
     u.push_back(u.back() + dist);
   }
 
@@ -68,7 +68,7 @@ Point generateQuadBezier(const std::vector<Point> &points, int first, int last,
     // V = P[i] - (1-t)^2 * Q0 - t^2 * Q2
     float B0 = invT * invT;
     float B2 = t * t;
-    Point V = sub(points[first + i], add(mul(Q0, B0), mul(Q2, B2)));
+    Point V = points[first + i] - (Q0*B0 + Q2*B2);;
 
     // Least Squares Sums
     numX += A * V.x;
@@ -78,7 +78,7 @@ Point generateQuadBezier(const std::vector<Point> &points, int first, int last,
 
   if (den < 1e-9) {
     // Fallback for straight lines (den is 0 if all t are 0 or 1)
-    return add(Q0, mul(sub(Q2, Q0), 0.5));
+    return Q0 + (Q2 - Q0) * 0.5;
   }
 
   return {numX / den, numY / den};
@@ -91,7 +91,7 @@ void fitRecursive(const std::vector<Point> &points, int first, int last,
   // Base Case: Not enough points, just connect them
   if (last - first < 2) {
     // Just a line segment
-    Point mid = add(points[first], mul(sub(points[last], points[first]), 0.5));
+    Point mid = points[first] + (points[last] - points[first]) * 0.5;
     outCurves.push_back({points[first], mid, points[last]});
     return;
   }
@@ -147,13 +147,6 @@ void fitCurveReduction(const std::vector<std::vector<Point>> &chains,
     // Start recursion on the whole chain
     std::vector<QuadBezier> result;
     fitRecursive(chains[i], 0, chains[i].size() - 1, tolerance, result);
-
-    /*std::cout << "Curve: " << std::endl;
-    for (auto &c: result) {
-        std::cout << "{ (" << c.p0.x << ", " << c.p0.y << ") " << ", (" <<
-    c.p1.x << ", " << c.p1.y << ") " << ", (" << c.p2.x << ", " << c.p2.y <<
-    ")}" << ", " << std::endl;
-    }*/
     results.push_back(result);
   }
 }
