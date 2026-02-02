@@ -40,11 +40,20 @@ _Figure 3: Step-by-step visualization of node merging_
 Assume a region partition image as shown. Each partition (and the pixels contained within) are represented as a Node. Nodes exist in the heap. A Graph is a collection of shared_ptr(s) to these Nodes. A Graph has unique ownership over these Nodes pointers.
 ![slide1](./diagrams/Slide1.SVG)
 
-This is how one would imagine the Graph to be connected forming a undirected graph(a). In reality each Node contains a list of pointer to their neighbors, represented as edges (b). Note that adjacent nodes point to each other. Edge management is handled by the Graph.
+![slide1](./diagrams/Slide1.SVG)
+*Figure 1: Partitioned Image*
+
+Below is a visualization of the Graph with its connections forming a undirected graph (a). In reality each `Node` contains a list of pointers to their neighbors, represented as edges (b). Note that adjacent nodes point to each other. Edge management is handled by the Graph.
 ![slide2](./diagrams/Slide2.SVG)
+*Figure 2: Visualizing a Graph. Note in (b) only 3 nodes are displayed 0,1,3. The remaining nodes have a similar structure*
+
+## Small Area Node Merging (Small Region Pruning)
 
 One of the Graph's main operations is Node merging. Suppose we want to absorb/merge region 0 (Node 0) into region 2 (Node 2). Node 2 will assume ownership of Nodes 0's pixels and neighbors. The following figure shows the step-by-step process that happens in Graph.
+
 ![slide3](./diagrams/Slide3.SVG)
+*Figure 3: Step-by-step visualization of node merging*
+
  **a**. Consider merging Node 0 into Node 2 
 
  **b**. Disconnect edges to Node 0 neighbors. This requires iterating over Nodes 1, 2, and 3, and removing Node 0 from their edge set.
@@ -108,6 +117,18 @@ See [this PR discussion](https://github.com/Ryan-Millard/Img2Num/pull/245#issuec
 To solve this problem `Graph` has to overlap neighboring contours. For this `Nodes` have a special `edge_pixel` property to keep track of additional pixels to be considered for the contour. This forces neighboring contours to perfectly overlap creating no gaps or holes, which is important for SVGs.
 
 Before gap management
+<details>
+<summary>Pull the code locally from PR #238</summary>
+```bash
+# 1. Clone the repo (if you haven't already)
+git clone https://github.com/Ryan-Millard/Img2Num.git
+cd Img2Num
+# 2. Fetch the specific commit from the PR
+git fetch origin 9eb23f9a56edaeec95e2dfcfc8389b11bfd777b6
+# 3. Create a local branch pointing at it
+git checkout -b try-pr-238 9eb23f9a56edaeec95e2dfcfc8389b11bfd777b6
+```
+</details>
 
 <details>
 <summary>Pull the code locally from PR #238</summary>
