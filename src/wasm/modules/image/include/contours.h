@@ -36,9 +36,19 @@ struct Point {
       return Point{x * scalar, y * scalar};
   }
 
+  Point operator/(float scalar) const {
+      return Point{x / scalar, y / scalar};
+  }
+
   // Friend function to allow float * Vector
   friend Point operator*(float scalar, const Point& v) {
       return Point{v.x * scalar, v.y * scalar};; // Calls the member function for the actual logic
+  }
+
+  Point& operator+=(const Point& other){
+      x += other.x;
+      y += other.y;
+      return *this;
   }
 };
 
@@ -76,10 +86,10 @@ namespace contours {
 ContoursResult find_contours(const std::vector<uint8_t> &binary, int width,
                              int height);
 
-void stitchSmooth(std::vector<Point> &vecA, std::vector<Point> &vecB);
-void coupledSmooth(std::vector<std::vector<Point>> &contours, Rect bounds);
+void stitch_smooth(std::vector<Point> &vecA, std::vector<Point> &vecB);
+void coupled_smooth(std::vector<std::vector<Point>> &contours, Rect bounds);
 
-void packWithBoundaryConstraints(std::vector<std::vector<Point>> &contours,
+void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours,
                                  Rect bounds, int iterations = 15);
 
 } // namespace contours

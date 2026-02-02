@@ -315,7 +315,7 @@ Point getTangent(const std::vector<Point> &vec, int i) {
   int prev = (i == 0) ? 0 : i - 1;
   int next = (i == n - 1) ? n - 1 : i + 1;
 
-  return normalize({vec[next].x - vec[prev].x, vec[next].y - vec[prev].y});
+  return normalize(vec[next] - vec[prev]);
 }
 
 float distSq(Point a, Point b) {
@@ -368,7 +368,7 @@ struct PointID {
  * @note The function assumes pts has at least 3 points for linear smoothing and 
  *       at least 5 points for quadratic smoothing.
  */
- 
+
 Point getQuadraticTarget(const std::vector<Point> &pts, int i) {
   int n = pts.size();
 
@@ -379,8 +379,7 @@ Point getQuadraticTarget(const std::vector<Point> &pts, int i) {
     Point prev = pts[i - 1];
     Point curr = pts[i];
     Point next = pts[i + 1];
-    return {0.25f * prev.x + 0.5f * curr.x + 0.25f * next.x,
-            0.25f * prev.y + 0.5f * curr.y + 0.25f * next.y};
+    return 0.25f * prev + 0.5f * curr + 0.25f * next;
   }
 
   // 2. QUADRATIC FILTER (Savitzky-Golay Window 5, Degree 2):
@@ -392,14 +391,7 @@ Point getQuadraticTarget(const std::vector<Point> &pts, int i) {
   const Point &p1R = pts[i + 1]; // 1 Right
   const Point &p2R = pts[i + 2]; // 2 Right
 
-  float tx = (-3.0f * p2L.x + 12.0f * p1L.x + 17.0f * p.x + 12.0f * p1R.x -
-              3.0f * p2R.x) /
-             35.0f;
-  float ty = (-3.0f * p2L.y + 12.0f * p1L.y + 17.0f * p.y + 12.0f * p1R.y -
-              3.0f * p2R.y) /
-             35.0f;
-
-  return {tx, ty};
+  return (-3.0f * p2L + 12.0f * p1L + 17.0f * p + 12.0f * p1R - 3.0f * p2R) / 35.0f;
 }
 
 void coupledSmooth(std::vector<Point> &contourA, std::vector<Point> &contourB) {
@@ -466,8 +458,7 @@ void coupledSmooth(std::vector<Point> &contourA, std::vector<Point> &contourB) {
                 oTarget = otherPos;
               }
 
-              sumPartnerTargets.x += oTarget.x;
-              sumPartnerTargets.y += oTarget.y;
+              sumPartnerTargets += oTarget;
               partnerCount++;
             }
           }
@@ -478,10 +469,7 @@ void coupledSmooth(std::vector<Point> &contourA, std::vector<Point> &contourB) {
       // "I want to be a parabola" vs "My partner wants to be a parabola"
       // We average the two perfect quadratic fits.
       if (partnerCount > 0) {
-        targetPos[c][p].x =
-            (myTarget.x + sumPartnerTargets.x) / (1.0 + partnerCount);
-        targetPos[c][p].y =
-            (myTarget.y + sumPartnerTargets.y) / (1.0 + partnerCount);
+        targetPos[c][p] = (myTarget + sumPartnerTargets) / (1.0 + partnerCount);
       } else {
         targetPos[c][p] = myTarget;
       }
@@ -492,7 +480,7 @@ void coupledSmooth(std::vector<Point> &contourA, std::vector<Point> &contourB) {
   std::copy(targetPos[1].begin(), targetPos[1].end(), contourB.begin());
 }
 
-void stitchSmooth(std::vector<Point> &vecA, std::vector<Point> &vecB) {
+void stitch_smooth(std::vector<Point> &vecA, std::vector<Point> &vecB) {
   // 1. Map Vector B indices to Grid (Optimization)
   // We map a coordinate to the INDEX in vector B
   std::map<Coord, int> mapB;
@@ -553,8 +541,7 @@ void stitchSmooth(std::vector<Point> &vecA, std::vector<Point> &vecB) {
 
     if (foundMatch) {
       // Move A to the midpoint between itself and the closest spot on B's line
-      Point mid = {(vecA[i].x + bestTarget.x) / 2.f,
-                   (vecA[i].y + bestTarget.y) / 2.f};
+      Point mid = (vecA[i] + bestTarget) * 0.5f;
       updatesA.push_back({(int)i, mid});
     }
   }
@@ -605,8 +592,7 @@ void stitchSmooth(std::vector<Point> &vecA, std::vector<Point> &vecB) {
     }
 
     if (foundMatch) {
-      Point mid = {(vecB[i].x + bestTarget.x) / 2.0f,
-                   (vecB[i].y + bestTarget.y) / 2.0f};
+      Point mid = (vecB[i] + bestTarget) * 0.5f;
       updatesB.push_back({(int)i, mid});
     }
   }
@@ -632,10 +618,7 @@ void stitchSmooth(std::vector<Point> &vecA, std::vector<Point> &vecB) {
     for (const auto &u : updates) {
       int i = u.index;
       if (i > 0 && i < (int)pts.size() - 1) {
-        pts[i].x = 0.25f * original[i - 1].x + 0.5f * original[i].x +
-                   0.25f * original[i + 1].x;
-        pts[i].y = 0.25f * original[i - 1].y + 0.5f * original[i].y +
-                   0.25f * original[i + 1].y;
+        pts[i] = 0.25f * original[i - 1] + 0.5f * original[i] + 0.25f * original[i + 1];
       }
     }
   };
@@ -648,10 +631,7 @@ void stitchSmooth(std::vector<Point> &vecA, std::vector<Point> &vecB) {
       if (i > 0 && i < (int)pts.size() - 1) {
         // Heavier weight on self (0.6) to preserve shape, but smooth noise (0.2
         // neighbors)
-        pts[i].x = 0.2f * original[i - 1].x + 0.6f * original[i].x +
-                   0.2f * original[i + 1].x;
-        pts[i].y = 0.2f * original[i - 1].y + 0.6f * original[i].y +
-                   0.2f * original[i + 1].y;
+        pts[i] = 0.2f * original[i - 1] + 0.6f * original[i] + 0.2f * original[i + 1];
       }
     }
   };
@@ -714,8 +694,8 @@ std::vector<bool> detectCorners(const std::vector<Point> &pts,
   float threshold = std::cos(angleThresholdDeg * M_PI / 180.0f);
 
   for (size_t i = 1; i < pts.size() - 1; ++i) {
-    Point v1 = normalize({pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y});
-    Point v2 = normalize({pts[i + 1].x - pts[i].x, pts[i + 1].y - pts[i].y});
+    Point v1 = normalize(pts[i] - pts[i - 1]);
+    Point v2 = normalize(pts[i + 1] - pts[i]);
     if (v1.x * v2.x + v1.y * v2.y < threshold)
       isCorner[i] = true;
   }
@@ -734,10 +714,7 @@ void selectiveSmooth(std::vector<Point> &pts,
     if (isLocked[i])
       continue;
 
-    pts[i].x = 0.25f * original[i - 1].x + 0.5f * original[i].x +
-               0.25f * original[i + 1].x;
-    pts[i].y = 0.25f * original[i - 1].y + 0.5f * original[i].y +
-               0.25f * original[i + 1].y;
+    pts[i] = 0.25f * original[i - 1] + 0.5f * original[i] + 0.25f * original[i + 1];
   }
 }
 
@@ -770,9 +747,7 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
       Point next = contours[c][p + 1];
 
       // 1. Calculate My Laplacian Target (Where I want to go to be smooth)
-      Point myTarget;
-      myTarget.x = 0.25f * prev.x + 0.5f * myPos.x + 0.25f * next.x;
-      myTarget.y = 0.25f * prev.y + 0.5f * myPos.y + 0.25f * next.y;
+      Point myTarget = 0.25f * prev + 0.5f * myPos + 0.25f * next;
 
       // 2. Find Partners in OTHER contours
       Point sumPartnerTargets = {0, 0};
@@ -808,21 +783,15 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
                 Point oPrev = otherContour[op - 1];
                 Point oNext = otherContour[op + 1];
 
-                Point oTarget;
-                oTarget.x =
-                    0.25f * oPrev.x + 0.5f * otherPos.x + 0.25f * oNext.x;
-                oTarget.y =
-                    0.25f * oPrev.y + 0.5f * otherPos.y + 0.25f * oNext.y;
+                Point oTarget = 0.25f * oPrev + 0.5f * otherPos + 0.25f * oNext;
 
-                sumPartnerTargets.x += oTarget.x;
-                sumPartnerTargets.y += oTarget.y;
+                sumPartnerTargets += oTarget;
                 partnerCount++;
               } else {
                 // If partner is constrained (e.g. corner),
                 // we should probably snap to THEM, not smooth them.
                 // For simplicity, we treat their current pos as their target.
-                sumPartnerTargets.x += otherPos.x;
-                sumPartnerTargets.y += otherPos.y;
+                sumPartnerTargets += otherPos;
                 partnerCount++;
               }
             }
@@ -832,11 +801,7 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
 
       // 3. Average "My Desire" with "Partners' Desires"
       if (partnerCount > 0) {
-        float avgTx =
-            (myTarget.x + sumPartnerTargets.x) / (1.0f + partnerCount);
-        float avgTy =
-            (myTarget.y + sumPartnerTargets.y) / (1.0f + partnerCount);
-        targetPos[c][p] = {avgTx, avgTy};
+        targetPos[c][p] = (myTarget + sumPartnerTargets) / (1.0f + partnerCount);
       } else {
         // No partners, just smooth myself
         targetPos[c][p] = myTarget;
@@ -847,13 +812,13 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
   contours = targetPos;
 }
 
-void coupledSmooth(std::vector<std::vector<Point>> &contours, Rect bounds) {
+void coupled_smooth(std::vector<std::vector<Point>> &contours, Rect bounds) {
   auto lockedMasks = createBoundaryMask(contours, bounds);
   coupledSmooth(contours, lockedMasks, 0.25f);
 }
 
 // --- Main Solver ---
-void packWithBoundaryConstraints(std::vector<std::vector<Point>> &contours,
+void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours,
                                  Rect bounds, int iterations) {
 
   // 1. Identify Locked Points (Boundary Constraint)
@@ -910,8 +875,7 @@ void packWithBoundaryConstraints(std::vector<std::vector<Point>> &contours,
               auto checkSeg = [&](int s, int e) {
                 Point t = getClosestPoint(currentPos, other[s], other[e]);
                 if (distSq(currentPos, t) < radiusSq) {
-                  sumTargets.x += t.x;
-                  sumTargets.y += t.y;
+                  sumTargets += t;
                   matchCount++;
                 }
               };
@@ -926,9 +890,7 @@ void packWithBoundaryConstraints(std::vector<std::vector<Point>> &contours,
         if (matchCount > 0) {
           // float stiffness = cornerMasks[c][p] ? 0.5f : 1.5f;
           float stiffness{1.5f};
-          nextContours[c][p].x = (sumTargets.x + currentPos.x * stiffness) /
-                                 (matchCount + stiffness);
-          nextContours[c][p].y = (sumTargets.y + currentPos.y * stiffness) /
+          nextContours[c][p] = (sumTargets + currentPos * stiffness) /
                                  (matchCount + stiffness);
         }
       }

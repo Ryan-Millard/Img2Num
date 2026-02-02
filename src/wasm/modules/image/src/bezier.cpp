@@ -138,7 +138,7 @@ void fitRecursive(const std::vector<Point> &points, int first, int last,
 }
 
 // --- Main Wrapper ---
-void fitCurveReduction(const std::vector<std::vector<Point>> &chains,
+void fit_curve_reduction(const std::vector<std::vector<Point>> &chains,
                        std::vector<std::vector<QuadBezier>> &results,
                        float tolerance) {
   // if (chain.empty()) return result;
