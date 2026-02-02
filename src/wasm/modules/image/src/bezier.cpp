@@ -13,8 +13,8 @@ inline float len(Point a) { return std::sqrt(a.x * a.x + a.y * a.y); }
 
 // --- Evaluate Quadratic Bezier at t ---
 Point evalBezier(const QuadBezier &b, float t) {
-  float invT = 1.0 - t;
   // B(t) = (1-t)^2 * P0 + 2*t*(1-t) * P1 + t^2 * P2
+  float invT = 1.0 - t;
   float c0 = invT * invT;
   float c1 = 2.0f * t * invT;
   float c2 = t * t;

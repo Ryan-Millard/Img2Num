@@ -345,6 +345,30 @@ struct PointID {
   int pIdx;
 };
 
+/**
+ * @brief Computes a smoothed target point using a local quadratic Savitzky-Golay filter.
+ *
+ * This function smooths a point in a sequence of 2D points by fitting a quadratic 
+ * polynomial to a 5-point window (if possible) and evaluating it at the center. 
+ * Essentially, it is a weighted local average where the reference point has the 
+ * largest weight and neighbors have progressively smaller weights the farther 
+ * they are from the reference.  
+ * 
+ * For points near the boundaries (indices 0, 1, n-2, n-1), where a full 5-point 
+ * window is not available, a 3-point linear smoothing is applied instead.
+ *
+ * The 5-point quadratic filter uses the following coefficients:
+ *   [-3, 12, 17, 12, -3] / 35
+ * which preserves local peaks and slopes while reducing noise.
+ *
+ * @param pts A vector of 2D points (Point struct with x, y floats) to smooth.
+ * @param i   The index of the point to smooth.
+ * @return    The smoothed Point at index i.
+ *
+ * @note The function assumes pts has at least 3 points for linear smoothing and 
+ *       at least 5 points for quadratic smoothing.
+ */
+ 
 Point getQuadraticTarget(const std::vector<Point> &pts, int i) {
   int n = pts.size();
 
