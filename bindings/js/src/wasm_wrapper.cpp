@@ -2,6 +2,6 @@
 #include "image_utils.h"
 #include "exported.h"
 
-EXPORTED void invertImage(uint8_t *ptr, int width, int height) {
-  invert_image(ptr, width, height);
+EXPORTED void gaussianBlurFft(uint8_t *image, size_t width, size_t height, double sigma) {
+  gaussian_blur_fft(image, width, height, sigma);
 }

@@ -1,5 +1,11 @@
 // Stable wrapper around the Emscripten-generated module
 
-import createImageModule from "../../build-wasm/build/index.js";
+import createImg2NumModule from "../../build-wasm/build/index.js";
 
-export default createImg2NumModule;
+const wasmBinary = await fetch('index.wasm').then(r => r.arrayBuffer());
+
+export default async function() {
+  return await createImg2NumModule({
+    wasmBinary
+  });
+};

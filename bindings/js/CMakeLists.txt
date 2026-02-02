@@ -13,22 +13,21 @@ add_executable(img2num_wasm
 # Include core headers
 target_include_directories(img2num_wasm PRIVATE "${CMAKE_SOURCE_DIR}/core/include")
 
-# Linker flags
-set(WASM_LINK_FLAGS
-    "-s MODULARIZE=1"
-    "-s EXPORT_ES6=1"
-    "-s EXIT_RUNTIME=1"
-    "-s ENVIRONMENT=web,worker"
-    "-s EXPORTED_FUNCTIONS=['_malloc','_free']"
-    "-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPU8','HEAP32']"
-    "-s INITIAL_MEMORY=1024MB"
-    "-s MAXIMUM_MEMORY=2048MB"
-    "-s ALLOW_MEMORY_GROWTH=1"
-    "-s USE_PTHREADS=1"
-    "-s PTHREAD_POOL_SIZE=8"
+target_compile_options(img2num_wasm PRIVATE
+    "-sMODULARIZE=1"
+    "-sEXPORT_ES6=1"
+    "-sEXIT_RUNTIME=1"
+    "-sENVIRONMENT=web,worker"
+    "-sEXPORTED_FUNCTIONS=['_malloc','_free']"
+    "-sEXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPU8','HEAP32']"
+    "-sINITIAL_MEMORY=1024MB"
+    "-sMAXIMUM_MEMORY=2048MB"
+    "-sALLOW_MEMORY_GROWTH=1"
+    "-sEXPORT_NAME=createImg2NumModule"
+    "-sUSE_PTHREADS=1"
+    "-sPTHREAD_POOL_SIZE=8"
+    "-sSINGLE_FILE=1"
 )
-
-target_link_options(img2num_wasm PRIVATE ${WASM_LINK_FLAGS})
 
 # Output
 set_target_properties(img2num_wasm PROPERTIES

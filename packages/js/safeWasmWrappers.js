@@ -1,4 +1,3 @@
-// imageOps.js
 import { initWasmWorker, callWasm } from "./wasmClient.js";
 
 // Ensure worker is ready as soon as this module is imported
@@ -10,13 +9,17 @@ export async function gaussianBlur({
   height,
   sigma_pixels = width * 0.005,
 }) {
-  return (
+  console.log('hi');
+  const res = (
     await callWasm(
       "gaussian_blur_fft",
       { pixels, width, height, sigma_pixels },
       ["pixels"]
     )
   ).output.pixels;
+  console.log(3);
+
+  console.log(res);
 }
 
 export async function bilateralFilter({

@@ -7,6 +7,7 @@
 #include <limits>
 #include <vector>
 #include <cstring>
+#include <iostream>
 
 // image: pointer to RGBA data
 // width, height: dimensions
@@ -15,6 +16,8 @@ void gaussian_blur_fft(uint8_t *image, size_t width, size_t height,
                        double sigma_pixels) {
   if (!image || width == 0 || height == 0 || sigma_pixels <= 0)
     return;
+
+  std::cout << "Here I am!!!" << std::flush;
 
   const size_t Npix = width * height;
 

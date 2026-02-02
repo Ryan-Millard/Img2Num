@@ -1,7 +1,7 @@
 import { useEffect, useState, useId, useRef, useCallback, useMemo } from "react";
 import { Upload } from "lucide-react";
+import { gaussianBlur } from 'img2num';
 import { loadImageToUint8Array, uint8ClampedArrayToSVG } from "@utils/image-utils";
-import { useWasmWorker } from "@hooks/useWasmWorker";
 import GlassCard from "@components/GlassCard";
 import styles from "./WasmImageProcessor.module.css";
 import { useNavigate } from "react-router-dom";
@@ -12,8 +12,6 @@ const WasmImageProcessor = () => {
   const navigate = useNavigate();
   const inputId = useId();
   const inputRef = useRef(null);
-
-  const { bilateralFilter, kmeans, findContours } = useWasmWorker();
 
   const [originalSrc, setOriginalSrc] = useState(null);
   const [fileData, setFileData] = useState(null);
@@ -75,50 +73,15 @@ const WasmImageProcessor = () => {
     step(5);
 
     try {
-      const { width, height } = fileData;
-
       step(20);
-      // NOTE: Gaussian blur destroys the sharp outlines first, preventing the Bilateral filter from detecting and preserving them
-      const imgBilateralFiltered = await bilateralFilter({
+      const blurred = await gaussianBlur({
         pixels: fileData.pixels,
-        width,
-        height,
+        width: fileData.width,
+        height: fileData.height
       });
 
-      // step(45);
-      // is this needed? num_colors is incorrect should be num_threshold
-      /*const thresholded = await blackThreshold({
-        ...fileData,
-        pixels: imgBilateralFiltered,
-        num_colors: 8,
-      });*/
-
-      step(70);
-      const { pixels: kmeansed, labels } = await kmeans({
-        ...fileData,
-        pixels: imgBilateralFiltered,
-        num_colors: 16,
-      });
-
-      const contours = await findContours({
-        pixels: kmeansed,
-        labels,
-        width,
-        height,
-      });
-
-      step(95);
-      const svg = await uint8ClampedArrayToSVG({
-        pixels: contours,
-        width,
-        height,
-      });
-
-      step(100);
-
-      navigate("/editor", {
-        state: { svg },
-      });
+      console.log(blurred);
+      setOriginalSrc(blurred);
     } catch (err) {
       console.error(err);
     } finally {
@@ -127,7 +90,7 @@ const WasmImageProcessor = () => {
         step(0);
       }, 800);
     }
-  }, [fileData, bilateralFilter, kmeans, findContours, navigate, step]);
+  }, [fileData, navigate, step]);
 
   /* Memo'd UI fragments */
   const EmptyState = useMemo(
