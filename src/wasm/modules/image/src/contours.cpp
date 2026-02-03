@@ -343,15 +343,16 @@ struct PointID {
 };
 
 /**
- * @brief Computes a smoothed target point using a local quadratic Savitzky-Golay filter.
+ * @brief Computes a smoothed target point using a local quadratic
+ * Savitzky-Golay filter.
  *
- * This function smooths a point in a sequence of 2D points by fitting a quadratic 
- * polynomial to a 5-point window (if possible) and evaluating it at the center. 
- * Essentially, it is a weighted local average where the reference point has the 
- * largest weight and neighbors have progressively smaller weights the farther 
- * they are from the reference.  
- * 
- * For points near the boundaries (indices 0, 1, n-2, n-1), where a full 5-point 
+ * This function smooths a point in a sequence of 2D points by fitting a
+ * quadratic polynomial to a 5-point window (if possible) and evaluating it at
+ * the center. Essentially, it is a weighted local average where the reference
+ * point has the largest weight and neighbors have progressively smaller weights
+ * the farther they are from the reference.
+ *
+ * For points near the boundaries (indices 0, 1, n-2, n-1), where a full 5-point
  * window is not available, a 3-point linear smoothing is applied instead.
  *
  * The 5-point quadratic filter uses the following coefficients:
@@ -362,7 +363,7 @@ struct PointID {
  * @param i   The index of the point to smooth.
  * @return    The smoothed Point at index i.
  *
- * @note The function assumes pts has at least 3 points for linear smoothing and 
+ * @note The function assumes pts has at least 3 points for linear smoothing and
  *       at least 5 points for quadratic smoothing.
  */
 
@@ -388,7 +389,8 @@ Point getQuadraticTarget(const std::vector<Point> &pts, int i) {
   const Point &p1R = pts[i + 1]; // 1 Right
   const Point &p2R = pts[i + 2]; // 2 Right
 
-  return (-3.0f * p2L + 12.0f * p1L + 17.0f * p + 12.0f * p1R - 3.0f * p2R) / 35.0f;
+  return (-3.0f * p2L + 12.0f * p1L + 17.0f * p + 12.0f * p1R - 3.0f * p2R) /
+         35.0f;
 }
 
 void coupledSmooth(std::vector<Point> &contourA, std::vector<Point> &contourB) {
@@ -615,7 +617,8 @@ void stitch_smooth(std::vector<Point> &vecA, std::vector<Point> &vecB) {
     for (const auto &u : updates) {
       int i = u.index;
       if (i > 0 && i < (int)pts.size() - 1) {
-        pts[i] = 0.25f * original[i - 1] + 0.5f * original[i] + 0.25f * original[i + 1];
+        pts[i] = 0.25f * original[i - 1] + 0.5f * original[i] +
+                 0.25f * original[i + 1];
       }
     }
   };
@@ -628,7 +631,8 @@ void stitch_smooth(std::vector<Point> &vecA, std::vector<Point> &vecB) {
       if (i > 0 && i < (int)pts.size() - 1) {
         // Heavier weight on self (0.6) to preserve shape, but smooth noise (0.2
         // neighbors)
-        pts[i] = 0.2f * original[i - 1] + 0.6f * original[i] + 0.2f * original[i + 1];
+        pts[i] = 0.2f * original[i - 1] + 0.6f * original[i] +
+                 0.2f * original[i + 1];
       }
     }
   };
@@ -704,7 +708,8 @@ void selectiveSmooth(std::vector<Point> &pts,
     if (isLocked[i])
       continue;
 
-    pts[i] = 0.25f * original[i - 1] + 0.5f * original[i] + 0.25f * original[i + 1];
+    pts[i] =
+        0.25f * original[i - 1] + 0.5f * original[i] + 0.25f * original[i + 1];
   }
 }
 
@@ -791,7 +796,8 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
 
       // 3. Average "My Desire" with "Partners' Desires"
       if (partnerCount > 0) {
-        targetPos[c][p] = (myTarget + sumPartnerTargets) / (1.0f + partnerCount);
+        targetPos[c][p] =
+            (myTarget + sumPartnerTargets) / (1.0f + partnerCount);
       } else {
         // No partners, just smooth myself
         targetPos[c][p] = myTarget;
@@ -809,7 +815,7 @@ void coupled_smooth(std::vector<std::vector<Point>> &contours, Rect bounds) {
 
 // --- Main Solver ---
 void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours,
-                                 Rect bounds, int iterations) {
+                                    Rect bounds, int iterations) {
 
   // 1. Identify Locked Points (Boundary Constraint)
   auto lockedMasks = createBoundaryMask(contours, bounds);
@@ -879,14 +885,14 @@ void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours,
 
         if (matchCount > 0) {
           float stiffness{1.5f};
-          nextContours[c][p] = (sumTargets + currentPos * stiffness) /
-                                 (matchCount + stiffness);
+          nextContours[c][p] =
+              (sumTargets + currentPos * stiffness) / (matchCount + stiffness);
         }
       }
     }
 
     contours = nextContours;
-  }    
+  }
 }
 
 } // namespace contours

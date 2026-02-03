@@ -2,9 +2,9 @@
 
 // --- Vector Math Helpers ---
 inline float dot(Point a, Point b) { return a.x * b.x + a.y * b.y; }
-inline float len(Point a, Point b) { 
+inline float len(Point a, Point b) {
   Point c = a - b;
-  return std::sqrt(c.x * c.x + c.y * c.y); 
+  return std::sqrt(c.x * c.x + c.y * c.y);
 }
 
 // --- Evaluate Quadratic Bezier at t ---
@@ -16,7 +16,6 @@ Point evalBezier(const QuadBezier &b, float t) {
   float c2 = t * t;
 
   return c0 * b.p0 + c1 * b.p1 + c2 * b.p2;
-
 }
 
 // --- Chord Length Parameterization ---
@@ -65,7 +64,8 @@ Point generateQuadBezier(const std::vector<Point> &points, int first, int last,
     // V = P[i] - (1-t)^2 * Q0 - t^2 * Q2
     float B0 = invT * invT;
     float B2 = t * t;
-    Point V = points[first + i] - (Q0*B0 + Q2*B2);;
+    Point V = points[first + i] - (Q0 * B0 + Q2 * B2);
+    ;
 
     // Least Squares Sums
     numX += A * V.x;
@@ -136,8 +136,8 @@ void fitRecursive(const std::vector<Point> &points, int first, int last,
 
 // --- Main Wrapper ---
 void fit_curve_reduction(const std::vector<std::vector<Point>> &chains,
-                       std::vector<std::vector<QuadBezier>> &results,
-                       float tolerance) {
+                         std::vector<std::vector<QuadBezier>> &results,
+                         float tolerance) {
   // if (chain.empty()) return result;
   // results.resize(chains.size());
   for (int i = 0; i < chains.size(); ++i) {

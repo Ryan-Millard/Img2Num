@@ -125,7 +125,7 @@ void Graph::discover_edges(const std::vector<int32_t> &region_labels,
 void Graph::compute_contours() {
   // overlap edge pixels
   // then compute contours
-  
+
   std::set<std::pair<int, int>> adjusted_neighbors{};
 
   constexpr int8_t dirs[8][2]{{1, 0}, {-1, 0},  {0, 1},  {0, -1},
@@ -203,15 +203,14 @@ void Graph::compute_contours() {
           int global_x = x + xywh[i][0] - bounds[0];
           uint8_t val = full_neighborhood[i][y * xywh[i][2] + x];
           if (val != 0) {
-            neighborhood[global_y * bounds[2] + global_x] =
-                (i + 1);
+            neighborhood[global_y * bounds[2] + global_x] = (i + 1);
           }
         }
       }
     }
 
     // 0 = background, 1 = this node, 2+ = neighboring nodes
-    
+
     // find touching edges
     for (int y = 0; y < bounds[3]; ++y) {
       for (int x = 0; x < bounds[2]; ++x) {
@@ -253,7 +252,7 @@ void Graph::compute_contours() {
       }
     }
   }
-  
+
   // ask each Node to compute contours
   for (const Node_ptr &n : get_nodes()) {
     if (n->area() == 0)
@@ -274,8 +273,8 @@ void Graph::compute_contours() {
   }
 
   contours::coupled_smooth(all_contours,
-                          Rect{0.0f, 0.0f, static_cast<float>(m_width),
-                               static_cast<float>(m_height)});
+                           Rect{0.0f, 0.0f, static_cast<float>(m_width),
+                                static_cast<float>(m_height)});
 
   std::vector<std::vector<QuadBezier>> all_curves;
   fit_curve_reduction(all_contours, all_curves, 0.5f);
@@ -310,13 +309,15 @@ void Graph::merge_small_area_nodes(const int32_t min_area) {
 
         ImageLib::RGBPixel<uint8_t> col = n->color();
         // sort by size and color similarity
-        std::sort(neighbors.begin(), neighbors.end(),
-                  [col](Node_ptr a, Node_ptr b) {
-                    float cdista = ImageLib::RGBPixel<uint8_t>::colorDistance(a->color(), col);
-                    float cdistb = ImageLib::RGBPixel<uint8_t>::colorDistance(b->color(), col);
-                    return (static_cast<float>(a->area()) + 10.f * cdista) <
-                           (static_cast<float>(b->area()) + 10.f * cdistb);
-                  });
+        std::sort(
+            neighbors.begin(), neighbors.end(), [col](Node_ptr a, Node_ptr b) {
+              float cdista =
+                  ImageLib::RGBPixel<uint8_t>::colorDistance(a->color(), col);
+              float cdistb =
+                  ImageLib::RGBPixel<uint8_t>::colorDistance(b->color(), col);
+              return (static_cast<float>(a->area()) + 10.f * cdista) <
+                     (static_cast<float>(b->area()) + 10.f * cdistb);
+            });
 
         int32_t idx{0};
         // find first non-zero area neighbor

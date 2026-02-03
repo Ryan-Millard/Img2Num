@@ -28,11 +28,9 @@ struct LABAPixel : public ImageLib::LABPixel<NumberT> {
     this->alpha = alpha;
   }
 
-  static inline float colorDistance(
-    const LABAPixel<NumberT> &a,
-    const LABAPixel<NumberT> &b
-  ) {
-    return LABPixel<NumberT>::colorDistance(a,b);
+  static inline float colorDistance(const LABAPixel<NumberT> &a,
+                                    const LABAPixel<NumberT> &b) {
+    return LABPixel<NumberT>::colorDistance(a, b);
   }
 
 } __attribute__((packed));
