@@ -28,6 +28,13 @@ struct RGBAPixel : public ImageLib::RGBPixel<NumberT> {
     this->alpha = alpha;
   }
 
+  static inline float colorDistance(
+    const RGBAPixel<NumberT> &a,
+    const RGBAPixel<NumberT> &b
+  ) {
+    return RGBAPixel<NumberT>::colorDistance(a,b);
+  }
+
 } __attribute__((packed));
 } // namespace ImageLib
 
