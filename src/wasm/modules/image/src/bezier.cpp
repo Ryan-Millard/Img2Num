@@ -65,7 +65,6 @@ Point generateQuadBezier(const std::vector<Point> &points, int first, int last,
     float B0 = invT * invT;
     float B2 = t * t;
     Point V = points[first + i] - (Q0 * B0 + Q2 * B2);
-    ;
 
     // Least Squares Sums
     numX += A * V.x;
