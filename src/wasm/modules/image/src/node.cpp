@@ -118,15 +118,19 @@ Node::create_binary_image(std::vector<uint8_t> &binary) const {
   return xywh;
 }
 
-void Node::compute_contour(void) {
-  // return list of all contours present in Node.
-  // usually 1 sometimes more if holes are present
-
+void Node::clear_contour(void) {
   m_contours.contours.clear();
   m_contours.hierarchy.clear();
   m_contours.is_hole.clear();
   m_contours.colors.clear();
   m_contours.curves.clear();
+}
+
+void Node::compute_contour(void) {
+  // return list of all contours present in Node.
+  // usually 1 sometimes more if holes are present
+
+  clear_contour();
 
   std::vector<uint8_t> binary;
   std::array<int, 4> xywh{create_binary_image(binary)};

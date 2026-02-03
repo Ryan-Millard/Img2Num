@@ -78,7 +78,9 @@ public:
 
   // keep track of its own contour points
   // only filled in when compute_contour() is called
+  // though these are public only Graph should access them
   ColoredContours m_contours;
+  void clear_contour(void);
   void compute_contour();
 
   /* access member variables */
