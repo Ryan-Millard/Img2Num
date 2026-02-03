@@ -2,9 +2,6 @@
 
 // --- Vector Math Helpers ---
 inline float dot(Point a, Point b) { return a.x * b.x + a.y * b.y; }
-inline float distSq(Point a, Point b) {
-  return (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
-}
 inline float len(Point a, Point b) { 
   Point c = a - b;
   return std::sqrt(c.x * c.x + c.y * c.y); 
@@ -113,7 +110,7 @@ void fitRecursive(const std::vector<Point> &points, int first, int last,
   for (int i = 0; i < u.size(); ++i) {
     Point P = points[first + i];
     Point CurveP = evalBezier(curve, u[i]);
-    float d2 = distSq(P, CurveP);
+    float d2 = Point::distSq(P, CurveP);
 
     if (d2 > maxDistSq) {
       maxDistSq = d2;

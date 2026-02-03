@@ -318,15 +318,12 @@ Point getTangent(const std::vector<Point> &vec, int i) {
   return normalize(vec[next] - vec[prev]);
 }
 
-float distSq(Point a, Point b) {
-  return (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
-}
 // Calculate the closest point on the segment V -> W from point P
 // Returns {ClosestPoint, DistanceSquared}
 std::pair<Point, float> getClosestPointOnSegment(Point p, Point v, Point w) {
-  float l2 = distSq(v, w);
+  float l2 = Point::distSq(v, w);
   if (l2 == 0.0)
-    return {v, distSq(p, v)};
+    return {v, Point::distSq(p, v)};
 
   // Project p onto line v-w
   // t is the parameterized distance along the line (0.0 to 1.0)
@@ -336,7 +333,7 @@ std::pair<Point, float> getClosestPointOnSegment(Point p, Point v, Point w) {
   t = std::max(0.0f, std::min(1.0f, t));
 
   Point projection = {v.x + t * (w.x - v.x), v.y + t * (w.y - v.y)};
-  return {projection, distSq(p, projection)};
+  return {projection, Point::distSq(p, projection)};
 }
 
 // Identifies a specific point: {ContourIndex, PointIndex}
@@ -442,7 +439,7 @@ void coupledSmooth(std::vector<Point> &contourA, std::vector<Point> &contourB) {
             Point otherPos = contours[neighbor.cIdx][neighbor.pIdx];
 
             // If close enough to be a "Partner"
-            if (distSq(myPos, otherPos) < pairRadiusSq) {
+            if (Point::distSq(myPos, otherPos) < pairRadiusSq) {
 
               // Check if partner is constrained
               int op = neighbor.pIdx;
@@ -636,20 +633,13 @@ void stitch_smooth(std::vector<Point> &vecA, std::vector<Point> &vecB) {
     }
   };
 
-  // laplacianSmooth(vecA, updatesA);
-  // laplacianSmooth(vecB, updatesB);
-
   smoothVector(vecA, updatesA);
   smoothVector(vecB, updatesB);
-
-  // coupledSmooth(vecA, vecB);
-  // std::cout << "Smoothly stitched " << updatesA.size() << " pts on A and " <<
-  // updatesB.size() << " pts on B.\n";
 }
 
 // Project p onto segment v-w. Returns closest point.
 Point getClosestPoint(Point p, Point v, Point w) {
-  float l2 = distSq(v, w);
+  float l2 = Point::distSq(v, w);
   if (l2 == 0.0f)
     return v;
 
@@ -768,7 +758,7 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
               continue; // Ignore self
 
             Point otherPos = contours[neighbor.cIdx][neighbor.pIdx];
-            if (distSq(myPos, otherPos) < pairRadiusSq) {
+            if (Point::distSq(myPos, otherPos) < pairRadiusSq) {
               // Found a partner!
               // Calculate where the PARTNER wants to go
               // (We need safe access to partner's neighbors)
@@ -828,7 +818,7 @@ void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours,
   // std::vector<std::vector<bool>> cornerMasks;
   // for (const auto& c : contours) cornerMasks.push_back(detectCorners(c));
 
-  float radiusSq = 3.0f * 3.0f; // Search radius
+  constexpr float radiusSq = 3.0f * 3.0f; // Search radius
 
   for (int iter = 0; iter < iterations; ++iter) {
 
@@ -874,7 +864,7 @@ void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours,
 
               auto checkSeg = [&](int s, int e) {
                 Point t = getClosestPoint(currentPos, other[s], other[e]);
-                if (distSq(currentPos, t) < radiusSq) {
+                if (Point::distSq(currentPos, t) < radiusSq) {
                   sumTargets += t;
                   matchCount++;
                 }
@@ -888,7 +878,6 @@ void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours,
         }
 
         if (matchCount > 0) {
-          // float stiffness = cornerMasks[c][p] ? 0.5f : 1.5f;
           float stiffness{1.5f};
           nextContours[c][p] = (sumTargets + currentPos * stiffness) /
                                  (matchCount + stiffness);
@@ -897,15 +886,7 @@ void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours,
     }
 
     contours = nextContours;
-
-    // Smooth (respecting locks)
-    // for (int c = 0; c < (int)contours.size(); ++c) {
-    //     selectiveSmooth(contours[c], lockedMasks[c]);
-    //}
-    // coupledSmooth(contours, lockedMasks);
-  }
-
-  std::cout << "Packed with locked boundaries.\n";
+  }    
 }
 
 } // namespace contours

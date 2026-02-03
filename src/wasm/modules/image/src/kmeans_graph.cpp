@@ -105,7 +105,6 @@ void region_labeling(const uint8_t *data, std::vector<int32_t> &labels,
 void visualize_contours(const std::vector<std::vector<Point>> &contours,
                         ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> &results,
                         int width, int height, int xmin = 0, int ymin = 0) {
-  auto index = [width](int x, int y) { return y * width + x; };
 
   // Random generator for colors
   static std::mt19937 rng(std::random_device{}());
