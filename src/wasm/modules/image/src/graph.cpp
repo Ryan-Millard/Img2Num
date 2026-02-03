@@ -9,7 +9,7 @@
  Graph class - manages Node class
 */
 
-static inline float colorDistance(const ImageLib::RGBPixel<uint8_t> &a,
+/*static inline float colorDistance(const ImageLib::RGBPixel<uint8_t> &a,
                                   const ImageLib::RGBPixel<uint8_t> &b) {
 
   ImageLib::RGBPixel<float> af{static_cast<float>(a.red),
@@ -21,7 +21,7 @@ static inline float colorDistance(const ImageLib::RGBPixel<uint8_t> &a,
   return std::sqrt((af.red - bf.red) * (af.red - bf.red) +
                    (af.green - bf.green) * (af.green - bf.green) +
                    (af.blue - bf.blue) * (af.blue - bf.blue));
-}
+}*/
 
 /*
  *To quickly search m_nodes (std::vector) for the index of a node id
@@ -145,11 +145,6 @@ void Graph::compute_contours() {
   constexpr int8_t dirs[8][2]{{1, 0}, {-1, 0},  {0, 1},  {0, -1},
                               {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};
 
-  constexpr int8_t dirs5[16][2]{{0, -2}, {1, -2},  {2, -2},  {2, -1},
-                                {2, 0},  {2, 1},   {2, 2},   {1, 2},
-                                {0, 2},  {-1, 2},  {-2, 2},  {-2, 1},
-                                {-2, 0}, {-2, -1}, {-2, -2}, {-1, -2}};
-
   for (const Node_ptr &n : get_nodes()) {
     if (n->area() == 0)
       continue;
@@ -223,25 +218,15 @@ void Graph::compute_contours() {
           uint8_t val = full_neighborhood[i][y * xywh[i][2] + x];
           if (val != 0) {
             neighborhood[global_y * bounds[2] + global_x] =
-                (i + 1); // full_neighborhood[i][y * xywh[i][2] + x];
+                (i + 1);
           }
         }
       }
     }
-    
-    // DEBUG PRINT
-    /*for(int y=0; y < bounds[3]; ++y){
-      for(int x=0; x < bounds[2]; ++x){
-        uint8_t val = neighborhood[y * bounds[2] + x];
-        std::cout << std::to_string(val);
-      }
-      std::cout<<std::endl;
-    }*/
 
     // 0 = background, 1 = this node, 2+ = neighboring nodes
     
     // find touching edges
-    // std::vector<bool> addressed_pixels(neighborhood.size, false);
     for (int y = 0; y < bounds[3]; ++y) {
       for (int x = 0; x < bounds[2]; ++x) {
         uint8_t val = neighborhood[y * bounds[2] + x];
@@ -306,13 +291,8 @@ void Graph::compute_contours() {
                           Rect{0.0f, 0.0f, static_cast<float>(m_width),
                                static_cast<float>(m_height)});
 
-  std::cout << "Fitting bezier" << std::endl;
   std::vector<std::vector<QuadBezier>> all_curves;
   fit_curve_reduction(all_contours, all_curves, 0.5f);
-  std::cout << "Done fitting bezier" << std::endl;
-
-  std::cout << "Num contours " << all_contours.size() << std::endl;
-  std::cout << "Num curves " << all_curves.size() << std::endl;
 
   int j = 0;
   for (const Node_ptr &n : get_nodes()) {
@@ -323,10 +303,6 @@ void Graph::compute_contours() {
     for (size_t i = 0; i < c0->contours.size(); ++i) {
       std::copy(all_contours[j].begin(), all_contours[j].end(),
                 c0->contours[i].begin());
-
-      // c0->curves[i].clear();
-      // c0->curves[i].resize(all_curves[j].size());
-      std::cout << "Curve size " << all_curves[j].size() << std::endl;
 
       c0->curves[i].resize(all_curves[j].size());
       std::copy(all_curves[j].begin(), all_curves[j].end(),
@@ -347,16 +323,11 @@ void Graph::merge_small_area_nodes(const int32_t min_area) {
                   std::back_inserter(neighbors));
 
         ImageLib::RGBPixel<uint8_t> col = n->color();
-        // Sort by size -> a.area < b.area
-        // std::sort(neighbors.begin(), neighbors.end(),
-        //          [](Node_ptr a, Node_ptr b) { return a->area() < b->area();
-        //          });
-
         // sort by size and color similarity
         std::sort(neighbors.begin(), neighbors.end(),
                   [col](Node_ptr a, Node_ptr b) {
-                    float cdista = colorDistance(a->color(), col);
-                    float cdistb = colorDistance(b->color(), col);
+                    float cdista = ImageLib::RGBPixel<uint8_t>::colorDistance(a->color(), col);
+                    float cdistb = ImageLib::RGBPixel<uint8_t>::colorDistance(b->color(), col);
                     return (static_cast<float>(a->area()) + 10.f * cdista) <
                            (static_cast<float>(b->area()) + 10.f * cdistb);
                   });

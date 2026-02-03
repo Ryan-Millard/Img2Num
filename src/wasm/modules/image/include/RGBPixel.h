@@ -2,6 +2,7 @@
 #define RGBPIXEL_H
 
 #include "Pixel.h"
+#include <cmath>
 
 namespace ImageLib {
 template <typename NumberT> struct RGBPixel : public Pixel<NumberT> {
@@ -21,6 +22,23 @@ template <typename NumberT> struct RGBPixel : public Pixel<NumberT> {
 
   // ----- Utilities -----
   inline void setGray(NumberT gray) { red = green = blue = gray; }
+
+  static inline float colorDistance(
+    const RGBPixel<NumberT> &a,
+    const RGBPixel<NumberT> &b
+  ) {
+
+    RGBPixel<float> af{static_cast<float>(a.red),
+                                static_cast<float>(a.green),
+                                static_cast<float>(a.blue)};
+    RGBPixel<float> bf{static_cast<float>(b.red),
+                                static_cast<float>(b.green),
+                                static_cast<float>(b.blue)};
+    return std::sqrt((af.red - bf.red) * (af.red - bf.red) +
+                    (af.green - bf.green) * (af.green - bf.green) +
+                    (af.blue - bf.blue) * (af.blue - bf.blue));
+  }
+
 } __attribute__((packed));
 } // namespace ImageLib
 
