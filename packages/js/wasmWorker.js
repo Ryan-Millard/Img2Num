@@ -9,7 +9,7 @@ Notes:
   5. Free the allocated memory.
 This ensures JS arrays correctly map to WASM memory.
 */
-import createImg2NumModule from "./wasmModule.js";
+import createImg2NumModule from "./build-wasm/index.js";
 
 let wasmModule;
 let readyResolve;

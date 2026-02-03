@@ -1,31 +1,31 @@
 import { useEffect, useState, useId, useRef, useCallback, useMemo } from "react";
 import { Upload } from "lucide-react";
-import { gaussianBlur } from 'img2num';
-import { loadImageToUint8Array, uint8ClampedArrayToSVG } from "@utils/image-utils";
+import { loadImageToUint8Array } from "@utils/image-utils"; // keep your existing loader
+import { bilateralFilter } from "img2num";
 import GlassCard from "@components/GlassCard";
 import styles from "./WasmImageProcessor.module.css";
-import { useNavigate } from "react-router-dom";
 import LoadingHedgehog from "@components/LoadingHedgehog";
 import Tooltip from "@components/Tooltip";
 
 const WasmImageProcessor = () => {
-  const navigate = useNavigate();
   const inputId = useId();
   const inputRef = useRef(null);
 
   const [originalSrc, setOriginalSrc] = useState(null);
   const [fileData, setFileData] = useState(null);
+  const [filteredSrc, setFilteredSrc] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  /* Cleanup object URLs on unmount or src change */
+  // Cleanup object URLs on unmount or src change
   useEffect(() => {
     return () => {
       if (originalSrc) URL.revokeObjectURL(originalSrc);
+      if (filteredSrc) URL.revokeObjectURL(filteredSrc);
     };
-  }, [originalSrc]);
+  }, [originalSrc, filteredSrc]);
 
-  /* Stable loader for images */
+  // Load original image
   const loadOriginal = useCallback(async (file) => {
     if (!file) return;
 
@@ -34,9 +34,10 @@ const WasmImageProcessor = () => {
 
     const { pixels, width, height } = await loadImageToUint8Array(file);
     setFileData({ pixels, width, height });
+    setFilteredSrc(null); // clear previous filtered image
   }, []);
 
-  /* Paste support */
+  // Paste support
   useEffect(() => {
     const handlePaste = (e) => {
       for (const item of e.clipboardData?.items || []) {
@@ -46,53 +47,60 @@ const WasmImageProcessor = () => {
         }
       }
     };
-
     document.addEventListener("paste", handlePaste);
     return () => document.removeEventListener("paste", handlePaste);
   }, [loadOriginal]);
 
-  /* Drag & drop */
+  // Drag & drop
   const handleDrop = useCallback(
     (e) => {
       e.preventDefault();
       loadOriginal(e.dataTransfer.files[0]);
     },
-    [loadOriginal],
+    [loadOriginal]
   );
 
   const handleSelect = useCallback((e) => loadOriginal(e.target.files[0]), [loadOriginal]);
 
-  /* Hashed steps to keep pipeline aligned */
   const step = useCallback((p) => setProgress(p), []);
 
-  /* Main pipeline */
-  const processImage = useCallback(async () => {
+  // Apply bilateral filter
+  const applyBilateralFilter = useCallback(async () => {
     if (!fileData) return;
 
     setIsProcessing(true);
     step(5);
 
     try {
+      const { width, height, pixels } = fileData;
       step(20);
-      const blurred = await gaussianBlur({
-        pixels: fileData.pixels,
-        width: fileData.width,
-        height: fileData.height
-      });
 
-      console.log(blurred);
-      setOriginalSrc(blurred);
+      const filteredPixels = await bilateralFilter({ pixels, width, height });
+      step(80);
+
+      // Convert filtered pixels to a data URL using canvas
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      const imageData = new ImageData(new Uint8ClampedArray(filteredPixels), width, height);
+      ctx.putImageData(imageData, 0, 0);
+
+      const filteredDataUrl = canvas.toDataURL();
+      setFilteredSrc(filteredDataUrl);
+
+      step(100);
     } catch (err) {
       console.error(err);
     } finally {
       setTimeout(() => {
         setIsProcessing(false);
         step(0);
-      }, 800);
+      }, 500);
     }
-  }, [fileData, navigate, step]);
+  }, [fileData, step]);
 
-  /* Memo'd UI fragments */
+  // Empty state UI
   const EmptyState = useMemo(
     () => (
       <>
@@ -108,9 +116,10 @@ const WasmImageProcessor = () => {
         </p>
       </>
     ),
-    [],
+    []
   );
 
+  // Loaded state UI
   const LoadedState = useMemo(() => {
     if (!originalSrc) return null;
 
@@ -119,23 +128,30 @@ const WasmImageProcessor = () => {
         <img src={originalSrc} alt="Original" className={styles.preview} />
 
         {!isProcessing ? (
-          <Tooltip content="Process the image and convert it to numbers">
+          <Tooltip content="Apply bilateral filter">
             <button
               className="uppercase button"
               onClick={(e) => {
                 e.stopPropagation();
-                processImage();
+                applyBilateralFilter();
               }}
             >
-              Ok
+              Apply Filter
             </button>
           </Tooltip>
         ) : (
-          <LoadingHedgehog progress={progress} text={`Processing — ${Math.round(progress)}%`} />
+          <LoadingHedgehog progress={progress} text={`Processing – ${Math.round(progress)}%`} />
+        )}
+
+        {filteredSrc && (
+          <>
+            <h4 className="text-center">Filtered Output</h4>
+            <img src={filteredSrc} alt="Filtered" className={styles.preview} />
+          </>
         )}
       </>
     );
-  }, [originalSrc, isProcessing, progress, processImage]);
+  }, [originalSrc, isProcessing, progress, applyBilateralFilter, filteredSrc]);
 
   return (
     <GlassCard

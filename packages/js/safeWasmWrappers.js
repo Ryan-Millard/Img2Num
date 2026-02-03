@@ -9,17 +9,13 @@ export async function gaussianBlur({
   height,
   sigma_pixels = width * 0.005,
 }) {
-  console.log('hi');
-  const res = (
+  return (
     await callWasm(
       "gaussian_blur_fft",
       { pixels, width, height, sigma_pixels },
       ["pixels"]
     )
   ).output.pixels;
-  console.log(3);
-
-  console.log(res);
 }
 
 export async function bilateralFilter({

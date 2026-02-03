@@ -37,14 +37,11 @@ export function callWasm(funcName, args = {}, bufferKeys = []) {
   if (!initialized) {
     throw new Error("WASM worker not initialized. Call initWasmWorker() first.");
   }
-  console.log(1);
-
   const id = idCounter++;
 
   return new Promise((resolve, reject) => {
     callbacks.set(id, { resolve, reject });
     worker.postMessage({ id, funcName, args, bufferKeys });
-  console.log(2);
   });
 }
 

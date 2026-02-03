@@ -1,36 +1,27 @@
 # =================================================================
 # Img2Num Core (Object Library)
 # =================================================================
+cmake_minimum_required(VERSION 3.16)
+project(CoreLibrary LANGUAGES CXX)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# =========================
-# Source files
-# =========================
-file(GLOB CORE_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+# Collect sources
+file(GLOB_RECURSE CORE_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+file(GLOB_RECURSE CORE_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
 
-# =========================
-# Core as object library
-# =========================
-add_library(img2num_core OBJECT ${CORE_SRC})
-target_include_directories(img2num_core PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
+# Build as object library
+add_library(core OBJECT ${CORE_SRC} ${CORE_HEADERS})
 
-# =========================
-# Compiler flags
-# =========================
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
-endif()
+target_include_directories(core PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_options(img2num_core PRIVATE -O2 -g)
-else()
-    target_compile_options(img2num_core PRIVATE -O3)
-endif()
-
-# =========================
-# WASM-specific flags
-# =========================
+# If building with Emscripten and pthreads
 if(EMSCRIPTEN)
-    target_compile_options(img2num_core PRIVATE -pthread -msimd128)
+    target_compile_options(core PRIVATE -pthread -msimd128)
+    target_link_options(core PRIVATE -pthread -msimd128)
 endif()
+
+message(STATUS "Core library configured with ${CORE_SRC}")
