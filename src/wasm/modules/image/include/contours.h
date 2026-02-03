@@ -4,6 +4,7 @@
 #include "Image.h"
 #include "PixelConverters.h"
 #include "RGBAPixel.h"
+#include "solver.h"
 #include <algorithm>
 #include <array>
 #include <cmath>

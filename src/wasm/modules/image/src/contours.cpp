@@ -717,12 +717,20 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
                    const std::vector<std::vector<bool>> &lockedMasks,
                    float pairRadiusSq = 2.25f) {
 
+  SavitzkyGolay sg(21, 4);
+  // first fit
+  std::vector<std::vector<Point>> smoothedContours;
+  for (int c = 0; c < (int)contours.size(); ++c) {
+    std::vector<Point> sc = sg.filter_wrap(contours[c]);
+    smoothedContours.push_back(sc);
+  }
+
   // 1. Build Spatial Grid to find partners quickly
   std::map<Coord, std::vector<PointID>> grid;
   for (int c = 0; c < (int)contours.size(); ++c) {
     for (int p = 0; p < (int)contours[c].size(); ++p) {
-      grid[{(int)std::round(contours[c][p].x),
-            (int)std::round(contours[c][p].y)}]
+      grid[{static_cast<int>(contours[c][p].x),
+            static_cast<int>(contours[c][p].y)}]
           .push_back({c, p});
     }
   }
@@ -742,14 +750,16 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
       Point next = contours[c][p + 1];
 
       // 1. Calculate My Laplacian Target (Where I want to go to be smooth)
-      Point myTarget = 0.25f * prev + 0.5f * myPos + 0.25f * next;
+      Point myTarget = smoothedContours[c][p];
+      // getQuadraticTarget(contours[c], p);
+      // 0.25f * prev + 0.5f * myPos + 0.25f * next;
 
       // 2. Find Partners in OTHER contours
       Point sumPartnerTargets = {0, 0};
       int partnerCount = 0;
 
-      int gx = (int)std::round(myPos.x);
-      int gy = (int)std::round(myPos.y);
+      int gx{static_cast<int>(myPos.x)};
+      int gy{static_cast<int>(myPos.y)};
 
       // Check 3x3 grid
       for (int dy = -1; dy <= 1; ++dy) {
@@ -778,7 +788,10 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
                 Point oPrev = otherContour[op - 1];
                 Point oNext = otherContour[op + 1];
 
-                Point oTarget = 0.25f * oPrev + 0.5f * otherPos + 0.25f * oNext;
+                Point oTarget = smoothedContours[neighbor.cIdx][op];
+                // getQuadraticTarget(otherContour, op);
+                // Point oTarget = 0.25f * oPrev + 0.5f * otherPos + 0.25f *
+                // oNext;
 
                 sumPartnerTargets += oTarget;
                 partnerCount++;
@@ -810,7 +823,7 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
 
 void coupled_smooth(std::vector<std::vector<Point>> &contours, Rect bounds) {
   auto lockedMasks = createBoundaryMask(contours, bounds);
-  coupledSmooth(contours, lockedMasks, 0.25f);
+  coupledSmooth(contours, lockedMasks, 1.0f);
 }
 
 // --- Main Solver ---
@@ -832,8 +845,8 @@ void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours,
     std::map<Coord, std::vector<PointID>> grid;
     for (int c = 0; c < (int)contours.size(); ++c) {
       for (int p = 0; p < (int)contours[c].size(); ++p) {
-        grid[{(int)std::round(contours[c][p].x),
-              (int)std::round(contours[c][p].y)}]
+        grid[{static_cast<int>(contours[c][p].x),
+              static_cast<int>(contours[c][p].y)}]
             .push_back({c, p});
       }
     }
@@ -853,8 +866,8 @@ void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours,
         int matchCount = 0;
 
         // Scan Neighborhood
-        int gx = (int)std::round(currentPos.x);
-        int gy = (int)std::round(currentPos.y);
+        int gx = static_cast<int>(currentPos.x);
+        int gy = static_cast<int>(currentPos.y);
 
         for (int dy = -1; dy <= 1; ++dy) {
           for (int dx = -1; dx <= 1; ++dx) {

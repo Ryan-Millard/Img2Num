@@ -2,7 +2,6 @@
 #define GRAPH_H
 
 #include "bezier.h"
-#include "morphology.h"
 #include "node.h"
 #include <unordered_map>
 
