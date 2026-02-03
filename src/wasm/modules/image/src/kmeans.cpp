@@ -16,21 +16,6 @@
 #include <thread>
 #include <vector>
 
-/*static inline float colorDistance(const ImageLib::RGBAPixel<float> &a,
-                                  const ImageLib::RGBAPixel<float> &b) {
-  // sqrt un-necessary
-  return (a.red - b.red) * (a.red - b.red) +
-         (a.green - b.green) * (a.green - b.green) +
-         (a.blue - b.blue) * (a.blue - b.blue);
-}
-
-static inline float colorDistance(const ImageLib::LABAPixel<float> &a,
-                                  const ImageLib::LABAPixel<float> &b) {
-  // sqrt un-necessary
-  return (a.l - b.l) * (a.l - b.l) + (a.a - b.a) * (a.a - b.a) +
-         (a.b - b.b) * (a.b - b.b);
-}*/
-
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB{0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
 

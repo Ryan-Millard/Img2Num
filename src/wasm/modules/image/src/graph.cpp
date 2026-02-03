@@ -9,26 +9,12 @@
  Graph class - manages Node class
 */
 
-/*static inline float colorDistance(const ImageLib::RGBPixel<uint8_t> &a,
-                                  const ImageLib::RGBPixel<uint8_t> &b) {
-
-  ImageLib::RGBPixel<float> af{static_cast<float>(a.red),
-                               static_cast<float>(a.green),
-                               static_cast<float>(a.blue)};
-  ImageLib::RGBPixel<float> bf{static_cast<float>(b.red),
-                               static_cast<float>(b.green),
-                               static_cast<float>(b.blue)};
-  return std::sqrt((af.red - bf.red) * (af.red - bf.red) +
-                   (af.green - bf.green) * (af.green - bf.green) +
-                   (af.blue - bf.blue) * (af.blue - bf.blue));
-}*/
-
 /*
- *To quickly search m_nodes (std::vector) for the index of a node id
- *create an std::unordered_map of node id - index pairs
- *indexing time of std::vector by value is O(N)
- *lookup time of std::unordered_map by key is O(log(N))
- */
+To quickly search m_nodes (std::vector) for the index of a node id
+create an std::unordered_map of node id - index pairs
+indexing time of std::vector by value is O(N)
+lookup time of std::unordered_map by key is O(log(N))
+*/
 void Graph::hash_node_ids() {
   for (int32_t i{0}; i < m_nodes->size(); i++) {
     const int32_t key{m_nodes->at(i)->id()};
