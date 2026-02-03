@@ -126,7 +126,7 @@ void Graph::discover_edges(const std::vector<int32_t> &region_labels,
 void Graph::compute_contours() {
   // overlap edge pixels
   // then compute contours
-  
+
   std::set<std::pair<int, int>> adjusted_neighbors{};
 
   constexpr int8_t dirs[8][2]{{1, 0}, {-1, 0},  {0, 1},  {0, -1},
@@ -213,7 +213,7 @@ void Graph::compute_contours() {
     }
 
     // 0 = background, 1 = this node, 2+ = neighboring nodes
-    
+
     // find touching edges
     for (int y = 0; y < bounds[3]; ++y) {
       for (int x = 0; x < bounds[2]; ++x) {
@@ -255,7 +255,7 @@ void Graph::compute_contours() {
       }
     }
   }
-  
+
   // ask each Node to compute contours
   for (const Node_ptr &n : get_nodes()) {
     if (n->area() == 0)

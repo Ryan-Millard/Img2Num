@@ -27,9 +27,9 @@ struct Rect {
 };
 
 struct QuadBezier {
-  Point p0{0,0}; // Start
-  Point p1{0,0}; // Control
-  Point p2{0,0}; // End
+  Point p0{0, 0}; // Start
+  Point p1{0, 0}; // Control
+  Point p2{0, 0}; // End
 };
 
 struct Rect {
