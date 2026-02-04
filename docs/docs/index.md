@@ -4,7 +4,7 @@ title: Img2Num Docs
 sidebar_position: 1
 ---
 
-# Welcome to Img2Num!🦔🦔
+# Welcome to Img2Num! 🦔
 
 Img2Num is a lightweight, high-performance C++ library (compiled to WebAssembly) for converting images to numeric representations with ease and speed.
 
