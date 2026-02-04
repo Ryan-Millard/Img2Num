@@ -119,5 +119,7 @@ export function useWasmWorker() {
       });
       return result.returnValue;
     },
+
+    call,
   };
 }
