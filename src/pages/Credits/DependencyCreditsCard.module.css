@@ -1,0 +1,71 @@
+.table {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80% !important;
+  min-width: 80%;
+  table-layout: fixed;
+}
+
+.table td {
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table td:first-child {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 35%;
+}
+
+.table td:nth-child(2) {
+  white-space: nowrap;
+  width: 15%;
+}
+
+.table td:nth-child(3) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 50%;
+}
+
+.fullUrl {
+  display: inline;
+}
+
+.iconUrl {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .table {
+    width: 100% !important;
+    min-width: 100%;
+    table-layout: fixed;
+  }
+
+  .table td:first-child {
+    width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .table td:nth-child(2) {
+    width: auto;
+  }
+
+  .table td:nth-child(3) {
+    width: 40px;
+  }
+
+  .fullUrl {
+    display: none;
+  }
+
+  .iconUrl {
+    display: inline;
+    vertical-align: middle;
+  }
+}
