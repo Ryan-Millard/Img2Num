@@ -268,14 +268,14 @@ findContours(params: {
   width: number;
   height: number;
   /**
-   * @default 100
+   * `@default` 100
    */
   min_area?: number;
   /**
-   * @default false
+   * `@default` false
    */
   draw_contour_borders?: boolean;
-}): Promise<Uint8ClampedArray>
+}): Promise<{ svg: string; visualization: Uint8ClampedArray }>
 ```
 
 #### Example Usage
