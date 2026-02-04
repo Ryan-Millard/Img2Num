@@ -721,7 +721,7 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
                    const std::vector<std::vector<bool>> &lockedMasks,
                    float pairRadiusSq = 2.25f) {
 
-  SavitzkyGolay sg(5, 2);
+  SavitzkyGolay sg(2, 2); // radius, polynomial order
 
   // first fit
   std::vector<std::vector<Point>> smoothedContours;
@@ -756,8 +756,6 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
 
       // 1. Calculate My Laplacian Target (Where I want to go to be smooth)
       Point myTarget = smoothedContours[c][p];
-      // getQuadraticTarget(contours[c], p);
-      // 0.25f * prev + 0.5f * myPos + 0.25f * next;
 
       // 2. Find Partners in OTHER contours
       Point sumPartnerTargets = {0, 0};
@@ -794,9 +792,6 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
                 Point oNext = otherContour[op + 1];
 
                 Point oTarget = smoothedContours[neighbor.cIdx][op];
-                // getQuadraticTarget(otherContour, op);
-                // Point oTarget = 0.25f * oPrev + 0.5f * otherPos + 0.25f *
-                // oNext;
 
                 sumPartnerTargets += oTarget;
                 partnerCount++;

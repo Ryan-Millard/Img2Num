@@ -1,16 +1,14 @@
 #include "SavitskyGolay.h"
+#include <cassert>
 
-SavitzkyGolay::SavitzkyGolay(int window_size, int poly_order)
-    : window_size_(window_size), m_((window_size - 1) / 2),
-      poly_order_(poly_order) {
+SavitzkyGolay::SavitzkyGolay(int radius, int poly_order)
+    : m_(radius), 
+      window_size_(2 * radius + 1),
+      poly_order_(poly_order) 
+{
 
-  if (window_size % 2 == 0) {
-    throw std::invalid_argument("Window size must be odd.");
-  }
-  if (window_size <= poly_order) {
-    throw std::invalid_argument(
-        "Window size must be larger than polynomial order.");
-  }
+  assert(radius >= 0);
+  assert(window_size_ > poly_order_);
 
   compute_coefficients();
 }

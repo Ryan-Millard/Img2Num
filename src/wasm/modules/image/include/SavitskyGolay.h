@@ -22,7 +22,7 @@ private:
   void compute_coefficients();
 
 public:
-  SavitzkyGolay(int window_size, int poly_order);
+  SavitzkyGolay(int radius, int poly_order);
   std::vector<Point> filter(const std::vector<Point> &data);
   std::vector<Point> filter_wrap(const std::vector<Point> &data);
   std::vector<float> get_coeffs() const { return coeffs_; }
