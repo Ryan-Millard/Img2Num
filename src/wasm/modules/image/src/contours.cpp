@@ -1,6 +1,11 @@
 
 #include "contours.h"
+#include <algorithm>
 #include <cmath>
+#include <iterator>
+#include <map>
+#include <set>
+#include <utility>
 
 namespace contours {
 

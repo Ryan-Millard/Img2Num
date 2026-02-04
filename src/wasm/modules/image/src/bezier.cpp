@@ -1,4 +1,7 @@
 #include "bezier.h"
+#include <cmath>
+#include <limits>
+#include <vector>
 
 // --- Vector Math Helpers ---
 inline float dot(Point a, Point b) { return a.x * b.x + a.y * b.y; }

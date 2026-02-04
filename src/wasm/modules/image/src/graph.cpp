@@ -1,5 +1,6 @@
 #include "graph.h"
 #include "Pixel.h"
+#include "bezier.h"
 #include <algorithm>
 #include <iostream>
 #include <iterator>

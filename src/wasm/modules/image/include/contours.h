@@ -3,19 +3,13 @@
 
 #include "Image.h"
 #include "PixelConverters.h"
-#include "RGBAPixel.h"
 #include "Point.h"
+#include "RGBAPixel.h"
 #include "SavitskyGolay.h"
-#include <algorithm>
 #include <array>
-#include <cmath>
 #include <cstdint>
 #include <cstdlib>
-#include <iterator>
-#include <map>
-#include <set>
 #include <stdexcept>
-#include <utility>
 #include <vector>
 
 struct QuadBezier {
