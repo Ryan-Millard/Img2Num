@@ -38,8 +38,6 @@ This follows the step-by-step guide in the [explanation](explained.md).
 - Initialize nodes and region map
 - Use floodfill to fill out the region map and construct nodes
 
-![code](../../../../../../../src/wasm/modules/image/src/kmeans_graph.cpp#L73)
-
 ```cpp
 std::vector<int32_t> region_labels;
 std::vector<Node_ptr> nodes;
@@ -105,7 +103,6 @@ for node in G.nodes
 ```
 
 4. Collect all contours for SVG export
-   ![code2](../../../../../../../src/wasm/modules/image/src/kmeans_graph.cpp#L252)
 
 ---
 
