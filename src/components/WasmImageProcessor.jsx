@@ -85,16 +85,9 @@ const WasmImageProcessor = () => {
         height,
       });
 
-      // step(45);
-      // is this needed? num_colors is incorrect should be num_threshold
-      /*const thresholded = await blackThreshold({
-        ...fileData,
-        pixels: imgBilateralFiltered,
-        num_colors: 8,
-      });*/
-
       step(70);
-      const { pixels: kmeansed, labels } = await kmeans({
+      // kmeansed pixels are unused - filtered pixels are better for findContours
+      const { pixels: _kmeansed, labels } = await kmeans({
         ...fileData,
         pixels: imgBilateralFiltered,
         num_colors: 16,
