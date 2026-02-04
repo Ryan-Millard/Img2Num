@@ -275,7 +275,7 @@
 
   /* Divider between internal and external links */
   .navList li:nth-child(3)::after {
-    content: '';
+    content: "";
     display: block;
     height: 1px;
     background: linear-gradient(90deg, transparent, rgba(215, 164, 125, 0.25), transparent);

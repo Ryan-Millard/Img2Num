@@ -119,8 +119,8 @@ npm dependencies are cached to speed up workflow runs:
 ```yaml
 - uses: actions/setup-node@v4
   with:
-    node-version: '22'
-    cache: 'npm'
+    node-version: "22"
+    cache: "npm"
 ```
 
 ### Conditional Execution

@@ -42,15 +42,15 @@ const WasmImageProcessor = () => {
   useEffect(() => {
     const handlePaste = (e) => {
       for (const item of e.clipboardData?.items || []) {
-        if (item.type.startsWith('image/')) {
+        if (item.type.startsWith("image/")) {
           loadOriginal(item.getAsFile());
           break;
         }
       }
     };
 
-    document.addEventListener('paste', handlePaste);
-    return () => document.removeEventListener('paste', handlePaste);
+    document.addEventListener("paste", handlePaste);
+    return () => document.removeEventListener("paste", handlePaste);
   }, [loadOriginal]);
 
   /* Drag & drop */
@@ -59,7 +59,7 @@ const WasmImageProcessor = () => {
       e.preventDefault();
       loadOriginal(e.dataTransfer.files[0]);
     },
-    [loadOriginal]
+    [loadOriginal],
   );
 
   const handleSelect = useCallback((e) => loadOriginal(e.target.files[0]), [loadOriginal]);
@@ -111,7 +111,7 @@ const WasmImageProcessor = () => {
 
       step(100);
 
-      navigate('/editor', {
+      navigate("/editor", {
         state: { svg },
       });
     } catch (err) {
@@ -128,19 +128,19 @@ const WasmImageProcessor = () => {
   const EmptyState = useMemo(
     () => (
       <>
-        <Tooltip content="Upload an image from your device">
+        <Tooltip content="Upload an image">
           <Upload className={`anchor-style ${styles.uploadIcon}`} />
         </Tooltip>
 
-        <p className={`text-center ${styles.dragDropText}`}>
-          Drag & Drop or{' '}
-          <Tooltip content="Select an image file from your computer">
-            <span className={`anchor-style ${styles.noTextWrap}`}>Choose File</span>
-          </Tooltip>
-        </p>
+        <Tooltip content="Choose an image">
+          <p className={`text-center ${styles.dragDropText}`}>
+            Drag & Drop or&nbsp;
+            <span className={`anchor-style ${styles.noTextWrap}`}>Choose Image</span>
+          </p>
+        </Tooltip>
       </>
     ),
-    []
+    [],
   );
 
   const LoadedState = useMemo(() => {
@@ -157,7 +157,8 @@ const WasmImageProcessor = () => {
               onClick={(e) => {
                 e.stopPropagation();
                 processImage();
-              }}>
+              }}
+            >
               Ok
             </button>
           </Tooltip>
@@ -176,7 +177,8 @@ const WasmImageProcessor = () => {
       onClick={() => {
         if (!originalSrc) inputRef.current?.click();
       }}
-      data-image-loaded={!!originalSrc}>
+      data-image-loaded={!!originalSrc}
+    >
       {originalSrc ? LoadedState : EmptyState}
 
       <input ref={inputRef} id={inputId} type="file" accept="image/*" hidden onChange={handleSelect} />

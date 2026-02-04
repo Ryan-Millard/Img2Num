@@ -1,14 +1,14 @@
-import { useRef, useState } from 'react';
-import parse from 'html-react-parser';
-import { useLocation } from 'react-router-dom';
-import { Eye, Brush } from 'lucide-react';
-import GlassCard from '@components/GlassCard';
-import styles from './Editor.module.css';
-import EditorHelmet from './EditorHelmet';
-import GlassSwitch from '@components/GlassSwitch';
+import { useRef, useState } from "react";
+import parse from "html-react-parser";
+import { useLocation } from "react-router-dom";
+import { Eye, Brush } from "lucide-react";
+import GlassCard from "@components/GlassCard";
+import styles from "./Editor.module.css";
+import EditorHelmet from "./EditorHelmet";
+import GlassSwitch from "@components/GlassSwitch";
 
 // shape selector we care about
-const SHAPE_SELECTOR = 'path,rect,circle,polygon,ellipse';
+const SHAPE_SELECTOR = "path,rect,circle,polygon,ellipse";
 
 export default function Editor() {
   const { state } = useLocation();
@@ -48,7 +48,7 @@ export default function Editor() {
     if (!viewportRef.current) return;
 
     // Only start a drag for primary button on mouse.
-    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    if (e.pointerType === "mouse" && e.button !== 0) return;
 
     activePointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
 
@@ -161,7 +161,7 @@ export default function Editor() {
     // Only treat as click if user didn't drag
     if (!moved && isColorMode) {
       // Find nearest shape inside SVG
-      const svgRoot = innerRef.current?.querySelector('svg');
+      const svgRoot = innerRef.current?.querySelector("svg");
       if (!svgRoot) return;
 
       const shape = document.elementFromPoint(e.clientX, e.clientY)?.closest(SHAPE_SELECTOR);
@@ -191,13 +191,13 @@ export default function Editor() {
       <EditorHelmet />
 
       <GlassCard className={cardClass}>
-        <div className="controls" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <div className="controls" style={{ display: "flex", justifyContent: "flex-end" }}>
           <GlassSwitch
             isOn={isColorMode}
             onChange={() => {
               setIsColorMode((prev) => !prev);
             }}
-            ariaLabel={`Switch to ${isColorMode ? 'preview' : 'color'} mode`}
+            ariaLabel={`Switch to ${isColorMode ? "preview" : "color"} mode`}
             thumbContent={isColorMode ? <Eye /> : <Brush />}
           />
         </div>
@@ -209,15 +209,13 @@ export default function Editor() {
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}>
+          onPointerCancel={onPointerUp}
+        >
           <div ref={innerRef} className={styles.inner} style={transformStyle}>
             {svgElements}
           </div>
         </GlassCard>
-        <div className={styles.hint}>
-          Click shapes to reveal their original colour. Use mouse wheel to zoom, drag to pan. Switching modes preserves
-          fills.
-        </div>
+        <div className={styles.hint}>Click shapes to reveal their original colour. Use mouse wheel to zoom, drag to pan. Switching modes preserves fills.</div>
       </GlassCard>
     </>
   );

@@ -13,7 +13,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background-image: url('@assets/hedgehog-bg.svg');
+  background-image: url("@assets/hedgehog-bg.svg");
   background-repeat: repeat;
   background-size: 600px 600px; /* same as tile size */
   background-attachment: fixed;
@@ -32,8 +32,8 @@ p {
   margin-bottom: var(--spacing-md);
 }
 
-input[type='text'],
-input[type='number'],
+input[type="text"],
+input[type="number"],
 textarea,
 select {
   width: 100%;
@@ -44,8 +44,8 @@ select {
   font-size: 1rem;
   transition: border-color 0.2s ease-in-out;
 }
-input[type='text']:focus,
-input[type='number']:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
 textarea:focus,
 select:focus {
   outline: none;

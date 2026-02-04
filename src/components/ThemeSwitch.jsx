@@ -1,6 +1,6 @@
-import { Moon, Sun } from 'lucide-react';
-import GlassSwitch from './GlassSwitch';
-import { useTheme } from '@hooks/useTheme';
+import { Moon, Sun } from "lucide-react";
+import GlassSwitch from "./GlassSwitch";
+import { useTheme } from "@hooks/useTheme";
 
 /*
  * ThemeSwitch
@@ -14,14 +14,7 @@ import { useTheme } from '@hooks/useTheme';
 export default function ThemeSwitch() {
   // Get current theme and toggle function from the theme hook
   const { theme, toggleTheme } = useTheme();
-  const isDark = theme === 'dark';
+  const isDark = theme === "dark";
 
-  return (
-    <GlassSwitch
-      isOn={isDark}
-      onChange={toggleTheme}
-      thumbContent={isDark ? <Sun /> : <Moon />}
-      ariaLabel={`switch to ${isDark ? 'light' : 'dark'} mode`}
-    />
-  );
+  return <GlassSwitch isOn={isDark} onChange={toggleTheme} thumbContent={isDark ? <Sun /> : <Moon />} ariaLabel={`switch to ${isDark ? "light" : "dark"} mode`} />;
 }

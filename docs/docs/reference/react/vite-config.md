@@ -29,13 +29,11 @@ This file defines the Vite configuration for the **Img2Num** project. It handles
 
 ```javascript
 function generateWasmAliases() {
-  const modulesPath = path.resolve(__dirname, 'src/wasm/modules');
-  const moduleNames = fs
-    .readdirSync(modulesPath)
-    .filter((name) => fs.statSync(path.join(modulesPath, name)).isDirectory());
+  const modulesPath = path.resolve(__dirname, "src/wasm/modules");
+  const moduleNames = fs.readdirSync(modulesPath).filter((name) => fs.statSync(path.join(modulesPath, name)).isDirectory());
   const aliases = {};
   moduleNames.forEach((name) => {
-    aliases[`@wasm-${name}`] = path.join(modulesPath, name, 'build');
+    aliases[`@wasm-${name}`] = path.join(modulesPath, name, "build");
     console.log(`Found wasm module: ${name}`);
   });
   return aliases;
@@ -50,15 +48,15 @@ function generateWasmAliases() {
 
 ```javascript
 async function buildWasmModules() {
-  console.log('🔨 Building WASM modules on startup...');
+  console.log("🔨 Building WASM modules on startup...");
   try {
-    const { stdout, stderr } = await execAsync('npm run build-wasm');
-    console.log('✅ WASM modules built successfully');
-    if (stdout) console.log('Build output:', stdout);
-    if (stderr) console.log('Build warnings:', stderr);
+    const { stdout, stderr } = await execAsync("npm run build-wasm");
+    console.log("✅ WASM modules built successfully");
+    if (stdout) console.log("Build output:", stdout);
+    if (stderr) console.log("Build warnings:", stderr);
   } catch (error) {
-    console.error('❌ Failed to build WASM modules:', error.message);
-    console.error('Make sure you have emscripten installed and npm run build-wasm is configured');
+    console.error("❌ Failed to build WASM modules:", error.message);
+    console.error("Make sure you have emscripten installed and npm run build-wasm is configured");
   }
 }
 ```
@@ -113,7 +111,7 @@ export default defineConfig({
 ### Base URL
 
 ```javascript
-base: '/Img2Num/';
+base: "/Img2Num/";
 ```
 
 - Necessary for deploying the project to GitHub Pages.
@@ -138,7 +136,7 @@ server: {
 ### Assets Include
 
 ```javascript
-assetsInclude: ['**/*.wasm'];
+assetsInclude: ["**/*.wasm"];
 ```
 
 - Ensures `.wasm` files are copied to the build output.
@@ -149,8 +147,8 @@ assetsInclude: ['**/*.wasm'];
 Provides shorthand imports across the project:
 
 ```js
-import MyComponent from '@components/MyComponent'; // imports MyComponent from /src/components/MyComponent
-import processWasm from '@wasm-image'; // imports WASM code from /src/wasm/modules/image/build
+import MyComponent from "@components/MyComponent"; // imports MyComponent from /src/components/MyComponent
+import processWasm from "@wasm-image"; // imports WASM code from /src/wasm/modules/image/build
 ```
 
 ### Plugins
@@ -177,8 +175,8 @@ imagetools();
 
 ```javascript
 VitePluginSitemap({
-  hostname: 'https://ryan-millard.github.io/Img2Num',
-  dynamicRoutes: ['/', '/credits'],
+  hostname: "https://ryan-millard.github.io/Img2Num",
+  dynamicRoutes: ["/", "/credits"],
 });
 ```
 

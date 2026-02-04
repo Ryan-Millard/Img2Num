@@ -1,13 +1,13 @@
-import { lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import useGoogleAnalytics from '@hooks/useGoogleAnalytics';
-import NavBar from '@components/NavBar';
-import Home from '@pages/Home';
-import Editor from '@pages/Editor';
-import Loading from '@pages/Loading';
+import { lazy, Suspense } from "react";
+import { Routes, Route } from "react-router-dom";
+import useGoogleAnalytics from "@hooks/useGoogleAnalytics";
+import NavBar from "@components/NavBar";
+import Home from "@pages/Home";
+import Editor from "@pages/Editor";
+import Loading from "@pages/Loading";
 
-const Credits = lazy(() => import('@pages/Credits'));
-const About = lazy(() => import('@pages/About'));
+const Credits = lazy(() => import("@pages/Credits"));
+const About = lazy(() => import("@pages/About"));
 
 export default function App() {
   useGoogleAnalytics();

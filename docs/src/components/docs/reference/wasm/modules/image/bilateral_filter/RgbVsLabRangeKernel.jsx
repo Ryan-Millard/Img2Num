@@ -1,6 +1,6 @@
 const RgbVsLabRangeKernel = () => (
-  <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-    <svg style={{ width: '100%', maxWidth: '500px' }} viewBox="0 0 430 150" xmlns="http://www.w3.org/2000/svg">
+  <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+    <svg style={{ width: "100%", maxWidth: "500px" }} viewBox="0 0 430 150" xmlns="http://www.w3.org/2000/svg">
       {/* Background */}
       <rect x="0" y="0" width="100%" height="100%" fill="#fff" />
 
@@ -18,7 +18,7 @@ const RgbVsLabRangeKernel = () => (
             points
               .slice(1)
               .map((p) => `L${p}`)
-              .join(' ') +
+              .join(" ") +
             ` L310,60 L10,60 Z`
           );
         })()}
@@ -41,7 +41,7 @@ const RgbVsLabRangeKernel = () => (
             points
               .slice(1)
               .map((p) => `L${p}`)
-              .join(' ') +
+              .join(" ") +
             ` L310,120 L10,120 Z`
           );
         })()}

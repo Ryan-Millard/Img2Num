@@ -1,10 +1,10 @@
-import Hero from '@components/Hero';
-import WhatIsThis from './WhatIsThis';
-import Motivation from './Motivation';
-import TechStack from './TechStack';
-import CTA from './CTA';
-import Author from './Author';
-import AboutHelmet from './AboutHelmet';
+import Hero from "@components/Hero";
+import WhatIsThis from "./WhatIsThis";
+import Motivation from "./Motivation";
+import TechStack from "./TechStack";
+import CTA from "./CTA";
+import Author from "./Author";
+import AboutHelmet from "./AboutHelmet";
 
 const About = () => (
   <>

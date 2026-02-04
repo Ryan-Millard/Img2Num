@@ -1,37 +1,37 @@
 version: 2
 updates:
   # React (npm)
-  - package-ecosystem: 'npm'
-    directory: '/'
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
-      interval: 'weekly'
-      day: 'monday'
-      time: '09:00'
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
     groups:
       all-npm:
         patterns:
-          - '*'
+          - "*"
     labels:
-      - 'dependencies'
-      - 'npm'
+      - "dependencies"
+      - "npm"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: 'chore(deps):'
+      prefix: "chore(deps):"
 
   # GitHub Actions
-  - package-ecosystem: 'github-actions'
-    directory: '/'
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
-      interval: 'weekly'
-      day: 'monday'
-      time: '09:00'
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
     groups:
       all-github-actions:
         patterns:
-          - '*'
+          - "*"
     labels:
-      - 'dependencies'
-      - 'github-actions'
+      - "dependencies"
+      - "github-actions"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: 'chore(deps):'
+      prefix: "chore(deps):"

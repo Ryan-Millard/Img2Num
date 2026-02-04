@@ -1,0 +1,30 @@
+c/cpp:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.c"
+          - "**/*.cpp"
+          - "**/*.h"
+          - "**/*.hpp"
+
+docs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.md"
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
+
+js/ts:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.js"
+          - "**/*.jsx"
+          - "**/*.ts"
+          - "**/*.tsx"
+          - "vite.config.*"
+          - "vite.*.js"
+          - "package.json"
+          - "package-lock.json"
+          - "yarn.lock"

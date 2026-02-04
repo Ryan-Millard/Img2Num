@@ -18,7 +18,7 @@ title: ThemeSwitch
 ## Basic usage
 
 ```jsx
-import ThemeSwitch from '@components/ThemeSwitch';
+import ThemeSwitch from "@components/ThemeSwitch";
 
 export default function Navigation() {
   return (
@@ -62,8 +62,8 @@ ThemeSwitch uses `GlassSwitch`, which implements accessible switch semantics:
 ### In a navigation bar
 
 ```jsx
-import ThemeSwitch from '@components/ThemeSwitch';
-import styles from './Nav.module.css';
+import ThemeSwitch from "@components/ThemeSwitch";
+import styles from "./Nav.module.css";
 
 export default function NavBar() {
   return (
@@ -80,7 +80,7 @@ export default function NavBar() {
 ### In a settings panel
 
 ```jsx
-import ThemeSwitch from '@components/ThemeSwitch';
+import ThemeSwitch from "@components/ThemeSwitch";
 
 export default function Settings() {
   return (
@@ -98,8 +98,8 @@ export default function Settings() {
 ### Checking current theme alongside the switch
 
 ```jsx
-import ThemeSwitch from '@components/ThemeSwitch';
-import { useTheme } from '@hooks/useTheme';
+import ThemeSwitch from "@components/ThemeSwitch";
+import { useTheme } from "@hooks/useTheme";
 
 export default function ThemeControl() {
   const { theme } = useTheme();
@@ -130,23 +130,16 @@ The component:
 ## Implementation
 
 ```jsx title="ThemeSwitch.jsx"
-import { Moon, Sun } from 'lucide-react';
-import GlassSwitch from './GlassSwitch';
-import { useTheme } from '@hooks/useTheme';
+import { Moon, Sun } from "lucide-react";
+import GlassSwitch from "./GlassSwitch";
+import { useTheme } from "@hooks/useTheme";
 
 // Theme toggle built on top of GlassSwitch
 export default function ThemeSwitch() {
   const { theme, toggleTheme } = useTheme();
-  const isDark = theme === 'dark';
+  const isDark = theme === "dark";
 
-  return (
-    <GlassSwitch
-      isOn={isDark}
-      onChange={toggleTheme}
-      thumbContent={isDark ? <Sun /> : <Moon />}
-      ariaLabel={`switch to ${isDark ? 'light' : 'dark'} mode`}
-    />
-  );
+  return <GlassSwitch isOn={isDark} onChange={toggleTheme} thumbContent={isDark ? <Sun /> : <Moon />} ariaLabel={`switch to ${isDark ? "light" : "dark"} mode`} />;
 }
 ```
 

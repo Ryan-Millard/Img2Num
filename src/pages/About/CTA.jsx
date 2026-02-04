@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
-import GlassCard from '@components/GlassCard';
-import styles from './About.module.css';
-import Tooltip from '@components/Tooltip';
+import { Link } from "react-router-dom";
+import GlassCard from "@components/GlassCard";
+import styles from "./About.module.css";
+import Tooltip from "@components/Tooltip";
 
 const CTA = () => (
   <GlassCard className={styles.container}>

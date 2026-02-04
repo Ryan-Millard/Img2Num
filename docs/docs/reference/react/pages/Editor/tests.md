@@ -30,9 +30,9 @@ Render the page inside a router and pass state through `MemoryRouter` entries:
 
 ```jsx
 render(
-  <MemoryRouter initialEntries={[{ pathname: '/editor', state: { svg: '<svg><path /></svg>' } }]}>
+  <MemoryRouter initialEntries={[{ pathname: "/editor", state: { svg: "<svg><path /></svg>" } }]}>
     <Editor />
-  </MemoryRouter>
+  </MemoryRouter>,
 );
 ```
 

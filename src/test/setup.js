@@ -1,8 +1,8 @@
-import '@testing-library/jest-dom';
-import { vi } from 'vitest';
+import "@testing-library/jest-dom";
+import { vi } from "vitest";
 
 // Mock URL.createObjectURL and URL.revokeObjectURL
-global.URL.createObjectURL = vi.fn(() => 'blob:mock-url');
+global.URL.createObjectURL = vi.fn(() => "blob:mock-url");
 global.URL.revokeObjectURL = vi.fn();
 
 // Mock Worker class for tests that need Web Workers
@@ -29,7 +29,7 @@ class MockWorker {
 global.Worker = MockWorker;
 
 // Mock ImageData which is not available in jsdom
-if (typeof global.ImageData === 'undefined') {
+if (typeof global.ImageData === "undefined") {
   global.ImageData = class ImageData {
     constructor(dataOrWidth, widthOrHeight, height) {
       if (dataOrWidth instanceof Uint8ClampedArray) {
@@ -71,7 +71,7 @@ const localStorageMock = (() => {
 global.localStorage = localStorageMock;
 
 // Mock window.matchMedia for theme detection
-Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: vi.fn().mockImplementation((query) => ({
     matches: false,

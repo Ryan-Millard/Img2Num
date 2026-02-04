@@ -34,7 +34,7 @@ page numbers to users.
 ## 🛠 Basic Usage
 
 ```jsx
-import Pagination from './components/Pagination';
+import Pagination from "./components/Pagination";
 
 function Gallery() {
   const [page, setPage] = useState(0);
@@ -149,7 +149,7 @@ const [page, setPage] = useState(0);
 ```jsx
 function DataTable() {
   const [page, setPage] = useState(0);
-  const { data, totalPages } = useQuery(['items', page], () => fetchItems({ page, limit: 10 }));
+  const { data, totalPages } = useQuery(["items", page], () => fetchItems({ page, limit: 10 }));
 
   return (
     <>
@@ -159,7 +159,7 @@ function DataTable() {
         totalPages={totalPages}
         onChange={(newPage) => {
           setPage(newPage);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.scrollTo({ top: 0, behavior: "smooth" });
         }}
       />
     </>

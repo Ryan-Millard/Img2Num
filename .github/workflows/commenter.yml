@@ -26,15 +26,15 @@ on:
   workflow_call:
     inputs:
       issue_number:
-        description: 'The PR or issue number to comment on'
+        description: "The PR or issue number to comment on"
         required: true
         type: number
       message:
-        description: 'The comment body text'
+        description: "The comment body text"
         required: true
         type: string
       is_pr:
-        description: 'If true, target a PR; if false, target an issue'
+        description: "If true, target a PR; if false, target an issue"
         required: false
         default: true
         type: boolean

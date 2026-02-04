@@ -1,5 +1,5 @@
-import styles from './Hero.module.css';
-import GlassCard from '@components/GlassCard';
+import styles from "./Hero.module.css";
+import GlassCard from "@components/GlassCard";
 
 const Hero = ({ header, description }) => (
   <GlassCard className="text-center">

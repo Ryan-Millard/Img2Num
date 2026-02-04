@@ -1,6 +1,6 @@
-import readline from 'readline';
-import fuzzy from 'fuzzy';
-import { Colors, colorText } from './colors.js';
+import readline from "readline";
+import fuzzy from "fuzzy";
+import { Colors, colorText } from "./colors.js";
 
 /**
  * Start an interactive fuzzy-search CLI for the provided script items.
@@ -17,14 +17,14 @@ import { Colors, colorText } from './colors.js';
  * @throws {TypeError} If `items` is not a non-null object, `basicItems` is not an array, or `title` is not a string.
  */
 export function runFuzzyCli({ items, basicItems, title, initialSearch = [] }) {
-  if (!items || typeof items !== 'object') {
-    throw new TypeError('items must be a non-null object');
+  if (!items || typeof items !== "object") {
+    throw new TypeError("items must be a non-null object");
   }
   if (!Array.isArray(basicItems)) {
-    throw new TypeError('basicItems must be an array');
+    throw new TypeError("basicItems must be an array");
   }
-  if (typeof title !== 'string') {
-    throw new TypeError('title must be a string');
+  if (typeof title !== "string") {
+    throw new TypeError("title must be a string");
   }
 
   printHeader(title);
@@ -44,7 +44,7 @@ export function runFuzzyCli({ items, basicItems, title, initialSearch = [] }) {
 
 const HEADER_LINE_WIDTH = 80;
 const HEADER_INSTRUCTIONS = "Type 'a' to list all, 'q' to quit.";
-const HEADER_LINE = colorText('─'.repeat(HEADER_LINE_WIDTH), Colors.BLUE);
+const HEADER_LINE = colorText("─".repeat(HEADER_LINE_WIDTH), Colors.BLUE);
 /**
  * Prints a styled header block containing the provided title and header instructions.
  * @param {string} title - The header title displayed between decorative horizontal lines.
@@ -63,11 +63,11 @@ function printHeader(title) {
  * @param {string[]} basicItems - Ordered list of script names to include in the basic section.
  */
 function printBasics(items, basicItems) {
-  console.log('\nBasic scripts:');
+  console.log("\nBasic scripts:");
   for (const name of basicItems) {
     if (items[name]) printItem(name, items[name]);
   }
-  console.log('');
+  console.log("");
 }
 
 /**
@@ -93,7 +93,7 @@ function startInteractive(items, skipIfInitialSearch = false) {
     },
   });
 
-  rl.setPrompt(colorText('> ', Colors.CYAN));
+  rl.setPrompt(colorText("> ", Colors.CYAN));
 
   // If initialSearch was provided, and we just want one-shot results, skip the interactive prompt
   if (skipIfInitialSearch) {
@@ -102,18 +102,18 @@ function startInteractive(items, skipIfInitialSearch = false) {
 
   rl.prompt();
 
-  rl.on('line', (line) => {
+  rl.on("line", (line) => {
     const input = line.trim();
-    if (input === 'q') return rl.close();
-    if (input === 'a') return printAll(items, rl);
+    if (input === "q") return rl.close();
+    if (input === "a") return printAll(items, rl);
 
     runSearch(input, items);
 
     rl.prompt();
   });
 
-  rl.on('close', () => {
-    console.log(colorText('Exiting.', Colors.MAGENTA));
+  rl.on("close", () => {
+    console.log(colorText("Exiting.", Colors.MAGENTA));
     process.exit(0);
   });
 }
@@ -129,7 +129,7 @@ function startInteractive(items, skipIfInitialSearch = false) {
 function runSearch(input, items) {
   const matches = fuzzy.filter(input, Object.keys(items)).map((x) => x.original);
   if (!matches.length) {
-    console.log(colorText('No matches.', Colors.RED));
+    console.log(colorText("No matches.", Colors.RED));
     return;
   }
 
@@ -152,7 +152,7 @@ function printAll(items, rl) {
   const groups = {};
 
   for (const [name, info] of Object.entries(items)) {
-    const group = info.group || 'Other';
+    const group = info.group || "Other";
     if (!groups[group]) groups[group] = [];
     groups[group].push([name, info]);
   }
@@ -177,8 +177,8 @@ function printAll(items, rl) {
  * @param {string} [info.command] - Optional command string displayed as a cyan-prefixed line.
  */
 function printItem(name, info) {
-  console.log(`\n\t${colorText(name, Colors.YELLOW)}${info.group ? ` (${info.group})` : ''}`);
-  const description = Array.isArray(info.desc) ? info.desc.join(' ') : info.desc;
+  console.log(`\n\t${colorText(name, Colors.YELLOW)}${info.group ? ` (${info.group})` : ""}`);
+  const description = Array.isArray(info.desc) ? info.desc.join(" ") : info.desc;
   if (description) {
     console.log(`\t\t- ${colorText(description, Colors.YELLOW)}`);
   }

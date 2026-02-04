@@ -44,8 +44,8 @@ This component is part of the Img2Num component library. It depends on:
 The simplest implementation requires just three props: `isOn`, `onChange`, and `ariaLabel`.
 
 ```jsx
-import GlassSwitch from '@components/GlassSwitch';
-import { useState } from 'react';
+import GlassSwitch from "@components/GlassSwitch";
+import { useState } from "react";
 
 export default function Settings() {
   const [isEnabled, setIsEnabled] = useState(false);
@@ -66,21 +66,14 @@ export default function Settings() {
 Add visual indicators using custom thumb content (icons, emojis, or any React element).
 
 ```jsx
-import GlassSwitch from '@components/GlassSwitch';
-import { Bell, BellOff } from 'lucide-react';
-import { useState } from 'react';
+import GlassSwitch from "@components/GlassSwitch";
+import { Bell, BellOff } from "lucide-react";
+import { useState } from "react";
 
 export default function NotificationToggle() {
   const [notificationsOn, setNotificationsOn] = useState(false);
 
-  return (
-    <GlassSwitch
-      isOn={notificationsOn}
-      onChange={() => setNotificationsOn(!notificationsOn)}
-      ariaLabel="Toggle notifications"
-      thumbContent={notificationsOn ? <Bell size={16} /> : <BellOff size={16} />}
-    />
-  );
+  return <GlassSwitch isOn={notificationsOn} onChange={() => setNotificationsOn(!notificationsOn)} ariaLabel="Toggle notifications" thumbContent={notificationsOn ? <Bell size={16} /> : <BellOff size={16} />} />;
 }
 ```
 
@@ -115,8 +108,8 @@ onChange={handleToggle}
 **`ariaLabel` (required)** - Accessibility label (also shown in tooltip)
 
 ```jsx
-ariaLabel = 'Toggle dark mode';
-ariaLabel = 'Enable push notifications';
+ariaLabel = "Toggle dark mode";
+ariaLabel = "Enable push notifications";
 ```
 
 **`thumbContent` (optional)** - Custom thumb visuals
@@ -218,31 +211,24 @@ transform: translateX(var(--size)); /* Slides right */
 Integrate with the theme hook for persistent dark mode:
 
 ```jsx
-import GlassSwitch from '@components/GlassSwitch';
-import { Moon, Sun } from 'lucide-react';
-import { useTheme } from '@hooks/useTheme';
+import GlassSwitch from "@components/GlassSwitch";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "@hooks/useTheme";
 
 export default function DarkModeSwitch() {
   const { theme, toggleTheme } = useTheme();
-  const isDark = theme === 'dark';
+  const isDark = theme === "dark";
 
-  return (
-    <GlassSwitch
-      isOn={isDark}
-      onChange={toggleTheme}
-      ariaLabel={`Switch to ${isDark ? 'light' : 'dark'} mode`}
-      thumbContent={isDark ? <Moon size={18} /> : <Sun size={18} />}
-    />
-  );
+  return <GlassSwitch isOn={isDark} onChange={toggleTheme} ariaLabel={`Switch to ${isDark ? "light" : "dark"} mode`} thumbContent={isDark ? <Moon size={18} /> : <Sun size={18} />} />;
 }
 ```
 
 ### Settings Panel with Multiple Switches
 
 ```jsx
-import GlassSwitch from '@components/GlassSwitch';
-import { Bell, Mail, Shield } from 'lucide-react';
-import { useState } from 'react';
+import GlassSwitch from "@components/GlassSwitch";
+import { Bell, Mail, Shield } from "lucide-react";
+import { useState } from "react";
 
 export default function SettingsPanel() {
   const [notifications, setNotifications] = useState(true);
@@ -253,32 +239,17 @@ export default function SettingsPanel() {
     <div className="settings-panel">
       <div className="setting-row">
         <label>Push Notifications</label>
-        <GlassSwitch
-          isOn={notifications}
-          onChange={() => setNotifications(!notifications)}
-          ariaLabel="Toggle push notifications"
-          thumbContent={<Bell size={14} />}
-        />
+        <GlassSwitch isOn={notifications} onChange={() => setNotifications(!notifications)} ariaLabel="Toggle push notifications" thumbContent={<Bell size={14} />} />
       </div>
 
       <div className="setting-row">
         <label>Email Alerts</label>
-        <GlassSwitch
-          isOn={emailAlerts}
-          onChange={() => setEmailAlerts(!emailAlerts)}
-          ariaLabel="Toggle email alerts"
-          thumbContent={<Mail size={14} />}
-        />
+        <GlassSwitch isOn={emailAlerts} onChange={() => setEmailAlerts(!emailAlerts)} ariaLabel="Toggle email alerts" thumbContent={<Mail size={14} />} />
       </div>
 
       <div className="setting-row">
         <label>Two-Factor Authentication</label>
-        <GlassSwitch
-          isOn={twoFactor}
-          onChange={() => setTwoFactor(!twoFactor)}
-          ariaLabel="Toggle two-factor authentication"
-          thumbContent={<Shield size={14} />}
-        />
+        <GlassSwitch isOn={twoFactor} onChange={() => setTwoFactor(!twoFactor)} ariaLabel="Toggle two-factor authentication" thumbContent={<Shield size={14} />} />
       </div>
     </div>
   );
@@ -288,22 +259,16 @@ export default function SettingsPanel() {
 ### Conditional Disable State
 
 ```jsx
-import GlassSwitch from '@components/GlassSwitch';
-import { Crown } from 'lucide-react';
-import { useState } from 'react';
+import GlassSwitch from "@components/GlassSwitch";
+import { Crown } from "lucide-react";
+import { useState } from "react";
 
 export default function PremiumFeature({ isPremium }) {
   const [enabled, setEnabled] = useState(false);
 
   return (
     <div>
-      <GlassSwitch
-        isOn={enabled}
-        onChange={() => setEnabled(!enabled)}
-        ariaLabel="Premium feature toggle"
-        thumbContent={<Crown size={14} />}
-        disabled={!isPremium}
-      />
+      <GlassSwitch isOn={enabled} onChange={() => setEnabled(!enabled)} ariaLabel="Premium feature toggle" thumbContent={<Crown size={14} />} disabled={!isPremium} />
       {!isPremium && <p>Upgrade to premium to enable this feature</p>}
     </div>
   );

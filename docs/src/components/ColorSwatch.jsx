@@ -4,13 +4,13 @@ export default function ColorSwatch({ color, size = 24 }) {
     <span
       title={color}
       style={{
-        display: 'inline-block',
-        width: size + 'px',
-        height: size + 'px',
+        display: "inline-block",
+        width: size + "px",
+        height: size + "px",
         background: color,
-        border: '1px solid #ccc',
-        borderRadius: '4px',
-        verticalAlign: 'middle',
+        border: "1px solid #ccc",
+        borderRadius: "4px",
+        verticalAlign: "middle",
       }}
     />
   );

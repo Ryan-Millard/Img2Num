@@ -67,21 +67,21 @@ npm test -- --watch GlassSwitch.test.jsx
 ### Testing checked state
 
 ```javascript
-it('sets aria-checked to true when checked', () => {
+it("sets aria-checked to true when checked", () => {
   render(<GlassSwitch isOn={true} onChange={() => {}} ariaLabel="Toggle" />);
-  expect(screen.getByRole('switch')).toHaveAttribute('aria-checked', 'true');
+  expect(screen.getByRole("switch")).toHaveAttribute("aria-checked", "true");
 });
 ```
 
 ### Testing user interaction
 
 ```javascript
-it('calls onChange when clicked', async () => {
+it("calls onChange when clicked", async () => {
   const user = userEvent.setup();
   const onChange = vi.fn();
 
   render(<GlassSwitch isOn={false} onChange={onChange} ariaLabel="Toggle" />);
-  await user.click(screen.getByRole('switch'));
+  await user.click(screen.getByRole("switch"));
 
   expect(onChange).toHaveBeenCalledOnce();
 });
@@ -90,17 +90,17 @@ it('calls onChange when clicked', async () => {
 ### Testing keyboard accessibility
 
 ```javascript
-it('is keyboard accessible', async () => {
+it("is keyboard accessible", async () => {
   const user = userEvent.setup();
   const onChange = vi.fn();
 
   render(<GlassSwitch isOn={false} onChange={onChange} ariaLabel="Toggle" />);
-  const button = screen.getByRole('switch');
+  const button = screen.getByRole("switch");
 
   button.focus();
   expect(button).toHaveFocus();
 
-  await user.keyboard('{Enter}');
+  await user.keyboard("{Enter}");
 
   expect(onChange).toHaveBeenCalled();
 });
@@ -109,33 +109,33 @@ it('is keyboard accessible', async () => {
 ### Testing CSS classes
 
 ```javascript
-it('applies correct CSS classes when checked', () => {
+it("applies correct CSS classes when checked", () => {
   render(<GlassSwitch isOn={true} onChange={() => {}} ariaLabel="Toggle" />);
-  const switchButton = screen.getByRole('switch');
+  const switchButton = screen.getByRole("switch");
 
-  expect(switchButton).toHaveClass('mocked-switch-class');
-  expect(switchButton).toHaveClass('mocked-checked-class');
+  expect(switchButton).toHaveClass("mocked-switch-class");
+  expect(switchButton).toHaveClass("mocked-checked-class");
 });
 ```
 
 ### Testing custom thumb content
 
 ```javascript
-it('renders with thumbContent when provided', () => {
+it("renders with thumbContent when provided", () => {
   const thumbContent = <span data-testid="custom-thumb">Custom</span>;
   render(<GlassSwitch isOn={false} onChange={() => {}} ariaLabel="Toggle" thumbContent={thumbContent} />);
 
-  expect(screen.getByTestId('custom-thumb')).toBeInTheDocument();
+  expect(screen.getByTestId("custom-thumb")).toBeInTheDocument();
 });
 ```
 
 ### Testing disabled state
 
 ```javascript
-it('can be disabled', () => {
+it("can be disabled", () => {
   const onChange = vi.fn();
   render(<GlassSwitch isOn={false} onChange={onChange} ariaLabel="Toggle" disabled={true} />);
-  const switchButton = screen.getByRole('switch');
+  const switchButton = screen.getByRole("switch");
 
   expect(switchButton).toBeDisabled();
 });
@@ -144,10 +144,10 @@ it('can be disabled', () => {
 ### Testing aria-label
 
 ```javascript
-it('sets correct aria-label', () => {
+it("sets correct aria-label", () => {
   render(<GlassSwitch isOn={false} onChange={() => {}} ariaLabel="My Custom Label" />);
 
-  expect(screen.getByLabelText('My Custom Label')).toBeInTheDocument();
+  expect(screen.getByLabelText("My Custom Label")).toBeInTheDocument();
 });
 ```
 
