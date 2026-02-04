@@ -42,7 +42,7 @@ export default defineConfig({
     imagetools(),
     VitePluginSitemap({
       hostname: "https://ryan-millard.github.io/Img2Num",
-      dynamicRoutes: ["/", "/credits"],
+      dynamicRoutes: ["/", "/about", "/credits"],
     }),
     generateContributorCreditsPlugin(),
     // For multithreading (in img2num js package)
