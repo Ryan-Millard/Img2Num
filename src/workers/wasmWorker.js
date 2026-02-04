@@ -78,41 +78,48 @@ self.onmessage = async ({ data }) => {
   if (bufferKeys?.length && !args) {
     throw new Error(
       `WASM call "${funcName}" has bufferKeys defined but no args object provided. ` +
-        `Each bufferKey must correspond to a key in args.`
+      `Each bufferKey must correspond to a key in args.`
     );
   }
 
-  const pointers = Object.create(null);
+  const pointers = new Map();
   try {
+    const argsMap = new Map(args ? Object.entries(args) : []);
+
     // Allocate inputs / out params
     bufferKeys?.forEach(({ key, type }) => {
-      if (!(type in WASM_TYPES))
-        throw new Error(`Unsupported type (${type}) in wasmWorker.js\nSee WASM_TYPES for the supported types`);
-      const ptr = WASM_TYPES[type].alloc(args[key]);
-      pointers[key] = { ptr, type, length: args[key].length || undefined };
-      args[key] = ptr;
+      if (!(type in WASM_TYPES)) throw new Error(`Unsupported type: ${type}`);
+
+      const val = argsMap.get(key);
+      const ptr = WASM_TYPES[type].alloc(val);
+      pointers.set(key, { ptr, type, length: val?.length });
+      argsMap.set(key, ptr);
     });
 
     // Call the WASM function
     const exportName = `_${funcName}`;
     if (typeof wasmModule[exportName] !== 'function') throw new Error(`Export not found: ${exportName}`);
-    const result = wasmModule[exportName](...Object.values(args ?? Object.create(null)));
+    const result = wasmModule[exportName](...argsMap.values());
 
     // Read back buffers
-    const output = Object.create(null);
+    const outputMap = new Map();
     bufferKeys?.forEach(({ key, type }) => {
-      output[key] = WASM_TYPES[type].read(pointers[key].ptr, pointers[key].length);
+      const p = pointers.get(key);
+      outputMap.set(key, WASM_TYPES[type].read(p.ptr, p.length));
     });
 
     // Handle return value
     let returnValue = result;
     if (returnType && WASM_TYPES[returnType] !== WASM_TYPES['void']) returnValue = WASM_TYPES[returnType].read(result);
 
+    const output = Object.fromEntries(outputMap);
     self.postMessage({ id, output, returnValue });
   } catch (error) {
     self.postMessage({ id, error: error.message });
   } finally {
     // Free memory
-    Object.values(pointers).forEach(({ ptr }) => wasmModule._free(ptr));
+    for (const { ptr } of pointers.values()) {
+      wasmModule._free(ptr);
+    }
   }
 };
