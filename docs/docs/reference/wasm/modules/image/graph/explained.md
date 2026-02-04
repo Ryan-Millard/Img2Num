@@ -28,7 +28,7 @@ _Figure 3: Step-by-step visualization of node merging_
 
 **b**. Disconnect edges to Node 0 neighbors. This requires iterating over Nodes 1, 2, and 3, and removing Node 0 from their edge set.
 
-**c**. Transferring edges to absorbing node (Node 2). Again, iterate over Nodes 1 and 3 to assign Node 2 as an edge. Similarily Node 2 adds Node 1 and 3 as edges. In this case Node 2 and Node 3 already share an edge, but Node 1 gets a new edge.
+**c**. Transferring edges to absorbing node (Node 2). Again, iterate over Nodes 1 and 3 to assign Node 2 as an edge. Similarly Node 2 adds Node 1 and 3 as edges. In this case Node 2 and Node 3 already share an edge, but Node 1 gets a new edge.
 
 **d**. Pixels owned by Node 0 are passed to Node 2. Node 0 is removed from the graph.
 
