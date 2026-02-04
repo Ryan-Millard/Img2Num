@@ -81,7 +81,7 @@ G.compute_contours();
 In this function nodes are iterated over one at a time.
 Pseudocode:
 
-```
+```text
 for node in G.nodes
 {
     // Consider all neigbors
