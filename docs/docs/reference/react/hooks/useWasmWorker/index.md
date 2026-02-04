@@ -56,7 +56,7 @@ Also see the [`WASM_TYPES` documentation](../../workers/wasm-worker/#typedarray-
 const { call } = useWasmWorker();
 
 const { output } = await call({
-  funcName: 'add_arrays',
+  funcName: "add_arrays",
   args: {
     a: arrayA,
     b: arrayB,
@@ -64,9 +64,9 @@ const { output } = await call({
     length: arrayA.length,
   },
   bufferKeys: [
-    { key: 'a', type: 'Int32Array' },
-    { key: 'b', type: 'Int32Array' },
-    { key: 'out', type: 'Int32Array' },
+    { key: "a", type: "Int32Array" },
+    { key: "b", type: "Int32Array" },
+    { key: "out", type: "Int32Array" },
   ],
 });
 
@@ -302,7 +302,7 @@ Each entry specifies:
 ```ts
 {
   key: string;
-  type: 'Int32Array' | 'Uint8Array' | 'Uint8ClampedArray';
+  type: "Int32Array" | "Uint8Array" | "Uint8ClampedArray";
 }
 ```
 
@@ -341,9 +341,9 @@ The worker currently supports:
    ```js
    myFunction: async ({ data, length }) => {
      const result = await call({
-       funcName: 'my_function',
+       funcName: "my_function",
        args: { data, length },
-       bufferKeys: [{ key: 'data', type: 'Int32Array' }],
+       bufferKeys: [{ key: "data", type: "Int32Array" }],
      });
      return result.output.data;
    };

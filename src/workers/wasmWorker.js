@@ -22,7 +22,7 @@ This ensures JS arrays correctly map to WASM memory.
  *  ```
  */
 
-import createImageModule from '@wasm-image';
+import createImageModule from "@wasm-image";
 
 let wasmModule;
 let readyResolve;
@@ -74,12 +74,9 @@ const WASM_TYPES = {
 self.onmessage = async ({ data }) => {
   await readyPromise;
 
-  const { id, funcName, args = undefined, bufferKeys = undefined, returnType = 'void' } = data;
+  const { id, funcName, args = undefined, bufferKeys = undefined, returnType = "void" } = data;
   if (bufferKeys?.length && !args) {
-    throw new Error(
-      `WASM call "${funcName}" has bufferKeys defined but no args object provided. ` +
-      `Each bufferKey must correspond to a key in args.`
-    );
+    throw new Error(`WASM call "${funcName}" has bufferKeys defined but no args object provided. ` + `Each bufferKey must correspond to a key in args.`);
   }
 
   const pointers = new Map();
@@ -98,7 +95,7 @@ self.onmessage = async ({ data }) => {
 
     // Call the WASM function
     const exportName = `_${funcName}`;
-    if (typeof wasmModule[exportName] !== 'function') throw new Error(`Export not found: ${exportName}`);
+    if (typeof wasmModule[exportName] !== "function") throw new Error(`Export not found: ${exportName}`);
     const result = wasmModule[exportName](...argsMap.values());
 
     // Read back buffers
@@ -110,7 +107,7 @@ self.onmessage = async ({ data }) => {
 
     // Handle return value
     let returnValue = result;
-    if (returnType && WASM_TYPES[returnType] !== WASM_TYPES['void']) returnValue = WASM_TYPES[returnType].read(result);
+    if (returnType && WASM_TYPES[returnType] !== WASM_TYPES["void"]) returnValue = WASM_TYPES[returnType].read(result);
 
     const output = Object.fromEntries(outputMap);
     self.postMessage({ id, output, returnValue });

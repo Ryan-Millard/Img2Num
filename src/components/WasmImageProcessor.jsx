@@ -1,12 +1,12 @@
-import { useEffect, useState, useId, useRef, useCallback, useMemo } from 'react';
-import { Upload } from 'lucide-react';
-import { loadImageToUint8Array } from '@utils/image-utils';
-import { useWasmWorker } from '@hooks/useWasmWorker';
-import GlassCard from '@components/GlassCard';
-import styles from './WasmImageProcessor.module.css';
-import { useNavigate } from 'react-router-dom';
-import LoadingHedgehog from '@components/LoadingHedgehog';
-import Tooltip from '@components/Tooltip';
+import { useEffect, useState, useId, useRef, useCallback, useMemo } from "react";
+import { Upload } from "lucide-react";
+import { loadImageToUint8Array } from "@utils/image-utils";
+import { useWasmWorker } from "@hooks/useWasmWorker";
+import GlassCard from "@components/GlassCard";
+import styles from "./WasmImageProcessor.module.css";
+import { useNavigate } from "react-router-dom";
+import LoadingHedgehog from "@components/LoadingHedgehog";
+import Tooltip from "@components/Tooltip";
 
 const WasmImageProcessor = () => {
   const navigate = useNavigate();
