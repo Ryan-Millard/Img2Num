@@ -1,5 +1,4 @@
 ---
-id: CODE_OF_CONDUCT.md
 title: Code of Conduct
 sidebar_position: 3
 ---
