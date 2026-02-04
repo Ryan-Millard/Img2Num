@@ -1,5 +1,5 @@
-#ifndef SOLVER_H
-#define SOLVER_H
+#ifndef SAVITZKYGOLAY_H
+#define SAVITZKYGOLAY_H
 
 #include "Point.h"
 #include <cmath>
@@ -28,4 +28,4 @@ public:
   std::vector<float> get_coeffs() const { return coeffs_; }
 };
 
-#endif
+#endif // SAVITZKYGOLAY_H
