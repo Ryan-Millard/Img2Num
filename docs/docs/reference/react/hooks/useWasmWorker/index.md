@@ -176,7 +176,7 @@ Possible values:
 - **0**: CIE La\*b\* (closer to human perception)
 - **1**: sRGB (the default color space for computers)
 
-The default for this parameter is CIE LAB because it closer to human perception and bilateral filters are usually
+The default for this parameter is CIE LAB because it is closer to human perception, and bilateral filters typically produce better edge-preserving results in perceptually uniform color spaces.
 
 :::
 
