@@ -1,5 +1,4 @@
 ---
-id: explained2
 title: Important Functions Explained
 sidebar_position: 4
 ---
