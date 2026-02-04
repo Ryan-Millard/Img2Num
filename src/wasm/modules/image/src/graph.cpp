@@ -209,7 +209,7 @@ void Graph::compute_contours() {
     bounds[3] = bounds[3] - bounds[1] + 1; // h
 
     // build joined neighborhood map
-    neighborhood.resize(bounds[2] * bounds[3], 0);
+    neighborhood.resize(static_cast<std::size_t>(bounds[2]) * static_cast<std::size_t>(bounds[3]), 0);
 
     for (int i = 0; i < full_neighborhood.size(); ++i) {
       for (int y = 0; y < xywh[i][3]; ++y) {
