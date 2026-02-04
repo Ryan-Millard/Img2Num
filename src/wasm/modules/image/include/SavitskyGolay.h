@@ -1,7 +1,7 @@
 #ifndef SOLVER_H
 #define SOLVER_H
 
-#include "contours.h"
+#include "Point.h"
 #include <cmath>
 #include <iomanip>
 #include <numeric>

@@ -1,7 +1,6 @@
 
 #include "contours.h"
 #include <cmath>
-#include <iostream>
 
 namespace contours {
 
@@ -717,7 +716,8 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
                    const std::vector<std::vector<bool>> &lockedMasks,
                    float pairRadiusSq = 2.25f) {
 
-  SavitzkyGolay sg(21, 4);
+  SavitzkyGolay sg(5, 2);
+
   // first fit
   std::vector<std::vector<Point>> smoothedContours;
   for (int c = 0; c < (int)contours.size(); ++c) {

@@ -1,4 +1,4 @@
-#include "solver.h"
+#include "SavitskyGolay.h"
 
 SavitzkyGolay::SavitzkyGolay(int window_size, int poly_order)
     : window_size_(window_size), m_((window_size - 1) / 2),

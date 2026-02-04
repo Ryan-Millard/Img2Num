@@ -149,8 +149,6 @@ std::string contourToSVGPath(const std::vector<Point> &contour) {
 
 std::string contourToSVGCurve(const std::vector<QuadBezier> &curves) {
 
-  std::cout << "writing bezier svg" << std::endl;
-
   if (curves.empty())
     return "";
 
@@ -177,10 +175,6 @@ std::string contoursResultToSVG(const ColoredContours &result, const int width,
          "width=\""
       << width << "\" height=\"" << height << "\">\n";
 
-  // for (size_t i = 0; i < result.contours.size(); ++i) {
-  // std::string pathData = contourToSVGPath(result.contours[i]);
-
-  std::cout << "result.curves.size() " << result.curves.size() << std::endl;
   for (size_t i = 0; i < result.curves.size(); ++i) {
     std::string pathData = contourToSVGCurve(result.curves[i]);
 
