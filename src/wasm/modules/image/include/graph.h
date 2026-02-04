@@ -1,7 +1,6 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include "bezier.h"
 #include "node.h"
 #include <unordered_map>
 

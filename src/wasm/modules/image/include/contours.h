@@ -9,11 +9,7 @@
 #include <array>
 #include <cstdint>
 #include <cstdlib>
-#include <iterator>
-#include <map>
-#include <set>
 #include <stdexcept>
-#include <utility>
 #include <vector>
 
 struct QuadBezier {
