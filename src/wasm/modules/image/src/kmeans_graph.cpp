@@ -2,9 +2,7 @@
 // should actually be taken into account.
 
 #include "kmeans_graph.h"
-#include "Image.h"
-#include "PixelConverters.h"
-#include "RGBAPixel.h"
+#include "bezier.h"
 #include "contours.h"
 #include "graph.h"
 #include <array>
@@ -23,12 +21,6 @@
 #include <set>
 #include <sstream>
 #include <vector>
-
-struct ColoredContours : ContoursResult {
-  // inherits: contours, hierarchy, is_hole
-
-  std::vector<ImageLib::RGBAPixel<uint8_t>> colors;
-};
 
 /* Flood fill */
 int flood_fill(std::vector<int32_t> &label_array,
@@ -113,7 +105,6 @@ void region_labeling(const uint8_t *data, std::vector<int32_t> &labels,
 void visualize_contours(const std::vector<std::vector<Point>> &contours,
                         ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> &results,
                         int width, int height, int xmin = 0, int ymin = 0) {
-  auto index = [width](int x, int y) { return y * width + x; };
 
   // Random generator for colors
   static std::mt19937 rng(std::random_device{}());
@@ -124,8 +115,8 @@ void visualize_contours(const std::vector<std::vector<Point>> &contours,
         static_cast<uint8_t>(dist(rng)), 255};
 
     for (const auto &p : c) {
-      int32_t _x{p.x + xmin};
-      int32_t _y{p.y + ymin};
+      int32_t _x{static_cast<int32_t>(p.x) + xmin};
+      int32_t _y{static_cast<int32_t>(p.y) + ymin};
 
       // Ensure within bounds
       if (_x < 0 || _x >= width || _y < 0 || _y >= height)
@@ -141,7 +132,7 @@ std::string contourToSVGPath(const std::vector<Point> &contour) {
     return "";
 
   std::ostringstream path;
-  path << std::fixed << std::setprecision(0);
+  path << std::fixed << std::setprecision(2);
 
   // Move to the first point
   path << "M " << contour[0].x << " " << contour[0].y << " ";
@@ -156,6 +147,27 @@ std::string contourToSVGPath(const std::vector<Point> &contour) {
   return path.str();
 }
 
+std::string contourToSVGCurve(const std::vector<QuadBezier> &curves) {
+
+  if (curves.empty())
+    return "";
+
+  std::ostringstream path;
+  path << std::fixed << std::setprecision(2);
+
+  for (size_t i = 0; i < curves.size(); ++i) {
+    const auto &c = curves[i];
+    if (i == 0)
+      path << "M " << c.p0.x << " " << c.p0.y << " ";
+    path << "Q " << c.p1.x << " " << c.p1.y << " " << c.p2.x << " " << c.p2.y
+         << " ";
+  }
+
+  //  Close the path
+  path << "Z";
+  return path.str();
+}
+
 std::string contoursResultToSVG(const ColoredContours &result, const int width,
                                 const int height) {
   std::ostringstream svg;
@@ -163,8 +175,8 @@ std::string contoursResultToSVG(const ColoredContours &result, const int width,
          "width=\""
       << width << "\" height=\"" << height << "\">\n";
 
-  for (size_t i = 0; i < result.contours.size(); ++i) {
-    std::string pathData = contourToSVGPath(result.contours[i]);
+  for (size_t i = 0; i < result.curves.size(); ++i) {
+    std::string pathData = contourToSVGCurve(result.curves[i]);
 
     const auto &px = result.colors[i];
     std::ostringstream oss;
@@ -205,7 +217,7 @@ char *kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
   // 2. initialize Graph from all Nodes
   std::unique_ptr<std::vector<Node_ptr>> node_ptr =
       std::make_unique<std::vector<Node_ptr>>(std::move(nodes));
-  Graph G(node_ptr);
+  Graph G(node_ptr, width, height);
 
   // 3. Discover node adjacencies - add edges to Graph
   G.discover_edges(region_labels, width, height);
@@ -226,46 +238,29 @@ char *kmeans_clustering_graph(uint8_t *data, int32_t *labels, const int width,
   }
 
   // 6. Contours
-  ColoredContours all_contours;
+  // graph will manage computing contours
+  G.compute_contours();
 
+  // accumulate all contours for svg export
+  ColoredContours all_contours;
   for (auto &n : G.get_nodes()) {
     if (n->area() == 0)
       continue;
-
-    std::array<int32_t, 4> xywh;
-    std::vector<uint8_t> binary;
-
-    xywh = n->create_binary_image(binary);
-
-    int xmin = xywh[0];
-    int ymin = xywh[1];
-    int bw = xywh[2];
-    int bh = xywh[3];
-
-    ContoursResult contour_res = contours::find_contours(binary, bw, bh);
-
-    if (draw_contour_borders) {
-      visualize_contours(contour_res.contours, results, width, height, xmin,
-                         ymin);
-    } else {
-      // shift contour coordinates to image space
-      for (size_t cidx = 0; cidx < contour_res.contours.size(); ++cidx) {
-        auto &contour = contour_res.contours[cidx];
-        for (auto &p : contour) {
-          p.x += xmin;
-          p.y += ymin;
-        }
-
-        // pick the color from the first pixel of the contour in the recolored
-        // image
-        const auto &first_px = contour[0];
-        ImageLib::RGBAPixel<uint8_t> col = results(first_px.x, first_px.y);
-
-        all_contours.contours.push_back(contour);
-        all_contours.hierarchy.push_back(contour_res.hierarchy[cidx]);
-        all_contours.is_hole.push_back(contour_res.is_hole[cidx]);
-        all_contours.colors.push_back(col);
-      }
+    ColoredContours node_contours = n->get_contours();
+    for (auto &c : node_contours.contours) {
+      all_contours.contours.push_back(c);
+    }
+    for (auto &c : node_contours.hierarchy) {
+      all_contours.hierarchy.push_back(c);
+    }
+    for (bool b : node_contours.is_hole) {
+      all_contours.is_hole.push_back(b);
+    }
+    for (auto &c : node_contours.colors) {
+      all_contours.colors.push_back(c);
+    }
+    for (auto &c : node_contours.curves) {
+      all_contours.curves.push_back(c);
     }
   }
 

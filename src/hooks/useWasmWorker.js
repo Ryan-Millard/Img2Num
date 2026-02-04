@@ -65,7 +65,7 @@ export function useWasmWorker() {
       sigma_spatial = 3,
       sigma_range = 50,
       color_space = 0,
-      n_threads = 1,  // Default because headers that enable threads aren't currently supported on GH Pages
+      n_threads = 8,
     }) => {
       const result = await call({
         funcName: 'bilateral_filter',
@@ -93,7 +93,7 @@ export function useWasmWorker() {
       num_colors,
       max_iter = 100,
       color_space = 0,
-      n_threads = 1,  // Default because headers that enable threads aren't currently supported on GH Pages
+      n_threads = 8,
     }) => {
       const result = await call({
         funcName: 'kmeans',
