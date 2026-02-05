@@ -1,4 +1,5 @@
 #include "SavitskyGolay.h"
+#include <cmath>
 #include <cassert>
 
 SavitzkyGolay::SavitzkyGolay(int radius, int poly_order)

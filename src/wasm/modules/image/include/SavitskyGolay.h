@@ -2,7 +2,6 @@
 #define SAVITZKYGOLAY_H
 
 #include "Point.h"
-#include <cmath>
 #include <iomanip>
 #include <numeric>
 #include <stdexcept>
