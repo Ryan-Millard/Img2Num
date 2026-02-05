@@ -2,6 +2,7 @@
 #define NODE_H
 
 #include "RGBPixel.h"
+#include "contours.h"
 #include <array>
 #include <cstdint>
 #include <memory>
@@ -35,6 +36,9 @@ discover_edges(G, region_labels, width, height);
 
 struct XY {
   int32_t x, y;
+  std::pair<int32_t, int32_t> xy;
+  XY(int32_t x_, int32_t y_) : x(x_), y(y_) { xy = std::make_pair(x, y); };
+  bool operator<(const XY &rhs) const { return xy < rhs.xy; };
 };
 
 struct RGBXY {
@@ -59,6 +63,10 @@ protected:
   std::unique_ptr<std::vector<RGBXY>> m_pixels;
   std::set<Node_ptr> m_edges{};
 
+  // pixels considered for contour tracing but not influencing other
+  // node properties such as color
+  std::set<XY> m_edge_pixels{};
+
 public:
   inline Node(int32_t id, std::unique_ptr<std::vector<RGBXY>> &pixels)
       : m_id(id), m_pixels(std::move(pixels)) {}
@@ -68,15 +76,25 @@ public:
   std::array<int32_t, 4> bounding_box_xywh() const;
   std::array<int, 4> create_binary_image(std::vector<uint8_t> &binary) const;
 
+  // keep track of its own contour points
+  // only filled in when compute_contour() is called
+  // though these are public only Graph should access them
+  ColoredContours m_contours;
+  void clear_contour();
+  void compute_contour();
+
   /* access member variables */
   inline int32_t id() const { return m_id; };
   inline size_t area() const { return m_pixels->size(); };
   inline const std::set<Node_ptr> &edges() const { return m_edges; }
   inline size_t num_edges() const { return m_edges.size(); }
   inline const std::vector<RGBXY> &get_pixels() const { return *m_pixels; }
+  inline ColoredContours &get_contours() { return m_contours; }
 
   /* modify member variables */
   void add_pixels(const std::vector<RGBXY> &new_pixels);
+  void add_edge_pixel(const XY edge_pixel);
+  void clear_edge_pixels();
 
   void clear_all();
 

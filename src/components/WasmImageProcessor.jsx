@@ -1,6 +1,6 @@
 import { useEffect, useState, useId, useRef, useCallback, useMemo } from "react";
 import { Upload } from "lucide-react";
-import { loadImageToUint8Array, uint8ClampedArrayToSVG } from "@utils/image-utils";
+import { loadImageToUint8Array } from "@utils/image-utils";
 import { useWasmWorker } from "@hooks/useWasmWorker";
 import GlassCard from "@components/GlassCard";
 import styles from "./WasmImageProcessor.module.css";
@@ -85,31 +85,19 @@ const WasmImageProcessor = () => {
         height,
       });
 
-      // step(45);
-      // is this needed? num_colors is incorrect should be num_threshold
-      /*const thresholded = await blackThreshold({
-        ...fileData,
-        pixels: imgBilateralFiltered,
-        num_colors: 8,
-      });*/
-
       step(70);
-      const { pixels: kmeansed, labels } = await kmeans({
+      // kmeansed pixels are unused - filtered pixels are better for findContours
+      const { pixels: _kmeansed, labels } = await kmeans({
         ...fileData,
         pixels: imgBilateralFiltered,
         num_colors: 16,
       });
 
-      const contours = await findContours({
-        pixels: kmeansed,
-        labels,
-        width,
-        height,
-      });
-
       step(95);
-      const svg = await uint8ClampedArrayToSVG({
-        pixels: contours,
+
+      const { svg } = await findContours({
+        pixels: imgBilateralFiltered,
+        labels,
         width,
         height,
       });

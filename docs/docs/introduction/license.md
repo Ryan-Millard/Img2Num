@@ -1,7 +1,7 @@
 ---
 id: license
-title: ⚖️ AGPLv3 License
-sidebar_position: 3
+title: License
+sidebar_position: 2
 ---
 
 ```

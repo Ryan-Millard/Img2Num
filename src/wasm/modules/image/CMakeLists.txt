@@ -30,6 +30,8 @@ target_include_directories(${MODULE_NAME}_wasm PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lidbfs.js")
+
 # Shared Emscripten options
 set(COMMON_FLAGS
     "SHELL:-s MODULARIZE=1"
@@ -37,7 +39,7 @@ set(COMMON_FLAGS
     "SHELL:-s EXIT_RUNTIME=1"
     "SHELL:-s ENVIRONMENT=web,worker"
     "SHELL:-s EXPORTED_FUNCTIONS=['_malloc','_free']"
-    "SHELL:-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPU8','HEAP32']"
+    "SHELL:-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPU8','HEAP32','UTF8ToString']"
     "SHELL:-s INITIAL_MEMORY=1024MB"
     "SHELL:-s MAXIMUM_MEMORY=2048MB"
     "SHELL:-s ALLOW_MEMORY_GROWTH=1"

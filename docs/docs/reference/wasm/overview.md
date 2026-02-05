@@ -1,5 +1,5 @@
 ---
-title: WebAssembly Overview
+title: C++ WebAssembly Overview
 sidebar_position: 1
 description: Detailed reference documentation for all Img2Num WebAssembly code. Use this as a guide to understand, use, and contribute to the project's C / C++ codebase.
 keywords: [reference, API, wasm, C++, Img2Num, documentation, developer guide]
