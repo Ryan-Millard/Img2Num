@@ -6,6 +6,8 @@
 #include <map>
 #include <set>
 #include <utility>
+#include <functional>
+#include <iostream>
 
 namespace contours {
 
@@ -718,15 +720,51 @@ std::vector<bool> detectCorners(const std::vector<Point> &pts,
 
 // --- Selective Smoothing ---
 void selectiveSmooth(std::vector<Point> &pts,
-                     const std::vector<bool> &isLocked) {
+                     const std::vector<bool> &isLocked, const int radius = 1) {
+
+  std::function<int(int)> factorial = [&factorial](int x) -> int {
+    if (x <=1 ) return 1;
+    return x * factorial(x-1);
+  };
+
   std::vector<Point> original = pts;
-  for (size_t i = 1; i < pts.size() - 1; ++i) {
+  int window = 2 * radius + 1;
+
+  std::vector<float> coeff(window);
+  // binomial coefficients
+  for (int k = 0; k < window; ++k){
+    //n!/((n-k)! * k!)
+    coeff[k] = static_cast<float>(factorial(window-1)/ (factorial(k) * factorial(window-1-k)));
+  }
+  float sum = std::accumulate(coeff.begin(), coeff.end(), 0.0f);
+  for (int k = 0; k < window; ++k){
+    coeff[k] /= sum;
+    std::cout << coeff[k] << " ";
+  }
+  std::cout << std::endl;
+
+  for (size_t i = 0; i < pts.size(); ++i) {
     // DO NOT move if it's a Corner OR if it's Locked on the boundary
     if (isLocked[i])
       continue;
+    
+    Point val{0,0};
+    for (int j = -radius; j <= radius; ++j) {
+      int k = i + j;
+      if (k < 0) {
+        k = pts.size() + k;
+      } else if (k >= pts.size()) {
+        k = k - pts.size();
+      }
+      val += pts[k] * coeff[j+radius];
+    }
+    pts[i] = val;
 
+    /*int previ = i > 0 ? i - 1 : pts.size() - 1;
+    int nexti = i < pts.size() - 1 ? i + 1 : 0;
     pts[i] =
-        0.25f * original[i - 1] + 0.5f * original[i] + 0.25f * original[i + 1];
+        0.3f * original[previ] + 0.4f * original[i] + 0.3f * original[nexti];
+    */
   }
 }
 
@@ -741,6 +779,7 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
   std::vector<std::vector<Point>> smoothedContours;
   for (int c = 0; c < (int)contours.size(); ++c) {
     std::vector<Point> sc = sg.filter_wrap_with_constraints(contours[c], lockedMasks[c], cornerMasks[c]);
+    selectiveSmooth(sc, lockedMasks[c], 2);
     smoothedContours.push_back(sc);
   }
 

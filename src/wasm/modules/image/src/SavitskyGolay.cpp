@@ -81,7 +81,7 @@ std::vector<Point> SavitzkyGolay::filter_wrap_with_constraints(
 
   // Weights: Normal = 1.0, Fixed = 10000.0 (Hard constraint)
   float wNormal = 1.0;
-  float wFixed = 1000.0;
+  float wFixed = 100.0;
 
   for (size_t i = 0; i < data.size(); ++i) {
     Point val{0.0, 0.0};
