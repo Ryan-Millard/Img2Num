@@ -12,7 +12,7 @@ struct Point;
 class SavitzkyGolay {
 private:
   int window_size_;
-  int m_; // half window size
+  int window_radius_; // half window size
   int poly_order_;
   std::vector<float> coeffs_;
 
