@@ -2,9 +2,6 @@
 #define SAVITZKYGOLAY_H
 
 #include "Point.h"
-#include <iomanip>
-#include <numeric>
-#include <stdexcept>
 #include <vector>
 
 struct Point;

@@ -1,6 +1,8 @@
 #include "SavitskyGolay.h"
 #include <cassert>
 #include <cmath>
+#include <numeric>
+#include <stdexcept>
 
 SavitzkyGolay::SavitzkyGolay(int radius, int poly_order)
     : window_radius_(radius), window_size_(2 * radius + 1), poly_order_(poly_order) {
