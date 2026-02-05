@@ -52,4 +52,4 @@ When a claim expires:
 
 The [Getting Started](../getting-started) section shows how to clone and run the application for the first time.
 
-The [Project Scripts](../../reference/tools/scripts/overview) section shows all of the available scripts you may find useful whilst working on Img2Num's source code as well as a helful way to find specific scripts if you have forgotten one.
+The [Project Scripts](../../reference/tools/scripts/overview) section shows all of the available scripts you may find useful whilst working on Img2Num's source code as well as a helpful way to find specific scripts if you have forgotten one.
