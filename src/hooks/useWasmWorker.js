@@ -112,14 +112,6 @@ export function useWasmWorker() {
       return { svg: result.returnValue, visualization: result.output.pixels };
     },
 
-    testSvg: async () => {
-      const result = await call({
-        funcName: "test_svg",
-        returnType: "string",
-      });
-      return result.returnValue;
-    },
-
     call,
   };
 }
