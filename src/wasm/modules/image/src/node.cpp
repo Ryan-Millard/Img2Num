@@ -150,7 +150,7 @@ void Node::compute_contour(void) {
       p.y += ymin;
     }
 
-    if (contour_res.is_hole[cidx]) { continue; }
+    // if (contour_res.is_hole[cidx]) { continue; }
 
     ImageLib::RGBPixel<uint8_t> _col = color();
     ImageLib::RGBAPixel<uint8_t> col{_col.red, _col.green, _col.blue, 255};
