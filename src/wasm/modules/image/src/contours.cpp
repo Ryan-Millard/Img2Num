@@ -372,26 +372,30 @@ struct PointID {
  */
 
 Point getQuadraticTarget(const std::vector<Point> &pts, int i) {
-  int n = pts.size();
+  int n{static_cast<int>(pts.size())};
+  // Endpoints cannot be smoothed - return as-is
+  if (i <= 0 || i >= n - 1) {
+    return pts[i];
+  }
 
   // 1. BOUNDARY FALLBACK:
   // If we are too close to the end (indices 1 or n-2), we don't have 5 points.
   // Fall back to standard Linear Laplacian (0.25, 0.5, 0.25).
   if (i < 2 || i >= n - 2) {
-    Point prev = pts[i - 1];
-    Point curr = pts[i];
-    Point next = pts[i + 1];
+    Point prev{pts[i - 1]};
+    Point curr{pts[i]};
+    Point next{pts[i + 1]};
     return 0.25f * prev + 0.5f * curr + 0.25f * next;
   }
 
   // 2. QUADRATIC FILTER (Savitzky-Golay Window 5, Degree 2):
   // Coefficients: [-3, 12, 17, 12, -3] / 35
   // This fits a local parabola and evaluates it at the center.
-  const Point &p2L = pts[i - 2]; // 2 Left
-  const Point &p1L = pts[i - 1]; // 1 Left
-  const Point &p = pts[i];       // Center
-  const Point &p1R = pts[i + 1]; // 1 Right
-  const Point &p2R = pts[i + 2]; // 2 Right
+  const Point &p2L{pts[i - 2]}; // 2 Left
+  const Point &p1L{pts[i - 1]}; // 1 Left
+  const Point &p{pts[i]};       // Center
+  const Point &p1R{pts[i + 1]}; // 1 Right
+  const Point &p2R{pts[i + 2]}; // 2 Right
 
   return (-3.0f * p2L + 12.0f * p1L + 17.0f * p + 12.0f * p1R - 3.0f * p2R) /
          35.0f;
