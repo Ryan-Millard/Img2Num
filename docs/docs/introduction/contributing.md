@@ -14,7 +14,7 @@ Please review and adhere to our [Code of Conduct](./code-of-conduct.md) to help 
 
 ## Reporting Issues
 
-If you encounter a bug or have a feature request, please open an issue at: https://github.com/Ryan-Millard/Img2Num/issues
+If you encounter a bug or have a feature request, please open an issue at: [https://github.com/Ryan-Millard/Img2Num/issues](https://github.com/Ryan-Millard/Img2Num/issues)
 
 _When reporting issues, please:_
 
