@@ -283,7 +283,10 @@ findContours(params: {
 ```ts
 const { findContours } = useWasmWorker();
 
-const contouredPixels = await findContours({
+const {
+  svg,          // pixels converted to SVG string
+  visualization // pixels raster image with contours outlined
+} = await findContours({
   pixels,
   labels,
   width,
