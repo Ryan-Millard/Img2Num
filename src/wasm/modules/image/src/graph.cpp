@@ -110,7 +110,7 @@ void Graph::discover_edges(const std::vector<int32_t> &region_labels,
   constexpr int8_t dirs[8][2]{{1, 0}, {-1, 0},  {0, 1},  {0, -1},
                               {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};
 
-  int32_t rneigh[4];
+  int32_t rneigh[8];
 
   for (int32_t y{0}; y < height; ++y) {
     for (int32_t x{0}; x < width; ++x) {
