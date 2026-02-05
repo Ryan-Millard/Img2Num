@@ -1,10 +1,10 @@
 /*
  *IMPORTANT:
- *The args array to all convenience wrapper functions passed to call()
+ **The args object (property insertion order) passed to call()
  *must match the order of the arguments defined in C++ exactly.
  *  e.g.,
  *  ```js
- *  args = [a, b];
+ *  args = { a, b };
  *  ```
  *  ```cpp
  *  int add(int a, int b);
