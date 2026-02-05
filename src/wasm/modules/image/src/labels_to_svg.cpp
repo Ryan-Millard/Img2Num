@@ -191,14 +191,14 @@ std::string contoursResultToSVG(const ColoredContours &result, const int width,
 }
 
 /*
-data: uint8_t* -> output image from K-Means (or similar) in RGBA repeating format ([r,g,b,a, r,g,b,a, ...])
-labels: int32_t* -> output of labelled regions from K-Means,
-  should be 1/4 the size of data since data is RGBA
-labels : width * height : number of pixels in image = 1 : 1 : 1
+data: uint8_t* -> output image from K-Means (or similar) in RGBA repeating
+format ([r,g,b,a, r,g,b,a, ...]) labels: int32_t* -> output of labelled regions
+from K-Means, should be 1/4 the size of data since data is RGBA labels : width *
+height : number of pixels in image = 1 : 1 : 1
 */
 char *labels_to_svg(uint8_t *data, int32_t *labels, const int width,
-                              const int height, const int min_area,
-                              const bool draw_contour_borders) {
+                    const int height, const int min_area,
+                    const bool draw_contour_borders) {
   const int32_t num_pixels{width * height};
   std::vector<int32_t> labels_vector{labels, labels + num_pixels};
   std::vector<int32_t> region_labels;
@@ -267,7 +267,7 @@ char *labels_to_svg(uint8_t *data, int32_t *labels, const int width,
     std::string svg = contoursResultToSVG(all_contours, width, height);
 
     // Dynamic C-style allocation (since returned over C ABI)
-    char* res_svg = static_cast<char*>(std::malloc(svg.size() + 1));
+    char *res_svg = static_cast<char *>(std::malloc(svg.size() + 1));
     std::memcpy(res_svg, svg.c_str(), svg.size() + 1);
 
     return res_svg;
