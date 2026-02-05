@@ -5,7 +5,8 @@
 #include <stdexcept>
 
 SavitzkyGolay::SavitzkyGolay(int radius, int poly_order)
-    : window_radius_(radius), window_size_(2 * radius + 1), poly_order_(poly_order) {
+    : window_radius_(radius), window_size_(2 * radius + 1),
+      poly_order_(poly_order) {
 
   assert(radius >= 0);
   assert(window_size_ > poly_order_);

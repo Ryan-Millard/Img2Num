@@ -264,12 +264,12 @@ char *labels_to_svg(uint8_t *data, int32_t *labels, const int width,
 
   // 8. Return SVG if requested
   if (!draw_contour_borders) {
-    std::string svg = contoursResultToSVG(all_contours, width, height);
+    std::string svg{contoursResultToSVG(all_contours, width, height)};
 
     // Dynamic C-style allocation (since returned over C ABI)
-    char* res_svg = static_cast<char*>(std::malloc(svg.size() + 1));
+    char *res_svg{static_cast<char *>(std::malloc(svg.size() + 1))};
     if (!res_svg) {
-      return nullptr;  // Allocation failed
+      return nullptr; // Allocation failed
     }
     std::memcpy(res_svg, svg.c_str(), svg.size() + 1);
 
