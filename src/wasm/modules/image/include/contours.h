@@ -18,6 +18,13 @@ struct QuadBezier {
   Point p2{0, 0}; // End
 };
 
+struct CubicBezier {
+  Point p0{0, 0}; // Start
+  Point p1{0, 0}; // Control 1
+  Point p2{0, 0}; // Control 2
+  Point p3{0, 0}; // End
+};
+
 struct Rect {
   float x, y, width, height;
 };
@@ -37,6 +44,7 @@ struct ContoursResult {
   // (0..w-1, 0..h-1)
   std::vector<std::vector<Point>> contours;
   std::vector<std::vector<QuadBezier>> curves;
+  std::vector<std::vector<CubicBezier>> ccurves;
 
   // hierarchy[k] = { next_sibling, prev_sibling, first_child, parent }
   // -1 means "none"
@@ -57,7 +65,7 @@ ContoursResult find_contours(const std::vector<uint8_t> &binary, int width,
                              int height);
 
 void stitch_smooth(std::vector<Point> &vecA, std::vector<Point> &vecB);
-void coupled_smooth(std::vector<std::vector<Point>> &contours, Rect bounds);
+void coupled_smooth(std::vector<std::vector<Point>> &contours, Rect bounds, float pairRadiusSq);
 
 void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours,
                                     Rect bounds, int iterations = 15);

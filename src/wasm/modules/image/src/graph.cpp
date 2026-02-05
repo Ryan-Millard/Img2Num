@@ -277,10 +277,13 @@ void Graph::compute_contours() {
 
   contours::coupled_smooth(all_contours,
                            Rect{0.0f, 0.0f, static_cast<float>(m_width),
-                                static_cast<float>(m_height)});
+                                static_cast<float>(m_height)}, 0.5f);
 
   std::vector<std::vector<QuadBezier>> all_curves;
-  fit_curve_reduction(all_contours, all_curves, 0.5f);
+  fit_curve_reduction(all_contours, all_curves, 0.25f);
+
+  std::vector<std::vector<CubicBezier>> all_ccurves;
+  fit_curve_reduction(all_contours, all_ccurves, 0.25f);
 
   int j = 0;
   for (const Node_ptr &n : get_nodes()) {
@@ -295,6 +298,10 @@ void Graph::compute_contours() {
       c0->curves[i].resize(all_curves[j].size());
       std::copy(all_curves[j].begin(), all_curves[j].end(),
                 c0->curves[i].begin());
+
+      c0->ccurves[i].resize(all_ccurves[j].size());
+      std::copy(all_ccurves[j].begin(), all_ccurves[j].end(),
+                c0->ccurves[i].begin());
       j++;
     }
   }

@@ -695,15 +695,24 @@ std::vector<bool> detectCorners(const std::vector<Point> &pts,
     return isCorner;
   float threshold = std::cos(angleThresholdDeg * M_PI / 180.0f);
 
-  for (size_t i = 1; i < pts.size() - 1; ++i) {
-    Point v1 = normalize(pts[i] - pts[i - 1]);
-    Point v2 = normalize(pts[i + 1] - pts[i]);
+  for (size_t i = 0; i < pts.size(); ++i) {
+    // int previ = i > 0 ? i - 1 : pts.size() - 1;
+    // int nexti = i < pts.size() - 1 ? i + 1 : 0;
+    int previ = i - 2;
+    int nexti = i + 2;
+    if (previ < 0) {
+      previ = pts.size() + previ;
+    } 
+    if (nexti >= pts.size()) {
+      nexti = nexti - pts.size();
+    }
+
+    Point v1 = normalize(pts[i] - pts[previ]);
+    Point v2 = normalize(pts[nexti] - pts[i]);
     if (v1.x * v2.x + v1.y * v2.y < threshold)
       isCorner[i] = true;
   }
-  // Endpoints are corners
-  isCorner[0] = true;
-  isCorner.back() = true;
+
   return isCorner;
 }
 
@@ -723,14 +732,15 @@ void selectiveSmooth(std::vector<Point> &pts,
 
 void coupledSmooth(std::vector<std::vector<Point>> &contours,
                    const std::vector<std::vector<bool>> &lockedMasks,
+                   const std::vector<std::vector<bool>> &cornerMasks,
                    float pairRadiusSq = 2.25f) {
 
-  SavitzkyGolay sg(2, 2); // radius, polynomial order
+  SavitzkyGolay sg(5, 2); // radius, polynomial order
 
   // first fit
   std::vector<std::vector<Point>> smoothedContours;
   for (int c = 0; c < (int)contours.size(); ++c) {
-    std::vector<Point> sc = sg.filter_wrap(contours[c]);
+    std::vector<Point> sc = sg.filter_wrap_with_constraints(contours[c], lockedMasks[c], cornerMasks[c]);
     smoothedContours.push_back(sc);
   }
 
@@ -749,14 +759,16 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
   // float pairRadiusSq = 1.5f * 1.5f; // Radius to define "Connected/Paired"
 
   for (int c = 0; c < (int)contours.size(); ++c) {
-    for (int p = 1; p < (int)contours[c].size() - 1; ++p) {
+    for (int p = 0; p < (int)contours[c].size(); ++p) {
       // SKIP Constraints
-      if (lockedMasks[c][p])
+      if (lockedMasks[c][p])// || cornerMasks[c][p])
         continue;
 
       Point myPos = contours[c][p];
-      Point prev = contours[c][p - 1];
-      Point next = contours[c][p + 1];
+      int prevp = p > 0 ? p - 1 : contours[c].size() - 1;
+      int nextp = p > contours[c].size() - 1 ? p + 1 : 0;
+      Point prev = contours[c][prevp];
+      Point next = contours[c][nextp];
 
       // 1. Calculate My Laplacian Target (Where I want to go to be smooth)
       Point myTarget = smoothedContours[c][p];
@@ -780,7 +792,7 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
               continue; // Ignore self
 
             Point otherPos = contours[neighbor.cIdx][neighbor.pIdx];
-            if (Point::distSq(myPos, otherPos) < pairRadiusSq) {
+            if (Point::distSq(myPos, otherPos) <= pairRadiusSq) {
               // Found a partner!
               // Calculate where the PARTNER wants to go
               // (We need safe access to partner's neighbors)
@@ -792,8 +804,8 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
                   // !cornerMasks[neighbor.cIdx][op] &&
                   !lockedMasks[neighbor.cIdx][op]) {
 
-                Point oPrev = otherContour[op - 1];
-                Point oNext = otherContour[op + 1];
+                //Point oPrev = otherContour[op - 1];
+                //Point oNext = otherContour[op + 1];
 
                 Point oTarget = smoothedContours[neighbor.cIdx][op];
 
@@ -825,9 +837,11 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
   contours = targetPos;
 }
 
-void coupled_smooth(std::vector<std::vector<Point>> &contours, Rect bounds) {
+void coupled_smooth(std::vector<std::vector<Point>> &contours, Rect bounds, float pairRadiusSq) {
   auto lockedMasks = createBoundaryMask(contours, bounds);
-  coupledSmooth(contours, lockedMasks, 1.0f);
+  std::vector<std::vector<bool>> cornerMasks;
+  for (const auto& c : contours) cornerMasks.push_back(detectCorners(c, 100.0));
+  coupledSmooth(contours, lockedMasks, cornerMasks, pairRadiusSq);
 }
 
 // --- Main Solver ---

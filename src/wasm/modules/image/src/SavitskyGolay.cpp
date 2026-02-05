@@ -66,6 +66,78 @@ std::vector<Point> SavitzkyGolay::filter_wrap(const std::vector<Point> &data) {
   return result;
 }
 
+std::vector<Point> SavitzkyGolay::filter_wrap_with_constraints(
+  const std::vector<Point> &data,
+  const std::vector<bool> &locked,
+  const std::vector<bool> &corner
+) {
+  // wrap around
+  if (data.size() < window_size_) {
+    return data; // Data too short to filter
+  }
+
+  std::vector<Point> result(data.size());
+  std::copy(data.begin(), data.end(), result.begin());
+
+  // Weights: Normal = 1.0, Fixed = 10000.0 (Hard constraint)
+  float wNormal = 1.0;
+  float wFixed = 1000.0;
+
+  for (size_t i = 0; i < data.size(); ++i) {
+    Point val{0.0, 0.0};
+    float A[3][3] = {0};
+    float Bx[3] = {0};
+    float By[3] = {0};
+    // if (locked[i] || corner[i]) { continue; }
+    for (int j = -m_; j <= m_; ++j) {
+      int k = i + j;
+      if (k < 0) {
+        k = data.size() + k;
+      } else if (k >= data.size()) {
+        k = k - data.size();
+      }
+
+      // weights
+      float w;
+      if (locked[k]) { //  || corner[k]
+        w = wFixed;
+      } else { w = wNormal; }
+
+      float xVal = (float)j; // Relative x coordinate (-window ... +window)
+      float yVal1 = data[k].x;
+      float yVal2 = data[k].y;
+
+      float x2 = xVal * xVal;
+      float x3 = x2 * xVal;
+      float x4 = x2 * x2;
+
+      // Update Normal Matrix (X^T * W * X)
+      // Row 0: Sum(w * 1 * [1, x, x2])
+      A[0][0] += w;       A[0][1] += w*xVal;  A[0][2] += w*x2;
+      // Row 1: Sum(w * x * [1, x, x2])
+      A[1][0] += w*xVal;  A[1][1] += w*x2;    A[1][2] += w*x3;
+      // Row 2: Sum(w * x2 * [1, x, x2])
+      A[2][0] += w*x2;    A[2][1] += w*x3;    A[2][2] += w*x4;
+
+      // Update Result Vector (X^T * W * Y)
+      Bx[0] += w * yVal1;
+      Bx[1] += w * yVal1 * xVal;
+      Bx[2] += w * yVal1 * x2;
+
+      By[0] += w * yVal2;
+      By[1] += w * yVal2 * xVal;
+      By[2] += w * yVal2 * x2;
+      // val = val + data[k] * coeffs_[j + m_];
+    } 
+    val.x = solveQuadraticAtZero(A, Bx);
+    val.y = solveQuadraticAtZero(A, By);
+
+    result[i] = val;
+  }
+
+  return result;
+}
+
 // Helper: Invert a matrix using Gauss-Jordan Elimination
 // A is (N x N), returns A_inv
 std::vector<std::vector<float>>
