@@ -166,6 +166,10 @@ bilateralFilter(params: {
    * @default 0
    */
   color_space?: number;
+  /**
+   * @default 8
+   */
+  n_threads?: number;
 }): Promise<Uint8ClampedArray>
 ```
 
