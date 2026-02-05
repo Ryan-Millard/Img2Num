@@ -267,7 +267,10 @@ char *labels_to_svg(uint8_t *data, int32_t *labels, const int width,
     std::string svg = contoursResultToSVG(all_contours, width, height);
 
     // Dynamic C-style allocation (since returned over C ABI)
-    char *res_svg = static_cast<char *>(std::malloc(svg.size() + 1));
+    char* res_svg = static_cast<char*>(std::malloc(svg.size() + 1));
+    if (!res_svg) {
+      return nullptr;  // Allocation failed
+    }
     std::memcpy(res_svg, svg.c_str(), svg.size() + 1);
 
     return res_svg;
