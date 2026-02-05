@@ -7,7 +7,7 @@ sidebar_position: 5
 
 # Graph / Node API
 
-Each `Node` is a collection of pixels. A `Node` holds a `unique_ptr` to a vectors of pixels with `RGBXY` structure. \
+Each `Node` is a collection of pixels. A `Node` holds a `unique_ptr` to a vector of pixels with `RGBXY` structure. \
 Each pixel has its own color and position.
 
 `Node`s reference neighbors through node pointers (`shared_ptr`)
