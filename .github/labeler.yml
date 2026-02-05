@@ -1,22 +1,30 @@
 c/cpp:
-  - "**/*.c"
-  - "**/*.cpp"
-  - "**/*.h"
-  - "**/*.hpp"
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.c"
+          - "**/*.cpp"
+          - "**/*.h"
+          - "**/*.hpp"
 
 docs:
-  - "**/*.md"
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.md"
 
 ci:
-  - ".github/**"
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
 
 js/ts:
-  - "**/*.js"
-  - "**/*.jsx"
-  - "**/*.ts"
-  - "**/*.tsx"
-  - "vite.config.*" # Vite config files
-  - "vite.*.js" # optional extra patterns
-  - "package.json" # package manifest changes
-  - "package-lock.json"
-  - "yarn.lock"
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.js"
+          - "**/*.jsx"
+          - "**/*.ts"
+          - "**/*.tsx"
+          - "vite.config.*"
+          - "vite.*.js"
+          - "package.json"
+          - "package-lock.json"
+          - "yarn.lock"

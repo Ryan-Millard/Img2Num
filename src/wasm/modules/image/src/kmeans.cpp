@@ -16,21 +16,6 @@
 #include <thread>
 #include <vector>
 
-static inline float colorDistance(const ImageLib::RGBAPixel<float> &a,
-                                  const ImageLib::RGBAPixel<float> &b) {
-  // sqrt un-necessary
-  return (a.red - b.red) * (a.red - b.red) +
-         (a.green - b.green) * (a.green - b.green) +
-         (a.blue - b.blue) * (a.blue - b.blue);
-}
-
-static inline float colorDistance(const ImageLib::LABAPixel<float> &a,
-                                  const ImageLib::LABAPixel<float> &b) {
-  // sqrt un-necessary
-  return (a.l - b.l) * (a.l - b.l) + (a.a - b.a) * (a.a - b.a) +
-         (a.b - b.b) * (a.b - b.b);
-}
-
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB{0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
 
@@ -44,7 +29,7 @@ void _process_dist_per_centroid(const ImageLib::Image<PixelT> &pixels,
   for (int j{start_centroid}; j < end_centroid; ++j) {
     std::transform(pixels.begin(), pixels.end(), _res.begin(),
                    [&centroids, j](const PixelT &p) {
-                     return colorDistance(p, centroids[j]);
+                     return PixelT::colorDistance(p, centroids[j]);
                    });
     std::copy(_res.begin(), _res.end(), output[j].begin());
   }
@@ -105,7 +90,7 @@ void kMeansPlusPlusInit(const ImageLib::Image<PixelT> &pixels,
     // We don't need to recheck previous centroids; min_dist_sq already holds
     // the best distance to them.
     for (int j = 0; j < num_pixels; ++j) {
-      double d = colorDistance(pixels[j], centroids.back());
+      double d = PixelT::colorDistance(pixels[j], centroids.back());
 
       // If this new centroid is closer than the previous best, update the min
       // distance
@@ -295,11 +280,13 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
           // float dist{colorDistance(pixels[i], centroids[j])};
           switch (color_space) {
           case COLOR_SPACE_OPTION_RGB: {
-            dist = colorDistance(pixels[i], centroids[j]);
+            dist = ImageLib::RGBAPixel<float>::colorDistance(pixels[i],
+                                                             centroids[j]);
             break;
           }
           case COLOR_SPACE_OPTION_CIELAB: {
-            dist = colorDistance(lab[i], centroids_lab[j]);
+            dist = ImageLib::LABAPixel<float>::colorDistance(lab[i],
+                                                             centroids_lab[j]);
             break;
           }
           }
