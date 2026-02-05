@@ -101,7 +101,7 @@ export function useWasmWorker() {
 
     findContours: async ({ pixels, labels, width, height, min_area = 100, draw_contour_borders = false }) => {
       const result = await call({
-        funcName: "kmeans_clustering_graph",
+        funcName: "labels_to_svg",
         args: { pixels, labels, width, height, min_area, draw_contour_borders },
         bufferKeys: [
           { key: "pixels", type: "Uint8ClampedArray" },
