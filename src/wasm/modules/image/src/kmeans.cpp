@@ -155,12 +155,12 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
         switch (color_space) {
         case COLOR_SPACE_OPTION_RGB: {
           dist = ImageLib::RGBAPixel<float>::colorDistance(pixels[i],
-                                                            centroids[j]);
+                                                           centroids[j]);
           break;
         }
         case COLOR_SPACE_OPTION_CIELAB: {
           dist = ImageLib::LABAPixel<float>::colorDistance(lab[i],
-                                                            centroids_lab[j]);
+                                                           centroids_lab[j]);
           break;
         }
         }
@@ -175,7 +175,7 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
         labels[i] = best_cluster;
       }
     }
-    
+
     // Stop if no changes
     if (!changed) {
       break;

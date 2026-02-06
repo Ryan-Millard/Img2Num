@@ -131,28 +131,28 @@ void _process(const uint8_t *image, const std::vector<double> &cie_image,
       }
 
       switch (color_space) {
-        case COLOR_SPACE_OPTION_RGB: {
-          result[center_idx] = static_cast<uint8_t>(
-              std::clamp(weight_acc_channel_0 / weight_acc, 0.0, 255.0));
-          result[center_idx + 1] = static_cast<uint8_t>(
-              std::clamp(weight_acc_channel_1 / weight_acc, 0.0, 255.0));
-          result[center_idx + 2] = static_cast<uint8_t>(
-              std::clamp(weight_acc_channel_2 / weight_acc, 0.0, 255.0));
-          result[center_idx + 3] = a0;
-          break;
-        }
-        case COLOR_SPACE_OPTION_CIELAB: {
-          double L{weight_acc_channel_0 / weight_acc};
-          double A{weight_acc_channel_1 / weight_acc};
-          double B{weight_acc_channel_2 / weight_acc};
-          uint8_t r, g, b;
-          lab_to_rgb<double, uint8_t>(L, A, B, r, g, b);
-          result[center_idx] = r;
-          result[center_idx + 1] = g;
-          result[center_idx + 2] = b;
-          result[center_idx + 3] = a0;
-          break;
-        }
+      case COLOR_SPACE_OPTION_RGB: {
+        result[center_idx] = static_cast<uint8_t>(
+            std::clamp(weight_acc_channel_0 / weight_acc, 0.0, 255.0));
+        result[center_idx + 1] = static_cast<uint8_t>(
+            std::clamp(weight_acc_channel_1 / weight_acc, 0.0, 255.0));
+        result[center_idx + 2] = static_cast<uint8_t>(
+            std::clamp(weight_acc_channel_2 / weight_acc, 0.0, 255.0));
+        result[center_idx + 3] = a0;
+        break;
+      }
+      case COLOR_SPACE_OPTION_CIELAB: {
+        double L{weight_acc_channel_0 / weight_acc};
+        double A{weight_acc_channel_1 / weight_acc};
+        double B{weight_acc_channel_2 / weight_acc};
+        uint8_t r, g, b;
+        lab_to_rgb<double, uint8_t>(L, A, B, r, g, b);
+        result[center_idx] = r;
+        result[center_idx + 1] = g;
+        result[center_idx + 2] = b;
+        result[center_idx + 3] = a0;
+        break;
+      }
       }
     }
   }
@@ -222,10 +222,10 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
     }
   }
   // ========= CIELAB section end =========
-  
+
   _process(image, cie_image, result, spatial_weights, range_lut, radius,
-            sigma_range, 0, static_cast<int>(height), height, width,
-            color_space);
+           sigma_range, 0, static_cast<int>(height), height, width,
+           color_space);
 
   std::memcpy(image, result.data(), result.size());
 }
