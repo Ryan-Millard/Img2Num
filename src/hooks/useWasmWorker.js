@@ -58,10 +58,10 @@ export function useWasmWorker() {
       return result.output.pixels;
     },
 
-    bilateralFilter: async ({ pixels, width, height, sigma_spatial = 3, sigma_range = 50, color_space = 0, n_threads = 8 }) => {
+    bilateralFilter: async ({ pixels, width, height, sigma_spatial = 3, sigma_range = 50, color_space = 0 }) => {
       const result = await call({
         funcName: "bilateral_filter",
-        args: { pixels, width, height, sigma_spatial, sigma_range, color_space, n_threads },
+        args: { pixels, width, height, sigma_spatial, sigma_range, color_space },
         bufferKeys: [{ key: "pixels", type: "Uint8ClampedArray" }],
       });
       return result.output.pixels;
@@ -76,20 +76,10 @@ export function useWasmWorker() {
       return result.output.pixels;
     },
 
-    kmeans: async ({
-      pixels,
-      out_pixels = new Uint8ClampedArray(pixels.length),
-      out_labels = new Int32Array(pixels.length / 4),
-      width,
-      height,
-      num_colors,
-      max_iter = 100,
-      color_space = 0,
-      n_threads = 8,
-    }) => {
+    kmeans: async ({ pixels, out_pixels = new Uint8ClampedArray(pixels.length), out_labels = new Int32Array(pixels.length / 4), width, height, num_colors, max_iter = 100, color_space = 0 }) => {
       const result = await call({
         funcName: "kmeans",
-        args: { pixels, out_pixels, out_labels, width, height, num_colors, max_iter, color_space, n_threads },
+        args: { pixels, out_pixels, out_labels, width, height, num_colors, max_iter, color_space },
         bufferKeys: [
           { key: "pixels", type: "Uint8ClampedArray" },
           { key: "out_pixels", type: "Uint8ClampedArray" },

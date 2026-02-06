@@ -7,8 +7,6 @@
 #include <cmath>
 #include <cstring>
 #include <functional>
-#include <mutex>
-#include <thread>
 #include <vector>
 
 namespace bilateral {
@@ -25,8 +23,6 @@ static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
 inline double gaussian(double x, double sigma) {
   return std::exp(-(x * x) / (2.0 * sigma * sigma));
 }
-
-std::mutex write_mutex;
 
 /*
 The Bilateral Filter applies a composite weight based on both spatial distance
@@ -51,7 +47,7 @@ void _process(const uint8_t *image, const std::vector<double> &cie_image,
               const std::vector<double> &spatial_weights,
               const std::vector<double> &range_lut, int radius,
               double sigma_range, int start_row, int end_row, size_t height,
-              size_t width, uint8_t color_space, const uint8_t n_threads) {
+              size_t width, uint8_t color_space) {
   int h{static_cast<int>(height)};
   int w{static_cast<int>(width)};
   const int kernel_diameter{2 * radius + 1};
@@ -133,8 +129,6 @@ void _process(const uint8_t *image, const std::vector<double> &cie_image,
           weight_acc += w_space * w_range;
         }
       }
-      // writing - must grab mutex
-      std::unique_lock<std::mutex> lock{write_mutex};
 
       switch (color_space) {
       case COLOR_SPACE_OPTION_RGB: {
@@ -160,25 +154,19 @@ void _process(const uint8_t *image, const std::vector<double> &cie_image,
         break;
       }
       }
-      // done writing
-      lock.unlock();
     }
   }
 }
 
 void bilateral_filter(uint8_t *image, size_t width, size_t height,
                       double sigma_spatial, double sigma_range,
-                      uint8_t color_space, const uint8_t n_threads) {
+                      uint8_t color_space) {
   // bad data -> return
   if (sigma_spatial <= 0.0 || sigma_range <= 0.0 || width <= 0 || height <= 0)
     return;
   if (color_space != COLOR_SPACE_OPTION_CIELAB &&
       color_space != COLOR_SPACE_OPTION_RGB)
     return;
-
-  std::vector<std::thread> threads;
-
-  int rows_per_thread = static_cast<int>(height) / static_cast<int>(n_threads);
 
   const int raw_radius{
       static_cast<int>(std::ceil(SIGMA_RADIUS_FACTOR * sigma_spatial))};
@@ -234,29 +222,10 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
     }
   }
   // ========= CIELAB section end =========
-  if (n_threads > 1) {
-    for (int i = 0; i < n_threads; ++i) {
-      int start_row{i * rows_per_thread};
-      int end_row{(i == n_threads - 1) ? static_cast<int>(height)
-                                       : (i + 1) * rows_per_thread};
-      // Launch a thread and add to vector
-      threads.emplace_back(_process, std::cref(image), std::cref(cie_image),
-                           std::ref(result), std::cref(spatial_weights),
-                           std::cref(range_lut), radius, sigma_range, start_row,
-                           end_row, height, width, color_space, n_threads);
-    }
 
-    // wait for threads to finish
-    for (auto &thread : threads) {
-      if (thread.joinable()) {
-        thread.join();
-      }
-    }
-  } else {
-    _process(image, cie_image, result, spatial_weights, range_lut, radius,
-             sigma_range, 0, static_cast<int>(height), height, width,
-             color_space, n_threads);
-  }
+  _process(image, cie_image, result, spatial_weights, range_lut, radius,
+           sigma_range, 0, static_cast<int>(height), height, width,
+           color_space);
 
   std::memcpy(image, result.data(), result.size());
 }
@@ -266,7 +235,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
 // Global wrapper for WASM export
 EXPORTED void bilateral_filter(uint8_t *image, size_t width, size_t height,
                                double sigma_spatial, double sigma_range,
-                               uint8_t color_space, const uint8_t n_threads) {
+                               uint8_t color_space) {
   bilateral::bilateral_filter(image, width, height, sigma_spatial, sigma_range,
-                              color_space, n_threads);
+                              color_space);
 }
