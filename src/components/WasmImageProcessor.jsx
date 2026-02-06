@@ -95,8 +95,6 @@ const WasmImageProcessor = () => {
 
       step(95);
 
-      step(95);
-
       const { svg } = await findContours({
         pixels: imgBilateralFiltered,
         labels,
@@ -104,7 +102,7 @@ const WasmImageProcessor = () => {
         height,
       });
 
-      //step(100);
+      step(100);
 
       navigate("/editor", {
         state: { svg },

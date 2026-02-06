@@ -697,7 +697,7 @@ std::vector<bool> detectCorners(const std::vector<Point> &pts,
     return isCorner;
   float threshold = std::cos(angleThresholdDeg * M_PI / 180.0f);
 
-  for (size_t i = 0; i < pts.size(); ++i) {
+  for (int i = 0; i < pts.size(); ++i) {
     // int previ = i > 0 ? i - 1 : pts.size() - 1;
     // int nexti = i < pts.size() - 1 ? i + 1 : 0;
     int previ = i - 2;
@@ -739,9 +739,7 @@ void selectiveSmooth(std::vector<Point> &pts,
   float sum = std::accumulate(coeff.begin(), coeff.end(), 0.0f);
   for (int k = 0; k < window; ++k){
     coeff[k] /= sum;
-    std::cout << coeff[k] << " ";
   }
-  std::cout << std::endl;
 
   for (size_t i = 0; i < pts.size(); ++i) {
     // DO NOT move if it's a Corner OR if it's Locked on the boundary
@@ -760,11 +758,6 @@ void selectiveSmooth(std::vector<Point> &pts,
     }
     pts[i] = val;
 
-    /*int previ = i > 0 ? i - 1 : pts.size() - 1;
-    int nexti = i < pts.size() - 1 ? i + 1 : 0;
-    pts[i] =
-        0.3f * original[previ] + 0.4f * original[i] + 0.3f * original[nexti];
-    */
   }
 }
 
@@ -805,7 +798,7 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
 
       Point myPos = contours[c][p];
       int prevp = p > 0 ? p - 1 : contours[c].size() - 1;
-      int nextp = p > contours[c].size() - 1 ? p + 1 : 0;
+      int nextp = p < contours[c].size() - 1 ? p + 1 : 0;
       Point prev = contours[c][prevp];
       Point next = contours[c][nextp];
 
