@@ -723,7 +723,7 @@ void selectiveSmooth(std::vector<Point> &pts,
                      const std::vector<bool> &isLocked, const int radius = 1) {
 
   std::function<int(int)> factorial = [&factorial](int x) -> int {
-    if (x <=1 ) return 1;
+    if (x <= 1) return 1;
     return x * factorial(x-1);
   };
 

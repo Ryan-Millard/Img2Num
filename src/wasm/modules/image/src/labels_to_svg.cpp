@@ -159,11 +159,6 @@ std::string contourToSVGCurve(const std::vector<QuadBezier> &curves) {
     }
     path << "Q " << c.p1.x << " " << c.p1.y << " " << c.p2.x << " " << c.p2.y
         << " ";
-
-    /*else {
-      path << "T " << c.p2.x << " " << c.p2.y << " ";
-    }*/
-
   }
 
   //  Close the path
@@ -186,11 +181,6 @@ std::string contourToSVGCurve(const std::vector<CubicBezier> &curves) {
     }
     path << "C " << c.p1.x << " " << c.p1.y << " " << c.p2.x << " " << c.p2.y << " "
          << c.p3.x << " " << c.p3.y << " ";
-    /*}
-    else {
-      path << "T " << c.p2.x << " " << c.p2.y << " ";
-    }*/
-
   }
 
   //  Close the path
@@ -290,24 +280,8 @@ char *labels_to_svg(uint8_t *data, int32_t *labels, const int width,
     for (auto &c : node_contours.curves) {
       all_contours.curves.push_back(c);
     }
-  }*/
-
-  G.compute_contours3();
-  // int count = 0;
-  for (auto &n : G.get_nodes()) {
-    if (n->area() == 0) continue;
-    ColoredContours node_contours = n->get_contours();
-    for (auto &c : node_contours.contours) {
-      all_contours.contours.push_back(c);
-    }
-    for (auto &c : node_contours.hierarchy) {
-      all_contours.hierarchy.push_back(c);
-    }
-    for (bool b : node_contours.is_hole) {
-      all_contours.is_hole.push_back(b);
-    }
-    for (auto &c : node_contours.colors) {
-      all_contours.colors.push_back(c);
+    for (auto &c : node_contours.ccurves) {
+      all_contours.ccurves.push_back(c);
     }
   }
 

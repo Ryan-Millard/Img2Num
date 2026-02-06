@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <stdexcept>
 #include <vector>
+#include <numeric>
 
 struct QuadBezier {
   Point p0{0, 0}; // Start
@@ -23,16 +24,6 @@ struct CubicBezier {
   Point p1{0, 0}; // Control 1
   Point p2{0, 0}; // Control 2
   Point p3{0, 0}; // End
-};
-
-struct Rect {
-  float x, y, width, height;
-};
-
-struct QuadBezier {
-  Point p0{0, 0}; // Start
-  Point p1{0, 0}; // Control
-  Point p2{0, 0}; // End
 };
 
 struct Rect {

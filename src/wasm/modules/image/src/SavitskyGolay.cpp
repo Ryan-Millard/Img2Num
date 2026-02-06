@@ -89,7 +89,7 @@ std::vector<Point> SavitzkyGolay::filter_wrap_with_constraints(
     float Bx[3] = {0};
     float By[3] = {0};
     // if (locked[i] || corner[i]) { continue; }
-    for (int j = -m_; j <= m_; ++j) {
+    for (int j = -window_radius_; j <= window_radius_; ++j) {
       int k = i + j;
       if (k < 0) {
         k = data.size() + k;
@@ -103,7 +103,7 @@ std::vector<Point> SavitzkyGolay::filter_wrap_with_constraints(
         w = wFixed;
       } else { w = wNormal; }
 
-      float xVal = (float)j; // Relative x coordinate (-window ... +window)
+      float xVal = (float)j;
       float yVal1 = data[k].x;
       float yVal2 = data[k].y;
 
@@ -127,7 +127,6 @@ std::vector<Point> SavitzkyGolay::filter_wrap_with_constraints(
       By[0] += w * yVal2;
       By[1] += w * yVal2 * xVal;
       By[2] += w * yVal2 * x2;
-      // val = val + data[k] * coeffs_[j + m_];
     } 
     val.x = solveQuadraticAtZero(A, Bx);
     val.y = solveQuadraticAtZero(A, By);
@@ -210,4 +209,28 @@ void SavitzkyGolay::compute_coefficients() {
     }
     coeffs_[k + window_radius_] = weight;
   }
+}
+
+float SavitzkyGolay::solveQuadraticAtZero(float A[3][3], float B[3]) {
+    // Determinant of A (Symmetric)
+    float det = A[0][0] * (A[1][1] * A[2][2] - A[1][2] * A[2][1]) -
+                 A[0][1] * (A[1][0] * A[2][2] - A[1][2] * A[2][0]) +
+                 A[0][2] * (A[1][0] * A[2][1] - A[1][1] * A[2][0]);
+
+    if (std::abs(det) < 1e-9) return 0.0; // Singularity check
+
+    // We only need the first element of the solution vector (c0), 
+    // which corresponds to the polynomial value at x=0.
+    // Cramer's Rule for x[0]: Replace first column of A with B, divide det by main det.
+    
+    // Matrix A_0:
+    // [ B0  A01 A02 ]
+    // [ B1  A11 A12 ]
+    // [ B2  A21 A22 ]
+    
+    float det0 = B[0] * (A[1][1] * A[2][2] - A[1][2] * A[2][1]) -
+                  A[0][1] * (B[1]   * A[2][2] - A[1][2] * B[2]) +
+                  A[0][2] * (B[1]   * A[2][1] - A[1][1] * B[2]);
+
+    return det0 / det;
 }
