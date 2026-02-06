@@ -832,9 +832,11 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
               int op = neighbor.pIdx;
 
               // Only calculate partner target if they are not constrained
-              if (op > 0 && op < (int)otherContour.size() - 1 &&
+              if (
+                  // op > 0 && op < (int)otherContour.size() - 1 &&
                   // !cornerMasks[neighbor.cIdx][op] &&
-                  !lockedMasks[neighbor.cIdx][op]) {
+                  !lockedMasks[neighbor.cIdx][op]
+              ) {
 
                 //Point oPrev = otherContour[op - 1];
                 //Point oNext = otherContour[op + 1];
