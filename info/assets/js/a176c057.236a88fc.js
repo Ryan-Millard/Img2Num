@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkdocs=globalThis.webpackChunkdocs||[]).push([[9051],{56023(o){o.exports=JSON.parse('{"metadata":{"permalink":"/Img2Num/info/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":1,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);
