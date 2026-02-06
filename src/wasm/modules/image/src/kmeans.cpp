@@ -5,7 +5,6 @@
 #include "RGBAPixel.h"
 #include "cielab.h"
 #include <algorithm>
-#include <atomic>
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
@@ -13,51 +12,10 @@
 #include <limits>
 #include <numeric>
 #include <random>
-#include <thread>
 #include <vector>
 
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB{0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
-
-template <typename PixelT>
-void _process_dist_per_centroid(const ImageLib::Image<PixelT> &pixels,
-                                const ImageLib::Image<PixelT> &centroids,
-                                std::vector<std::vector<float>> &output,
-                                int start_centroid, int end_centroid) {
-  // threads will not overlap - no need for mutex
-  std::vector<float> _res(pixels.getPixelCount());
-  for (int j{start_centroid}; j < end_centroid; ++j) {
-    std::transform(pixels.begin(), pixels.end(), _res.begin(),
-                   [&centroids, j](const PixelT &p) {
-                     return PixelT::colorDistance(p, centroids[j]);
-                   });
-    std::copy(_res.begin(), _res.end(), output[j].begin());
-  }
-}
-
-template <typename PixelT>
-void _apply_labels(const ImageLib::Image<PixelT> &pixels,
-                   const std::vector<std::vector<float>> &distances,
-                   std::vector<int> &labels, int start_pixel, int end_pixel,
-                   int k, std::atomic<bool> &changed) {
-  // threads don't overlap
-  float min_color_dist{std::numeric_limits<float>::max()};
-  int32_t best_cluster{0};
-  for (int i{start_pixel}; i < end_pixel; ++i) {
-    min_color_dist = std::numeric_limits<float>::max();
-    best_cluster = 0;
-    for (int j{0}; j < k; ++j) {
-      if (distances[j][i] < min_color_dist) {
-        min_color_dist = distances[j][i];
-        best_cluster = j;
-      }
-    }
-    if (labels[i] != best_cluster) {
-      labels[i] = best_cluster;
-      changed.store(true, std::memory_order_relaxed);
-    }
-  }
-}
 
 // The K-Means++ Initialization Function
 template <typename PixelT>
@@ -131,8 +89,7 @@ void kMeansPlusPlusInit(const ImageLib::Image<PixelT> &pixels,
 
 void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
             const int32_t width, const int32_t height, const int32_t k,
-            const int32_t max_iter, const uint8_t color_space,
-            const uint8_t n_threads) {
+            const int32_t max_iter, const uint8_t color_space) {
   ImageLib::Image<ImageLib::RGBAPixel<float>> pixels;
   pixels.loadFromBuffer(data, width, height, ImageLib::RGBA_CONVERTER<float>);
   const int32_t num_pixels{pixels.getSize()};
@@ -151,13 +108,6 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
       rgb_to_lab<float, float>(pixels[i], lab[i]);
     }
   }
-
-  std::vector<std::thread> threads;
-
-  int nthreads = std::clamp(static_cast<int>(n_threads), 1, k);
-
-  int pixels_per_thread{num_pixels / nthreads};
-  int centroids_per_thread{k / nthreads};
 
   // Step 2: Initialize centroids randomly
   // This does not give satisfactory initializations
@@ -189,119 +139,43 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
 
   // Step 3: Run k-means iterations
 
-  std::vector<std::vector<float>> distances;
-  if (nthreads > 1) {
-    distances.resize(k);
-    for (auto &d : distances) {
-      d.resize(num_pixels, std::numeric_limits<float>::max());
-    }
-  }
-
   // Assignment step
   for (int32_t iter{0}; iter < max_iter; ++iter) {
     bool changed{false};
 
-    if (nthreads > 1) {
-      for (int i = 0; i < nthreads; ++i) {
+    // Iterate over pixels
+    for (int32_t i{0}; i < num_pixels; ++i) {
+      float min_color_dist{std::numeric_limits<float>::max()};
+      int32_t best_cluster{0};
 
-        int start_c{i * centroids_per_thread};
-        int end_c{(i == nthreads - 1) ? k : (i + 1) * centroids_per_thread};
-
+      // Iterate over centroids to find centroid with most similar color to
+      // pixels[i]
+      float dist;
+      for (int32_t j{0}; j < k; ++j) {
         switch (color_space) {
         case COLOR_SPACE_OPTION_RGB: {
-          threads.emplace_back(
-              _process_dist_per_centroid<ImageLib::RGBAPixel<float>>,
-              std::cref(pixels), std::cref(centroids), std::ref(distances),
-              start_c, end_c);
+          dist = ImageLib::RGBAPixel<float>::colorDistance(pixels[i],
+                                                            centroids[j]);
           break;
         }
         case COLOR_SPACE_OPTION_CIELAB: {
-          threads.emplace_back(
-              _process_dist_per_centroid<ImageLib::LABAPixel<float>>,
-              std::cref(lab), std::cref(centroids_lab), std::ref(distances),
-              start_c, end_c);
+          dist = ImageLib::LABAPixel<float>::colorDistance(lab[i],
+                                                            centroids_lab[j]);
           break;
         }
         }
-      }
-
-      // wait for threads to finish
-      for (auto &thread : threads) {
-        if (thread.joinable()) {
-          thread.join();
-        }
-      }
-      // std::cout << "Computed distances" << std::endl;
-      threads.clear();
-
-      // assign labels
-      std::atomic<bool> changed_atomic{false};
-      for (int i = 0; i < nthreads; ++i) {
-        int start_pixel{i * pixels_per_thread};
-        int end_pixel{(i == nthreads - 1) ? num_pixels
-                                          : (i + 1) * pixels_per_thread};
-
-        switch (color_space) {
-        case COLOR_SPACE_OPTION_RGB: {
-          threads.emplace_back(_apply_labels<ImageLib::RGBAPixel<float>>,
-                               std::cref(pixels), std::cref(distances),
-                               std::ref(labels), start_pixel, end_pixel, k,
-                               std::ref(changed_atomic));
-          break;
-        }
-        case COLOR_SPACE_OPTION_CIELAB: {
-          threads.emplace_back(_apply_labels<ImageLib::LABAPixel<float>>,
-                               std::cref(lab), std::cref(distances),
-                               std::ref(labels), start_pixel, end_pixel, k,
-                               std::ref(changed_atomic));
-          break;
-        }
-        }
-      }
-      // wait for threads to finish
-      for (auto &thread : threads) {
-        if (thread.joinable()) {
-          thread.join();
+        if (dist < min_color_dist) {
+          min_color_dist = dist;
+          best_cluster = j;
         }
       }
 
-      changed = changed_atomic.load();
-      threads.clear();
-    } else {
-      // Iterate over pixels
-      for (int32_t i{0}; i < num_pixels; ++i) {
-        float min_color_dist{std::numeric_limits<float>::max()};
-        int32_t best_cluster{0};
-
-        // Iterate over centroids to find centroid with most similar color to
-        // pixels[i]
-        float dist;
-        for (int32_t j{0}; j < k; ++j) {
-          // float dist{colorDistance(pixels[i], centroids[j])};
-          switch (color_space) {
-          case COLOR_SPACE_OPTION_RGB: {
-            dist = ImageLib::RGBAPixel<float>::colorDistance(pixels[i],
-                                                             centroids[j]);
-            break;
-          }
-          case COLOR_SPACE_OPTION_CIELAB: {
-            dist = ImageLib::LABAPixel<float>::colorDistance(lab[i],
-                                                             centroids_lab[j]);
-            break;
-          }
-          }
-          if (dist < min_color_dist) {
-            min_color_dist = dist;
-            best_cluster = j;
-          }
-        }
-
-        if (labels[i] != best_cluster) {
-          changed = true;
-          labels[i] = best_cluster;
-        }
+      if (labels[i] != best_cluster) {
+        changed = true;
+        labels[i] = best_cluster;
       }
     }
+    
     // Stop if no changes
     if (!changed) {
       break;
