@@ -1,3 +1,9 @@
+# pnpm
+node_modules/
+
+# cmake
+build-wasm/
+
 # Logs
 logs
 *.log

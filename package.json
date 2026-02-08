@@ -1,0 +1,9 @@
+{
+  "name": "img2num-workspace",
+  "private": true,
+  "packageManager": "pnpm@10.29.1",
+  "scripts": {
+    "react": "pnpm --filter react-example run",
+    "doc": "pnpm --filter docs run"
+  }
+}

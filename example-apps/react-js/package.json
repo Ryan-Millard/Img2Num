@@ -1,5 +1,5 @@
 {
-  "name": "imgtonum",
+  "name": "react-example",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -161,6 +161,7 @@
     "validate-scripts": "node scripts/validate-scripts.js"
   },
   "dependencies": {
+    "img2num": "workspace:*",
     "html-react-parser": "^5.2.15",
     "lucide-react": "^0.563.0",
     "prop-types": "^15.8.1",
