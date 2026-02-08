@@ -44,13 +44,11 @@ set(COMMON_FLAGS
     "SHELL:-s MAXIMUM_MEMORY=2048MB"
     "SHELL:-s ALLOW_MEMORY_GROWTH=1"
     "SHELL:-s EXPORT_NAME=create${CAP_MODULE_NAME}Module"
-    "SHELL:-s USE_PTHREADS=1"
-    "SHELL:-s PTHREAD_POOL_SIZE=8"
 )
 
 # Apply common flags
-target_compile_options(${MODULE_NAME}_wasm PRIVATE -pthread -msimd128)
-target_link_options(${MODULE_NAME}_wasm PRIVATE ${COMMON_FLAGS} -pthread -msimd128)
+target_compile_options(${MODULE_NAME}_wasm PRIVATE -msimd128)
+target_link_options(${MODULE_NAME}_wasm PRIVATE ${COMMON_FLAGS} -msimd128)
 
 # Build-type specific flags
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
