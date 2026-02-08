@@ -1,6 +1,5 @@
-#include "bilateral_filter.h"
+#include "img2num.h"
 #include "cielab.h"
-#include "exported.h"
 
 #include <algorithm>
 #include <climits>
@@ -8,8 +7,6 @@
 #include <cstring>
 #include <functional>
 #include <vector>
-
-namespace bilateral {
 
 static constexpr double SIGMA_RADIUS_FACTOR{3.0}; // 3 standard deviations
 static constexpr int MAX_KERNEL_RADIUS{50};
@@ -158,6 +155,7 @@ void _process(const uint8_t *image, const std::vector<double> &cie_image,
   }
 }
 
+namespace img2num {
 void bilateral_filter(uint8_t *image, size_t width, size_t height,
                       double sigma_spatial, double sigma_range,
                       uint8_t color_space) {
@@ -229,13 +227,4 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height,
 
   std::memcpy(image, result.data(), result.size());
 }
-
-} // namespace bilateral
-
-// Global wrapper for WASM export
-EXPORTED void bilateral_filter(uint8_t *image, size_t width, size_t height,
-                               double sigma_spatial, double sigma_range,
-                               uint8_t color_space) {
-  bilateral::bilateral_filter(image, width, height, sigma_spatial, sigma_range,
-                              color_space);
 }

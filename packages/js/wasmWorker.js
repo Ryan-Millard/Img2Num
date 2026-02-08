@@ -74,7 +74,13 @@ const WASM_TYPES = {
 self.onmessage = async ({ data }) => {
   await readyPromise;
 
-  const { id, funcName, args = undefined, bufferKeys = undefined, returnType = "void" } = data;
+  const { id, funcName, args, bufferKeys, returnType } = data;
+
+  if (funcName == null) throw new Error("Img2Num wasmWorker.js: call missing funcName");
+  if (args == null) throw new Error("Img2Num wasmWorker.js: call missing args object");
+  if (bufferKeys == null) throw new Error("Img2Num wasmWorker.js: call missing bufferKeys array");
+  if (returnType == null) throw new Error("Img2Num wasmWorker.js: call missing returnType");
+
   if (bufferKeys?.length && !args) {
     throw new Error(`WASM call "${funcName}" has bufferKeys defined but no args object provided. ` + `Each bufferKey must correspond to a key in args.`);
   }
@@ -108,6 +114,10 @@ self.onmessage = async ({ data }) => {
     // Handle return value
     let returnValue = result;
     if (returnType && WASM_TYPES[returnType] !== WASM_TYPES["void"]) returnValue = WASM_TYPES[returnType].read(result);
+
+    if (returnType === "string") {
+      wasmModule._free(result);
+    }
 
     const output = Object.fromEntries(outputMap);
     self.postMessage({ id, output, returnValue });

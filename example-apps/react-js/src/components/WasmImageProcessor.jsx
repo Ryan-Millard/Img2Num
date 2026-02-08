@@ -1,31 +1,31 @@
 import { useEffect, useState, useId, useRef, useCallback, useMemo } from "react";
 import { Upload } from "lucide-react";
-import { loadImageToUint8Array } from "@utils/image-utils"; // keep your existing loader
-import { bilateralFilter } from "img2num";
+import { bilateralFilter, kmeans, findContours } from "img2num";
+import { loadImageToUint8Array } from "@utils/image-utils";
 import GlassCard from "@components/GlassCard";
 import styles from "./WasmImageProcessor.module.css";
+import { useNavigate } from "react-router-dom";
 import LoadingHedgehog from "@components/LoadingHedgehog";
 import Tooltip from "@components/Tooltip";
 
 const WasmImageProcessor = () => {
+  const navigate = useNavigate();
   const inputId = useId();
   const inputRef = useRef(null);
 
   const [originalSrc, setOriginalSrc] = useState(null);
   const [fileData, setFileData] = useState(null);
-  const [filteredSrc, setFilteredSrc] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  // Cleanup object URLs on unmount or src change
+  /* Cleanup object URLs on unmount or src change */
   useEffect(() => {
     return () => {
       if (originalSrc) URL.revokeObjectURL(originalSrc);
-      if (filteredSrc) URL.revokeObjectURL(filteredSrc);
     };
-  }, [originalSrc, filteredSrc]);
+  }, [originalSrc]);
 
-  // Load original image
+  /* Stable loader for images */
   const loadOriginal = useCallback(async (file) => {
     if (!file) return;
 
@@ -34,10 +34,9 @@ const WasmImageProcessor = () => {
 
     const { pixels, width, height } = await loadImageToUint8Array(file);
     setFileData({ pixels, width, height });
-    setFilteredSrc(null); // clear previous filtered image
   }, []);
 
-  // Paste support
+  /* Paste support */
   useEffect(() => {
     const handlePaste = (e) => {
       for (const item of e.clipboardData?.items || []) {
@@ -47,60 +46,76 @@ const WasmImageProcessor = () => {
         }
       }
     };
+
     document.addEventListener("paste", handlePaste);
     return () => document.removeEventListener("paste", handlePaste);
   }, [loadOriginal]);
 
-  // Drag & drop
+  /* Drag & drop */
   const handleDrop = useCallback(
     (e) => {
       e.preventDefault();
       loadOriginal(e.dataTransfer.files[0]);
     },
-    [loadOriginal]
+    [loadOriginal],
   );
 
   const handleSelect = useCallback((e) => loadOriginal(e.target.files[0]), [loadOriginal]);
 
+  /* Hashed steps to keep pipeline aligned */
   const step = useCallback((p) => setProgress(p), []);
 
-  // Apply bilateral filter
-  const applyBilateralFilter = useCallback(async () => {
+  /* Main pipeline */
+  const processImage = useCallback(async () => {
     if (!fileData) return;
 
     setIsProcessing(true);
     step(5);
 
     try {
-      const { width, height, pixels } = fileData;
+      const { width, height } = fileData;
+
       step(20);
+      // NOTE: Gaussian blur destroys the sharp outlines first, preventing the Bilateral filter from detecting and preserving them
+      const imgBilateralFiltered = await bilateralFilter({
+        pixels: fileData.pixels,
+        width,
+        height,
+      });
 
-      const filteredPixels = await bilateralFilter({ pixels, width, height });
-      step(80);
+      step(70);
+      // kmeansed pixels are unused - filtered pixels are better for findContours
+      const { pixels: _kmeansed, labels } = await kmeans({
+        ...fileData,
+        pixels: imgBilateralFiltered,
+        num_colors: 16,
+      });
 
-      // Convert filtered pixels to a data URL using canvas
-      const canvas = document.createElement("canvas");
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext("2d");
-      const imageData = new ImageData(new Uint8ClampedArray(filteredPixels), width, height);
-      ctx.putImageData(imageData, 0, 0);
+      step(95);
 
-      const filteredDataUrl = canvas.toDataURL();
-      setFilteredSrc(filteredDataUrl);
+      const { svg } = await findContours({
+        pixels: imgBilateralFiltered,
+        labels,
+        width,
+        height,
+      });
 
       step(100);
+
+      navigate("/editor", {
+        state: { svg },
+      });
     } catch (err) {
       console.error(err);
     } finally {
       setTimeout(() => {
         setIsProcessing(false);
         step(0);
-      }, 500);
+      }, 800);
     }
-  }, [fileData, step]);
+  }, [fileData, navigate, step]);
 
-  // Empty state UI
+  /* Memo'd UI fragments */
   const EmptyState = useMemo(
     () => (
       <>
@@ -116,10 +131,9 @@ const WasmImageProcessor = () => {
         </Tooltip>
       </>
     ),
-    []
+    [],
   );
 
-  // Loaded state UI
   const LoadedState = useMemo(() => {
     if (!originalSrc) return null;
 
@@ -128,30 +142,23 @@ const WasmImageProcessor = () => {
         <img src={originalSrc} alt="Original" className={styles.preview} />
 
         {!isProcessing ? (
-          <Tooltip content="Apply bilateral filter">
+          <Tooltip content="Process the image and convert it to numbers">
             <button
               className="uppercase button"
               onClick={(e) => {
                 e.stopPropagation();
-                applyBilateralFilter();
+                processImage();
               }}
             >
-              Apply Filter
+              Ok
             </button>
           </Tooltip>
         ) : (
-          <LoadingHedgehog progress={progress} text={`Processing – ${Math.round(progress)}%`} />
-        )}
-
-        {filteredSrc && (
-          <>
-            <h4 className="text-center">Filtered Output</h4>
-            <img src={filteredSrc} alt="Filtered" className={styles.preview} />
-          </>
+          <LoadingHedgehog progress={progress} text={`Processing — ${Math.round(progress)}%`} />
         )}
       </>
     );
-  }, [originalSrc, isProcessing, progress, applyBilateralFilter, filteredSrc]);
+  }, [originalSrc, isProcessing, progress, processImage]);
 
   return (
     <GlassCard

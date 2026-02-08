@@ -34,17 +34,15 @@ set(COMMON_FLAGS
     "SHELL:-s EXIT_RUNTIME=1"
     "SHELL:-s ENVIRONMENT=web,worker"
     "SHELL:-s EXPORTED_FUNCTIONS=['_malloc','_free']"
-    "SHELL:-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPU8','HEAP32']"
+    "SHELL:-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPU8','HEAP32','UTF8ToString','stringToUTF8','lengthBytesUTF8']"
     "SHELL:-s INITIAL_MEMORY=1024MB"
     "SHELL:-s MAXIMUM_MEMORY=2048MB"
     "SHELL:-s ALLOW_MEMORY_GROWTH=1"
     "SHELL:-s EXPORT_NAME=createImg2NumModule"
-    "SHELL:-s USE_PTHREADS=1"
-    "SHELL:-s PTHREAD_POOL_SIZE=8"
 )
 
-target_compile_options(img2num_wasm PRIVATE -pthread -msimd128)
-target_link_options(img2num_wasm PRIVATE ${COMMON_FLAGS} -pthread -msimd128)
+target_compile_options(img2num_wasm PRIVATE -msimd128)
+target_link_options(img2num_wasm PRIVATE ${COMMON_FLAGS} -msimd128)
 
 # Build type flags
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")

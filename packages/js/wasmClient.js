@@ -1,5 +1,4 @@
-// wasmClient.js
-// Vanilla JS interface for communicating with wasmWorker
+// Interface for communicating with wasmWorker
 
 let worker;
 let idCounter = 0;
@@ -33,15 +32,12 @@ export function initWasmWorker() {
 /**
  * Low-level call into WASM
  */
-export function callWasm({ funcName, args = {}, bufferKeys = [] }) {
-  if (!initialized) {
-    throw new Error("WASM worker not initialized. Call initWasmWorker() first.");
-  }
+export function callWasm({ funcName, args = {}, bufferKeys = [], returnType = "void" }) {
+  if (!initialized) throw new Error("WASM worker not initialized. Call initWasmWorker() first.");
   const id = idCounter++;
-
   return new Promise((resolve, reject) => {
     callbacks.set(id, { resolve, reject });
-    worker.postMessage({ id, funcName, args, bufferKeys });
+    worker.postMessage({ id, funcName, args, bufferKeys, returnType }); // <-- send it
   });
 }
 

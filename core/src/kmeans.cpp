@@ -1,9 +1,11 @@
-#include "kmeans.h"
+#include "img2num.h"
+
 #include "Image.h"
 #include "LABAPixel.h"
 #include "PixelConverters.h"
 #include "RGBAPixel.h"
 #include "cielab.h"
+
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
@@ -88,148 +90,150 @@ void kMeansPlusPlusInit(const ImageLib::Image<PixelT> &pixels,
   std::copy(centroids.begin(), centroids.end(), out_centroids.begin());
 }
 
-void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
-            const int32_t width, const int32_t height, const int32_t k,
-            const int32_t max_iter, const uint8_t color_space) {
-  ImageLib::Image<ImageLib::RGBAPixel<float>> pixels;
-  pixels.loadFromBuffer(data, width, height, ImageLib::RGBA_CONVERTER<float>);
-  const int32_t num_pixels{pixels.getSize()};
+namespace img2num {
+  void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
+      const int32_t width, const int32_t height, const int32_t k,
+      const int32_t max_iter, const uint8_t color_space) {
+    ImageLib::Image<ImageLib::RGBAPixel<float>> pixels;
+    pixels.loadFromBuffer(data, width, height, ImageLib::RGBA_CONVERTER<float>);
+    const int32_t num_pixels{pixels.getSize()};
 
-  // width = k, height = 1
-  // k centroids, initialized to rgba(0,0,0,255)
-  // Init of each pixel is from default in Image constructor
-  ImageLib::Image<ImageLib::RGBAPixel<float>> centroids{k, 1};
-  ImageLib::Image<ImageLib::LABAPixel<float>> centroids_lab{k, 1};
-  std::vector<int32_t> labels(num_pixels, 0);
+    // width = k, height = 1
+    // k centroids, initialized to rgba(0,0,0,255)
+    // Init of each pixel is from default in Image constructor
+    ImageLib::Image<ImageLib::RGBAPixel<float>> centroids{k, 1};
+    ImageLib::Image<ImageLib::LABAPixel<float>> centroids_lab{k, 1};
+    std::vector<int32_t> labels(num_pixels, 0);
 
-  ImageLib::Image<ImageLib::LABAPixel<float>> lab(pixels.getWidth(),
-                                                  pixels.getHeight());
-  if (color_space == COLOR_SPACE_OPTION_CIELAB) {
-    for (int i{0}; i < pixels.getSize(); ++i) {
-      rgb_to_lab<float, float>(pixels[i], lab[i]);
-    }
-  }
-
-  // Step 2: Initialize centroids randomly
-
-  switch (color_space) {
-  case COLOR_SPACE_OPTION_RGB: {
-    kMeansPlusPlusInit<ImageLib::RGBAPixel<float>>(pixels, centroids, k);
-    break;
-  }
-  case COLOR_SPACE_OPTION_CIELAB: {
-    kMeansPlusPlusInit<ImageLib::LABAPixel<float>>(lab, centroids_lab, k);
-    break;
-  }
-  }
-
-  // Step 3: Run k-means iterations
-
-  // Assignment step
-  for (int32_t iter{0}; iter < max_iter; ++iter) {
-    bool changed{false};
-
-    // Iterate over pixels
-    for (int32_t i{0}; i < num_pixels; ++i) {
-      float min_color_dist{std::numeric_limits<float>::max()};
-      int32_t best_cluster{0};
-
-      // Iterate over centroids to find centroid with most similar color to
-      // pixels[i]
-      float dist;
-      for (int32_t j{0}; j < k; ++j) {
-        switch (color_space) {
-        case COLOR_SPACE_OPTION_RGB: {
-          dist = ImageLib::RGBAPixel<float>::colorDistance(pixels[i],
-                                                           centroids[j]);
-          break;
-        }
-        case COLOR_SPACE_OPTION_CIELAB: {
-          dist = ImageLib::LABAPixel<float>::colorDistance(lab[i],
-                                                           centroids_lab[j]);
-          break;
-        }
-        }
-        if (dist < min_color_dist) {
-          min_color_dist = dist;
-          best_cluster = j;
-        }
-      }
-
-      if (labels[i] != best_cluster) {
-        changed = true;
-        labels[i] = best_cluster;
+    ImageLib::Image<ImageLib::LABAPixel<float>> lab(pixels.getWidth(),
+        pixels.getHeight());
+    if (color_space == COLOR_SPACE_OPTION_CIELAB) {
+      for (int i{0}; i < pixels.getSize(); ++i) {
+        rgb_to_lab<float, float>(pixels[i], lab[i]);
       }
     }
 
-    // Stop if no changes
-    if (!changed) {
-      break;
-    }
+    // Step 2: Initialize centroids randomly
 
-    // Update step
-    ImageLib::Image<ImageLib::RGBAPixel<float>> new_centroids(k, 1, 0);
-    ImageLib::Image<ImageLib::LABAPixel<float>> new_centroids_lab(k, 1, 0);
-    std::vector<int32_t> counts(k, 0);
-
-    for (int32_t i = 0; i < num_pixels; ++i) {
-      int32_t cluster = labels[i];
-      switch (color_space) {
+    switch (color_space) {
       case COLOR_SPACE_OPTION_RGB: {
-        new_centroids[cluster].red += pixels[i].red;
-        new_centroids[cluster].green += pixels[i].green;
-        new_centroids[cluster].blue += pixels[i].blue;
-        break;
-      }
+                                     kMeansPlusPlusInit<ImageLib::RGBAPixel<float>>(pixels, centroids, k);
+                                     break;
+                                   }
       case COLOR_SPACE_OPTION_CIELAB: {
-        new_centroids_lab[cluster].l += lab[i].l;
-        new_centroids_lab[cluster].a += lab[i].a;
-        new_centroids_lab[cluster].b += lab[i].b;
+                                        kMeansPlusPlusInit<ImageLib::LABAPixel<float>>(lab, centroids_lab, k);
+                                        break;
+                                      }
+    }
+
+    // Step 3: Run k-means iterations
+
+    // Assignment step
+    for (int32_t iter{0}; iter < max_iter; ++iter) {
+      bool changed{false};
+
+      // Iterate over pixels
+      for (int32_t i{0}; i < num_pixels; ++i) {
+        float min_color_dist{std::numeric_limits<float>::max()};
+        int32_t best_cluster{0};
+
+        // Iterate over centroids to find centroid with most similar color to
+        // pixels[i]
+        float dist;
+        for (int32_t j{0}; j < k; ++j) {
+          switch (color_space) {
+            case COLOR_SPACE_OPTION_RGB: {
+                                           dist = ImageLib::RGBAPixel<float>::colorDistance(pixels[i],
+                                               centroids[j]);
+                                           break;
+                                         }
+            case COLOR_SPACE_OPTION_CIELAB: {
+                                              dist = ImageLib::LABAPixel<float>::colorDistance(lab[i],
+                                                  centroids_lab[j]);
+                                              break;
+                                            }
+          }
+          if (dist < min_color_dist) {
+            min_color_dist = dist;
+            best_cluster = j;
+          }
+        }
+
+        if (labels[i] != best_cluster) {
+          changed = true;
+          labels[i] = best_cluster;
+        }
+      }
+
+      // Stop if no changes
+      if (!changed) {
         break;
       }
-      }
-      counts[cluster]++;
-    }
 
-    for (int32_t j = 0; j < k; ++j) {
-      /*
-         A centroid may become a dead centroid if it never gets pixels assigned
-         to it. May be good idea to reinitialize these dead centroids.
-      */
-      if (counts[j] > 0) {
+      // Update step
+      ImageLib::Image<ImageLib::RGBAPixel<float>> new_centroids(k, 1, 0);
+      ImageLib::Image<ImageLib::LABAPixel<float>> new_centroids_lab(k, 1, 0);
+      std::vector<int32_t> counts(k, 0);
+
+      for (int32_t i = 0; i < num_pixels; ++i) {
+        int32_t cluster = labels[i];
         switch (color_space) {
-        case COLOR_SPACE_OPTION_RGB: {
-          centroids[j].red = new_centroids[j].red / counts[j];
-          centroids[j].green = new_centroids[j].green / counts[j];
-          centroids[j].blue = new_centroids[j].blue / counts[j];
-          break;
+          case COLOR_SPACE_OPTION_RGB: {
+                                         new_centroids[cluster].red += pixels[i].red;
+                                         new_centroids[cluster].green += pixels[i].green;
+                                         new_centroids[cluster].blue += pixels[i].blue;
+                                         break;
+                                       }
+          case COLOR_SPACE_OPTION_CIELAB: {
+                                            new_centroids_lab[cluster].l += lab[i].l;
+                                            new_centroids_lab[cluster].a += lab[i].a;
+                                            new_centroids_lab[cluster].b += lab[i].b;
+                                            break;
+                                          }
         }
-        case COLOR_SPACE_OPTION_CIELAB: {
-          centroids_lab[j].l = new_centroids_lab[j].l / counts[j];
-          centroids_lab[j].a = new_centroids_lab[j].a / counts[j];
-          centroids_lab[j].b = new_centroids_lab[j].b / counts[j];
-          break;
-        }
+        counts[cluster]++;
+      }
+
+      for (int32_t j = 0; j < k; ++j) {
+        /*
+           A centroid may become a dead centroid if it never gets pixels assigned
+           to it. May be good idea to reinitialize these dead centroids.
+           */
+        if (counts[j] > 0) {
+          switch (color_space) {
+            case COLOR_SPACE_OPTION_RGB: {
+                                           centroids[j].red = new_centroids[j].red / counts[j];
+                                           centroids[j].green = new_centroids[j].green / counts[j];
+                                           centroids[j].blue = new_centroids[j].blue / counts[j];
+                                           break;
+                                         }
+            case COLOR_SPACE_OPTION_CIELAB: {
+                                              centroids_lab[j].l = new_centroids_lab[j].l / counts[j];
+                                              centroids_lab[j].a = new_centroids_lab[j].a / counts[j];
+                                              centroids_lab[j].b = new_centroids_lab[j].b / counts[j];
+                                              break;
+                                            }
+          }
         }
       }
     }
-  }
 
-  if (color_space == COLOR_SPACE_OPTION_CIELAB) {
-    for (int32_t i{0}; i < k; ++i) {
-      lab_to_rgb<float, float>(centroids_lab[i], centroids[i]);
+    if (color_space == COLOR_SPACE_OPTION_CIELAB) {
+      for (int32_t i{0}; i < k; ++i) {
+        lab_to_rgb<float, float>(centroids_lab[i], centroids[i]);
+      }
     }
-  }
 
-  // Write the final centroid values to each pixel in the cluster
-  for (int32_t i = 0; i < num_pixels; ++i) {
-    const int32_t cluster = labels[i];
-    out_data[i * 4 + 0] = static_cast<uint8_t>(centroids[cluster].red);
-    out_data[i * 4 + 1] = static_cast<uint8_t>(centroids[cluster].green);
-    out_data[i * 4 + 2] = static_cast<uint8_t>(centroids[cluster].blue);
-    out_data[i * 4 + 3] = 255;
-  }
+    // Write the final centroid values to each pixel in the cluster
+    for (int32_t i = 0; i < num_pixels; ++i) {
+      const int32_t cluster = labels[i];
+      out_data[i * 4 + 0] = static_cast<uint8_t>(centroids[cluster].red);
+      out_data[i * 4 + 1] = static_cast<uint8_t>(centroids[cluster].green);
+      out_data[i * 4 + 2] = static_cast<uint8_t>(centroids[cluster].blue);
+      out_data[i * 4 + 3] = 255;
+    }
 
-  // Write labels to out_labels
-  std::memcpy(out_labels, labels.data(), labels.size() * sizeof(int32_t));
+    // Write labels to out_labels
+    std::memcpy(out_labels, labels.data(), labels.size() * sizeof(int32_t));
+  }
 }

@@ -1,7 +1,9 @@
-#include "labels_to_svg.h"
+#include "img2num.h"
+
 #include "bezier.h"
 #include "contours.h"
 #include "graph.h"
+
 #include <array>
 #include <cmath>
 #include <cstdint>
@@ -190,91 +192,93 @@ std::string contoursResultToSVG(const ColoredContours &result, const int width,
   return svg.str();
 }
 
-/*
-data: uint8_t* -> output image from K-Means (or similar) in RGBA repeating
-format ([r,g,b,a, r,g,b,a, ...]) labels: int32_t* -> output of labelled regions
-from K-Means, should be 1/4 the size of data since data is RGBA labels : width *
-height : number of pixels in image = 1 : 1 : 1
-*/
-char *labels_to_svg(uint8_t *data, int32_t *labels, const int width,
-                    const int height, const int min_area,
-                    const bool draw_contour_borders) {
-  const int32_t num_pixels{width * height};
-  std::vector<int32_t> labels_vector{labels, labels + num_pixels};
-  std::vector<int32_t> region_labels;
+namespace img2num {
+  /*
+  data: uint8_t* -> output image from K-Means (or similar) in RGBA repeating
+  format ([r,g,b,a, r,g,b,a, ...]) labels: int32_t* -> output of labelled regions
+  from K-Means, should be 1/4 the size of data since data is RGBA labels : width *
+  height : number of pixels in image = 1 : 1 : 1
+  */
+  char *labels_to_svg(uint8_t *data, int32_t *labels, const int width,
+                      const int height, const int min_area,
+                      const bool draw_contour_borders) {
+    const int32_t num_pixels{width * height};
+    std::vector<int32_t> labels_vector{labels, labels + num_pixels};
+    std::vector<int32_t> region_labels;
 
-  // 1. enumerate regions and convert to Nodes
-  std::vector<Node_ptr> nodes;
-  region_labeling(data, labels_vector, region_labels, width, height, nodes);
+    // 1. enumerate regions and convert to Nodes
+    std::vector<Node_ptr> nodes;
+    region_labeling(data, labels_vector, region_labels, width, height, nodes);
 
-  // 2. initialize Graph from all Nodes
-  std::unique_ptr<std::vector<Node_ptr>> node_ptr =
-      std::make_unique<std::vector<Node_ptr>>(std::move(nodes));
-  Graph G(node_ptr, width, height);
+    // 2. initialize Graph from all Nodes
+    std::unique_ptr<std::vector<Node_ptr>> node_ptr =
+        std::make_unique<std::vector<Node_ptr>>(std::move(nodes));
+    Graph G(node_ptr, width, height);
 
-  // 3. Discover node adjacencies - add edges to Graph
-  G.discover_edges(region_labels, width, height);
+    // 3. Discover node adjacencies - add edges to Graph
+    G.discover_edges(region_labels, width, height);
 
-  // 4. Merge small area nodes until all nodes are minArea or larger
-  G.merge_small_area_nodes(min_area);
+    // 4. Merge small area nodes until all nodes are minArea or larger
+    G.merge_small_area_nodes(min_area);
 
-  // 5. recolor image on new regions
-  ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> results{width, height};
-  for (auto &n : G.get_nodes()) {
-    if (n->area() == 0)
-      continue;
+    // 5. recolor image on new regions
+    ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> results{width, height};
+    for (auto &n : G.get_nodes()) {
+      if (n->area() == 0)
+        continue;
 
-    auto [r, g, b] = n->color();
-    for (auto &[_, p] : n->get_pixels()) {
-      results(p.x, p.y) = {r, g, b};
+      auto [r, g, b] = n->color();
+      for (auto &[_, p] : n->get_pixels()) {
+        results(p.x, p.y) = {r, g, b};
+      }
     }
+
+    // 6. Contours
+    // graph will manage computing contours
+    G.compute_contours();
+
+    // accumulate all contours for svg export
+    ColoredContours all_contours;
+    for (auto &n : G.get_nodes()) {
+      if (n->area() == 0)
+        continue;
+      ColoredContours node_contours = n->get_contours();
+      for (auto &c : node_contours.contours) {
+        all_contours.contours.push_back(c);
+      }
+      for (auto &c : node_contours.hierarchy) {
+        all_contours.hierarchy.push_back(c);
+      }
+      for (bool b : node_contours.is_hole) {
+        all_contours.is_hole.push_back(b);
+      }
+      for (auto &c : node_contours.colors) {
+        all_contours.colors.push_back(c);
+      }
+      for (auto &c : node_contours.curves) {
+        all_contours.curves.push_back(c);
+      }
+    }
+
+    // 7. Copy recolored image back
+    const auto &modified = results.getData();
+    std::memcpy(data, modified.data(),
+                modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
+
+    // 8. Return SVG if requested
+    if (!draw_contour_borders) {
+      std::string svg{contoursResultToSVG(all_contours, width, height)};
+
+      // Dynamic C-style allocation (since returned over C ABI)
+      char *res_svg{static_cast<char *>(std::malloc(svg.size() + 1))};
+      if (!res_svg) {
+        return nullptr; // Allocation failed
+      }
+      std::memcpy(res_svg, svg.c_str(), svg.size() + 1);
+
+      return res_svg;
+    }
+
+    return nullptr; // no SVG
   }
-
-  // 6. Contours
-  // graph will manage computing contours
-  G.compute_contours();
-
-  // accumulate all contours for svg export
-  ColoredContours all_contours;
-  for (auto &n : G.get_nodes()) {
-    if (n->area() == 0)
-      continue;
-    ColoredContours node_contours = n->get_contours();
-    for (auto &c : node_contours.contours) {
-      all_contours.contours.push_back(c);
-    }
-    for (auto &c : node_contours.hierarchy) {
-      all_contours.hierarchy.push_back(c);
-    }
-    for (bool b : node_contours.is_hole) {
-      all_contours.is_hole.push_back(b);
-    }
-    for (auto &c : node_contours.colors) {
-      all_contours.colors.push_back(c);
-    }
-    for (auto &c : node_contours.curves) {
-      all_contours.curves.push_back(c);
-    }
-  }
-
-  // 7. Copy recolored image back
-  const auto &modified = results.getData();
-  std::memcpy(data, modified.data(),
-              modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
-
-  // 8. Return SVG if requested
-  if (!draw_contour_borders) {
-    std::string svg{contoursResultToSVG(all_contours, width, height)};
-
-    // Dynamic C-style allocation (since returned over C ABI)
-    char *res_svg{static_cast<char *>(std::malloc(svg.size() + 1))};
-    if (!res_svg) {
-      return nullptr; // Allocation failed
-    }
-    std::memcpy(res_svg, svg.c_str(), svg.size() + 1);
-
-    return res_svg;
-  }
-
-  return nullptr; // no SVG
 }
