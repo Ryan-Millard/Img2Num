@@ -2,9 +2,10 @@ import PropTypes from "prop-types";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useState, useEffect, useRef, useId, cloneElement, isValidElement } from "react";
 
-export default function Tooltip({ content, children, id, dynamicPositioning = true }) {
+export default function Tooltip({ children, content = "Tooltip content", id = undefined, position = "right", dynamicPositioning = true }) {
   const reactId = useId();
-  const tooltipId = id || `tooltip-${reactId}`;
+  const tooltipId = id ?? `tooltip-${reactId}`;
+
   const [isOpen, setIsOpen] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const hideTimeoutRef = useRef(null);
@@ -115,9 +116,9 @@ export default function Tooltip({ content, children, id, dynamicPositioning = tr
       {childWithTooltip}
       <ReactTooltip
         id={tooltipId}
-        place="right"
+        place={position}
         appendTo={typeof document !== "undefined" ? document.body : undefined}
-        positionStrategy="fixed"
+        positionStrategy="absolute"
         fallbackPlacements={dynamicPositioning ? ["bottom", "top", "left"] : []}
         openOnFocus
         isOpen={isTouchDevice ? isOpen : undefined}
@@ -127,8 +128,9 @@ export default function Tooltip({ content, children, id, dynamicPositioning = tr
 }
 
 Tooltip.propTypes = {
-  content: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
+  content: PropTypes.string,
   id: PropTypes.string,
   dynamicPositioning: PropTypes.bool,
+  position: PropTypes.string,
 };

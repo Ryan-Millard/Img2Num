@@ -104,16 +104,16 @@ const WasmImageProcessor = () => {
   const EmptyState = useMemo(
     () => (
       <>
-        <Tooltip content="Upload an image from your device">
+        <Tooltip content="Upload an image">
           <Upload className={`anchor-style ${styles.uploadIcon}`} />
         </Tooltip>
 
-        <p className={`text-center ${styles.dragDropText}`}>
-          Drag & Drop or{" "}
-          <Tooltip content="Select an image file from your computer">
-            <span className={`anchor-style ${styles.noTextWrap}`}>Choose File</span>
-          </Tooltip>
-        </p>
+        <Tooltip content="Choose an image">
+          <p className={`text-center ${styles.dragDropText}`}>
+            Drag & Drop or&nbsp;
+            <span className={`anchor-style ${styles.noTextWrap}`}>Choose Image</span>
+          </p>
+        </Tooltip>
       </>
     ),
     []

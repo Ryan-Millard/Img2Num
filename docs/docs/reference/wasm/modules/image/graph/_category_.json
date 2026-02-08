@@ -1,0 +1,9 @@
+{
+  "label": "graph.h",
+  "link": {
+    "type": "generated-index",
+    "title": "Graph and Node Representation",
+    "description": "Documentation for Graph and Node Data Structure in the Image WebAssembly (WASM) module in Img2Num.",
+    "slug": "/reference/wasm/modules/image/graph"
+  }
+}

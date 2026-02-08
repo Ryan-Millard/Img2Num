@@ -33,7 +33,7 @@ export function initWasmWorker() {
 /**
  * Low-level call into WASM
  */
-export function callWasm(funcName, args = {}, bufferKeys = []) {
+export function callWasm({ funcName, args = {}, bufferKeys = [] }) {
   if (!initialized) {
     throw new Error("WASM worker not initialized. Call initWasmWorker() first.");
   }

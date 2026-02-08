@@ -5,28 +5,56 @@ hide_title: false
 description: A Web Worker that interfaces with the Image WebAssembly module, handling TypedArray memory allocation, function calls, and returning results.
 ---
 
-This file implements a **Web Worker** that acts as a bridge between JavaScript and the **Image WASM module**.
-It handles **memory allocation**, **TypedArray mapping**, **dynamic function calls**, and **returning results or errors** asynchronously.
+[`wasmWorker.js`](https://github.com/Ryan-Millard/Img2Num/tree/main/src/workers/wasmWorker.js) defines a
+**Web Worker** that bridges between JavaScript and the **Image WASM module**.
 
-This allows expensive WASM computations to run independently from the main thread, improving UI performance.
+It allows expensive WASM computations to run independently from the main thread, improving UI performance.
 
 :::tip JS-to-WASM Memory
-To ensure safety and proper memory management, all data is copied between JavaScript and WASM.
+All data is copied between JavaScript and WASM - this avoids unexpected use-after-free bugs in JS.
 
-- JavaScript receives a **detached copy**, allowing its garbage collector (GC) to clean up unused objects.
-- WASM manages its own memory independently, preventing accidental overwrites or leaks.
+| Language   | Memory type                    | Data supplier                                                                                                                                        | Who manages it                |
+| ---------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| JavaScript | Detached Copy of WASM data     | [`wasmWorker.js`](https://github.com/Ryan-Millard/Img2Num/tree/main/src/workers/wasmWorker.js): copies return & out parameter values to JS variables | Garbage Collector (automatic) |
+| WASM (C++) | Linear Independent WASM memory | [`wasmWorker.js`](https://github.com/Ryan-Millard/Img2Num/tree/main/src/workers/wasmWorker.js): copies args & bufferKeys to WASM memory              | Programmer (manual)           |
 
-This pattern avoids bugs that could occur if JS arrays directly referenced WASM memory that gets freed.
 :::
 
 ## Overview
 
 ### Key responsibilities
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs groupId="wasm-worker" defaultValue="flow">
+<TabItem value="flow" label="Flow diagram">
+
+<div>
+
+```mermaid
+flowchart TD
+    A[Load and initialize Image WASM module]
+    B[Accept posted messages]
+    C[Allocate and copy JS arrays into WASM buffers]
+    D[Invoke WASM function dynamically]
+    E[Read back modified buffers from WASM memory]
+    F[Free allocated memory to prevent leaks]
+    G[Post results or errors back to caller]
+
+    A --> B --> C --> D --> E --> F --> G
+```
+
+</div>
+
+</TabItem>
+
+<TabItem value="overview" label="Overview">
+
 - Load and initialize the **Image WASM module**.
 - Accept messages from the main thread describing:
   - The function to call in WASM.
-  - Arguments to pass (including TypedArrays).
+  - Arguments to pass, including TypedArrays.
 - Allocate and copy memory for JS arrays into WASM.
 - Invoke the WASM function dynamically.
 - Read back any modified buffers from WASM memory.
@@ -34,129 +62,160 @@ This pattern avoids bugs that could occur if JS arrays directly referenced WASM 
   - This keeps the code written in JavaScript looking more like JavaScript and prevents forgotten memory frees.
 - Post results or errors back to the main thread.
 
-## WASM Module Initialization
+</TabItem>
+</Tabs>
 
-```js
-import createImageModule from "@wasm-image";
+## TypedArray and Value Handling (`WASM_TYPES`)
 
-let wasmModule;
-let readyResolve;
-const readyPromise = new Promise((res) => (readyResolve = res));
+```js title="The worker uses a centralized type registry to handle allocation and readback consistently:"
+const WASM_TYPES = {
+  void: {},
 
-// Initialize the module once
-createImageModule().then((mod) => {
-  wasmModule = mod;
-  readyResolve();
+  Int32Array: {
+    alloc: (arr) => {
+      const ptr = wasmModule._malloc(arr.byteLength);
+      wasmModule.HEAP32.set(arr, ptr / 4);
+      return ptr;
+    },
+    read: (ptr, length) => new Int32Array(wasmModule.HEAP32.buffer, ptr, length).slice(),
+  },
+
+  Uint8Array: {
+    alloc: (arr) => {
+      const ptr = wasmModule._malloc(arr.byteLength);
+      wasmModule.HEAPU8.set(arr, ptr);
+      return ptr;
+    },
+    read: (ptr, length) => new Uint8Array(wasmModule.HEAPU8.subarray(ptr, ptr + length)).slice(),
+  },
+
+  Uint8ClampedArray: {
+    alloc: (arr) => {
+      const ptr = wasmModule._malloc(arr.byteLength);
+      wasmModule.HEAPU8.set(arr, ptr);
+      return ptr;
+    },
+    read: (ptr, length) => new Uint8ClampedArray(wasmModule.HEAPU8.subarray(ptr, ptr + length)).slice(),
+  },
+
+  string: {
+    alloc: (str) => {
+      const len = wasmModule.lengthBytesUTF8(str) + 1;
+      const ptr = wasmModule._malloc(len);
+      wasmModule.stringToUTF8(str, ptr, len);
+      return ptr;
+    },
+    read: (ptr) => wasmModule.UTF8ToString(ptr),
+  },
+};
+```
+
+### Why this design?
+
+- One authoritative place for allocation and readback logic
+- Easy to add new types safely
+- Prevents mismatched heap usage
+- Keeps JS-side code declarative
+  - TypeScript offers limited benefit here: all values decay to raw pointers and integers at the C ABI boundary, so runtime handling must be explicit.
+
+:::danger Danger: Adding New WASM_TYPES
+Memory received from WASM is raw and untyped. Returned values are typically integers (often pointers) and must be interpreted explicitly.
+
+See the [Adding New WASM_TYPES](#adding-new-wasm_types) section below to learn how to read new types safely.
+:::
+
+## Memory Allocation for Arguments and Out Parameters
+
+### Optional Buffer Keys
+
+Messages **optionally** specify bufferKeys as structured descriptors:
+
+```js title="Arguments passed to WASM function"
+args: {
+  (pixels, labels, width, height, min_area, draw_contour_borders);
+}
+```
+
+```js title="Arguments that represent buffers (C++ arrays)"
+bufferKeys: [
+  { key: "pixels", type: "Uint8ClampedArray" },
+  { key: "labels", type: "Int32Array" },
+];
+```
+
+:::important
+The `key` values in `bufferKeys` must exactly match the name of the argument given in JS.
+
+> The names given to `args` do not need to match the names in the definition of the C++ function.
+> :::
+
+### Allocation Flow
+
+```js title="Loop over bufferKeys"
+bufferKeys?.forEach(({ key, type }) => {
+  const ptr = WASM_TYPES[type].alloc(args[key]);
+  pointers[key] = { ptr, type, length: args[key].length };
+  args[key] = ptr;
 });
 ```
 
-- Imports the `createImageModule` factory function generated by **Emscripten**.
-- Uses a **Promise** (`readyPromise`) to ensure the module is fully loaded before handling any messages.
-- Initialization only happens once.
-
-## Message Handling
-
-```js
-self.onmessage = async ({ data }) => {
-  await readyPromise;
-
-  const { id, funcName, args, bufferKeys } = data;
-  const pointers = Object.create(null); // Track malloc pointers
-  try {
-    // Allocate buffers for Array payloads
-    ...
-```
-
-- The worker listens to `self.onmessage` from the main thread.
-- Each message should contain:
-  - `id`: Unique identifier for correlating responses.
-  - `funcName`: WASM function to call.
-  - `args`: Object containing arguments.
-  - `bufferKeys` (optional): Keys in `args` that are TypedArrays and require special WASM memory mapping.
-
-- The worker waits for the WASM module to be **ready** before proceeding.
-
-## Memory Allocation for TypedArrays
-
-```js
-if (bufferKeys) {
-  for (const key of bufferKeys) {
-    const arr = args[key];
-    const sizeInBytes = arr.byteLength;
-    const ptr = wasmModule._malloc(sizeInBytes);
-
-    if (arr instanceof Int32Array) {
-      wasmModule.HEAP32.set(arr, ptr / Int32Array.BYTES_PER_ELEMENT);
-    } else if (arr instanceof Uint8ClampedArray || arr instanceof Uint8Array) {
-      wasmModule.HEAPU8.set(arr, ptr);
-    } else {
-      throw new Error(`Unsupported TypedArray type for key: ${key}`);
-    }
-
-    pointers[key] = { ptr, sizeInBytes, type: arr.constructor };
-    args[key] = ptr; // pass pointer to WASM
-  }
-}
-```
-
-- For each buffer key:
-  1. Allocate memory in WASM using `_malloc` (C-style code applies here for interoperability, this is why the `new` keyword from C++ is not used).
-  2. Copy the JS array into the appropriate **HEAP view**:
-     - `Int32Array` → `HEAP32`
-     - `Uint8ClampedArray` → `HEAPU8`
-     - `Uint8Array` → `HEAPU8`
-  3. Replace the JS array in `args` with the pointer.
-  4. Track allocation for later cleanup.
-
-:::danger Danger: New TypedArray Types
-Any new TypedArray types must be added to this section and their corresponding **EXPORTED_RUNTIME_METHODS** in the C++ module's CMake build file.
-
-For example, an `Int32Array` cannot be read if `HEAP32` is not exported from WASM. This means that it needs to be exported explicitly in the CMake file.
-:::
+- Allocates memory via `_malloc`
+- Copies JS data into the correct WASM heap
+- Replaces JS values with raw pointers
+- Tracks all allocations for guaranteed cleanup
+  - Memory freed in `finally` block
 
 ## Dynamic WASM Function Call
 
-```js
+```js title="Dynamic lookup & invocation"
 const exportName = `_${funcName}`;
-if (typeof wasmModule[exportName] !== "function") {
-  throw new Error(`WASM export not found: ${exportName}`);
-}
-
-const targetFunction = wasmModule[exportName];
-const targetFunctionArgs = funcName && args ? Object.values(args) : [];
-const result = targetFunction(...targetFunctionArgs);
+if (typeof wasmModule[exportName] !== "function") throw new Error(`Export not found: ${exportName}`);
+const result = wasmModule[exportName](...Object.values(args ?? {}));
 ```
 
 - All Emscripten exports are prefixed with `_`.
   - We add the prefix in the API for the caller's convenience because it is easy to forget.
-- Uses **dynamic lookup** so any exported function can be called.
-- Arguments are passed as an **array of values or pointers**.
+- **Dynamic lookup** allows calling any exported function.
+- Arguments must match the **exact C++ signature order**.
+- `Object.values(args)` relies on property insertion order; callers must construct `args` in the exact order expected by the C++ signature.
 
-## Reading Back Modified Buffers
+## Reading Back Buffers and Return Values
+
+**Example `WASM_TYPE`** (for reference):
 
 ```js
-const outputs = {};
-if (bufferKeys) {
-  for (const key of bufferKeys) {
-    const { ptr, sizeInBytes, type } = pointers[key];
-    if (type === Int32Array) {
-      outputs[key] = new Int32Array(wasmModule.HEAP32.buffer, ptr, sizeInBytes / Int32Array.BYTES_PER_ELEMENT).slice();
-    } else if (type === Uint8ClampedArray) {
-      outputs[key] = new Uint8ClampedArray(wasmModule.HEAPU8.subarray(ptr, ptr + sizeInBytes)).slice();
-    } else if (type === Uint8Array) {
-      outputs[key] = new Uint8Array(wasmModule.HEAPU8.subarray(ptr, ptr + sizeInBytes)).slice();
-    }
-  }
+Int32Array: {
+  alloc: (arr) => {
+    const ptr = wasmModule._malloc(arr.byteLength);
+    wasmModule.HEAP32.set(arr, ptr / 4);
+    return ptr;
+  },
+  read: (ptr, length) => new Int32Array(wasmModule.HEAP32.buffer, ptr, length).slice(),
 }
 ```
 
-- After the function call, reads back any modified arrays.
-- Uses `.slice()` to detach from WASM memory.
-- Ensures main thread receives **independent copies**.
+- `.slice()` ensures the data is detached from WASM memory.
+- JS always receives GC-managed copies
 
-## Memory Cleanup
+### Buffers (Out Parameters)
 
-```js
+```js title="Suppose bufferKey[i].type = Int32Array"
+bufferKeys?.forEach(({ key, type }) => {
+  output[key] = WASM_TYPES[type].read(pointers[key].ptr, pointers[key].length);
+});
+```
+
+### Returned Values
+
+```js title="Suppose returnType = Int32Array:"
+if (returnType && WASM_TYPES[returnType] !== WASM_TYPES.void) {
+  returnValue = WASM_TYPES[returnType].read(result);
+}
+```
+
+## Guaranteed Memory Cleanup
+
+```js title="Free pointers we previously allocated from WASM memory"
 finally {
   for (const { ptr } of Object.values(pointers)) {
     wasmModule._free(ptr);
@@ -164,48 +223,28 @@ finally {
 }
 ```
 
-- Always frees allocated memory with `_free`.
-- Prevents memory leaks in long-running workers.
+- Memory is always freed, even on exceptions.
+- Safe for long-running workers.
+- Prevents silent WASM heap growth.
 
-## Posting Results Back
+## Adding New `WASM_TYPES`
 
-```js
-self.postMessage({ id, output: outputs, returnValue: result });
+Any new TypedArray types must be added to the `WASM_TYPES` object
+and their corresponding Emscripten-provided views to the **EXPORTED_RUNTIME_METHODS** flag in the C++ module's CMake build file.
+
+For example, an `Int32Array` cannot be read if `HEAP32` is not exported from WASM.
+
+This means that it needs to be exported explicitly in the CMake file's flags:
+
+```CMakeLists.txt
+"SHELL:-s EXPORTED_RUNTIME_METHODS=['HEAP32']"
 ```
 
-- Returns both:
-  - `returnValue`: the function’s direct return value.
-  - `output`: object containing updated TypedArrays.
-
-- If any error occurs, it posts back:
-
-```js
-self.postMessage({ id, error: error.message });
-```
-
-## Diagram (WASM Worker Flow)
-
-```mermaid
-flowchart TD
-    A["Main Thread posts message"] --> B["Worker receives message"]
-    B --> C["Wait for WASM module ready"]
-    C --> D["Allocate memory for TypedArrays in HEAP"]
-    D --> E["Copy JS arrays into WASM memory"]
-    E --> F["Call WASM function dynamically"]
-    F --> G["Read back modified buffers"]
-    G --> H["Free allocated memory"]
-    H --> I["Post result or error back to main thread"]
-```
-
-- Shows the **end-to-end flow** of handling a message:
-  - JS array → WASM memory → function call → output → free memory → return to main thread.
-
-:::info Notes for Developers
+## Notes
 
 - Always add **new TypedArray types** in both:
   1. This worker file (`wasmWorker.js`).
-  2. The Emscripten module’s `EXPORTED_RUNTIME_METHODS` in CMake.
+  2. The Emscripten module’s `EXPORTED_RUNTIME_METHODS` in CMake (add the corresponding view to this flag).
 
 - Avoid calling WASM functions before the module is fully initialized.
 - Use **`bufferKeys`** to specify which arguments are arrays needing memory allocation.
-  :::

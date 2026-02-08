@@ -1,21 +1,14 @@
 ---
 id: index
-title: 🏄‍♂️ Img2Num Docs
+title: Img2Num Docs
 sidebar_position: 1
 ---
 
-# Welcome to Img2Num Docs 🚀
+# Welcome to Img2Num! 🦔
 
 Img2Num is a lightweight, high-performance C++ library (compiled to WebAssembly) for converting images to numeric representations with ease and speed.
 
 Whether you're a beginner or an advanced user, you'll find everything you need here to get started and master Img2Num.
-
-## Features
-
-- ⚡ **Fast & Efficient**: Optimized for large images.
-- 🖼️ **Image to Numeric Conversion**: Seamlessly convert images to arrays.
-- 🌐 **WebAssembly Ready**: Run directly in the browser.
-- 🔧 **Developer-Friendly**: Easy-to-use API for rapid integration.
 
 ## Getting Started
 
