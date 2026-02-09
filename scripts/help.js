@@ -1,6 +1,6 @@
-import { runFuzzyCli, readPackageJsonScripts } from "img2num-dev-scripts";
+import { runFuzzyCli, readPackageJsonScripts } from "./img2num-dev-scripts/index.js";
 
-const title = `Img2Num CLI Scripts
+const title = `Img2Num root CLI Scripts
 Also see: https://ryan-millard.github.io/Img2Num/info/docs/category/-project-scripts
 `;
 
@@ -17,6 +17,6 @@ try {
     initialSearch,
   });
 } catch (error) {
-  console.error("Failed to read root package.json scripts:", error.message);
+  console.error("Failed to read docs package.json scripts:", error.message);
   process.exit(1);
 }

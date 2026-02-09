@@ -1,5 +1,6 @@
 {
   "name": "docs",
+  "type": "module",
   "version": "0.0.0",
   "private": true,
   "scriptsInfo": {
@@ -86,9 +87,6 @@
         "args": [
           "-- filter <term>    Only show scripts matching <term>"
         ]
-      },
-      "validate-scripts": {
-        "desc": "Validate that every script has a corresponding scriptsInfo entry"
       }
     }
   },
@@ -102,8 +100,7 @@
     "clear": "docusaurus clear",
     "serve": "docusaurus serve --host 0.0.0.0",
     "write-translations": "docusaurus write-translations",
-    "write-heading-ids": "docusaurus write-heading-ids",
-    "validate-scripts": "npm run --prefix .. validate-scripts"
+    "write-heading-ids": "docusaurus write-heading-ids"
   },
   "dependencies": {
     "@docusaurus/plugin-google-gtag": "^3.9.2",
@@ -119,6 +116,7 @@
     "remark-math": "^6.0.0"
   },
   "devDependencies": {
+    "img2num-dev-scripts": "workspace:*",
     "@docusaurus/babel": "^3.9.2",
     "@docusaurus/core": "^3.9.2",
     "@docusaurus/module-type-aliases": "3.9.2",

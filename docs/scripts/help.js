@@ -1,5 +1,4 @@
-import { runFuzzyCli } from "../../scripts/lib/cli-fuzzy.js";
-import { readPackageJsonScripts } from "../../scripts/lib/read-packageJson-scripts.js";
+import { runFuzzyCli, readPackageJsonScripts } from "img2num-dev-scripts";
 
 const title = `Img2Num Docs CLI Scripts
 Also see: https://ryan-millard.github.io/Img2Num/info/docs/category/-project-scripts

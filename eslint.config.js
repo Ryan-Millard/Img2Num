@@ -5,10 +5,22 @@ import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([
   globalIgnores([
-    "dist", // Vite build output
-    "node_modules", // Dependencies
-    "src/wasm/**/build/**", // WebAssembly build output
-    "docs/build", // Docusaurus build output
+    "example-apps/react-js/dist",
+    "example-apps/react-js/node_modules",
+
+    "docs/node_modules",
+    "docs/build",
+    "docs/.docusaurus",
+
+    "scripts/img2num-dev-scripts/node_modules",
+
+    "packages/js/build-wasm",
+    "packages/js/node_modules",
+
+    "bindings",
+    "build-wasm",
+    "core",
+    "node_modules",
   ]),
   {
     files: ["**/*.{js,jsx}"],

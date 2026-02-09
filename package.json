@@ -1,9 +1,94 @@
 {
   "name": "img2num-workspace",
+  "type": "module",
   "private": true,
   "packageManager": "pnpm@10.29.1",
+  "scriptsInfo": {
+    "_meta": {
+      "basic": [
+        "react",
+        "doc",
+        "format",
+        "lint",
+        "help"
+      ]
+    },
+    "Development": {
+      "react": {
+        "desc": "Run scripts for the React example app",
+        "args": [
+          "-- Any args passed after `pnpm run react --` are forwarded"
+        ]
+      },
+      "doc": {
+        "desc": "Run scripts for the docs package",
+        "args": [
+          "-- Any args passed after `pnpm run doc --` are forwarded"
+        ]
+      }
+    },
+    "Formatting": {
+      "format:cpp": {
+        "desc": "Format C++ code using img2num-dev-scripts",
+        "args": [
+          "--check   Only check formatting without modifying files"
+        ]
+      },
+      "format:js": {
+        "desc": "Format JavaScript/TypeScript code with Prettier",
+        "args": [
+          "--check   Only check formatting without modifying files"
+        ]
+      }
+    },
+    "Linting": {
+      "eslint": {
+        "desc": "Run ESLint on example apps, scripts, and docs",
+        "args": [
+          "--fix   Automatically fix fixable issues"
+        ]
+      },
+      "eslint:fix": {
+        "desc": "Run ESLint and automatically fix issues"
+      }
+    },
+    "Validation": {
+      "validate-scripts": {
+        "desc": "Validate all scripts defined in workspace package.json files"
+      }
+    },
+    "Other": {
+      "help": {
+        "desc": "Show this help message",
+        "args": [
+          "--filter <term>   Only show scripts matching <term>"
+        ]
+      },
+      "editorconfig:check": {
+        "desc": "Check all files against .editorconfig rules"
+      }
+    }
+  },
   "scripts": {
+    "help": "node scripts/help.js",
     "react": "pnpm --filter react-example run",
-    "doc": "pnpm --filter docs run"
+    "doc": "pnpm --filter docs run",
+    "format:cpp": "node scripts/img2num-dev-scripts/format-cpp.js",
+    "format:cpp:check": "node scripts/img2num-dev-scripts/format-cpp.js --check",
+    "format:js": "pnpm prettier --write . --ignore-path .prettierignore --config .prettierrc",
+    "format:js:check": "pnpm prettier --check . --ignore-path .prettierignore --config .prettierrc",
+    "validate-scripts": "node scripts/img2num-dev-scripts/validate-scripts.js",
+    "eslint": "eslint example-apps/react-js scripts/img2num-dev-scripts docs",
+    "eslint:fix": "eslint example-apps/react-js scripts/img2num-dev-scripts docs --fix",
+    "editorconfig:check": "editorconfig-checker"
+  },
+  "devDependencies": {
+    "clang-format": "^1.8.0",
+    "editorconfig-checker": "^6.1.1",
+    "eslint": "^9.39.2",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.5.0",
+    "globals": "^17.3.0",
+    "prettier": "^3.8.1"
   }
 }

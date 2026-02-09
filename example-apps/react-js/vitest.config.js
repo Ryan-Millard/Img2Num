@@ -12,7 +12,7 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html"],
-      exclude: ["node_modules/", "src/test/", "src/wasm/", "**/*.config.js", "scripts/", "docs/"],
+      exclude: ["src/test/", "**/*.config.js", "scripts/"],
     },
   },
   resolve: {
@@ -22,7 +22,6 @@ export default defineConfig({
       "@components": path.resolve(__dirname, "src/components"),
       "@utils": path.resolve(__dirname, "src/utils"),
       "@hooks": path.resolve(__dirname, "src/hooks"),
-      "@workers": path.resolve(__dirname, "src/workers"),
       "@global-styles": path.resolve(__dirname, "src/global-styles"),
       "@data": path.resolve(__dirname, "src/data"),
     },
