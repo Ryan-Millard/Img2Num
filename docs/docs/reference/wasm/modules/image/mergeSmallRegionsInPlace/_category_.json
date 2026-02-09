@@ -1,0 +1,9 @@
+{
+  "label": "mergeSmallRegionsInPlace.h",
+  "link": {
+    "type": "generated-index",
+    "title": "Merging Small Pixel Regions",
+    "description": "A single-pass C++ routine that finds connected-color regions in an RGBA image, computes per-region bounding-box metadata, and replaces pixels belonging to small regions by sampling colors from adjacent large regions (effectively merging small islands into nearby large blobs).",
+    "slug": "/reference/wasm/modules/image/mergeSmallRegionsInPlace"
+  }
+}

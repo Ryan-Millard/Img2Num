@@ -67,6 +67,22 @@ export function useWasmWorker() {
       return result.output.pixels;
     },
 
+    bilateralFilterGpu: async ({
+      pixels,
+      width,
+      height,
+      sigma_spatial = 3.0,
+      sigma_range = 50.0,
+      color_space = 1, // rgb only for now
+    }) => {
+      const result = await call({
+        funcName: "bilateral_filter_gpu",
+        args: { pixels, width, height, sigma_spatial, sigma_range, color_space },
+        bufferKeys: [{ key: "pixels", type: "Uint8ClampedArray" }],
+      });
+      return result.output.pixels;
+    },
+
     blackThreshold: async ({ pixels, width, height, num_colors }) => {
       const result = await call({
         funcName: "black_threshold_image",

@@ -96,7 +96,49 @@ self.onmessage = async ({ data }) => {
     // Call the WASM function
     const exportName = `_${funcName}`;
     if (typeof wasmModule[exportName] !== "function") throw new Error(`Export not found: ${exportName}`);
-    const result = wasmModule[exportName](...argsMap.values());
+
+    var result;
+
+    if (funcName === 'bilateral_filter_gpu') {
+      // 1. Define the specific signature for your bilateral filter
+      // You must map these types carefully.
+      // Pointers = 'number', size_t/int = 'number', double/float = 'number'
+      const cArgTypes = ["number", "number", "number", "number", "number", "number"];
+      
+      // 2. Build the argument list explicitly to ensure order
+      // Do NOT rely on Object.values(args)
+      const cArgs = [
+          argsMap.get('pixels'), // args.pixels,       // uint8_t* image
+          args.width,        // size_t width
+          args.height,       // size_t height
+          args.sigma_spatial,// double sigma_spatial
+          args.sigma_range,  // double sigma_range
+          args.color_space   // uint8_t color_space
+      ];
+
+      console.log("Calling C++ with:", cArgs);
+
+      // 3. Use ccall with async: true
+      // This wrapper ensures that if C++ sleeps, you get a Promise back.
+      result = wasmModule.ccall(
+          funcName,          // Name WITHOUT the underscore (e.g. "bilateral_filter_gpu")
+          "void",            // Return type
+          cArgTypes,         // Argument types
+          cArgs,             // Arguments
+          { async: true }    // <--- This works here!
+      );
+    }
+    else {
+      result = wasmModule[exportName](...argsMap.values());
+    }
+
+    //Handle the result
+    if (result && typeof result.then === 'function') {
+      console.log("Asyncify: Pausing JS for C++...");
+      result = await result;
+      console.log(result);
+      console.log("Asyncify: Resumed!");
+    }
 
     // Read back buffers
     const outputMap = new Map();
@@ -106,6 +148,8 @@ self.onmessage = async ({ data }) => {
     });
 
     // Handle return value
+    console.log("read results")
+    console.log(result);
     let returnValue = result;
     if (returnType && WASM_TYPES[returnType] !== WASM_TYPES["void"]) returnValue = WASM_TYPES[returnType].read(result);
 
