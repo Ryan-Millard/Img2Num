@@ -45,7 +45,7 @@ const runCommand = (file) => {
   try {
     execSync(`pnpm exec ${cmdBase} "${file}"`, { stdio: "inherit" });
     if (!checkOnly) logColor(`Formatted: ${file}`, Colors.GREEN);
-  } catch (err) {
+  } catch {
     logColor(
       `${checkOnly ? "Check failed" : "Formatting error"}: ${file}`,
       Colors.RED
