@@ -21,7 +21,7 @@ jobs:
         run: pnpm install
 
       - name: Run ESLint
-        run: pnpm run lint
+        run: pnpm run eslint
 
       - name: Validate format
         run: pnpm run format --check
