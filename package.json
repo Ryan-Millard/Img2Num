@@ -76,13 +76,12 @@
     "help": "node scripts/help.js",
     "react": "pnpm --filter react-example run",
     "doc": "pnpm --filter docs run",
+    "format": "pnpm run format:cpp && pnpm run format:js",
     "format:cpp": "node scripts/img2num-dev-scripts/format-cpp.js",
-    "format:cpp:check": "node scripts/img2num-dev-scripts/format-cpp.js --check",
     "format:js": "pnpm prettier --write . --ignore-path .prettierignore --config .prettierrc",
-    "format:js:check": "pnpm prettier --check . --ignore-path .prettierignore --config .prettierrc",
     "validate-scripts": "node scripts/img2num-dev-scripts/validate-scripts.js",
-    "eslint": "eslint example-apps/react-js scripts/img2num-dev-scripts docs",
-    "eslint:fix": "eslint example-apps/react-js scripts/img2num-dev-scripts docs --fix",
+    "eslint": "eslint packages/js example-apps/react-js scripts/img2num-dev-scripts docs",
+    "eslint:fix": "eslint packages/js example-apps/react-js scripts/img2num-dev-scripts docs --fix",
     "editorconfig:check": "editorconfig-checker"
   },
   "devDependencies": {

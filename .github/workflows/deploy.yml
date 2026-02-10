@@ -6,58 +6,60 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  build-wasm:
+    name: Build WASM
+    uses: ./.github/workflows/build-wasm.yml
+
+  build-react-app:
+    name: Build React App
+    uses: ./.github/workflows/build-react-app.yml
+    needs: build-wasm
+    with:
+      wasm-artifacts-path: packages/js/build-wasm/
+
+  build-docs:
+    name: Build Documentation Site
+    uses: ./.github/workflows/build-docs.yml
+    secrets:
+      ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+      ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+      ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME }}
+
+  deploy-react-app:
+    name: Deploy React App to GitHub Pages
+    needs: build-react-app
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
+      - name: Download React build artifacts
+        uses: actions/download-artifact@v4
         with:
-          node-version: 20
+          name: react-build
+          path: ./react-dist
 
-      - name: Install npm dependencies
-        run: npm ci
-
-      - name: Install Emscripten SDK
-        run: |
-          # Download and extract EMSDK
-          curl -sSL https://github.com/emscripten-core/emsdk/archive/refs/tags/4.0.15.tar.gz | tar -xz
-          cd emsdk-4.0.15
-          ./emsdk install latest
-          ./emsdk activate latest
-
-          # Source into this shell so the build here works
-          source ./emsdk_env.sh
-
-          # Persist variables for later steps
-          echo "EMSDK=${GITHUB_WORKSPACE}/emsdk-4.0.15" >> $GITHUB_ENV
-          echo "EMSDK_NODE=${GITHUB_WORKSPACE}/emsdk-4.0.15/node/22.16.0_64bit/bin/node" >> $GITHUB_ENV
-          echo "PATH=${GITHUB_WORKSPACE}/emsdk-4.0.15:${GITHUB_WORKSPACE}/emsdk-4.0.15/upstream/emscripten:$PATH" >> $GITHUB_ENV
-
-      - name: Build Vite app
-        run: npm run build
-
-      - name: Build Docusaurus site
-        env:
-          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
-          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
-          ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME }}
-        run: |
-          cd docs
-          npm ci
-          npm run build
-          cd ..
-          mkdir -p dist/info
-          cp -r docs/build/* dist/info/
-        shell: bash
-
-      - name: Deploy everything to GitHub Pages
+      - name: Deploy React App
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./react-dist
+          user_name: "github-actions[bot]"
+          user_email: "github-actions[bot]@users.noreply.github.com"
+
+  deploy-docs:
+    name: Deploy Documentation to GitHub Pages
+    needs: build-docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Docs build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: docs-build
+          path: ./docs-dist
+
+      - name: Deploy Documentation
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs-dist
+          destination_dir: info
           user_name: "github-actions[bot]"
           user_email: "github-actions[bot]@users.noreply.github.com"

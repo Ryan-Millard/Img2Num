@@ -4,6 +4,8 @@ node_modules/
 # cmake
 build-wasm/
 
+build*/
+
 # Logs
 logs
 *.log
@@ -24,5 +26,3 @@ logs
 *:Zone.Identifier
 
 .env
-
-build*

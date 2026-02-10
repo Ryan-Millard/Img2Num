@@ -1,0 +1,26 @@
+name: Build WASM
+
+on:
+  workflow_call:
+
+jobs:
+  build-wasm:
+    name: Build C++ (Emscripten)
+    runs-on: ubuntu-latest
+    container:
+      image: ryanmillard/img2num-dev:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Run emcmake
+        run: emcmake cmake -B build-wasm/ .
+
+      - name: Build using Emscripten
+        run: cmake --build build-wasm/
+
+      - name: Upload WASM build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wasm-build
+          path: packages/js/build-wasm/

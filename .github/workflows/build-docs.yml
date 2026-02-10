@@ -1,0 +1,34 @@
+name: Build Documentation
+
+on:
+  workflow_call:
+    secrets:
+      ALGOLIA_APP_ID:
+        required: true
+      ALGOLIA_API_KEY:
+        required: true
+      ALGOLIA_INDEX_NAME:
+        required: true
+
+jobs:
+  build-docs:
+    name: Build Docusaurus Site
+    runs-on: ubuntu-latest
+    container:
+      image: ryanmillard/img2num-dev:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Install Node dependencies & Build Docusaurus
+        env:
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+          ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME }}
+        run: pnpm run doc build
+
+      - name: Upload Documentation Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-build
+          path: docs/build
