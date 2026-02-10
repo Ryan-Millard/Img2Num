@@ -2,7 +2,7 @@
 #define ITERATIVE_FFT_H
 
 #include <complex>
-#include <cstddef> // for size_t
+#include <cstddef>  // for size_t
 #include <vector>
 
 namespace fft {
@@ -35,16 +35,14 @@ std::vector<cd> fft_copy(const std::vector<cd> &input, bool inverse = false);
 // Parameters:
 //  - data: input/output buffer (modified in-place).
 //  - inverse: false for forward FFT, true for inverse FFT.
-void iterative_fft_2d(std::vector<cd> &a, size_t width, size_t height,
-                      bool inverse = false);
+void iterative_fft_2d(std::vector<cd> &a, size_t width, size_t height, bool inverse = false);
 
 // Convenience wrapper: return 2D FFT result as a new vector.
 // Parameters:
 //  - input: const input vector.
 //  - inverse: false for forward FFT, true for inverse FFT.
-std::vector<cd> iterative_fft_2d_copy(const std::vector<cd> &input,
-                                      size_t width, size_t height,
+std::vector<cd> iterative_fft_2d_copy(const std::vector<cd> &input, size_t width, size_t height,
                                       bool inverse = false);
-} // namespace fft
+}  // namespace fft
 
-#endif // ITERATIVE_FFT_H
+#endif  // ITERATIVE_FFT_H

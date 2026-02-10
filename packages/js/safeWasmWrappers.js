@@ -30,7 +30,16 @@ export const blackThreshold = async ({ pixels, width, height, num_colors }) => {
   return result.output.pixels;
 };
 
-export const kmeans = async ({ pixels, out_pixels = new Uint8ClampedArray(pixels.length), out_labels = new Int32Array(pixels.length / 4), width, height, num_colors, max_iter = 100, color_space = 0 }) => {
+export const kmeans = async ({
+  pixels,
+  out_pixels = new Uint8ClampedArray(pixels.length),
+  out_labels = new Int32Array(pixels.length / 4),
+  width,
+  height,
+  num_colors,
+  max_iter = 100,
+  color_space = 0,
+}) => {
   const result = await callWasm({
     funcName: "kmeans",
     args: { pixels, out_pixels, out_labels, width, height, num_colors, max_iter, color_space },

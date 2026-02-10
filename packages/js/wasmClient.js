@@ -12,10 +12,7 @@ let initialized = false;
 export function initWasmWorker() {
   if (initialized) return;
 
-  worker = new Worker(
-    new URL("./wasmWorker.js", import.meta.url),
-    { type: "module" }
-  );
+  worker = new Worker(new URL("./wasmWorker.js", import.meta.url), { type: "module" });
 
   worker.onmessage = ({ data }) => {
     const { id, error, output, returnValue } = data;
