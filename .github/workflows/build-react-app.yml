@@ -17,6 +17,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
+      - name: Install Dependendencies
+        run: pnpm --filter react-example install
+
       - name: Download WASM artifacts
         if: ${{ inputs.wasm-artifacts-path }}
         uses: actions/download-artifact@v4

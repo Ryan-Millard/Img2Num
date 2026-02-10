@@ -20,7 +20,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Install Node dependencies & Build Docusaurus
+      - name: Install Dependendencies
+        run: pnpm install --filter docs
+
+      - name: Build Docusaurus
         env:
           ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
           ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
