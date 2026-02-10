@@ -20,25 +20,31 @@
       "react": {
         "desc": "Run scripts for the React example app",
         "args": [
-          "-- Any args passed after `pnpm run react --` are forwarded"
+          "-- Any args passed after `pnpm run react --` are forwarded (see example-apps/react-js/package.json)"
         ]
       },
       "doc": {
         "desc": "Run scripts for the docs package",
         "args": [
-          "-- Any args passed after `pnpm run doc --` are forwarded"
+          "-- Any args passed after `pnpm run doc --` are forwarded (see docs/package.json)"
         ]
       }
     },
     "Formatting": {
+      "format": {
+        "desc": "Format C++ and JavaScript/TypeScript code",
+        "args": [
+          "--check   Only check formatting without modifying files"
+        ]
+      },
       "format:cpp": {
-        "desc": "Format C++ code using img2num-dev-scripts",
+        "desc": "Format C++ code",
         "args": [
           "--check   Only check formatting without modifying files"
         ]
       },
       "format:js": {
-        "desc": "Format JavaScript/TypeScript code with Prettier",
+        "desc": "Format JavaScript/TypeScript",
         "args": [
           "--check   Only check formatting without modifying files"
         ]
@@ -76,7 +82,7 @@
     "help": "node scripts/help.js",
     "react": "pnpm --filter react-example run",
     "doc": "pnpm --filter docs run",
-    "format": "pnpm run format:cpp && pnpm run format:js",
+    "format": "node scripts/format.js",
     "format:cpp": "node scripts/img2num-dev-scripts/format-cpp.js",
     "format:js": "pnpm prettier --write . --ignore-path .prettierignore --config .prettierrc",
     "validate-scripts": "node scripts/img2num-dev-scripts/validate-scripts.js",

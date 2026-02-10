@@ -68,6 +68,7 @@ function validateScripts(pkgPath) {
 
 // --- Validate packages ---
 [
+  ".",
   "example-apps/react-js",
   "docs",
   "scripts/img2num-dev-scripts",

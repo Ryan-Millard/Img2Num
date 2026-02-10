@@ -1,5 +1,7 @@
 packages/js/build-wasm
 docs/.docusaurus
+docs/build
+example-apps/react-js/dist/
 
 .clang-format
 .devcontainer
