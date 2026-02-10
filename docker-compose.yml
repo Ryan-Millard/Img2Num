@@ -8,8 +8,7 @@ services:
     working_dir: /usr/src/app
     volumes:
       - .:/usr/src/app:cached
-      - node_modules:/usr/src/app/node_modules
-      - docs_node_modules:/usr/src/app/docs/node_modules
+      - pnpm-store:/pnpm
     environment:
       CHOKIDAR_USEPOLLING: "true"
       CHOKIDAR_INTERVAL: "100"
@@ -21,5 +20,4 @@ services:
     tty: true
 
 volumes:
-  node_modules:
-  docs_node_modules:
+  pnpm-store:
