@@ -7,7 +7,6 @@
 import { createRequire } from "module";
 import { themes as prismThemes } from "prism-react-renderer";
 import path from "path";
-import webpackAliasPlugin from "./plugins/webpack-alias/index.js";
 import { changelogSidebarGenerator } from "./changelogSidebarGenerator.js";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
@@ -87,7 +86,6 @@ const config = {
         sidebarItemsGenerator: changelogSidebarGenerator,
       },
     ],
-    webpackAliasPlugin,
     [
       "@docusaurus/plugin-google-gtag",
       {
