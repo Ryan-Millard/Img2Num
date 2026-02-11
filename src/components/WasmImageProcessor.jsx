@@ -13,7 +13,7 @@ const WasmImageProcessor = () => {
   const inputId = useId();
   const inputRef = useRef(null);
 
-  const { bilateralFilter, bilateralFilterGpu, kmeans, findContours } = useWasmWorker();
+  const { bilateralFilter, bilateralFilterGpu, kmeans, kmeansGpu, findContours } = useWasmWorker();
 
   const [originalSrc, setOriginalSrc] = useState(null);
   const [kmeansSrc, setKmeansSrc] = useState(null);
@@ -82,7 +82,6 @@ const WasmImageProcessor = () => {
       const { width, height } = fileData;
 
       step(20);
-      console.time("bilaterFilter GPU");
       // NOTE: Gaussian blur destroys the sharp outlines first, preventing the Bilateral filter from detecting and preserving them
       // const imgBilateralFiltered = await bilateralFilter({
       const imgBilateralFiltered = await bilateralFilterGpu({
@@ -93,7 +92,8 @@ const WasmImageProcessor = () => {
 
       step(70);
       // kmeansed pixels are unused - filtered pixels are better for findContours
-      const { pixels: _kmeansed, labels } = await kmeans({
+      // const { pixels: _kmeansed, labels } = await kmeans({
+      const { pixels: _kmeansed, labels } = await kmeansGpu({
         ...fileData,
         pixels: imgBilateralFiltered,
         num_colors: 16,
@@ -125,7 +125,7 @@ const WasmImageProcessor = () => {
         step(0);
       }, 800);
     }
-  }, [fileData, bilateralFilter, bilateralFilterGpu, kmeans, findContours, navigate, step]);
+  }, [fileData, bilateralFilter, bilateralFilterGpu, kmeans, kmeansGpu, findContours, navigate, step]);
 
   /* Memo'd UI fragments */
   const EmptyState = useMemo(

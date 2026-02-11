@@ -34,7 +34,7 @@ struct FilterParams {
     float _pad1; 
     float _pad2;
 };
-
+/*
 wgpu::Instance instance;
 wgpu::Adapter adapter;
 wgpu::Device device;
@@ -149,7 +149,7 @@ void init_gpu() {
     queue = device.GetQueue();
     gpu_initialized = true;
     std::cout << "GPU Fully Initialized." << std::endl;
-}
+}*/
 
 /*void init_gpu() {
     static const auto kTimedWaitAny = wgpu::InstanceFeatureName::TimedWaitAny;
@@ -219,9 +219,14 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
         return;
     }
 
+    /*wgpu::Instance instance;
+    wgpu::Adapter adapter;
+    wgpu::Device device;
+    wgpu::Queue queue;*/
+
     if (~gpu_initialized) {
         std::cout << "init gpu " << std::endl;
-        init_gpu();
+        init_gpu();//instance, adapter, device, queue);
     }
 
     std::cout << "begin wgpu portion" << std::endl;

@@ -105,6 +105,19 @@ export function useWasmWorker() {
       return { pixels: result.output.out_pixels, labels: result.output.out_labels };
     },
 
+    kmeansGpu: async ({ pixels, out_pixels = new Uint8ClampedArray(pixels.length), out_labels = new Int32Array(pixels.length / 4), width, height, num_colors, max_iter = 100, color_space = 1 }) => {
+      const result = await call({
+        funcName: "kmeans_gpu",
+        args: { pixels, out_pixels, out_labels, width, height, num_colors, max_iter, color_space },
+        bufferKeys: [
+          { key: "pixels", type: "Uint8ClampedArray" },
+          { key: "out_pixels", type: "Uint8ClampedArray" },
+          { key: "out_labels", type: "Int32Array" },
+        ],
+      });
+      return { pixels: result.output.out_pixels, labels: result.output.out_labels };
+    },
+
     findContours: async ({ pixels, labels, width, height, min_area = 100, draw_contour_borders = false }) => {
       const result = await call({
         funcName: "labels_to_svg",

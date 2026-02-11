@@ -128,6 +128,37 @@ self.onmessage = async ({ data }) => {
           { async: true }    // <--- This works here!
       );
     }
+    else if (funcName === 'kmeans_gpu') {
+      // 1. Define the specific signature for your bilateral filter
+      // You must map these types carefully.
+      // Pointers = 'number', size_t/int = 'number', double/float = 'number'
+      const cArgTypes = ["number", "number", "number", "number", "number", "number", "number", "number"];
+      
+      // 2. Build the argument list explicitly to ensure order
+      // Do NOT rely on Object.values(args)
+      const cArgs = [
+          argsMap.get('pixels'), // args.pixels,       // uint8_t* image
+          argsMap.get('out_pixels'),
+          argsMap.get('out_labels'),
+          args.width,        // size_t width
+          args.height,       // size_t height
+          args.num_colors,
+          args.max_iter,
+          args.color_space   // uint8_t color_space
+      ];
+
+      console.log("Calling C++ with:", cArgs);
+
+      // 3. Use ccall with async: true
+      // This wrapper ensures that if C++ sleeps, you get a Promise back.
+      result = wasmModule.ccall(
+          funcName,          // Name WITHOUT the underscore (e.g. "bilateral_filter_gpu")
+          "void",            // Return type
+          cArgTypes,         // Argument types
+          cArgs,             // Arguments
+          { async: true }    // <--- This works here!
+      );
+    }
     else {
       result = wasmModule[exportName](...argsMap.values());
     }

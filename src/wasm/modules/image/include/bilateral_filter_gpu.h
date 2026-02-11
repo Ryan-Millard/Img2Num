@@ -3,6 +3,11 @@
 
 #include <cstddef> // for size_t
 #include <cstdint> // for uint8_t
+#include "gpu.h"
+
+/*extern bool gpu_initialized;
+extern bool adapter_ready;
+extern bool device_ready;*/
 
 // The WGSL Shader Source
 const char* shaderSource = R"(
