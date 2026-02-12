@@ -21,70 +21,174 @@ static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
 template <typename PixelT>
 void kMeansPlusPlusInit(const ImageLib::Image<PixelT> &pixels,
                         ImageLib::Image<PixelT> &out_centroids, int k) {
-  std::vector<PixelT> centroids;
+    if (k <= 0) return;
 
-  int num_pixels = pixels.getSize();
-  // Random number generator setup
-  std::random_device rd;
-  std::mt19937 gen(rd());
+    size_t width = pixels.getWidth();
+    size_t height = pixels.getHeight();
+    size_t num_pixels = width * height;
+    
+    std::vector<PixelT> centroids;
+    
+    // --- WEBGPU SETUP START ---
+    // (Assuming 'device' and 'queue' are globally available or passed in)
+    // 1. Upload Image Texture
+    wgpu::TextureDescriptor texDesc = {};
+    texDesc.size = { (uint32_t)width, (uint32_t)height, 1 };
+    texDesc.format = wgpu::TextureFormat::RGBA32Float;
+    texDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst;
+    wgpu::Texture inputTexture = device.CreateTexture(&texDesc);
 
-  // --- Step 1: Choose the first centroid uniformly at random ---
-  std::uniform_int_distribution<> dis(0, num_pixels - 1);
-  int first_index = dis(gen);
-  centroids.push_back(pixels[first_index]);
+    // Upload pixel data (Normalization to 0.0-1.0 assumed)
+    std::vector<float> gpu_pixels;
+    gpu_pixels.reserve(num_pixels * 4);
+    for (int i = 0; i < num_pixels; ++i) {
+        gpu_pixels.push_back(pixels[i].red / 255.0f);
+        gpu_pixels.push_back(pixels[i].green / 255.0f);
+        gpu_pixels.push_back(pixels[i].blue / 255.0f);
+        gpu_pixels.push_back(pixels[i].alpha / 255.0f); // Alpha
+    }
+    
+    wgpu::TexelCopyTextureInfo texDst = {};
+    texDst.texture = inputTexture;
+    wgpu::TexelCopyBufferLayout texLayout = {};
+    texLayout.bytesPerRow = width * 16;
+    texLayout.rowsPerImage = height;
+    queue.WriteTexture(&texDst, gpu_pixels.data(), gpu_pixels.size() * 4, &texLayout, &texDesc.size);
 
-  // Vector to store the squared distance of each pixel to its NEAREST existing
-  // centroid. Initialize with max double so the first distance calculation
-  // always updates it.
-  std::vector<double> min_dist_sq(num_pixels,
-                                  std::numeric_limits<double>::max());
+    // 2. Create MinDist Buffer (Storage)
+    // Initialize with FLT_MAX so the first centroid overwrites everything
+    std::vector<float> initial_dists(num_pixels, std::numeric_limits<float>::max());
+    
+    wgpu::BufferDescriptor distDesc = {};
+    distDesc.size = num_pixels * sizeof(float);
+    distDesc.usage = wgpu::BufferUsage::Storage | wgpu::BufferUsage::CopySrc | wgpu::BufferUsage::CopyDst;
+    wgpu::Buffer minDistBuffer = device.CreateBuffer(&distDesc);
+    queue.WriteBuffer(minDistBuffer, 0, initial_dists.data(), distDesc.size);
 
-  // --- Step 2 & 3: Repeat until we have k centroids ---
-  for (int i = 1; i < k; ++i) {
+    // 3. Create Uniform Buffer (For passing new centroid color)
+    struct CentroidParams {
+        float r, g, b, a;
+        uint32_t width;
+        uint32_t pad[3]; // Padding to align to 16 bytes
+    };
+    wgpu::BufferDescriptor uniDesc = {};
+    uniDesc.size = sizeof(CentroidParams);
+    uniDesc.usage = wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst;
+    wgpu::Buffer paramBuffer = device.CreateBuffer(&uniDesc);
 
-    double sum_dist_sq = 0.0;
+    // 4. Create Readback Buffer
+    wgpu::BufferDescriptor readDesc = {};
+    readDesc.size = num_pixels * sizeof(float);
+    readDesc.usage = wgpu::BufferUsage::MapRead | wgpu::BufferUsage::CopyDst;
+    wgpu::Buffer readBuffer = device.CreateBuffer(&readDesc);
 
-    // Update distances relative to the LAST added centroid (centroids.back())
-    // We don't need to recheck previous centroids; min_dist_sq already holds
-    // the best distance to them.
-    for (int j = 0; j < num_pixels; ++j) {
-      double d = PixelT::colorDistance(pixels[j], centroids.back());
+    // 5. Compile Shader & Pipeline
+    wgpu::ShaderSourceWGSL wgslDesc;
+    wgslDesc.code = updateDistShader;
+    wgpu::ShaderModuleDescriptor shaderDesc = {};
+    shaderDesc.nextInChain = &wgslDesc;
+    shaderDesc.label = "updateDistShader";
+    wgpu::ShaderModule shaderModule = device.CreateShaderModule(&shaderDesc);
 
-      // If this new centroid is closer than the previous best, update the min
-      // distance
-      if (d < min_dist_sq[j]) {
-        min_dist_sq[j] = d;
-      }
-      sum_dist_sq += min_dist_sq[j];
+    wgpu::ComputePipelineDescriptor pipeDesc = {};
+    pipeDesc.compute.module = shaderModule;
+    pipeDesc.compute.entryPoint = "main";
+    wgpu::ComputePipeline pipeline = device.CreateComputePipeline(&pipeDesc);
+
+    // 6. Bind Group
+    wgpu::BindGroupEntry entries[3];
+    entries[0].binding = 0; entries[0].textureView = inputTexture.CreateView();
+    entries[1].binding = 1; entries[1].buffer = minDistBuffer; entries[1].size = distDesc.size;
+    entries[2].binding = 2; entries[2].buffer = paramBuffer;   entries[2].size = uniDesc.size;
+    
+    wgpu::BindGroupDescriptor bgDesc = {};
+    bgDesc.layout = pipeline.GetBindGroupLayout(0);
+    bgDesc.entryCount = 3;
+    bgDesc.entries = entries;
+    wgpu::BindGroup bindGroup = device.CreateBindGroup(&bgDesc);
+    // --- WEBGPU SETUP END ---
+
+    // RNG Setup
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    // --- Step 1: Choose the first centroid randomly ---
+    std::uniform_int_distribution<> dis(0, num_pixels - 1);
+    int first_index = dis(gen);
+    centroids.push_back(pixels[first_index]);
+
+    // --- Step 2 & 3: Repeat until we have k centroids ---
+    for (int i = 1; i < k; ++i) {
+        
+        // A. Upload Current Centroid to GPU
+        PixelT c = centroids.back();
+        CentroidParams params = {
+            c.red / 255.0f, c.green / 255.0f, c.blue / 255.0f, 1.0f,
+            (uint32_t)width
+        };
+        queue.WriteBuffer(paramBuffer, 0, &params, sizeof(CentroidParams));
+
+        // B. Dispatch Shader (Updates min_dist buffer on GPU)
+        wgpu::CommandEncoder encoder = device.CreateCommandEncoder();
+        wgpu::ComputePassEncoder pass = encoder.BeginComputePass();
+        pass.SetPipeline(pipeline);
+        pass.SetBindGroup(0, bindGroup);
+        pass.DispatchWorkgroups((num_pixels + 63) / 64, 1, 1);
+        pass.End();
+
+        // C. Copy Result to ReadBuffer
+        encoder.CopyBufferToBuffer(minDistBuffer, 0, readBuffer, 0, readDesc.size);
+        wgpu::CommandBuffer commands = encoder.Finish();
+        queue.Submit(1, &commands);
+
+        // D. Map and Read
+        bool done = false;
+        readBuffer.MapAsync(wgpu::MapMode::Read, 0, readDesc.size, wgpu::CallbackMode::AllowProcessEvents,
+            [&](wgpu::MapAsyncStatus status, wgpu::StringView) {
+                if (status == wgpu::MapAsyncStatus::Success) {
+                    const float* dists = (const float*)readBuffer.GetConstMappedRange();
+                    
+                    // --- CPU SIDE: Selection Logic ---
+                    double sum_dist_sq = 0.0;
+                    
+                    // 1. Sum (We have to iterate anyway for roulette, so sum here)
+                    // Note: dists[] contains the SQUARED distance because shader calculated distSq
+                    for(size_t j=0; j<num_pixels; ++j) {
+                        sum_dist_sq += dists[j];
+                    }
+
+                    // 2. Select
+                    std::uniform_real_distribution<> dist_selector(0.0, sum_dist_sq);
+                    double random_value = dist_selector(gen);
+                    double current_sum = 0.0;
+                    int selected_index = -1;
+
+                    for (size_t j = 0; j < num_pixels; ++j) {
+                        current_sum += dists[j];
+                        if (current_sum >= random_value) {
+                            selected_index = j;
+                            break;
+                        }
+                    }
+
+                    if (selected_index == -1) selected_index = num_pixels - 1;
+                    
+                    // Add new centroid
+                    centroids.push_back(pixels[selected_index]);
+                    
+                    readBuffer.Unmap();
+                    done = true;
+                }
+            });
+
+        // E. Wait for GPU
+        while (!done) {
+            instance.ProcessEvents();
+            emscripten_sleep(1); 
+        }
     }
 
-    // --- Step 3: Choose new center with probability proportional to D(x)^2 ---
-    // We use a weighted random selection (Roulette Wheel Selection)
-    std::uniform_real_distribution<> dist_selector(0.0, sum_dist_sq);
-    double random_value = dist_selector(gen);
-
-    double current_sum = 0.0;
-    int selected_index = -1;
-
-    // Iterate to find the pixel corresponding to the random_value
-    for (int j = 0; j < num_pixels; ++j) {
-      current_sum += min_dist_sq[j];
-      if (current_sum >= random_value) {
-        selected_index = j;
-        break;
-      }
-    }
-
-    // Fallback for floating point rounding errors (pick last one if loop
-    // finishes)
-    if (selected_index == -1) {
-      selected_index = num_pixels - 1;
-    }
-
-    centroids.push_back(pixels[selected_index]);
-  }
-
-  std::copy(centroids.begin(), centroids.end(), out_centroids.begin());
+    std::copy(centroids.begin(), centroids.end(), out_centroids.begin());
 }
 
 void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
@@ -116,10 +220,10 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
     kMeansPlusPlusInit<ImageLib::RGBAPixel<float>>(pixels, centroids, k);
     break;
   }
-  case COLOR_SPACE_OPTION_CIELAB: {
+  /*case COLOR_SPACE_OPTION_CIELAB: {
     kMeansPlusPlusInit<ImageLib::LABAPixel<float>>(lab, centroids_lab, k);
     break;
-  }
+  }*/
   }
 
   // Step 3: Run k-means iterations
@@ -182,7 +286,6 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   wgpu::TextureDescriptor labelDesc = {};
   labelDesc.size = { (uint32_t)width, (uint32_t)height, 1 };
   labelDesc.format = wgpu::TextureFormat::RGBA32Uint;
-
   labelDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::StorageBinding | wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
   wgpu::Texture labelTexture = device.CreateTexture(&labelDesc);
 
