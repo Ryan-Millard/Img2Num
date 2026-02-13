@@ -19,7 +19,7 @@ export function initWasmWorker() {
     const cb = callbacks.get(id);
     if (!cb) return;
 
-    error ? cb.reject(error) : cb.resolve({ output, returnValue });
+    error ? cb.reject(new Error(error)) : cb.resolve({ output, returnValue });
     callbacks.delete(id);
   };
 
