@@ -1,7 +1,6 @@
 #include "graph.h"
 
 #include <algorithm>
-#include <iostream>
 #include <iterator>
 #include <queue>
 #include <string>
