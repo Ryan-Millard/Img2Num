@@ -44,6 +44,11 @@ export function callWasm({ funcName, args = {}, bufferKeys = [], returnType = "v
 export function terminateWasmWorker() {
   if (!worker) return;
   worker.terminate();
+  // Reject any pending calls before clearing
+  for (const [id, cb] of callbacks) {
+    cb.reject(new Error("WASM worker terminated"));
+  }
+  worker = null;
   callbacks.clear();
   initialized = false;
 }
