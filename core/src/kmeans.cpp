@@ -221,9 +221,9 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels, const i
     // Write the final centroid values to each pixel in the cluster
     for (int32_t i = 0; i < num_pixels; ++i) {
         const int32_t cluster = labels[i];
-        out_data[i * 4 + 0] = static_cast<uint8_t>(centroids[cluster].red);
-        out_data[i * 4 + 1] = static_cast<uint8_t>(centroids[cluster].green);
-        out_data[i * 4 + 2] = static_cast<uint8_t>(centroids[cluster].blue);
+        out_data[i * 4 + 0] = static_cast<uint8_t>(std::clamp(centroids[cluster].red, 0.0f, 255.0f));
+        out_data[i * 4 + 1] = static_cast<uint8_t>(std::clamp(centroids[cluster].green, 0.0f, 255.0f));
+        out_data[i * 4 + 2] = static_cast<uint8_t>(std::clamp(centroids[cluster].blue, 0.0f, 255.0f));
         out_data[i * 4 + 3] = 255;
     }
 
