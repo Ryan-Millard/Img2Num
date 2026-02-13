@@ -1,9 +1,5 @@
 #include "image_utils.h"
 
-#include "Image.h"
-#include "PixelConverters.h"
-#include "RGBAPixel.h"
-
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
@@ -11,6 +7,9 @@
 #include <limits>
 #include <vector>
 
+#include "Image.h"
+#include "PixelConverters.h"
+#include "RGBAPixel.h"
 #include "fft_iterative.h"
 #include "img2num.h"
 
