@@ -24,10 +24,10 @@ jobs:
         run: pnpm run eslint
 
       - name: Validate format
-        run: pnpm run format --check
+        run: pnpm run format:check
 
       - name: Validate .editorconfig adherance
-        run: pnpm run editorconfig --check
+        run: pnpm run editorconfig:check
 
       - name: Validate scriptsInfo in package.json
         run: pnpm run validate-scripts

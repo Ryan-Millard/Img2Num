@@ -1,24 +1,37 @@
-import { spawnSync } from "node:child_process";
-
-const SCRIPTS = ["format:cpp", "format:js"];
+import { spawn } from "node:child_process";
 
 const args = process.argv.slice(2);
+const isCheck = args.includes("--check");
+const forwardedArgs = args.filter(a => a !== "--check");
 
-function run(cmd) {
-  const res = spawnSync(cmd[0], cmd.slice(1), {
-    stdio: "inherit",
+const SCRIPTS = ["format:cpp", "format:js"];
+const suffix = isCheck ? ":check" : "";
+
+function run(script) {
+  return new Promise((resolve, reject) => {
+    const cmd = ["pnpm", "run", `${script}${suffix}`, "--", ...forwardedArgs];
+    const proc = spawn(cmd[0], cmd.slice(1));
+
+    proc.stdout.on("data", chunk => {
+      chunk.toString().split("\n").forEach(line => {
+        if (line) console.log(`[${script}] ${line}`);
+      });
+    });
+
+    proc.stderr.on("data", chunk => {
+      chunk.toString().split("\n").forEach(line => {
+        if (line) console.error(`[${script}][ERR] ${line}`);
+      });
+    });
+
+    proc.on("close", code => {
+      if (code !== 0) reject(new Error(`${script} exited with ${code}`));
+      else resolve();
+    });
+
+    proc.on("error", reject);
   });
-
-  if (res.error) {
-    console.error(res.error);
-    process.exit(1);
-  }
-
-  if (res.status !== 0) {
-    process.exit(res.status ?? 1);
-  }
 }
 
-for (const script of SCRIPTS) {
-  run(["pnpm", "run", script, "--", ...args]);
-}
+// Run all in parallel for check mode
+await Promise.all(SCRIPTS.map(run));

@@ -28,7 +28,7 @@ jobs:
           path: ${{ inputs.wasm-artifacts-path }}
 
       - name: Build React app
-        run: pnpm run react build
+        run: pnpm -F react-example run build
 
       - name: Upload React build artifacts
         uses: actions/upload-artifact@v4
