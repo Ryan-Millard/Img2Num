@@ -1,0 +1,14 @@
+# Licensing
+
+This project is **primarily licensed under the MIT License** (see https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE-MIT).
+
+Certain files and folders remain licensed under the **GNU AGPLv3** (see https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE-AGPL):
+- `example-apps/react-js/` (consumer example application built in React)
+- `docs/` (project documentation)
+- `.github/` (CI/config files)
+
+These AGPL-licensed files **do not affect the use or redistribution of the MIT-licensed packages**.
+
+This is because the project was originally licensed under the GNU AGPLv3.
+
+Approval for relicensing the bulk of the project under MIT was granted by the relevant contributors in GitHub Discussion #230 (see https://github.com/Ryan-Millard/Img2Num/discussions/230).

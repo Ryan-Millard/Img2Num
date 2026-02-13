@@ -4,9 +4,7 @@
 
 # Img2Num
 
-[![Site Badge](https://img.shields.io/badge/site-online-blue.svg)](https://ryan-millard.github.io/Img2Num/)
-[![Docs Badge](https://img.shields.io/badge/docs-online-blue.svg)](https://ryan-millard.github.io/Img2Num/info/)
-[![License Badge](https://img.shields.io/badge/license-AGPLv3-blue.svg)](LICENSE)
+[![Deploy to GitHub Pages](https://github.com/Ryan-Millard/Img2Num/actions/workflows/deploy.yml/badge.svg)](https://github.com/Ryan-Millard/Img2Num/actions/workflows/deploy.yml)
 
 </div>
 
@@ -93,9 +91,12 @@ We welcome contributions from all places. Please read the [Contribution Guidelin
 
 If you're unsure what to change, [open a discussion](https://github.com/Ryan-Millard/Img2Num/discussions/new/choose) and someone will assist you.
 
-## License
+## License Summary
 
-[AGPLv3](https://ryan-millard.github.io/Img2Num/info/docs/license)
+- **MIT** — core packages, scripts, libraries, build tools, etc.
+- **AGPLv3** — docs, example apps, CI/config.
+
+See the top-level [LICENSE](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE) file for the explanation.
 
 ## Can't find something?
 
