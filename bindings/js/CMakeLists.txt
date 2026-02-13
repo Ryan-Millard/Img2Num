@@ -31,11 +31,10 @@ target_include_directories(img2num_wasm PRIVATE
 set(COMMON_FLAGS
     "SHELL:-s MODULARIZE=1"
     "SHELL:-s EXPORT_ES6=1"
-    "SHELL:-s EXIT_RUNTIME=1"
     "SHELL:-s ENVIRONMENT=web,worker"
     "SHELL:-s EXPORTED_FUNCTIONS=['_malloc','_free']"
     "SHELL:-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPU8','HEAP32','UTF8ToString','stringToUTF8','lengthBytesUTF8']"
-    "SHELL:-s INITIAL_MEMORY=1024MB"
+    "SHELL:-s INITIAL_MEMORY=128MB"
     "SHELL:-s MAXIMUM_MEMORY=2048MB"
     "SHELL:-s ALLOW_MEMORY_GROWTH=1"
     "SHELL:-s EXPORT_NAME=createImg2NumModule"
