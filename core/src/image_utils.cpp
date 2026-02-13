@@ -1,5 +1,9 @@
 #include "image_utils.h"
 
+#include "Image.h"
+#include "PixelConverters.h"
+#include "RGBAPixel.h"
+
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
@@ -11,6 +15,10 @@
 #include "img2num.h"
 
 uint8_t quantize(uint8_t value, uint8_t region_size) {
+    if (region_size == 0) {
+        return value;
+    }
+
     uint8_t bucket = value / region_size;  // Narrowing to colour boundary with
                                            // Range [0 : num_thresholds - 1].
 
