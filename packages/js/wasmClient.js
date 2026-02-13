@@ -23,6 +23,14 @@ export function initWasmWorker() {
     callbacks.delete(id);
   };
 
+  worker.onerror = (event) => {
+    const err = new Error(event.message || "WASM worker error");
+    for (const [id, cb] of callbacks) {
+      cb.reject(err);
+    }
+    callbacks.clear();
+  };
+
   initialized = true;
 }
 
