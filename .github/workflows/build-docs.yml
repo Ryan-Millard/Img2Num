@@ -10,6 +10,9 @@ on:
       ALGOLIA_INDEX_NAME:
         required: true
 
+permissions:
+  contents: read
+
 jobs:
   build-docs:
     name: Build Docusaurus Site

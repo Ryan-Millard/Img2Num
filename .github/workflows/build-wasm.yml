@@ -3,6 +3,9 @@ name: Build WASM
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   build-wasm:
     name: Build C++ (Emscripten)
