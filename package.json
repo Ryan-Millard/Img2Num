@@ -9,26 +9,10 @@
   "scriptsInfo": {
     "_meta": {
       "basic": [
-        "react",
-        "doc",
         "format",
         "lint",
         "help"
       ]
-    },
-    "Development": {
-      "react": {
-        "desc": "Run scripts for the React example app",
-        "args": [
-          "-- Any args passed after `pnpm run react --` are forwarded (see example-apps/react-js/package.json)"
-        ]
-      },
-      "doc": {
-        "desc": "Run scripts for the docs package",
-        "args": [
-          "-- Any args passed after `pnpm run doc --` are forwarded (see docs/package.json)"
-        ]
-      }
     },
     "Formatting": {
       "format": {
@@ -37,17 +21,20 @@
           "--check   Only check formatting without modifying files"
         ]
       },
+      "format:check": {
+        "desc": "Runs \"format\" script with the \"--check\" flag"
+      },
       "format:cpp": {
-        "desc": "Format C++ code",
-        "args": [
-          "--check   Only check formatting without modifying files"
-        ]
+        "desc": "Format C++ code"
+      },
+      "format:cpp:check": {
+        "desc": "Format C++ code (read-only)"
       },
       "format:js": {
-        "desc": "Format JavaScript/TypeScript",
-        "args": [
-          "--check   Only check formatting without modifying files"
-        ]
+        "desc": "Format JavaScript/TypeScript"
+      },
+      "format:js:check": {
+        "desc": "Format JavaScript/TypeScript (read-only)"
       }
     },
     "Linting": {
