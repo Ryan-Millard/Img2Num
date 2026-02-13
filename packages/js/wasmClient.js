@@ -25,7 +25,7 @@ export function initWasmWorker() {
 
   worker.onerror = (event) => {
     const err = new Error(event.message || "WASM worker error");
-    for (const [id, cb] of callbacks) {
+    for (const [_id, cb] of callbacks) {
       cb.reject(err);
     }
     callbacks.clear();
@@ -53,7 +53,7 @@ export function terminateWasmWorker() {
   if (!worker) return;
   worker.terminate();
   // Reject any pending calls before clearing
-  for (const [id, cb] of callbacks) {
+  for (const [_id, cb] of callbacks) {
     cb.reject(new Error("WASM worker terminated"));
   }
   worker = null;
