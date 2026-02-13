@@ -76,10 +76,10 @@ self.onmessage = async ({ data }) => {
 
   const { id, funcName, args, bufferKeys, returnType } = data;
 
-  if (funcName == null) throw new Error("Img2Num wasmWorker.js: call missing funcName");
-  if (args == null) throw new Error("Img2Num wasmWorker.js: call missing args object");
-  if (bufferKeys == null) throw new Error("Img2Num wasmWorker.js: call missing bufferKeys array");
-  if (returnType == null) throw new Error("Img2Num wasmWorker.js: call missing returnType");
+  if (funcName == null)   { self.postMessage({ id, error: "Img2Num wasmWorker.js: call missing funcName" }); return; }
+  if (args == null)       { self.postMessage({ id, error: "Img2Num wasmWorker.js: call missing args object" }); return; }
+  if (bufferKeys == null) { self.postMessage({ id, error: "Img2Num wasmWorker.js: call missing bufferKeys array" }); return; }
+  if (returnType == null) { self.postMessage({ id, error: "Img2Num wasmWorker.js: call missing returnType" }); return; }
 
   if (bufferKeys?.length && !args) {
     throw new Error(`WASM call "${funcName}" has bufferKeys defined but no args object provided. ` + `Each bufferKey must correspond to a key in args.`);
