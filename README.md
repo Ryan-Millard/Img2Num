@@ -74,22 +74,13 @@ This README is intentionally short — full installation steps, guides and refer
 Visit the docs site for full guides, API references and troubleshooting:
 
 - [Quick start](https://ryan-millard.github.io/Img2Num/info/docs/introduction/getting-started)
-- [Guidelines](https://ryan-millard.github.io/Img2Num/info/docs/category/-guidelines)
 - [Documentation](https://ryan-millard.github.io/Img2Num/info/docs/)
-- [Reference & Advanced Guides](https://ryan-millard.github.io/Img2Num/info/docs/reference/)
+- [Internal Documentation](https://ryan-millard.github.io/Img2Num/info/docs/internal/)
 - [Changelog](https://ryan-millard.github.io/Img2Num/info/changelog)
 
 ## Contributing
 
-We welcome contributions from all places. Please read the [Contribution Guidelines](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/contributing) and the pinned issues before opening issues or pull requests.
-
-**A few important points:**
-
-- **Add tests** with your PR — new features and bug fixes **must** include tests where appropriate. PRs without tests are unlikely to be approved.
-- Follow the repository's [coding style rules](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/coding-style) and [commit message rules](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/commits).
-- Use the issue and PR templates when filing issues or submitting code. Your PR will be rejected if you don't.
-
-If you're unsure what to change, [open a discussion](https://github.com/Ryan-Millard/Img2Num/discussions/new/choose) and someone will assist you.
+See our [CONTIRBUTING.md](https://github.com/Ryan-Millard/Img2Num/blob/main/CONTRIBUTING.md)
 
 ## License Summary
 

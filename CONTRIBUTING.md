@@ -2,39 +2,15 @@
 
 Want to contribute to Img2Num? There are a few things you need to know.
 
-We wrote a [contribution guide](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/contributing) to help you get started.
+We wrote a [contribution guide](https://ryan-millard.github.io/Img2Num/info/docs/introduction/contributing) to help you get started.
 
-## Quick Links
+**A few important points:**
 
-- **[Coding Style Guidelines](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/coding-style)** - Code quality and linting standards
-- **[CI/CD Workflows](https://ryan-millard.github.io/Img2Num/info/docs/reference/tools/ci-workflows)** - Understanding our automated checks
-- **[Commit Guidelines](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/commits)** - How to write good commit messages
-- **[Pull Request Guidelines](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/pull-requests)** - Creating and submitting PRs
+- **Add tests** with your PR — new features and bug fixes **must** include tests where appropriate. PRs without tests are unlikely to be approved.
+- Follow the repository's coding style rules.
+- Use the issue and PR templates when filing issues or submitting code. Your PR will be rejected if you don't.
 
-## Code Quality
-
-Before submitting a PR, ensure your code passes all checks:
-
-**With Docker:**
-
-```bash
-./img2num npm ci                # Install dependencies
-./img2num lint                  # Check JavaScript/React code
-./img2num lint:style            # Check code style
-./img2num npm run format:check  # Verify formatting
-```
-
-**Local Dev:**
-
-```bash
-npm ci                # Install dependencies
-npm run lint          # Check JavaScript/React code
-npm run lint:style    # Check code style
-npm run format:check  # Verify formatting
-```
-
-For detailed information about linting, formatting, and fixing issues, see our
-[Coding Style Guidelines](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/coding-style).
+If you're unsure what to change, [open a discussion](https://github.com/Ryan-Millard/Img2Num/discussions/new/choose) and someone will assist you.
 
 ## Questions?
 
@@ -42,6 +18,6 @@ If you have questions or need help:
 
 - Open a [discussion](https://github.com/Ryan-Millard/Img2Num/discussions)
 - Create an [issue](https://github.com/Ryan-Millard/Img2Num/issues)
-- Check existing PRs for examples
+- Check existing PRs for ideas
 
 Thank you for improving Img2Num! 🎨🚀
