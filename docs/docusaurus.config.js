@@ -61,7 +61,6 @@ const config = {
   projectName: "Img2Num", // Usually your repo name.
 
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "throw",
   onBrokenAnchors: "throw",
 
   // Even if you don't use internationalization, you can use this field to set
@@ -145,11 +144,35 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      docs: {
+        versionPersistence: 'localStorage',
+        sidebar: {
+          hideable: true,
+          autoCollapseCategories: true,
+        },
+      },
+
+      blog: {
+        sidebar: {
+          groupByYear: true,
+        },
+      },
+
       // Replace with your project's social card
-      image: "img/docusaurus-social-card.jpg",
+      image: "img/favicon.png",
       colorMode: {
+        defaultMode: 'dark',
+        disableSwitch: false,
         respectPrefersColorScheme: true,
       },
+
+      //announcementBar: {
+        //id: 'announcement-docusarusus_config_js',
+        //content: 'Announcement',
+        //isCloseable: true,
+        ////backgroundColor: '#fafbfc',
+        ////textColor: '#091E42',
+      //},
 
       metadata: [algoliaHeadTag],
 
@@ -177,8 +200,13 @@ const config = {
             position: "right",
           },
         ],
+        hideOnScroll: false,
       },
       footer: {
+        logo: {
+          alt: "Img2Num Logo",
+          src: "img/favicon.svg",
+        },
         style: "dark",
         links: [
           {
@@ -214,6 +242,10 @@ const config = {
           },
         ],
         copyright: `Copyright © ${new Date().getFullYear()} Img2Num.`,
+      },
+      tableOfContents: {
+        minHeadingLevel: 2,
+        maxHeadingLevel: 5,
       },
       prism: {
         theme: prismThemes.github,
