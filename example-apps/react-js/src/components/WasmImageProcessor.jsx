@@ -84,7 +84,7 @@ const WasmImageProcessor = () => {
 
       step(70);
       // kmeansed pixels are unused - filtered pixels are better for findContours
-      const { pixels: _kmeansed, labels } = await kmeans({
+      const { labels } = await kmeans({
         ...fileData,
         pixels: imgBilateralFiltered,
         num_colors: 16,

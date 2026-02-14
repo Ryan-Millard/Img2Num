@@ -23,5 +23,16 @@
   "main": "./index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  }
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "files": [
+    "build-wasm/",
+    "index.js",
+    "safeWasmWrappers.js",
+    "wasmClient.js",
+    "wasmWorker.js",
+    "imageToUint8ClampedArray.js"
+  ]
 }

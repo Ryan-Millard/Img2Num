@@ -10,6 +10,7 @@ import path from "path";
 import { changelogSidebarGenerator } from "./changelogSidebarGenerator.js";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import docusaurusPluginTypeDocConfig from "./plugins/docusaurusPluginTypeDocConfig.js";
 
 const require = createRequire(import.meta.url);
 require("dotenv").config();
@@ -31,7 +32,7 @@ const algoliaHeadTag = {
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Img2Num",
-  tagline: "Transforms any image into a printable or digital colour-by-number template using WebAssembly-powered C++ image processing.",
+  tagline: "Transform any image into an SVG.",
   favicon: "img/favicon.svg",
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -60,6 +61,8 @@ const config = {
   projectName: "Img2Num", // Usually your repo name.
 
   onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "throw",
+  onBrokenAnchors: "throw",
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -93,6 +96,7 @@ const config = {
         anonymizeIP: true,
       },
     ],
+    docusaurusPluginTypeDocConfig,
   ],
 
   presets: [
