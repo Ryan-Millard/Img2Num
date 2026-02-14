@@ -2,7 +2,6 @@ packages/js/build-wasm
 docs/.docusaurus
 docs/build/
 example-apps/react-js/dist/
-
 .clang-format
 .devcontainer
 .dockerignore
@@ -29,3 +28,6 @@ node_modules/
 scripts/
 pnpm-lock.yaml
 .pnpm-store/
+docs/static/js/api.json
+docs/docs/js/api/
+example-apps/react-js/src/data/contributor-credits.json

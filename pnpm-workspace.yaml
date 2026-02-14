@@ -5,7 +5,7 @@ packages:
   - scripts/img2num-dev-scripts
 
 onlyBuiltDependencies:
-  - '@swc/core'
+  - "@swc/core"
   - core-js
   - core-js-pure
   - esbuild

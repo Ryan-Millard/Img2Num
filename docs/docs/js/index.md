@@ -4,7 +4,6 @@ title: Img2Num
 sidebar_label: JavaScript
 ---
 
-
 A high-performance raster-to-vector conversion library that transforms images into **SVGs**.
 It is powered by WebAssembly (WASM) for speed, while providing easy-to-use JavaScript wrappers for integration into web or Node.js projects.
 
@@ -19,15 +18,18 @@ It is powered by WebAssembly (WASM) for speed, while providing easy-to-use JavaS
 ## Requirements
 
 ### Node.js (server-side)
+
 - **Node ≥ 14** is required for ESM support (`"type": "module"` in package.json).
 - Node ≥ 16 is recommended if you want top-level `await` and best WASM performance.
 
 ### Browser (client-side)
+
 - A modern browser with **ES module** support (`<script type="module">`) and **WebAssembly** support.
 - Most browsers from 2020+ are compatible.
 - **Not supported:** Internet Explorer 11 or older browsers.
 
 ### Files and Bundlers
+
 - When using bundlers (Webpack, Vite, Rollup), ensure that `.wasm` files (like Img2Num's `build-wasm/index.wasm`) are properly served or imported.
 - No external JS dependencies are required — the package is pure JS + WASM.
 
@@ -65,12 +67,7 @@ import TabItem from '@theme/TabItem';
 
 ```html title="Paste this in your HTML file"
 <script type="module">
-  import {
-    imageToUint8ClampedArray,
-    bilateralFilter,
-    kmeans,
-    findContours
-  } from "https://cdn.jsdelivr.net/npm/img2num/build-wasm/index.js";
+  import { imageToUint8ClampedArray, bilateralFilter, kmeans, findContours } from "https://cdn.jsdelivr.net/npm/img2num/build-wasm/index.js";
 
   // Your code here
 </script>

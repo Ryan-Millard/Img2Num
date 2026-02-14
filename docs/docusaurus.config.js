@@ -145,7 +145,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       docs: {
-        versionPersistence: 'localStorage',
+        versionPersistence: "localStorage",
         sidebar: {
           hideable: true,
           autoCollapseCategories: true,
@@ -161,17 +161,17 @@ const config = {
       // Replace with your project's social card
       image: "img/favicon.png",
       colorMode: {
-        defaultMode: 'dark',
+        defaultMode: "dark",
         disableSwitch: false,
         respectPrefersColorScheme: true,
       },
 
       //announcementBar: {
-        //id: 'announcement-docusarusus_config_js',
-        //content: 'Announcement',
-        //isCloseable: true,
-        ////backgroundColor: '#fafbfc',
-        ////textColor: '#091E42',
+      //id: 'announcement-docusarusus_config_js',
+      //content: 'Announcement',
+      //isCloseable: true,
+      ////backgroundColor: '#fafbfc',
+      ////textColor: '#091E42',
       //},
 
       metadata: [algoliaHeadTag],
