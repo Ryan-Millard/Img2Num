@@ -1,7 +1,6 @@
 import { useEffect, useState, useId, useRef, useCallback, useMemo } from "react";
 import { Upload } from "lucide-react";
-import { bilateralFilter, kmeans, findContours } from "img2num";
-import { loadImageToUint8Array } from "@utils/image-utils";
+import { imageToUint8ClampedArray, bilateralFilter, kmeans, findContours } from "img2num";
 import GlassCard from "@components/GlassCard";
 import styles from "./WasmImageProcessor.module.css";
 import { useNavigate } from "react-router-dom";
@@ -32,7 +31,7 @@ const WasmImageProcessor = () => {
     const url = URL.createObjectURL(file);
     setOriginalSrc(url);
 
-    const { pixels, width, height } = await loadImageToUint8Array(file);
+    const { pixels, width, height } = await imageToUint8ClampedArray(file);
     setFileData({ pixels, width, height });
   }, []);
 

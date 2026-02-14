@@ -1,4 +1,4 @@
-export function loadImageToUint8Array(file) {
+export function imageToUint8ClampedArray(file) {
   return new Promise((resolve) => {
     const img = new Image();
     img.onload = () => {
