@@ -104,7 +104,7 @@ npm run validate-scripts
 1. Ensure every script in `package.json` has an entry in `scriptsInfo`
 2. Run `npm run validate-scripts` locally to see specific errors
 3. Add missing `scriptsInfo` entries or remove unused scripts
-4. See [Project Scripts](./scripts/overview.md) for more details
+4. See [Scripts](../scripts/overview) for more details
 
 ## Workflow Configuration
 

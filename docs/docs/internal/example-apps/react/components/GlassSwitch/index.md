@@ -304,7 +304,7 @@ npm test -- --watch GlassSwitch.test.jsx
 - Disabled state
 - Accessibility (ARIA labels, keyboard navigation)
 
-📖 **Detailed test documentation:** [GlassSwitch Tests](./tests.md)
+📖 **Detailed test documentation:** [GlassSwitch Tests](./tests)
 
 ## Troubleshooting
 
@@ -353,11 +353,11 @@ thumbContent={<Moon size={16} />}
 
 ## Related Components
 
-- [ThemeSwitch](../ThemeSwitch/index.md) - Pre-built dark mode toggle using GlassSwitch pattern
-- [Tooltip](../Tooltip/index.md) - Provides hover hints (used internally by GlassSwitch)
+- [ThemeSwitch](../ThemeSwitch/index) - Pre-built dark mode toggle using GlassSwitch pattern
+- [Tooltip](../Tooltip/index) - Provides hover hints (used internally by GlassSwitch)
 
 ## Further Resources
 
-- [Testing Documentation](./tests.md) - Complete test suite reference
+- [Testing Documentation](./tests) - Complete test suite reference
 - [WCAG Switch Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/switch/) - Accessibility guidelines
 - [React Switch Component Guide](https://react.dev/learn/sharing-state-between-components) - State management patterns
