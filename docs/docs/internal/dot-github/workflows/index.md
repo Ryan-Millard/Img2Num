@@ -1,6 +1,6 @@
 ---
-sidebar_position: 2
 title: CI/CD Workflows
+sidebar_title: workflows
 description: Documentation for GitHub Actions workflows used in Img2Num's continuous integration and deployment pipeline
 keywords: [CI, CD, GitHub Actions, workflows, automation, testing, linting]
 ---

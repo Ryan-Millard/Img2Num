@@ -48,12 +48,6 @@ We aim to match the structure of the repository to ensure the relevant docs are 
 - **Scalability:** Use this page as a template for future additions — every new module or component should follow this structure.
 - **SEO-Friendly:** Include meaningful titles, descriptions, and keywords in frontmatter and content.
 
-## Navigation Tips
-
-- Start here to **understand the structure and conventions** of the reference section.
-- Follow links within the section to dive into specific modules or components.
-- Use reference documentation alongside **Guides** and **Concepts** for complete understanding.
-
 :::info
 This section is your single source of truth for technical reference in Img2Num. Future contributors should use this page as the **model** for all reference documentation.
 :::
