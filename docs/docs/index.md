@@ -33,4 +33,4 @@ Issue links:
 - [Bug Report](https://github.com/Ryan-Millard/Img2Num/issues/new?template=bug_report.yml)
 - [Refactor / Code Quality Improvement](https://github.com/Ryan-Millard/Img2Num/issues/new?template=refactor.yml)
 - [Blank Issue](https://github.com/Ryan-Millard/Img2Num/issues/new)
-:::
+  :::

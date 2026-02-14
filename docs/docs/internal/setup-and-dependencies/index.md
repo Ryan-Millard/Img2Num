@@ -42,27 +42,27 @@ cd Img2Num/
 ## Start Docker
 
 <Tabs
-  defaultValue="bash"
-  values={[
-    { label: 'Linux / macOS', value: 'bash' },
-    { label: 'Windows CMD', value: 'cmd' },
-    { label: 'PowerShell', value: 'powershell' },
-  ]}>
-  <TabItem value="bash">
-    ```bash
+defaultValue="bash"
+values={[
+{ label: 'Linux / macOS', value: 'bash' },
+{ label: 'Windows CMD', value: 'cmd' },
+{ label: 'PowerShell', value: 'powershell' },
+]}>
+<TabItem value="bash">
+`bash
     ./img2num sh
-    ```
-  </TabItem>
-  <TabItem value="cmd">
-    ```bat
+    `
+</TabItem>
+<TabItem value="cmd">
+`bat
     .\img2num.bat sh
-    ```
-  </TabItem>
-  <TabItem value="powershell">
-    ```powershell
+    `
+</TabItem>
+<TabItem value="powershell">
+`powershell
     .\img2num.ps1 sh
-    ```
-  </TabItem>
+    `
+</TabItem>
 </Tabs>
 
 :::info What is that script?
@@ -73,27 +73,27 @@ The `img2num` script is a thin wrapper around Docker Compose that manages the de
 Forgot an argument? Try the below.
 
 <Tabs
-  defaultValue="bash"
-  values={[
-    { label: 'Linux / macOS', value: 'bash' },
-    { label: 'Windows CMD', value: 'cmd' },
-    { label: 'PowerShell', value: 'powershell' },
-  ]}>
-  <TabItem value="bash">
-    ```bash
+defaultValue="bash"
+values={[
+{ label: 'Linux / macOS', value: 'bash' },
+{ label: 'Windows CMD', value: 'cmd' },
+{ label: 'PowerShell', value: 'powershell' },
+]}>
+<TabItem value="bash">
+`bash
     ./img2num help
-    ```
-  </TabItem>
-  <TabItem value="cmd">
-    ```bat
+    `
+</TabItem>
+<TabItem value="cmd">
+`bat
     .\img2num.bat help
-    ```
-  </TabItem>
-  <TabItem value="powershell">
-    ```powershell
+    `
+</TabItem>
+<TabItem value="powershell">
+`powershell
     .\img2num.ps1 help
-    ```
-  </TabItem>
+    `
+</TabItem>
 </Tabs>
 :::
 
@@ -102,15 +102,17 @@ Forgot an argument? Try the below.
 These are required for running the documentation, packages, and some example apps.
 
 <Tabs
-  defaultValue="docker-term"
-  values={[
-    { label: 'Docker Terminal', value: 'docker-term' },
-    { label: 'Normal Terminal', value: 'normal-term' },
-  ]}>
+defaultValue="docker-term"
+values={[
+{ label: 'Docker Terminal', value: 'docker-term' },
+{ label: 'Normal Terminal', value: 'normal-term' },
+]}>
 <TabItem value="docker-term">
+
 ```bash title="From inside the Docker terminal"
 pnpm install
 ```
+
 </TabItem>
 <TabItem value="normal-term">
 ```bash title="From outside the Docker terminal one-off command inside the Docker terminal"
@@ -134,41 +136,41 @@ This compiles the core C++ image processing library to WebAssembly using Emscrip
 The C++ library must be compiled before running any applications, as it produces the WebAssembly module used by the JavaScript packages.
 
 <Tabs
-  defaultValue="release"
-  values={[
-    { label: 'Release Build', value: 'release' },
-    { label: 'Debug Build', value: 'debug' },
-  ]}>
-  <TabItem value="release">
-    ```bash title="Compile Release build"
+defaultValue="release"
+values={[
+{ label: 'Release Build', value: 'release' },
+{ label: 'Debug Build', value: 'debug' },
+]}>
+<TabItem value="release">
+`bash title="Compile Release build"
     emcmake cmake -B build-wasm-release/ .
     cmake --build build-wasm-release/
-    ```
-  </TabItem>
-  <TabItem value="debug">
-    ```bash title="Compile Debug build"
+    `
+</TabItem>
+<TabItem value="debug">
+`bash title="Compile Debug build"
     emcmake cmake -B build-wasm/ . -DCMAKE_BUILD_TYPE=Debug
     cmake --build build-wasm/
-    ```
-  </TabItem>
+    `
+</TabItem>
 </Tabs>
 
 ## Running Projects
 
 <Tabs
-  defaultValue="react-example"
-  values={[
-    { label: 'React Example App', value: 'react-example' },
-    { label: 'Documentation Site', value: 'docs' },
-  ]}>
-  <TabItem value="react-example">
-    ```bash
+defaultValue="react-example"
+values={[
+{ label: 'React Example App', value: 'react-example' },
+{ label: 'Documentation Site', value: 'docs' },
+]}>
+<TabItem value="react-example">
+`bash
     pnpm -F react-example dev
-    ```
-  </TabItem>
-  <TabItem value="docs">
-    ```bash
+    `
+</TabItem>
+<TabItem value="docs">
+`bash
     pnpm -F docs start
-    ```
-  </TabItem>
+    `
+</TabItem>
 </Tabs>
