@@ -70,7 +70,7 @@
     "format": "node scripts/format.js",
     "format:check": "node scripts/format.js --check",
     "format:cpp": "node scripts/format-cpp.js",
-    "format:cpp:check": "node scripts/img2num-dev-scripts/format-cpp.js",
+    "format:cpp:check": "node scripts/format-cpp.js",
     "format:js": "pnpm prettier --write . --ignore-path .prettierignore --config .prettierrc",
     "format:js:check": "pnpm prettier --check . --ignore-path .prettierignore --config .prettierrc",
     "validate-scripts": "node scripts/img2num-dev-scripts/validate-scripts.js",

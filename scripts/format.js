@@ -5,32 +5,31 @@ const args = process.argv.slice(2);
 const isCheck = args.includes("--check");
 const forwardedArgs = args.filter(a => a !== "--check");
 
-const SCRIPTS = ["format:cpp", "format:js"];
-const SCRIPT_COLORS = {
-  "format:cpp": Colors.BLUE,
-  "format:js": Colors.YELLOW,
-};
-const suffix = isCheck ? ":check" : "";
+const SCRIPT_TYPE = isCheck ? ":check" : "";
+const SCRIPTS = [
+  { name: `format:cpp${SCRIPT_TYPE}`, color: Colors.BLUE },
+  { name: `format:js${SCRIPT_TYPE}`,  color: Colors.YELLOW },
+];
 
-function run(script) {
+function run({ name, color }) {
   return new Promise((resolve, reject) => {
-    const cmd = ["pnpm", "run", `${script}${suffix}`, "--", ...forwardedArgs];
+    const cmd = ["pnpm", "run", name, "--", ...forwardedArgs];
     const proc = spawn(cmd[0], cmd.slice(1));
 
     proc.stdout.on("data", chunk => {
       chunk.toString().split("\n").forEach(line => {
-        if (line) logColor(`[${script}] ${line}`, SCRIPT_COLORS[script] || Colors.WHITE);
+        if (line) logColor(`[${name}] ${line}`, color || Colors.WHITE);
       });
     });
 
     proc.stderr.on("data", chunk => {
       chunk.toString().split("\n").forEach(line => {
-        if (line) logColor(`[${script}][ERR] ${line}`, Colors.RED, console.error);
+        if (line) logColor(`[${name}][ERR] ${line}`, Colors.RED, console.error);
       });
     });
 
     proc.on("close", code => {
-      if (code !== 0) reject(new Error(`${script} exited with ${code}`));
+      if (code !== 0) reject(new Error(`${name} exited with ${code}`));
       else resolve();
     });
 
