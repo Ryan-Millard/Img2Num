@@ -69,7 +69,7 @@
     "help": "node scripts/help.js",
     "format": "node scripts/format.js",
     "format:check": "node scripts/format.js --check",
-    "format:cpp": "node scripts/img2num-dev-scripts/format-cpp.js",
+    "format:cpp": "node scripts/format-cpp.js",
     "format:cpp:check": "node scripts/img2num-dev-scripts/format-cpp.js",
     "format:js": "pnpm prettier --write . --ignore-path .prettierignore --config .prettierrc",
     "format:js:check": "pnpm prettier --check . --ignore-path .prettierignore --config .prettierrc",
@@ -85,6 +85,10 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.0",
     "globals": "^17.3.0",
+    "img2num-dev-scripts": "workspace:*",
     "prettier": "^3.8.1"
+  },
+  "dependencies": {
+    "fast-glob": "^3.3.3"
   }
 }

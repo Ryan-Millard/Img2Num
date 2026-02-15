@@ -1,4 +1,4 @@
-import Link from '@docusaurus/Link';
+import Link from "@docusaurus/Link";
 import React, { useEffect, useState } from "react";
 import idle from "@site/static/img/pixel_art_hedgehog/idle/idle.gif";
 import run from "@site/static/img/pixel_art_hedgehog/move/move.gif";
@@ -48,7 +48,7 @@ export default function Hedgehog() {
 
     const timer = setTimeout(() => {
       setState(STATE_MACHINE[state].next);
-      setKey(k => k + 1);
+      setKey((k) => k + 1);
     }, delay);
 
     return () => clearTimeout(timer);

@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      fast-glob:
+        specifier: ^3.3.3
+        version: 3.3.3
     devDependencies:
       clang-format:
         specifier: ^1.8.0
@@ -26,6 +30,9 @@ importers:
       globals:
         specifier: ^17.3.0
         version: 17.3.0
+      img2num-dev-scripts:
+        specifier: workspace:*
+        version: link:scripts/img2num-dev-scripts
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
@@ -216,9 +223,6 @@ importers:
 
   scripts/img2num-dev-scripts:
     dependencies:
-      fast-glob:
-        specifier: ^3.3.3
-        version: 3.3.3
       fs:
         specifier: 0.0.1-security
         version: 0.0.1-security

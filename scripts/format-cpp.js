@@ -2,7 +2,7 @@
 import { execSync } from "child_process";
 import fg from "fast-glob";
 import { cpus } from "os";
-import { logColor, Colors } from "./colors.js";
+import { logColor, Colors } from "img2num-dev-scripts";
 import fs from "fs";
 
 if (!fs.existsSync(".clang-format")) {

@@ -62,6 +62,6 @@ export function colorText(text, colorEnum) {
  * @param {?string} text - The text to log; if `null` or `undefined`, an empty string is logged.
  * @param {string} colorEnum - Color token name (one of the exported `Colors`); if the token is unsupported the original text is logged without color.
  */
-export function logColor(text, colorEnum) {
-  console.log(colorText(text, colorEnum));
+export function logColor(text, colorEnum, consoleFunction = console.log) {
+  consoleFunction(colorText(text, colorEnum));
 }

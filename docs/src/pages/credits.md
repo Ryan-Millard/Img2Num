@@ -14,7 +14,7 @@ By [dustdfg](https://opengameart.org/users/dustdfg)
 
 <Hedgehog />
 
-- *License:* [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
-- *Modifications:* None
-- *Source:* [opengameart.org](https://opengameart.org/content/pixel-art-hedgehog)
-- *Usage:* Interactive animations across the site.
+- _License:_ [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+- _Modifications:_ None
+- _Source:_ [opengameart.org](https://opengameart.org/content/pixel-art-hedgehog)
+- _Usage:_ Interactive animations across the site.
