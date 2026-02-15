@@ -3,7 +3,7 @@ import { logColor, Colors } from "img2num-dev-scripts";
 
 const args = process.argv.slice(2);
 const isCheck = args.includes("--check");
-const forwardedArgs = args.filter(a => a !== "--check");
+const forwardedArgs = isCheck ? ["--", "check"] : [];
 
 const SCRIPT_TYPE = isCheck ? ":check" : "";
 const SCRIPTS = [
@@ -13,8 +13,7 @@ const SCRIPTS = [
 
 function run({ name, color }) {
   return new Promise((resolve, reject) => {
-    const cmd = ["pnpm", "run", name, "--", ...forwardedArgs];
-    const proc = spawn(cmd[0], cmd.slice(1));
+    const proc = spawn("pnpm", ["run", name, ...forwardedArgs]);
 
     proc.stdout.on("data", chunk => {
       chunk.toString().split("\n").forEach(line => {
