@@ -71,6 +71,8 @@ const WASM_TYPES = {
   },
 };
 
+// Possible error: js/missing-origin-check
+//   - This is a false positive because messages only call internal WASM exports.
 self.onmessage = async ({ data }) => {
   await readyPromise;
 
