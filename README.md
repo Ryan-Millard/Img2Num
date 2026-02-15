@@ -73,7 +73,7 @@ This README is intentionally short — full installation steps, guides and refer
 
 Visit the docs site for full guides, API references and troubleshooting:
 
-- [Quick start](https://ryan-millard.github.io/Img2Num/info/docs/introduction/getting-started)
+- [Quick start](https://ryan-millard.github.io/Img2Num/info/docs/)
 - [Documentation](https://ryan-millard.github.io/Img2Num/info/docs/)
 - [Internal Documentation](https://ryan-millard.github.io/Img2Num/info/docs/internal/)
 - [Changelog](https://ryan-millard.github.io/Img2Num/info/changelog)

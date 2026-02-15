@@ -206,6 +206,7 @@ const config = {
         logo: {
           alt: "Img2Num Logo",
           src: "img/favicon.svg",
+          height: 150,
         },
         style: "dark",
         links: [

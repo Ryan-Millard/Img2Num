@@ -3,7 +3,6 @@
   "link": {
     "type": "generated-index",
     "title": "React Workers (threads)",
-    "description": "Reference for React workers used in Img2Num",
-    "slug": "/reference/react/workers"
+    "description": "Reference for React workers used in Img2Num"
   }
 }

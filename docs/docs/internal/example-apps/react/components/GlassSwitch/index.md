@@ -353,8 +353,8 @@ thumbContent={<Moon size={16} />}
 
 ## Related Components
 
-- [ThemeSwitch](../ThemeSwitch/index) - Pre-built dark mode toggle using GlassSwitch pattern
-- [Tooltip](../Tooltip/index) - Provides hover hints (used internally by GlassSwitch)
+- [ThemeSwitch](../ThemeSwitch) - Pre-built dark mode toggle using GlassSwitch pattern
+- [Tooltip](../Tooltip) - Provides hover hints (used internally by GlassSwitch)
 
 ## Further Resources
 

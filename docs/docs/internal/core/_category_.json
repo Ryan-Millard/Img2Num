@@ -1,10 +1,9 @@
 {
-  "label": "C++ WebAssembly (WASM)",
-  "position": 3,
+  "label": "core",
   "link": {
     "type": "generated-index",
-    "title": "C++ WebAssembly (WASM)",
+    "title": "C++ Core Library",
     "description": "Documentation for all C++ WebAssembly (WASM) modules in Img2Num, including FFT and image processing functions.",
-    "slug": "/reference/wasm"
+    "slug": "/internal/core"
   }
 }
