@@ -61,7 +61,7 @@ UML_LOOK               = YES
 USE_MDFILE_AS_MAINPAGE = index.md
 
 # --- Disable latex ---
-GENERATE_LATEX         = NO
+GENERATE_LATEX         = YES
 
 # --- Search ---
 SEARCHENGINE           = YES
