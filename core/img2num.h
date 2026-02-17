@@ -1,19 +1,20 @@
+/** @file img2num.h
+ *  @brief Core image processing functions for img2num project.
+ *  @details This file declares functions for image manipulation, clustering, filtering,
+ *           and conversion to SVG. Functions operate on raw image buffers (uint8_t*).
+ * @defgroup IMG2NUM_H Img2Num Core Functions
+ */
 #ifndef IMG2NUM_H
 #define IMG2NUM_H
 
 #include <cstddef>
 #include <cstdint>
 
+/// @note All image buffers are assumed to be stored in row-major order, unless otherwise noted.
 namespace img2num {
 
-/// @file img2num.h
-/// @brief Core image processing functions for img2num project.
-/// @details This file declares functions for image manipulation, clustering, filtering,
-///          and conversion to SVG. Functions operate on raw image buffers (uint8_t*).
-/// @namespace img2num
-/// @note All image buffers are assumed to be stored in row-major order, unless otherwise noted.
-
 /// @brief Apply a Gaussian blur to an image using FFT.
+/// @ingroup IMG2NUM_H
 /// @param image Pointer to the image buffer (grayscale or single-channel).
 /// @param width Width of the image in pixels.
 /// @param height Height of the image in pixels.
@@ -22,6 +23,7 @@ namespace img2num {
 void gaussian_blur_fft(uint8_t *image, size_t width, size_t height, double sigma);
 
 /// @brief Invert the pixel values of an image.
+/// @ingroup IMG2NUM_H
 /// @param ptr Pointer to the image buffer.
 /// @param width Width of the image in pixels.
 /// @param height Height of the image in pixels.
@@ -29,6 +31,7 @@ void gaussian_blur_fft(uint8_t *image, size_t width, size_t height, double sigma
 void invert_image(uint8_t *ptr, int width, int height);
 
 /// @brief Apply a thresholding operation to an image.
+/// @ingroup IMG2NUM_H
 /// @param ptr Pointer to the image buffer.
 /// @param width Width of the image in pixels.
 /// @param height Height of the image in pixels.
@@ -37,6 +40,7 @@ void invert_image(uint8_t *ptr, int width, int height);
 void threshold_image(uint8_t *ptr, const int width, const int height, const int num_thresholds);
 
 /// @brief Apply black-thresholding to an image.
+/// @ingroup IMG2NUM_H
 /// @param ptr Pointer to the image buffer.
 /// @param width Width of the image in pixels.
 /// @param height Height of the image in pixels.
@@ -46,6 +50,7 @@ void black_threshold_image(uint8_t *ptr, const int width, const int height,
                            const int num_thresholds);
 
 /// @brief Perform k-means clustering on image data.
+/// @ingroup IMG2NUM_H
 /// @param data Pointer to input image data buffer.
 /// @param out_data Pointer to output buffer where clustered pixel values are stored.
 /// @param out_labels Pointer to output buffer for cluster labels per pixel.
@@ -60,6 +65,7 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels, const i
             const uint8_t color_space);
 
 /// @brief Apply bilateral filtering to an image.
+/// @ingroup IMG2NUM_H
 /// @param image Pointer to RGBA pixel buffer.
 /// @param width Width of the image in pixels.
 /// @param height Height of the image in pixels.
@@ -71,6 +77,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
                       double sigma_range, uint8_t color_space);
 
 /// @brief Convert labeled regions of an image into an SVG string.
+/// @ingroup IMG2NUM_H
 /// @param data Pointer to image data buffer.
 /// @param labels Pointer to label buffer, indicating region for each pixel.
 /// @param width Width of the image in pixels.

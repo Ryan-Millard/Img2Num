@@ -18,6 +18,8 @@ RUN apt-get update \
     bash \
     ca-certificates \
     libvips-dev \
+    # graphviz enables diagrams in doxygen
+    doxygen graphviz \
   && rm -rf /var/lib/apt/lists/*
 
 # Install EMSDK once, cached by Docker layers

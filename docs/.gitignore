@@ -1,5 +1,7 @@
 # Dependencies
 /node_modules
+static/docs/internal/**/api/*
+!static/docs/internal/**/api/.gitkeep
 
 # Production
 /build
