@@ -10,7 +10,9 @@
         "clear",
         "help"
       ],
-      "ignore": ["prebuild"]
+      "ignore": [
+        "prebuild"
+      ]
     },
     "Development": {
       "start": {
