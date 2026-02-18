@@ -4,6 +4,15 @@ title: Img2Num
 sidebar_label: JavaScript
 ---
 
+:::warning Not on NPM yet
+This version of the docs is a placeholder for when the package arrives on NPM.
+It is not on NPM yet, so if you would like to use the library, you will likely need to manually install the 
+source and link to it using something like `npm link` or a workspace.
+
+Feel free to [open a discussion](https://github.com/Ryan-Millard/Img2Num/discussions/new?category=general) if you would 
+like some help with it.
+:::
+
 A high-performance raster-to-vector conversion library that transforms images into **SVGs**.
 It is powered by WebAssembly (WASM) for speed, while providing easy-to-use JavaScript wrappers for integration into web or Node.js projects.
 
