@@ -166,13 +166,13 @@ const config = {
         respectPrefersColorScheme: true,
       },
 
-      //announcementBar: {
-      //id: 'announcement-docusarusus_config_js',
-      //content: 'Announcement',
-      //isCloseable: true,
-      ////backgroundColor: '#fafbfc',
-      ////textColor: '#091E42',
-      //},
+      announcementBar: {
+        id: "docs-refactor-notice",
+        content: `⚠️ Some documentation pages are incomplete due to a recent refactor. <a href="/Img2Num/info/notices/refactor-notice">Learn more</a>.`,
+        backgroundColor: "#fdfd96", // light background
+        textColor: "#091E42",       // dark text
+        isCloseable: true,
+      },
 
       metadata: [algoliaHeadTag],
 
