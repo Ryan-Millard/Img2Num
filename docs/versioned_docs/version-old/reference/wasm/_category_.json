@@ -1,0 +1,10 @@
+{
+  "label": "C++ WebAssembly (WASM)",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "title": "C++ WebAssembly (WASM)",
+    "description": "Documentation for all C++ WebAssembly (WASM) modules in Img2Num, including FFT and image processing functions.",
+    "slug": "/reference/wasm"
+  }
+}

@@ -1,0 +1,3 @@
+.noWrapKatexChildren :global(.katex) {
+  white-space: nowrap;
+}

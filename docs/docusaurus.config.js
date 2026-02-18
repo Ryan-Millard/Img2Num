@@ -12,6 +12,8 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import docusaurusPluginTypeDocConfig from "./plugins/docusaurusPluginTypeDocConfig.js";
 
+const lastVersionReleased = 'old';
+
 const require = createRequire(import.meta.url);
 require("dotenv").config();
 
@@ -105,12 +107,18 @@ const config = {
       ({
         docs: {
           sidebarPath: "./sidebars.js",
-          // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl: "https://github.com/Ryan-Millard/Img2Num/edit/main/docs/",
           routeBasePath: "docs",
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
+          lastVersion: lastVersionReleased,
+          versions: {
+            current: {
+              label: lastVersionReleased,
+              banner: 'none',
+            },
+          },
         },
         blog: {
           showReadingTime: true,
@@ -194,6 +202,10 @@ const config = {
           },
           { to: "/blog", label: "Blog", position: "left" },
           { to: "/changelog", label: "Changelog", position: "left" },
+          {
+            type: 'docsVersionDropdown',
+            position: 'right',
+          },
           {
             href: "https://github.com/Ryan-Millard/Img2Num",
             label: "GitHub",
