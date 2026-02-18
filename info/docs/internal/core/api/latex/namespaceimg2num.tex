@@ -1,0 +1,25 @@
+\hypertarget{namespaceimg2num}{}\doxysection{img2num Namespace Reference}
+\label{namespaceimg2num}\index{img2num@{img2num}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{group__IMG2NUM__H_ga365bbbd4976477bdf515be023a73d63f}{gaussian\+\_\+blur\+\_\+fft}} (uint8\+\_\+t $\ast$image, size\+\_\+t width, size\+\_\+t height, double sigma)
+\begin{DoxyCompactList}\small\item\em Apply a Gaussian blur to an image using FFT. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__IMG2NUM__H_gadcf00084d90ead66510dadc459d0990e}{invert\+\_\+image}} (uint8\+\_\+t $\ast$ptr, int width, int height)
+\begin{DoxyCompactList}\small\item\em Invert the pixel values of an image. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__IMG2NUM__H_gad36f12c85016e28c7427c356783dea03}{threshold\+\_\+image}} (uint8\+\_\+t $\ast$ptr, const int width, const int height, const int num\+\_\+thresholds)
+\begin{DoxyCompactList}\small\item\em Apply a thresholding operation to an image. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__IMG2NUM__H_ga0b00cb7b162b17498d9c816ac5e38563}{black\+\_\+threshold\+\_\+image}} (uint8\+\_\+t $\ast$ptr, const int width, const int height, const int num\+\_\+thresholds)
+\begin{DoxyCompactList}\small\item\em Apply black-\/thresholding to an image. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__IMG2NUM__H_gae73563e9dd25a8dd2120fd519ef87abd}{kmeans}} (const uint8\+\_\+t $\ast$data, uint8\+\_\+t $\ast$out\+\_\+data, int32\+\_\+t $\ast$out\+\_\+labels, const int32\+\_\+t width, const int32\+\_\+t height, const int32\+\_\+t k, const int32\+\_\+t max\+\_\+iter, const uint8\+\_\+t color\+\_\+space)
+\begin{DoxyCompactList}\small\item\em Perform k-\/means clustering on image data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__IMG2NUM__H_ga48d9a04a535198b5fc47905e359961ac}{bilateral\+\_\+filter}} (uint8\+\_\+t $\ast$image, size\+\_\+t width, size\+\_\+t height, double sigma\+\_\+spatial, double sigma\+\_\+range, uint8\+\_\+t color\+\_\+space)
+\begin{DoxyCompactList}\small\item\em Apply bilateral filtering to an image. \end{DoxyCompactList}\item 
+char $\ast$ \mbox{\hyperlink{group__IMG2NUM__H_ga5822dd3722c40a8d1cff368c6848c15d}{labels\+\_\+to\+\_\+svg}} (uint8\+\_\+t $\ast$data, int32\+\_\+t $\ast$labels, const int width, const int height, const int min\+\_\+area, const bool draw\+\_\+contour\+\_\+borders)
+\begin{DoxyCompactList}\small\item\em Convert labeled regions of an image into an SVG string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyNote}{Note}
+All image buffers are assumed to be stored in row-\/major order, unless otherwise noted. 
+\end{DoxyNote}
