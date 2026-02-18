@@ -19,8 +19,13 @@ if(EMSCRIPTEN)
   # JS bindings
   add_subdirectory(bindings/js)
 else()
-  # Example console app
+  # C bindings
+  add_subdirectory(bindings/c)
+
+  # Example console app (C++)
   add_subdirectory(example-apps/console-cpp)
+  # Example console app (C)
+  add_subdirectory(example-apps/console-c)
 
   # --- Install export for package ---
   install(EXPORT Img2NumTargets
