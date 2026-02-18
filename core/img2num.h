@@ -15,7 +15,7 @@ namespace img2num {
 
 /// @brief Apply a Gaussian blur to an image using FFT.
 /// @ingroup IMG2NUM_H
-/// @param image Pointer to the image buffer (grayscale or single-channel).
+/// @param image Pointer to the image buffer (RGBA).
 /// @param width Width of the image in pixels.
 /// @param height Height of the image in pixels.
 /// @param sigma Standard deviation for Gaussian kernel.
@@ -58,7 +58,7 @@ void black_threshold_image(uint8_t *ptr, const int width, const int height,
 /// @param height Height of the image in pixels.
 /// @param k Number of clusters to compute.
 /// @param max_iter Maximum number of iterations for the algorithm.
-/// @param color_space Color space flag (0 = grayscale, 1 = RGB, etc.).
+/// @param color_space Color space flag (0 = CIE LAB, 1 = RGB).
 /// @note The function does not modify the input buffer.
 void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels, const int32_t width,
             const int32_t height, const int32_t k, const int32_t max_iter,
@@ -71,7 +71,7 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels, const i
 /// @param height Height of the image in pixels.
 /// @param sigma_spatial Standard deviation for spatial Gaussian (proximity weight).
 /// @param sigma_range Standard deviation for range Gaussian (intensity similarity weight).
-/// @param color_space Color space flag (0 = grayscale, 1 = RGB, etc.).
+/// @param color_space Color space flag (0 = CIE LAB, 1 = RGB).
 /// @note The filter modifies the image buffer in-place.
 void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_spatial,
                       double sigma_range, uint8_t color_space);

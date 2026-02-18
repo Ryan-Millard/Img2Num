@@ -3,9 +3,10 @@ node_modules/
 .pnpm-store/
 
 # cmake
-build-wasm/
-
 build*/
+
+# C++ Example app
+console-cpp-output.png
 
 # Logs
 logs
