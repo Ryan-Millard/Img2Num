@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   build-wasm:
-    name: Build C++ (Emscripten)
+    name: Emscripten Build (bindings/js)
     runs-on: ubuntu-latest
     container:
       image: ryanmillard/img2num-dev:latest
@@ -27,3 +27,24 @@ jobs:
         with:
           name: wasm-build
           path: packages/js/build-wasm/
+
+  build-c-cpp:
+    name: Build C/C++
+    runs-on: ubuntu-latest
+    container:
+      image: ryanmillard/img2num-dev:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Run cmake
+        run: cmake -B build-c-cpp/ .
+
+      - name: Build C/C++
+        run: cmake --build build-c-cpp/
+
+      - name: Upload C/C++ build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-c-cpp
+          path: build-c-cpp/
