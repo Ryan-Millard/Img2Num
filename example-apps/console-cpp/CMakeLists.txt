@@ -14,4 +14,4 @@ file(GLOB_RECURSE EXAMPLE_SRC "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 add_executable(console_cpp_app ${EXAMPLE_SRC})
 
 # Link against the shared core library
-target_link_libraries(console_cpp_app PRIVATE core_shared)
+target_link_libraries(console_cpp_app PRIVATE Img2Num)

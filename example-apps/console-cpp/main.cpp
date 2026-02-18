@@ -8,7 +8,7 @@
 #include <string>
 #include <cstring>
 
-#include "img2num.h"
+#include <img2num.h>
 
 int main(int argc, char** argv) {
     if (argc < 2) {
