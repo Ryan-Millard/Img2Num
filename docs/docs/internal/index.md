@@ -3,6 +3,7 @@ title: Internal Documentations
 sidebar_label: Internal Docs
 description: Complete reference for Img2Num\'s codebase including WASM modules, React components, and developer tools - designed for developers to use. This is the detailed reference documentation for all Img2Num code, including WebAssembly modules and React components. Use this as a guide to understand, use, and contribute to the project.
 keywords: [reference, API, wasm, react, Img2Num, documentation, developer guide]
+sidebar_position: 999
 ---
 
 # Internal Documentation

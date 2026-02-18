@@ -2,6 +2,7 @@
 id: img2num-javascript
 title: Img2Num
 sidebar_label: JavaScript
+sidebar_position: 2
 ---
 
 :::warning Not on NPM yet
