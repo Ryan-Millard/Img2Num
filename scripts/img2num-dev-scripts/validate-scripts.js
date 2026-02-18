@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 import fs from "fs";
-import path from "path";
 import { logColor, Colors } from "./colors.js";
 
 /**
@@ -32,7 +31,7 @@ function flattenScriptsInfo(scriptsInfo) {
 /**
  * Validate that package.json scripts match scriptsInfo.
  */
-function validateScripts(pkgPath) {
+export function validateScripts(pkgPath) {
   const pkg = loadPackageJson(pkgPath);
   const { scripts, scriptsInfo } = pkg;
 
@@ -45,11 +44,25 @@ function validateScripts(pkgPath) {
   const infoSet = new Set(Object.keys(flattenScriptsInfo(scriptsInfo)));
   let failed = false;
 
-  // Scripts without description
+  // Scripts without description and not ignored
   for (const script of scriptsSet) {
-    if (!infoSet.has(script)) {
+    if (!infoSet.has(script) && !scriptsInfo._meta.ignore.includes(script)) {
       logColor(`Script "${script}" exists in scripts but missing in scriptsInfo`, Colors.RED);
       failed = true;
+    }
+  }
+
+  // Scripts that are in ignore shouldn’t exist in scriptsInfo
+  for (const ignored of scriptsInfo._meta?.ignore ?? []) {
+    for (const group of Object.keys(scriptsInfo)) {
+      if (group === "_meta") continue;
+      if (ignored in scriptsInfo[group]) {
+        logColor(
+          `Ignored script "${ignored}" should not appear in scriptsInfo group "${group}"`,
+          Colors.RED
+        );
+        failed = true;
+      }
     }
   }
 
@@ -65,15 +78,3 @@ function validateScripts(pkgPath) {
 
   logColor(`All scripts validated for ${pkgPath}`, Colors.GREEN);
 }
-
-// --- Validate packages ---
-[
-  ".",
-  "example-apps/react-js",
-  "docs",
-  "scripts/img2num-dev-scripts",
-].forEach((project) => {
-  const pathToPackageJson = `./${project}/package.json`;
-  const resolvedPath = path.resolve(pathToPackageJson);
-  validateScripts(resolvedPath);
-});

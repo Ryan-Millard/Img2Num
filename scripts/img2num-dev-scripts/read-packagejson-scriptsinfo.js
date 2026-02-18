@@ -16,11 +16,13 @@ export function readPackageJsonScripts(fileUrl) {
   // Separate _meta
   const { _meta = {}, ...groups } = scriptsInfo;
   const basicItems = _meta.basic ?? [];
+  const ignoreList = new Set(_meta.ignore ?? []);
 
   // Flatten scripts for CLI
   const flat = {};
   for (const [group, entries] of Object.entries(groups)) {
     for (const [name, desc] of Object.entries(entries)) {
+      if (ignoreList.has(name)) continue; // skip ignored scripts
       flat[name] = {
         desc: desc.desc || "", // take the actual string description
         args: desc.args || [], // optional, if you want to show CLI args

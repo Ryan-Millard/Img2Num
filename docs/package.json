@@ -9,7 +9,8 @@
         "build",
         "clear",
         "help"
-      ]
+      ],
+      "ignore": ["prebuild"]
     },
     "Development": {
       "start": {
@@ -80,6 +81,10 @@
         "args": [
           "Pass any standard Docusaurus CLI arguments here"
         ]
+      },
+      "doxygen": {
+        "desc": "Generate C++ API documentation using Doxygen for internal docs",
+        "args": []
       },
       "help": {
         "desc": "Show this help message",
