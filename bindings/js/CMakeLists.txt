@@ -20,7 +20,7 @@ file(GLOB_RECURSE BINDING_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
 add_executable(img2num_wasm ${BINDING_SRC})
 
 # Link core library object files
-target_link_libraries(img2num_wasm PRIVATE core)
+target_link_libraries(img2num_wasm PRIVATE core_obj)
 
 # Include directories
 target_include_directories(img2num_wasm PRIVATE

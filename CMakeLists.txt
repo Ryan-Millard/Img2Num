@@ -15,5 +15,10 @@ endif()
 # Core library
 add_subdirectory(core)
 
-# JS bindings
-add_subdirectory(bindings/js)
+if(EMSCRIPTEN)
+  # JS bindings
+  add_subdirectory(bindings/js)
+else()
+  # Example console app
+  add_subdirectory(example-apps/console-cpp)
+endif()
