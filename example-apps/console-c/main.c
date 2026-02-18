@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
 
     // Apply Gaussian blur using C API
     double sigma = width * SIGMA_WIDTH_RATIO;
-    gaussian_blur_fft(img_data, width, height, sigma);
+    img2num_gaussian_blur_fft(img_data, width, height, sigma);
 
     // Save blurred image
     const char* out_path = "console-c-output.png";

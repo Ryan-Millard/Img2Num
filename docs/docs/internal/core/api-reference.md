@@ -11,7 +11,7 @@ import FullscreenWrapper from '@site/src/components/FullscreenWrapper';
 
 <FullscreenWrapper>
   <iframe
-    src="../api/"
+    src="/Img2Num/info/docs/internal/core/api/"
     style={{
       width: '100%',
       height: '100vh',
@@ -27,8 +27,8 @@ import FullscreenWrapper from '@site/src/components/FullscreenWrapper';
 ## About this page
 
 This page is a <b>direct proxy for the 
-<a href="../api/" onClick={(e) => {
+<a href="/Img2Num/info/docs/internal/core/api/" onClick={(e) => {
   e.preventDefault();
-  window.location.href = "../api/";
+  window.location.href = "/Img2Num/info/docs/internal/core/api/";
 }}>Doxygen documentation</a>
 </b> generated from the C++ core directory.

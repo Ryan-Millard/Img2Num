@@ -29,7 +29,7 @@ WARN_LOGFILE           = warnings.log
 ENABLE_PREPROCESSING   = YES
 MACRO_EXPANSION        = YES
 SEARCH_INCLUDES        = YES
-FILE_PATTERNS          = *.h *.hpp *.c *.cpp *.cc *.md
+FILE_PATTERNS          = *.h *.hpp *.c *.cpp *.cc *.md *.dox
 RECURSIVE              = YES
 
 # --- Source browser ---

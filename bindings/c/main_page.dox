@@ -1,0 +1,15 @@
+/*! \mainpage My Project
+ *
+ * \section intro_sec Introduction
+ *
+ * Welcome to the My Project documentation!
+ *
+ * This project is written in C and demonstrates using Doxygen with .dox files.
+ *
+ * \section install_sec Installation
+ *
+ * Steps to build and run the project:
+ * - Step 1
+ * - Step 2
+ */
+
