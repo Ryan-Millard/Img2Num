@@ -12,8 +12,6 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import docusaurusPluginTypeDocConfig from "./plugins/docusaurusPluginTypeDocConfig.js";
 
-const lastVersionReleased = 'old';
-
 const require = createRequire(import.meta.url);
 require("dotenv").config();
 
@@ -112,11 +110,11 @@ const config = {
           routeBasePath: "docs",
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
-          lastVersion: lastVersionReleased,
+          lastVersion: 'old',
           versions: {
             current: {
-              label: lastVersionReleased,
-              banner: 'none',
+              label: 'Next',
+              banner: 'unreleased',
             },
           },
         },
