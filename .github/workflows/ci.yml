@@ -6,95 +6,50 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   lint:
-    name: Lint Code
+    name: Lint & Validate Code
     runs-on: ubuntu-latest
+    container:
+      image: ryanmillard/img2num-dev:latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: "22"
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
+      - name: Install PNPM dependencies
+        run: pnpm install
 
       - name: Run ESLint
-        run: npm run lint
+        run: pnpm run eslint
 
-      - name: Run format check
-        run: npm run format:check
+      - name: Validate format
+        run: pnpm run format:check
 
-      - name: Run editorconfig-checker
-        run: npm run lint:style
-  validate-scripts:
-    runs-on: ubuntu-latest
-    steps:
-      # Checkout full history to ensure git diff works
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      # Node.js setup
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 22
-      # Install dependencies
-      - name: Install dependencies
-        run: npm ci
-      # Detect if scripts changed
-      - name: Determine if scripts changed
-        id: check_changes
-        shell: bash
-        run: |
-          echo "Checking for changed scripts..."
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            BASE_SHA="${{ github.event.pull_request.base.sha }}"
-          else
-            BASE_SHA="${{ github.event.before }}"
-          fi
-          HEAD_SHA="${{ github.sha }}"
-          # Ensure a valid common ancestor (handles force-pushes)
-          BASE_SHA=$(git merge-base "$BASE_SHA" "$HEAD_SHA")
-          files=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
-          echo "Changed files: $files"
-          match=false
-          for file in $files; do
-            if [[ "$file" == "package.json" || "$file" == "docs/package.json" ]]; then
-              if git diff "$BASE_SHA" "$HEAD_SHA" -- "$file" | grep -q '"scriptsInfo"'; then
-                match=true
-                break
-              fi
-            elif [[ "$file" == scripts/* || "$file" == docs/scripts/* ]]; then
-              match=true
-              break
-            fi
-          done
-          echo "scripts_changed=$match" >> "$GITHUB_OUTPUT"
-      # Run script validation if scripts changed
-      - name: Run script validation
-        id: validate
-        if: steps.check_changes.outputs.scripts_changed == 'true'
-        shell: bash
-        run: |
-          set -o pipefail
-          npm run validate-scripts 2>&1 | tee validation.log
-          echo "validation_exit_code=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
-      # Comment on PR if validation fails
-      - name: Comment on PR if validation fails
-        if: steps.validate.outputs.validation_exit_code != '0' && github.event_name == 'pull_request'
-        uses: ./.github/workflows/commenter.yml
-        with:
-          issue_number: ${{ github.event.pull_request.number }}
-          message: |
-            ⚠️ **Script validation failed!**
-            The following issues were found with your PR (latest 100 lines):
-            ```
-            $(tail -n 100 validation.log)
-            ```
-          is_pr: true
+      - name: Validate .editorconfig adherance
+        run: pnpm run editorconfig:check
+
+      - name: Validate scriptsInfo in package.json
+        run: pnpm run validate-scripts
+
+  build-wasm:
+    name: Build WASM
+    uses: ./.github/workflows/build-wasm.yml
+
+  build-react-app:
+    name: Build React App
+    uses: ./.github/workflows/build-react-app.yml
+    needs: build-wasm
+    with:
+      wasm-artifacts-path: packages/js/build-wasm/
+
+  build-docs:
+    name: Build Documentation Site
+    uses: ./.github/workflows/build-docs.yml
+    secrets:
+      ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+      ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+      ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME }}

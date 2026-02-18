@@ -6,26 +6,27 @@ sidebar_position: 1
 
 # Welcome to Img2Num! 🦔
 
-Img2Num is a lightweight, high-performance C++ library (compiled to WebAssembly) for converting images to numeric representations with ease and speed.
+Img2Num is a lightweight, high-performance library for converting raster images to to SVGs with ease and speed.
 
 Whether you're a beginner or an advanced user, you'll find everything you need here to get started and master Img2Num.
 
 ## Getting Started
 
-Follow the [installation guide](./introduction/getting-started.md) to set up Img2Num quickly.
+Follow the relevant installation guide from the following:
 
-## Quick Links
+- [JavaScript](./js)
 
-- [Overview](./introduction/getting-started.md) – Project introduction and setup
-- [Changelog](/changelog) – Track releases and updates
+## Changelog
+
+Our [changelog](/changelog) is quite empty right now since we haven't had our first release yet, but it is coming soon!
 
 ---
 
 We hope you enjoy using **Img2Num**!
-For issues or contributions, visit our
+For issues or contributions, see our [contributors guide](./contributing) or visit our
 [GitHub repository](https://github.com/Ryan-Millard/Img2Num/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22).
 
-:::important
+:::note
 If you spot something wrong in the documentation or elsewhere, please help the community by opening an issue for it!
 
 Issue links:

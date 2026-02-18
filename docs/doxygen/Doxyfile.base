@@ -1,0 +1,67 @@
+# =========================
+# Shared Img2Num Doxygen Config
+# =========================
+
+DOXYFILE_ENCODING      = UTF-8
+PROJECT_BRIEF          = "Internal API Documentation"
+OUTPUT_LANGUAGE        = English
+MARKDOWN_SUPPORT       = YES
+AUTOLINK_SUPPORT       = YES
+BUILTIN_STL_SUPPORT    = YES
+QUIET                  = NO
+
+# --- Extraction ---
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+EXTRACT_ANON_NSPACES   = YES
+HIDE_UNDOC_MEMBERS     = NO
+HIDE_UNDOC_CLASSES     = NO
+
+# --- Warnings (CI useful) ---
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_DOC_ERROR      = YES
+WARN_NO_PARAMDOC       = YES
+WARN_LOGFILE           = warnings.log
+
+# --- Parsing ---
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = YES
+SEARCH_INCLUDES        = YES
+FILE_PATTERNS          = *.h *.hpp *.c *.cpp *.cc *.md
+RECURSIVE              = YES
+
+# --- Source browser ---
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = YES
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES
+VERBATIM_HEADERS       = YES
+
+# --- OUTPUT ---
+GENERATE_HTML          = YES
+HTML_COLORSTYLE_HUE    = 210
+HTML_DYNAMIC_SECTIONS  = YES
+GENERATE_TREEVIEW      = YES
+HTML_TIMESTAMP         = NO
+#GENERATE_XML           = YES
+#XML_OUTPUT             = xml
+#XML_PROGRAMLISTING     = YES
+
+# --- Graphviz ---
+HAVE_DOT               = YES
+DOT_IMAGE_FORMAT       = svg
+INTERACTIVE_SVG        = YES
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
+UML_LOOK               = YES
+
+# --- Markdown ---
+USE_MDFILE_AS_MAINPAGE = index.md
+
+# --- Disable latex ---
+GENERATE_LATEX         = YES
+
+# --- Search ---
+SEARCHENGINE           = YES

@@ -1,24 +1,19 @@
 ---
-title: Img2Num
+title: "Vectorize Images: Image to SVG"
 description: Convert any image into a color-by-number template you can interact with.
 slug: /
+sidebar: false
 ---
 
-import hedgeMove from '@site/static/img/pixel_art_hedgehog/move/move.gif';
+import Hedgehog from '@site/src/components/Hedgehog';
 
-# Welcome to Img2Num
+# Vectorize Images: Image → SVG
 
-<img src={hedgeMove} alt="Hedhehog Running" style={{ display: 'block', margin: '0 auto', height: '20vh', aspectRatio: 'maintain' }} />
-
-Turn your favorite images into interactive color-by-number templates in seconds!
-
-- Upload any image and instantly get a numbered template.
-- Click or tap to fill in colors digitally.
-- Print and color offline for fun or educational purposes.
+<Hedgehog />
 
 ## Get Started
 
-[Let's go!](/docs/introduction/getting-started)
+Want to learn how to use Img2Num? [Let's go!](./docs)
 
 ## Learn More
 

@@ -4,9 +4,7 @@
 
 # Img2Num
 
-[![Site Badge](https://img.shields.io/badge/site-online-blue.svg)](https://ryan-millard.github.io/Img2Num/)
-[![Docs Badge](https://img.shields.io/badge/docs-online-blue.svg)](https://ryan-millard.github.io/Img2Num/info/)
-[![License Badge](https://img.shields.io/badge/license-AGPLv3-blue.svg)](LICENSE)
+[![Deploy to GitHub Pages](https://github.com/Ryan-Millard/Img2Num/actions/workflows/deploy.yml/badge.svg)](https://github.com/Ryan-Millard/Img2Num/actions/workflows/deploy.yml)
 
 </div>
 
@@ -61,9 +59,6 @@ Try it out now by [clicking here](https://ryan-millard.github.io/Img2Num/)!
 
 ---
 
-> [!IMPORTANT]
-> We're in the process of converting the C++ into a self-contained library that is separate from the React app. Stay tuned by watching this repo!
-
 ## What this repository contains (short)
 
 - A React frontend that handles image input, preview and in-browser colouring.
@@ -71,31 +66,26 @@ Try it out now by [clicking here](https://ryan-millard.github.io/Img2Num/)!
 
 This README is intentionally short — full installation steps, guides and references live in the docs site (see **Essential links** below).
 
-## Essential links (docs site)
+## Essential links
 
 Visit the docs site for full guides, API references and troubleshooting:
 
-- [Quick start](https://ryan-millard.github.io/Img2Num/info/docs/introduction/getting-started)
-- [Guidelines](https://ryan-millard.github.io/Img2Num/info/docs/category/-guidelines)
 - [Documentation](https://ryan-millard.github.io/Img2Num/info/docs/)
-- [Reference & Advanced Guides](https://ryan-millard.github.io/Img2Num/info/docs/reference/)
+- [Installation & Usage](https://ryan-millard.github.io/Img2Num/info/docs/js/)
+- [Internal Documentation](https://ryan-millard.github.io/Img2Num/info/docs/internal/)
 - [Changelog](https://ryan-millard.github.io/Img2Num/info/changelog)
+- [React Example App](https://ryan-millard.github.io/Img2Num/)
 
 ## Contributing
 
-We welcome contributions from all places. Please read the [Contribution Guidelines](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/contributing) and the pinned issues before opening issues or pull requests.
+See our [CONTIRBUTING.md](https://github.com/Ryan-Millard/Img2Num/blob/main/CONTRIBUTING.md)
 
-**A few important points:**
+## License Summary
 
-- **Add tests** with your PR — new features and bug fixes **must** include tests where appropriate. PRs without tests are unlikely to be approved.
-- Follow the repository's [coding style rules](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/coding-style) and [commit message rules](https://ryan-millard.github.io/Img2Num/info/docs/guidelines/commits).
-- Use the issue and PR templates when filing issues or submitting code. Your PR will be rejected if you don't.
+- **MIT** — core packages, scripts, libraries, build tools, etc.
+- **AGPLv3** — docs, example apps, CI/config.
 
-If you're unsure what to change, [open a discussion](https://github.com/Ryan-Millard/Img2Num/discussions/new/choose) and someone will assist you.
-
-## License
-
-[AGPLv3](https://ryan-millard.github.io/Img2Num/info/docs/license)
+See the top-level [LICENSE](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE) file for the explanation.
 
 ## Can't find something?
 

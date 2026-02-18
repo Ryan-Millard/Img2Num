@@ -1,0 +1,7 @@
+@INCLUDE = ../../docs/doxygen/Doxyfile.base
+
+PROJECT_NAME     = "Img2Num JS/WASM Bindings"
+PROJECT_NUMBER   = dev
+
+INPUT            = src
+OUTPUT_DIRECTORY = ../../docs/static/docs/internal/bindings/js/api

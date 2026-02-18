@@ -1,0 +1,12 @@
+packages:
+  - packages/js
+  - example-apps/react-js
+  - docs
+  - scripts/img2num-dev-scripts
+
+onlyBuiltDependencies:
+  - "@swc/core"
+  - core-js
+  - core-js-pure
+  - esbuild
+  - sharp

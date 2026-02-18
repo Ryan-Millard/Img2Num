@@ -1,9 +1,0 @@
-{
-  "label": "Components",
-  "link": {
-    "type": "generated-index",
-    "title": "React Components",
-    "description": "Reference for React components in Img2Num",
-    "slug": "/reference/react/components"
-  }
-}

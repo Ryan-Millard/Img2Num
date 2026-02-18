@@ -1,0 +1,10 @@
+{
+  "label": "Theme Variables",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "title": "Global CSS - Theme Variables",
+    "description": "Reference for global theme CSS variables in Img2Num",
+    "slug": "/internal/example-apps/react/css/global/variables/theme"
+  }
+}
