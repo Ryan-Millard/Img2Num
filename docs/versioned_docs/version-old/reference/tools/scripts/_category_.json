@@ -1,0 +1,8 @@
+{
+  "label": "Scripts",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Every development script you may need whilst working on Img2Num"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "label": "Modules",
+  "link": {
+    "type": "generated-index",
+    "title": "WebAssembly Modules",
+    "description": "Documentation for individual WebAssembly (WASM) modules in Img2Num.",
+    "slug": "/reference/wasm/modules"
+  }
+}
