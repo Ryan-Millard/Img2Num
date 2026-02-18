@@ -66,14 +66,15 @@ Try it out now by [clicking here](https://ryan-millard.github.io/Img2Num/)!
 
 This README is intentionally short — full installation steps, guides and references live in the docs site (see **Essential links** below).
 
-## Essential links (docs site)
+## Essential links
 
 Visit the docs site for full guides, API references and troubleshooting:
 
-- [Quick start](https://ryan-millard.github.io/Img2Num/info/docs/)
 - [Documentation](https://ryan-millard.github.io/Img2Num/info/docs/)
+- [Installation & Usage](https://ryan-millard.github.io/Img2Num/info/docs/js/)
 - [Internal Documentation](https://ryan-millard.github.io/Img2Num/info/docs/internal/)
 - [Changelog](https://ryan-millard.github.io/Img2Num/info/changelog)
+- [React Example App](https://ryan-millard.github.io/Img2Num/)
 
 ## Contributing
 
