@@ -59,9 +59,6 @@ Try it out now by [clicking here](https://ryan-millard.github.io/Img2Num/)!
 
 ---
 
-> [!IMPORTANT]
-> We're in the process of converting the C++ into a self-contained library that is separate from the React app. Stay tuned by watching this repo!
-
 ## What this repository contains (short)
 
 - A React frontend that handles image input, preview and in-browser colouring.

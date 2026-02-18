@@ -110,11 +110,11 @@ const config = {
           routeBasePath: "docs",
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
-          lastVersion: 'old',
+          lastVersion: "old",
           versions: {
             current: {
-              label: 'Next',
-              banner: 'unreleased',
+              label: "Next",
+              banner: "unreleased",
             },
           },
         },
@@ -176,7 +176,7 @@ const config = {
         id: "docs-refactor-notice",
         content: `⚠️ Some documentation pages are incomplete due to a recent refactor. <a href="/Img2Num/info/notices/refactor-notice">Learn more</a>.`,
         backgroundColor: "#fdfd96", // light background
-        textColor: "#091E42",       // dark text
+        textColor: "#091E42", // dark text
         isCloseable: true,
       },
 
@@ -201,8 +201,8 @@ const config = {
           { to: "/blog", label: "Blog", position: "left" },
           { to: "/changelog", label: "Changelog", position: "left" },
           {
-            type: 'docsVersionDropdown',
-            position: 'right',
+            type: "docsVersionDropdown",
+            position: "right",
           },
           {
             href: "https://github.com/Ryan-Millard/Img2Num",
