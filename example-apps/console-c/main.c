@@ -10,47 +10,50 @@
 
 #include <cimg2num.h>
 
+const int NUM_CHANNELS = 4;
+const double SIGMA_WIDTH_RATIO = 0.005;
+
 int main(int argc, char** argv) {
     if (argc < 2) {
         fprintf(stderr, "Usage: %s <image_file>\n", argv[0]);
         return 1;
     }
 
-    const char* imagePath = argv[1];
+    const char* image_path = argv[1];
     int width, height, channels;
 
     // Load image as RGBA
-    uint8_t* imgDataOriginal = stbi_load(imagePath, &width, &height, &channels, 4);
-    if (!imgDataOriginal) {
+    uint8_t* image_path_original = stbi_load(image_path, &width, &height, &channels, NUM_CHANNELS);
+    if (!image_path_original) {
         fprintf(stderr, "Failed to load image: %s\n", stbi_failure_reason());
         return 1;
     }
 
-    printf("Image loaded: %dx%d with 4 channels.\n", width, height);
+    printf("Image loaded: %dx%d with NUM_CHANNELS channels.\n", width, height);
 
     // Allocate a copy of the image
-    const size_t img_size = (size_t)width * (size_t)height * 4;
-    uint8_t* imgData = (uint8_t*)malloc(img_size);
-    if (!imgData) {
+    const size_t img_size = (size_t)width * (size_t)height * NUM_CHANNELS;
+    uint8_t* img_data = (uint8_t*)malloc(img_size);
+    if (!img_data) {
         fprintf(stderr, "Failed to allocate memory for image copy\n");
-        stbi_image_free(imgDataOriginal);
+        stbi_image_free(image_path_original);
         return 1;
     }
-    memcpy(imgData, imgDataOriginal, img_size);
+    memcpy(img_data, image_path_original, img_size);
 
     // Apply Gaussian blur using C API
-    double sigma = width * 0.005;
-    gaussian_blur_fft(imgData, width, height, sigma);
+    double sigma = width * SIGMA_WIDTH_RATIO;
+    gaussian_blur_fft(img_data, width, height, sigma);
 
     // Save blurred image
-    const char* outPath = "console-c-output.png";
-    if (!stbi_write_png(outPath, width, height, 4, imgData, width * 4)) {
+    const char* out_path = "console-c-output.png";
+    if (!stbi_write_png(out_path, width, height, NUM_CHANNELS, img_data, width * NUM_CHANNELS)) {
         fprintf(stderr, "Failed to save blurred image!\n");
     } else {
-        printf("Blurred image saved to: %s\n", outPath);
+        printf("Blurred image saved to: %s\n", out_path);
     }
 
-    stbi_image_free(imgDataOriginal);
-    free(imgData);
+    stbi_image_free(image_path_original);
+    free(img_data);
     return 0;
 }
