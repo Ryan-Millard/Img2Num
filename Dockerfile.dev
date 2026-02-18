@@ -35,9 +35,9 @@ ENV EMSDK=$EMSDK_DIR
 # Download stb_image.h into a standard include directory
 RUN mkdir -p /usr/include/stb \
   && curl -L https://raw.githubusercontent.com/nothings/stb/master/stb_image.h \
-       -o /usr/include/stb/stb_image.h \
+        -o /usr/include/stb/stb_image.h \
   && curl -L https://raw.githubusercontent.com/nothings/stb/master/stb_image_write.h \
-       -o /usr/include/stb/stb_image_write.h
+        -o /usr/include/stb/stb_image_write.h
 
 # Install pnpm
 RUN corepack enable \
