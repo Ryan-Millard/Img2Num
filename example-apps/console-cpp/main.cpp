@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    std::cout << "Image loaded: " << width << "x" << height << " with " << channels + 1 << " channel(s)." << std::endl;
+    std::cout << "Image loaded: " << width << "x" << height << " with " << NUM_CHANNELS << " channel(s)." << std::endl;
 
     // Allocate a copy of the original image
     uint8_t* img_data{new uint8_t[width * height * NUM_CHANNELS]};

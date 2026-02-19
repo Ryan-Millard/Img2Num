@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    printf("Image loaded: %dx%d with NUM_CHANNELS channels.\n", width, height);
+    printf("Image loaded: %dx%d with %d channels.\n", width, height, NUM_CHANNELS);
 
     // Allocate a copy of the image
     const size_t img_size = (size_t)width * (size_t)height * NUM_CHANNELS;
