@@ -40,13 +40,15 @@ int main(int argc, char** argv) {
 
     // Save the blurred image
     std::string out_path{"console-cpp-output.png"};
+    int exit_code{0};
     if (!stbi_write_png(out_path.c_str(), width, height, NUM_CHANNELS, img_data, width * NUM_CHANNELS)) {
         std::cerr << "Failed to save blurred image!" << std::endl;
+        exit_code = 1;
     } else {
         std::cout << "Blurred image saved to: " << out_path << std::endl;
     }
 
     stbi_image_free(image_data_original);
     delete[] img_data;
-    return 0;
+    return exit_code;
 }
