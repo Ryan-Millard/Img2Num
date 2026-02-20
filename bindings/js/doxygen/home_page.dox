@@ -3,9 +3,13 @@
  * \section intro_sec Introduction
  *
  * {{INTRODUCTION_PARAGRAPH}}
- * The Img2Num library provides powerful image processing and vectorization capabilities. With the addition of JavaScript and WebAssembly (WASM) bindings, it is now easy to integrate Img2Num into web applications, enabling image processing in the browser with high performance.
+ * The Img2Num library provides powerful image processing and vectorization capabilities. With the addition of
+ * JavaScript and WebAssembly (WASM) bindings, it is now easy to integrate Img2Num into web applications, enabling
+ * image processing in the browser with high performance.
  *
- * These bindings expose the core functionality of Img2Num to JavaScript, allowing developers to access image processing functions directly in the browser or via Node.js environments. WASM provides near-native performance for resource-intensive tasks like Fast Fourier Transforms (FFT) and contour tracing.
+ * These bindings expose the core functionality of Img2Num to JavaScript, allowing developers to access image processing
+ * functions directly in the browser or via Node.js environments. WASM provides near-native performance for
+ * resource-intensive tasks like Fast Fourier Transforms (FFT) and contour tracing.
  *
  * \section features_sec Key Features
  *

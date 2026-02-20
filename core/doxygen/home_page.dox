@@ -6,7 +6,8 @@
  * and libraries. C++ developers include this library directly, C developers include a lightweight wrapper around it, and JavaScript
  * developers import a safe wrapper that protects them from manual memory management.
  *
- * The main raster image vectorization functions are located in this part of the library—FFTs, contour tracing, blurring,
+ * The main raster image vectorization functions are located in this part of the library—FFTs, contour tracing,
+ * blurring,
  * and much more.
  *
  * \section features_sec Key Features
