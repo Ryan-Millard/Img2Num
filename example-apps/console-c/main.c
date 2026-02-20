@@ -19,12 +19,12 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    const char* image_path = argv[1];
+    const char* image_data = argv[1];
     int width, height, channels;
 
     // Load image as RGBA
-    uint8_t* image_path_original = stbi_load(image_path, &width, &height, &channels, NUM_CHANNELS);
-    if (!image_path_original) {
+    uint8_t* image_data_original = stbi_load(image_data, &width, &height, &channels, NUM_CHANNELS);
+    if (!image_data_original) {
         fprintf(stderr, "Failed to load image: %s\n", stbi_failure_reason());
         return 1;
     }
@@ -36,10 +36,10 @@ int main(int argc, char** argv) {
     uint8_t* img_data = (uint8_t*)malloc(img_size);
     if (!img_data) {
         fprintf(stderr, "Failed to allocate memory for image copy\n");
-        stbi_image_free(image_path_original);
+        stbi_image_free(image_data_original);
         return 1;
     }
-    memcpy(img_data, image_path_original, img_size);
+    memcpy(img_data, image_data_original, img_size);
 
     // Apply Gaussian blur using C API
     double sigma = width * SIGMA_WIDTH_RATIO;
@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
         printf("Blurred image saved to: %s\n", out_path);
     }
 
-    stbi_image_free(image_path_original);
+    stbi_image_free(image_data_original);
     free(img_data);
     return 0;
 }
