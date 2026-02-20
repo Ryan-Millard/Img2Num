@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
 
     // Allocate a copy of the original image
     uint8_t* img_data{new uint8_t[width * height * NUM_CHANNELS]};
-    std::memcpy(img_data, image_data_original, width * height * NUM_CHANNELS);
+    std::memcpy(img_data, image_data_original, static_cast<size_t>(width) * static_cast<size_t>(height) * NUM_CHANNELS);
 
     // Apply Gaussian blur
     const double sigma{width * SIGMA_WIDTH_RATIO};
