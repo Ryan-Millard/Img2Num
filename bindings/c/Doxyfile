@@ -6,5 +6,5 @@ PROJECT_NUMBER   = dev
 OPTIMIZE_OUTPUT_FOR_C = YES
 EXTRACT_ALL            = YES
 
-INPUT            = include src ../../doxygen/img2num.h.dox
+INPUT            = include src ../../doxygen/img2num.h.dox doxygen/home_page.dox
 OUTPUT_DIRECTORY = ../../docs/static/docs/internal/bindings/c/api

@@ -1,0 +1,44 @@
+/*! \mainpage JavaScript/WASM Bindings
+ *
+ * \section intro_sec Introduction
+ *
+ * {{INTRODUCTION_PARAGRAPH}}
+ * The Img2Num library provides powerful image processing and vectorization capabilities. With the addition of JavaScript and WebAssembly (WASM) bindings, it is now easy to integrate Img2Num into web applications, enabling image processing in the browser with high performance.
+ *
+ * These bindings expose the core functionality of Img2Num to JavaScript, allowing developers to access image processing functions directly in the browser or via Node.js environments. WASM provides near-native performance for resource-intensive tasks like Fast Fourier Transforms (FFT) and contour tracing.
+ *
+ * \section features_sec Key Features
+ *
+ * The JS/WASM bindings offer the following key features:
+ * - **Direct browser access** to Img2Num's image vectorization functions.
+ * - **Performance** optimized with WebAssembly for fast computation.
+ * - **Cross-platform**: Works seamlessly on all major browsers and Node.js environments.
+ * - **Memory safety** provided by the WASM wrapper, ensuring no manual memory management is required.
+ *
+ * \section building_sec Building JS/WASM Bindings
+ *
+ * To build the JavaScript/WASM bindings, follow these steps:
+ *
+ * \code{.sh}
+ * emcmake cmake -B build-wasm
+ * cmake --build build-wasm
+ * \endcode
+ *
+ * This will generate the necessary WASM files for use in JavaScript. You can then integrate them into your web projects or Node.js applications.
+ *
+ * \section install_sec Installation
+ *
+ * The JS/WASM bindings can be installed using the following commands:
+ * \code{.sh}
+ * cmake --install build-wasm
+ * \endcode
+ *
+ * After installation, you will find the WASM module and JavaScript wrapper in the `{{LIB_PATH}}` directory.
+ *
+ * \section usage_sec Usage
+ *
+ * Usage of these raw bindings is discouraged. The Img2Num JavaScript library wraps these bindings safely for you. If
+ * you are looking to using it, see the relevant documentation.
+ *
+ * Each function exposed to JavaScript provides a simple interface for interacting with the core Img2Num library functions in the browser or Node.js.
+ */
