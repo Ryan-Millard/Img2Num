@@ -13,5 +13,10 @@ set(EXAMPLE_SRC main.c)
 # Build executable
 add_executable(console_c_app ${EXAMPLE_SRC})
 
+# Include the downloaded headers directly
+target_include_directories(console_c_app PRIVATE
+    ${CMAKE_BINARY_DIR}
+)
+
 # Link against the C bindings
 target_link_libraries(console_c_app PRIVATE CImg2Num m)

@@ -32,13 +32,6 @@ RUN git clone --depth 1 https://github.com/emscripten-core/emsdk.git $EMSDK_DIR 
 ENV PATH=$EMSDK_DIR:$EMSDK_DIR/upstream/emscripten:$PATH
 ENV EMSDK=$EMSDK_DIR
 
-# Download stb_image.h into a standard include directory
-RUN mkdir -p /usr/include/stb \
-  && curl -L https://raw.githubusercontent.com/nothings/stb/master/stb_image.h \
-        -o /usr/include/stb/stb_image.h \
-  && curl -L https://raw.githubusercontent.com/nothings/stb/master/stb_image_write.h \
-        -o /usr/include/stb/stb_image_write.h
-
 # Install pnpm
 RUN corepack enable \
   && corepack prepare pnpm@10.29.1 --activate

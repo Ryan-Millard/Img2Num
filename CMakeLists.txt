@@ -22,6 +22,17 @@ else()
   # C bindings
   add_subdirectory(bindings/c)
 
+  # --- Download stb_image.h and stb_image_write.h ---
+  include(FetchContent)
+  file(DOWNLOAD 
+    "https://raw.githubusercontent.com/nothings/stb/master/stb_image.h"
+    "${CMAKE_BINARY_DIR}/stb_image.h"
+  )
+  file(DOWNLOAD 
+    "https://raw.githubusercontent.com/nothings/stb/master/stb_image_write.h"
+    "${CMAKE_BINARY_DIR}/stb_image_write.h"
+  )
+
   # Example console app (C++)
   add_subdirectory(example-apps/console-cpp)
   # Example console app (C)
