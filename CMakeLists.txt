@@ -26,11 +26,11 @@ else()
   include(FetchContent)
   file(DOWNLOAD 
     "https://raw.githubusercontent.com/nothings/stb/master/stb_image.h"
-    "${CMAKE_BINARY_DIR}/stb_image.h"
+    "${CMAKE_BINARY_DIR}/stb/stb_image.h"
   )
   file(DOWNLOAD 
     "https://raw.githubusercontent.com/nothings/stb/master/stb_image_write.h"
-    "${CMAKE_BINARY_DIR}/stb_image_write.h"
+    "${CMAKE_BINARY_DIR}/stb/stb_image_write.h"
   )
 
   # Example console app (C++)
