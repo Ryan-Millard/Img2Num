@@ -40,7 +40,7 @@ void img2num_bilateral_filter(uint8_t *image, size_t width, size_t height, doubl
                               double sigma_range, uint8_t color_space);
 
 /// @copydoc ::IMG2NUM_H_LABELS_TO_SVG_DOC
-char *img2num_labels_to_svg(uint8_t *data, int32_t *labels, const int width, const int height,
+char* img2num_labels_to_svg(uint8_t *data, int32_t *labels, const int width, const int height,
                             const int min_area, const bool draw_contour_borders);
 
 #ifdef __cplusplus

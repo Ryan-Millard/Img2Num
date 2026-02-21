@@ -8,6 +8,7 @@ project(CImg2NumBindings LANGUAGES C CXX)
 # Wrapper source
 set(C_BINDINGS_SRC
     src/cimg2num.cpp
+    src/cimg2num/cimg2num_error_t.cpp
 )
 
 # Build shared library for C bindings
@@ -22,7 +23,7 @@ target_link_libraries(CImg2Num PRIVATE Img2Num)
 target_include_directories(CImg2Num
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:include/cimg2num>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include/cimg2num>
 )
 
 # Install headers and library
