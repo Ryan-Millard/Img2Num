@@ -1,7 +1,6 @@
 ---
-id: wasm-worker
 title: WASM Worker for Image Module
-hide_title: false
+sidebar_title: js
 description: A Web Worker that interfaces with the Image WebAssembly module, handling TypedArray memory allocation, function calls, and returning results.
 ---
 

@@ -173,25 +173,13 @@ insert_final_newline = true
 max_line_length = 120
 
 # -------------------------
-# Batch scripts
+# Batch & PowerShell scripts
 # -------------------------
-[*.{bat,cmd}]
+[*.{bat,cmd,ps1}]
 indent_style = space
 indent_size = 2
 charset = utf-8
 end_of_line = crlf
 trim_trailing_whitespace = true
-insert_final_newline = true
-max_line_length = 120
-
-# -------------------------
-# PowerShell scripts
-# -------------------------
-[*.ps1]
-indent_style = space
-indent_size = 2
-charset = utf-8
-end_of_line = crlf
-trim_trailing_whitespace = true
-insert_final_newline = true
+insert_final_newline = false
 max_line_length = 120

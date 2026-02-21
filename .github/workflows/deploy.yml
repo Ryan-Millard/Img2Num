@@ -9,14 +9,14 @@ permissions:
   contents: write
 
 jobs:
-  build-wasm:
+  cmake-build:
     name: Build WASM
-    uses: ./.github/workflows/build-wasm.yml
+    uses: ./.github/workflows/cmake-build.yml
 
   build-react-app:
     name: Build React App
     uses: ./.github/workflows/build-react-app.yml
-    needs: build-wasm
+    needs: cmake-build
     with:
       wasm-artifacts-path: packages/js/build-wasm/
 

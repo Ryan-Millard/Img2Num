@@ -10,8 +10,9 @@ const ROOT_DIR = join(SCRIPT_DIR, ".."); // docs/
 const OUTPUT_PARENT_DIR = join(ROOT_DIR, "static/docs/internal");
 const CORE_DIR = join("core");
 const JS_BINDINGS_DIR = join("bindings", "js");
+const C_BINDINGS_DIR = join("bindings", "c");
 
-[CORE_DIR, JS_BINDINGS_DIR].forEach((DIR) => {
+[CORE_DIR, JS_BINDINGS_DIR, C_BINDINGS_DIR].forEach((DIR) => {
   const OUTPUT_DIR = join(OUTPUT_PARENT_DIR, DIR, "api");
   const HTML_SUBDIR = join(OUTPUT_DIR, "html");
 

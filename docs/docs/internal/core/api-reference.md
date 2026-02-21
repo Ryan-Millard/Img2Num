@@ -6,29 +6,17 @@ description: >
   for easier navigation and code browsing.
 ---
 
-import React from 'react';
-import FullscreenWrapper from '@site/src/components/FullscreenWrapper';
+import FullscreenIframe from '@site/src/components/FullscreenIframe';
 
-<FullscreenWrapper>
-  <iframe
-    src="../api/"
-    style={{
-      width: '100%',
-      height: '100vh',
-      border: 'none',
-      margin: 0,
-      padding: 0,
-      display: 'block',
-    }}
-    title="C++ API Reference (Doxygen)"
-  />
-</FullscreenWrapper>
+> Don't like iframes?
+Visit the{' '}
+<a href="/Img2Num/info/docs/internal/core/api/" onClick={(e) => { e.preventDefault(); window.location.href = "/Img2Num/info/docs/internal/core/api/"; }}> Doxygen documentation </a>{' '} directly.
+
+<FullscreenIframe
+  src="/Img2Num/info/docs/internal/core/api/"
+  title="C++ API Reference (Doxygen)"
+/>
 
 ## About this page
 
-This page is a <b>direct proxy for the 
-<a href="../api/" onClick={(e) => {
-  e.preventDefault();
-  window.location.href = "../api/";
-}}>Doxygen documentation</a>
-</b> generated from the C++ core directory.
+This page is a direct proxy for the{' '} <a href="/Img2Num/info/docs/internal/core/api/" onClick={(e) => { e.preventDefault(); window.location.href = "/Img2Num/info/docs/internal/core/api/"; }}> Doxygen documentation </a> generated from the C++ core directory.

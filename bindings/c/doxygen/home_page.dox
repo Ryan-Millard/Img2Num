@@ -1,0 +1,75 @@
+/*! \mainpage Img2Num C Bindings
+ *
+ * \section intro_sec Introduction
+ *
+ * The **Img2Num C Bindings** provide a C-friendly interface to the core Img2Num
+ * image processing library. These bindings wrap the underlying C++ functionality
+ * using `extern "C"` to allow C projects to access advanced image processing
+ * operations, including filtering, clustering, thresholding, and SVG conversion.
+ *
+ * All functions operate on raw image buffers (`uint8_t*`) and provide a simple,
+ * low-level interface suitable for integration into C applications.
+ *
+ * \section features_sec Key Features
+ *
+ * The below are `extern "C"` wrappers around the `core/` library's functions:
+ * - **FFT-based Gaussian blur** — Fast frequency-domain blurring
+ * - **Image inversion** — Invert pixel values in-place
+ * - **Thresholding** — Apply standard and black-thresholding operations
+ * - **K-means clustering** — Pixel clustering for color quantization
+ * - **Bilateral filtering** — Edge-preserving smoothing
+ * - **SVG label rendering** — Convert labeled images to scalable vector graphics
+ *
+ * \section building_sec Building the C Bindings
+ *
+ * The C bindings are built using CMake from the project root:
+ *
+ * \code{.sh}
+ * cmake -B build .
+ * cmake --build build
+ * \endcode
+ *
+ * \section install_sec Installation
+ *
+ * Install the library and headers to your system:
+ *
+ * \code{.sh}
+ * cmake --install build
+ * \endcode
+ *
+ * - **Libraries** are installed to `lib/`
+ * - **Headers** are installed to `include/cimg2num/`
+ *
+ * Link against `CImg2Num` in your CMake project:
+ *
+ * \code{.cmake}
+ * find_package(Img2Num REQUIRED)
+ * target_link_libraries(your_app PRIVATE CImg2Num)
+ * \endcode
+ *
+ * \section usage_sec Usage Example
+ *
+ * \code{.c}
+ * `#include` <cimg2num.h>
+ * `#include` <stdint.h>
+ *
+ * int main() {
+ *     uint8_t image[256 * 256 * 3];  // RGB image buffer
+ *
+ *     // Apply Gaussian blur with sigma = 1.5
+ *     img2num_gaussian_blur_fft(image, 256, 256, 1.5);
+ *
+ *     // Invert the image
+ *     img2num_invert_image(image, 256, 256);
+ *
+ *     return 0;
+ * }
+ * \endcode
+ *
+ * For complete working examples, see the `example-apps/console-c/` directory.
+ *
+ * \section api_sec API Reference
+ *
+ * Browse the detailed function documentation:
+ * - \ref CIMG2NUM_H "Core C API Functions"
+ */

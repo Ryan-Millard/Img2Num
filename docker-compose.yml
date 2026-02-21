@@ -1,6 +1,5 @@
 services:
   dev:
-    image: ryanmillard/img2num-dev:latest
     build:
       context: .
       dockerfile: Dockerfile.dev

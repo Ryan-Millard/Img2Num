@@ -1,5 +1,5 @@
 {
-  "Exclude": ["node_modules", "dist", "build", ".git", "package-lock.json", "src/data/contributor-credits.json", "docs/node_modules", "docs/build", "docs/.docusaurus", "docs/package-lock.json", "src/wasm/build", "src/wasm/modules/image/build", "\\.ase$", "\\.min\\.js$", "\\.min\\.css$", "\\.lock$", "CC-BY-SA-4\\.0\\.txt$", "LICENSE.*", "\\.md$", "\\.mdx$", "\\.py$", "\\.bat$", "\\.ps1$", "^img2num$", "\\.cpp$", "\\.h$"],
+  "Exclude": ["node_modules", "dist", "build", ".git", "docs/build", "docs/.docusaurus", "docs/static", "docs/docs/js/api", "example-apps/react-js/src/data/contributor-credits.json", "\\.ase$", "\\.min\\.js$", "\\.min\\.css$", "\\.lock$", "CC-BY-SA-4\\.0\\.txt$", "LICENSE.*", "\\.md$", "\\.mdx$", "\\.py$", "\\.bat$", "\\.ps1$", "^img2num$", "\\.cpp$", "\\.h$", ".pnpm-store"],
   "AllowedContentTypes": [],
   "PassedFiles": [],
   "Disable": {
