@@ -13,8 +13,8 @@ namespace img2num {
         UNKNOWN = 4
     };
 
-    static thread_local Error last_error{Error::OK};
-    static thread_local std::string last_error_message{};
+    extern thread_local Error last_error;
+    extern thread_local std::string last_error_message;
 
     inline Error get_last_error() {
         return last_error;
