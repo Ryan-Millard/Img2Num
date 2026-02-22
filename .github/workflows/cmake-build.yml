@@ -1,4 +1,4 @@
-name: Build WASM
+name: Build C & C++
 
 on:
   workflow_call:
@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   build-wasm:
-    name: Emscripten Build (bindings/js)
+    name: Build WASM (bindings/js)
     runs-on: ubuntu-latest
     container:
       image: ryanmillard/img2num-dev:latest
@@ -29,7 +29,7 @@ jobs:
           path: packages/js/build-wasm/
 
   build-c-cpp:
-    name: Build C/C++
+    name: Build C & C++
     runs-on: ubuntu-latest
     container:
       image: ryanmillard/img2num-dev:latest
