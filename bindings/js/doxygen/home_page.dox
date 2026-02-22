@@ -2,7 +2,6 @@
  *
  * \section intro_sec Introduction
  *
- * {{INTRODUCTION_PARAGRAPH}}
  * The Img2Num library provides powerful image processing and vectorization capabilities. With the addition of
  * JavaScript and WebAssembly (WASM) bindings, it is now easy to integrate Img2Num into web applications, enabling
  * image processing in the browser with high performance.
