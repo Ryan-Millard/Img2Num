@@ -23,7 +23,7 @@ target_link_libraries(CImg2Num PRIVATE Img2Num)
 target_include_directories(CImg2Num
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include/cimg2num>
+        $<INSTALL_INTERFACE:/include/cimg2num>
 )
 
 # Install headers and library
