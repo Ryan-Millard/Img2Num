@@ -1,5 +1,6 @@
 ---
 title: React Overview
+sidebar_label: react-js
 description: Detailed reference documentation for all Img2Num React.js code. Use this as a guide to understand, use, and contribute to the project's JavaScript and React codebase.
 keywords: [reference, API, JavaScript, React, Img2Num, documentation, developer guide]
 ---
