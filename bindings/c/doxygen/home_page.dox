@@ -50,8 +50,8 @@
  * \section usage_sec Usage Example
  *
  * \code{.c}
- * `#include` <cimg2num.h>
- * `#include` <stdint.h>
+ * #include <cimg2num.h>
+ * #include <stdint.h>
  *
  * int main() {
  *     uint8_t image[256 * 256 * 3];  // RGB image buffer
