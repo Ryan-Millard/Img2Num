@@ -1,5 +1,5 @@
-#ifndef ERROR_H
-#define ERROR_H
+#ifndef IMG2NUM_ERROR_H
+#define IMG2NUM_ERROR_H
 
 #include <stdexcept>
 #include <string>
@@ -46,4 +46,4 @@ namespace img2num {
     }
 }
 
-#endif // ERROR_H
+#endif // IMG2NUM_ERROR_H

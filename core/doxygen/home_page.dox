@@ -46,18 +46,7 @@
  *
  * \section usage_sec Usage Example
  *
- * Here's a simple usage example in C++:
- * \code{.cpp}
- * #include <img2num.h>
- *
- * int main() {
- *     // Example usage of Img2Num functions
- *     Img2Num::processImage("input.png");
- *     return 0;
- * }
- * \endcode
- *
- * For complete working examples, see the `examples/` directory.
+ * For complete working examples, see the `example-apps/` directory.
  *
  * \section api_sec API Reference
  *
