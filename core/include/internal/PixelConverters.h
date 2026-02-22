@@ -1,10 +1,10 @@
 #ifndef PIXELCONVERTERS_H
 #define PIXELCONVERTERS_H
 
-#include "Pixel.h"
-#include "PixelConverter.h"
-#include "RGBAPixel.h"
-#include "RGBPixel.h"
+#include "internal/Pixel.h"
+#include "internal/PixelConverter.h"
+#include "internal/RGBAPixel.h"
+#include "internal/RGBPixel.h"
 
 namespace ImageLib {
 template <typename NumberT>

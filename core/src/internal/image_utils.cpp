@@ -1,4 +1,9 @@
-#include "image_utils.h"
+#include "internal/image_utils.h"
+#include "internal/Image.h"
+#include "internal/PixelConverters.h"
+#include "internal/RGBAPixel.h"
+#include "internal/fft_iterative.h"
+#include "img2num.h"
 
 #include <algorithm>
 #include <cmath>
@@ -6,12 +11,6 @@
 #include <cstring>
 #include <limits>
 #include <vector>
-
-#include "Image.h"
-#include "PixelConverters.h"
-#include "RGBAPixel.h"
-#include "fft_iterative.h"
-#include "img2num.h"
 
 uint8_t quantize(uint8_t value, uint8_t region_size) {
     if (region_size == 0) {

@@ -8,7 +8,7 @@ project(CImg2NumBindings LANGUAGES C CXX)
 # Wrapper source
 set(C_BINDINGS_SRC
     src/cimg2num.cpp
-    src/cimg2num/cimg2num_error_t.cpp
+    src/cimg2num/img2num_error_t.cpp
 )
 
 # Build shared library for C bindings

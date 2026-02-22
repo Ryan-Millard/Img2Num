@@ -14,9 +14,9 @@
 #include <sstream>
 #include <vector>
 
-#include "bezier.h"
-#include "contours.h"
-#include "graph.h"
+#include "internal/bezier.h"
+#include "internal/contours.h"
+#include "internal/graph.h"
 #include "img2num.h"
 
 /* Flood fill */

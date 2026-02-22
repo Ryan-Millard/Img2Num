@@ -1,5 +1,4 @@
-
-#include "contours.h"
+#include "internal/contours.h"
 
 #include <algorithm>
 #include <cmath>

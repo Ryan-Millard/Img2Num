@@ -9,11 +9,11 @@
 #include <random>
 #include <vector>
 
-#include "Image.h"
-#include "LABAPixel.h"
-#include "PixelConverters.h"
-#include "RGBAPixel.h"
-#include "cielab.h"
+#include "internal/Image.h"
+#include "internal/LABAPixel.h"
+#include "internal/PixelConverters.h"
+#include "internal/RGBAPixel.h"
+#include "internal/cielab.h"
 #include "img2num.h"
 
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB{0};

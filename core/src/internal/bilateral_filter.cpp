@@ -5,7 +5,7 @@
 #include <functional>
 #include <vector>
 
-#include "cielab.h"
+#include "internal/cielab.h"
 #include "img2num.h"
 
 static constexpr double SIGMA_RADIUS_FACTOR{3.0};  // 3 standard deviations

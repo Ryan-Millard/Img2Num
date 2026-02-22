@@ -4,10 +4,10 @@
 #include <cstdint>
 #include <type_traits>
 
-#include "LABAPixel.h"
-#include "LABPixel.h"
-#include "RGBAPixel.h"
-#include "RGBPixel.h"
+#include "internal/LABAPixel.h"
+#include "internal/LABPixel.h"
+#include "internal/RGBAPixel.h"
+#include "internal/RGBPixel.h"
 
 // templates must be in headers
 

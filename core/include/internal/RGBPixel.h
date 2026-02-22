@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-#include "Pixel.h"
+#include "internal/Pixel.h"
 
 namespace ImageLib {
 template <typename NumberT>

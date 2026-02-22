@@ -19,9 +19,9 @@ if(EMSCRIPTEN)
   # PRIVATE: internal headers
   target_include_directories(core_obj
       PUBLIC
-          ${CMAKE_CURRENT_SOURCE_DIR}          # img2num.h
+          ${CMAKE_CURRENT_SOURCE_DIR}/include
       PRIVATE
-          ${CMAKE_CURRENT_SOURCE_DIR}/include  # internal headers
+          ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
   )
 
     target_compile_options(core_obj PRIVATE -msimd128)
@@ -34,10 +34,9 @@ else()
   # PRIVATE: internal headers
   target_include_directories(Img2Num
     PUBLIC
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-      $<INSTALL_INTERFACE:include/img2num>
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     PRIVATE
-      ${CMAKE_CURRENT_SOURCE_DIR}/include
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
   )
 
   # --- Install targets for packaging ---

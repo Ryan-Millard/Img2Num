@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "Point.h"
+#include "internal/Point.h"
 
 struct Point;
 

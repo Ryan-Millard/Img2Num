@@ -7,11 +7,11 @@
 #include <stdexcept>
 #include <vector>
 
-#include "Image.h"
-#include "PixelConverters.h"
-#include "Point.h"
-#include "RGBAPixel.h"
-#include "SavitskyGolay.h"
+#include "internal/Image.h"
+#include "internal/PixelConverters.h"
+#include "internal/Point.h"
+#include "internal/RGBAPixel.h"
+#include "internal/SavitskyGolay.h"
 
 struct QuadBezier {
     Point p0{0, 0};  // Start

@@ -3,7 +3,7 @@
 
 #include <unordered_map>
 
-#include "node.h"
+#include "internal/node.h"
 
 /*
    Graph and Node classes support conversion of a region divided image into a

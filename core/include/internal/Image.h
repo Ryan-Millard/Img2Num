@@ -6,8 +6,8 @@
 #include <type_traits>
 #include <vector>
 
-#include "Pixel.h"
-#include "PixelConverter.h"
+#include "internal/Pixel.h"
+#include "internal/PixelConverter.h"
 
 namespace ImageLib {
 template <typename PixelT>

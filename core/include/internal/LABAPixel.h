@@ -1,7 +1,7 @@
 #ifndef LABAPixel_H
 #define LABAPixel_H
 
-#include "LABPixel.h"
+#include "internal/LABPixel.h"
 
 namespace ImageLib {
 template <typename NumberT>

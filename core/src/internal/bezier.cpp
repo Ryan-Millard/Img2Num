@@ -1,4 +1,4 @@
-#include "bezier.h"
+#include "internal/bezier.h"
 
 #include <cmath>
 #include <limits>

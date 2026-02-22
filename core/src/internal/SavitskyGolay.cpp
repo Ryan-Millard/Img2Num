@@ -1,4 +1,4 @@
-#include "SavitskyGolay.h"
+#include "internal/SavitskyGolay.h"
 
 #include <cassert>
 #include <cmath>

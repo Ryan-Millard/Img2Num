@@ -7,8 +7,8 @@
 #include <set>
 #include <vector>
 
-#include "RGBPixel.h"
-#include "contours.h"
+#include "internal/RGBPixel.h"
+#include "internal/contours.h"
 
 /*
    Graph and Node classes support conversion of a region divided image into a

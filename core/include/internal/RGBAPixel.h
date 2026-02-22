@@ -1,7 +1,7 @@
 #ifndef RGBAPIXEL_H
 #define RGBAPIXEL_H
 
-#include "RGBPixel.h"
+#include "internal/RGBPixel.h"
 
 namespace ImageLib {
 template <typename NumberT>

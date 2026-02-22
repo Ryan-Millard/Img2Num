@@ -19,4 +19,4 @@ target_include_directories(console_c_app PRIVATE
 )
 
 # Link against the C bindings
-target_link_libraries(console_c_app PRIVATE CImg2Num m)
+target_link_libraries(console_c_app PRIVATE CImg2Num Img2Num m)
