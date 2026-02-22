@@ -14,7 +14,7 @@ Visit the{' '}
 
 <FullscreenIframe
   src="/Img2Num/info/docs/internal/bindings/js/api/"
-  title="C++ API Reference (Doxygen)"
+  title="JS/WASM API Reference (Doxygen)"
 />
 
 ## About this page

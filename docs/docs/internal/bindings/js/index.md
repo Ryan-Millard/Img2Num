@@ -3,9 +3,7 @@ title: Img2Num JS/WASM Bindings
 sidebar_label: js
 keywords: [Img2Num, JS bindings, WASM, WebAssembly, image processing, SVG conversion, gaussian blur, k-means clustering, bilateral filter]
 description: Internal documentation for the Img2Num JS/WASM bindings, providing an overview of available functions, building instructions, and usage examples.
-----
-
-# Img2Num JS/WASM Bindings
+---
 
 The **Img2Num JS/WASM Bindings** allow the core Img2Num image processing library to be used in JavaScript environments via WebAssembly. These bindings expose high-performance image processing, clustering, filtering, and SVG conversion functions to web and Node.js projects.
 
@@ -30,7 +28,7 @@ Each function is documented with Doxygen and mirrors the functionality of the co
 ## Building the WASM Module
 
 ```bash title="Run this in the root of the project"
-emcmake cmake -B build .
+emcmake cmake -B build-wasm .
 cmake --build build-wasm
 ```
 
