@@ -20,8 +20,9 @@ img2num_error_t img2num_get_last_error() {
 }
 
 const char* img2num_get_last_error_message() {
-    static std::string last_error = img2num::get_last_error_message();
-    return last_error.c_str();
+    static thread_local std::string msg;
+    msg = img2num::get_last_error_message();
+    return msg.c_str();
 }
 
 void img2num_clear_last_error() {
