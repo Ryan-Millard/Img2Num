@@ -1,9 +1,0 @@
-{
-  "label": "scripts",
-  "link": {
-    "type": "generated-index",
-    "title": "Command Line Scripts",
-    "description": "Every development script you may need whilst working on Img2Num",
-    "slug": "/internal/scripts"
-  }
-}

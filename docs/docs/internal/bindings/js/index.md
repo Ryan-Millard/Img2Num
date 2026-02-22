@@ -36,9 +36,7 @@ cmake --build build-wasm
 * Core library object files (`core_obj`) must be available and linked.
 * SIMD support (`-msimd128`) is enabled for performance.
 
-## Usage JavaScript
-
-:::caution
+:::caution Using JavaScript
 Interfacing with raw WASM in JavaScript is dangerous. As a result, we have built a safety wrapper around it to avoid manual memory management.
 
 See [`packages/js`](../../packages/js).

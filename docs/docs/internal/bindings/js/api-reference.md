@@ -19,4 +19,4 @@ Visit the{' '}
 
 ## About this page
 
-This page is a direct proxy for the{' '} <a href="/Img2Num/info/docs/internal/bindings/js/api/" onClick={(e) => { e.preventDefault(); window.location.href = "/Img2Num/info/docs/internal/bindings/js/api/"; }}> Doxygen documentation </a> generated from the C++ bindings/js directory.
+This page is a direct proxy for the{' '} <a href="/Img2Num/info/docs/internal/bindings/js/api/" onClick={(e) => { e.preventDefault(); window.location.href = "/Img2Num/info/docs/internal/bindings/js/api/"; }}> Doxygen documentation </a> generated from the `bindings/js` directory.

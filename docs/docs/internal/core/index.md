@@ -1,7 +1,6 @@
 ---
 title: C++ Core Overview
-sidebar_label: Overview
-sidebar_position: 1
+sidebar_label: core
 description: Detailed reference documentation for Img2Num\'s core C++ library. Use this as a guide to understand, use, and contribute to the project's C / C++ codebase.
 keywords: [reference, API, wasm, C++, Img2Num, documentation, developer guide]
 ---

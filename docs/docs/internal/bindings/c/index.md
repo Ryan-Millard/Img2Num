@@ -35,6 +35,8 @@ cmake --build build
 cmake --install build
 ```
 
+> `cmake --install build` might need elevated permissions, but that shouldn't be a problem in the Docker container.
+
 * The library is installed under `lib/` and headers under `include/cimg2num`.
 * Ensure that the core `Img2Num` library is built and accessible.
 
