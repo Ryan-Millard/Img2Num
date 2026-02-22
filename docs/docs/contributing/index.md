@@ -50,6 +50,6 @@ When a claim expires:
 
 ## Development Setup
 
-The [Setup & Dependencies](../internal/setup-and-dependencies) section shows how to clone and run the application for the first time.
+The [Setup & Dependencies](./setup-and-dependencies) section shows how to clone and run the application for the first time.
 
 The [scripts](../internal/scripts) section shows all of the available scripts you may find useful whilst working on Img2Num's source code as well as a helpful way to find specific scripts if you have forgotten one.
