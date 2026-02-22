@@ -1,7 +1,7 @@
 ---
 id: overview
 title: Bilateral Filter
-sidebar_label: Overview
+sidebar_label: bilateral_filter.h
 sidebar_position: 1
 ---
 
@@ -26,7 +26,7 @@ allowing it to preserve sharp edges.
 
 - **Algorithm:** Bilateral Filter (Non-linear, edge-preserving).
 - **Input/Output image data types:** `uint8_t` (8-bit unsigned integer channels).
-- **Color spaces:** RGB & CIELAB can be chosen (see `color_space` in the [**API / Usage** section](../api/)).
+- **Color spaces:** RGB & CIELAB can be chosen (see `color_space` in the [**API / Usage** section](./api)).
 - **Key steps:**
   1. For each pixel, inspect neighbors in radius $R$.
   2. Weight neighbors by **spatial distance** (Gaussian).
@@ -35,7 +35,7 @@ allowing it to preserve sharp edges.
 
 ## Keywords
 
-The [keywords section](../keywords/) will help you in case the terminology confuses you.
+The [keywords section](./keywords/) will help you in case the terminology confuses you.
 
 :::tip Gaussian functions
 Bilateral filters rely on Gaussian weighting, so understanding Gaussian functions will help when reading the implementation.

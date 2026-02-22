@@ -1,7 +1,7 @@
 ---
 id: overview
 title: Iterative FFT — Overview
-sidebar_label: Overview
+sidebar_label: fft_iterative.h
 sidebar_position: 2
 ---
 
@@ -13,7 +13,7 @@ This section introduces the **iterative, radix-2, decimation-in-time (DIT) FFT**
 It focuses on how the algorithm is implemented, why each step is necessary,
 and where the corresponding code lives so you can jump straight into the implementation.
 
-If you need the mathematical background before diving in, see the prerequisite page: [Prerequisite theory](../prerequisite-theory/).
+If you need the mathematical background before diving in, see the prerequisite page: [Prerequisite theory](./prerequisite-theory/).
 
 ## At a glance
 
@@ -31,4 +31,4 @@ If you need the mathematical background before diving in, see the prerequisite p
 - **Implementation details** — step-by-step mapping between theory and the actual C++ code.
 - **API & reference** — brief function signatures and purpose for quick lookup.
 
-Jump to implementation: [Implementation details](../implementation/)
+Jump to implementation: [Implementation details](./implementation/)

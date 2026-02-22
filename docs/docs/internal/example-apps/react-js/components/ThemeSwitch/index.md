@@ -165,5 +165,5 @@ See the [test documentation](./tests) for details.
 ## Related
 
 - [useTheme Hook](../../hooks/useTheme) - The underlying hook that powers theme switching
-- [CSS Theme Variables](../../css/global/variables/theme/) - CSS variables that change with the theme
+- CSS Theme Variables - CSS variables that change with the theme
 - [NavBar Component](../NavBar) - Example usage in the navigation bar

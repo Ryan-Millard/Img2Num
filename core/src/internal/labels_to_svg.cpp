@@ -14,10 +14,10 @@
 #include <sstream>
 #include <vector>
 
+#include "img2num.h"
 #include "internal/bezier.h"
 #include "internal/contours.h"
 #include "internal/graph.h"
-#include "img2num.h"
 
 /* Flood fill */
 int flood_fill(std::vector<int32_t> &label_array, std::vector<int32_t> &region_array,

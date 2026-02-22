@@ -3,6 +3,7 @@
   "link": {
     "type": "generated-index",
     "title": "React CSS - Styling",
-    "description": "Reference for React CSS & styling in Img2Num"
+    "description": "Reference for React CSS & styling in Img2Num",
+    "slug": "/internal/example-apps/react/css"
   }
 }

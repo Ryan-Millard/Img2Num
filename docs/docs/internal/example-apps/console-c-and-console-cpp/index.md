@@ -10,7 +10,6 @@ keywords: [c, c++, using Img2Num, Img2Num demonstration]
 These demo applications demonstrate **how to use the Img2Num library** for image processing and test that the library works as expected.
 Both a **C** and a **C++** version are provided for flexibility.
 
-
 ## Overview
 
 Both applications demonstrate how to process an image using the Img2Num library.
@@ -41,6 +40,7 @@ import TabItem from '@theme/TabItem';
 ```bash title="Example usage"
 ./build/example-apps/console-cpp/console_cpp_app test.jpg
 ```
+
 </TabItem>
 <TabItem value="c" label="C console app">
 ```bash title="Run this from the root of the project"
@@ -50,6 +50,7 @@ import TabItem from '@theme/TabItem';
 ```bash title="Example usage"
 ./build/example-apps/console-c/console_c_app test.jpg
 ```
+
 </TabItem>
 </Tabs>
 

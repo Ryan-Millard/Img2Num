@@ -1,7 +1,6 @@
 ---
-id: overview
-title: 🗂️ Overview
-sidebar_position: 1
+title: Development Scripts
+sidebar_label: scripts
 ---
 
 Img2Num provides several `npm scripts` that help with development, building, formatting, and documentation.

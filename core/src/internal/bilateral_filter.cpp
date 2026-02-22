@@ -5,8 +5,8 @@
 #include <functional>
 #include <vector>
 
-#include "internal/cielab.h"
 #include "img2num.h"
+#include "internal/cielab.h"
 
 static constexpr double SIGMA_RADIUS_FACTOR{3.0};  // 3 standard deviations
 static constexpr int MAX_KERNEL_RADIUS{50};

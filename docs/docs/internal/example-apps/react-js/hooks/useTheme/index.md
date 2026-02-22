@@ -85,7 +85,7 @@ The hook works in conjunction with CSS variables defined in `/src/global-styles/
 }
 ```
 
-See [CSS Theme Variables](../../css/global/variables/theme/) for a complete list of available variables.
+See CSS Theme Variables for a complete list of available variables.
 
 ## Examples
 
@@ -198,4 +198,4 @@ See [ThemeSwitch tests](../../components/ThemeSwitch/tests) for examples of test
 ## Related
 
 - [ThemeSwitch Component](../../components/ThemeSwitch) - UI component built with this hook
-- [CSS Theme Variables](../../css/global/variables/theme/) - Available CSS variables for theming
+- CSS Theme Variables - Available CSS variables for theming

@@ -1,7 +1,7 @@
 ---
 id: overview
 title: Graph Data Structure Overview
-sidebar_label: Overview
+sidebar_label: graph.h & node.h
 sidebar_position: 2
 ---
 

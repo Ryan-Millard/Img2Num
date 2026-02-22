@@ -7,7 +7,7 @@ keywords: [reference, API, wasm, C++, Img2Num, documentation, developer guide]
 
 This section documents all the major headers, functions, and classes in Img2Num's C++ code.
 This part of the project is treated as an isolated internal library - it is compiled to an object library and used inside
-the other C++ libraries (e.g., [`bindings/js`](../../bindings/js)).
+the other C++ libraries (e.g., [`bindings/js`](../bindings/js)).
 
 ## DocString Guidelines
 

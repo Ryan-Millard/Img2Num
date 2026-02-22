@@ -1,11 +1,12 @@
 #include "internal/graph.h"
-#include "internal/Pixel.h"
-#include "internal/bezier.h"
 
 #include <algorithm>
 #include <iterator>
 #include <queue>
 #include <string>
+
+#include "internal/Pixel.h"
+#include "internal/bezier.h"
 /*
  Graph class - manages Node class
 */
