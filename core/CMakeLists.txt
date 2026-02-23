@@ -46,12 +46,6 @@ else()
     ARCHIVE DESTINATION lib
     INCLUDES DESTINATION include
   )
-
-  # Only make img2num.h public
-  install(FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/img2num.h
-    DESTINATION include/img2num
-  )
 endif()
 
 message(STATUS "Core library configured with ${CORE_SRC}")
