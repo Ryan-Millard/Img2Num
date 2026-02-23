@@ -48,19 +48,21 @@ values={[
 { label: 'PowerShell', value: 'powershell' },
 ]}>
 <TabItem value="bash">
-`bash title="Paste this in your terminal"
-    ./img2num sh
-    `
+
+```bash title="Paste this in your terminal"
+./img2num sh
+```
+
 </TabItem>
 <TabItem value="cmd">
-`bat title="Paste this in your terminal"
-    .\img2num.bat sh
-    `
+```bat title="Paste this in your terminal"
+.\img2num.bat sh
+```
 </TabItem>
 <TabItem value="powershell">
-`powershel title="Paste this in your terminal"
-    .\img2num.ps1 sh
-    `
+```powershel title="Paste this in your terminal"
+.\img2num.ps1 sh
+```
 </TabItem>
 </Tabs>
 
@@ -84,19 +86,21 @@ values={[
 { label: 'PowerShell', value: 'powershell' },
 ]}>
 <TabItem value="bash">
-`bash title="Paste this in your terminal"
-    ./img2num help
-    `
+
+```bash title="Paste this in your terminal"
+./img2num help
+```
+
 </TabItem>
 <TabItem value="cmd">
-`bat title="Paste this in your terminal"
-    .\img2num.bat help
-    `
+```bat title="Paste this in your terminal"
+.\img2num.bat help
+```
 </TabItem>
 <TabItem value="powershell">
-`powershell title="Paste this in your terminal"
-    .\img2num.ps1 help
-    `
+```powershell title="Paste this in your terminal"
+.\img2num.ps1 help
+```
 </TabItem>
 </Tabs>
 
@@ -119,18 +123,18 @@ In future docs, assume that the commands are to be run in the Docker terminal.
   ]}>
   <TabItem value="root">
   `bash title="Fuzzy find scripts local to the root project"
-      ./img2num pnpm run help
-      `
+./img2num pnpm run help
+`
   </TabItem>
   <TabItem value="docs">
   `bash title="Fuzzy find scripts local to the documentation"
-      ./img2num pnpm run -F docs help
-      `
+./img2num pnpm run -F docs help
+`
   </TabItem>
   <TabItem value="react-example">
   `bash title="Fuzzy find scripts local to the React Example app"
-      ./img2num pnpm run -F react-example help
-      `
+./img2num pnpm run -F react-example help
+`
   </TabItem>
   </Tabs>
 - `./img2num sh`, `./img2num shell`, and `./img2num bash` all open the Docker container's interactive terminal.
@@ -159,16 +163,18 @@ values={[
 { label: 'Debug Build', value: 'debug' },
 ]}>
 <TabItem value="release">
-`bash title="Compile Release build"
-    cmake -B build-release/ .
-    cmake --build build-release/
-    `
+
+```bash title="Compile Release build"
+cmake -B build-release/ .
+cmake --build build-release/
+```
+
 </TabItem>
 <TabItem value="debug">
-`bash title="Compile Debug build"
-    cmake -B build/ . -DCMAKE_BUILD_TYPE=Debug
-    cmake --build build/
-    `
+```bash title="Compile Debug build"
+cmake -B build/ . -DCMAKE_BUILD_TYPE=Debug
+cmake --build build/
+```
 </TabItem>
 </Tabs>
 
@@ -197,16 +203,18 @@ values={[
 { label: 'Debug Build', value: 'debug' },
 ]}>
 <TabItem value="release">
-`bash title="Compile Release build"
-    emcmake cmake -B build-wasm-release/ .
-    cmake --build build-wasm-release/
-    `
+
+```bash title="Compile Release build"
+emcmake cmake -B build-wasm-release/ .
+cmake --build build-wasm-release/
+```
+
 </TabItem>
 <TabItem value="debug">
-`bash title="Compile Debug build"
-    emcmake cmake -B build-wasm/ . -DCMAKE_BUILD_TYPE=Debug
-    cmake --build build-wasm/
-    `
+```bash title="Compile Debug build"
+emcmake cmake -B build-wasm/ . -DCMAKE_BUILD_TYPE=Debug
+cmake --build build-wasm/
+```
 </TabItem>
 </Tabs>
 
@@ -245,13 +253,15 @@ values={[
 { label: 'Documentation Site', value: 'docs' },
 ]}>
 <TabItem value="react-example">
-`bash
-    pnpm -F react-example dev
-    `
+
+```bash
+pnpm -F react-example dev
+```
+
 </TabItem>
 <TabItem value="docs">
-`bash
-    pnpm -F docs start
-    `
+```bash
+pnpm -F docs start
+```
 </TabItem>
 </Tabs>
