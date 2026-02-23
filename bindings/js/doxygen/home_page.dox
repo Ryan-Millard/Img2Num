@@ -27,6 +27,8 @@
  * cmake --build build-wasm
  * \endcode
  *
+ * For extensive documentation, please see the [project setup guide](/Img2Num/info/docs/next/contributing/setup-and-dependencies/)
+ *
  * This will generate the necessary WASM files for use in JavaScript. You can then integrate them into your web
  * projects or Node.js applications.
  *
