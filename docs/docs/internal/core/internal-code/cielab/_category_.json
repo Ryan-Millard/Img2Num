@@ -3,7 +3,6 @@
   "link": {
     "type": "generated-index",
     "title": "CIELAB Utilities",
-    "description": "Documentation for the CIELAB Utilities in the Image WebAssembly (WASM) module in Img2Num.",
-    "slug": "/reference/wasm/modules/image/cielab"
+    "description": "Documentation for the CIELAB Utilities in the Image WebAssembly (WASM) module in Img2Num."
   }
 }

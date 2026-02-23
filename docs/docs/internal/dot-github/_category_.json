@@ -3,7 +3,6 @@
   "link": {
     "type": "generated-index",
     "title": "GitHub Configuration",
-    "description": "Every GitHub-specific configuration Img2Num uses, including Actions, templates, and other configuration files.",
-    "slug": "/internal/dot-github"
+    "description": "Every GitHub-specific configuration Img2Num uses, including Actions, templates, and other configuration files."
   }
 }
