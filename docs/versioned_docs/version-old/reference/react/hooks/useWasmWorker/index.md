@@ -370,7 +370,6 @@ Failing to do this will cause memory corruption or crashes.
 
 ```mermaid
 flowchart TD
-<<<<<<< HEAD
   A[React calls hook] --> B[useWasmWorker posts message]
   B --> C[Worker waits for WASM ready]
   C --> D[Allocate WASM memory]
@@ -388,23 +387,3 @@ flowchart TD
 - TypedArrays require explicit declaration via `bufferKeys`
 - Convenience wrappers are the preferred API
 - Memory allocation and cleanup are fully automatic
-=======
-    A["React component calls hook function"] --> B["useWasmWorker posts message to wasmWorker"]
-    B --> C["Worker allocates WASM memory for TypedArrays"]
-    C --> D["Worker calls WASM function dynamically"]
-    D --> E["Worker reads back modified buffers"]
-    E --> F["Worker frees allocated memory"]
-    F --> G["Worker posts result back to hook"]
-    G --> H["Hook resolves promise and returns output to component"]
-```
-
-* Demonstrates the **end-to-end flow** of calling any WASM function via the hook.
-
-## Summary
-
-* `useWasmWorker` exposes **all WASM functions dynamically** through the generic `call` method.
-* TypedArrays must be specified in `bufferKeys` and argument **order must match C++ signature**.
-* New functions require both **C++ export** and proper handling in `wasmWorker.js`.
-* Handles memory allocation, result copying, and cleanup automatically.
-* Provides safe, asynchronous access to WASM from React.
->>>>>>> feat/bilater_filter_gpu
