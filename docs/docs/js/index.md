@@ -5,17 +5,8 @@ sidebar_label: JavaScript
 sidebar_position: 2
 ---
 
-:::warning Not on NPM yet
-This version of the docs is a placeholder for when the package arrives on NPM.
-It is not on NPM yet, so if you would like to use the library, you will likely need to manually install the
-source and link to it using something like `npm link` or a workspace.
-
-Feel free to [open a discussion](https://github.com/Ryan-Millard/Img2Num/discussions/new?category=general) if you would
-like some help with it.
-:::
-
-A high-performance raster-to-vector conversion library that transforms images into **SVGs**.
-It is powered by WebAssembly (WASM) for speed, while providing easy-to-use JavaScript wrappers for integration into web or Node.js projects.
+> A high-performance raster-to-vector conversion library that transforms images into **SVGs**.
+> It is powered by WebAssembly (WASM) for speed, while providing easy-to-use JavaScript wrappers for integration into web or Node.js projects.
 
 ## Features
 
@@ -87,6 +78,8 @@ import TabItem from '@theme/TabItem';
 
 ### Basic Usage
 
+> This example mirrors that of the [React example app](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/react-js/src/components/WasmImageProcessor.jsx).
+
 ```js title="Convert an image to an SVG"
 import {
   imageToUint8ClampedArray,
@@ -124,15 +117,6 @@ const { svg } = await findContours({
   height,
 });
 ```
-
-## How It Works
-
-1. **Memory management**: Img2Num allocates WASM memory for input arrays and strings, copies the data into WASM memory, then reads back the results.
-2. **Typed arrays**: All buffers are handled efficiently using the appropriate `HEAP` views (`HEAPU8`, `HEAP32`).
-3. **String conversion**: SVG output is returned as a UTF-8 string for direct use in web pages or files.
-4. **Clean-up**: All allocated memory is automatically freed after the function call to prevent leaks.
-
-> This library is JavaScript-friendly, meaning it does not require users to manually manage memory.
 
 ## Resources
 

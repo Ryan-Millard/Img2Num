@@ -3,7 +3,6 @@
   "link": {
     "type": "generated-index",
     "title": "include/ & src/ folders",
-    "description": "Documentation for the core object library's internal implementation",
-    "slug": "/internal/core/internal-code"
+    "description": "Documentation for the core object library's internal implementation"
   }
 }

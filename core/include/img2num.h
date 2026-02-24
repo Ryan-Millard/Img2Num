@@ -1,0 +1,44 @@
+/** @file img2num.h
+ *  @brief Core image processing functions for img2num project.
+ *  @details This file declares functions for image manipulation, clustering, filtering,
+ *           and conversion to SVG. Functions operate on raw image buffers (uint8_t*).
+ * @defgroup IMG2NUM_H Img2Num Core Functions
+ * @note Dox File: `doxygen/img2num.h.dox`
+ */
+#ifndef IMG2NUM_H
+#define IMG2NUM_H
+
+#include <cstddef>
+#include <cstdint>
+
+/// @note All image buffers are assumed to be stored in row-major order, unless otherwise noted.
+namespace img2num {
+
+/// @copydoc IMG2NUM_H_GAUSSIAN_BLUR_DOC
+void gaussian_blur_fft(uint8_t *image, size_t width, size_t height, double sigma);
+
+/// @copydoc IMG2NUM_H_INVERT_IMAGE_DOC
+void invert_image(uint8_t *ptr, int width, int height);
+
+/// @copydoc IMG2NUM_H_THRESHOLD_IMAGE_DOC
+void threshold_image(uint8_t *ptr, const int width, const int height, const int num_thresholds);
+
+/// @copydoc IMG2NUM_H_BLACK_THRESHOLD_IMAGE_DOC
+void black_threshold_image(uint8_t *ptr, const int width, const int height,
+                           const int num_thresholds);
+
+/// @copydoc IMG2NUM_H_KMEANS_DOC
+void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels, const int32_t width,
+            const int32_t height, const int32_t k, const int32_t max_iter,
+            const uint8_t color_space);
+
+/// @copydoc IMG2NUM_H_BILATERAL_FILTER_DOC
+void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_spatial,
+                      double sigma_range, uint8_t color_space);
+
+/// @copydoc IMG2NUM_H_LABELS_TO_SVG_DOC
+char *labels_to_svg(uint8_t *data, int32_t *labels, const int width, const int height,
+                    const int min_area, const bool draw_contour_borders);
+}  // namespace img2num
+
+#endif  // IMG2NUM_H
