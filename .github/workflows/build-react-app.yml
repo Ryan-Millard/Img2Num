@@ -25,7 +25,7 @@ jobs:
 
       - name: Download WASM artifacts
         if: ${{ inputs.wasm-artifacts-path }}
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: wasm-build
           path: ${{ inputs.wasm-artifacts-path }}
@@ -34,7 +34,7 @@ jobs:
         run: pnpm -F react-example run build
 
       - name: Upload React build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: react-build
           path: example-apps/react-js/dist/
