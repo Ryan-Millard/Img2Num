@@ -1,0 +1,64 @@
+\hypertarget{classSavitzkyGolay}{}\doxysection{Savitzky\+Golay Class Reference}
+\label{classSavitzkyGolay}\index{SavitzkyGolay@{SavitzkyGolay}}
+
+
+Collaboration diagram for Savitzky\+Golay\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=215pt]{classSavitzkyGolay__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSavitzkyGolay_a30010024f286b67ce6ac764eddfd2e91}\label{classSavitzkyGolay_a30010024f286b67ce6ac764eddfd2e91}} 
+{\bfseries Savitzky\+Golay} (int radius, int poly\+\_\+order)
+\item 
+\mbox{\Hypertarget{classSavitzkyGolay_ad1d9f9045c0dbb8af582d306b4f96650}\label{classSavitzkyGolay_ad1d9f9045c0dbb8af582d306b4f96650}} 
+std\+::vector$<$ \mbox{\hyperlink{structPoint}{Point}} $>$ {\bfseries filter} (const std\+::vector$<$ \mbox{\hyperlink{structPoint}{Point}} $>$ \&data)
+\item 
+\mbox{\Hypertarget{classSavitzkyGolay_aa4e4f99f9a8cf615287a10314126bf3b}\label{classSavitzkyGolay_aa4e4f99f9a8cf615287a10314126bf3b}} 
+std\+::vector$<$ \mbox{\hyperlink{structPoint}{Point}} $>$ {\bfseries filter\+\_\+wrap} (const std\+::vector$<$ \mbox{\hyperlink{structPoint}{Point}} $>$ \&data)
+\item 
+\mbox{\Hypertarget{classSavitzkyGolay_a2f99778064c4e1e58ed35431f8560cad}\label{classSavitzkyGolay_a2f99778064c4e1e58ed35431f8560cad}} 
+std\+::vector$<$ float $>$ {\bfseries get\+\_\+coeffs} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSavitzkyGolay_aa06dcb1f2610dcaa54e39503d8eac743}\label{classSavitzkyGolay_aa06dcb1f2610dcaa54e39503d8eac743}} 
+std\+::vector$<$ std\+::vector$<$ float $>$ $>$ {\bfseries invert\+\_\+matrix} (std\+::vector$<$ std\+::vector$<$ float $>$$>$ A)
+\item 
+\mbox{\Hypertarget{classSavitzkyGolay_a69507cde87725b5ffc2efb9ad10fe816}\label{classSavitzkyGolay_a69507cde87725b5ffc2efb9ad10fe816}} 
+void {\bfseries compute\+\_\+coefficients} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSavitzkyGolay_a5648ebf68397ea37a0e0ea4278328cba}\label{classSavitzkyGolay_a5648ebf68397ea37a0e0ea4278328cba}} 
+int {\bfseries window\+\_\+size\+\_\+}
+\item 
+\mbox{\Hypertarget{classSavitzkyGolay_ad8b97bb3fb56ae7573c4729372dc3dda}\label{classSavitzkyGolay_ad8b97bb3fb56ae7573c4729372dc3dda}} 
+int {\bfseries window\+\_\+radius\+\_\+}
+\item 
+\mbox{\Hypertarget{classSavitzkyGolay_a6fa965aa82f9dbd272a06e2b12cf97e5}\label{classSavitzkyGolay_a6fa965aa82f9dbd272a06e2b12cf97e5}} 
+int {\bfseries poly\+\_\+order\+\_\+}
+\item 
+\mbox{\Hypertarget{classSavitzkyGolay_a057a039178bfcb561b8f14a715cb09c1}\label{classSavitzkyGolay_a057a039178bfcb561b8f14a715cb09c1}} 
+std\+::vector$<$ float $>$ {\bfseries coeffs\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 10 of file Savitsky\+Golay.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/internal/Savitsky\+Golay.\+h\item 
+src/internal/Savitsky\+Golay.\+cpp\end{DoxyCompactItemize}
