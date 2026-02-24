@@ -1,0 +1,7 @@
+@INCLUDE = ../doxygen/Doxyfile.base
+
+PROJECT_NAME     = "Img2Num Core"
+PROJECT_NUMBER   = dev
+
+INPUT            = img2num.h include src ../doxygen/img2num.h.dox doxygen/home_page.dox
+OUTPUT_DIRECTORY = ../docs/static/docs/internal/core/api

@@ -1,0 +1,56 @@
+/*! \mainpage Img2Num Core Library
+ *
+ * \section intro_sec Introduction
+ *
+ * This is the heart of Img2Num. All implementations start here and are built upwards using this framework of functions
+ * and libraries. C++ developers include this library directly, C developers include a lightweight wrapper around it,
+ * and JavaScript
+ * developers import a safe wrapper that protects them from manual memory management.
+ *
+ * The main raster image vectorization functions are located in this part of the library—FFTs, contour tracing,
+ * blurring,
+ * and much more.
+ *
+ * \section features_sec Key Features
+ *
+ * All public functions are exported from `img2num.h`:
+ * - Image processing algorithms (FFT, Contour Tracing, etc.)
+ * - Memory management utilities
+ * - Cross-platform compatibility
+ *
+ * \section building_sec Building Img2Num
+ *
+ * To build the project, follow these instructions:
+ *
+ * \code{.sh}
+ * cmake -B build
+ * cmake --build build
+ * \endcode
+ *
+ * \section install_sec Installation
+ *
+ * To install the library, use the following commands:
+ * \code{.sh}
+ * cmake --install build
+ * \endcode
+ *
+ * The library and headers will be installed as follows:
+ * - **Libraries** are installed to `/usr/local/lib`
+ * - **Headers** are installed to `/usr/local/include`
+ *
+ * To link to the library in your CMake project, use:
+ * \code{.cmake}
+ * find_package(Img2Num REQUIRED)
+ * target_link_libraries(your_app PRIVATE Img2Num)
+ * \endcode
+ *
+ * \section usage_sec Usage Example
+ *
+ * For complete working examples, see the `example-apps/` directory.
+ *
+ * \section api_sec API Reference
+ *
+ * Browse the detailed function documentation:
+ * - \ref image_processing_group "Image Processing Algorithms"
+ * - \ref memory_management_group "Memory Management Functions"
+ */

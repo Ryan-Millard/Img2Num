@@ -1,0 +1,9 @@
+{
+  "label": "bindings",
+  "link": {
+    "type": "generated-index",
+    "title": "C++ Bindings for supported languages & runtimes",
+    "description": "Documentation for all C++ bindings in Img2Num. This covers how the core library is ported into different langauges.",
+    "slug": "/internal/bindings"
+  }
+}

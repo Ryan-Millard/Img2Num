@@ -40,38 +40,9 @@ function Run-InContainer {
 # -------------------------------
 switch ($Mode) {
 
-    # NPM scripts
-    { $_ -in @(
-        "dev","dev:all","dev:debug","dev:all:debug",
-        "build","build-js","build-wasm","build-wasm:debug",
-        "preview","docs",
-        "lint","lint:fix","lint:style",
-        "format","format-js","format-wasm",
-        "clean","clean-js","clean-wasm",
-        "help"
-    ) } {
-
-        if ($Mode -eq "docs") {
-            $YELLOW = $MAGENTA = $RESET = ""
-            # Check if terminal supports colors
-            $supportsColor = $Host.UI.SupportsVirtualTerminal
-            if ($supportsColor) {
-                $YELLOW  = "`e[33m"
-                $MAGENTA = "`e[35m"
-                $RESET   = "`e[0m"
-            }
-
-            Write-Host "${YELLOW}[INFO] Docusaurus is running inside the container, listening on all interfaces (0.0.0.0).${RESET}"
-            Write-Host "${YELLOW}[INFO] You cannot use the 0.0.0.0 link directly.${RESET}"
-            Write-Host "${YELLOW}[INFO] Access the site in your browser via: ${MAGENTA}http://localhost:3000/Img2Num/info/${RESET}"
-        }
-        $cmd = @("npm", "run", $Mode) + $RemainingArgs
-        Run-InContainer -CmdArgs $cmd
-    }
-
-    # Arbitrary npm
-    "npm" {
-        $cmd = @("npm") + $RemainingArgs
+    # Arbitrary pnpm
+    "pnpm" {
+        $cmd = @("pnpm") + $RemainingArgs
         Run-InContainer -CmdArgs $cmd
     }
 
@@ -113,18 +84,8 @@ Usage:
   ./img2num <command>
 
 Commands:
-  NPM Scripts (use help to see more info about each script):
-    build|build-js|build-wasm|build-wasm:debug
-    clean|clean-js|clean-wasm
-    dev|dev:all|dev:debug|dev:all:debug
-    docs
-    format|format-js|format-wasm
-    help
-    lint|lint:fix|lint:style
-    preview
-
-  Using NPM Directly:
-    npm <args>       Run arbitrary npm command
+  Using PNPM Directly:
+    pnpm <args>       Run arbitrary pnpm command
 
   Open Container Terminal:
     sh|shell|bash    Opens bash terminal in Docker container

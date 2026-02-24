@@ -1,5 +1,7 @@
 # Dependencies
 /node_modules
+static/docs/internal/**/api/*
+!static/docs/internal/**/api/.gitkeep
 
 # Production
 /build
@@ -19,3 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Auto-generated API docs
+docs/js/api/
+static/js/api.json

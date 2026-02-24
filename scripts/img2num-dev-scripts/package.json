@@ -1,0 +1,12 @@
+{
+  "name": "img2num-dev-scripts",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "fuzzy": "^0.1.3",
+    "readline": "^1.3.0"
+  },
+  "scriptsInfo": {},
+  "scripts": {}
+}

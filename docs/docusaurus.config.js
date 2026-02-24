@@ -7,10 +7,10 @@
 import { createRequire } from "module";
 import { themes as prismThemes } from "prism-react-renderer";
 import path from "path";
-import webpackAliasPlugin from "./plugins/webpack-alias/index.js";
 import { changelogSidebarGenerator } from "./changelogSidebarGenerator.js";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import docusaurusPluginTypeDocConfig from "./plugins/docusaurusPluginTypeDocConfig.js";
 
 const require = createRequire(import.meta.url);
 require("dotenv").config();
@@ -32,7 +32,7 @@ const algoliaHeadTag = {
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Img2Num",
-  tagline: "Transforms any image into a printable or digital colour-by-number template using WebAssembly-powered C++ image processing.",
+  tagline: "Transform any image into an SVG.",
   favicon: "img/favicon.svg",
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -61,6 +61,7 @@ const config = {
   projectName: "Img2Num", // Usually your repo name.
 
   onBrokenLinks: "throw",
+  onBrokenAnchors: "throw",
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -87,7 +88,6 @@ const config = {
         sidebarItemsGenerator: changelogSidebarGenerator,
       },
     ],
-    webpackAliasPlugin,
     [
       "@docusaurus/plugin-google-gtag",
       {
@@ -95,6 +95,7 @@ const config = {
         anonymizeIP: true,
       },
     ],
+    docusaurusPluginTypeDocConfig,
   ],
 
   presets: [
@@ -104,12 +105,18 @@ const config = {
       ({
         docs: {
           sidebarPath: "./sidebars.js",
-          // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl: "https://github.com/Ryan-Millard/Img2Num/edit/main/docs/",
           routeBasePath: "docs",
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
+          lastVersion: "old",
+          versions: {
+            current: {
+              label: "Next",
+              banner: "unreleased",
+            },
+          },
         },
         blog: {
           showReadingTime: true,
@@ -143,10 +150,34 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      docs: {
+        versionPersistence: "localStorage",
+        sidebar: {
+          hideable: true,
+          autoCollapseCategories: true,
+        },
+      },
+
+      blog: {
+        sidebar: {
+          groupByYear: true,
+        },
+      },
+
       // Replace with your project's social card
-      image: "img/docusaurus-social-card.jpg",
+      image: "img/favicon.png",
       colorMode: {
+        defaultMode: "dark",
+        disableSwitch: false,
         respectPrefersColorScheme: true,
+      },
+
+      announcementBar: {
+        id: "docs-refactor-notice",
+        content: `⚠️ Some documentation pages are incomplete due to a recent refactor. <a href="/Img2Num/info/notices/refactor-notice">Learn more</a>.`,
+        backgroundColor: "#fdfd96", // light background
+        textColor: "#091E42", // dark text
+        isCloseable: true,
       },
 
       metadata: [algoliaHeadTag],
@@ -164,19 +195,29 @@ const config = {
             type: "docSidebar",
             sidebarId: "tutorialSidebar",
             position: "left",
-            label: "Documentation",
+            label: "Docs",
             to: "/docs",
           },
           { to: "/blog", label: "Blog", position: "left" },
           { to: "/changelog", label: "Changelog", position: "left" },
+          {
+            type: "docsVersionDropdown",
+            position: "right",
+          },
           {
             href: "https://github.com/Ryan-Millard/Img2Num",
             label: "GitHub",
             position: "right",
           },
         ],
+        hideOnScroll: false,
       },
       footer: {
+        logo: {
+          alt: "Img2Num Logo",
+          src: "img/favicon.svg",
+          height: 150,
+        },
         style: "dark",
         links: [
           {
@@ -212,6 +253,10 @@ const config = {
           },
         ],
         copyright: `Copyright © ${new Date().getFullYear()} Img2Num.`,
+      },
+      tableOfContents: {
+        minHeadingLevel: 2,
+        maxHeadingLevel: 5,
       },
       prism: {
         theme: prismThemes.github,

@@ -1,0 +1,26 @@
+build/
+cmake-build/
+
+# C++ object and binary files
+*.o
+*.obj
+*.so
+*.a
+*.out
+*.exe
+*.dll
+
+# Backup files
+*~
+*.swp
+*.bak
+
+# VSCode and macOS stuff
+.vscode/
+.DS_Store
+
+# Logs
+*.log
+
+# Optional: ignore emscripten cache
+emscripten_cache/

@@ -1,0 +1,9 @@
+{
+  "label": "example-apps",
+  "link": {
+    "type": "generated-index",
+    "title": "Example Apps",
+    "description": "Example consumer apps of Img2Num packages",
+    "slug": "/internal/example-apps"
+  }
+}

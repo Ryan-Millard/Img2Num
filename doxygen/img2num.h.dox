@@ -1,0 +1,91 @@
+#define IMG2NUM_H_GAUSSIAN_BLUR_DOC
+/// @def IMG2NUM_H_GAUSSIAN_BLUR_DOC
+/// @brief Apply a Gaussian blur to an image using FFT.
+/// @ingroup IMG2NUM_H
+/// @param image Pointer to the image buffer (RGBA).
+/// @param width Width of the image in pixels.
+/// @param height Height of the image in pixels.
+/// @param sigma Standard deviation for Gaussian kernel.
+/// @note The operation modifies the image buffer in-place.
+/// @note Dox File: `doxygen/img2num.h.dox`
+///
+
+#define IMG2NUM_H_INVERT_IMAGE_DOC
+/// @def IMG2NUM_H_INVERT_IMAGE_DOC
+/// @brief Invert the pixel values of an image.
+/// @ingroup IMG2NUM_H
+/// @param ptr Pointer to the image buffer.
+/// @param width Width of the image in pixels.
+/// @param height Height of the image in pixels.
+/// @note Each pixel value is replaced by 255 - original_value.
+/// @note Dox File: `doxygen/img2num.h.dox`
+///
+
+#define IMG2NUM_H_THRESHOLD_IMAGE_DOC
+/// @def IMG2NUM_H_THRESHOLD_IMAGE_DOC
+/// @brief Apply a thresholding operation to an image.
+/// @ingroup IMG2NUM_H
+/// @param ptr Pointer to the image buffer.
+/// @param width Width of the image in pixels.
+/// @param height Height of the image in pixels.
+/// @param num_thresholds Number of thresholds to apply.
+/// @note Thresholds split pixel intensity ranges into discrete levels.
+/// @note Dox File: `doxygen/img2num.h.dox`
+///
+
+#define IMG2NUM_H_BLACK_THRESHOLD_IMAGE_DOC
+/// @def IMG2NUM_H_BLACK_THRESHOLD_IMAGE_DOC
+/// @brief Apply black-thresholding to an image.
+/// @ingroup IMG2NUM_H
+/// @param ptr Pointer to the image buffer.
+/// @param width Width of the image in pixels.
+/// @param height Height of the image in pixels.
+/// @param num_thresholds Number of thresholds to apply.
+/// @note Similar to threshold_image but prioritizes darker pixels.
+/// @note Dox File: `doxygen/img2num.h.dox`
+///
+
+#define IMG2NUM_H_KMEANS_DOC
+/// @def IMG2NUM_H_KMEANS_DOC
+/// @brief Perform k-means clustering on image data.
+/// @ingroup IMG2NUM_H
+/// @param data Pointer to input image data buffer.
+/// @param out_data Pointer to output buffer where clustered pixel values are stored.
+/// @param out_labels Pointer to output buffer for cluster labels per pixel.
+/// @param width Width of the image in pixels.
+/// @param height Height of the image in pixels.
+/// @param k Number of clusters to compute.
+/// @param max_iter Maximum number of iterations for the algorithm.
+/// @param color_space Color space flag (0 = CIE LAB, 1 = RGB).
+/// @note The function does not modify the input buffer.
+/// @note Dox File: `doxygen/img2num.h.dox`
+///
+
+#define IMG2NUM_H_BILATERAL_FILTER_DOC
+/// @def IMG2NUM_H_BILATERAL_FILTER_DOC
+/// @brief Apply bilateral filtering to an image.
+/// @ingroup IMG2NUM_H
+/// @param image Pointer to RGBA pixel buffer.
+/// @param width Width of the image in pixels.
+/// @param height Height of the image in pixels.
+/// @param sigma_spatial Standard deviation for spatial Gaussian (proximity weight).
+/// @param sigma_range Standard deviation for range Gaussian (intensity similarity weight).
+/// @param color_space Color space flag (0 = CIE LAB, 1 = RGB).
+/// @note The filter modifies the image buffer in-place.
+/// @note Dox File: `doxygen/img2num.h.dox`
+///
+
+#define IMG2NUM_H_LABELS_TO_SVG_DOC
+/// @def IMG2NUM_H_LABELS_TO_SVG_DOC
+/// @brief Convert labeled regions of an image into an SVG string.
+/// @ingroup IMG2NUM_H
+/// @param data Pointer to image data buffer.
+/// @param labels Pointer to label buffer, indicating region for each pixel.
+/// @param width Width of the image in pixels.
+/// @param height Height of the image in pixels.
+/// @param min_area Minimum area (in pixels) for a region to be included in the SVG.
+/// @param draw_contour_borders If true, contours of labeled regions will be drawn.
+/// @return Pointer to a dynamically allocated C-string containing the SVG data.
+/// @note Caller is responsible for freeing the returned string.
+/// @note Dox File: `doxygen/img2num.h.dox`
+///

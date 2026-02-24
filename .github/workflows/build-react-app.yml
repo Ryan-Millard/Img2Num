@@ -1,0 +1,40 @@
+name: Build React App
+
+on:
+  workflow_call:
+    inputs:
+      wasm-artifacts-path:
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build-react-app:
+    name: Build React Example App
+    runs-on: ubuntu-latest
+    container:
+      image: ryanmillard/img2num-dev:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Install Dependendencies
+        run: pnpm --filter react-example install
+
+      - name: Download WASM artifacts
+        if: ${{ inputs.wasm-artifacts-path }}
+        uses: actions/download-artifact@v4
+        with:
+          name: wasm-build
+          path: ${{ inputs.wasm-artifacts-path }}
+
+      - name: Build React app
+        run: pnpm -F react-example run build
+
+      - name: Upload React build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-build
+          path: example-apps/react-js/dist/
