@@ -35,3 +35,5 @@ Issue links:
 - [Refactor / Code Quality Improvement](https://github.com/Ryan-Millard/Img2Num/issues/new?template=refactor.yml)
 - [Blank Issue](https://github.com/Ryan-Millard/Img2Num/issues/new)
   :::
+
+  ths a spllng eror
