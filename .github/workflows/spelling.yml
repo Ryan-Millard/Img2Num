@@ -110,19 +110,6 @@ jobs:
           warnings: bad-regex,binary-file,deprecated-feature,ignored-expect-variant,large-file,limited-references,no-newline-at-eof,noisy-file,non-alpha-in-dictionary,token-is-substring,unexpected-line-ending,whitespace-in-dictionary,minified-file,unsupported-configuration,no-files-to-check,unclosed-block-ignore-begin,unclosed-block-ignore-end
           experimental_apply_changes_via_bot: 1
           use_sarif: 1
-          load-config-from: |
-            {
-              "pr-base-keys": [
-                "check_extra_dictionaries",
-                "dictionary_source_prefixes",
-                "extra_dictionaries",
-                ""
-              ],
-              "pr-trusted-keys": [
-                ""
-              ],
-              "": []
-            }
 
   update:
     name: Update PR
