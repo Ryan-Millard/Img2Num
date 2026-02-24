@@ -56,7 +56,7 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     wgpu::Device device;
     wgpu::Queue queue;*/
 
-    if (~gpu_initialized) {
+    if (!gpu_initialized) {
         std::cout << "init gpu " << std::endl;
         init_gpu();//instance, adapter, device, queue);
     }
