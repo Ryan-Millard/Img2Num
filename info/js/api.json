@@ -1,0 +1,1485 @@
+{
+	"schemaVersion": "2.0",
+	"id": 0,
+	"name": "API",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 11,
+			"name": "bilateralFilter",
+			"variant": "declaration",
+			"kind": 64,
+			"flags": {},
+			"sources": [
+				{
+					"fileName": "safeWasmWrappers.js",
+					"line": 82,
+					"character": 13
+				}
+			],
+			"signatures": [
+				{
+					"id": 12,
+					"name": "bilateralFilter",
+					"variant": "signature",
+					"kind": 4096,
+					"flags": {},
+					"comment": {
+						"summary": [],
+						"blockTags": [
+							{
+								"tag": "@summary",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Apply a bilateral filter to an image using WASM."
+									}
+								]
+							},
+							{
+								"tag": "@description",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Takes a Uint8ClampedArray and its dimensions and applies a bilateral filter on the Uint8ClampedArray image.\nThe "
+									},
+									{
+										"kind": "code",
+										"text": "`sigma_spatial`"
+									},
+									{
+										"kind": "text",
+										"text": " and "
+									},
+									{
+										"kind": "code",
+										"text": "`sigma_range`"
+									},
+									{
+										"kind": "text",
+										"text": " set weights to the respective Gaussian kernels applied to spatial (x, y) and range (color) data -\nthey both have recommended default values applied.\nThe default "
+									},
+									{
+										"kind": "code",
+										"text": "`color_space`"
+									},
+									{
+										"kind": "text",
+										"text": " is 0, which is CIE LAB, but sRGB can be chosen by setting "
+									},
+									{
+										"kind": "code",
+										"text": "`color_space`"
+									},
+									{
+										"kind": "text",
+										"text": " = 1. CIE LAB is more\naccurate, but sRGB is slightly faster."
+									}
+								]
+							},
+							{
+								"tag": "@async",
+								"content": [
+									{
+										"kind": "text",
+										"text": "bilateralFilter"
+									}
+								]
+							},
+							{
+								"tag": "@returns",
+								"content": [
+									{
+										"kind": "text",
+										"text": "The filtered image pixels."
+									}
+								]
+							},
+							{
+								"tag": "@throws",
+								"content": [
+									{
+										"kind": "text",
+										"text": "If the WASM function fails."
+									}
+								]
+							},
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\nconst filtered = await bilateralFilter({ pixels, width, height });\n```"
+									}
+								]
+							},
+							{
+								"tag": "@variation",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Standard bilateral filter with default parameters"
+									}
+								]
+							},
+							{
+								"tag": "@since",
+								"content": [
+									{
+										"kind": "text",
+										"text": "0.0.0"
+									}
+								]
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "safeWasmWrappers.js",
+							"line": 82,
+							"character": 31
+						}
+					],
+					"parameters": [
+						{
+							"id": 13,
+							"name": "__named_parameters",
+							"variant": "param",
+							"kind": 32768,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The input options."
+									}
+								]
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "any"
+							}
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": {
+							"packageName": "typescript",
+							"packagePath": "lib/lib.es5.d.ts",
+							"qualifiedName": "Promise"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": {
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
+									"qualifiedName": "Uint8ClampedArray"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"packageName": "typescript",
+											"packagePath": "lib/lib.es5.d.ts",
+											"qualifiedName": "ArrayBufferLike"
+										},
+										"name": "ArrayBufferLike",
+										"package": "typescript"
+									}
+								],
+								"name": "Uint8ClampedArray",
+								"package": "typescript"
+							}
+						],
+						"name": "Promise",
+						"package": "typescript"
+					}
+				}
+			]
+		},
+		{
+			"id": 14,
+			"name": "blackThreshold",
+			"variant": "declaration",
+			"kind": 64,
+			"flags": {},
+			"sources": [
+				{
+					"fileName": "safeWasmWrappers.js",
+					"line": 114,
+					"character": 13
+				}
+			],
+			"signatures": [
+				{
+					"id": 15,
+					"name": "blackThreshold",
+					"variant": "signature",
+					"kind": 4096,
+					"flags": {},
+					"comment": {
+						"summary": [],
+						"blockTags": [
+							{
+								"tag": "@summary",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Apply a black-biased threshold filter to reduce colors in an image."
+									}
+								]
+							},
+							{
+								"tag": "@description",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Apply a simple sRGB bin-based threshold on the Uint8ClampedArray image.\nThe bins in this function are determined by the "
+									},
+									{
+										"kind": "code",
+										"text": "`num_colors`"
+									},
+									{
+										"kind": "text",
+										"text": " parameter."
+									}
+								]
+							},
+							{
+								"tag": "@async",
+								"content": [
+									{
+										"kind": "text",
+										"text": "blackThreshold"
+									}
+								]
+							},
+							{
+								"tag": "@returns",
+								"content": [
+									{
+										"kind": "text",
+										"text": "The thresholded image pixels."
+									}
+								]
+							},
+							{
+								"tag": "@throws",
+								"content": [
+									{
+										"kind": "text",
+										"text": "If the WASM function fails."
+									}
+								]
+							},
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\nconst thresholded = await blackThreshold({ pixels, width, height, num_colors: 16 });\n```"
+									}
+								]
+							},
+							{
+								"tag": "@see",
+								"content": [
+									{
+										"kind": "inline-tag",
+										"tag": "@link",
+										"text": "Quantization Wiki",
+										"target": "https://en.wikipedia.org/wiki/Color_quantization|Color"
+									}
+								]
+							},
+							{
+								"tag": "@todo",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Support different bias levels for black/white thresholds."
+									}
+								]
+							},
+							{
+								"tag": "@variation",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Black-biased threshold with customizable number of colors"
+									}
+								]
+							},
+							{
+								"tag": "@since",
+								"content": [
+									{
+										"kind": "text",
+										"text": "0.0.0"
+									}
+								]
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "safeWasmWrappers.js",
+							"line": 114,
+							"character": 30
+						}
+					],
+					"parameters": [
+						{
+							"id": 16,
+							"name": "__named_parameters",
+							"variant": "param",
+							"kind": 32768,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The input options."
+									}
+								]
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "any"
+							}
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": {
+							"packageName": "typescript",
+							"packagePath": "lib/lib.es5.d.ts",
+							"qualifiedName": "Promise"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": {
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
+									"qualifiedName": "Uint8ClampedArray"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"packageName": "typescript",
+											"packagePath": "lib/lib.es5.d.ts",
+											"qualifiedName": "ArrayBufferLike"
+										},
+										"name": "ArrayBufferLike",
+										"package": "typescript"
+									}
+								],
+								"name": "Uint8ClampedArray",
+								"package": "typescript"
+							}
+						],
+						"name": "Promise",
+						"package": "typescript"
+					}
+				}
+			]
+		},
+		{
+			"id": 23,
+			"name": "findContours",
+			"variant": "declaration",
+			"kind": 64,
+			"flags": {},
+			"sources": [
+				{
+					"fileName": "safeWasmWrappers.js",
+					"line": 197,
+					"character": 13
+				}
+			],
+			"signatures": [
+				{
+					"id": 24,
+					"name": "findContours",
+					"variant": "signature",
+					"kind": 4096,
+					"flags": {},
+					"comment": {
+						"summary": [],
+						"blockTags": [
+							{
+								"tag": "@summary",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Convert labeled regions to SVG contours."
+									}
+								]
+							},
+							{
+								"tag": "@description",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Default path: convert an input image and its labeled regions into an SVG.\n"
+									},
+									{
+										"kind": "code",
+										"text": "`draw_contour_borders`"
+									},
+									{
+										"kind": "text",
+										"text": "=true: the input image with its contours traced and marked with unique colors."
+									}
+								]
+							},
+							{
+								"tag": "@async",
+								"content": [
+									{
+										"kind": "text",
+										"text": "findContours"
+									}
+								]
+							},
+							{
+								"tag": "@returns",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Generated SVG and optionally pixels with visualized contours."
+									}
+								]
+							},
+							{
+								"tag": "@throws",
+								"content": [
+									{
+										"kind": "text",
+										"text": "If the WASM function fails or input labels are invalid."
+									}
+								]
+							},
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\nconst { svg, visualization } = await findContours({ pixels, labels, width, height });\n```"
+									}
+								]
+							},
+							{
+								"tag": "@todo",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Support additional visualization options like color-coded regions."
+									}
+								]
+							},
+							{
+								"tag": "@variation",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Contour extraction with optional visualization"
+									}
+								]
+							},
+							{
+								"tag": "@since",
+								"content": [
+									{
+										"kind": "text",
+										"text": "0.0.0"
+									}
+								]
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "safeWasmWrappers.js",
+							"line": 197,
+							"character": 28
+						}
+					],
+					"parameters": [
+						{
+							"id": 25,
+							"name": "__named_parameters",
+							"variant": "param",
+							"kind": 32768,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The input options."
+									}
+								]
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "any"
+							}
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": {
+							"packageName": "typescript",
+							"packagePath": "lib/lib.es5.d.ts",
+							"qualifiedName": "Promise"
+						},
+						"typeArguments": [
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 26,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 27,
+											"name": "svg",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 189,
+													"character": 22
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 28,
+											"name": "visualization",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 189,
+													"character": 35
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "typescript",
+													"packagePath": "lib/lib.es5.d.ts",
+													"qualifiedName": "Uint8ClampedArray"
+												},
+												"name": "Uint8ClampedArray",
+												"package": "typescript"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												27,
+												28
+											]
+										}
+									]
+								}
+							}
+						],
+						"name": "Promise",
+						"package": "typescript"
+					}
+				}
+			]
+		},
+		{
+			"id": 8,
+			"name": "gaussianBlur",
+			"variant": "declaration",
+			"kind": 64,
+			"flags": {},
+			"sources": [
+				{
+					"fileName": "safeWasmWrappers.js",
+					"line": 47,
+					"character": 13
+				}
+			],
+			"signatures": [
+				{
+					"id": 9,
+					"name": "gaussianBlur",
+					"variant": "signature",
+					"kind": 4096,
+					"flags": {},
+					"comment": {
+						"summary": [],
+						"blockTags": [
+							{
+								"tag": "@summary",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Apply a Gaussian blur to an image using FFT in WASM."
+									}
+								]
+							},
+							{
+								"tag": "@description",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Takes a Uint8ClampedArray and its dimensions and applies a Gaussian blur on the Uint8ClampedArray image.\nThe "
+									},
+									{
+										"kind": "code",
+										"text": "`sigma_pixels`"
+									},
+									{
+										"kind": "text",
+										"text": " parameter determines the blur radius and has a dynamic default value equal to 5% of the image's width.\nUseful for denoising images by applying a low-pass filter. Sped up by a 2-D FFT."
+									}
+								]
+							},
+							{
+								"tag": "@async",
+								"content": [
+									{
+										"kind": "text",
+										"text": "gaussianBlur"
+									}
+								]
+							},
+							{
+								"tag": "@returns",
+								"content": [
+									{
+										"kind": "text",
+										"text": "The blurred image pixels."
+									}
+								]
+							},
+							{
+								"tag": "@throws",
+								"content": [
+									{
+										"kind": "text",
+										"text": "If the WASM function fails or memory allocation fails."
+									}
+								]
+							},
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\nconst blurred = await gaussianBlur({ pixels, width, height });\n```"
+									}
+								]
+							},
+							{
+								"tag": "@todo",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Consider adding support for multiple channels or alpha-only blurs."
+									}
+								]
+							},
+							{
+								"tag": "@variation",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Standard Gaussian blur using FFT"
+									}
+								]
+							},
+							{
+								"tag": "@since",
+								"content": [
+									{
+										"kind": "text",
+										"text": "0.0.0"
+									}
+								]
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "safeWasmWrappers.js",
+							"line": 47,
+							"character": 28
+						}
+					],
+					"parameters": [
+						{
+							"id": 10,
+							"name": "__named_parameters",
+							"variant": "param",
+							"kind": 32768,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The input options."
+									}
+								]
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "any"
+							}
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": {
+							"packageName": "typescript",
+							"packagePath": "lib/lib.es5.d.ts",
+							"qualifiedName": "Promise"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": {
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
+									"qualifiedName": "Uint8ClampedArray"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"packageName": "typescript",
+											"packagePath": "lib/lib.es5.d.ts",
+											"qualifiedName": "ArrayBufferLike"
+										},
+										"name": "ArrayBufferLike",
+										"package": "typescript"
+									}
+								],
+								"name": "Uint8ClampedArray",
+								"package": "typescript"
+							}
+						],
+						"name": "Promise",
+						"package": "typescript"
+					}
+				}
+			]
+		},
+		{
+			"id": 1,
+			"name": "imageToUint8ClampedArray",
+			"variant": "declaration",
+			"kind": 64,
+			"flags": {},
+			"sources": [
+				{
+					"fileName": "imageToUint8ClampedArray.js",
+					"line": 50,
+					"character": 16
+				}
+			],
+			"signatures": [
+				{
+					"id": 2,
+					"name": "imageToUint8ClampedArray",
+					"variant": "signature",
+					"kind": 4096,
+					"flags": {},
+					"comment": {
+						"summary": [],
+						"blockTags": [
+							{
+								"tag": "@summary",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Convert an image file into a "
+									},
+									{
+										"kind": "code",
+										"text": "`Uint8ClampedArray`"
+									},
+									{
+										"kind": "text",
+										"text": " of pixel data (RGBA).\n\n imageToUint8ClampedArray"
+									}
+								]
+							},
+							{
+								"tag": "@async",
+								"content": []
+							},
+							{
+								"tag": "@description",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Reads an image file (PNG, JPEG, etc.) and returns its pixel data as a "
+									},
+									{
+										"kind": "code",
+										"text": "`Uint8ClampedArray`"
+									},
+									{
+										"kind": "text",
+										"text": ".\nEach pixel consists of four consecutive values: red, green, blue, and alpha (RGBA).\nAlso returns the image's original width and height. Useful for canvas operations,\nimage processing, WebGL textures, or computer vision tasks."
+									}
+								]
+							},
+							{
+								"tag": "@returns",
+								"content": [
+									{
+										"kind": "text",
+										"text": "A Promise resolving to an object containing:\n- "
+									},
+									{
+										"kind": "code",
+										"text": "`pixels`"
+									},
+									{
+										"kind": "text",
+										"text": ": A "
+									},
+									{
+										"kind": "code",
+										"text": "`Uint8ClampedArray`"
+									},
+									{
+										"kind": "text",
+										"text": " of RGBA pixel values.\n- "
+									},
+									{
+										"kind": "code",
+										"text": "`width`"
+									},
+									{
+										"kind": "text",
+										"text": ": Width of the image in pixels.\n- "
+									},
+									{
+										"kind": "code",
+										"text": "`height`"
+									},
+									{
+										"kind": "text",
+										"text": ": Height of the image in pixels."
+									}
+								]
+							},
+							{
+								"tag": "@throws",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Will not throw in current implementation, but could reject if the image fails to load."
+									}
+								]
+							},
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\nconst fileInput = document.querySelector(\"#fileInput\");\nfileInput.addEventListener(\"change\", async (event) => {\n  const file = event.target.files[0];\n  const { pixels, width, height } = await imageToUint8ClampedArray(file);\n  console.log(\"Width:\", width, \"Height:\", height);\n  console.log(\"Pixels:\", pixels);\n});\n```"
+									}
+								]
+							},
+							{
+								"tag": "@todo",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Add error handling for invalid or corrupt image files."
+									}
+								]
+							},
+							{
+								"tag": "@variation",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Standard image file input"
+									}
+								]
+							}
+						],
+						"modifierTags": [
+							"@function"
+						]
+					},
+					"sources": [
+						{
+							"fileName": "imageToUint8ClampedArray.js",
+							"line": 50,
+							"character": 16
+						}
+					],
+					"parameters": [
+						{
+							"id": 3,
+							"name": "file",
+							"variant": "param",
+							"kind": 32768,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The image file to process. Must be a valid "
+									},
+									{
+										"kind": "code",
+										"text": "`File`"
+									},
+									{
+										"kind": "text",
+										"text": " object, e.g., from an "
+									},
+									{
+										"kind": "code",
+										"text": "`<input type=\"file\">`"
+									},
+									{
+										"kind": "text",
+										"text": " element."
+									}
+								]
+							},
+							"type": {
+								"type": "reference",
+								"target": {
+									"packageName": "typescript",
+									"packagePath": "lib/lib.dom.d.ts",
+									"qualifiedName": "File"
+								},
+								"name": "File",
+								"package": "typescript"
+							}
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": {
+							"packageName": "typescript",
+							"packagePath": "lib/lib.es5.d.ts",
+							"qualifiedName": "Promise"
+						},
+						"typeArguments": [
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 4,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 7,
+											"name": "height",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"sources": [
+												{
+													"fileName": "imageToUint8ClampedArray.js",
+													"line": 30,
+													"character": 64
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											}
+										},
+										{
+											"id": 5,
+											"name": "pixels",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"sources": [
+												{
+													"fileName": "imageToUint8ClampedArray.js",
+													"line": 30,
+													"character": 22
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "typescript",
+													"packagePath": "lib/lib.es5.d.ts",
+													"qualifiedName": "Uint8ClampedArray"
+												},
+												"name": "Uint8ClampedArray",
+												"package": "typescript"
+											}
+										},
+										{
+											"id": 6,
+											"name": "width",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"sources": [
+												{
+													"fileName": "imageToUint8ClampedArray.js",
+													"line": 30,
+													"character": 49
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												7,
+												5,
+												6
+											]
+										}
+									]
+								}
+							}
+						],
+						"name": "Promise",
+						"package": "typescript"
+					}
+				}
+			]
+		},
+		{
+			"id": 17,
+			"name": "kmeans",
+			"variant": "declaration",
+			"kind": 64,
+			"flags": {},
+			"sources": [
+				{
+					"fileName": "safeWasmWrappers.js",
+					"line": 151,
+					"character": 13
+				}
+			],
+			"signatures": [
+				{
+					"id": 18,
+					"name": "kmeans",
+					"variant": "signature",
+					"kind": 4096,
+					"flags": {},
+					"comment": {
+						"summary": [],
+						"blockTags": [
+							{
+								"tag": "@summary",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Cluster pixels using the K-Means algorithm in WASM."
+									}
+								]
+							},
+							{
+								"tag": "@description",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Apply a standard K-Means clustering algorithm to the input image in the specified "
+									},
+									{
+										"kind": "code",
+										"text": "`color_space`"
+									},
+									{
+										"kind": "text",
+										"text": "\n(default is 0: CIE LAB, but 1: sRGB can be use) using pre-specified maximum color and iteration counts.\nYou can provide the "
+									},
+									{
+										"kind": "code",
+										"text": "`out_pixels`"
+									},
+									{
+										"kind": "text",
+										"text": " and "
+									},
+									{
+										"kind": "code",
+										"text": "`out_labels`"
+									},
+									{
+										"kind": "text",
+										"text": " arrays,\nhowever this is atypical in JavaScript (since it is modified in-place and you will need to allocate a sufficiently large array),\nso it is recommended to use the default arguments and returns."
+									}
+								]
+							},
+							{
+								"tag": "@async",
+								"content": [
+									{
+										"kind": "text",
+										"text": "kmeans"
+									}
+								]
+							},
+							{
+								"tag": "@returns",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Clustered pixels and labels."
+									}
+								]
+							},
+							{
+								"tag": "@throws",
+								"content": [
+									{
+										"kind": "text",
+										"text": "If the WASM function fails or iterations do not converge."
+									}
+								]
+							},
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\nconst { pixels: clusteredPixels, labels } = await kmeans({ pixels, width, height, num_colors: 8 });\n```"
+									}
+								]
+							},
+							{
+								"tag": "@variation",
+								"content": [
+									{
+										"kind": "text",
+										"text": "K-means clustering with default color space"
+									}
+								]
+							},
+							{
+								"tag": "@since",
+								"content": [
+									{
+										"kind": "text",
+										"text": "0.0.0"
+									}
+								]
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "safeWasmWrappers.js",
+							"line": 151,
+							"character": 22
+						}
+					],
+					"parameters": [
+						{
+							"id": 19,
+							"name": "__named_parameters",
+							"variant": "param",
+							"kind": 32768,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The input options."
+									}
+								]
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "any"
+							}
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": {
+							"packageName": "typescript",
+							"packagePath": "lib/lib.es5.d.ts",
+							"qualifiedName": "Promise"
+						},
+						"typeArguments": [
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 20,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 22,
+											"name": "labels",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 144,
+													"character": 49
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "typescript",
+													"packagePath": "lib/lib.es5.d.ts",
+													"qualifiedName": "Int32Array"
+												},
+												"name": "Int32Array",
+												"package": "typescript"
+											}
+										},
+										{
+											"id": 21,
+											"name": "pixels",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 144,
+													"character": 22
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "typescript",
+													"packagePath": "lib/lib.es5.d.ts",
+													"qualifiedName": "Uint8ClampedArray"
+												},
+												"name": "Uint8ClampedArray",
+												"package": "typescript"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												22,
+												21
+											]
+										}
+									]
+								}
+							}
+						],
+						"name": "Promise",
+						"package": "typescript"
+					}
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Functions",
+			"children": [
+				11,
+				14,
+				23,
+				8,
+				1,
+				17
+			]
+		}
+	],
+	"packageName": "img2num",
+	"symbolIdMap": {
+		"0": {
+			"packageName": "img2num",
+			"packagePath": "index.js",
+			"qualifiedName": ""
+		},
+		"1": {
+			"packageName": "img2num",
+			"packagePath": "imageToUint8ClampedArray.js",
+			"qualifiedName": "imageToUint8ClampedArray"
+		},
+		"2": {
+			"packageName": "img2num",
+			"packagePath": "imageToUint8ClampedArray.js",
+			"qualifiedName": "imageToUint8ClampedArray"
+		},
+		"3": {
+			"packageName": "img2num",
+			"packagePath": "imageToUint8ClampedArray.js",
+			"qualifiedName": "file"
+		},
+		"4": {
+			"packageName": "img2num",
+			"packagePath": "imageToUint8ClampedArray.js",
+			"qualifiedName": "__type"
+		},
+		"5": {
+			"packageName": "img2num",
+			"packagePath": "imageToUint8ClampedArray.js",
+			"qualifiedName": "__type.pixels"
+		},
+		"6": {
+			"packageName": "img2num",
+			"packagePath": "imageToUint8ClampedArray.js",
+			"qualifiedName": "__type.width"
+		},
+		"7": {
+			"packageName": "img2num",
+			"packagePath": "imageToUint8ClampedArray.js",
+			"qualifiedName": "__type.height"
+		},
+		"8": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "gaussianBlur"
+		},
+		"9": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "gaussianBlur"
+		},
+		"10": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__0"
+		},
+		"11": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "bilateralFilter"
+		},
+		"12": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "bilateralFilter"
+		},
+		"13": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__0"
+		},
+		"14": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "blackThreshold"
+		},
+		"15": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "blackThreshold"
+		},
+		"16": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__0"
+		},
+		"17": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "kmeans"
+		},
+		"18": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "kmeans"
+		},
+		"19": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__0"
+		},
+		"20": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type"
+		},
+		"21": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.pixels"
+		},
+		"22": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.labels"
+		},
+		"23": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "findContours"
+		},
+		"24": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "findContours"
+		},
+		"25": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__0"
+		},
+		"26": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type"
+		},
+		"27": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.svg"
+		},
+		"28": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.visualization"
+		}
+	},
+	"files": {
+		"entries": {
+			"1": "../packages/js/index.js"
+		},
+		"reflections": {
+			"1": 0
+		}
+	}
+}
