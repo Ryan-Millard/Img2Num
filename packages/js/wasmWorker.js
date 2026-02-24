@@ -116,7 +116,27 @@ self.onmessage = async ({ data }) => {
     // Call the WASM function
     const exportName = `_${funcName}`;
     if (typeof wasmModule[exportName] !== "function") throw new Error(`Export not found: ${exportName}`);
-    const result = wasmModule[exportName](...argsMap.values());
+
+    var result;
+    
+    console.log(funcName);
+    // result = wasmModule[exportName](...argsMap.values());
+    let cArgTypes = Array(argsMap.size).fill("number");
+    result = wasmModule.ccall(
+      funcName,          // Name WITHOUT the underscore (e.g. "bilateral_filter_gpu")
+        "void",            // Return type
+        cArgTypes,         // Argument types
+        [...argsMap.values()],             // Arguments
+        { async: true }    // <--- This works here!
+    );
+
+    //Handle the result
+    if (result && typeof result.then === 'function') {
+      console.log("Asyncify: Pausing JS for C++...");
+      result = await result;
+      console.log(result);
+      console.log("Asyncify: Resumed!");
+    }
 
     // Read back buffers
     const outputMap = new Map();
@@ -126,6 +146,8 @@ self.onmessage = async ({ data }) => {
     });
 
     // Handle return value
+    console.log("read results")
+    console.log(result);
     let returnValue = result;
     if (returnType && WASM_TYPES[returnType] !== WASM_TYPES["void"]) returnValue = WASM_TYPES[returnType].read(result);
 

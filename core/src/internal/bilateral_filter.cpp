@@ -7,6 +7,7 @@
 
 #include "img2num.h"
 #include "internal/cielab.h"
+#include "internal/bilateral_filter_gpu.h"
 
 static constexpr double SIGMA_RADIUS_FACTOR{3.0};  // 3 standard deviations
 static constexpr int MAX_KERNEL_RADIUS{50};
@@ -151,8 +152,7 @@ void _process(const uint8_t *image, const std::vector<double> &cie_image,
     }
 }
 
-namespace img2num {
-void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_spatial,
+void bilateral_filter_cpu(uint8_t *image, size_t width, size_t height, double sigma_spatial,
                       double sigma_range, uint8_t color_space) {
     // bad data -> return
     if (sigma_spatial <= 0.0 || sigma_range <= 0.0 || width <= 0 || height <= 0) return;
@@ -216,4 +216,22 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
 
     std::memcpy(image, result.data(), result.size());
 }
+
+namespace img2num {
+    void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_spatial,
+                      double sigma_range, uint8_t color_space) {
+
+        int isWebGPUAvailable = EM_ASM_INT({
+            if (navigator.gpu) return 1;
+            console.error("WEBGPU MISSING: navigator.gpu is undefined. Check HTTPS/Secure Context.");
+            return 0;
+        });
+
+        if (isWebGPUAvailable) {
+            bilateral_filter_gpu(image, width, height, sigma_spatial, sigma_range, color_space);
+        }
+        else {
+            bilateral_filter_cpu(image, width, height, sigma_spatial, sigma_range, color_space);
+        }
+    }
 }  // namespace img2num

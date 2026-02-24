@@ -38,9 +38,11 @@ set(COMMON_FLAGS
     "SHELL:-s MAXIMUM_MEMORY=2048MB"
     "SHELL:-s ALLOW_MEMORY_GROWTH=1"
     "SHELL:-s EXPORT_NAME=createImg2NumModule"
+    "SHELL:-s ASYNCIFY=1"
+    "SHELL:--use-port=emdawnwebgpu"
 )
 
-target_compile_options(img2num_wasm PRIVATE -msimd128)
+target_compile_options(img2num_wasm PRIVATE -msimd128 "--use-port=emdawnwebgpu")
 target_link_options(img2num_wasm PRIVATE ${COMMON_FLAGS} -msimd128)
 
 # Build type flags

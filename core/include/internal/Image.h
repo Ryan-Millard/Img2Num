@@ -101,6 +101,10 @@ class Image {
         return data.at(index(x, y));
     }  // get
 
+    std::vector<PixelT>& getData() {
+        return data;
+    }
+
    private:
     std::vector<PixelT> data;
     int width, height;

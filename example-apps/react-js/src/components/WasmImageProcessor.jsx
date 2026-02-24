@@ -13,6 +13,8 @@ const WasmImageProcessor = () => {
   const inputRef = useRef(null);
 
   const [originalSrc, setOriginalSrc] = useState(null);
+  const [kmeansSrc, setKmeansSrc] = useState(null);
+  const [contoursSrc, setContoursSrc] = useState(null);
   const [fileData, setFileData] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -21,8 +23,10 @@ const WasmImageProcessor = () => {
   useEffect(() => {
     return () => {
       if (originalSrc) URL.revokeObjectURL(originalSrc);
+      if (kmeansSrc) URL.revokeObjectURL(kmeansSrc);
+      if (contoursSrc) URL.revokeObjectURL(contoursSrc);
     };
-  }, [originalSrc]);
+  }, [originalSrc, kmeansSrc, contoursSrc]);
 
   /* Stable loader for images */
   const loadOriginal = useCallback(async (file) => {
@@ -89,6 +93,7 @@ const WasmImageProcessor = () => {
         pixels: imgBilateralFiltered,
         num_colors: 16,
       });
+      console.log(1);
 
       step(95);
 
@@ -99,7 +104,10 @@ const WasmImageProcessor = () => {
         height,
       });
 
-      step(100);
+      //// Get 2% of the input dimension (width / height), but default to 1 pixel
+      //const twoPercentOrOne = (dimension) => Math.ceil(Math.max(dimension * 0.02, 1));
+      //const minWidth = twoPercentOrOne(width);
+      //const minHeight = twoPercentOrOne(height);
 
       navigate("/editor", {
         state: { svg },
@@ -139,6 +147,8 @@ const WasmImageProcessor = () => {
     return (
       <>
         <img src={originalSrc} alt="Original" className={styles.preview} />
+        {kmeansSrc && <img src={kmeansSrc} alt="Kmeans" className={styles.preview} />}
+        {contoursSrc && <img src={contoursSrc} alt="Kmeans" className={styles.preview} />}
 
         {!isProcessing ? (
           <Tooltip content="Process the image and convert it to numbers">
@@ -157,7 +167,7 @@ const WasmImageProcessor = () => {
         )}
       </>
     );
-  }, [originalSrc, isProcessing, progress, processImage]);
+  }, [originalSrc, kmeansSrc, contoursSrc, isProcessing, progress, processImage]);
 
   return (
     <GlassCard
