@@ -12,6 +12,11 @@
 #include <webgpu/webgpu_cpp.h>
 #include <emscripten/html5.h>
 
+#include "internal/cielab.h"
+
+static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB{0};
+static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
+
 // Structure matching the WGSL Uniform (std140 layout)
 struct FilterParams {
     float sigmaSpatial;
@@ -30,26 +35,40 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     
     if (sigma_spatial <= 0.0 || sigma_range <= 0.0 || width <= 0 || height <= 0)
         return;
-    /*if (color_space != COLOR_SPACE_OPTION_CIELAB &&
+    if (color_space != COLOR_SPACE_OPTION_CIELAB &&
         color_space != COLOR_SPACE_OPTION_RGB)
         return;
-    */
 
     std::vector<uint8_t> result(width * height * 4, 255);
-
+    std::vector<float> result_lab(width * height * 16, 0.0);
     // std::memcpy(image, result.data(), result.size());
 
     // 1. Sanity Check: Is WebGPU available in this JS context?
-    int isWebGPUAvailable = EM_ASM_INT({
-        if (navigator.gpu) return 1;
-        console.error("WEBGPU MISSING: navigator.gpu is undefined. Check HTTPS/Secure Context.");
-        return 0;
-    });
+    // should be done in bilateral_filter.cpp
+    // ========= CIELAB section start =========
+    // Compute full image RGB - CIELAB conversion
+    std::vector<float> cie_image;
+    if (color_space == COLOR_SPACE_OPTION_CIELAB) {
+        cie_image.resize(width * height * 4);
 
-    if (!isWebGPUAvailable) {
-        std::cerr << "ABORTING: WebGPU not supported in this browser context." << std::endl;
-        return;
+        for (int y{0}; y < height; y++) {
+            for (int x{0}; x < width; x++) {
+                int center_idx{(y * static_cast<int>(width) + x) * 4};
+                uint8_t r0{image[center_idx]};
+                uint8_t g0{image[center_idx + 1]};
+                uint8_t b0{image[center_idx + 2]};
+                uint8_t a0{image[center_idx + 3]};
+                float L0, A0, B0;
+                rgb_to_lab<uint8_t, float>(r0, g0, b0, L0, A0, B0);
+
+                cie_image[center_idx] = L0 / 255.f;
+                cie_image[center_idx + 1] = A0 / 255.f;
+                cie_image[center_idx + 2] = B0 / 255.f;
+                cie_image[center_idx + 3] = static_cast<float>(a0) / 255.f;  // unused but keep for indexing purposes
+            }
+        }
     }
+    // ========= CIELAB section end =========
 
     /*wgpu::Instance instance;
     wgpu::Adapter adapter;
@@ -65,7 +84,19 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     // 1. Create Input Texture
     wgpu::TextureDescriptor texDesc = {};
     texDesc.size = { (uint32_t)width, (uint32_t)height, 1 };
-    texDesc.format = wgpu::TextureFormat::RGBA8Unorm;
+    int bytesPerPixel;
+    switch (color_space) {
+        case COLOR_SPACE_OPTION_RGB: {
+            texDesc.format = wgpu::TextureFormat::RGBA8Unorm;
+            bytesPerPixel = 4;
+            break;
+        }
+        case COLOR_SPACE_OPTION_CIELAB : {
+            texDesc.format = wgpu::TextureFormat::RGBA32Float;
+            bytesPerPixel = 16;
+            break;
+        }
+    }
     texDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst;
     wgpu::Texture inputTexture = device.CreateTexture(&texDesc);
 
@@ -75,10 +106,19 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     dst.texture = inputTexture;
     wgpu::TexelCopyBufferLayout layout = {};
     layout.offset = 0;
-    layout.bytesPerRow = width * 4; // Tightly packed for upload
-    layout.rowsPerImage = height;
-    queue.WriteTexture(&dst, image, 4 * width * height, &layout, &texDesc.size);
 
+    layout.bytesPerRow = width * bytesPerPixel; // Tightly packed for upload
+    layout.rowsPerImage = height;
+    switch (color_space) {
+        case COLOR_SPACE_OPTION_RGB: {
+            queue.WriteTexture(&dst, image, bytesPerPixel * width * height, &layout, &texDesc.size);
+            break;
+        }
+        case COLOR_SPACE_OPTION_CIELAB : {
+            queue.WriteTexture(&dst, cie_image.data(), bytesPerPixel * width * height, &layout, &texDesc.size);
+            break;
+        }
+    }
     std::cout << "create output texture" << std::endl;
     // 2. Create Output Texture (Storage)
     wgpu::TextureDescriptor outDesc = texDesc;
@@ -97,7 +137,16 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     std::cout << "compile shader" << std::endl;
     // 4. Compile Shader
     wgpu::ShaderSourceWGSL wgslDesc;
-    wgslDesc.code = shaderSource;
+    switch (color_space) {
+        case COLOR_SPACE_OPTION_RGB: {
+            wgslDesc.code = shaderSource;
+            break;
+        };
+        case COLOR_SPACE_OPTION_CIELAB: {
+            wgslDesc.code = shaderSourceLAB;
+            break;
+        }
+    }
     wgpu::ShaderModuleDescriptor shaderDesc = {};
     shaderDesc.nextInChain = &wgslDesc;
     shaderDesc.label = "BilateralFilterShader";
@@ -145,7 +194,7 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
 
     // 8. Prepare for Readback (Copy Texture -> Buffer)
     // We cannot read textures directly on CPU. We must copy to a MapRead buffer.
-    uint32_t alignedBytesPerRow = getAlignedBytesPerRow(width);
+    uint32_t alignedBytesPerRow = getAlignedBytesPerRow(width, (uint32_t)bytesPerPixel);
     uint32_t bufferSize = alignedBytesPerRow * height;
 
     wgpu::BufferDescriptor readBufDesc = {};
@@ -190,12 +239,31 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
                 std::cout << "Map success: " << message.data << std::endl;
                 // Get the raw pointer
                 const uint8_t* mappedData = (const uint8_t*)readBuffer.GetConstMappedRange(0, bufferSize);
-                
-                // Copy row by row to remove padding and put data into 'result'
+                // copy to cpu buffer
                 for (size_t y = 0; y < height; ++y) {
-                    size_t srcIndex = y * alignedBytesPerRow;
-                    size_t dstIndex = y * width * 4;
-                    std::memcpy(result.data() + dstIndex, mappedData + srcIndex, width * 4);
+                    const uint8_t* rowPtr = mappedData + (y * alignedBytesPerRow);
+                    for (size_t x = 0; x < width; ++x) {
+                        const uint8_t* pixelPtr = rowPtr + (x * bytesPerPixel);
+                        size_t dstIndex = 4 * (y * width + x); //RGBA
+
+                        switch (color_space) {
+                            case COLOR_SPACE_OPTION_RGB: {
+                                result[dstIndex] = *pixelPtr;
+                                result[dstIndex + 1] = *(pixelPtr + 1);
+                                result[dstIndex + 2] = *(pixelPtr + 2);
+                                result[dstIndex + 3] = *(pixelPtr + 3);
+                                break;
+                            }
+                            case COLOR_SPACE_OPTION_CIELAB: {
+                                const float* floatPtr = (const float*)pixelPtr;
+                                result_lab[dstIndex] = *floatPtr;
+                                result_lab[dstIndex + 1] = *(floatPtr + 1);
+                                result_lab[dstIndex + 2] = *(floatPtr + 2);
+                                result_lab[dstIndex + 3] = *(floatPtr + 3);
+                                break;
+                            }
+                        }
+                    }
                 }
                 
                 readBuffer.Unmap();
@@ -217,6 +285,25 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
         emscripten_sleep(100);
     }
     std::cout << "done wgpu" << std::endl;
+
+    if (color_space == COLOR_SPACE_OPTION_CIELAB) {
+        for (int y{0}; y < height; y++) {
+            for (int x{0}; x < width; x++) {
+                int center_idx{(y * static_cast<int>(width) + x) * 4};
+                float L0{result_lab[center_idx] * 255.f};
+                float A0{result_lab[center_idx + 1] * 255.f};
+                float B0{result_lab[center_idx + 2] * 255.f};
+                uint8_t a0{image[center_idx + 3]};
+                uint8_t r0, g0, b0;
+                lab_to_rgb<float, uint8_t>(L0, A0, B0, r0, g0, b0);
+
+                result[center_idx] = r0;
+                result[center_idx + 1] = g0;
+                result[center_idx + 2] = b0;
+                result[center_idx + 3] = a0;
+            }
+        }
+    }
 
     std::memcpy(image, result.data(), result.size());
     std::cout << "done memcpy" << std::endl;

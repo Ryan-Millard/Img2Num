@@ -15,8 +15,7 @@ inline wgpu::Device device;
 inline wgpu::Queue queue;
 
 // Helper to align rows for buffer reading (WebGPU requirement: 256 bytes per row)
-inline uint32_t getAlignedBytesPerRow(uint32_t width) {
-    uint32_t bytesPerPixel = 4;
+inline uint32_t getAlignedBytesPerRow(uint32_t width, uint32_t bytesPerPixel = 4) {
     uint32_t unaligned = width * bytesPerPixel;
     uint32_t align = 256;
     return (unaligned + align - 1) & ~(align - 1);

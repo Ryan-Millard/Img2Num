@@ -120,7 +120,7 @@ fn main(@builtin(global_invocation_id) global_id : vec3<u32>) {
 
     let centerVal = textureLoad(inputTex, vec2<i32>(i32(x), i32(y)), 0);
 
-    var minDistSq = 3.40282347e+38; // Max f32
+    var minDistSq = 1e+38; // Max f32
     var bestClusterIndex: u32 = 0u;
 
     for (var i = 0u; i < params.numCentroids; i = i + 1u) {        
