@@ -118,13 +118,14 @@ self.onmessage = async ({ data }) => {
     if (typeof wasmModule[exportName] !== "function") throw new Error(`Export not found: ${exportName}`);
 
     var result;
-    
+
     console.log(funcName);
     // result = wasmModule[exportName](...argsMap.values());
-    let cArgTypes = Array(argsMap.size).fill("number");
+    const cArgTypes = Array(argsMap.size).fill("number");
+    const ccallReturnType = (returnType && returnType !== "void") ? "number" : null;
     result = wasmModule.ccall(
       funcName,          // Name WITHOUT the underscore (e.g. "bilateral_filter_gpu")
-        "void",            // Return type
+        ccallReturnType, // Return type
         cArgTypes,         // Argument types
         [...argsMap.values()],             // Arguments
         { async: true }    // <--- This works here!
