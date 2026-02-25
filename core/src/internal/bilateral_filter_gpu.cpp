@@ -40,7 +40,7 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
         return;
 
     std::vector<uint8_t> result(width * height * 4, 255);
-    std::vector<float> result_lab(width * height * 16, 0.0);
+    std::vector<float> result_lab(width * height * 4, 0.0);
     // std::memcpy(image, result.data(), result.size());
 
     // 1. Sanity Check: Is WebGPU available in this JS context?
@@ -127,7 +127,11 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
 
     std::cout << "create buffer" << std::endl;
     // 3. Create Uniform Buffer
-    FilterParams params = { static_cast<float>(sigma_spatial), static_cast<float>(sigma_range), 0.0f, 0.0f };
+    float sr = static_cast<float>(sigma_range);
+    if (color_space == COLOR_SPACE_OPTION_CIELAB) {
+        sr /= 255.f;
+    }
+    FilterParams params = { static_cast<float>(sigma_spatial), sr, 0.0f, 0.0f };
     wgpu::BufferDescriptor bufDesc = {};
     bufDesc.size = sizeof(FilterParams);
     bufDesc.usage = wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst;
