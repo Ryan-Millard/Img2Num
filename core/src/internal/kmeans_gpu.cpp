@@ -40,7 +40,7 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
     texDesc.format = wgpu::TextureFormat::RGBA32Float;
     texDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst;
     texDesc.label = "inputTextureInit";
-    wgpu::Texture inputTexture = device.CreateTexture(&texDesc);
+    wgpu::Texture inputTexture = GPU::getClassInstance().get_device().CreateTexture(&texDesc);
 
     // Upload pixel data (Normalization to 0.0-1.0 assumed)
     std::vector<float> gpu_pixels;
@@ -57,7 +57,7 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
     wgpu::TexelCopyBufferLayout texLayout = {};
     texLayout.bytesPerRow = width * 16;
     texLayout.rowsPerImage = height;
-    queue.WriteTexture(&texDst, gpu_pixels.data(), gpu_pixels.size() * 4, &texLayout, &texDesc.size);
+    GPU::getClassInstance().get_queue().WriteTexture(&texDst, gpu_pixels.data(), gpu_pixels.size() * 4, &texLayout, &texDesc.size);
 
     // 2. Create MinDist Buffer (Storage)
     // Initialize with FLT_MAX so the first centroid overwrites everything
@@ -66,8 +66,8 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
     wgpu::BufferDescriptor distDesc = {};
     distDesc.size = num_pixels * sizeof(float);
     distDesc.usage = wgpu::BufferUsage::Storage | wgpu::BufferUsage::CopySrc | wgpu::BufferUsage::CopyDst;
-    wgpu::Buffer minDistBuffer = device.CreateBuffer(&distDesc);
-    queue.WriteBuffer(minDistBuffer, 0, initial_dists.data(), distDesc.size);
+    wgpu::Buffer minDistBuffer = GPU::getClassInstance().get_device().CreateBuffer(&distDesc);
+    GPU::getClassInstance().get_queue().WriteBuffer(minDistBuffer, 0, initial_dists.data(), distDesc.size);
 
     // 3. Create Uniform Buffer (For passing new centroid color)
     struct CentroidParams {
@@ -78,13 +78,13 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
     wgpu::BufferDescriptor uniDesc = {};
     uniDesc.size = sizeof(CentroidParams);
     uniDesc.usage = wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst;
-    wgpu::Buffer paramBuffer = device.CreateBuffer(&uniDesc);
+    wgpu::Buffer paramBuffer = GPU::getClassInstance().get_device().CreateBuffer(&uniDesc);
 
     // 4. Create Readback Buffer
     wgpu::BufferDescriptor readDesc = {};
     readDesc.size = num_pixels * sizeof(float);
     readDesc.usage = wgpu::BufferUsage::MapRead | wgpu::BufferUsage::CopyDst;
-    wgpu::Buffer readBuffer = device.CreateBuffer(&readDesc);
+    wgpu::Buffer readBuffer = GPU::getClassInstance().get_device().CreateBuffer(&readDesc);
 
     // 5. Compile Shader & Pipeline
     wgpu::ShaderSourceWGSL wgslDesc;
@@ -92,12 +92,12 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
     wgpu::ShaderModuleDescriptor shaderDesc = {};
     shaderDesc.nextInChain = &wgslDesc;
     shaderDesc.label = "updateDistShader";
-    wgpu::ShaderModule shaderModule = device.CreateShaderModule(&shaderDesc);
+    wgpu::ShaderModule shaderModule = GPU::getClassInstance().get_device().CreateShaderModule(&shaderDesc);
 
     wgpu::ComputePipelineDescriptor pipeDesc = {};
     pipeDesc.compute.module = shaderModule;
     pipeDesc.compute.entryPoint = "main";
-    wgpu::ComputePipeline pipeline = device.CreateComputePipeline(&pipeDesc);
+    wgpu::ComputePipeline pipeline = GPU::getClassInstance().get_device().CreateComputePipeline(&pipeDesc);
 
     // 6. Bind Group
     wgpu::BindGroupEntry entries[3];
@@ -109,7 +109,7 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
     bgDesc.layout = pipeline.GetBindGroupLayout(0);
     bgDesc.entryCount = 3;
     bgDesc.entries = entries;
-    wgpu::BindGroup bindGroup = device.CreateBindGroup(&bgDesc);
+    wgpu::BindGroup bindGroup = GPU::getClassInstance().get_device().CreateBindGroup(&bgDesc);
     // --- WEBGPU SETUP END ---
 
     // RNG Setup
@@ -130,10 +130,10 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
             c.red / 255.0f, c.green / 255.0f, c.blue / 255.0f, 1.0f,
             (uint32_t)width
         };
-        queue.WriteBuffer(paramBuffer, 0, &params, sizeof(CentroidParams));
+        GPU::getClassInstance().get_queue().WriteBuffer(paramBuffer, 0, &params, sizeof(CentroidParams));
 
         // B. Dispatch Shader (Updates min_dist buffer on GPU)
-        wgpu::CommandEncoder encoder = device.CreateCommandEncoder();
+        wgpu::CommandEncoder encoder = GPU::getClassInstance().get_device().CreateCommandEncoder();
         wgpu::ComputePassEncoder pass = encoder.BeginComputePass();
         pass.SetPipeline(pipeline);
         pass.SetBindGroup(0, bindGroup);
@@ -143,7 +143,7 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
         // C. Copy Result to ReadBuffer
         encoder.CopyBufferToBuffer(minDistBuffer, 0, readBuffer, 0, readDesc.size);
         wgpu::CommandBuffer commands = encoder.Finish();
-        queue.Submit(1, &commands);
+        GPU::getClassInstance().get_queue().Submit(1, &commands);
 
         // D. Map and Read
         bool done = false;
@@ -187,7 +187,7 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
 
         // E. Wait for GPU
         while (!done) {
-            instance.ProcessEvents();
+            GPU::getClassInstance().get_instance().ProcessEvents();
             emscripten_sleep(1); 
         }
     }
@@ -217,10 +217,11 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
       rgb_to_lab<float, float>(pixels[i], lab[i]);
     }
   }*/
-  if (!gpu_initialized) {
+  /*if (!gpu_initialized) {
     std::cout << "init gpu " << std::endl;
     init_gpu();
-  }
+  }*/
+  GPU::getClassInstance().init_gpu();
 
   std::cout << "starting" << std::endl;
   // Step 2: Initialize centroids randomly
@@ -245,7 +246,7 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   texDesc.format = wgpu::TextureFormat::RGBA32Float;
   texDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst;
   texDesc.label = "inputTexture";
-  wgpu::Texture inputTexture = device.CreateTexture(&texDesc);
+  wgpu::Texture inputTexture = GPU::getClassInstance().get_device().CreateTexture(&texDesc);
 
   wgpu::TexelCopyTextureInfo dst = {};
   dst.texture = inputTexture;
@@ -262,7 +263,7 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
     pixels_.push_back(p.alpha / 255.0f);
   }
 
-  queue.WriteTexture(&dst, pixels_.data(), pixels_.size() * sizeof(float), &layout, &texDesc.size);
+  GPU::getClassInstance().get_queue().WriteTexture(&dst, pixels_.data(), pixels_.size() * sizeof(float), &layout, &texDesc.size);
 
   // centroids
   wgpu::TextureDescriptor centroidDesc = {};
@@ -270,7 +271,7 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   centroidDesc.format = wgpu::TextureFormat::RGBA32Float;
   centroidDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::StorageBinding | wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
   centroidDesc.label = "centroidTexture";
-  wgpu::Texture centroidTexture = device.CreateTexture(&centroidDesc);
+  wgpu::Texture centroidTexture = GPU::getClassInstance().get_device().CreateTexture(&centroidDesc);
 
   wgpu::TexelCopyTextureInfo cdst = {};
   cdst.texture = centroidTexture;
@@ -288,7 +289,7 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   }
 
 
-  queue.WriteTexture(&cdst, centroids_.data(), centroids_.size() * sizeof(float), &clayout, &centroidDesc.size);
+  GPU::getClassInstance().get_queue().WriteTexture(&cdst, centroids_.data(), centroids_.size() * sizeof(float), &clayout, &centroidDesc.size);
 
   // labels
   wgpu::TextureDescriptor labelDesc = {};
@@ -296,23 +297,23 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   labelDesc.format = wgpu::TextureFormat::RGBA32Uint;
   labelDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::StorageBinding | wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
   labelDesc.label = "labelTexture";
-  wgpu::Texture labelTexture = device.CreateTexture(&labelDesc);
+  wgpu::Texture labelTexture = GPU::getClassInstance().get_device().CreateTexture(&labelDesc);
 
   // params
   Params params = { (uint32_t)num_pixels, (uint32_t)k};
   wgpu::BufferDescriptor bufDesc = {};
   bufDesc.size = sizeof(Params);
   bufDesc.usage = wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst;
-  wgpu::Buffer paramBuffer = device.CreateBuffer(&bufDesc);
-  queue.WriteBuffer(paramBuffer, 0, &params, sizeof(Params));
+  wgpu::Buffer paramBuffer = GPU::getClassInstance().get_device().CreateBuffer(&bufDesc);
+  GPU::getClassInstance().get_queue().WriteBuffer(paramBuffer, 0, &params, sizeof(Params));
 
   // centroid accumulator
   std::vector<ClusterAccumulator> reset_centroids(k, { 0, 0, 0, 0 });
   wgpu::BufferDescriptor accDesc = {};
   accDesc.size = sizeof(ClusterAccumulator) * k;
   accDesc.usage = wgpu::BufferUsage::Storage | wgpu::BufferUsage::CopyDst;
-  wgpu::Buffer accBuffer = device.CreateBuffer(&accDesc);
-  queue.WriteBuffer(accBuffer, 0, reset_centroids.data(), accDesc.size);
+  wgpu::Buffer accBuffer = GPU::getClassInstance().get_device().CreateBuffer(&accDesc);
+  GPU::getClassInstance().get_queue().WriteBuffer(accBuffer, 0, reset_centroids.data(), accDesc.size);
 
   // shaders
   wgpu::ShaderSourceWGSL wgslDesc1;
@@ -320,37 +321,37 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   wgpu::ShaderModuleDescriptor shaderDesc1 = {};
   shaderDesc1.nextInChain = &wgslDesc1;
   shaderDesc1.label = "assignShader";
-  wgpu::ShaderModule shaderModule1 = device.CreateShaderModule(&shaderDesc1);
+  wgpu::ShaderModule shaderModule1 = GPU::getClassInstance().get_device().CreateShaderModule(&shaderDesc1);
 
   wgpu::ShaderSourceWGSL wgslDesc2;
   wgslDesc2.code = updateShader;
   wgpu::ShaderModuleDescriptor shaderDesc2 = {};
   shaderDesc2.nextInChain = &wgslDesc2;
   shaderDesc2.label = "updateShader";
-  wgpu::ShaderModule shaderModule2 = device.CreateShaderModule(&shaderDesc2);
+  wgpu::ShaderModule shaderModule2 = GPU::getClassInstance().get_device().CreateShaderModule(&shaderDesc2);
 
   wgpu::ShaderSourceWGSL wgslDesc3;
   wgslDesc3.code = resolveShader;
   wgpu::ShaderModuleDescriptor shaderDesc3 = {};
   shaderDesc3.nextInChain = &wgslDesc3;
   shaderDesc3.label = "resolveShader";
-  wgpu::ShaderModule shaderModule3 = device.CreateShaderModule(&shaderDesc3);
+  wgpu::ShaderModule shaderModule3 = GPU::getClassInstance().get_device().CreateShaderModule(&shaderDesc3);
 
   // pipelines
   wgpu::ComputePipelineDescriptor pipelineDesc1 = {};
   pipelineDesc1.compute.module = shaderModule1;
   pipelineDesc1.compute.entryPoint = "main";
-  wgpu::ComputePipeline pipeline1 = device.CreateComputePipeline(&pipelineDesc1);
+  wgpu::ComputePipeline pipeline1 = GPU::getClassInstance().get_device().CreateComputePipeline(&pipelineDesc1);
 
   wgpu::ComputePipelineDescriptor pipelineDesc2 = {};
   pipelineDesc2.compute.module = shaderModule2;
   pipelineDesc2.compute.entryPoint = "main";
-  wgpu::ComputePipeline pipeline2 = device.CreateComputePipeline(&pipelineDesc2);
+  wgpu::ComputePipeline pipeline2 = GPU::getClassInstance().get_device().CreateComputePipeline(&pipelineDesc2);
 
   wgpu::ComputePipelineDescriptor pipelineDesc3 = {};
   pipelineDesc3.compute.module = shaderModule3;
   pipelineDesc3.compute.entryPoint = "main";
-  wgpu::ComputePipeline pipeline3 = device.CreateComputePipeline(&pipelineDesc3);
+  wgpu::ComputePipeline pipeline3 = GPU::getClassInstance().get_device().CreateComputePipeline(&pipelineDesc3);
 
   // binding groups
   wgpu::BindGroupDescriptor bindGroupDesc1 = {};
@@ -371,7 +372,7 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   entries1[3].size = sizeof(Params);
   bindGroupDesc1.entryCount = 4;
   bindGroupDesc1.entries = entries1;
-  wgpu::BindGroup bindGroup1 = device.CreateBindGroup(&bindGroupDesc1);
+  wgpu::BindGroup bindGroup1 = GPU::getClassInstance().get_device().CreateBindGroup(&bindGroupDesc1);
 
   wgpu::BindGroupDescriptor bindGroupDesc2 = {};
   bindGroupDesc2.layout = pipeline2.GetBindGroupLayout(0);
@@ -392,7 +393,7 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   entries2[3].size = sizeof(Params);
   bindGroupDesc2.entryCount = 4;
   bindGroupDesc2.entries = entries2;
-  wgpu::BindGroup bindGroup2 = device.CreateBindGroup(&bindGroupDesc2);
+  wgpu::BindGroup bindGroup2 = GPU::getClassInstance().get_device().CreateBindGroup(&bindGroupDesc2);
 
   wgpu::BindGroupDescriptor bindGroupDesc3 = {};
   bindGroupDesc3.layout = pipeline3.GetBindGroupLayout(0);
@@ -404,7 +405,7 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   entries3[1].textureView = centroidTexture.CreateView(); 
   bindGroupDesc3.entryCount = 2;
   bindGroupDesc3.entries = entries3;
-  wgpu::BindGroup bindGroup3 = device.CreateBindGroup(&bindGroupDesc3);
+  wgpu::BindGroup bindGroup3 = GPU::getClassInstance().get_device().CreateBindGroup(&bindGroupDesc3);
 
   uint32_t wgX = (width + 15) / 16;
   uint32_t wgY = (height + 15) / 16;
@@ -414,19 +415,19 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   wgpu::BufferDescriptor readLabelsDesc = {};
   readLabelsDesc.size = bytesPerRowLabels * height;
   readLabelsDesc.usage = wgpu::BufferUsage::MapRead | wgpu::BufferUsage::CopyDst;
-  wgpu::Buffer readLabelsBuffer = device.CreateBuffer(&readLabelsDesc);
+  wgpu::Buffer readLabelsBuffer = GPU::getClassInstance().get_device().CreateBuffer(&readLabelsDesc);
   
   // Centroid Readback
   uint32_t bytesPerRowCentroids = (k * 16 + 255) & ~255; // RGBA32Float is 16 bytes/pixel
   wgpu::BufferDescriptor readCentroidsDesc = {};
   readCentroidsDesc.size = bytesPerRowCentroids; // Height is 1
   readCentroidsDesc.usage = wgpu::BufferUsage::MapRead | wgpu::BufferUsage::CopyDst;
-  wgpu::Buffer readCentroidsBuffer = device.CreateBuffer(&readCentroidsDesc);
+  wgpu::Buffer readCentroidsBuffer = GPU::getClassInstance().get_device().CreateBuffer(&readCentroidsDesc);
 
   std::cout << "start iterations" << std::endl;
   for (int32_t iter{0}; iter < max_iter; ++iter) {
-    wgpu::CommandEncoder encoder = device.CreateCommandEncoder();
-    queue.WriteBuffer(accBuffer, 0, reset_centroids.data(), accDesc.size);
+    wgpu::CommandEncoder encoder = GPU::getClassInstance().get_device().CreateCommandEncoder();
+    GPU::getClassInstance().get_queue().WriteBuffer(accBuffer, 0, reset_centroids.data(), accDesc.size);
     
     wgpu::ComputePassEncoder pass1 = encoder.BeginComputePass();
     pass1.SetPipeline(pipeline1);
@@ -447,15 +448,15 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
     pass3.End();
 
     wgpu::CommandBuffer commands = encoder.Finish();
-    queue.Submit(1, &commands);
+    GPU::getClassInstance().get_queue().Submit(1, &commands);
 
-    instance.ProcessEvents();
+    GPU::getClassInstance().get_instance().ProcessEvents();
     emscripten_sleep(1);
   }
 
   std::cout << "done iterations" << std::endl;
   // 3. Readback (After Loop Finishes)
-  wgpu::CommandEncoder readEncoder = device.CreateCommandEncoder();
+  wgpu::CommandEncoder readEncoder = GPU::getClassInstance().get_device().CreateCommandEncoder();
   
   // Copy Labels
   wgpu::TexelCopyTextureInfo srcLabels = {};
@@ -476,7 +477,7 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   readEncoder.CopyTextureToBuffer(&srcCentroids, &dstCentroids, &centroidDesc.size);
   
   wgpu::CommandBuffer readCmd = readEncoder.Finish();
-  queue.Submit(1, &readCmd);
+  GPU::getClassInstance().get_queue().Submit(1, &readCmd);
   
   // 4. Map Async & Wait
   bool done = false;
@@ -531,7 +532,7 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
       });
   
   while (!done) {
-    instance.ProcessEvents();
+    GPU::getClassInstance().get_instance().ProcessEvents();
     emscripten_sleep(10);
   }
   

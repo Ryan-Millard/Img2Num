@@ -76,10 +76,11 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     wgpu::Device device;
     wgpu::Queue queue;*/
 
-    if (!gpu_initialized) {
+    /*if (!gpu_initialized) {
         std::cout << "init gpu " << std::endl;
         init_gpu();//instance, adapter, device, queue);
-    }
+    }*/
+    GPU::getClassInstance().init_gpu();
 
     std::cout << "begin wgpu portion" << std::endl;
     // 1. Create Input Texture
@@ -99,7 +100,7 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
         }
     }
     texDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst;
-    wgpu::Texture inputTexture = device.CreateTexture(&texDesc);
+    wgpu::Texture inputTexture = GPU::getClassInstance().get_device().CreateTexture(&texDesc);
 
     std::cout << "upload texture" << std::endl;
     // Upload data to Input Texture
@@ -112,11 +113,11 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     layout.rowsPerImage = height;
     switch (color_space) {
         case COLOR_SPACE_OPTION_RGB: {
-            queue.WriteTexture(&dst, image, bytesPerPixel * width * height, &layout, &texDesc.size);
+            GPU::getClassInstance().get_queue().WriteTexture(&dst, image, bytesPerPixel * width * height, &layout, &texDesc.size);
             break;
         }
         case COLOR_SPACE_OPTION_CIELAB : {
-            queue.WriteTexture(&dst, cie_image.data(), bytesPerPixel * width * height, &layout, &texDesc.size);
+            GPU::getClassInstance().get_queue().WriteTexture(&dst, cie_image.data(), bytesPerPixel * width * height, &layout, &texDesc.size);
             break;
         }
     }
@@ -124,7 +125,7 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     // 2. Create Output Texture (Storage)
     wgpu::TextureDescriptor outDesc = texDesc;
     outDesc.usage = wgpu::TextureUsage::StorageBinding | wgpu::TextureUsage::CopySrc;
-    wgpu::Texture outputTexture = device.CreateTexture(&outDesc);
+    wgpu::Texture outputTexture = GPU::getClassInstance().get_device().CreateTexture(&outDesc);
 
     std::cout << "create buffer" << std::endl;
     // 3. Create Uniform Buffer
@@ -136,8 +137,8 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     wgpu::BufferDescriptor bufDesc = {};
     bufDesc.size = sizeof(FilterParams);
     bufDesc.usage = wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst;
-    wgpu::Buffer paramBuffer = device.CreateBuffer(&bufDesc);
-    queue.WriteBuffer(paramBuffer, 0, &params, sizeof(FilterParams));
+    wgpu::Buffer paramBuffer = GPU::getClassInstance().get_device().CreateBuffer(&bufDesc);
+    GPU::getClassInstance().get_queue().WriteBuffer(paramBuffer, 0, &params, sizeof(FilterParams));
 
     std::cout << "compile shader" << std::endl;
     // 4. Compile Shader
@@ -155,14 +156,14 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     wgpu::ShaderModuleDescriptor shaderDesc = {};
     shaderDesc.nextInChain = &wgslDesc;
     shaderDesc.label = "BilateralFilterShader";
-    wgpu::ShaderModule shaderModule = device.CreateShaderModule(&shaderDesc);
+    wgpu::ShaderModule shaderModule = GPU::getClassInstance().get_device().CreateShaderModule(&shaderDesc);
 
     std::cout << "compute pipeline" << std::endl;
     // 5. Create Compute Pipeline
     wgpu::ComputePipelineDescriptor pipelineDesc = {};
     pipelineDesc.compute.module = shaderModule;
     pipelineDesc.compute.entryPoint = "main";
-    wgpu::ComputePipeline pipeline = device.CreateComputePipeline(&pipelineDesc);
+    wgpu::ComputePipeline pipeline = GPU::getClassInstance().get_device().CreateComputePipeline(&pipelineDesc);
 
     // 6. Create Bind Group
     // Note: We use GetBindGroupLayout(0) to auto-generate layout from shader
@@ -186,10 +187,10 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
 
     bindGroupDesc.entryCount = 3;
     bindGroupDesc.entries = entries;
-    wgpu::BindGroup bindGroup = device.CreateBindGroup(&bindGroupDesc);
+    wgpu::BindGroup bindGroup = GPU::getClassInstance().get_device().CreateBindGroup(&bindGroupDesc);
 
     // 7. Dispatch Compute Pass
-    wgpu::CommandEncoder encoder = device.CreateCommandEncoder();
+    wgpu::CommandEncoder encoder = GPU::getClassInstance().get_device().CreateCommandEncoder();
     wgpu::ComputePassEncoder pass = encoder.BeginComputePass();
     pass.SetPipeline(pipeline);
     pass.SetBindGroup(0, bindGroup);
@@ -199,13 +200,13 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
 
     // 8. Prepare for Readback (Copy Texture -> Buffer)
     // We cannot read textures directly on CPU. We must copy to a MapRead buffer.
-    uint32_t alignedBytesPerRow = getAlignedBytesPerRow(width, (uint32_t)bytesPerPixel);
+    uint32_t alignedBytesPerRow = GPU::getAlignedBytesPerRow(width, (uint32_t)bytesPerPixel);
     uint32_t bufferSize = alignedBytesPerRow * height;
 
     wgpu::BufferDescriptor readBufDesc = {};
     readBufDesc.size = bufferSize;
     readBufDesc.usage = wgpu::BufferUsage::MapRead | wgpu::BufferUsage::CopyDst;
-    wgpu::Buffer readBuffer = device.CreateBuffer(&readBufDesc);
+    wgpu::Buffer readBuffer = GPU::getClassInstance().get_device().CreateBuffer(&readBufDesc);
 
     wgpu::TexelCopyTextureInfo srcTex = {};
     srcTex.texture = outputTexture;
@@ -217,7 +218,7 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     encoder.CopyTextureToBuffer(&srcTex, &dstBuf, &texDesc.size);
 
     wgpu::CommandBuffer commands = encoder.Finish();
-    queue.Submit(1, &commands);
+    GPU::getClassInstance().get_queue().Submit(1, &commands);
     std::cout << "queue submit" << std::endl;
 
     bool waiting = true;
@@ -286,7 +287,7 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     
     while (waiting) {
         // std::cout << "waiting, " << std::endl; 
-        instance.ProcessEvents();
+        GPU::getClassInstance().get_instance().ProcessEvents();
         emscripten_sleep(100);
     }
     std::cout << "done wgpu" << std::endl;
