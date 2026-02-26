@@ -12,9 +12,6 @@
 #include <vector>
 #include <iostream>
 
-#include <webgpu/webgpu_cpp.h>
-#include <emscripten/html5.h>
-
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB{0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
 
@@ -70,17 +67,6 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
         }
     }
     // ========= CIELAB section end =========
-
-    /*wgpu::Instance instance;
-    wgpu::Adapter adapter;
-    wgpu::Device device;
-    wgpu::Queue queue;*/
-
-    /*if (!gpu_initialized) {
-        std::cout << "init gpu " << std::endl;
-        init_gpu();//instance, adapter, device, queue);
-    }*/
-    GPU::getClassInstance().init_gpu();
 
     std::cout << "begin wgpu portion" << std::endl;
     // 1. Create Input Texture

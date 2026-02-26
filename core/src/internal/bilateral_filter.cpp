@@ -6,10 +6,9 @@
 #include <vector>
 
 #include "img2num.h"
+#include "internal/gpu.h"
 #include "internal/cielab.h"
 #include "internal/bilateral_filter_gpu.h"
-
-#include <emscripten/html5.h>
 
 static constexpr double SIGMA_RADIUS_FACTOR{3.0};  // 3 standard deviations
 static constexpr int MAX_KERNEL_RADIUS{50};
@@ -223,13 +222,9 @@ namespace img2num {
     void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_spatial,
                       double sigma_range, uint8_t color_space) {
 
-        int isWebGPUAvailable = EM_ASM_INT({
-            if (navigator.gpu) return 1;
-            console.error("WEBGPU MISSING: navigator.gpu is undefined. Check HTTPS/Secure Context.");
-            return 0;
-        });
+        GPU::getClassInstance().init_gpu();
 
-        if (isWebGPUAvailable) {
+        if (GPU::getClassInstance().gpu_initialized) {
             bilateral_filter_gpu(image, width, height, sigma_spatial, sigma_range, color_space);
         }
         else {

@@ -97,6 +97,11 @@ class GPU {
                 }
             );
 
+            if (!instance) {
+                std::cerr << "Fatal: WebGPU instance creation failed." << std::endl;
+                return;
+            }
+
             // WAIT LOOP: Yield to browser so it can actually find the adapter
             while (!adapter_ready) {
                 instance.ProcessEvents();

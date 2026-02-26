@@ -11,14 +11,13 @@
 #include <iostream>
 
 #include "img2num.h"
+#include "internal/gpu.h"
 #include "internal/Image.h"
 #include "internal/LABAPixel.h"
 #include "internal/PixelConverters.h"
 #include "internal/RGBAPixel.h"
 #include "internal/cielab.h"
 #include "internal/kmeans_gpu.h"
-
-#include <emscripten/html5.h>
 
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB{0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
@@ -242,13 +241,9 @@ namespace img2num {
             const int32_t height, const int32_t k, const int32_t max_iter,
             const uint8_t color_space) {
 
-        int isWebGPUAvailable = EM_ASM_INT({
-            if (navigator.gpu) return 1;
-            console.error("WEBGPU MISSING: navigator.gpu is undefined. Check HTTPS/Secure Context.");
-            return 0;
-        });
+        GPU::getClassInstance().init_gpu();
 
-        if (isWebGPUAvailable) {
+        if (GPU::getClassInstance().gpu_initialized) {
             std::cout << "kmeans gpu" << std::endl;
             kmeans_gpu(data, out_data, out_labels, width, height, k, max_iter, color_space);
         }

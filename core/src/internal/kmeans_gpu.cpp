@@ -217,11 +217,6 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
       rgb_to_lab<float, float>(pixels[i], lab[i]);
     }
   }*/
-  /*if (!gpu_initialized) {
-    std::cout << "init gpu " << std::endl;
-    init_gpu();
-  }*/
-  GPU::getClassInstance().init_gpu();
 
   std::cout << "starting" << std::endl;
   // Step 2: Initialize centroids randomly
