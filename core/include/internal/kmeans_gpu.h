@@ -28,7 +28,7 @@ struct ClusterAccumulator {
 @group(0) @binding(0) var<storage, read> accumulators: array<ClusterAccumulator>;
 @group(0) @binding(1) var centroids : texture_storage_2d<rgba32float, write>;
 
-@compute @workgroup_size(64)
+@compute @workgroup_size(256)
 fn main(@builtin(global_invocation_id) global_id : vec3<u32>) {
     let i = global_id.x;
     if (i >= arrayLength(&accumulators)) { return; }
@@ -143,7 +143,7 @@ struct Params {
 };
 @group(0) @binding(2) var<uniform> params : Params;
 
-@compute @workgroup_size(64)
+@compute @workgroup_size(256)
 fn main(@builtin(global_invocation_id) global_id : vec3<u32>) {
     let index = global_id.x;
     let width = params.width;

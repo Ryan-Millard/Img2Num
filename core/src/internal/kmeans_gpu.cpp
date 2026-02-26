@@ -137,7 +137,7 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
         wgpu::ComputePassEncoder pass = encoder.BeginComputePass();
         pass.SetPipeline(pipeline);
         pass.SetBindGroup(0, bindGroup);
-        pass.DispatchWorkgroups((num_pixels + 63) / 64, 1, 1);
+        pass.DispatchWorkgroups((num_pixels + 255) / 256, 1, 1);
         pass.End();
 
         // C. Copy Result to ReadBuffer
@@ -439,7 +439,7 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
     wgpu::ComputePassEncoder pass3 = encoder.BeginComputePass();
     pass3.SetPipeline(pipeline3);
     pass3.SetBindGroup(0, bindGroup3);
-    pass3.DispatchWorkgroups((k + 63) / 64, 1);
+    pass3.DispatchWorkgroups((k + 255) / 256, 1);
     pass3.End();
 
     wgpu::CommandBuffer commands = encoder.Finish();
