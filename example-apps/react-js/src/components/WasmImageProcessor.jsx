@@ -104,11 +104,6 @@ const WasmImageProcessor = () => {
         height,
       });
 
-      //// Get 2% of the input dimension (width / height), but default to 1 pixel
-      //const twoPercentOrOne = (dimension) => Math.ceil(Math.max(dimension * 0.02, 1));
-      //const minWidth = twoPercentOrOne(width);
-      //const minHeight = twoPercentOrOne(height);
-
       navigate("/editor", {
         state: { svg },
       });

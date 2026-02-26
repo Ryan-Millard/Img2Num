@@ -1,8 +1,11 @@
 #include "img2num.h"
+#include "internal/gpu.h"
 #include "internal/bilateral_filter_gpu.h"
 #include "internal/cielab.h"
 
 #include <algorithm>
+#include <cstddef>
+#include <cstdint>
 #include <climits>
 #include <cmath>
 #include <cstring>
@@ -11,8 +14,6 @@
 
 #include <webgpu/webgpu_cpp.h>
 #include <emscripten/html5.h>
-
-#include "internal/cielab.h"
 
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB{0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};

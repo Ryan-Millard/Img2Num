@@ -1,14 +1,6 @@
 #ifndef BILATERAL_FILTER_GPU_H
 #define BILATERAL_FILTER_GPU_H
 
-#include <cstddef> // for size_t
-#include <cstdint> // for uint8_t
-#include "internal/gpu.h"
-
-/*extern bool gpu_initialized;
-extern bool adapter_ready;
-extern bool device_ready;*/
-
 // The WGSL Shader Source RGB
 inline const char* shaderSource = R"(
 @group(0) @binding(0) var inputTex : texture_2d<f32>;

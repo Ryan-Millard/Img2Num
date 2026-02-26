@@ -18,6 +18,8 @@
 #include "internal/cielab.h"
 #include "internal/kmeans_gpu.h"
 
+#include <emscripten/html5.h>
+
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB{0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
 

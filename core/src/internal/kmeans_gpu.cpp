@@ -1,5 +1,6 @@
 
 #include "img2num.h"
+#include "internal/gpu.h"
 #include "internal/kmeans_gpu.h"
 #include "internal/Image.h"
 #include "internal/LABAPixel.h"
@@ -8,6 +9,8 @@
 #include "internal/cielab.h"
 
 #include <algorithm>
+#include <cstddef>
+#include <cstdint>
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
@@ -520,12 +523,8 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
           if (status == wgpu::MapAsyncStatus::Success) {
                const float* mappedData = (const float*)readCentroidsBuffer.GetConstMappedRange();
                // ... Copy data to your C++ vector ...
-               std::cout << "mapping centroids... skip for now" << std::endl;
-               /*for (size_t i = 0; i < k; i++) {
-                  size_t srcIndex = i * bytesPerRowCentroids;
-                  size_t dstIndex = i * width * 4;
-                  std::memcpy(centroids.getData().data() + dstIndex, mappedData + srcIndex, width * 4);
-               }*/
+               std::cout << "mapping centroids" << std::endl;
+               std::memcpy(centroids.getData().data(), mappedData, k);
                readCentroidsBuffer.Unmap();
                done = true; // Signal completion
           }
@@ -537,13 +536,13 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   }
   
   // Write the final centroid values to each pixel in the cluster
-  /*for (int32_t i = 0; i < num_pixels; ++i) {
+  for (int32_t i = 0; i < num_pixels; ++i) {
     const int32_t cluster = labels[i];
     out_data[i * 4 + 0] = static_cast<uint8_t>(centroids[cluster].red);
     out_data[i * 4 + 1] = static_cast<uint8_t>(centroids[cluster].green);
     out_data[i * 4 + 2] = static_cast<uint8_t>(centroids[cluster].blue);
     out_data[i * 4 + 3] = 255;
-  }*/
+  }
 
   // Write labels to out_labels
   std::cout << "copying labels out" << std::endl;

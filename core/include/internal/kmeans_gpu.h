@@ -1,14 +1,6 @@
 #ifndef KMEANS_GPU_H
 #define KMEANS_GPU_H
 
-#include <cstddef> // for size_t
-#include <cstdint> // for uint8_t
-#include "internal/gpu.h"
-
-/*extern bool gpu_initialized;
-extern bool adapter_ready;
-extern bool device_ready;*/
-
 // needs atomicAdd but that only supports i32
 
 struct Params {

@@ -9,6 +9,8 @@
 #include "internal/cielab.h"
 #include "internal/bilateral_filter_gpu.h"
 
+#include <emscripten/html5.h>
+
 static constexpr double SIGMA_RADIUS_FACTOR{3.0};  // 3 standard deviations
 static constexpr int MAX_KERNEL_RADIUS{50};
 // Max possible squared Euclidean distance in a 3-channel 8-bit image: 255^2 * 3
