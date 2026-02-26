@@ -60,7 +60,7 @@ inline void init_gpu() { // wgpu::Instance& instance, wgpu::Adapter& adapter, wg
                 adapter = std::move(a);
                 std::cout << "Adapter Acquired" << std::endl;
             } else {
-                std::cerr << "Adapter Failed: " << msg.data << std::endl;
+                std::cerr << "Adapter Failed: " << std::string_view(msg.data ? msg.data : "", msg.length) << std::endl;
             }
             adapter_ready = true; // Unblock the loop
         }
