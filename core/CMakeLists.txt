@@ -24,8 +24,9 @@ if(EMSCRIPTEN)
           ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
   )
 
-    target_compile_options(core_obj PRIVATE -msimd128)
-    target_link_options(core_obj PRIVATE -msimd128)
+    target_compile_options(core_obj PRIVATE -msimd128 "--use-port=emdawnwebgpu")
+    target_link_options(core_obj PRIVATE -msimd128 "--use-port=emdawnwebgpu")
+
 else()
   # Build a regular shared library
   add_library(Img2Num SHARED ${CORE_SRC})

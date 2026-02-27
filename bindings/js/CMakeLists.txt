@@ -38,10 +38,22 @@ set(COMMON_FLAGS
     "SHELL:-s MAXIMUM_MEMORY=2048MB"
     "SHELL:-s ALLOW_MEMORY_GROWTH=1"
     "SHELL:-s EXPORT_NAME=createImg2NumModule"
+    "SHELL:-s ASYNCIFY=1"
+    "SHELL:--use-port=emdawnwebgpu"
 )
 
-target_compile_options(img2num_wasm PRIVATE -msimd128)
+target_compile_options(img2num_wasm PRIVATE -msimd128 "--use-port=emdawnwebgpu")
 target_link_options(img2num_wasm PRIVATE ${COMMON_FLAGS} -msimd128)
+
+file(GLOB_RECURSE SHADER_FILES
+  "../../core/src/resources/*.wgsl"
+)
+
+foreach (file ${SHADER_FILES})
+get_filename_component(file_name ${file} NAME)
+message(${file_name})
+target_link_options(img2num_wasm PRIVATE "SHELL:--embed-file=${file}@./resources/${file_name}")
+endforeach()
 
 # Build type flags
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
