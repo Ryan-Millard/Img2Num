@@ -3,20 +3,6 @@
 
 // needs atomicAdd but that only supports i32
 
-struct Params {
-    uint32_t numPoints;
-    uint32_t numCentroids;
-};
-
-struct ClusterAccumulator {
-    int32_t sumR;
-    int32_t sumG;
-    int32_t sumB;
-    uint32_t count;
-};
-
-constexpr int scale = 1000;
-
 inline const char* resolveShader = R"(
 struct ClusterAccumulator {
     sumR: i32,

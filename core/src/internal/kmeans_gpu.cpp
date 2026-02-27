@@ -24,6 +24,18 @@
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB{0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
 
+struct Params {
+    uint32_t numPoints;
+    uint32_t numCentroids;
+};
+
+struct ClusterAccumulator {
+    int32_t sumR;
+    int32_t sumG;
+    int32_t sumB;
+    uint32_t count;
+};
+
 // The K-Means++ Initialization Function
 template <typename PixelT>
 void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
