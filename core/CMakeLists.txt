@@ -26,7 +26,6 @@ if(EMSCRIPTEN)
 
     target_compile_options(core_obj PRIVATE -msimd128 "--use-port=emdawnwebgpu")
     target_link_options(core_obj PRIVATE -msimd128 "--use-port=emdawnwebgpu")
-    # target_link_options(core_obj PRIVATE "--embed-file=${CMAKE_CURRENT_SOURCE_DIR}/src/resources@/resources")
 
 else()
   # Build a regular shared library

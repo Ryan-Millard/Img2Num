@@ -46,7 +46,7 @@ target_compile_options(img2num_wasm PRIVATE -msimd128 "--use-port=emdawnwebgpu")
 target_link_options(img2num_wasm PRIVATE ${COMMON_FLAGS} -msimd128)
 
 file(GLOB_RECURSE SHADER_FILES
-  "/home/ubuntu/Img2Num/core/src/resources/*.wgsl"
+  "../../core/src/resources/*.wgsl"
 )
 
 foreach (file ${SHADER_FILES})
