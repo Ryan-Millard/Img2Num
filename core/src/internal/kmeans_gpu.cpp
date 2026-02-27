@@ -235,7 +235,8 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
 
   // Step 3: Run k-means iterations
 
-  // image
+  int bytesPerPixel = 16; // float pixels
+
   wgpu::TextureDescriptor texDesc = {};
   texDesc.size = { (uint32_t)width, (uint32_t)height, 1 };
   texDesc.format = wgpu::TextureFormat::RGBA32Float;
@@ -247,11 +248,12 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   dst.texture = inputTexture;
   wgpu::TexelCopyBufferLayout layout = {};
   layout.offset = 0;
-  layout.bytesPerRow = width * 16; // Tightly packed for upload
+  layout.bytesPerRow = width * bytesPerPixel; // Tightly packed for upload
   layout.rowsPerImage = height;
 
   std::vector<float> pixels_; // rgba
-  for(auto &p: pixels.getData()) {
+  for (int i=0; i<num_pixels; i++) {
+    auto p = pixels[i];
     pixels_.push_back(p.red / 255.0f);
     pixels_.push_back(p.green / 255.0f);
     pixels_.push_back(p.blue / 255.0f);
@@ -272,17 +274,17 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   cdst.texture = centroidTexture;
   wgpu::TexelCopyBufferLayout clayout = {};
   clayout.offset = 0;
-  clayout.bytesPerRow = k * 16; // Tightly packed for upload
+  clayout.bytesPerRow = k * bytesPerPixel; // Tightly packed for upload
   clayout.rowsPerImage = 1;
 
   std::vector<float> centroids_; // rgba
-  for(auto &p: centroids.getData()) {
+  for (int i=0; i<k; i++){
+    auto p = centroids[i];
     centroids_.push_back(p.red / 255.0f);
     centroids_.push_back(p.green / 255.0f);
     centroids_.push_back(p.blue / 255.0f);
     centroids_.push_back(p.alpha / 255.0f);
   }
-
 
   GPU::getClassInstance().get_queue().WriteTexture(&cdst, centroids_.data(), centroids_.size() * sizeof(float), &clayout, &centroidDesc.size);
 
@@ -406,14 +408,14 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   uint32_t wgY = (height + 15) / 16;
 
   // Label Readback RGBA32Uint is 16 bytes/ pixel
-  uint32_t bytesPerRowLabels = (width * 16 + 255) & ~255; // Align to 256 bytes
+  uint32_t bytesPerRowLabels = GPU::getAlignedBytesPerRow(width, (uint32_t)bytesPerPixel);
   wgpu::BufferDescriptor readLabelsDesc = {};
   readLabelsDesc.size = bytesPerRowLabels * height;
   readLabelsDesc.usage = wgpu::BufferUsage::MapRead | wgpu::BufferUsage::CopyDst;
   wgpu::Buffer readLabelsBuffer = GPU::getClassInstance().get_device().CreateBuffer(&readLabelsDesc);
   
   // Centroid Readback
-  uint32_t bytesPerRowCentroids = (k * 16 + 255) & ~255; // RGBA32Float is 16 bytes/pixel
+  uint32_t bytesPerRowCentroids = GPU::getAlignedBytesPerRow(width, (uint32_t)bytesPerPixel);
   wgpu::BufferDescriptor readCentroidsDesc = {};
   readCentroidsDesc.size = bytesPerRowCentroids; // Height is 1
   readCentroidsDesc.usage = wgpu::BufferUsage::MapRead | wgpu::BufferUsage::CopyDst;
@@ -495,7 +497,7 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
                 const uint8_t* rowPtr = mappedData + (y * bytesPerRowLabels);
                 for (size_t x = 0; x < width; ++x) {
                   //size_t srcIndex = y * bytesPerRowLabels + x * 16;
-                  const uint8_t* pixelPtr = rowPtr + (x * 16);
+                  const uint8_t* pixelPtr = rowPtr + (x * bytesPerPixel);
                   uint32_t r = *(const uint32_t*)pixelPtr;
 
                   size_t dstIndex = y * width + x;
@@ -520,7 +522,13 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
                const float* mappedData = (const float*)readCentroidsBuffer.GetConstMappedRange();
                // ... Copy data to your C++ vector ...
                std::cout << "mapping centroids" << std::endl;
-               std::memcpy(centroids.getData().data(), mappedData, k);
+               for (int i=0; i < k; i++) {
+                  float r = *(mappedData);
+                  float g = *(mappedData+1);
+                  float b = *(mappedData+2);
+                  float a = *(mappedData+3);
+                  centroids[i] = ImageLib::RGBAPixel<float>(r*255.f, g*255.f, b*255.f, a*255.f);
+               }
                readCentroidsBuffer.Unmap();
                done = true; // Signal completion
           }
