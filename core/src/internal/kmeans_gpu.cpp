@@ -19,11 +19,15 @@
 #include <numeric>
 #include <random>
 #include <vector>
+#include <type_traits> // Required for std::is_same_v
+
+static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB{0};
+static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
 
 // The K-Means++ Initialization Function
 template <typename PixelT>
 void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
-                        ImageLib::Image<PixelT> &out_centroids, int k) {
+                        ImageLib::Image<PixelT> &out_centroids, int k, const uint8_t color_space) {
     if (k <= 0) return;
 
     size_t width = pixels.getWidth();
@@ -45,11 +49,27 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
     // Upload pixel data (Normalization to 0.0-1.0 assumed)
     std::vector<float> gpu_pixels;
     gpu_pixels.reserve(num_pixels * 4);
-    for (int i = 0; i < num_pixels; ++i) {
+    /*for (int i = 0; i < num_pixels; ++i) {
         gpu_pixels.push_back(pixels[i].red / 255.0f);
         gpu_pixels.push_back(pixels[i].green / 255.0f);
         gpu_pixels.push_back(pixels[i].blue / 255.0f);
         gpu_pixels.push_back(pixels[i].alpha / 255.0f); // Alpha
+    }*/
+
+    for (int i=0; i<num_pixels; i++) {
+      PixelT p = pixels[i];
+      if constexpr (std::is_same_v<PixelT, ImageLib::LABAPixel<float>>) {
+        gpu_pixels.push_back(p.l / 255.0f);
+        gpu_pixels.push_back(p.a / 255.0f);
+        gpu_pixels.push_back(p.b / 255.0f);
+        gpu_pixels.push_back(p.alpha / 255.0f);
+      }
+      else {
+        gpu_pixels.push_back(p.red / 255.0f);
+        gpu_pixels.push_back(p.green / 255.0f);
+        gpu_pixels.push_back(p.blue / 255.0f);
+        gpu_pixels.push_back(p.alpha / 255.0f);
+      }
     }
     
     wgpu::TexelCopyTextureInfo texDst = {};
@@ -126,10 +146,20 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
         
         // A. Upload Current Centroid to GPU
         PixelT c = centroids.back();
-        CentroidParams params = {
-            c.red / 255.0f, c.green / 255.0f, c.blue / 255.0f, 1.0f,
-            (uint32_t)width
-        };
+        CentroidParams params;
+        if constexpr (std::is_same_v<PixelT, ImageLib::LABAPixel<float>>) {
+          params = CentroidParams{
+              c.l / 255.0f, c.a / 255.0f, c.b / 255.0f, 1.0f,
+              (uint32_t)width
+          };
+        }
+        else {
+          params = CentroidParams{
+              c.red / 255.0f, c.green / 255.0f, c.blue / 255.0f, 1.0f,
+              (uint32_t)width
+          };
+        }
+        
         GPU::getClassInstance().get_queue().WriteBuffer(paramBuffer, 0, &params, sizeof(CentroidParams));
 
         // B. Dispatch Shader (Updates min_dist buffer on GPU)
@@ -212,26 +242,26 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   ImageLib::Image<ImageLib::LABAPixel<float>> lab(pixels.getWidth(),
                                                   pixels.getHeight());
   
-  /*if (color_space == COLOR_SPACE_OPTION_CIELAB) {
+  if (color_space == COLOR_SPACE_OPTION_CIELAB) {
     for (int i{0}; i < pixels.getSize(); ++i) {
       rgb_to_lab<float, float>(pixels[i], lab[i]);
     }
-  }*/
+  }
 
   std::cout << "starting" << std::endl;
-  // Step 2: Initialize centroids randomly
-  kMeansPlusPlusInitGpu<ImageLib::RGBAPixel<float>>(pixels, centroids, k);
-  std::cout << "kmeans++ init done" << std::endl;
-  /*switch (color_space) {
+  // Step 2: Initialize centroids
+  
+  switch (color_space) {
   case COLOR_SPACE_OPTION_RGB: {
-    kMeansPlusPlusInit<ImageLib::RGBAPixel<float>>(pixels, centroids, k);
+    kMeansPlusPlusInitGpu<ImageLib::RGBAPixel<float>>(pixels, centroids, k, color_space);
     break;
   }
   case COLOR_SPACE_OPTION_CIELAB: {
-    kMeansPlusPlusInit<ImageLib::LABAPixel<float>>(lab, centroids_lab, k);
+    kMeansPlusPlusInitGpu<ImageLib::LABAPixel<float>>(lab, centroids_lab, k, color_space);
     break;
   }
-  }*/
+  }
+  std::cout << "kmeans++ init done" << std::endl;
 
   // Step 3: Run k-means iterations
 
@@ -251,13 +281,26 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   layout.bytesPerRow = width * bytesPerPixel; // Tightly packed for upload
   layout.rowsPerImage = height;
 
-  std::vector<float> pixels_; // rgba
+  std::vector<float> pixels_;
   for (int i=0; i<num_pixels; i++) {
-    auto p = pixels[i];
-    pixels_.push_back(p.red / 255.0f);
-    pixels_.push_back(p.green / 255.0f);
-    pixels_.push_back(p.blue / 255.0f);
-    pixels_.push_back(p.alpha / 255.0f);
+    switch (color_space) {
+      case COLOR_SPACE_OPTION_RGB: {
+        auto p = pixels[i];
+        pixels_.push_back(p.red / 255.0f);
+        pixels_.push_back(p.green / 255.0f);
+        pixels_.push_back(p.blue / 255.0f);
+        pixels_.push_back(p.alpha / 255.0f);
+        break;
+      }
+      case COLOR_SPACE_OPTION_CIELAB: {
+        auto p = lab[i];
+        pixels_.push_back(p.l / 255.0f);
+        pixels_.push_back(p.a / 255.0f);
+        pixels_.push_back(p.b / 255.0f);
+        pixels_.push_back(p.alpha / 255.0f);
+        break;
+      }
+    }
   }
 
   GPU::getClassInstance().get_queue().WriteTexture(&dst, pixels_.data(), pixels_.size() * sizeof(float), &layout, &texDesc.size);
@@ -278,12 +321,27 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   clayout.rowsPerImage = 1;
 
   std::vector<float> centroids_; // rgba
-  for (int i=0; i<k; i++){
-    auto p = centroids[i];
-    centroids_.push_back(p.red / 255.0f);
-    centroids_.push_back(p.green / 255.0f);
-    centroids_.push_back(p.blue / 255.0f);
-    centroids_.push_back(p.alpha / 255.0f);
+  switch (color_space) {
+      case COLOR_SPACE_OPTION_RGB: {
+        for (int i=0; i<k; i++){
+          auto p = centroids[i];
+          centroids_.push_back(p.red / 255.0f);
+          centroids_.push_back(p.green / 255.0f);
+          centroids_.push_back(p.blue / 255.0f);
+          centroids_.push_back(p.alpha / 255.0f);
+        }
+        break;
+      }
+      case COLOR_SPACE_OPTION_CIELAB: {
+        for (int i=0; i<k; i++){
+          auto p = centroids_lab[i];
+          centroids_.push_back(p.l / 255.0f);
+          centroids_.push_back(p.a / 255.0f);
+          centroids_.push_back(p.b / 255.0f);
+          centroids_.push_back(p.alpha / 255.0f);
+        }
+        break;
+      }
   }
 
   GPU::getClassInstance().get_queue().WriteTexture(&cdst, centroids_.data(), centroids_.size() * sizeof(float), &clayout, &centroidDesc.size);
@@ -523,11 +581,21 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
                // ... Copy data to your C++ vector ...
                std::cout << "mapping centroids" << std::endl;
                for (int i=0; i < k; i++) {
+                  // if CIELAB color space these represent l, a, b, alpha
                   float r = *(mappedData);
                   float g = *(mappedData+1);
                   float b = *(mappedData+2);
                   float a = *(mappedData+3);
-                  centroids[i] = ImageLib::RGBAPixel<float>(r*255.f, g*255.f, b*255.f, a*255.f);
+                  switch (color_space) {
+                    case COLOR_SPACE_OPTION_RGB: {
+                      centroids[i] = ImageLib::RGBAPixel<float>(r*255.f, g*255.f, b*255.f, a*255.f);
+                      break;
+                    }
+                    case COLOR_SPACE_OPTION_CIELAB: {
+                      centroids_lab[i] = ImageLib::LABAPixel<float>(r*255.f, g*255.f, b*255.f, a*255.f);
+                      break;
+                    }
+                  }
                }
                readCentroidsBuffer.Unmap();
                done = true; // Signal completion
@@ -540,6 +608,12 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   }
   
   // Write the final centroid values to each pixel in the cluster
+  if (color_space == COLOR_SPACE_OPTION_CIELAB) {
+      for (int32_t i{0}; i < k; ++i) {
+          lab_to_rgb<float, float>(centroids_lab[i], centroids[i]);
+      }
+  }
+
   for (int32_t i = 0; i < num_pixels; ++i) {
     const int32_t cluster = labels[i];
     out_data[i * 4 + 0] = static_cast<uint8_t>(centroids[cluster].red);
