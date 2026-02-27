@@ -129,15 +129,16 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     std::cout << "compile shader" << std::endl;
     // 4. Compile Shader
     wgpu::ShaderSourceWGSL wgslDesc;
+    std::string shaderSource;
     switch (color_space) {
         case COLOR_SPACE_OPTION_RGB: {
-            std::string shaderSource = GPU::readWGSLFile("/resources/bilateral_filter_rgb.wgsl");
+            shaderSource = GPU::getClassInstance().readWGSLFile("/resources/bilateral_filter_rgb.wgsl");
             wgslDesc.code = shaderSource.c_str();
             break;
         };
         case COLOR_SPACE_OPTION_CIELAB: {
-            std::string shaderSourceLAB = GPU::readWGSLFile("/resources/bilateral_filter_lab.wgsl");
-            wgslDesc.code = shaderSourceLAB.c_str();
+            shaderSource = GPU::getClassInstance().readWGSLFile("/resources/bilateral_filter_lab.wgsl");
+            wgslDesc.code = shaderSource.c_str();
             break;
         }
     }

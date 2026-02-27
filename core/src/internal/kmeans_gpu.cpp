@@ -120,7 +120,7 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
 
     // 5. Compile Shader & Pipeline
     wgpu::ShaderSourceWGSL wgslDesc;
-    std::string updateDistShader = GPU::readWGSLFile("/resources/dist_shader.wgsl");
+    std::string updateDistShader = GPU::getClassInstance().readWGSLFile("/resources/dist_shader.wgsl");
     wgslDesc.code = updateDistShader.c_str();
     wgpu::ShaderModuleDescriptor shaderDesc = {};
     shaderDesc.nextInChain = &wgslDesc;
@@ -385,7 +385,7 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
 
   // shaders
   wgpu::ShaderSourceWGSL wgslDesc1;
-  std::string assignShader = GPU::readWGSLFile("/resources/assign_shader.wgsl");
+  std::string assignShader = GPU::getClassInstance().readWGSLFile("/resources/assign_shader.wgsl");
   wgslDesc1.code = assignShader.c_str();
   wgpu::ShaderModuleDescriptor shaderDesc1 = {};
   shaderDesc1.nextInChain = &wgslDesc1;
@@ -393,7 +393,7 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   wgpu::ShaderModule shaderModule1 = GPU::getClassInstance().get_device().CreateShaderModule(&shaderDesc1);
 
   wgpu::ShaderSourceWGSL wgslDesc2;
-  std::string updateShader = GPU::readWGSLFile("/resources/update_shader.wgsl");
+  std::string updateShader = GPU::getClassInstance().readWGSLFile("/resources/update_shader.wgsl");
   wgslDesc2.code = updateShader.c_str();
   wgpu::ShaderModuleDescriptor shaderDesc2 = {};
   shaderDesc2.nextInChain = &wgslDesc2;
@@ -401,7 +401,7 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   wgpu::ShaderModule shaderModule2 = GPU::getClassInstance().get_device().CreateShaderModule(&shaderDesc2);
 
   wgpu::ShaderSourceWGSL wgslDesc3;
-  std::string resolveShader = GPU::readWGSLFile("/resources/resolve_shader.wgsl");
+  std::string resolveShader = GPU::getClassInstance().readWGSLFile("/resources/resolve_shader.wgsl");
   wgslDesc3.code = resolveShader.c_str();
   wgpu::ShaderModuleDescriptor shaderDesc3 = {};
   shaderDesc3.nextInChain = &wgslDesc3;

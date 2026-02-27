@@ -8,6 +8,7 @@
 #include <string>
 #include <iterator>
 #include <iostream>
+#include <map>
 
 class GPU {
 
@@ -21,6 +22,8 @@ class GPU {
         bool device_ready = false;
 
         GPU() = default;
+
+        std::map<std::string, std::string> loadedShaders;
 
     public:
         
@@ -50,18 +53,26 @@ class GPU {
         GPU(GPU&&) = delete;
         GPU& operator=(GPU&&) = delete;
 
-        static std::string readWGSLFile(const std::string& filepath) {
-            std::ifstream file(filepath);
-            if (!file.is_open()) {
-                return nullptr;
+        std::string readWGSLFile(const std::string& filepath) {
+            auto it = loadedShaders.find(filepath);
+            if (it != loadedShaders.end()) {
+                std::cout << "using cached shader" << std::endl;
+                return it->second;
             }
-            file.seekg(0, std::ios::end);
-            size_t size = file.tellg();
-            std::string shaderSource(size, ' ');
-            file.seekg(0);
-            file.read(shaderSource.data(), size);
-
-            return shaderSource;
+            else {
+                std::cout << "loading shader from file" << std::endl;
+                
+                std::ifstream file(filepath, std::ios::in);
+                if (!file.is_open()) {
+                    std::cerr << "Failed to open file: " << filepath << std::endl;
+                    return ""; // Or throw an exception
+                }
+                std::string shaderSource{std::istreambuf_iterator<char>{file}, {}};
+                
+                loadedShaders[filepath] = shaderSource;
+                file.close();
+                return shaderSource;
+            }
         }
 
         static uint32_t getAlignedBytesPerRow(uint32_t width, uint32_t bytesPerPixel = 4) {
