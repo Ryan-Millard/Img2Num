@@ -3,6 +3,10 @@
 
 #include <webgpu/webgpu_cpp.h>
 #include <emscripten/html5.h>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <iterator>
 #include <iostream>
 
 class GPU {
@@ -45,6 +49,20 @@ class GPU {
         GPU& operator=(const GPU&) = delete;
         GPU(GPU&&) = delete;
         GPU& operator=(GPU&&) = delete;
+
+        static std::string readWGSLFile(const std::string& filepath) {
+            std::ifstream file(filepath);
+            if (!file.is_open()) {
+                return nullptr;
+            }
+            file.seekg(0, std::ios::end);
+            size_t size = file.tellg();
+            std::string shaderSource(size, ' ');
+            file.seekg(0);
+            file.read(shaderSource.data(), size);
+
+            return shaderSource;
+        }
 
         static uint32_t getAlignedBytesPerRow(uint32_t width, uint32_t bytesPerPixel = 4) {
             uint32_t unaligned = width * bytesPerPixel;

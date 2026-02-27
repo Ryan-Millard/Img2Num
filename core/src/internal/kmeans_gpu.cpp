@@ -120,7 +120,8 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
 
     // 5. Compile Shader & Pipeline
     wgpu::ShaderSourceWGSL wgslDesc;
-    wgslDesc.code = updateDistShader;
+    std::string updateDistShader = GPU::readWGSLFile("/resources/dist_shader.wgsl");
+    wgslDesc.code = updateDistShader.c_str();
     wgpu::ShaderModuleDescriptor shaderDesc = {};
     shaderDesc.nextInChain = &wgslDesc;
     shaderDesc.label = "updateDistShader";
@@ -384,21 +385,24 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
 
   // shaders
   wgpu::ShaderSourceWGSL wgslDesc1;
-  wgslDesc1.code = assignShader;
+  std::string assignShader = GPU::readWGSLFile("/resources/assign_shader.wgsl");
+  wgslDesc1.code = assignShader.c_str();
   wgpu::ShaderModuleDescriptor shaderDesc1 = {};
   shaderDesc1.nextInChain = &wgslDesc1;
   shaderDesc1.label = "assignShader";
   wgpu::ShaderModule shaderModule1 = GPU::getClassInstance().get_device().CreateShaderModule(&shaderDesc1);
 
   wgpu::ShaderSourceWGSL wgslDesc2;
-  wgslDesc2.code = updateShader;
+  std::string updateShader = GPU::readWGSLFile("/resources/update_shader.wgsl");
+  wgslDesc2.code = updateShader.c_str();
   wgpu::ShaderModuleDescriptor shaderDesc2 = {};
   shaderDesc2.nextInChain = &wgslDesc2;
   shaderDesc2.label = "updateShader";
   wgpu::ShaderModule shaderModule2 = GPU::getClassInstance().get_device().CreateShaderModule(&shaderDesc2);
 
   wgpu::ShaderSourceWGSL wgslDesc3;
-  wgslDesc3.code = resolveShader;
+  std::string resolveShader = GPU::readWGSLFile("/resources/resolve_shader.wgsl");
+  wgslDesc3.code = resolveShader.c_str();
   wgpu::ShaderModuleDescriptor shaderDesc3 = {};
   shaderDesc3.nextInChain = &wgslDesc3;
   shaderDesc3.label = "resolveShader";
