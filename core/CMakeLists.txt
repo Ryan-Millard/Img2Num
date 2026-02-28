@@ -11,15 +11,7 @@ file(GLOB_RECURSE CORE_SRC
   "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
 )
 
-if(EMSCRIPTEN)
-  # Build object library
-  add_library(Img2Num OBJECT ${CORE_SRC})
-
-  target_compile_options(Img2Num PRIVATE -msimd128)
-  target_link_options(Img2Num PRIVATE -msimd128)
-else()
-  add_library(Img2Num ${CORE_SRC})
-endif()
+add_library(Img2Num ${CORE_SRC})
 
 target_include_directories(Img2Num
   PUBLIC
