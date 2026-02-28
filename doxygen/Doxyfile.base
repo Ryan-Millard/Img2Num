@@ -3,7 +3,7 @@
 # =========================
 
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_BRIEF          = "Internal API Documentation"
+PROJECT_BRIEF          = "API Documentation"
 OUTPUT_LANGUAGE        = English
 MARKDOWN_SUPPORT       = YES
 AUTOLINK_SUPPORT       = YES
