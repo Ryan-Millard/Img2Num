@@ -11,7 +11,6 @@ set(C_BINDINGS_SRC
     src/cimg2num/img2num_error_t.cpp
 )
 
-# Build shared library for C bindings
 add_library(CImg2Num ${C_BINDINGS_SRC})
 
 # Link against the core C++ library
