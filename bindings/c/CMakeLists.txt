@@ -12,23 +12,20 @@ set(C_BINDINGS_SRC
 )
 
 # Build shared library for C bindings
-add_library(CImg2Num SHARED ${C_BINDINGS_SRC})
+add_library(CImg2Num ${C_BINDINGS_SRC})
 
 # Link against the core C++ library
 target_link_libraries(CImg2Num PRIVATE Img2Num)
 
-# Include directories
-#   - BUILD_INTERFACE: used when building in this repo
-#   - INSTALL_INTERFACE: used when installed and found by consumers
 target_include_directories(CImg2Num
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:/include/cimg2num>
+        $<INSTALL_INTERFACE:include/cimg2num>
 )
 
 # Install headers and library
 install(TARGETS CImg2Num
-        EXPORT Img2NumTargets
+    EXPORT Img2NumTargets
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
         INCLUDES DESTINATION include/cimg2num
@@ -37,3 +34,5 @@ install(TARGETS CImg2Num
 install(DIRECTORY include/
         DESTINATION include/cimg2num
 )
+
+message(STATUS "C bindings library configured with ${C_BINDINGS_SRC}")
