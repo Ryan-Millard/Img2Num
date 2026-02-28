@@ -15,7 +15,7 @@ add_executable(console_cpp_app ${EXAMPLE_SRC})
 
 # Include the downloaded STB headers
 target_include_directories(console_cpp_app PRIVATE
-    ${CMAKE_BINARY_DIR}
+  ${CMAKE_SOURCE_DIR}/third_party
 )
 
 # Link against the core Img2Num library

@@ -1,0 +1,14 @@
+@INCLUDE         = ../doxygen/Doxyfile.base
+
+PROJECT_NAME     = "Img2Num C++"
+OUTPUT_DIRECTORY = ../docs/static/docs/cpp/api
+
+INPUT            = include/img2num include/img2num.h doxygen
+
+RECURSIVE        = YES
+
+EXCLUDE          = include/internal src/internal
+
+EXTRACT_PRIVATE  = NO
+EXTRACT_STATIC   = NO
+INTERNAL_DOCS    = NO

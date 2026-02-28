@@ -11,41 +11,28 @@ file(GLOB_RECURSE CORE_SRC
   "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
 )
 
-if(EMSCRIPTEN)
-  # Build object library
-  add_library(core_obj OBJECT ${CORE_SRC})
+add_library(Img2Num ${CORE_SRC})
 
-  # PUBLIC: only expose the directory that contains img2num.h
-  # PRIVATE: internal headers
-  target_include_directories(core_obj
-      PUBLIC
-          ${CMAKE_CURRENT_SOURCE_DIR}/include
-      PRIVATE
-          ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
-  )
+target_include_directories(Img2Num
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include/img2num>
+  PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
+)
 
-    target_compile_options(core_obj PRIVATE -msimd128)
-    target_link_options(core_obj PRIVATE -msimd128)
-else()
-  # Build a regular shared library
-  add_library(Img2Num SHARED ${CORE_SRC})
+# --- Install targets for packaging ---
+install(TARGETS Img2Num
+  EXPORT Img2NumTargets
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  INCLUDES DESTINATION include/img2num
+)
 
-  # PUBLIC: only expose the directory that contains img2num.h
-  # PRIVATE: internal headers
-  target_include_directories(Img2Num
-    PUBLIC
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    PRIVATE
-      ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
-  )
-
-  # --- Install targets for packaging ---
-  install(TARGETS Img2Num
-    EXPORT Img2NumTargets
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
-    INCLUDES DESTINATION include
-  )
-endif()
+install(DIRECTORY include/
+        DESTINATION include/img2num
+        EXCLUDE_FROM_ALL
+        REGEX "^.*/internal/.*" EXCLUDE
+)
 
 message(STATUS "Core library configured with ${CORE_SRC}")

@@ -32,7 +32,7 @@ _If you choose to develop locally, you are responsible for configuring and maint
 ## Clone the repository
 
 ```bash title="Paste this in your terminal"
-git clone https://github.com/Ryan-Millard/Img2Num.git
+git clone --recursive https://github.com/Ryan-Millard/Img2Num.git
 cd Img2Num/
 ```
 

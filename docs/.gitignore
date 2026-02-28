@@ -2,6 +2,10 @@
 /node_modules
 static/docs/internal/**/api/*
 !static/docs/internal/**/api/.gitkeep
+static/docs/cpp/api/*
+!static/docs/cpp/api/.gitkeep
+static/docs/c/api/*
+!static/docs/c/api/.gitkeep
 
 # Production
 /build

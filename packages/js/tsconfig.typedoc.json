@@ -6,7 +6,7 @@
     "checkJs": false,
     "outDir": "dist",
     "rootDir": ".",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "esModuleInterop": true
   },
   "include": ["*.js"]

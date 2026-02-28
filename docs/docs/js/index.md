@@ -1,8 +1,7 @@
 ---
-id: img2num-javascript
-title: Img2Num
+title: Img2Num JavaScript
 sidebar_label: JavaScript
-sidebar_position: 2
+sidebar_position: 4
 ---
 
 > A high-performance raster-to-vector conversion library that transforms images into **SVGs**.
