@@ -6,6 +6,12 @@
 
 [![Deploy to GitHub Pages](https://github.com/Ryan-Millard/Img2Num/actions/workflows/deploy.yml/badge.svg)](https://github.com/Ryan-Millard/Img2Num/actions/workflows/deploy.yml)
 
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img height="25px" src="https://skillicons.dev/icons?i=cpp,c,js" />
+  </a>
+</p>
+
 </div>
 
 <p align="center">  
@@ -26,13 +32,6 @@ Try it out now by [clicking here](https://ryan-millard.github.io/Img2Num/)!
 </div>
 
 ---
-
-## What this repository contains
-
-- A raster image to SVG conversion library for:
-  - C++
-  - C
-  - JavaScript
 
 This README is intentionally short — full installation steps, guides and references live in the docs site (see below).
 
