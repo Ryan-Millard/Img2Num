@@ -31,7 +31,6 @@ install(TARGETS Img2Num
 
 install(DIRECTORY include/
         DESTINATION include/img2num
-        EXCLUDE_FROM_ALL
         REGEX "^.*/internal/.*" EXCLUDE
 )
 
