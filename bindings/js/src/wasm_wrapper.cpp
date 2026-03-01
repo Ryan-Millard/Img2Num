@@ -1,5 +1,5 @@
-#include <emscripten/emscripten.h>
 #include <cimg2num.h>
+#include <emscripten/emscripten.h>
 
 extern "C" {
 EMSCRIPTEN_KEEPALIVE void gaussian_blur_fft(uint8_t *image, size_t width, size_t height,

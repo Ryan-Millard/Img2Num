@@ -22,9 +22,11 @@ See the [Setup & Dependencies](../../../contributing/setup-and-dependencies) pag
 
 :::note
 If you have already set up the project, you will only need to run the below to build these apps:
+
 ```cpp
 cmake -S . --build build
 ```
+
 :::
 
 #### Usage
@@ -49,8 +51,10 @@ import TabItem from '@theme/TabItem';
 ```
 
 > **Expected Output**: `console-cpp-output.png` in the root of the project.
+
 </TabItem>
 <TabItem value="c" label="C console app">
+
 ```bash title="Run this from the root of the project"
 ./console_c_app <image_file>
 ```
@@ -60,6 +64,7 @@ import TabItem from '@theme/TabItem';
 ```
 
 > **Expected Output**: `console-c-output.png` in the root of the project.
+
 </TabItem>
 </Tabs>
 

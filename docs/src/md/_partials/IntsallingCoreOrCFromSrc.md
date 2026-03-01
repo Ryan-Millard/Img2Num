@@ -1,5 +1,6 @@
 <!--DO NOT CHANGE THE PAGE TITLE CHECK WITHOUT VERIFYING THAT THE PAGES THAT DEPEND ON THIS AREN'T BROKEN-->
 <!--This partial is only compatible with a few pages. It is not recommended that you use it-->
+
 import CodeBlock from '@theme/CodeBlock';
 import { useDoc } from '@docusaurus/plugin-content-docs/client';
 
@@ -53,6 +54,7 @@ cmake --build build
 ```
 
 :::tip Failed to build?
+
 ```bash title="Try running this to refresh the submodules"
 git submodule update --init --recursive
 ```
@@ -88,16 +90,16 @@ values={[
 { label: 'Namespaced', value: 'namespaced-include' },
 { label: 'Normal', value: 'normal-include' },
 ]}>
-  <TabItem value="namespaced-include">
-    <CodeBlock language="cpp" title="Include any public header">
-    {`#include <${useDoc().metadata.title.includes("C++") ? "img2num/img2num" : "cimg2num/cimg2num"}.h>`}
-    </CodeBlock>
-  </TabItem>
-  <TabItem value="normal-include">
-    <CodeBlock language="cpp" title="Include any public header">
-    {`#include <${useDoc().metadata.title.includes("C++") ? "img2num" : "cimg2num"}.h>`}
-    </CodeBlock>
-  </TabItem>
+<TabItem value="namespaced-include">
+<CodeBlock language="cpp" title="Include any public header">
+{`#include <${useDoc().metadata.title.includes("C++") ? "img2num/img2num" : "cimg2num/cimg2num"}.h>`}
+</CodeBlock>
+</TabItem>
+<TabItem value="normal-include">
+<CodeBlock language="cpp" title="Include any public header">
+{`#include <${useDoc().metadata.title.includes("C++") ? "img2num" : "cimg2num"}.h>`}
+</CodeBlock>
+</TabItem>
 </Tabs>
 
 You should be good to go now!

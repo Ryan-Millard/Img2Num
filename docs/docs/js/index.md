@@ -7,7 +7,7 @@ sidebar_position: 4
 > A high-performance raster-to-vector conversion library that transforms images into **SVGs**.
 > It is powered by WebAssembly (WASM) for speed, while providing easy-to-use JavaScript wrappers for integration into web or Node.js projects.
 
-import Features from '@site/src/md/_partials/library-features.md';
+import Features from '@site/src/md/\_partials/library-features.md';
 
 <Features />
 
