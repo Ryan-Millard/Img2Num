@@ -13,6 +13,7 @@
 #include <cstdint>
 #include <cmath>
 #include <cstdlib>
+#include <cstring>
 #include <ctime>
 #include <functional>
 #include <limits>
@@ -231,7 +232,9 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
         // E. Wait for GPU
         while (!done) {
             GPU::getClassInstance().get_instance().ProcessEvents();
-            emscripten_sleep(1); 
+            #if defined(__EMSCRIPTEN__)
+            emscripten_sleep(10); 
+            #endif
         }
     }
 
@@ -522,7 +525,9 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
     GPU::getClassInstance().get_queue().Submit(1, &commands);
 
     GPU::getClassInstance().get_instance().ProcessEvents();
-    emscripten_sleep(1);
+    #if defined(__EMSCRIPTEN__)
+    emscripten_sleep(10);
+    #endif
   }
 
   std::cout << "done iterations" << std::endl;
@@ -620,7 +625,9 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   
   while (!done) {
     GPU::getClassInstance().get_instance().ProcessEvents();
+    #if defined(__EMSCRIPTEN__)
     emscripten_sleep(10);
+    #endif
   }
   
   // Write the final centroid values to each pixel in the cluster

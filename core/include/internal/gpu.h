@@ -2,7 +2,9 @@
 #define GPU_H
 
 #include <webgpu/webgpu_cpp.h>
+#if defined(__EMSCRIPTEN__)
 #include <emscripten/html5.h>
+#endif
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -20,6 +22,7 @@ class GPU {
 
         bool adapter_ready = false;
         bool device_ready = false;
+        bool gpu_initialized = false;
 
         GPU() = default;
 
@@ -27,24 +30,26 @@ class GPU {
 
     public:
         
-        bool gpu_initialized = false;
-
         // makes a single global instance that other files can reference
         static GPU& getClassInstance() {
             static GPU gpuInstance;
             return gpuInstance;
         }
 
-        wgpu::Device& get_device() {
+        const wgpu::Device& get_device() {
             return device;
         }
 
-        wgpu::Instance& get_instance() {
+        const wgpu::Instance& get_instance() {
             return instance;
         }
 
-        wgpu::Queue& get_queue() {
+        const wgpu::Queue& get_queue() {
             return queue;
+        }
+
+        bool is_initialized() {
+            return gpu_initialized;
         }
 
         // Delete copy constructor and assignment operator to prevent duplication
@@ -134,7 +139,9 @@ class GPU {
             // WAIT LOOP: Yield to browser so it can actually find the adapter
             while (!adapter_ready) {
                 instance.ProcessEvents();
+                #if defined(__EMSCRIPTEN__)
                 emscripten_sleep(10); // Sleep 10ms
+                #endif
             }
 
             if (!adapter) {
@@ -171,7 +178,9 @@ class GPU {
             // WAIT LOOP
             while (!device_ready) {
                 instance.ProcessEvents();
+                #if defined(__EMSCRIPTEN__)
                 emscripten_sleep(10);
+                #endif
             }
 
             if (!device) {

@@ -28,6 +28,11 @@ if(EMSCRIPTEN)
     target_link_options(core_obj PRIVATE -msimd128 "--use-port=emdawnwebgpu")
 
 else()
+  set(DAWN_SUPPORTS_GLFW_FOR_WINDOWING OFF CACHE BOOL "Disable GLFW support for windowing" FORCE)
+  set(DAWN_USE_X11 OFF CACHE BOOL "Disable X11 support" FORCE)
+  set(DAWN_FETCH_DEPENDENCIES ON)
+  add_subdirectory("../third_party/dawn" ${CMAKE_CURRENT_SOURCE_DIR} EXCLUDE_FROM_ALL)
+
   # Build a regular shared library
   add_library(Img2Num SHARED ${CORE_SRC})
 
@@ -36,9 +41,12 @@ else()
   target_include_directories(Img2Num
     PUBLIC
       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+      $<BUILD_INTERFACE:${DAWN_INCLUDE_DIR}>
     PRIVATE
       ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
   )
+
+  target_link_libraries(Img2Num PRIVATE webgpu_dawn)
 
   # --- Install targets for packaging ---
   install(TARGETS Img2Num

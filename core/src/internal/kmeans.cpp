@@ -241,14 +241,14 @@ namespace img2num {
             const int32_t height, const int32_t k, const int32_t max_iter,
             const uint8_t color_space) {
 
-        GPU::getClassInstance().init_gpu();
+        // GPU::getClassInstance().init_gpu();
 
-        if (GPU::getClassInstance().gpu_initialized) {
+        if (GPU::getClassInstance().is_initialized()) {
             std::cout << "kmeans gpu" << std::endl;
             kmeans_gpu(data, out_data, out_labels, width, height, k, max_iter, color_space);
         }
         else {
-            std::cout << "kmeans gpu" << std::endl;
+            std::cout << "kmeans cpu" << std::endl;
             kmeans_cpu(data, out_data, out_labels, width, height, k, max_iter, color_space);
         }
         

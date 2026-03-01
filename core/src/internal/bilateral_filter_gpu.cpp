@@ -277,7 +277,9 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     while (waiting) {
         // std::cout << "waiting, " << std::endl; 
         GPU::getClassInstance().get_instance().ProcessEvents();
+        #if defined(__EMSCRIPTEN__)
         emscripten_sleep(100);
+        #endif
     }
     std::cout << "done wgpu" << std::endl;
 
