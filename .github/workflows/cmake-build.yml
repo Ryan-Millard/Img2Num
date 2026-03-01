@@ -36,8 +36,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-        with:
-          submodules: recursive
 
       - name: Run cmake
         run: cmake -B build-c-cpp/ .
