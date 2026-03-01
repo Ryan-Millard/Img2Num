@@ -50,7 +50,7 @@ Visit the docs site for full guides, API references and troubleshooting:
 
 ## Contributing
 
-We'd love some help! Check out our [CONTIRBUTING.md](https://github.com/Ryan-Millard/Img2Num/blob/main/CONTRIBUTING.md).
+We'd love some help! Check out our [CONTRIBUTING.md](https://github.com/Ryan-Millard/Img2Num/blob/main/CONTRIBUTING.md).
 
 ## License Summary
 
