@@ -241,7 +241,7 @@ namespace img2num {
             const int32_t height, const int32_t k, const int32_t max_iter,
             const uint8_t color_space) {
 
-        // GPU::getClassInstance().init_gpu();
+        GPU::getClassInstance().init_gpu();
 
         if (GPU::getClassInstance().is_initialized()) {
             std::cout << "kmeans gpu" << std::endl;

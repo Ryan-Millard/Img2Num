@@ -222,7 +222,7 @@ namespace img2num {
     void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_spatial,
                       double sigma_range, uint8_t color_space) {
 
-        // GPU::getClassInstance().init_gpu();
+        GPU::getClassInstance().init_gpu();
 
         if (GPU::getClassInstance().is_initialized()) {
             bilateral_filter_gpu(image, width, height, sigma_spatial, sigma_range, color_space);
