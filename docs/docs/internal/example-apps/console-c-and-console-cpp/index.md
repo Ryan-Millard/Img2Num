@@ -20,6 +20,13 @@ Both applications demonstrate how to process an image using the Img2Num library.
 
 See the [Setup & Dependencies](../../../contributing/setup-and-dependencies) page in the [Contributing](../../../contributing) section.
 
+:::note
+If you have already set up the project, you will only need to run the below to build these apps:
+```cpp
+cmake -S . --build build
+```
+:::
+
 #### Usage
 
 :::important
@@ -41,6 +48,7 @@ import TabItem from '@theme/TabItem';
 ./build/example-apps/console-cpp/console_cpp_app test.jpg
 ```
 
+> **Expected Output**: `console-cpp-output.png` in the root of the project.
 </TabItem>
 <TabItem value="c" label="C console app">
 ```bash title="Run this from the root of the project"
@@ -51,6 +59,7 @@ import TabItem from '@theme/TabItem';
 ./build/example-apps/console-c/console_c_app test.jpg
 ```
 
+> **Expected Output**: `console-c-output.png` in the root of the project.
 </TabItem>
 </Tabs>
 
@@ -64,17 +73,14 @@ import TabItem from '@theme/TabItem';
 
 ### Dependencies
 
-> The `stb` dependencies are configured in the [root CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/CMakeLists.txt).
-> This should be automatically installed.
-
 - `stb_image`
 - `stb_image_write`
 - `Img2Num`
 - `CImg2Num` (only for the C app)
 
-### Expected Output
-
-Both applications output a PNG file (`console-c-output.png` or `console-cpp-output.png`).
+:::info
+The `stb` dependencies are configured in the [root CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/CMakeLists.txt) as a submodule.
+:::
 
 ### Testing
 
