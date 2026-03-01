@@ -1,5 +1,5 @@
 # =================================================================
-# Img2Num Top-Level
+# Img2Num Top-Level (Manages all libs and apps)
 # =================================================================
 cmake_minimum_required(VERSION 3.16)
 project(Img2Num LANGUAGES CXX)
@@ -28,16 +28,18 @@ else()
 endif()
 
 # --- Install export for package ---
+include(GNUInstallDirs)
+
 install(EXPORT Img2NumTargets
   FILE Img2NumTargets.cmake
   NAMESPACE Img2Num::
-  DESTINATION lib/cmake/Img2Num
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Img2Num
 )
 
 include(CMakePackageConfigHelpers)
 
 write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/my_libConfigVersion.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/Img2NumConfigVersion.cmake"
     VERSION 0.0.0
     COMPATIBILITY SameMajorVersion
 )
@@ -45,10 +47,10 @@ write_basic_package_version_file(
 configure_package_config_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Img2NumConfig.cmake.in
   ${CMAKE_CURRENT_BINARY_DIR}/Img2NumConfig.cmake
-  INSTALL_DESTINATION lib/cmake/Img2Num
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Img2Num
 )
 
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/Img2NumConfig.cmake
-  DESTINATION lib/cmake/Img2Num
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Img2Num
 )
