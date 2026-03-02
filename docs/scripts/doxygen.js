@@ -49,7 +49,7 @@ DOXYFILES.forEach(({ fileName, srcDir, outDir }) => {
 
   // Step 3: Run Doxygen
   try {
-    const DOXYFILE_PATH = join("..", srcDir, fileName);
+    const DOXYFILE_PATH = join(ROOT_DIR, "..", srcDir, fileName);
     if (!existsSync(DOXYFILE_PATH)) {
       throw new Error(`Doxyfile not found at: ${DOXYFILE_PATH}`);
     }
