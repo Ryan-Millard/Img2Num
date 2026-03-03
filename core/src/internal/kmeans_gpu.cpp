@@ -62,13 +62,7 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
     // Upload pixel data (Normalization to 0.0-1.0 assumed)
     std::vector<float> gpu_pixels;
     gpu_pixels.reserve(num_pixels * 4);
-    /*for (int i = 0; i < num_pixels; ++i) {
-        gpu_pixels.push_back(pixels[i].red / 255.0f);
-        gpu_pixels.push_back(pixels[i].green / 255.0f);
-        gpu_pixels.push_back(pixels[i].blue / 255.0f);
-        gpu_pixels.push_back(pixels[i].alpha / 255.0f); // Alpha
-    }*/
-
+    
     for (int i=0; i<num_pixels; i++) {
       PixelT p = pixels[i];
       if constexpr (std::is_same_v<PixelT, ImageLib::LABAPixel<float>>) {
@@ -120,18 +114,7 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
     wgpu::Buffer readBuffer = GPU::getClassInstance().get_device().CreateBuffer(&readDesc);
 
     // 5. Compile Shader & Pipeline
-    wgpu::ShaderSourceWGSL wgslDesc;
-    std::string updateDistShader = GPU::getClassInstance().readWGSLFile("/resources/dist_shader.wgsl");
-    wgslDesc.code = updateDistShader.c_str();
-    wgpu::ShaderModuleDescriptor shaderDesc = {};
-    shaderDesc.nextInChain = &wgslDesc;
-    shaderDesc.label = "updateDistShader";
-    wgpu::ShaderModule shaderModule = GPU::getClassInstance().get_device().CreateShaderModule(&shaderDesc);
-
-    wgpu::ComputePipelineDescriptor pipeDesc = {};
-    pipeDesc.compute.module = shaderModule;
-    pipeDesc.compute.entryPoint = "main";
-    wgpu::ComputePipeline pipeline = GPU::getClassInstance().get_device().CreateComputePipeline(&pipeDesc);
+    wgpu::ComputePipeline pipeline = GPU::getClassInstance().createPipeline("/resources/dist_shader.wgsl", "updateDistShader");
 
     // 6. Bind Group
     wgpu::BindGroupEntry entries[3];
@@ -387,54 +370,8 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   GPU::getClassInstance().get_queue().WriteBuffer(accBuffer, 0, reset_centroids.data(), accDesc.size);
 
   // shaders
-  /*wgpu::ShaderSourceWGSL wgslDesc1;
-  std::string assignShader = GPU::getClassInstance().readWGSLFile("/resources/assign_shader.wgsl");
-  wgslDesc1.code = assignShader.c_str();
-  wgpu::ShaderModuleDescriptor shaderDesc1 = {};
-  shaderDesc1.nextInChain = &wgslDesc1;
-  shaderDesc1.label = "assignShader";
-  wgpu::ShaderModule shaderModule1 = GPU::getClassInstance().get_device().CreateShaderModule(&shaderDesc1);
-
-  wgpu::ShaderSourceWGSL wgslDesc2;
-  std::string updateShader = GPU::getClassInstance().readWGSLFile("/resources/update_shader.wgsl");
-  wgslDesc2.code = updateShader.c_str();
-  wgpu::ShaderModuleDescriptor shaderDesc2 = {};
-  shaderDesc2.nextInChain = &wgslDesc2;
-  shaderDesc2.label = "updateShader";
-  wgpu::ShaderModule shaderModule2 = GPU::getClassInstance().get_device().CreateShaderModule(&shaderDesc2);
-  */
-
-  wgpu::ShaderSourceWGSL wgslDesc1;
-  std::string assignShader = GPU::getClassInstance().readWGSLFile("/resources/assign_update_shader2.wgsl");
-  wgslDesc1.code = assignShader.c_str();
-  wgpu::ShaderModuleDescriptor shaderDesc1 = {};
-  shaderDesc1.nextInChain = &wgslDesc1;
-  shaderDesc1.label = "assignUpdateShader";
-  wgpu::ShaderModule shaderModule1 = GPU::getClassInstance().get_device().CreateShaderModule(&shaderDesc1);
-
-  wgpu::ShaderSourceWGSL wgslDesc3;
-  std::string resolveShader = GPU::getClassInstance().readWGSLFile("/resources/resolve_shader.wgsl");
-  wgslDesc3.code = resolveShader.c_str();
-  wgpu::ShaderModuleDescriptor shaderDesc3 = {};
-  shaderDesc3.nextInChain = &wgslDesc3;
-  shaderDesc3.label = "resolveShader";
-  wgpu::ShaderModule shaderModule3 = GPU::getClassInstance().get_device().CreateShaderModule(&shaderDesc3);
-
-  // pipelines
-  wgpu::ComputePipelineDescriptor pipelineDesc1 = {};
-  pipelineDesc1.compute.module = shaderModule1;
-  pipelineDesc1.compute.entryPoint = "main";
-  wgpu::ComputePipeline pipeline1 = GPU::getClassInstance().get_device().CreateComputePipeline(&pipelineDesc1);
-
-  /*wgpu::ComputePipelineDescriptor pipelineDesc2 = {};
-  pipelineDesc2.compute.module = shaderModule2;
-  pipelineDesc2.compute.entryPoint = "main";
-  wgpu::ComputePipeline pipeline2 = GPU::getClassInstance().get_device().CreateComputePipeline(&pipelineDesc2);
-  */
-  wgpu::ComputePipelineDescriptor pipelineDesc3 = {};
-  pipelineDesc3.compute.module = shaderModule3;
-  pipelineDesc3.compute.entryPoint = "main";
-  wgpu::ComputePipeline pipeline3 = GPU::getClassInstance().get_device().CreateComputePipeline(&pipelineDesc3);
+  wgpu::ComputePipeline pipeline1 = GPU::getClassInstance().createPipeline("/resources/assign_update_shader2.wgsl", "assignUpdateShader");
+  wgpu::ComputePipeline pipeline3 = GPU::getClassInstance().createPipeline("/resources/resolve_shader.wgsl", "resolveShader");
 
   // binding groups
   wgpu::BindGroupDescriptor bindGroupDesc1 = {};
@@ -462,27 +399,6 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   bindGroupDesc1.entries = entries1;
   wgpu::BindGroup bindGroup1 = GPU::getClassInstance().get_device().CreateBindGroup(&bindGroupDesc1);
 
-  /*wgpu::BindGroupDescriptor bindGroupDesc2 = {};
-  bindGroupDesc2.layout = pipeline2.GetBindGroupLayout(0);
-  wgpu::BindGroupEntry entries2[4];
-  // Entry 0: Input Texture View
-  entries2[0].binding = 0;
-  entries2[0].textureView = inputTexture.CreateView();
-  // Entry 1: Label Texture View
-  entries2[1].binding = 1;
-  entries2[1].textureView = labelTexture.CreateView();
-  // Entry 2: Label Texture View
-  entries2[2].binding = 2;
-  entries2[2].buffer = accBuffer;
-  entries2[2].size = sizeof(ClusterAccumulator) * k;
-  // Entry 2: Uniform Buffer
-  entries2[3].binding = 3;
-  entries2[3].buffer = paramBuffer;
-  entries2[3].size = sizeof(Params);
-  bindGroupDesc2.entryCount = 4;
-  bindGroupDesc2.entries = entries2;
-  wgpu::BindGroup bindGroup2 = GPU::getClassInstance().get_device().CreateBindGroup(&bindGroupDesc2);
-  */
   wgpu::BindGroupDescriptor bindGroupDesc3 = {};
   bindGroupDesc3.layout = pipeline3.GetBindGroupLayout(0);
   wgpu::BindGroupEntry entries3[2];
@@ -514,9 +430,7 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
 
   std::cout << "start iterations" << std::endl;
   wgpu::CommandEncoder encoder = GPU::getClassInstance().get_device().CreateCommandEncoder();
-  for (int32_t iter{0}; iter < max_iter; ++iter) {
-    // wgpu::CommandEncoder encoder = GPU::getClassInstance().get_device().CreateCommandEncoder();
-    
+  for (int32_t iter{0}; iter < max_iter; ++iter) {    
     // will reset in resolver shader
     // GPU::getClassInstance().get_queue().WriteBuffer(accBuffer, 0, reset_centroids.data(), accDesc.size);
     
@@ -526,25 +440,11 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
     pass1.DispatchWorkgroups(wgX, wgY);
     pass1.End();
   
-    /*wgpu::ComputePassEncoder pass2 = encoder.BeginComputePass();
-    pass2.SetPipeline(pipeline2);
-    pass2.SetBindGroup(0, bindGroup2);
-    pass2.DispatchWorkgroups(wgX, wgY);
-    pass2.End();*/
-  
     wgpu::ComputePassEncoder pass3 = encoder.BeginComputePass();
     pass3.SetPipeline(pipeline3);
     pass3.SetBindGroup(0, bindGroup3);
     pass3.DispatchWorkgroups((k + 255) / 256, 1);
     pass3.End();
-
-    // wgpu::CommandBuffer commands = encoder.Finish();
-    // GPU::getClassInstance().get_queue().Submit(1, &commands);
-
-    /*GPU::getClassInstance().get_instance().ProcessEvents();
-    #if defined(__EMSCRIPTEN__)
-    emscripten_sleep(10);
-    #endif*/
   }
   wgpu::CommandBuffer commands = encoder.Finish();
   GPU::getClassInstance().get_queue().Submit(1, &commands);
