@@ -370,7 +370,7 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   GPU::getClassInstance().get_queue().WriteBuffer(accBuffer, 0, reset_centroids.data(), accDesc.size);
 
   // shaders
-  wgpu::ComputePipeline pipeline1 = GPU::getClassInstance().createPipeline("/resources/assign_update_shader2.wgsl", "assignUpdateShader");
+  wgpu::ComputePipeline pipeline1 = GPU::getClassInstance().createPipeline("/resources/assign_update_shader.wgsl", "assignUpdateShader");
   wgpu::ComputePipeline pipeline3 = GPU::getClassInstance().createPipeline("/resources/resolve_shader.wgsl", "resolveShader");
 
   // binding groups
