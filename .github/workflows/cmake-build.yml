@@ -42,13 +42,13 @@ jobs:
 
       - name: Install CMake 3.22+
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget
+          apt-get update
+          apt-get install -y wget
           wget https://apt.kitware.com/kitware-archive.sh
-          sudo bash kitware-archive.sh
-          sudo apt-get update
-          sudo apt-get install -y cmake
-          
+          bash kitware-archive.sh
+          apt-get update
+          apt-get install -y cmake
+
       - name: Run cmake
         run: cmake -B build-c-cpp/ .
 
