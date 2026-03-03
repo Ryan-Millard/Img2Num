@@ -15,7 +15,7 @@ add_executable(console_c_app ${EXAMPLE_SRC})
 
 # Include the downloaded headers directly
 target_include_directories(console_c_app PRIVATE
-    ${CMAKE_BINARY_DIR}
+  ${CMAKE_SOURCE_DIR}/third_party
 )
 
 # Link against the C bindings
