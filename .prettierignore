@@ -31,3 +31,4 @@ pnpm-lock.yaml
 docs/static/js/api.json
 docs/docs/js/api/
 example-apps/react-js/src/data/contributor-credits.json
+third_party/
