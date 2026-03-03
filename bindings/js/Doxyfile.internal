@@ -1,7 +1,14 @@
 @INCLUDE = ../../doxygen/Doxyfile.base
 
-PROJECT_NAME     = "Img2Num JS/WASM Bindings"
+PROJECT_NAME     = "Img2Num JS/WASM Bindings (Internal Developer Docs)"
+
 PROJECT_NUMBER   = dev
 
 INPUT            = src ../../doxygen/*.dox doxygen/home_page.dox
 OUTPUT_DIRECTORY = ../../docs/static/docs/internal/bindings/js/api
+
+RECURSIVE        = YES
+
+EXTRACT_PRIVATE  = YES
+EXTRACT_STATIC   = YES
+INTERNAL_DOCS    = YES

@@ -1,20 +1,15 @@
 ---
-id: img2num-javascript
-title: Img2Num
+title: Img2Num JavaScript
 sidebar_label: JavaScript
-sidebar_position: 2
+sidebar_position: 4
 ---
 
 > A high-performance raster-to-vector conversion library that transforms images into **SVGs**.
 > It is powered by WebAssembly (WASM) for speed, while providing easy-to-use JavaScript wrappers for integration into web or Node.js projects.
 
-## Features
+import Features from '@site/src/md/\_partials/library-features.md';
 
-- **Fast raster vectorization** with WASM backend.
-- **Typed array support**: Works with `Uint8Array`, `Uint8ClampedArray`, and `Int32Array`.
-- **String outputs**: Converts results directly into SVG strings.
-- **Worker-friendly**: Supports offloading heavy computations to Web Workers.
-- **Zero dependencies**: Pure WASM + JS with no external libraries required.
+<Features />
 
 ## Requirements
 

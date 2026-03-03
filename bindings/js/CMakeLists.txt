@@ -20,7 +20,7 @@ file(GLOB_RECURSE BINDING_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
 add_executable(img2num_wasm ${BINDING_SRC})
 
 # Link core library object files
-target_link_libraries(img2num_wasm PRIVATE core_obj)
+target_link_libraries(img2num_wasm PRIVATE CImg2Num)
 
 # Include directories
 target_include_directories(img2num_wasm PRIVATE
@@ -43,7 +43,7 @@ set(COMMON_FLAGS
 )
 
 target_compile_options(img2num_wasm PRIVATE -msimd128 "--use-port=emdawnwebgpu")
-target_link_options(img2num_wasm PRIVATE ${COMMON_FLAGS} -msimd128)
+target_link_options(img2num_wasm PRIVATE ${COMMON_FLAGS} -msimd128 "--use-port=emdawnwebgpu")
 
 file(GLOB_RECURSE SHADER_FILES
   "../../core/src/resources/*.wgsl"
