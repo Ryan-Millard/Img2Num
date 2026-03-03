@@ -1,0 +1,7 @@
+<map id="include/img2num.h" name="include/img2num.h">
+<area shape="rect" id="node1" title="Core image processing functions for img2num project." alt="" coords="271,5,418,32"/>
+<area shape="rect" id="node2" href="$bilateral__filter_8cpp_source.html" title=" " alt="" coords="5,80,159,121"/>
+<area shape="rect" id="node3" href="$image__utils_8cpp_source.html" title=" " alt="" coords="183,80,323,121"/>
+<area shape="rect" id="node4" href="$kmeans_8cpp_source.html" title=" " alt="" coords="347,87,526,114"/>
+<area shape="rect" id="node5" href="$labels__to__svg_8cpp_source.html" title=" " alt="" coords="550,80,689,121"/>
+</map>

@@ -1,0 +1,109 @@
+\hypertarget{classNode}{}\doxysection{Node Class Reference}
+\label{classNode}\index{Node@{Node}}
+
+
+Collaboration diagram for Node\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classNode__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classNode_a47afa59112eeb9c6c63bfe29cfba4a59}\label{classNode_a47afa59112eeb9c6c63bfe29cfba4a59}} 
+{\bfseries Node} (int32\+\_\+t id, std\+::unique\+\_\+ptr$<$ std\+::vector$<$ \mbox{\hyperlink{structRGBXY}{RGBXY}} $>$$>$ \&pixels)
+\item 
+\mbox{\Hypertarget{classNode_a78606bde7a4aebcc0ee6a44cfb910b41}\label{classNode_a78606bde7a4aebcc0ee6a44cfb910b41}} 
+\mbox{\hyperlink{structXY}{XY}} {\bfseries centroid} () const
+\item 
+\mbox{\Hypertarget{classNode_a4b41d57ada02261f3d6adf1297439883}\label{classNode_a4b41d57ada02261f3d6adf1297439883}} 
+\mbox{\hyperlink{structImageLib_1_1RGBPixel}{Image\+Lib\+::\+RGBPixel}}$<$ uint8\+\_\+t $>$ {\bfseries color} () const
+\item 
+\mbox{\Hypertarget{classNode_a1b03dd34e2ac098d361fa42be0ad0df2}\label{classNode_a1b03dd34e2ac098d361fa42be0ad0df2}} 
+std\+::array$<$ int32\+\_\+t, 4 $>$ {\bfseries bounding\+\_\+box\+\_\+xywh} () const
+\item 
+\mbox{\Hypertarget{classNode_ac5c6533ec81dddd711dcdc276e25fc23}\label{classNode_ac5c6533ec81dddd711dcdc276e25fc23}} 
+std\+::array$<$ int, 4 $>$ {\bfseries create\+\_\+binary\+\_\+image} (std\+::vector$<$ uint8\+\_\+t $>$ \&binary) const
+\item 
+\mbox{\Hypertarget{classNode_a6759fac0e9a0670a86d11eb784595f8a}\label{classNode_a6759fac0e9a0670a86d11eb784595f8a}} 
+void {\bfseries clear\+\_\+contour} ()
+\item 
+\mbox{\Hypertarget{classNode_a41923e52e28429019fbd3e608e124714}\label{classNode_a41923e52e28429019fbd3e608e124714}} 
+void {\bfseries compute\+\_\+contour} ()
+\item 
+\mbox{\Hypertarget{classNode_ac778ddfbe8b17883170d86cba5ed63d3}\label{classNode_ac778ddfbe8b17883170d86cba5ed63d3}} 
+int32\+\_\+t {\bfseries id} () const
+\item 
+\mbox{\Hypertarget{classNode_ad225f26654b5fa72e806b1b3a9022d35}\label{classNode_ad225f26654b5fa72e806b1b3a9022d35}} 
+size\+\_\+t {\bfseries area} () const
+\item 
+\mbox{\Hypertarget{classNode_a1c14740c93d6e719376cb22ff9563e52}\label{classNode_a1c14740c93d6e719376cb22ff9563e52}} 
+const std\+::set$<$ Node\+\_\+ptr $>$ \& {\bfseries edges} () const
+\item 
+\mbox{\Hypertarget{classNode_a8d8f2c2af03a189148f367d61ff03a2d}\label{classNode_a8d8f2c2af03a189148f367d61ff03a2d}} 
+size\+\_\+t {\bfseries num\+\_\+edges} () const
+\item 
+\mbox{\Hypertarget{classNode_a2a842ec0b1b9ccbdb1d0302ab58587fb}\label{classNode_a2a842ec0b1b9ccbdb1d0302ab58587fb}} 
+const std\+::vector$<$ \mbox{\hyperlink{structRGBXY}{RGBXY}} $>$ \& {\bfseries get\+\_\+pixels} () const
+\item 
+\mbox{\Hypertarget{classNode_a3e2a2cfd2acb77cca968db9aebf804de}\label{classNode_a3e2a2cfd2acb77cca968db9aebf804de}} 
+\mbox{\hyperlink{structColoredContours}{Colored\+Contours}} \& {\bfseries get\+\_\+contours} ()
+\item 
+\mbox{\Hypertarget{classNode_a77464ecba532719e4302ed3461fc4f35}\label{classNode_a77464ecba532719e4302ed3461fc4f35}} 
+void {\bfseries add\+\_\+pixels} (const std\+::vector$<$ \mbox{\hyperlink{structRGBXY}{RGBXY}} $>$ \&new\+\_\+pixels)
+\item 
+\mbox{\Hypertarget{classNode_ac9d4cb213b3ffc955b9f1bee846a7cd7}\label{classNode_ac9d4cb213b3ffc955b9f1bee846a7cd7}} 
+void {\bfseries add\+\_\+edge\+\_\+pixel} (const \mbox{\hyperlink{structXY}{XY}} edge\+\_\+pixel)
+\item 
+\mbox{\Hypertarget{classNode_ab13207a55df073dd5b25c3fee1be94c0}\label{classNode_ab13207a55df073dd5b25c3fee1be94c0}} 
+void {\bfseries clear\+\_\+edge\+\_\+pixels} ()
+\item 
+\mbox{\Hypertarget{classNode_a6c1f7c18651cdea9e28832ac6bde6e4c}\label{classNode_a6c1f7c18651cdea9e28832ac6bde6e4c}} 
+void {\bfseries clear\+\_\+all} ()
+\item 
+\mbox{\Hypertarget{classNode_aaa8507ca227d8fb34f02e8002f771053}\label{classNode_aaa8507ca227d8fb34f02e8002f771053}} 
+void {\bfseries add\+\_\+edge} (const Node\+\_\+ptr \&node)
+\item 
+\mbox{\Hypertarget{classNode_afeb853a2c74316010c4850cbde459660}\label{classNode_afeb853a2c74316010c4850cbde459660}} 
+void {\bfseries remove\+\_\+edge} (const Node\+\_\+ptr \&node)
+\item 
+\mbox{\Hypertarget{classNode_aba1ec085d600582bae407077bd2b01c8}\label{classNode_aba1ec085d600582bae407077bd2b01c8}} 
+void {\bfseries remove\+\_\+all\+\_\+edges} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classNode_a209f24302cf5e19142ebd450e6a5861b}\label{classNode_a209f24302cf5e19142ebd450e6a5861b}} 
+\mbox{\hyperlink{structColoredContours}{Colored\+Contours}} {\bfseries m\+\_\+contours}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classNode_ae290d5afb95c73d6f7fe1fef4a57d476}\label{classNode_ae290d5afb95c73d6f7fe1fef4a57d476}} 
+int32\+\_\+t {\bfseries m\+\_\+id}
+\item 
+\mbox{\Hypertarget{classNode_a2c8e15307d10a4e2bde9ec6a6e21ae67}\label{classNode_a2c8e15307d10a4e2bde9ec6a6e21ae67}} 
+std\+::unique\+\_\+ptr$<$ std\+::vector$<$ \mbox{\hyperlink{structRGBXY}{RGBXY}} $>$ $>$ {\bfseries m\+\_\+pixels}
+\item 
+\mbox{\Hypertarget{classNode_abb919cd0f676365dc222d284dde9c6ef}\label{classNode_abb919cd0f676365dc222d284dde9c6ef}} 
+std\+::set$<$ Node\+\_\+ptr $>$ {\bfseries m\+\_\+edges} \{\}
+\item 
+\mbox{\Hypertarget{classNode_a5d00228b34cbe37be40ebc0053f4b309}\label{classNode_a5d00228b34cbe37be40ebc0053f4b309}} 
+std\+::set$<$ \mbox{\hyperlink{structXY}{XY}} $>$ {\bfseries m\+\_\+edge\+\_\+pixels} \{\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 65 of file node.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/internal/node.\+h\item 
+src/internal/node.\+cpp\end{DoxyCompactItemize}

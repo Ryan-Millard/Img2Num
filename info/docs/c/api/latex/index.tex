@@ -1,0 +1,71 @@
+\hypertarget{index_intro_sec}{}\doxysection{Introduction}\label{index_intro_sec}
+The {\bfseries{Img2\+Num C Bindings}} provide a C-\/friendly interface to the core Img2\+Num image processing library. These bindings wrap the underlying C++ functionality using {\ttfamily extern \char`\"{}\+C\char`\"{}} to allow C projects to access advanced image processing operations, including filtering, clustering, thresholding, and SVG conversion.
+
+All functions operate on raw image buffers ({\ttfamily uint8\+\_\+t$\ast$}) and provide a simple, low-\/level interface suitable for integration into C applications.\hypertarget{index_features_sec}{}\doxysection{Key Features}\label{index_features_sec}
+The below are {\ttfamily extern \char`\"{}\+C\char`\"{}} wrappers around the {\ttfamily core/} library\textquotesingle{}s functions\+:
+\begin{DoxyItemize}
+\item {\bfseries{FFT-\/based Gaussian blur}} — Fast frequency-\/domain blurring
+\item {\bfseries{Image inversion}} — Invert pixel values in-\/place
+\item {\bfseries{Thresholding}} — Apply standard and black-\/thresholding operations
+\item {\bfseries{K-\/means clustering}} — Pixel clustering for color quantization
+\item {\bfseries{Bilateral filtering}} — Edge-\/preserving smoothing
+\item {\bfseries{SVG label rendering}} — Convert labeled images to scalable vector graphics
+\end{DoxyItemize}\hypertarget{index_building_sec}{}\doxysection{Building the C Bindings}\label{index_building_sec}
+The C bindings are built using CMake from the project root\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cmake -\/B build .}
+\DoxyCodeLine{cmake -\/-\/build build}
+
+\end{DoxyCode}
+\hypertarget{index_install_sec}{}\doxysection{Installation}\label{index_install_sec}
+Install the library and headers to your system\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cmake -\/-\/install build}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyItemize}
+\item {\bfseries{Libraries}} are installed to {\ttfamily lib/}
+\item {\bfseries{Headers}} are installed to {\ttfamily include/cimg2num/}
+\end{DoxyItemize}
+
+Link against {\ttfamily CImg2\+Num} in your CMake project\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{find\_package(Img2Num REQUIRED)}
+\DoxyCodeLine{target\_link\_libraries(your\_app PRIVATE CImg2Num)}
+
+\end{DoxyCode}
+\hypertarget{index_usage_sec}{}\doxysection{Usage Example}\label{index_usage_sec}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <\mbox{\hyperlink{cimg2num_8h}{cimg2num.h}}>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include <stdint.h>}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordtype}{int} main() \{}
+\DoxyCodeLine{    uint8\_t image[256 * 256 * 3];  \textcolor{comment}{// RGB image buffer}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{// Apply Gaussian blur with sigma = 1.5}}
+\DoxyCodeLine{    \mbox{\hyperlink{cimg2num_8h_a9ec403b5d2ba9b510eb999dfc8ba9305}{img2num\_gaussian\_blur\_fft}}(image, 256, 256, 1.5);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{comment}{// Invert the image}}
+\DoxyCodeLine{    \mbox{\hyperlink{cimg2num_8h_a1414ef09df95cdbef430433629b2a136}{img2num\_invert\_image}}(image, 256, 256);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+For complete working examples, see the {\ttfamily example-\/apps/console-\/c/} directory.\hypertarget{index_api_sec}{}\doxysection{API Reference}\label{index_api_sec}
+Browse the detailed function documentation\+:
+\begin{DoxyItemize}
+\item \mbox{\hyperlink{group__CIMG2NUM__H}{Core C API Functions}} 
+\end{DoxyItemize}
