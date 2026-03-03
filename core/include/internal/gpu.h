@@ -80,6 +80,24 @@ class GPU {
             }
         }
 
+        wgpu::ComputePipeline createPipeline(const std::string& filename, const std::string& label) {
+            wgpu::ShaderSourceWGSL wgsl;
+            std::string shaderCode = readWGSLFile(filename);
+            wgsl.code = shaderCode.c_str();
+            wgpu::ShaderModuleDescriptor md = {};
+            md.nextInChain = &wgsl;
+            md.label = label.c_str();
+            wgpu::ShaderModule sm = device.CreateShaderModule(&md);
+
+            // Debug print
+            printShaderError(sm);
+
+            wgpu::ComputePipelineDescriptor cpd = {};
+            cpd.compute.module = sm;
+            cpd.compute.entryPoint = "main";
+            return device.CreateComputePipeline(&cpd);
+        };
+
         static uint32_t getAlignedBytesPerRow(uint32_t width, uint32_t bytesPerPixel = 4) {
             uint32_t unaligned = width * bytesPerPixel;
             uint32_t align = 256;
