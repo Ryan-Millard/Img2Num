@@ -1,0 +1,13 @@
+@INCLUDE              = ../../doxygen/Doxyfile.base
+
+PROJECT_NAME          = "Img2Num C"
+OUTPUT_DIRECTORY      = ../../docs/static/docs/c/api
+
+OPTIMIZE_OUTPUT_FOR_C = YES
+EXTRACT_ALL           = YES
+
+INPUT                 = include src ../../doxygen/img2num.h.dox doxygen/home_page.dox
+
+EXTRACT_PRIVATE  = NO
+EXTRACT_STATIC   = NO
+INTERNAL_DOCS    = NO
