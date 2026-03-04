@@ -36,10 +36,10 @@ jobs:
     steps:
       - name: Install CMake 3.22+
         run: |
-          wget https://github.com/Kitware/CMake/releases/download/v3.22.0/cmake-3.22.0-linux-x86_64.tar.gz
-          tar -zxvf cmake-3.22.0-linux-x86_64.tar.gz
-          mv cmake-3.22.0-linux-x86_64 /opt/cmake-3.22.0
-          echo "/opt/cmake-3.22.0/bin" >> $GITHUB_PATH
+          wget https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-linux-x86_64.tar.gz
+          tar -zxvf cmake-3.22.1-linux-x86_64.tar.gz
+          mv cmake-3.22.1-linux-x86_64 /opt/cmake-3.22.1
+          echo "/opt/cmake-3.22.1/bin" >> $GITHUB_PATH
 
       - name: Checkout code
         uses: actions/checkout@v6
@@ -48,7 +48,7 @@ jobs:
         # continue-on-error: true
       - name: Fix dubious ownership error
         run: git config --global --add safe.directory /__w/Img2Num/Img2Num
-        
+
       - name: Init submodules (ignore chrome-internal)
         run: |
           git submodule update --init --recursive --depth 1 || true
