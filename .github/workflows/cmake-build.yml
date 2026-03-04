@@ -34,16 +34,16 @@ jobs:
     container:
       image: ryanmillard/img2num-dev:latest
     steps:
-      - name: Install gcc 12
-        run: |
-          apt-get update
-          apt-get install -y software-properties-common
-          apt install -y build-essential
-        # add-apt-repository universe
-        # apt-get update
-        # apt-get install -y gcc-12 g++-12
-        # echo "CC=gcc-12" >> $GITHUB_ENV
-        # echo "CXX=g++-12" >> $GITHUB_ENV
+      # - name: Install gcc 12
+      #   run: |
+      #     apt-get update
+      #     apt-get install -y software-properties-common
+      #     apt install -y build-essential
+      #   # add-apt-repository universe
+      #   # apt-get update
+      #   # apt-get install -y gcc-12 g++-12
+      #   # echo "CC=gcc-12" >> $GITHUB_ENV
+      #   # echo "CXX=g++-12" >> $GITHUB_ENV
 
       - name: Install CMake 3.22+
         run: |
@@ -62,8 +62,9 @@ jobs:
 
       - name: Init submodules (ignore chrome-internal)
         run: |
-          git submodule update --init --recursive --depth 1 || true
-
+          git submodule init
+          git submodule update
+          
       - name: Run cmake
         run: cmake -B build-c-cpp/ .
 
