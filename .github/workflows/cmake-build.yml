@@ -35,7 +35,11 @@ jobs:
       image: ryanmillard/img2num-dev:latest
     steps:
       - name: Install CMake 3.22+
-        uses: ssrobins/install-cmake@v1
+        run: |
+          wget https://github.com/Kitware/CMake/releases/download/v3.22.0/cmake-3.22.0-linux-x86_64.tar.gz
+          tar -zxvf cmake-3.22.0-linux-x86_64.tar.gz
+          mv cmake-3.22.0-linux-x86_64 /opt/cmake-3.22.0
+          echo "/opt/cmake-3.22.0/bin" >> $GITHUB_PATH
 
       - name: Checkout code
         uses: actions/checkout@v6
