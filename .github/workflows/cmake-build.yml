@@ -34,17 +34,14 @@ jobs:
     container:
       image: ryanmillard/img2num-dev:latest
     steps:
+      - name: Install CMake 3.22+
+        uses: ssrobins/install-cmake@v1
+
       - name: Checkout code
         uses: actions/checkout@v6
         with:
           submodules: recursive
         continue-on-error: true
-
-      - name: Install CMake 3.22+
-        run: |
-          apt update
-          apt install cmake -y
-          cmake --version # Verify installation
 
       - name: Run cmake
         run: cmake -B build-c-cpp/ .
