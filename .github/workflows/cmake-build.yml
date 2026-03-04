@@ -42,8 +42,8 @@ jobs:
 
       - name: Install CMake 3.22+
         run: |
-          sudo apt update
-          sudo apt install cmake -y
+          apt update
+          apt install cmake -y
           cmake --version # Verify installation
 
       - name: Run cmake
