@@ -13,8 +13,6 @@ const WasmImageProcessor = () => {
   const inputRef = useRef(null);
 
   const [originalSrc, setOriginalSrc] = useState(null);
-  const [kmeansSrc, setKmeansSrc] = useState(null);
-  const [contoursSrc, setContoursSrc] = useState(null);
   const [fileData, setFileData] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -23,10 +21,8 @@ const WasmImageProcessor = () => {
   useEffect(() => {
     return () => {
       if (originalSrc) URL.revokeObjectURL(originalSrc);
-      if (kmeansSrc) URL.revokeObjectURL(kmeansSrc);
-      if (contoursSrc) URL.revokeObjectURL(contoursSrc);
     };
-  }, [originalSrc, kmeansSrc, contoursSrc]);
+  }, [originalSrc]);
 
   /* Stable loader for images */
   const loadOriginal = useCallback(async (file) => {
@@ -144,8 +140,6 @@ const WasmImageProcessor = () => {
     return (
       <>
         <img src={originalSrc} alt="Original" className={styles.preview} />
-        {kmeansSrc && <img src={kmeansSrc} alt="Kmeans" className={styles.preview} />}
-        {contoursSrc && <img src={contoursSrc} alt="Kmeans" className={styles.preview} />}
 
         {!isProcessing ? (
           <Tooltip content="Process the image and convert it to numbers">
@@ -164,7 +158,7 @@ const WasmImageProcessor = () => {
         )}
       </>
     );
-  }, [originalSrc, kmeansSrc, contoursSrc, isProcessing, progress, processImage]);
+  }, [originalSrc, isProcessing, progress, processImage]);
 
   return (
     <GlassCard
