@@ -43,9 +43,12 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v6
-        with:
-          submodules: recursive
-        continue-on-error: true
+        # with:
+        #   submodules: recursive
+        # continue-on-error: true
+      - name: Init submodules (ignore chrome-internal)
+        run: |
+          git submodule update --init --recursive --depth 1 || true
 
       - name: Run cmake
         run: cmake -B build-c-cpp/ .
