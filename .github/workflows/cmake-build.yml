@@ -46,6 +46,9 @@ jobs:
         # with:
         #   submodules: recursive
         # continue-on-error: true
+      - name: Fix dubious ownership error
+        run: git config --global --add safe.directory /__w/Img2Num/Img2Num
+        
       - name: Init submodules (ignore chrome-internal)
         run: |
           git submodule update --init --recursive --depth 1 || true
