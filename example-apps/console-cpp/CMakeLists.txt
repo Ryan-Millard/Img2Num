@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(Img2NumExample LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Collect source files
@@ -17,6 +17,16 @@ add_executable(console_cpp_app ${EXAMPLE_SRC})
 target_include_directories(console_cpp_app PRIVATE
   ${CMAKE_SOURCE_DIR}/third_party
 )
+
+file(GLOB_RECURSE SHADER_FILES
+  "${Img2Num_BINARY_DIR}/bindings/c/resources/*.wgsl"
+)
+
+foreach (file ${SHADER_FILES})
+get_filename_component(file_name ${file} NAME)
+message(${file_name})
+configure_file(${file} ./resources/${file_name} COPYONLY)
+endforeach()
 
 # Link against the core Img2Num library
 target_link_libraries(console_cpp_app PRIVATE Img2Num)
