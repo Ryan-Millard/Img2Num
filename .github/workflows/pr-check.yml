@@ -46,6 +46,8 @@ jobs:
             }
 
   body-check:
+    # Dependabot cannot be configured to meaningfully use a PR template
+    if: github.event.pull_request.user.login != 'dependabot[bot]'
     permissions:
       contents: read
       pull-requests: read
