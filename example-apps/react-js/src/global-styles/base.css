@@ -19,6 +19,9 @@ body {
   background-attachment: fixed;
   background-color: var(--color-bg);
 }
+button, input, select, textarea, a {
+  font: inherit;
+}
 
 h1 {
   font-size: 2rem;

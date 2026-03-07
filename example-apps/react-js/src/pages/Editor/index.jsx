@@ -1,11 +1,10 @@
 import { useRef, useState } from "react";
 import parse from "html-react-parser";
 import { useLocation } from "react-router-dom";
-import { Eye, Brush } from "lucide-react";
 import GlassCard from "@components/GlassCard";
 import styles from "./Editor.module.css";
 import EditorHelmet from "./EditorHelmet";
-import GlassSwitch from "@components/GlassSwitch";
+import EditorControls from "./EditorControls";
 
 // shape selector we care about
 const SHAPE_SELECTOR = "path,rect,circle,polygon,ellipse";
@@ -177,6 +176,17 @@ export default function Editor() {
     transform: `translate(${transform.tx}px, ${transform.ty}px) scale(${transform.scale})`,
   };
 
+  const resetColors = () => {
+    console.log('reset');
+    const svgRoot = innerRef.current?.querySelector("svg");
+    if (!svgRoot) return;
+
+    const shapes = svgRoot.querySelectorAll(SHAPE_SELECTOR);
+    shapes.forEach((shape) => {
+      shape.classList.remove(styles.coloredRegion);
+    });
+  };
+
   if (!svg) {
     return (
       <GlassCard className="text-center p-8">
@@ -191,17 +201,15 @@ export default function Editor() {
       <EditorHelmet />
 
       <GlassCard className={cardClass}>
-        <div className="controls" style={{ display: "flex", justifyContent: "flex-end" }}>
-          <GlassSwitch
-            isOn={isColorMode}
-            onChange={() => {
-              setIsColorMode((prev) => !prev);
-            }}
-            ariaLabel={`Switch to ${isColorMode ? "preview" : "color"} mode`}
-            thumbContent={isColorMode ? <Eye /> : <Brush />}
-          />
-        </div>
+        <EditorControls
+          svg={svg}
+          fileName={"edited-image"}
+          isColorMode={isColorMode}
+          setIsColorMode={setIsColorMode}
+          onResetColors={resetColors}
+        />
 
+        <div className={styles.hint}>Click shapes to reveal their original colour.</div>
         <GlassCard
           className={`flex-center ${styles.viewport}`}
           ref={viewportRef}
@@ -215,7 +223,6 @@ export default function Editor() {
             {svgElements}
           </div>
         </GlassCard>
-        <div className={styles.hint}>Click shapes to reveal their original colour. Use mouse wheel to zoom, drag to pan. Switching modes preserves fills.</div>
       </GlassCard>
     </>
   );
