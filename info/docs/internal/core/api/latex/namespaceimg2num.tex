@@ -1,0 +1,703 @@
+\hypertarget{namespaceimg2num}{}\doxysection{img2num Namespace Reference}
+\label{namespaceimg2num}\index{img2num@{img2num}}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespaceimg2num_acb23d3a1a65158fb81244be9f4b4fbb3}\label{namespaceimg2num_acb23d3a1a65158fb81244be9f4b4fbb3}} 
+enum class {\bfseries Error} \{ \newline
+{\bfseries OK} = 0
+, {\bfseries BAD\+\_\+\+ALLOC} = 1
+, {\bfseries INVALID\+\_\+\+ARGUMENT} = 2
+, {\bfseries RUNTIME} = 3
+, \newline
+{\bfseries UNKNOWN} = 4
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespaceimg2num_a9448b2dfdb823340970d0b0bb51fc4e3}\label{namespaceimg2num_a9448b2dfdb823340970d0b0bb51fc4e3}} 
+Error {\bfseries get\+\_\+last\+\_\+error} ()
+\item 
+\mbox{\Hypertarget{namespaceimg2num_a9dd188fc7d492dc81d7343ae06c0a3aa}\label{namespaceimg2num_a9dd188fc7d492dc81d7343ae06c0a3aa}} 
+const std\+::string {\bfseries get\+\_\+last\+\_\+error\+\_\+message} ()
+\item 
+\mbox{\Hypertarget{namespaceimg2num_a70ec94a56c6cdb94a28ed67d6a32e575}\label{namespaceimg2num_a70ec94a56c6cdb94a28ed67d6a32e575}} 
+void {\bfseries clear\+\_\+last\+\_\+error} ()
+\item 
+\mbox{\Hypertarget{namespaceimg2num_a9f4cebf6c051efd2bcb6e6cc83382aaf}\label{namespaceimg2num_a9f4cebf6c051efd2bcb6e6cc83382aaf}} 
+void {\bfseries set\+\_\+error} (Error code, const std\+::string message)
+\item 
+\mbox{\Hypertarget{namespaceimg2num_a7ffd5576f76ea580b3029c985129bfde}\label{namespaceimg2num_a7ffd5576f76ea580b3029c985129bfde}} 
+{\footnotesize template$<$typename Func , typename... Args$>$ }\\void {\bfseries clear\+\_\+last\+\_\+error\+\_\+and\+\_\+catch} (Func \&\&exception\+\_\+prone\+\_\+func, Args \&\&... args)
+\item 
+void \mbox{\hyperlink{namespaceimg2num_a365bbbd4976477bdf515be023a73d63f}{gaussian\+\_\+blur\+\_\+fft}} (uint8\+\_\+t $\ast$image, size\+\_\+t width, size\+\_\+t height, double sigma)
+\begin{DoxyCompactList}\small\item\em Apply a Gaussian blur to an image using FFT. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceimg2num_adcf00084d90ead66510dadc459d0990e}{invert\+\_\+image}} (uint8\+\_\+t $\ast$ptr, int width, int height)
+\begin{DoxyCompactList}\small\item\em Invert the pixel values of an image. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceimg2num_ad36f12c85016e28c7427c356783dea03}{threshold\+\_\+image}} (uint8\+\_\+t $\ast$ptr, const int width, const int height, const int num\+\_\+thresholds)
+\begin{DoxyCompactList}\small\item\em Apply a thresholding operation to an image. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceimg2num_a0b00cb7b162b17498d9c816ac5e38563}{black\+\_\+threshold\+\_\+image}} (uint8\+\_\+t $\ast$ptr, const int width, const int height, const int num\+\_\+thresholds)
+\begin{DoxyCompactList}\small\item\em Apply black-\/thresholding to an image. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceimg2num_ae73563e9dd25a8dd2120fd519ef87abd}{kmeans}} (const uint8\+\_\+t $\ast$data, uint8\+\_\+t $\ast$out\+\_\+data, int32\+\_\+t $\ast$out\+\_\+labels, const int32\+\_\+t width, const int32\+\_\+t height, const int32\+\_\+t k, const int32\+\_\+t max\+\_\+iter, const uint8\+\_\+t color\+\_\+space)
+\begin{DoxyCompactList}\small\item\em Perform k-\/means clustering on image data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceimg2num_a48d9a04a535198b5fc47905e359961ac}{bilateral\+\_\+filter}} (uint8\+\_\+t $\ast$image, size\+\_\+t width, size\+\_\+t height, double sigma\+\_\+spatial, double sigma\+\_\+range, uint8\+\_\+t color\+\_\+space)
+\begin{DoxyCompactList}\small\item\em Apply bilateral filtering to an image. \end{DoxyCompactList}\item 
+char $\ast$ \mbox{\hyperlink{namespaceimg2num_a5822dd3722c40a8d1cff368c6848c15d}{labels\+\_\+to\+\_\+svg}} (uint8\+\_\+t $\ast$data, int32\+\_\+t $\ast$labels, const int width, const int height, const int min\+\_\+area, const bool draw\+\_\+contour\+\_\+borders)
+\begin{DoxyCompactList}\small\item\em Convert labeled regions of an image into an SVG string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespaceimg2num_a4166893eb0cb1ab12933961746f68661}\label{namespaceimg2num_a4166893eb0cb1ab12933961746f68661}} 
+thread\+\_\+local Error {\bfseries last\+\_\+error} \{Error\+::\+OK\}
+\item 
+\mbox{\Hypertarget{namespaceimg2num_aa1962427954e19635e27660bedfe13d0}\label{namespaceimg2num_aa1962427954e19635e27660bedfe13d0}} 
+thread\+\_\+local std\+::string {\bfseries last\+\_\+error\+\_\+message} \{\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyNote}{Note}
+All image buffers are assumed to be stored in row-\/major order, unless otherwise noted. 
+\end{DoxyNote}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceimg2num_a48d9a04a535198b5fc47905e359961ac}\label{namespaceimg2num_a48d9a04a535198b5fc47905e359961ac}} 
+\index{img2num@{img2num}!bilateral\_filter@{bilateral\_filter}}
+\index{bilateral\_filter@{bilateral\_filter}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{bilateral\_filter()}{bilateral\_filter()}}
+{\footnotesize\ttfamily void img2num\+::bilateral\+\_\+filter (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{image,  }\item[{size\+\_\+t}]{width,  }\item[{size\+\_\+t}]{height,  }\item[{double}]{sigma\+\_\+spatial,  }\item[{double}]{sigma\+\_\+range,  }\item[{uint8\+\_\+t}]{color\+\_\+space }\end{DoxyParamCaption})}
+
+
+
+Apply bilateral filtering to an image. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em image} & Pointer to RGBA pixel buffer. \\
+\hline
+{\em width} & Width of the image in pixels. \\
+\hline
+{\em height} & Height of the image in pixels. \\
+\hline
+{\em sigma\+\_\+spatial} & Standard deviation for spatial Gaussian (proximity weight). \\
+\hline
+{\em sigma\+\_\+range} & Standard deviation for range Gaussian (intensity similarity weight). \\
+\hline
+{\em color\+\_\+space} & Color space flag (0 = CIE LAB, 1 = RGB). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The filter modifies the image buffer in-\/place. 
+
+Dox File\+: {\ttfamily doxygen/img2num.\+h.\+dox} 
+\end{DoxyNote}
+
+
+Definition at line 155 of file bilateral\+\_\+filter.\+cpp.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{156                                                                \{}
+\DoxyCodeLine{157     \textcolor{comment}{// bad data -\/> return}}
+\DoxyCodeLine{158     \textcolor{keywordflow}{if} (sigma\_spatial <= 0.0 || sigma\_range <= 0.0 || width <= 0 || height <= 0) \textcolor{keywordflow}{return};}
+\DoxyCodeLine{159     \textcolor{keywordflow}{if} (color\_space != COLOR\_SPACE\_OPTION\_CIELAB \&\& color\_space != COLOR\_SPACE\_OPTION\_RGB) \textcolor{keywordflow}{return};}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161     \textcolor{keyword}{const} \textcolor{keywordtype}{int} raw\_radius\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(std::ceil(SIGMA\_RADIUS\_FACTOR * sigma\_spatial))\};}
+\DoxyCodeLine{162     \textcolor{keyword}{const} \textcolor{keywordtype}{int} radius\{std::min(raw\_radius, MAX\_KERNEL\_RADIUS)\};}
+\DoxyCodeLine{163     \textcolor{keyword}{const} \textcolor{keywordtype}{int} kernel\_diameter\{2 * radius + 1\};}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165     std::vector<uint8\_t> result(width * height * 4);}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167     std::vector<double> spatial\_weights(kernel\_diameter * kernel\_diameter);}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169     \textcolor{comment}{// Precompute Spatial Weights (Gaussian Kernel)}}
+\DoxyCodeLine{170     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} ky\{-\/radius\}; ky <= radius; ++ky) \{}
+\DoxyCodeLine{171         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} kx\{-\/radius\}; kx <= radius; ++kx) \{}
+\DoxyCodeLine{172             \textcolor{keyword}{const} \textcolor{keywordtype}{double} dist\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(std::sqrt(kx * kx + ky * ky))\};}
+\DoxyCodeLine{173             spatial\_weights[(ky + radius) * kernel\_diameter + (kx + radius)] =}
+\DoxyCodeLine{174                 gaussian(dist, sigma\_spatial);}
+\DoxyCodeLine{175         \}}
+\DoxyCodeLine{176     \}}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178     \textcolor{comment}{// ========= RGB-\/only section start =========}}
+\DoxyCodeLine{179     \textcolor{comment}{// Precompute Range Weights}}
+\DoxyCodeLine{180     std::vector<double> range\_lut;}
+\DoxyCodeLine{181     \textcolor{keywordflow}{if} (color\_space == COLOR\_SPACE\_OPTION\_RGB) \{}
+\DoxyCodeLine{182         range\_lut.resize(MAX\_RGB\_DIST\_SQ + 1);}
+\DoxyCodeLine{183         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i\{0\}; i <= MAX\_RGB\_DIST\_SQ; ++i) \{}
+\DoxyCodeLine{184             range\_lut[i] = gaussian(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(std::sqrt(i)), sigma\_range);}
+\DoxyCodeLine{185         \}}
+\DoxyCodeLine{186     \}}
+\DoxyCodeLine{187     \textcolor{comment}{// ========= RGB-\/only section end =========}}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189     \textcolor{comment}{// ========= CIELAB section start =========}}
+\DoxyCodeLine{190     \textcolor{comment}{// Compute full image RGB -\/ CIELAB conversion}}
+\DoxyCodeLine{191     std::vector<double> cie\_image;}
+\DoxyCodeLine{192     \textcolor{keywordflow}{if} (color\_space == COLOR\_SPACE\_OPTION\_CIELAB) \{}
+\DoxyCodeLine{193         cie\_image.resize(width * height * 4);}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} y\{0\}; y < height; y++) \{}
+\DoxyCodeLine{196             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} x\{0\}; x < width; x++) \{}
+\DoxyCodeLine{197                 \textcolor{keywordtype}{int} center\_idx\{(y * \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(width) + x) * 4\};}
+\DoxyCodeLine{198                 uint8\_t r0\{image[center\_idx]\};}
+\DoxyCodeLine{199                 uint8\_t g0\{image[center\_idx + 1]\};}
+\DoxyCodeLine{200                 uint8\_t b0\{image[center\_idx + 2]\};}
+\DoxyCodeLine{201                 uint8\_t a0\{image[center\_idx + 3]\};}
+\DoxyCodeLine{202                 \textcolor{keywordtype}{double} L0, A0, B0;}
+\DoxyCodeLine{203                 rgb\_to\_lab<uint8\_t, double>(r0, g0, b0, L0, A0, B0);}
+\DoxyCodeLine{204 }
+\DoxyCodeLine{205                 cie\_image[center\_idx] = L0;}
+\DoxyCodeLine{206                 cie\_image[center\_idx + 1] = A0;}
+\DoxyCodeLine{207                 cie\_image[center\_idx + 2] = B0;}
+\DoxyCodeLine{208                 cie\_image[center\_idx + 3] = 0.0;  \textcolor{comment}{// unused but keep for indexing purposes}}
+\DoxyCodeLine{209             \}}
+\DoxyCodeLine{210         \}}
+\DoxyCodeLine{211     \}}
+\DoxyCodeLine{212     \textcolor{comment}{// ========= CIELAB section end =========}}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214     \_process(image, cie\_image, result, spatial\_weights, range\_lut, radius, sigma\_range, 0,}
+\DoxyCodeLine{215              \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(height), height, width, color\_space);}
+\DoxyCodeLine{216 }
+\DoxyCodeLine{217     std::memcpy(image, result.data(), result.size());}
+\DoxyCodeLine{218 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{namespaceimg2num_a0b00cb7b162b17498d9c816ac5e38563}\label{namespaceimg2num_a0b00cb7b162b17498d9c816ac5e38563}} 
+\index{img2num@{img2num}!black\_threshold\_image@{black\_threshold\_image}}
+\index{black\_threshold\_image@{black\_threshold\_image}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{black\_threshold\_image()}{black\_threshold\_image()}}
+{\footnotesize\ttfamily void img2num\+::black\+\_\+threshold\+\_\+image (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{ptr,  }\item[{const int}]{width,  }\item[{const int}]{height,  }\item[{const int}]{num\+\_\+thresholds }\end{DoxyParamCaption})}
+
+
+
+Apply black-\/thresholding to an image. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ptr} & Pointer to the image buffer. \\
+\hline
+{\em width} & Width of the image in pixels. \\
+\hline
+{\em height} & Height of the image in pixels. \\
+\hline
+{\em num\+\_\+thresholds} & Number of thresholds to apply. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Similar to threshold\+\_\+image but prioritizes darker pixels. 
+
+Dox File\+: {\ttfamily doxygen/img2num.\+h.\+dox} 
+\end{DoxyNote}
+
+
+Definition at line 130 of file image\+\_\+utils.\+cpp.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{131                                                      \{}
+\DoxyCodeLine{132     \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}> img;}
+\DoxyCodeLine{133     img.loadFromBuffer(ptr, width, height, ImageLib::RGBA\_CONVERTER<uint8\_t>);}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135     \textcolor{keyword}{const} \textcolor{keyword}{auto} imgWidth\{img.getWidth()\}, imgHeight\{img.getHeight()\};}
+\DoxyCodeLine{136     \textcolor{keywordflow}{for} (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}} \&p : img) \{}
+\DoxyCodeLine{137         \textcolor{keyword}{const} \textcolor{keywordtype}{bool} R\{p.red < num\_thresholds\};}
+\DoxyCodeLine{138         \textcolor{keyword}{const} \textcolor{keywordtype}{bool} G\{p.green < num\_thresholds\};}
+\DoxyCodeLine{139         \textcolor{keyword}{const} \textcolor{keywordtype}{bool} B\{p.blue < num\_thresholds\};}
+\DoxyCodeLine{140         \textcolor{keywordflow}{if} (R \&\& B \&\& G) \{}
+\DoxyCodeLine{141             p.setGray(0);}
+\DoxyCodeLine{142         \}}
+\DoxyCodeLine{143     \}}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145     \textcolor{keyword}{const} \textcolor{keyword}{auto} \&modified = img.getData();}
+\DoxyCodeLine{146     std::memcpy(ptr, modified.data(), modified.size() * \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
+\DoxyCodeLine{147 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{namespaceimg2num_a365bbbd4976477bdf515be023a73d63f}\label{namespaceimg2num_a365bbbd4976477bdf515be023a73d63f}} 
+\index{img2num@{img2num}!gaussian\_blur\_fft@{gaussian\_blur\_fft}}
+\index{gaussian\_blur\_fft@{gaussian\_blur\_fft}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{gaussian\_blur\_fft()}{gaussian\_blur\_fft()}}
+{\footnotesize\ttfamily void img2num\+::gaussian\+\_\+blur\+\_\+fft (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{image,  }\item[{size\+\_\+t}]{width,  }\item[{size\+\_\+t}]{height,  }\item[{double}]{sigma }\end{DoxyParamCaption})}
+
+
+
+Apply a Gaussian blur to an image using FFT. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em image} & Pointer to the image buffer (RGBA). \\
+\hline
+{\em width} & Width of the image in pixels. \\
+\hline
+{\em height} & Height of the image in pixels. \\
+\hline
+{\em sigma} & Standard deviation for Gaussian kernel. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The operation modifies the image buffer in-\/place. 
+
+Dox File\+: {\ttfamily doxygen/img2num.\+h.\+dox} 
+\end{DoxyNote}
+
+
+Definition at line 43 of file image\+\_\+utils.\+cpp.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{43                                                                                          \{}
+\DoxyCodeLine{44     \textcolor{keywordflow}{if} (!image || width == 0 || height == 0 || sigma\_pixels <= 0) \textcolor{keywordflow}{return};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46     \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} Npix = width * height;}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48     \textcolor{comment}{// Compute padded dimensions (next power of two)}}
+\DoxyCodeLine{49     \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} W = fft::next\_power\_of\_two(width);}
+\DoxyCodeLine{50     \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} H = fft::next\_power\_of\_two(height);}
+\DoxyCodeLine{51     \textcolor{keyword}{const} \textcolor{keywordtype}{size\_t} Npix\_padded = W * H;}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53     \textcolor{comment}{// Frequency coordinates helper (DC at corner)}}
+\DoxyCodeLine{54     \textcolor{keyword}{auto} freq\_coord = [](\textcolor{keywordtype}{int} k, \textcolor{keywordtype}{int} dim) -\/> \textcolor{keywordtype}{double} \{}
+\DoxyCodeLine{55         \textcolor{keywordflow}{return} (k <= dim / 2) ? double(k) / dim : double(k -\/ dim) / dim;}
+\DoxyCodeLine{56     \};}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58     \textcolor{comment}{// Precompute Gaussian factor in frequency domain}}
+\DoxyCodeLine{59     \textcolor{keyword}{const} \textcolor{keywordtype}{double} two\_pi2\_sigma2 = 2.0 * M\_PI * M\_PI * sigma\_pixels * sigma\_pixels;}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} channel = 0; channel < 3; channel++) \{}
+\DoxyCodeLine{62         \textcolor{comment}{// Allocate padded buffer}}
+\DoxyCodeLine{63         std::vector<fft::cd> data(Npix\_padded, \{0.0, 0.0\});}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65         \textcolor{comment}{// Copy original image channel into padded buffer}}
+\DoxyCodeLine{66         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} y = 0; y < height; y++)}
+\DoxyCodeLine{67             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} x = 0; x < width; x++)}
+\DoxyCodeLine{68                 data[y * W + x] = fft::cd(image[(y * width + x) * 4 + channel], 0.0);}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70         \textcolor{comment}{// Forward 2D FFT}}
+\DoxyCodeLine{71         fft::iterative\_fft\_2d(data, W, H, \textcolor{keyword}{false});}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73         \textcolor{comment}{// Apply Gaussian filter in frequency domain}}
+\DoxyCodeLine{74         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} y = 0; y < H; y++) \{}
+\DoxyCodeLine{75             \textcolor{keywordtype}{double} fy2 = freq\_coord(y, H) * freq\_coord(y, H);}
+\DoxyCodeLine{76             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} x = 0; x < W; x++) \{}
+\DoxyCodeLine{77                 \textcolor{keywordtype}{double} fx2 = freq\_coord(x, W) * freq\_coord(x, W);}
+\DoxyCodeLine{78                 \textcolor{keywordtype}{double} gain = std::exp(-\/two\_pi2\_sigma2 * (fx2 + fy2));}
+\DoxyCodeLine{79                 data[y * W + x] *= gain;}
+\DoxyCodeLine{80             \}}
+\DoxyCodeLine{81         \}}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83         \textcolor{comment}{// Inverse 2D FFT}}
+\DoxyCodeLine{84         fft::iterative\_fft\_2d(data, W, H, \textcolor{keyword}{true});}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86         \textcolor{comment}{// Copy back only the original width/height and clamp}}
+\DoxyCodeLine{87         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} y = 0; y < height; y++)}
+\DoxyCodeLine{88             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} x = 0; x < width; x++) \{}
+\DoxyCodeLine{89                 \textcolor{keywordtype}{double} v = data[y * W + x].real();}
+\DoxyCodeLine{90                 v = std::clamp(v, 0.0, 255.0);}
+\DoxyCodeLine{91                 image[(y * width + x) * 4 + channel] = \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(std::lrint(v));}
+\DoxyCodeLine{92             \}}
+\DoxyCodeLine{93     \}}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95     \textcolor{comment}{// Alpha channel remains unchanged}}
+\DoxyCodeLine{96 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{namespaceimg2num_adcf00084d90ead66510dadc459d0990e}\label{namespaceimg2num_adcf00084d90ead66510dadc459d0990e}} 
+\index{img2num@{img2num}!invert\_image@{invert\_image}}
+\index{invert\_image@{invert\_image}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{invert\_image()}{invert\_image()}}
+{\footnotesize\ttfamily void img2num\+::invert\+\_\+image (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{ptr,  }\item[{int}]{width,  }\item[{int}]{height }\end{DoxyParamCaption})}
+
+
+
+Invert the pixel values of an image. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ptr} & Pointer to the image buffer. \\
+\hline
+{\em width} & Width of the image in pixels. \\
+\hline
+{\em height} & Height of the image in pixels. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Each pixel value is replaced by 255 -\/ original\+\_\+value. 
+
+Dox File\+: {\ttfamily doxygen/img2num.\+h.\+dox} 
+\end{DoxyNote}
+
+
+Definition at line 99 of file image\+\_\+utils.\+cpp.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{99                                                        \{}
+\DoxyCodeLine{100     \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}> img;}
+\DoxyCodeLine{101     img.loadFromBuffer(ptr, width, height, ImageLib::RGBA\_CONVERTER<uint8\_t>);}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103     \textcolor{keywordflow}{for} (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}} \&p : img) \{}
+\DoxyCodeLine{104         p.red = 255 -\/ p.red;}
+\DoxyCodeLine{105         p.blue = 255 -\/ p.blue;}
+\DoxyCodeLine{106         p.green = 255 -\/ p.green;}
+\DoxyCodeLine{107     \}}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109     \textcolor{keyword}{const} \textcolor{keyword}{auto} \&modified = img.getData();}
+\DoxyCodeLine{110     std::memcpy(ptr, modified.data(), modified.size() * \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
+\DoxyCodeLine{111 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{namespaceimg2num_ae73563e9dd25a8dd2120fd519ef87abd}\label{namespaceimg2num_ae73563e9dd25a8dd2120fd519ef87abd}} 
+\index{img2num@{img2num}!kmeans@{kmeans}}
+\index{kmeans@{kmeans}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{kmeans()}{kmeans()}}
+{\footnotesize\ttfamily void img2num\+::kmeans (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t $\ast$}]{data,  }\item[{uint8\+\_\+t $\ast$}]{out\+\_\+data,  }\item[{int32\+\_\+t $\ast$}]{out\+\_\+labels,  }\item[{const int32\+\_\+t}]{width,  }\item[{const int32\+\_\+t}]{height,  }\item[{const int32\+\_\+t}]{k,  }\item[{const int32\+\_\+t}]{max\+\_\+iter,  }\item[{const uint8\+\_\+t}]{color\+\_\+space }\end{DoxyParamCaption})}
+
+
+
+Perform k-\/means clustering on image data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Pointer to input image data buffer. \\
+\hline
+{\em out\+\_\+data} & Pointer to output buffer where clustered pixel values are stored. \\
+\hline
+{\em out\+\_\+labels} & Pointer to output buffer for cluster labels per pixel. \\
+\hline
+{\em width} & Width of the image in pixels. \\
+\hline
+{\em height} & Height of the image in pixels. \\
+\hline
+{\em k} & Number of clusters to compute. \\
+\hline
+{\em max\+\_\+iter} & Maximum number of iterations for the algorithm. \\
+\hline
+{\em color\+\_\+space} & Color space flag (0 = CIE LAB, 1 = RGB). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The function does not modify the input buffer. 
+
+Dox File\+: {\ttfamily doxygen/img2num.\+h.\+dox} 
+\end{DoxyNote}
+
+
+Definition at line 91 of file kmeans.\+cpp.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{93                                        \{}
+\DoxyCodeLine{94     \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<float>}}> pixels;}
+\DoxyCodeLine{95     pixels.loadFromBuffer(data, width, height, ImageLib::RGBA\_CONVERTER<float>);}
+\DoxyCodeLine{96     \textcolor{keyword}{const} int32\_t num\_pixels\{pixels.getSize()\};}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98     \textcolor{comment}{// width = k, height = 1}}
+\DoxyCodeLine{99     \textcolor{comment}{// k centroids, initialized to rgba(0,0,0,255)}}
+\DoxyCodeLine{100     \textcolor{comment}{// Init of each pixel is from default in Image constructor}}
+\DoxyCodeLine{101     \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<float>}}> centroids\{k, 1\};}
+\DoxyCodeLine{102     \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::LABAPixel<float>}}> centroids\_lab\{k, 1\};}
+\DoxyCodeLine{103     std::vector<int32\_t> labels(num\_pixels, 0);}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105     \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::LABAPixel<float>}}> lab(pixels.getWidth(), pixels.getHeight());}
+\DoxyCodeLine{106     \textcolor{keywordflow}{if} (color\_space == COLOR\_SPACE\_OPTION\_CIELAB) \{}
+\DoxyCodeLine{107         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i\{0\}; i < pixels.getSize(); ++i) \{}
+\DoxyCodeLine{108             rgb\_to\_lab<float, float>(pixels[i], lab[i]);}
+\DoxyCodeLine{109         \}}
+\DoxyCodeLine{110     \}}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112     \textcolor{comment}{// Step 2: Initialize centroids randomly}}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114     \textcolor{keywordflow}{switch} (color\_space) \{}
+\DoxyCodeLine{115         \textcolor{keywordflow}{case} COLOR\_SPACE\_OPTION\_RGB: \{}
+\DoxyCodeLine{116             kMeansPlusPlusInit<ImageLib::RGBAPixel<float>>(pixels, centroids, k);}
+\DoxyCodeLine{117             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{118         \}}
+\DoxyCodeLine{119         \textcolor{keywordflow}{case} COLOR\_SPACE\_OPTION\_CIELAB: \{}
+\DoxyCodeLine{120             kMeansPlusPlusInit<ImageLib::LABAPixel<float>>(lab, centroids\_lab, k);}
+\DoxyCodeLine{121             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{122         \}}
+\DoxyCodeLine{123     \}}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125     \textcolor{comment}{// Step 3: Run k-\/means iterations}}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127     \textcolor{comment}{// Assignment step}}
+\DoxyCodeLine{128     \textcolor{keywordflow}{for} (int32\_t iter\{0\}; iter < max\_iter; ++iter) \{}
+\DoxyCodeLine{129         \textcolor{keywordtype}{bool} changed\{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131         \textcolor{comment}{// Iterate over pixels}}
+\DoxyCodeLine{132         \textcolor{keywordflow}{for} (int32\_t i\{0\}; i < num\_pixels; ++i) \{}
+\DoxyCodeLine{133             \textcolor{keywordtype}{float} min\_color\_dist\{std::numeric\_limits<float>::max()\};}
+\DoxyCodeLine{134             int32\_t best\_cluster\{0\};}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136             \textcolor{comment}{// Iterate over centroids to find centroid with most similar color to}}
+\DoxyCodeLine{137             \textcolor{comment}{// pixels[i]}}
+\DoxyCodeLine{138             \textcolor{keywordtype}{float} dist;}
+\DoxyCodeLine{139             \textcolor{keywordflow}{for} (int32\_t j\{0\}; j < k; ++j) \{}
+\DoxyCodeLine{140                 \textcolor{keywordflow}{switch} (color\_space) \{}
+\DoxyCodeLine{141                     \textcolor{keywordflow}{case} COLOR\_SPACE\_OPTION\_RGB: \{}
+\DoxyCodeLine{142                         dist = \mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<float>::colorDistance}}(pixels[i], centroids[j]);}
+\DoxyCodeLine{143                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{144                     \}}
+\DoxyCodeLine{145                     \textcolor{keywordflow}{case} COLOR\_SPACE\_OPTION\_CIELAB: \{}
+\DoxyCodeLine{146                         dist = \mbox{\hyperlink{structImageLib_1_1LABAPixel}{ImageLib::LABAPixel<float>::colorDistance}}(lab[i], centroids\_lab[j]);}
+\DoxyCodeLine{147                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{148                     \}}
+\DoxyCodeLine{149                 \}}
+\DoxyCodeLine{150                 \textcolor{keywordflow}{if} (dist < min\_color\_dist) \{}
+\DoxyCodeLine{151                     min\_color\_dist = dist;}
+\DoxyCodeLine{152                     best\_cluster = j;}
+\DoxyCodeLine{153                 \}}
+\DoxyCodeLine{154             \}}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156             \textcolor{keywordflow}{if} (labels[i] != best\_cluster) \{}
+\DoxyCodeLine{157                 changed = \textcolor{keyword}{true};}
+\DoxyCodeLine{158                 labels[i] = best\_cluster;}
+\DoxyCodeLine{159             \}}
+\DoxyCodeLine{160         \}}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162         \textcolor{comment}{// Stop if no changes}}
+\DoxyCodeLine{163         \textcolor{keywordflow}{if} (!changed) \{}
+\DoxyCodeLine{164             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{165         \}}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167         \textcolor{comment}{// Update step}}
+\DoxyCodeLine{168         \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<float>}}> new\_centroids(k, 1, 0);}
+\DoxyCodeLine{169         \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::LABAPixel<float>}}> new\_centroids\_lab(k, 1, 0);}
+\DoxyCodeLine{170         std::vector<int32\_t> counts(k, 0);}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172         \textcolor{keywordflow}{for} (int32\_t i = 0; i < num\_pixels; ++i) \{}
+\DoxyCodeLine{173             int32\_t cluster = labels[i];}
+\DoxyCodeLine{174             \textcolor{keywordflow}{switch} (color\_space) \{}
+\DoxyCodeLine{175                 \textcolor{keywordflow}{case} COLOR\_SPACE\_OPTION\_RGB: \{}
+\DoxyCodeLine{176                     new\_centroids[cluster].red += pixels[i].red;}
+\DoxyCodeLine{177                     new\_centroids[cluster].green += pixels[i].green;}
+\DoxyCodeLine{178                     new\_centroids[cluster].blue += pixels[i].blue;}
+\DoxyCodeLine{179                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{180                 \}}
+\DoxyCodeLine{181                 \textcolor{keywordflow}{case} COLOR\_SPACE\_OPTION\_CIELAB: \{}
+\DoxyCodeLine{182                     new\_centroids\_lab[cluster].l += lab[i].l;}
+\DoxyCodeLine{183                     new\_centroids\_lab[cluster].a += lab[i].a;}
+\DoxyCodeLine{184                     new\_centroids\_lab[cluster].b += lab[i].b;}
+\DoxyCodeLine{185                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{186                 \}}
+\DoxyCodeLine{187             \}}
+\DoxyCodeLine{188             counts[cluster]++;}
+\DoxyCodeLine{189         \}}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191         \textcolor{keywordflow}{for} (int32\_t j = 0; j < k; ++j) \{}
+\DoxyCodeLine{192             \textcolor{comment}{/*}}
+\DoxyCodeLine{193 \textcolor{comment}{               A centroid may become a dead centroid if it never gets pixels assigned}}
+\DoxyCodeLine{194 \textcolor{comment}{               to it. May be good idea to reinitialize these dead centroids.}}
+\DoxyCodeLine{195 \textcolor{comment}{               */}}
+\DoxyCodeLine{196             \textcolor{keywordflow}{if} (counts[j] > 0) \{}
+\DoxyCodeLine{197                 \textcolor{keywordflow}{switch} (color\_space) \{}
+\DoxyCodeLine{198                     \textcolor{keywordflow}{case} COLOR\_SPACE\_OPTION\_RGB: \{}
+\DoxyCodeLine{199                         centroids[j].red = new\_centroids[j].red / counts[j];}
+\DoxyCodeLine{200                         centroids[j].green = new\_centroids[j].green / counts[j];}
+\DoxyCodeLine{201                         centroids[j].blue = new\_centroids[j].blue / counts[j];}
+\DoxyCodeLine{202                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{203                     \}}
+\DoxyCodeLine{204                     \textcolor{keywordflow}{case} COLOR\_SPACE\_OPTION\_CIELAB: \{}
+\DoxyCodeLine{205                         centroids\_lab[j].l = new\_centroids\_lab[j].l / counts[j];}
+\DoxyCodeLine{206                         centroids\_lab[j].a = new\_centroids\_lab[j].a / counts[j];}
+\DoxyCodeLine{207                         centroids\_lab[j].b = new\_centroids\_lab[j].b / counts[j];}
+\DoxyCodeLine{208                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{209                     \}}
+\DoxyCodeLine{210                 \}}
+\DoxyCodeLine{211             \}}
+\DoxyCodeLine{212         \}}
+\DoxyCodeLine{213     \}}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215     \textcolor{keywordflow}{if} (color\_space == COLOR\_SPACE\_OPTION\_CIELAB) \{}
+\DoxyCodeLine{216         \textcolor{keywordflow}{for} (int32\_t i\{0\}; i < k; ++i) \{}
+\DoxyCodeLine{217             lab\_to\_rgb<float, float>(centroids\_lab[i], centroids[i]);}
+\DoxyCodeLine{218         \}}
+\DoxyCodeLine{219     \}}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{221     \textcolor{comment}{// Write the final centroid values to each pixel in the cluster}}
+\DoxyCodeLine{222     \textcolor{keywordflow}{for} (int32\_t i = 0; i < num\_pixels; ++i) \{}
+\DoxyCodeLine{223         \textcolor{keyword}{const} int32\_t cluster = labels[i];}
+\DoxyCodeLine{224         out\_data[i * 4 + 0] =}
+\DoxyCodeLine{225             \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(std::clamp(centroids[cluster].red, 0.0f, 255.0f));}
+\DoxyCodeLine{226         out\_data[i * 4 + 1] =}
+\DoxyCodeLine{227             \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(std::clamp(centroids[cluster].green, 0.0f, 255.0f));}
+\DoxyCodeLine{228         out\_data[i * 4 + 2] =}
+\DoxyCodeLine{229             \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(std::clamp(centroids[cluster].blue, 0.0f, 255.0f));}
+\DoxyCodeLine{230         out\_data[i * 4 + 3] = 255;}
+\DoxyCodeLine{231     \}}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233     \textcolor{comment}{// Write labels to out\_labels}}
+\DoxyCodeLine{234     std::memcpy(out\_labels, labels.data(), labels.size() * \textcolor{keyword}{sizeof}(int32\_t));}
+\DoxyCodeLine{235 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{namespaceimg2num_a5822dd3722c40a8d1cff368c6848c15d}\label{namespaceimg2num_a5822dd3722c40a8d1cff368c6848c15d}} 
+\index{img2num@{img2num}!labels\_to\_svg@{labels\_to\_svg}}
+\index{labels\_to\_svg@{labels\_to\_svg}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{labels\_to\_svg()}{labels\_to\_svg()}}
+{\footnotesize\ttfamily char $\ast$ img2num\+::labels\+\_\+to\+\_\+svg (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{data,  }\item[{int32\+\_\+t $\ast$}]{labels,  }\item[{const int}]{width,  }\item[{const int}]{height,  }\item[{const int}]{min\+\_\+area,  }\item[{const bool}]{draw\+\_\+contour\+\_\+borders }\end{DoxyParamCaption})}
+
+
+
+Convert labeled regions of an image into an SVG string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Pointer to image data buffer. \\
+\hline
+{\em labels} & Pointer to label buffer, indicating region for each pixel. \\
+\hline
+{\em width} & Width of the image in pixels. \\
+\hline
+{\em height} & Height of the image in pixels. \\
+\hline
+{\em min\+\_\+area} & Minimum area (in pixels) for a region to be included in the SVG. \\
+\hline
+{\em draw\+\_\+contour\+\_\+borders} & If true, contours of labeled regions will be drawn. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to a dynamically allocated C-\/string containing the SVG data. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Caller is responsible for freeing the returned string. 
+
+Dox File\+: {\ttfamily doxygen/img2num.\+h.\+dox} 
+\end{DoxyNote}
+
+
+Definition at line 189 of file labels\+\_\+to\+\_\+svg.\+cpp.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{190                                                                          \{}
+\DoxyCodeLine{191     \textcolor{keyword}{const} int32\_t num\_pixels\{width * height\};}
+\DoxyCodeLine{192     std::vector<int32\_t> labels\_vector\{labels, labels + num\_pixels\};}
+\DoxyCodeLine{193     std::vector<int32\_t> region\_labels;}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195     \textcolor{comment}{// 1. enumerate regions and convert to Nodes}}
+\DoxyCodeLine{196     std::vector<Node\_ptr> nodes;}
+\DoxyCodeLine{197     region\_labeling(data, labels\_vector, region\_labels, width, height, nodes);}
+\DoxyCodeLine{198 }
+\DoxyCodeLine{199     \textcolor{comment}{// 2. initialize Graph from all Nodes}}
+\DoxyCodeLine{200     std::unique\_ptr<std::vector<Node\_ptr>> node\_ptr =}
+\DoxyCodeLine{201         std::make\_unique<std::vector<Node\_ptr>>(std::move(nodes));}
+\DoxyCodeLine{202     \mbox{\hyperlink{classGraph}{Graph}} G(node\_ptr, width, height);}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204     \textcolor{comment}{// 3. Discover node adjacencies -\/ add edges to Graph}}
+\DoxyCodeLine{205     G.discover\_edges(region\_labels, width, height);}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{207     \textcolor{comment}{// 4. Merge small area nodes until all nodes are minArea or larger}}
+\DoxyCodeLine{208     G.merge\_small\_area\_nodes(min\_area);}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210     \textcolor{comment}{// 5. recolor image on new regions}}
+\DoxyCodeLine{211     \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}> results\{width, height\};}
+\DoxyCodeLine{212     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} \&n : G.get\_nodes()) \{}
+\DoxyCodeLine{213         \textcolor{keywordflow}{if} (n-\/>area() == 0) \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215         \textcolor{keyword}{auto} [r, g, b] = n-\/>color();}
+\DoxyCodeLine{216         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} \&[\_, p] : n-\/>get\_pixels()) \{}
+\DoxyCodeLine{217             results(p.x, p.y) = \{r, g, b\};}
+\DoxyCodeLine{218         \}}
+\DoxyCodeLine{219     \}}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{221     \textcolor{comment}{// 6. Contours}}
+\DoxyCodeLine{222     \textcolor{comment}{// graph will manage computing contours}}
+\DoxyCodeLine{223     G.compute\_contours();}
+\DoxyCodeLine{224 }
+\DoxyCodeLine{225     \textcolor{comment}{// accumulate all contours for svg export}}
+\DoxyCodeLine{226     \mbox{\hyperlink{structColoredContours}{ColoredContours}} all\_contours;}
+\DoxyCodeLine{227     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} \&n : G.get\_nodes()) \{}
+\DoxyCodeLine{228         \textcolor{keywordflow}{if} (n-\/>area() == 0) \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{229         \mbox{\hyperlink{structColoredContours}{ColoredContours}} node\_contours = n-\/>get\_contours();}
+\DoxyCodeLine{230         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} \&c : node\_contours.contours) \{}
+\DoxyCodeLine{231             all\_contours.contours.push\_back(c);}
+\DoxyCodeLine{232         \}}
+\DoxyCodeLine{233         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} \&c : node\_contours.hierarchy) \{}
+\DoxyCodeLine{234             all\_contours.hierarchy.push\_back(c);}
+\DoxyCodeLine{235         \}}
+\DoxyCodeLine{236         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{bool} b : node\_contours.is\_hole) \{}
+\DoxyCodeLine{237             all\_contours.is\_hole.push\_back(b);}
+\DoxyCodeLine{238         \}}
+\DoxyCodeLine{239         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} \&c : node\_contours.colors) \{}
+\DoxyCodeLine{240             all\_contours.colors.push\_back(c);}
+\DoxyCodeLine{241         \}}
+\DoxyCodeLine{242         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} \&c : node\_contours.curves) \{}
+\DoxyCodeLine{243             all\_contours.curves.push\_back(c);}
+\DoxyCodeLine{244         \}}
+\DoxyCodeLine{245     \}}
+\DoxyCodeLine{246 }
+\DoxyCodeLine{247     \textcolor{comment}{// 7. Copy recolored image back}}
+\DoxyCodeLine{248     \textcolor{keyword}{const} \textcolor{keyword}{auto} \&modified = results.getData();}
+\DoxyCodeLine{249     std::memcpy(data, modified.data(), modified.size() * \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
+\DoxyCodeLine{250 }
+\DoxyCodeLine{251     \textcolor{comment}{// 8. Return SVG if requested}}
+\DoxyCodeLine{252     \textcolor{keywordflow}{if} (!draw\_contour\_borders) \{}
+\DoxyCodeLine{253         std::string svg\{contoursResultToSVG(all\_contours, width, height)\};}
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255         \textcolor{comment}{// Dynamic C-\/style allocation (since returned over C ABI)}}
+\DoxyCodeLine{256         \textcolor{keywordtype}{char} *res\_svg\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{char} *\textcolor{keyword}{>}(std::malloc(svg.size() + 1))\};}
+\DoxyCodeLine{257         \textcolor{keywordflow}{if} (!res\_svg) \{}
+\DoxyCodeLine{258             \textcolor{keywordflow}{return} \textcolor{keyword}{nullptr};  \textcolor{comment}{// Allocation failed}}
+\DoxyCodeLine{259         \}}
+\DoxyCodeLine{260         std::memcpy(res\_svg, svg.c\_str(), svg.size() + 1);}
+\DoxyCodeLine{261 }
+\DoxyCodeLine{262         \textcolor{keywordflow}{return} res\_svg;}
+\DoxyCodeLine{263     \}}
+\DoxyCodeLine{264 }
+\DoxyCodeLine{265     \textcolor{keywordflow}{return} \textcolor{keyword}{nullptr};  \textcolor{comment}{// no SVG}}
+\DoxyCodeLine{266 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{namespaceimg2num_ad36f12c85016e28c7427c356783dea03}\label{namespaceimg2num_ad36f12c85016e28c7427c356783dea03}} 
+\index{img2num@{img2num}!threshold\_image@{threshold\_image}}
+\index{threshold\_image@{threshold\_image}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{threshold\_image()}{threshold\_image()}}
+{\footnotesize\ttfamily void img2num\+::threshold\+\_\+image (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{ptr,  }\item[{const int}]{width,  }\item[{const int}]{height,  }\item[{const int}]{num\+\_\+thresholds }\end{DoxyParamCaption})}
+
+
+
+Apply a thresholding operation to an image. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ptr} & Pointer to the image buffer. \\
+\hline
+{\em width} & Width of the image in pixels. \\
+\hline
+{\em height} & Height of the image in pixels. \\
+\hline
+{\em num\+\_\+thresholds} & Number of thresholds to apply. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Thresholds split pixel intensity ranges into discrete levels. 
+
+Dox File\+: {\ttfamily doxygen/img2num.\+h.\+dox} 
+\end{DoxyNote}
+
+
+Definition at line 113 of file image\+\_\+utils.\+cpp.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{113                                                                                                 \{}
+\DoxyCodeLine{114     \textcolor{keyword}{const} uint8\_t REGION\_SIZE(255 / num\_thresholds);  \textcolor{comment}{// Size of buckets per colour}}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116     \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}> img;}
+\DoxyCodeLine{117     img.loadFromBuffer(ptr, width, height, ImageLib::RGBA\_CONVERTER<uint8\_t>);}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119     \textcolor{keyword}{const} \textcolor{keyword}{auto} imgWidth\{img.getWidth()\}, imgHeight\{img.getHeight()\};}
+\DoxyCodeLine{120     \textcolor{keywordflow}{for} (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}} \&p : img) \{}
+\DoxyCodeLine{121         p.red = quantize(p.red, REGION\_SIZE);}
+\DoxyCodeLine{122         p.green = quantize(p.green, REGION\_SIZE);}
+\DoxyCodeLine{123         p.blue = quantize(p.blue, REGION\_SIZE);}
+\DoxyCodeLine{124     \}}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126     \textcolor{keyword}{const} \textcolor{keyword}{auto} \&modified = img.getData();}
+\DoxyCodeLine{127     std::memcpy(ptr, modified.data(), modified.size() * \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
+\DoxyCodeLine{128 \}}
+
+\end{DoxyCode}

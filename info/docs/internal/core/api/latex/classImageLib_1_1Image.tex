@@ -1,0 +1,114 @@
+\hypertarget{classImageLib_1_1Image}{}\doxysection{Image\+Lib\+::Image$<$ PixelT $>$ Class Template Reference}
+\label{classImageLib_1_1Image}\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+
+
+Collaboration diagram for Image\+Lib\+::Image$<$ PixelT $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=230pt]{classImageLib_1_1Image__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_a8215fba763ec3d779a6757d60ef47dac}\label{classImageLib_1_1Image_a8215fba763ec3d779a6757d60ef47dac}} 
+using {\bfseries iter} = typename std\+::vector$<$ PixelT $>$\+::iterator
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_a2b0d6c0e1b0d86b0ce7bd1ab35c67607}\label{classImageLib_1_1Image_a2b0d6c0e1b0d86b0ce7bd1ab35c67607}} 
+using {\bfseries const\+\_\+iter} = typename std\+::vector$<$ PixelT $>$\+::const\+\_\+iterator
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_a81c50159e3d311f359f8d77ab76f1096}\label{classImageLib_1_1Image_a81c50159e3d311f359f8d77ab76f1096}} 
+{\bfseries Image} (int width, int height, PixelT fill=PixelT())
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_a3b12bc1ac29c945eacc3cebc79ad1e86}\label{classImageLib_1_1Image_a3b12bc1ac29c945eacc3cebc79ad1e86}} 
+{\footnotesize template$<$typename ConverterT $>$ }\\void {\bfseries load\+From\+Buffer} (const uint8\+\_\+t $\ast$buffer, int width, int height, \mbox{\hyperlink{structImageLib_1_1PixelConverter}{Pixel\+Converter}}$<$ ConverterT $>$ converter)
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_a9e589c54da207dee8b0ec95ef48d07cc}\label{classImageLib_1_1Image_a9e589c54da207dee8b0ec95ef48d07cc}} 
+void {\bfseries fill} (const PixelT \&color)
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_a4c6e254e4f0a6725e5a737aa7bcd247b}\label{classImageLib_1_1Image_a4c6e254e4f0a6725e5a737aa7bcd247b}} 
+iter {\bfseries begin} ()
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_aa50c261f696f7fc1ca36ae278691de6f}\label{classImageLib_1_1Image_aa50c261f696f7fc1ca36ae278691de6f}} 
+iter {\bfseries end} ()
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_ab1d1799443e6cbb60444f4a8de58e814}\label{classImageLib_1_1Image_ab1d1799443e6cbb60444f4a8de58e814}} 
+const\+\_\+iter {\bfseries begin} () const
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_afc8f87874b4a2c488f8c664885d61658}\label{classImageLib_1_1Image_afc8f87874b4a2c488f8c664885d61658}} 
+const\+\_\+iter {\bfseries end} () const
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_aee1d2442bf2d7f5cfc6c5bd61dabf8d3}\label{classImageLib_1_1Image_aee1d2442bf2d7f5cfc6c5bd61dabf8d3}} 
+int {\bfseries get\+Width} () const
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_aacc12689a567af38957b99156861f87b}\label{classImageLib_1_1Image_aacc12689a567af38957b99156861f87b}} 
+int {\bfseries get\+Height} () const
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_ad0e1573cee45769acb01a1c1d52af88b}\label{classImageLib_1_1Image_ad0e1573cee45769acb01a1c1d52af88b}} 
+int {\bfseries get\+Pixel\+Count} () const
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_a829b0384543379f0b9cb0b3025ac26bf}\label{classImageLib_1_1Image_a829b0384543379f0b9cb0b3025ac26bf}} 
+int {\bfseries get\+Size} () const
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_a445578d7a4adacb3c55914707811eaf5}\label{classImageLib_1_1Image_a445578d7a4adacb3c55914707811eaf5}} 
+const std\+::vector$<$ PixelT $>$ \& {\bfseries get\+Data} () const
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_a197cf5260446b76a61a18df2729dfc1c}\label{classImageLib_1_1Image_a197cf5260446b76a61a18df2729dfc1c}} 
+const PixelT \& {\bfseries get\+Pixel} (int x, int y) const
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_aea5aceb80b7d592ab29cac06e802b264}\label{classImageLib_1_1Image_aea5aceb80b7d592ab29cac06e802b264}} 
+PixelT \& {\bfseries get\+Pixel} (int x, int y)
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_a835be9568d55d9c629a9c9803d619e46}\label{classImageLib_1_1Image_a835be9568d55d9c629a9c9803d619e46}} 
+void {\bfseries set\+Pixel} (int x, int y, const PixelT \&p)
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_a21c53d681412bb7e3805ecfc5a7b20d1}\label{classImageLib_1_1Image_a21c53d681412bb7e3805ecfc5a7b20d1}} 
+PixelT \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (int idx)
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_a4742be287645a78276e3d6c160c51054}\label{classImageLib_1_1Image_a4742be287645a78276e3d6c160c51054}} 
+const PixelT \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (int idx) const
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_a613a23d2a79077246394e0ed9b72eef1}\label{classImageLib_1_1Image_a613a23d2a79077246394e0ed9b72eef1}} 
+PixelT \& {\bfseries operator()} (int x, int y)
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_a71e4699d36e222bd06866a5687cadd73}\label{classImageLib_1_1Image_a71e4699d36e222bd06866a5687cadd73}} 
+const PixelT \& {\bfseries operator()} (int x, int y) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_ae911d4bb737e1f896b70a127086f2d77}\label{classImageLib_1_1Image_ae911d4bb737e1f896b70a127086f2d77}} 
+int {\bfseries index} (int x, int y) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_a00e64fe2564655a0eb901eed8b024cde}\label{classImageLib_1_1Image_a00e64fe2564655a0eb901eed8b024cde}} 
+std\+::vector$<$ PixelT $>$ {\bfseries data}
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_aacc54cbdf5b20190e5a2739979dd917e}\label{classImageLib_1_1Image_aacc54cbdf5b20190e5a2739979dd917e}} 
+int {\bfseries width}
+\item 
+\mbox{\Hypertarget{classImageLib_1_1Image_ab3cbfc4a8a0e2096a700a1ee3f66a46d}\label{classImageLib_1_1Image_ab3cbfc4a8a0e2096a700a1ee3f66a46d}} 
+int {\bfseries height}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename PixelT$>$\newline
+class Image\+Lib\+::\+Image$<$ Pixel\+T $>$}
+
+
+
+Definition at line 14 of file Image.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/internal/Image.\+h\end{DoxyCompactItemize}

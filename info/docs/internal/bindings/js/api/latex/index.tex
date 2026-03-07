@@ -1,0 +1,35 @@
+\hypertarget{index_intro_sec}{}\doxysection{Introduction}\label{index_intro_sec}
+The Img2\+Num library provides powerful image processing and vectorization capabilities. With the addition of Java\+Script and Web\+Assembly (WASM) bindings, it is now easy to integrate Img2\+Num into web applications, enabling image processing in the browser with high performance.
+
+These bindings expose the core functionality of Img2\+Num to Java\+Script, allowing developers to access image processing functions directly in the browser or via Node.\+js environments. WASM provides near-\/native performance for resource-\/intensive tasks like Fast Fourier Transforms (FFT) and contour tracing.\hypertarget{index_features_sec}{}\doxysection{Key Features}\label{index_features_sec}
+The JS/\+WASM bindings offer the following key features\+:
+\begin{DoxyItemize}
+\item {\bfseries{Direct browser access}} to Img2\+Num\textquotesingle{}s image vectorization functions.
+\item {\bfseries{Performance}} optimized with Web\+Assembly for fast computation.
+\item {\bfseries{Cross-\/platform}}\+: Works seamlessly on all major browsers and Node.\+js environments.
+\item {\bfseries{Memory safety}} provided by the WASM wrapper, ensuring no manual memory management is required.
+\end{DoxyItemize}\hypertarget{index_building_sec}{}\doxysection{Building JS/\+WASM Bindings}\label{index_building_sec}
+To build the Java\+Script/\+WASM bindings, follow these steps\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{emcmake cmake -\/B build-\/wasm}
+\DoxyCodeLine{cmake -\/-\/build build-\/wasm}
+
+\end{DoxyCode}
+
+
+For extensive documentation, please see the \href{/Img2Num/info/docs/next/contributing/setup-and-dependencies/}{\texttt{ project setup guide}}
+
+This will generate the necessary WASM files for use in Java\+Script. You can then integrate them into your web projects or Node.\+js applications.\hypertarget{index_install_sec}{}\doxysection{Installation}\label{index_install_sec}
+The JS/\+WASM bindings can be installed using the following commands\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cmake -\/-\/install build-\/wasm}
+
+\end{DoxyCode}
+
+
+After installation, you will find the WASM module and Java\+Script wrapper in the {\ttfamily \{\{LIB\+\_\+\+PATH\}\}} directory.\hypertarget{index_usage_sec}{}\doxysection{Usage}\label{index_usage_sec}
+Usage of these raw bindings is discouraged. The Img2\+Num Java\+Script library wraps these bindings safely for you. If you are looking to using it, see the relevant documentation.
+
+Each function exposed to Java\+Script provides a simple interface for interacting with the core Img2\+Num library functions in the browser or Node.\+js. 

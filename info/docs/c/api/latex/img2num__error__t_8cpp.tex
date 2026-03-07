@@ -1,0 +1,79 @@
+\hypertarget{img2num__error__t_8cpp}{}\doxysection{src/cimg2num/img2num\+\_\+error\+\_\+t.cpp File Reference}
+\label{img2num__error__t_8cpp}\index{src/cimg2num/img2num\_error\_t.cpp@{src/cimg2num/img2num\_error\_t.cpp}}
+{\ttfamily \#include \char`\"{}cimg2num/img2num\+\_\+error\+\_\+t.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$cstring$>$}\newline
+{\ttfamily \#include \char`\"{}img2num/\+Error.\+h\char`\"{}}\newline
+Include dependency graph for img2num\+\_\+error\+\_\+t.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{img2num__error__t_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{img2num__error__t_8h_a208debf202796bb5ac21d27878829bb2}{img2num\+\_\+error\+\_\+t}} \mbox{\hyperlink{img2num__error__t_8cpp_a19e8b982f542ab10e701fe3557582340}{img2num\+\_\+get\+\_\+last\+\_\+error}} ()
+\item 
+const char $\ast$ \mbox{\hyperlink{img2num__error__t_8cpp_ac71758d1b82da9ae75501ac5c24ceb94}{img2num\+\_\+get\+\_\+last\+\_\+error\+\_\+message}} ()
+\item 
+void \mbox{\hyperlink{img2num__error__t_8cpp_a6e18e50086049cc81d6ab0babacf2dee}{img2num\+\_\+clear\+\_\+last\+\_\+error}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{img2num__error__t_8cpp_a6e18e50086049cc81d6ab0babacf2dee}\label{img2num__error__t_8cpp_a6e18e50086049cc81d6ab0babacf2dee}} 
+\index{img2num\_error\_t.cpp@{img2num\_error\_t.cpp}!img2num\_clear\_last\_error@{img2num\_clear\_last\_error}}
+\index{img2num\_clear\_last\_error@{img2num\_clear\_last\_error}!img2num\_error\_t.cpp@{img2num\_error\_t.cpp}}
+\doxysubsubsection{\texorpdfstring{img2num\_clear\_last\_error()}{img2num\_clear\_last\_error()}}
+{\footnotesize\ttfamily void img2num\+\_\+clear\+\_\+last\+\_\+error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 34 of file img2num\+\_\+error\+\_\+t.\+cpp.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{34                                 \{}
+\DoxyCodeLine{35     img2num::clear\_last\_error();}
+\DoxyCodeLine{36 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{img2num__error__t_8cpp_a19e8b982f542ab10e701fe3557582340}\label{img2num__error__t_8cpp_a19e8b982f542ab10e701fe3557582340}} 
+\index{img2num\_error\_t.cpp@{img2num\_error\_t.cpp}!img2num\_get\_last\_error@{img2num\_get\_last\_error}}
+\index{img2num\_get\_last\_error@{img2num\_get\_last\_error}!img2num\_error\_t.cpp@{img2num\_error\_t.cpp}}
+\doxysubsubsection{\texorpdfstring{img2num\_get\_last\_error()}{img2num\_get\_last\_error()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{img2num__error__t_8h_a208debf202796bb5ac21d27878829bb2}{img2num\+\_\+error\+\_\+t}} img2num\+\_\+get\+\_\+last\+\_\+error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 23 of file img2num\+\_\+error\+\_\+t.\+cpp.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{23                                          \{}
+\DoxyCodeLine{24     \textcolor{keyword}{const} img2num::Error cpp\_err\{img2num::get\_last\_error()\};}
+\DoxyCodeLine{25     \textcolor{keywordflow}{return} cpp\_error\_to\_c\_error(cpp\_err);}
+\DoxyCodeLine{26 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{img2num__error__t_8cpp_ac71758d1b82da9ae75501ac5c24ceb94}\label{img2num__error__t_8cpp_ac71758d1b82da9ae75501ac5c24ceb94}} 
+\index{img2num\_error\_t.cpp@{img2num\_error\_t.cpp}!img2num\_get\_last\_error\_message@{img2num\_get\_last\_error\_message}}
+\index{img2num\_get\_last\_error\_message@{img2num\_get\_last\_error\_message}!img2num\_error\_t.cpp@{img2num\_error\_t.cpp}}
+\doxysubsubsection{\texorpdfstring{img2num\_get\_last\_error\_message()}{img2num\_get\_last\_error\_message()}}
+{\footnotesize\ttfamily const char$\ast$ img2num\+\_\+get\+\_\+last\+\_\+error\+\_\+message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 28 of file img2num\+\_\+error\+\_\+t.\+cpp.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{28                                              \{}
+\DoxyCodeLine{29     \textcolor{keyword}{static} thread\_local std::string msg;}
+\DoxyCodeLine{30     msg = img2num::get\_last\_error\_message();}
+\DoxyCodeLine{31     \textcolor{keywordflow}{return} msg.c\_str();}
+\DoxyCodeLine{32 \}}
+
+\end{DoxyCode}
