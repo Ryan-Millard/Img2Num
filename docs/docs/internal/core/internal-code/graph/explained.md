@@ -93,7 +93,7 @@ Before gap management
 <summary>Pull the code locally from PR #238</summary>
 ```bash
 # 1. Clone the repo (if you haven't already)
-git clone https://github.com/Ryan-Millard/Img2Num.git
+git clone --recursive https://github.com/Ryan-Millard/Img2Num.git
 cd Img2Num
 # 2. Fetch the specific commit from the PR
 git fetch origin 9eb23f9a56edaeec95e2dfcfc8389b11bfd777b6
