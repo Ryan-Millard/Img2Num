@@ -35,8 +35,12 @@ int main(int argc, char** argv) {
     std::memcpy(img_data, image_data_original, static_cast<size_t>(width) * static_cast<size_t>(height) * NUM_CHANNELS);
 
     // Apply Gaussian blur
+    // const double sigma{width * SIGMA_WIDTH_RATIO};
+    // img2num::gaussian_blur_fft(img_data, width, height, sigma);
+
+    // Apply bilateral
     const double sigma{width * SIGMA_WIDTH_RATIO};
-    img2num::gaussian_blur_fft(img_data, width, height, sigma);
+    img2num::bilateral_filter(img_data, width, height, sigma, 50.0, 0);
 
     // Save the blurred image
     std::string out_path{"console-cpp-output.png"};

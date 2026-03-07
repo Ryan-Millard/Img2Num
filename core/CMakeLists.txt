@@ -18,6 +18,28 @@ target_include_directories(Img2Num
     ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
 )
 
+if (EMSCRIPTEN)
+  target_compile_options(Img2Num PRIVATE -msimd128 "--use-port=emdawnwebgpu")
+  target_link_options(Img2Num PRIVATE -msimd128 "--use-port=emdawnwebgpu")
+else()
+  set(DAWN_SUPPORTS_GLFW_FOR_WINDOWING OFF CACHE BOOL "Disable GLFW support for windowing" FORCE)
+  set(DAWN_USE_X11 OFF CACHE BOOL "Disable X11 support" FORCE)
+  set(DAWN_FETCH_DEPENDENCIES ON)
+  add_subdirectory("../third_party/dawn" ${CMAKE_CURRENT_SOURCE_DIR} EXCLUDE_FROM_ALL)
+
+  # PUBLIC: only expose the directory that contains img2num.h
+  # PRIVATE: internal headers
+  target_include_directories(Img2Num
+    PUBLIC
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+      $<BUILD_INTERFACE:${DAWN_INCLUDE_DIR}>
+    PRIVATE
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
+  )
+
+  target_link_libraries(Img2Num PRIVATE $<BUILD_INTERFACE:webgpu_dawn>)
+endif()
+
 # --- Install targets for packaging ---
 install(TARGETS Img2Num
   EXPORT Img2NumTargets

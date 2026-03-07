@@ -36,6 +36,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+        
+      - name: Fix dubious ownership error
+        run: git config --global --add safe.directory /__w/Img2Num/Img2Num
+
+      - name: Init submodules (ignore chrome-internal)
+        run: |
+          git submodule init
+          git submodule update
 
       - name: Run cmake
         run: cmake -B build-c-cpp/ .
