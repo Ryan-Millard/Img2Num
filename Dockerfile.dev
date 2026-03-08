@@ -9,6 +9,7 @@ ENV EMSDK_DIR=/opt/emsdk
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     build-essential \
+    clang \
     cmake \
     python3 \
     git \
@@ -21,6 +22,10 @@ RUN apt-get update \
     # graphviz enables diagrams in doxygen
     doxygen graphviz \
   && rm -rf /var/lib/apt/lists/*
+
+# CMake preferred compiler (Dawn requires it and it's easier to just use it for everything)
+ENV CC=clang
+ENV CXX=clang++
 
 # Install EMSDK once, cached by Docker layers
 RUN git clone --depth 1 https://github.com/emscripten-core/emsdk.git $EMSDK_DIR \
@@ -44,6 +49,9 @@ WORKDIR /usr/src/app
 
 ENV CHOKIDAR_USEPOLLING=true
 ENV CHOKIDAR_INTERVAL=100
+
+# Make the mounted working directory safe for Git
+RUN git config --global --add safe.directory /usr/src/app
 
 EXPOSE 5173 3000
 

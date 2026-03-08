@@ -4,6 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     container_name: img2num-dev
+    #image: ryanmillard/img2num-dev:latest
     working_dir: /usr/src/app
     volumes:
       - .:/usr/src/app:cached
