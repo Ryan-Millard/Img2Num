@@ -21,6 +21,8 @@ RUN apt-get update \
     libvips-dev \
     # graphviz enables diagrams in doxygen
     doxygen graphviz \
+    # vulkan drivers
+    vulkan-tools libvulkan1 mesa-vulkan-drivers \
   && rm -rf /var/lib/apt/lists/*
 
 # CMake preferred compiler (Dawn requires it and it's easier to just use it for everything)
