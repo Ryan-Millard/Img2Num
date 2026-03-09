@@ -1,7 +1,7 @@
 # ------------------------
 # Img2Num Dockerfile.dev
 # ------------------------
-FROM node:22-bookworm
+FROM node:22-trixie
 
 ENV EMSDK_VERSION=4.0.10
 ENV EMSDK_DIR=/opt/emsdk
@@ -24,8 +24,8 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # CMake preferred compiler (Dawn requires it and it's easier to just use it for everything)
-ENV CC=cc
-ENV CXX=c++
+ENV CC=gcc-14
+ENV CXX=g++-14
 
 # Install EMSDK once, cached by Docker layers
 RUN git clone --depth 1 https://github.com/emscripten-core/emsdk.git $EMSDK_DIR \
