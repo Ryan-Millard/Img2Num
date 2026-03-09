@@ -110,7 +110,7 @@
     "@testing-library/dom": "^10.4.1",
     "html-react-parser": "^5.2.15",
     "img2num": "workspace:*",
-    "lucide-react": "^0.576.0",
+    "lucide-react": "^0.577.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.4",
     "react-dom": "^18.2.4",
