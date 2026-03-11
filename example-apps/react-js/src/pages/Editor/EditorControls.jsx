@@ -1,7 +1,7 @@
 import GlassSwitch from "@components/GlassSwitch";
 import Tooltip from "@components/Tooltip";
 import { useMemo } from "react";
-import { Ellipsis, Eye, Brush, Printer, Download, Copy, RotateCcw } from "lucide-react";
+import { Ellipsis, Eye, Brush, Printer, Download, Copy, RotateCcw, Share2 } from "lucide-react";
 import styles from "./EditorControls.module.css";
 import HamburgerMenu from "@components/HamburgerMenu";
 
@@ -30,6 +30,43 @@ const EditorControls = ({
     document.body.removeChild(a);
 
     URL.revokeObjectURL(url);
+  };
+
+  const printSvg = () => {
+    const iframe = document.createElement("iframe");
+    iframe.style.position = "absolute";
+    iframe.style.width = "0";
+    iframe.style.height = "0";
+    iframe.style.border = "0";
+    document.body.appendChild(iframe);
+
+    const doc = iframe.contentWindow.document;
+    doc.open();
+    doc.write(svg);
+    doc.close();
+
+    // Give browser a moment to render
+    setTimeout(() => {
+      iframe.contentWindow.focus();
+      iframe.contentWindow.print();
+      document.body.removeChild(iframe);
+    }, 100);
+  };
+
+  const shareSvg = () => {
+    if (!navigator.canShare || !svg) return alert("Sharing not supported!");
+
+    const file = new File([svg], `${fileName}.svg`, { type: "image/svg+xml" });
+
+    if (navigator.canShare({ files: [file] })) {
+      navigator.share({
+        files: [file],
+        title: fileName,
+        text: "Check out this SVG!",
+      }).catch(console.error);
+    } else {
+      alert("Sharing this file is not supported on your device.");
+    }
   };
 
   if (!svg) return null;
@@ -78,29 +115,19 @@ const EditorControls = ({
           <Tooltip content="Print SVG">
             <a
               type="button"
-              onClick={() => {
-                const iframe = document.createElement("iframe");
-                iframe.style.position = "absolute";
-                iframe.style.width = "0";
-                iframe.style.height = "0";
-                iframe.style.border = "0";
-                document.body.appendChild(iframe);
-
-                const doc = iframe.contentWindow.document;
-                doc.open();
-                doc.write(svg);
-                doc.close();
-
-                // Give browser a moment to render
-                setTimeout(() => {
-                  iframe.contentWindow.focus();
-                  iframe.contentWindow.print();
-                  document.body.removeChild(iframe);
-                }, 100);
-              }}
+              onClick={printSvg}
             >
               <Download /> {/* Replace with Printer icon if desired */}
               <span>Print</span>
+            </a>
+          </Tooltip>
+        </li>
+
+        <li>
+          <Tooltip content="Share SVG">
+            <a type="button" onClick={shareSvg}>
+              <Share2 />
+              <span>Share</span>
             </a>
           </Tooltip>
         </li>
