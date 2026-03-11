@@ -35,7 +35,6 @@ export default function GlassModal({
     <div
       className={styles.backdrop}
       onClick={handleBackdropClick}
-      aria-modal="true"
       role="dialog"
     >
       <GlassCard

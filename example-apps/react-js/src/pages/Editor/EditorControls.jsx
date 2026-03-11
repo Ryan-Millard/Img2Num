@@ -1,7 +1,8 @@
+import GlassModal from "@components/GlassModal";
 import GlassSwitch from "@components/GlassSwitch";
 import Tooltip from "@components/Tooltip";
-import { useMemo } from "react";
-import { Undo, Redo, Ellipsis, Eye, Brush, Printer, Download, Copy, RotateCcw, Share2 } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Undo, Redo, Ellipsis, Save, Eye, Brush, Printer, Download, Copy, RotateCcw, Share2 } from "lucide-react";
 import styles from "./EditorControls.module.css";
 import HamburgerMenu from "@components/HamburgerMenu";
 
@@ -14,6 +15,8 @@ const EditorControls = ({
   onUndo = () => {},
   onRedo = () => {},
 }) => {
+  const [modalOpen, setModalOpen] = useState(false);
+
   const svgUrl = useMemo(() => {
     if (!svg) return null;
     const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
@@ -75,6 +78,43 @@ const EditorControls = ({
 
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <GlassModal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          size="sm"
+        >
+          <h2>Download Image</h2>
+          <div className="flex-column container" style={{ maxWidth: "max-content" }}>
+            <Tooltip content="Download original SVG file">
+              <button href={svgUrl} download={`${fileName}.svg`} className="button">
+                <Download />
+                <span>Original SVG</span>
+              </button>
+            </Tooltip>
+
+            <Tooltip content="Download raw SVG as text file">
+              <button onClick={() => download(svg, `${fileName}-raw.txt`, "text/plain")} className="button">
+                <Download />
+                Raw Text
+              </button>
+            </Tooltip>
+
+            <Tooltip content="Copy SVG code to clipboard">
+              <button onClick={() => navigator.clipboard.writeText(svg)} className="button">
+                <Copy />
+                Copy SVG
+              </button>
+            </Tooltip>
+
+            <Tooltip content="Print SVG">
+              <button onClick={printSvg} className="button">
+                <Printer />
+                <span>Print</span>
+              </button>
+            </Tooltip>
+          </div>
+        </GlassModal>
+
       <div className="flex-space-evenly">
         <Tooltip content="Reset all colored shapes">
           <button
@@ -100,37 +140,10 @@ const EditorControls = ({
 
       <HamburgerMenu className={styles.hamburger} CloseMenuIcon={<Ellipsis />}>
         <li>
-          <Tooltip content="Download original SVG file">
-            <span href={svgUrl} download={`${fileName}.svg`}>
-              <Download />
-              <span>Original SVG</span>
-            </span>
-          </Tooltip>
-        </li>
-
-        <li>
-          <Tooltip content="Download raw SVG as text file">
-            <span onClick={() => download(svg, `${fileName}-raw.txt`, "text/plain")}>
-              <Download />
-              Raw Text
-            </span>
-          </Tooltip>
-        </li>
-
-        <li>
-          <Tooltip content="Copy SVG code to clipboard">
-            <span onClick={() => navigator.clipboard.writeText(svg)}>
-              <Copy />
-              Copy SVG
-            </span>
-          </Tooltip>
-        </li>
-
-        <li>
-          <Tooltip content="Print SVG">
-            <span onClick={printSvg} >
-              <Download /> {/* Replace with Printer icon if desired */}
-              <span>Print</span>
+          <Tooltip content="Share the image with others">
+            <span onClick={() => setModalOpen(true)}>
+              <Save />
+              <span>Save</span>
             </span>
           </Tooltip>
         </li>
