@@ -36,6 +36,9 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  * {
+    color: var(--color-text);
+  }
 }
 
 /* The open class only affects mobile dropdown visibility */
@@ -46,7 +49,7 @@
 }
 
 /* ========== MOBILE (responsive) ========== */
-@media (max-width: 830px) {
+@media (max-width: 900px) {
   /* show toggle on mobile */
   .menuToggle {
     display: flex;
@@ -61,7 +64,7 @@
     flex-direction: column;
     gap: 6px;
     padding: 12px;
-    background: linear-gradient(145deg, rgba(106, 56, 23, 0.95) 0%, rgba(83, 46, 26, 0.98) 100%);
+    background: var(--color-bg);
     border: 1px solid rgba(215, 164, 125, 0.2);
     border-radius: 20px;
     box-shadow:
@@ -108,8 +111,6 @@
     border-radius: 12px;
     background: transparent;
     border: none;
-    color: rgba(248, 234, 205, 0.95);
-    font-size: 0.95rem;
     text-decoration: none;
   }
 
@@ -140,7 +141,6 @@
   #nav-menu a.active {
     background: linear-gradient(135deg, rgba(248, 234, 205, 0.25) 0%, rgba(215, 164, 125, 0.2) 100%);
     color: #f8eacd;
-    font-weight: 600;
     border-left: 3px solid #f8eacd;
   }
 
@@ -154,7 +154,37 @@
     content: "";
     display: block;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(215, 164, 125, 0.25), transparent);
+    background: linear-gradient(90deg, transparent 20%, var(--color-primary), transparent 80%);
     margin-top: 6px;
   }
+}
+
+
+.navLink {
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--color-text);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transition:
+    background 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1),
+    color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.navLink:hover {
+  background: var(--glass-bg);
+  color: var(--color-secondary);
+  transform: translateY(-2px);
+}
+.navLink *:active {
+  transform: translateY(0) scale(0.98);
+}
+.navLink *:hover .externalIcon {
+  opacity: 1;
+  transform: translate(3px, -3px);
+}
+.navLink > * {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-xs);
 }

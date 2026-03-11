@@ -15,11 +15,7 @@
   background: transparent;
 }
 /* Default shape appearance in color mode: hide original fills until revealed */
-.colorMode .viewport svg path:not(.coloredRegion),
-.colorMode .viewport svg rect:not(.coloredRegion),
-.colorMode .viewport svg circle:not(.coloredRegion),
-.colorMode .viewport svg polygon:not(.coloredRegion),
-.colorMode .viewport svg ellipse:not(.coloredRegion) {
+.colorMode .viewport svg *:not(.coloredRegion) {
   fill: white;
   cursor: pointer;
   transition: 150ms ease;

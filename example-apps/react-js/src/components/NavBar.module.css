@@ -44,33 +44,6 @@
   transform: rotate(12deg) scale(1.08);
 }
 
-/* ===== NAV LINK (base) ===== */
-.navLink {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--color-text);
-  text-decoration: none;
-  border-radius: var(--radius-md);
-  transition:
-    background 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
-    transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1),
-    color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-}
-
-.navLink:hover {
-  background: var(--glass-bg);
-  color: var(--color-secondary);
-  transform: translateY(-2px);
-}
-
-.navLink:active {
-  transform: translateY(0) scale(0.98);
-}
-
 /* Active state (desktop and mobile both share this appearance; mobile overrides can tweak colors) */
 .active {
   background: rgba(106, 56, 23, 0.15);
@@ -94,21 +67,9 @@
     opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-.navLink:hover .externalIcon {
-  opacity: 1;
-  transform: translate(3px, -3px);
-}
-
 /* Theme Toggle in nav */
 .themeToggle {
   display: flex;
   align-items: center;
   margin-left: var(--spacing-sm);
-}
-
-/* small helper so inline nav (desktop) spacing looks right */
-.navListInlineShim {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
 }

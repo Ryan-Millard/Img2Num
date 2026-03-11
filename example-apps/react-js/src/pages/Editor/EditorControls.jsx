@@ -1,8 +1,9 @@
 import GlassSwitch from "@components/GlassSwitch";
 import Tooltip from "@components/Tooltip";
 import { useMemo } from "react";
-import { Eye, Brush, Download, Copy, RotateCcw } from "lucide-react";
+import { Ellipsis, Eye, Brush, Download, Copy, RotateCcw } from "lucide-react";
 import styles from "./EditorControls.module.css";
+import HamburgerMenu from "@components/HamburgerMenu";
 
 const EditorControls = ({
   svg,
@@ -34,62 +35,67 @@ const EditorControls = ({
   if (!svg) return null;
 
   return (
-    <div className={styles.container}>
-      <span className="flex-center gap-xl">
-        <Tooltip content="Download original SVG file">
-          <a
-            type="button"
-            className="flex-center gap-sm"
-            href={svgUrl}
-            download={`${fileName}.svg`}
-          >
-            <Download />
-            Original SVG
-          </a>
-        </Tooltip>
+    <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
+      <HamburgerMenu className={styles.hamburger} CloseMenuIcon={<Ellipsis />}>
+        <li>
+          <Tooltip content="Download original SVG file">
+            <a
+              type="button"
+              href={svgUrl}
+              download={`${fileName}.svg`}
+            >
+              <Download />
+              <span>Original SVG</span>
+            </a>
+          </Tooltip>
+        </li>
 
-        <Tooltip content="Download raw SVG as text file">
-          <a
-            type="button"
-            className="flex-center gap-sm"
-            onClick={() => download(svg, `${fileName}-raw.txt`, "text/plain")}
-          >
-            <Download />
-            Raw Text
-          </a>
-        </Tooltip>
+        <li>
+          <Tooltip content="Download raw SVG as text file">
+            <a
+              type="button"
+              onClick={() => download(svg, `${fileName}-raw.txt`, "text/plain")}
+            >
+              <Download />
+              Raw Text
+            </a>
+          </Tooltip>
+        </li>
 
-        <Tooltip content="Copy SVG code to clipboard">
-          <a
-            type="button"
-            className="flex-center gap-sm"
-            onClick={() => navigator.clipboard.writeText(svg)}
-          >
-            <Copy />
-            Copy SVG
-          </a>
-        </Tooltip>
-      </span>
+        <li>
+          <Tooltip content="Copy SVG code to clipboard">
+            <a
+              type="button"
+              onClick={() => navigator.clipboard.writeText(svg)}
+            >
+              <Copy />
+              Copy SVG
+            </a>
+          </Tooltip>
+        </li>
 
-      <span className="flex-center gap-xl">
-        <Tooltip content="Reset all colored shapes">
-          <a
-            type="button"
-            className="flex-center gap-sm"
-            onClick={onResetColors}
-          >
-            <RotateCcw />
-            Reset Progress
-          </a>
-        </Tooltip>
+        <li>
+          <Tooltip content="Reset all colored shapes">
+            <a
+              type="button"
+              className="flex-center gap-sm"
+              onClick={onResetColors}
+            >
+              <RotateCcw />
+              <span>Restart</span>
+            </a>
+          </Tooltip>
+        </li>
 
-        <GlassSwitch
-          isOn={isColorMode}
-          onChange={() => setIsColorMode((prev) => !prev)}
-          ariaLabel={`Switch to ${isColorMode ? "preview" : "color"} mode`}
-          thumbContent={isColorMode ? <Eye /> : <Brush />}
-        />
-      </span>
+        <li>
+          <GlassSwitch
+            isOn={isColorMode}
+            onChange={() => setIsColorMode((prev) => !prev)}
+            ariaLabel={`Switch to ${isColorMode ? "preview" : "color"} mode`}
+            thumbContent={isColorMode ? <Eye /> : <Brush />}
+          />
+        </li>
+      </HamburgerMenu>
     </div>
   );
 };

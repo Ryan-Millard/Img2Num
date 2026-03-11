@@ -5,6 +5,8 @@ import styles from "./HamburgerMenu.module.css";
 
 export default function HamburgerMenu({
   children,
+  className = "",
+  style = {},
   OpenMenuIcon = <X size={20} />,
   CloseMenuIcon = <Menu size={20} />,
 }) {
@@ -22,6 +24,18 @@ export default function HamburgerMenu({
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
+  }, [isOpen]);
+
+  // Close when clicking outside
+  useEffect(() => {
+    if (!isOpen) return;
+    const onClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        close();
+      }
+    };
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
   }, [isOpen]);
 
   // close on navigation (optional): when any link inside menu is clicked, close it.
@@ -55,10 +69,15 @@ export default function HamburgerMenu({
       <ul
         id="nav-menu"
         ref={menuRef}
-        className={`${styles.navList} ${isOpen ? styles.open : ""}`}
+        className={`${styles.navList} ${isOpen ? styles.open : ""} ${className}`}
+        style={style}
         role="menubar"
       >
-        {children}
+        {React.Children.map(children, (child) =>
+          React.cloneElement(child, {
+            className: `${styles.navLink}`
+          })
+        )}
       </ul>
     </>
   );

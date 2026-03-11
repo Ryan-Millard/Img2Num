@@ -44,7 +44,7 @@ export default function NavBar() {
               <Link
                 to={path}
                 role="menuitem"
-                className={`${styles.navLink} ${pathname === path ? styles.active : ""}`}
+                className={pathname === path ? styles.active : ""}
               >
                 {React.createElement(icon, { size: 16 })}
                 <span>{label}</span>
@@ -56,7 +56,7 @@ export default function NavBar() {
         {EXTERNAL_LINKS.map(({ href, label, icon, tooltip }) => (
           <li key={href} role="none">
             <Tooltip content={`${tooltip} (opens in a new tab)`}>
-              <a href={href} target="_blank" rel="noopener noreferrer" role="menuitem" className={styles.navLink}>
+              <a href={href} target="_blank" rel="noopener noreferrer" role="menuitem">
                 {React.createElement(icon, { size: 16 })}
                 <span>{label}</span>
                 <SquareArrowOutUpRight size={12} className={styles.externalIcon} />
