@@ -1,7 +1,7 @@
 import GlassSwitch from "@components/GlassSwitch";
 import Tooltip from "@components/Tooltip";
 import { useMemo } from "react";
-import { Ellipsis, Eye, Brush, Download, Copy, RotateCcw } from "lucide-react";
+import { Ellipsis, Eye, Brush, Printer, Download, Copy, RotateCcw } from "lucide-react";
 import styles from "./EditorControls.module.css";
 import HamburgerMenu from "@components/HamburgerMenu";
 
@@ -70,6 +70,37 @@ const EditorControls = ({
             >
               <Copy />
               Copy SVG
+            </a>
+          </Tooltip>
+        </li>
+
+        <li>
+          <Tooltip content="Print SVG">
+            <a
+              type="button"
+              onClick={() => {
+                const iframe = document.createElement("iframe");
+                iframe.style.position = "absolute";
+                iframe.style.width = "0";
+                iframe.style.height = "0";
+                iframe.style.border = "0";
+                document.body.appendChild(iframe);
+
+                const doc = iframe.contentWindow.document;
+                doc.open();
+                doc.write(svg);
+                doc.close();
+
+                // Give browser a moment to render
+                setTimeout(() => {
+                  iframe.contentWindow.focus();
+                  iframe.contentWindow.print();
+                  document.body.removeChild(iframe);
+                }, 100);
+              }}
+            >
+              <Download /> {/* Replace with Printer icon if desired */}
+              <span>Print</span>
             </a>
           </Tooltip>
         </li>
