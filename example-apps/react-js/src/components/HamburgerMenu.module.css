@@ -32,13 +32,9 @@
 .navList {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
   list-style: none;
   margin: 0;
   padding: 0;
-  * {
-    color: var(--color-text);
-  }
 }
 
 /* The open class only affects mobile dropdown visibility */
@@ -98,7 +94,7 @@
   }
 
   /* Tweak descendant anchor/link styles for mobile (these target plain <a> / link elements inside the menu)
-     This ensures mobile-specific visual changes apply regardless of which CSS module provided the .navLink class.
+     This ensures mobile-specific visual changes apply regardless of which CSS module provided the .button class.
   */
   #nav-menu a,
   #nav-menu a:link,
@@ -114,41 +110,6 @@
     text-decoration: none;
   }
 
-  #nav-menu a svg:first-child {
-    opacity: 0.6;
-    transition:
-      opacity 0.25s ease,
-      color 0.25s ease;
-  }
-
-  #nav-menu a:hover {
-    background: rgba(248, 234, 205, 0.1);
-    color: #f8eacd;
-    transform: none;
-  }
-
-  #nav-menu a:hover svg:first-child {
-    opacity: 1;
-    color: var(--color-secondary);
-  }
-
-  #nav-menu a:active {
-    background: rgba(248, 234, 205, 0.15);
-    transform: scale(0.98);
-  }
-
-  /* active link appearance on mobile (left border highlight) */
-  #nav-menu a.active {
-    background: linear-gradient(135deg, rgba(248, 234, 205, 0.25) 0%, rgba(215, 164, 125, 0.2) 100%);
-    color: #f8eacd;
-    border-left: 3px solid #f8eacd;
-  }
-
-  #nav-menu a.active svg:first-child {
-    opacity: 1;
-    color: #f8eacd;
-  }
-
   /* small divider after the internal links group (if you rely on nth-child split) */
   .navList li:nth-child(3)::after {
     content: "";
@@ -157,34 +118,4 @@
     background: linear-gradient(90deg, transparent 20%, var(--color-primary), transparent 80%);
     margin-top: 6px;
   }
-}
-
-
-.navLink {
-  padding: var(--spacing-sm) var(--spacing-md);
-  color: var(--color-text);
-  text-decoration: none;
-  border-radius: var(--radius-md);
-  transition:
-    background 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
-    transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1),
-    color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-}
-.navLink:hover {
-  background: var(--glass-bg);
-  color: var(--color-secondary);
-  transform: translateY(-2px);
-}
-.navLink *:active {
-  transform: translateY(0) scale(0.98);
-}
-.navLink *:hover .externalIcon {
-  opacity: 1;
-  transform: translate(3px, -3px);
-}
-.navLink > * {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--spacing-xs);
 }

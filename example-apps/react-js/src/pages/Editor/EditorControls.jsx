@@ -75,83 +75,72 @@ const EditorControls = ({
 
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-      <div className={`flex-space-evenly gap-sm ${styles.historyContainer}`}>
-        <Tooltip content="Undo last change">
-          <Undo size={"2em"} onClick={onUndo} className="anchor-style" />
-        </Tooltip>
-
-        <Tooltip content="Redo last change">
-          <Redo size={"2em"} onClick={onRedo} className="anchor-style" />
-        </Tooltip>
-
+      <div className="flex-space-evenly">
         <Tooltip content="Reset all colored shapes">
-          <a
-            type="button"
+          <button
             className="flex-center gap-sm"
             onClick={onReset}
           >
             <RotateCcw />
-            <span>Restart</span>
-          </a>
+          </button>
+        </Tooltip>
+
+        <Tooltip content="Undo last change">
+          <button onClick={onUndo}>
+            <Undo />
+          </button>
+        </Tooltip>
+
+        <Tooltip content="Redo last change">
+          <button onClick={onRedo}>
+            <Redo />
+          </button>
         </Tooltip>
       </div>
 
       <HamburgerMenu className={styles.hamburger} CloseMenuIcon={<Ellipsis />}>
         <li>
           <Tooltip content="Download original SVG file">
-            <a
-              type="button"
-              href={svgUrl}
-              download={`${fileName}.svg`}
-            >
+            <span href={svgUrl} download={`${fileName}.svg`}>
               <Download />
               <span>Original SVG</span>
-            </a>
+            </span>
           </Tooltip>
         </li>
 
         <li>
           <Tooltip content="Download raw SVG as text file">
-            <a
-              type="button"
-              onClick={() => download(svg, `${fileName}-raw.txt`, "text/plain")}
-            >
+            <span onClick={() => download(svg, `${fileName}-raw.txt`, "text/plain")}>
               <Download />
               Raw Text
-            </a>
+            </span>
           </Tooltip>
         </li>
 
         <li>
           <Tooltip content="Copy SVG code to clipboard">
-            <a
-              type="button"
-              onClick={() => navigator.clipboard.writeText(svg)}
-            >
+            <span onClick={() => navigator.clipboard.writeText(svg)}>
               <Copy />
               Copy SVG
-            </a>
+            </span>
           </Tooltip>
         </li>
 
         <li>
           <Tooltip content="Print SVG">
-            <a
-              type="button"
-              onClick={printSvg}
-            >
+            <span onClick={printSvg} >
               <Download /> {/* Replace with Printer icon if desired */}
               <span>Print</span>
-            </a>
+            </span>
           </Tooltip>
         </li>
 
         <li>
           <Tooltip content="Share SVG">
-            <a type="button" onClick={shareSvg}>
+            <span onClick={shareSvg}>
               <Share2 />
               <span>Share</span>
-            </a>
+            </span>
           </Tooltip>
         </li>
 

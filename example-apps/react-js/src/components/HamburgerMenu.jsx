@@ -75,7 +75,7 @@ export default function HamburgerMenu({
       >
         {React.Children.map(children, (child) =>
           React.cloneElement(child, {
-            className: `${styles.navLink}`
+            className: "button"
           })
         )}
       </ul>
