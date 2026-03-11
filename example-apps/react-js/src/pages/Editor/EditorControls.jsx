@@ -1,16 +1,18 @@
 import GlassSwitch from "@components/GlassSwitch";
 import Tooltip from "@components/Tooltip";
 import { useMemo } from "react";
-import { Ellipsis, Eye, Brush, Printer, Download, Copy, RotateCcw, Share2 } from "lucide-react";
+import { Undo, Redo, Ellipsis, Eye, Brush, Printer, Download, Copy, RotateCcw, Share2 } from "lucide-react";
 import styles from "./EditorControls.module.css";
 import HamburgerMenu from "@components/HamburgerMenu";
 
 const EditorControls = ({
   svg,
   fileName,
-  isColorMode,
-  setIsColorMode,
-  onResetColors,
+  isColorMode = false,
+  setIsColorMode = () => {},
+  onReset = () => {},
+  onUndo = () => {},
+  onRedo = () => {},
 }) => {
   const svgUrl = useMemo(() => {
     if (!svg) return null;
@@ -72,7 +74,28 @@ const EditorControls = ({
   if (!svg) return null;
 
   return (
-    <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div className={`flex-space-evenly gap-sm ${styles.historyContainer}`}>
+        <Tooltip content="Undo last change">
+          <Undo size={"2em"} onClick={onUndo} className="anchor-style" />
+        </Tooltip>
+
+        <Tooltip content="Redo last change">
+          <Redo size={"2em"} onClick={onRedo} className="anchor-style" />
+        </Tooltip>
+
+        <Tooltip content="Reset all colored shapes">
+          <a
+            type="button"
+            className="flex-center gap-sm"
+            onClick={onReset}
+          >
+            <RotateCcw />
+            <span>Restart</span>
+          </a>
+        </Tooltip>
+      </div>
+
       <HamburgerMenu className={styles.hamburger} CloseMenuIcon={<Ellipsis />}>
         <li>
           <Tooltip content="Download original SVG file">
@@ -128,19 +151,6 @@ const EditorControls = ({
             <a type="button" onClick={shareSvg}>
               <Share2 />
               <span>Share</span>
-            </a>
-          </Tooltip>
-        </li>
-
-        <li>
-          <Tooltip content="Reset all colored shapes">
-            <a
-              type="button"
-              className="flex-center gap-sm"
-              onClick={onResetColors}
-            >
-              <RotateCcw />
-              <span>Restart</span>
             </a>
           </Tooltip>
         </li>

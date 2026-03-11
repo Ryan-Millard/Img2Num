@@ -92,3 +92,7 @@
     min-height: 240px;
   }
 }
+
+.historyContainer {
+  width: 100%;
+}

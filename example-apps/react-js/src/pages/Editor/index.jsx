@@ -15,6 +15,10 @@ export default function Editor() {
   const [svgElements] = useState(() => (svg ? parse(svg) : null));
   const [isColorMode, setIsColorMode] = useState(true);
 
+  const [history, setHistory] = useState([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const [initialSnapshot, setInitialSnapshot] = useState([]);
+
   const viewportRef = useRef(null);
   const innerRef = useRef(null);
 
@@ -213,17 +217,48 @@ export default function Editor() {
       if (!shape || !svgRoot.contains(shape)) return;
 
       shape.classList.add(styles.coloredRegion);
+
+      // Record history snapshot
+      const currentShapes = Array.from(svgRoot.querySelectorAll(`.${styles.coloredRegion}`)).map(el => el.dataset.id);
+
+
+      const newHistory = history.slice(0, historyIndex + 1); // drop redo steps
+      newHistory.push(currentShapes);
+
+      setHistory(newHistory);
+      setHistoryIndex(newHistory.length - 1);
     }
   };
 
-  const resetColors = () => {
+  const undo = () => {
+    if (historyIndex <= 0) return;
+
+    const newIndex = historyIndex - 1;
+    setHistoryIndex(newIndex);
+    restoreHistory(history[newIndex]);
+  };
+
+  const redo = () => {
+    if (historyIndex >= history.length - 1) return;
+
+    const newIndex = historyIndex + 1;
+    setHistoryIndex(newIndex);
+    restoreHistory(history[newIndex]);
+  };
+
+  const restoreHistory = (snapshot) => {
     const svgRoot = innerRef.current?.querySelector("svg");
     if (!svgRoot) return;
 
-    const shapes = svgRoot.querySelectorAll(SHAPE_SELECTOR);
+    // Remove all colored classes
+    svgRoot.querySelectorAll(`.${styles.coloredRegion}`).forEach(el => {
+      el.classList.remove(styles.coloredRegion);
+    });
 
-    shapes.forEach((shape) => {
-      shape.classList.remove(styles.coloredRegion);
+    // Apply snapshot
+    snapshot.forEach(id => {
+      const el = svgRoot.querySelector(`[data-id="${id}"]`);
+      if (el) el.classList.add(styles.coloredRegion);
     });
   };
 
@@ -243,6 +278,33 @@ export default function Editor() {
     };
   }, []);
 
+  // Keybindings
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.ctrlKey && e.key === "z") undo();
+      if (e.ctrlKey && e.key === "y") redo();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [historyIndex, history]);
+
+  useEffect(() => {
+    const svgRoot = innerRef.current?.querySelector("svg");
+    if (!svgRoot) return;
+
+    const shapes = svgRoot.querySelectorAll(SHAPE_SELECTOR);
+    shapes.forEach((shape, i) => {
+      if (!shape.dataset.id) {
+        shape.dataset.id = `shape-${i}`;
+      }
+    });
+
+    // Store the empty initial snapshot
+    setInitialSnapshot([]);
+    setHistory([[]]); // history starts with empty selection
+    setHistoryIndex(0);
+  }, [svgElements]);
+
   if (!svg) {
     return (
       <GlassCard className="text-center p-8">
@@ -251,6 +313,7 @@ export default function Editor() {
       </GlassCard>
     );
   }
+
 
   return (
     <>
@@ -262,7 +325,9 @@ export default function Editor() {
           fileName={"edited-image"}
           isColorMode={isColorMode}
           setIsColorMode={setIsColorMode}
-          onResetColors={resetColors}
+          onReset={() => restoreHistory(initialSnapshot)}
+          onUndo={undo}
+          onRedo={redo}
         />
 
         <div className={styles.hint}>
