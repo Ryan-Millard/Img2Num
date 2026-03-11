@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import parse from "html-react-parser";
 import { useLocation } from "react-router-dom";
 import GlassCard from "@components/GlassCard";
+import GlassModal from "@components/GlassModal";
 import styles from "./Editor.module.css";
 import EditorHelmet from "./EditorHelmet";
 import EditorControls from "./EditorControls";
@@ -18,6 +19,8 @@ export default function Editor() {
   const [history, setHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [initialSnapshot, setInitialSnapshot] = useState([]);
+
+  const [modalOpen, setModalOpen] = useState(false);
 
   const viewportRef = useRef(null);
   const innerRef = useRef(null);
@@ -325,10 +328,32 @@ export default function Editor() {
           fileName={"edited-image"}
           isColorMode={isColorMode}
           setIsColorMode={setIsColorMode}
-          onReset={() => restoreHistory(initialSnapshot)}
+          onReset={() => setModalOpen(true)}
           onUndo={undo}
           onRedo={redo}
         />
+
+        <GlassModal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          size="sm"
+        >
+          <h2>Reset your progress</h2>
+          <p>If you click confirm, all of your progress will be reset and you will start coloring in the image from scratch.</p>
+          <div className="flex-center">
+            <button onClick={() => setModalOpen(false)} className="button">
+              Cancel
+            </button>
+            <button onClick={() => {
+                restoreHistory(initialSnapshot);
+                setModalOpen(false);
+              }}
+              className="button"
+            >
+              Confirm
+            </button>
+          </div>
+        </GlassModal>
 
         <div className={styles.hint}>
           Click shapes to reveal their original colour.
