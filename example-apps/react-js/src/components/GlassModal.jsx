@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import PropTypes from "prop-types";
 import GlassCard from "@components/GlassCard";
 import styles from "./GlassModal.module.css";
@@ -8,13 +9,12 @@ export default function GlassModal({
   isOpen,
   onClose,
   children,
-  size = "md", // sm | md | lg
+  size = "lg", // sm | md | lg | any CSS width
   showCloseButton = true,
   closeOnBackdropClick = true,
   className = "",
   style = {}
 }) {
-  // Handle ESC key
   useEffect(() => {
     const handleKey = (e) => {
       if (e.key === "Escape") onClose?.();
@@ -31,7 +31,12 @@ export default function GlassModal({
     }
   };
 
-  return (
+  const width = size === "sm" ? "300px"
+                : size === "md" ? "500px"
+                : size === "lg" ? "800px"
+                : size;
+
+  const modal = (
     <div
       className={styles.backdrop}
       onClick={handleBackdropClick}
@@ -40,7 +45,11 @@ export default function GlassModal({
       <GlassCard
         as="div"
         className={`${styles.modal} ${className}`}
-        style={{ ...style, width: size === "sm" ? "300px" : size === "md" ? "500px" : "800px" }}
+        style={{
+          flex: "0 0 auto",
+          width: width,
+          ...style,
+        }}
       >
         {showCloseButton && (
           <button
@@ -55,14 +64,6 @@ export default function GlassModal({
       </GlassCard>
     </div>
   );
-}
 
-GlassModal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired,
-  size: PropTypes.oneOf(["sm", "md", "lg"]),
-  showCloseButton: PropTypes.bool,
-  closeOnBackdropClick: PropTypes.bool,
-  className: PropTypes.string,
-};
+  return createPortal(modal, document.body);
+}

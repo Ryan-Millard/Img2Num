@@ -336,7 +336,6 @@ export default function Editor() {
         <GlassModal
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
-          size="sm"
         >
           <h2>Reset your progress</h2>
           <p>If you click confirm, all of your progress will be reset and you will start coloring in the image from scratch.</p>

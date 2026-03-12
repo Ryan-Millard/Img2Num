@@ -17,6 +17,14 @@ const EditorControls = ({
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
+  const [copied, setCopied] = useState(false);
+  const copySvg = () => {
+    navigator.clipboard.writeText(svg).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500); // hide after 1.5s
+    });
+  };
+
   const svgUrl = useMemo(() => {
     if (!svg) return null;
     const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
@@ -77,19 +85,18 @@ const EditorControls = ({
   if (!svg) return null;
 
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <div className="flex-center flex-space-between glass">
         <GlassModal
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
-          size="sm"
         >
           <h2>Download Image</h2>
           <div className="flex-column container" style={{ maxWidth: "max-content" }}>
             <Tooltip content="Download original SVG file">
-              <button href={svgUrl} download={`${fileName}.svg`} className="button">
+              <a href={svgUrl} download={`${fileName}.svg`} className="button">
                 <Download />
                 <span>Original SVG</span>
-              </button>
+              </a>
             </Tooltip>
 
             <Tooltip content="Download raw SVG as text file">
@@ -99,8 +106,8 @@ const EditorControls = ({
               </button>
             </Tooltip>
 
-            <Tooltip content="Copy SVG code to clipboard">
-              <button onClick={() => navigator.clipboard.writeText(svg)} className="button">
+            <Tooltip content={copied ? "Copied!" : "Copy SVG"}>
+              <button onClick={copySvg} className="button">
                 <Copy />
                 Copy SVG
               </button>
@@ -138,7 +145,7 @@ const EditorControls = ({
         </Tooltip>
       </div>
 
-      <HamburgerMenu className={styles.hamburger} CloseMenuIcon={<Ellipsis />}>
+      <HamburgerMenu className={`styles.hamburger`} CloseMenuIcon={<Ellipsis />}>
         <li>
           <Tooltip content="Share the image with others">
             <span onClick={() => setModalOpen(true)}>
