@@ -15,7 +15,7 @@ file(GLOB WGSL_SHADERS ${CMAKE_CURRENT_SOURCE_DIR}/src/resources/*.wgsl)
 message(STATUS ${CMAKE_BINARY_DIR})
 add_custom_command(
     OUTPUT ${CMAKE_BINARY_DIR}/embedded_shaders.h
-    COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/tools/embed_shaders.py
+    COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/tools/embed_shaders.py
             ${CMAKE_CURRENT_SOURCE_DIR}/src/resources
             ${CMAKE_BINARY_DIR}/embedded_shaders.h
     DEPENDS ${WGSL_SHADERS}
