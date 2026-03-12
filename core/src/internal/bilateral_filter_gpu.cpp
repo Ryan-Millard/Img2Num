@@ -97,14 +97,14 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
 
     switch (color_space) {
         case COLOR_SPACE_OPTION_RGB : {
-            pipeline = GPU::getClassInstance().createPipeline("./resources/bilateral_filter_rgb.wgsl", "BilateralFilterShader");
+            pipeline = GPU::getClassInstance().createPipeline("bilateral_filter_rgb", "BilateralFilterShader");
             break;
         }
         case COLOR_SPACE_OPTION_CIELAB: {
             // also requires RGB-CIELAB conversion shaders
-            pipeline = GPU::getClassInstance().createPipeline("./resources/bilateral_filter_lab.wgsl", "BilateralFilterShader");
-            pipelineRGB2LAB = GPU::getClassInstance().createPipeline("./resources/rgb2cielab.wgsl", "rgb2lab");
-            pipelineLAB2RGB = GPU::getClassInstance().createPipeline("./resources/cielab2rgb.wgsl", "lab2rgb");
+            pipeline = GPU::getClassInstance().createPipeline("bilateral_filter_lab", "BilateralFilterShader");
+            pipelineRGB2LAB = GPU::getClassInstance().createPipeline("rgb2cielab", "rgb2lab");
+            pipelineLAB2RGB = GPU::getClassInstance().createPipeline("cielab2rgb", "lab2rgb");
             break;
         }
     }

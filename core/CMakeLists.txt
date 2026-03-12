@@ -10,12 +10,26 @@ file(GLOB_RECURSE CORE_SRC
 
 add_library(Img2Num ${CORE_SRC})
 
+file(GLOB WGSL_SHADERS ${CMAKE_CURRENT_SOURCE_DIR}/src/resources/*.wgsl)
+
+message(STATUS ${CMAKE_BINARY_DIR})
+add_custom_command(
+    OUTPUT ${CMAKE_BINARY_DIR}/embedded_shaders.h
+    COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/tools/embed_shaders.py
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/resources
+            ${CMAKE_BINARY_DIR}/embedded_shaders.h
+    DEPENDS ${WGSL_SHADERS}
+)
+
+set_property(SOURCE ${CORE_SRC} APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_BINARY_DIR}/embedded_shaders.h)
+
 target_include_directories(Img2Num
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/img2num>
   PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
+    ${CMAKE_BINARY_DIR}
 )
 
 if (EMSCRIPTEN)

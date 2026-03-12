@@ -45,16 +45,6 @@ set(COMMON_FLAGS
 target_compile_options(img2num_wasm PRIVATE -msimd128 "--use-port=emdawnwebgpu")
 target_link_options(img2num_wasm PRIVATE ${COMMON_FLAGS} -msimd128 "--use-port=emdawnwebgpu")
 
-file(GLOB_RECURSE SHADER_FILES
-  "../../core/src/resources/*.wgsl"
-)
-
-foreach (file ${SHADER_FILES})
-get_filename_component(file_name ${file} NAME)
-message(${file_name})
-target_link_options(img2num_wasm PRIVATE "SHELL:--embed-file=${file}@./resources/${file_name}")
-endforeach()
-
 # Build type flags
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_options(img2num_wasm PRIVATE -O2 -g4)

@@ -9,16 +9,6 @@ set(C_BINDINGS_SRC
 
 add_library(CImg2Num ${C_BINDINGS_SRC})
 
-file(GLOB_RECURSE SHADER_FILES
-  "../../core/src/resources/*.wgsl"
-)
-
-foreach (file ${SHADER_FILES})
-get_filename_component(file_name ${file} NAME)
-message(${file_name})
-configure_file(${file} ./resources/${file_name} COPYONLY)
-endforeach()
-
 # Link against the core C++ library
 target_link_libraries(CImg2Num PRIVATE Img2Num)
 

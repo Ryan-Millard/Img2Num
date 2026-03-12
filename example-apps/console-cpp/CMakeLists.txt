@@ -18,15 +18,5 @@ target_include_directories(console_cpp_app PRIVATE
   ${CMAKE_SOURCE_DIR}/third_party
 )
 
-file(GLOB_RECURSE SHADER_FILES
-  "${Img2Num_BINARY_DIR}/bindings/c/resources/*.wgsl"
-)
-
-foreach (file ${SHADER_FILES})
-get_filename_component(file_name ${file} NAME)
-message(${file_name})
-configure_file(${file} ./resources/${file_name} COPYONLY)
-endforeach()
-
 # Link against the core Img2Num library
 target_link_libraries(console_cpp_app PRIVATE Img2Num)
