@@ -11,6 +11,11 @@
 #include <iterator>
 #include <iostream>
 #include <map>
+#include <climits>
+#include <unistd.h>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 class GPU {
 
@@ -59,7 +64,20 @@ class GPU {
         GPU& operator=(GPU&&) = delete;
 
         std::string readWGSLFile(const std::string& filepath) {
-            auto it = loadedShaders.find(filepath);
+            fs::path _filepath = filepath;
+            // must make sure we are reading a filepath relative to executable not the user's working dir
+            #if !defined(__EMSCRIPTEN__)
+            char path[PATH_MAX + 1];
+            ssize_t length = readlink("/proc/self/exe", path, PATH_MAX);
+            path[length] = '\0';
+            std::cout << path << std::endl;
+
+            std::string path_str(path);
+            fs::path path_fs = path_str;
+            _filepath = path_fs.parent_path() / _filepath;
+            #endif
+
+            auto it = loadedShaders.find(_filepath.string());
             if (it != loadedShaders.end()) {
                 std::cout << "using cached shader" << std::endl;
                 return it->second;
@@ -67,14 +85,14 @@ class GPU {
             else {
                 std::cout << "loading shader from file" << std::endl;
                 
-                std::ifstream file(filepath, std::ios::in);
+                std::ifstream file(_filepath.string(), std::ios::in);
                 if (!file.is_open()) {
-                    std::cerr << "Failed to open file: " << filepath << std::endl;
+                    std::cerr << "Failed to open file: " << _filepath.string() << std::endl;
                     return ""; // Or throw an exception
                 }
                 std::string shaderSource{std::istreambuf_iterator<char>{file}, {}};
                 
-                loadedShaders[filepath] = shaderSource;
+                loadedShaders[_filepath.string()] = shaderSource;
                 file.close();
                 return shaderSource;
             }
