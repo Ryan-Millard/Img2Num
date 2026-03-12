@@ -284,8 +284,17 @@ export default function Editor() {
   // Keybindings
   useEffect(() => {
     const handler = (e) => {
-      if (e.ctrlKey && e.key === "z") undo();
-      if (e.ctrlKey && e.key === "y") redo();
+      const mod = e.ctrlKey || e.metaKey;
+      if (!mod) {
+        return;
+      }
+
+      e.preventDefault();
+      if (e.key === "z") {
+        undo();
+      } else if (e.key === "y") {
+        redo();
+      }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
