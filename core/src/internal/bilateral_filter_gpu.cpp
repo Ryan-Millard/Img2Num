@@ -45,8 +45,8 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     std::cout << "begin wgpu portion" << std::endl;
     // 1. Create Input Texture
     wgpu::TextureDescriptor texDesc = {};
-    texDesc.size = { (uint32_t)width, (uint32_t)height, 1 };
-    int bytesPerPixel = 4;
+    texDesc.size = { static_cast<uint32_t>(width), static_cast<uint32_t>(height), 1 };
+    int bytesPerPixel{4};
     texDesc.format = wgpu::TextureFormat::RGBA8Unorm;
     texDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst;
     wgpu::Texture inputTexture = GPU::getClassInstance().get_device().CreateTexture(&texDesc);
@@ -200,7 +200,7 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
 
     // 8. Prepare for Readback (Copy Texture -> Buffer)
     // We cannot read textures directly on CPU. We must copy to a MapRead buffer.
-    uint32_t alignedBytesPerRow = GPU::getAlignedBytesPerRow(width, (uint32_t)bytesPerPixel);
+    uint32_t alignedBytesPerRow = GPU::getAlignedBytesPerRow(width, static_cast<uint32_t>(bytesPerPixel));
     uint32_t bufferSize = alignedBytesPerRow * height;
 
     wgpu::BufferDescriptor readBufDesc = {};

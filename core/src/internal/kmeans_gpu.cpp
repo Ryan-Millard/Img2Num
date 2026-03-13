@@ -53,7 +53,7 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
     // (Assuming 'device' and 'queue' are globally available or passed in)
     // 1. Upload Image Texture
     wgpu::TextureDescriptor texDesc = {};
-    texDesc.size = { (uint32_t)width, (uint32_t)height, 1 };
+    texDesc.size = { static_cast<uint32_t>(width), static_cast<uint32_t>(height), 1 };
     texDesc.format = wgpu::TextureFormat::RGBA32Float;
     texDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst;
     texDesc.label = "inputTextureInit";
@@ -147,13 +147,13 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT> &pixels,
         if constexpr (std::is_same_v<PixelT, ImageLib::LABAPixel<float>>) {
           params = CentroidParams{
               c.l / 255.0f, c.a / 255.0f, c.b / 255.0f, 1.0f,
-              (uint32_t)width
+              static_cast<uint32_t>(width)
           };
         }
         else {
           params = CentroidParams{
               c.red / 255.0f, c.green / 255.0f, c.blue / 255.0f, 1.0f,
-              (uint32_t)width
+              static_cast<uint32_t>(width)
           };
         }
         
@@ -264,10 +264,10 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
 
   // Step 3: Run k-means iterations
 
-  int bytesPerPixel = 16; // float pixels
+  int bytesPerPixel{16}; // float pixels
 
   wgpu::TextureDescriptor texDesc = {};
-  texDesc.size = { (uint32_t)width, (uint32_t)height, 1 };
+  texDesc.size = { static_cast<uint32_t>(width), static_cast<uint32_t>(height), 1 };
   texDesc.format = wgpu::TextureFormat::RGBA32Float;
   texDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst;
   texDesc.label = "inputTexture";
@@ -306,7 +306,7 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
 
   // centroids
   wgpu::TextureDescriptor centroidDesc = {};
-  centroidDesc.size = { (uint32_t)k, 1, 1 };
+  centroidDesc.size = { static_cast<uint32_t>(k), 1, 1 };
   centroidDesc.format = wgpu::TextureFormat::RGBA32Float;
   centroidDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::StorageBinding | wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
   centroidDesc.label = "centroidTexture";
@@ -347,14 +347,14 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
 
   // labels
   wgpu::TextureDescriptor labelDesc = {};
-  labelDesc.size = { (uint32_t)width, (uint32_t)height, 1 };
+  labelDesc.size = { static_cast<uint32_t>(width), static_cast<uint32_t>(height), 1 };
   labelDesc.format = wgpu::TextureFormat::RGBA32Uint;
   labelDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::StorageBinding | wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
   labelDesc.label = "labelTexture";
   wgpu::Texture labelTexture = GPU::getClassInstance().get_device().CreateTexture(&labelDesc);
 
   // params
-  Params params = { (uint32_t)num_pixels, (uint32_t)k};
+  Params params = { static_cast<uint32_t>(num_pixels), static_cast<uint32_t>(k)};
   wgpu::BufferDescriptor bufDesc = {};
   bufDesc.size = sizeof(Params);
   bufDesc.usage = wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst;
@@ -415,14 +415,14 @@ void kmeans_gpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels,
   uint32_t wgY = (height + 15) / 16;
 
   // Label Readback RGBA32Uint is 16 bytes/ pixel
-  uint32_t bytesPerRowLabels = GPU::getAlignedBytesPerRow(width, (uint32_t)bytesPerPixel);
+  uint32_t bytesPerRowLabels = GPU::getAlignedBytesPerRow(width, static_cast<uint32_t>(bytesPerPixel));
   wgpu::BufferDescriptor readLabelsDesc = {};
   readLabelsDesc.size = bytesPerRowLabels * height;
   readLabelsDesc.usage = wgpu::BufferUsage::MapRead | wgpu::BufferUsage::CopyDst;
   wgpu::Buffer readLabelsBuffer = GPU::getClassInstance().get_device().CreateBuffer(&readLabelsDesc);
   
   // Centroid Readback
-  uint32_t bytesPerRowCentroids = GPU::getAlignedBytesPerRow(width, (uint32_t)bytesPerPixel);
+  uint32_t bytesPerRowCentroids = GPU::getAlignedBytesPerRow(width, static_cast<uint32_t>(bytesPerPixel));
   wgpu::BufferDescriptor readCentroidsDesc = {};
   readCentroidsDesc.size = bytesPerRowCentroids; // Height is 1
   readCentroidsDesc.usage = wgpu::BufferUsage::MapRead | wgpu::BufferUsage::CopyDst;

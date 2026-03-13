@@ -194,6 +194,13 @@ class GPU {
             gpu_initialized = true;
             std::cout << "GPU Fully Initialized." << std::endl;
         };
+
+        ~GPU() {
+            device = nullptr;
+            adapter = nullptr;
+            queue = nullptr;
+            instance = nullptr;
+        };
 };
 
 #endif
