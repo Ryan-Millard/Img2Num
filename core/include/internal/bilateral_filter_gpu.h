@@ -1,6 +1,9 @@
 #ifndef BILATERAL_FILTER_GPU_H
 #define BILATERAL_FILTER_GPU_H
 
+#include <cstddef>
+#include <cstdint>
+
 // Apply bilateral filter to an image.
 // The filter modifies the image buffer in-place.
 // Parameters:
