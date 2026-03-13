@@ -76,23 +76,23 @@ const WasmImageProcessor = () => {
 
       step(20);
       // NOTE: Gaussian blur destroys the sharp outlines first, preventing the Bilateral filter from detecting and preserving them
-      console.time("bilateralFilter")
+      console.time("bilateralFilter");
       const imgBilateralFiltered = await bilateralFilter({
         pixels: fileData.pixels,
         width,
         height,
       });
-      console.timeEnd("bilateralFilter")
+      console.timeEnd("bilateralFilter");
 
       step(70);
       // kmeansed pixels are unused - filtered pixels are better for findContours
-      console.time("kmeans")
+      console.time("kmeans");
       const { labels } = await kmeans({
         ...fileData,
         pixels: imgBilateralFiltered,
         num_colors: 16,
       });
-      console.timeEnd("kmeans")
+      console.timeEnd("kmeans");
 
       step(95);
       const { svg } = await findContours({

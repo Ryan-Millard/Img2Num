@@ -1,16 +1,17 @@
-#include "img2num.h"
-#include "internal/gpu.h"
 #include "internal/bilateral_filter_gpu.h"
-#include "internal/cielab.h"
 
 #include <algorithm>
-#include <cstddef>
-#include <cstdint>
 #include <climits>
 #include <cmath>
+#include <cstddef>
+#include <cstdint>
 #include <cstring>
-#include <vector>
 #include <iostream>
+#include <vector>
+
+#include "img2num.h"
+#include "internal/cielab.h"
+#include "internal/gpu.h"
 
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB{0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
@@ -19,23 +20,18 @@ static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
 struct FilterParams {
     float sigmaSpatial;
     float sigmaRange;
-    // std140 requires 16-byte alignment for structs/vec4s. 
-    // Two floats = 8 bytes. We likely need padding if this struct grows, 
+    // std140 requires 16-byte alignment for structs/vec4s.
+    // Two floats = 8 bytes. We likely need padding if this struct grows,
     // but for a standalone bind group of 2 floats, standard alignment usually suffices.
     // However, it is safer to pad to 16 bytes to be sure.
-    float _pad1; 
+    float _pad1;
     float _pad2;
 };
 
-void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
-                      double sigma_spatial, double sigma_range,
-                      uint8_t color_space) {
-    
-    if (sigma_spatial <= 0.0 || sigma_range <= 0.0 || width <= 0 || height <= 0)
-        return;
-    if (color_space != COLOR_SPACE_OPTION_CIELAB &&
-        color_space != COLOR_SPACE_OPTION_RGB)
-        return;
+void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double sigma_spatial,
+                          double sigma_range, uint8_t color_space) {
+    if (sigma_spatial <= 0.0 || sigma_range <= 0.0 || width <= 0 || height <= 0) return;
+    if (color_space != COLOR_SPACE_OPTION_CIELAB && color_space != COLOR_SPACE_OPTION_RGB) return;
 
     std::vector<uint8_t> result(width * height * 4, 255);
     std::vector<float> result_lab(width * height * 4, 0.0);
@@ -45,7 +41,7 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     std::cout << "begin wgpu portion" << std::endl;
     // 1. Create Input Texture
     wgpu::TextureDescriptor texDesc = {};
-    texDesc.size = { static_cast<uint32_t>(width), static_cast<uint32_t>(height), 1 };
+    texDesc.size = {static_cast<uint32_t>(width), static_cast<uint32_t>(height), 1};
     int bytesPerPixel{4};
     texDesc.format = wgpu::TextureFormat::RGBA8Unorm;
     texDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst;
@@ -58,10 +54,11 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     wgpu::TexelCopyBufferLayout layout = {};
     layout.offset = 0;
 
-    layout.bytesPerRow = width * bytesPerPixel; // Tightly packed for upload
+    layout.bytesPerRow = width * bytesPerPixel;  // Tightly packed for upload
     layout.rowsPerImage = height;
-    GPU::getClassInstance().get_queue().WriteTexture(&dst, image, bytesPerPixel * width * height, &layout, &texDesc.size);
-    
+    GPU::getClassInstance().get_queue().WriteTexture(&dst, image, bytesPerPixel * width * height,
+                                                     &layout, &texDesc.size);
+
     std::cout << "create output texture" << std::endl;
     // 2. Create Output Texture (Storage)
     wgpu::TextureDescriptor outDesc = texDesc;
@@ -70,21 +67,20 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
 
     // 2a. Intermediate textures for LAB if needed
     wgpu::TextureDescriptor descLab = texDesc;
-    descLab.format = wgpu::TextureFormat::RGBA32Float; // <--- CRITICAL
-    descLab.usage =
-        wgpu::TextureUsage::StorageBinding | wgpu::TextureUsage::TextureBinding;
+    descLab.format = wgpu::TextureFormat::RGBA32Float;  // <--- CRITICAL
+    descLab.usage = wgpu::TextureUsage::StorageBinding | wgpu::TextureUsage::TextureBinding;
     // input lab
     wgpu::Texture texLabRaw = GPU::getClassInstance().get_device().CreateTexture(&descLab);
     // filtered lab
     wgpu::Texture texLabFiltered = GPU::getClassInstance().get_device().CreateTexture(&descLab);
-    
+
     std::cout << "create buffer" << std::endl;
     // 3. Create Uniform Buffer
     float sr = static_cast<float>(sigma_range);
     /*if (color_space == COLOR_SPACE_OPTION_CIELAB) {
         sr /= 255.f;
     }*/
-    FilterParams params = { static_cast<float>(sigma_spatial), sr, 0.0f, 0.0f };
+    FilterParams params = {static_cast<float>(sigma_spatial), sr, 0.0f, 0.0f};
     wgpu::BufferDescriptor bufDesc = {};
     bufDesc.size = sizeof(FilterParams);
     bufDesc.usage = wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst;
@@ -96,13 +92,15 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     wgpu::ComputePipeline pipelineLAB2RGB;
 
     switch (color_space) {
-        case COLOR_SPACE_OPTION_RGB : {
-            pipeline = GPU::getClassInstance().createPipeline("bilateral_filter_rgb", "BilateralFilterShader");
+        case COLOR_SPACE_OPTION_RGB: {
+            pipeline = GPU::getClassInstance().createPipeline("bilateral_filter_rgb",
+                                                              "BilateralFilterShader");
             break;
         }
         case COLOR_SPACE_OPTION_CIELAB: {
             // also requires RGB-CIELAB conversion shaders
-            pipeline = GPU::getClassInstance().createPipeline("bilateral_filter_lab", "BilateralFilterShader");
+            pipeline = GPU::getClassInstance().createPipeline("bilateral_filter_lab",
+                                                              "BilateralFilterShader");
             pipelineRGB2LAB = GPU::getClassInstance().createPipeline("rgb2cielab", "rgb2lab");
             pipelineLAB2RGB = GPU::getClassInstance().createPipeline("cielab2rgb", "lab2rgb");
             break;
@@ -139,8 +137,9 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
     entries[2].size = sizeof(FilterParams);
     bindGroupDesc.entryCount = 3;
     bindGroupDesc.entries = entries;
-    wgpu::BindGroup bindGroup = GPU::getClassInstance().get_device().CreateBindGroup(&bindGroupDesc);
-    
+    wgpu::BindGroup bindGroup =
+        GPU::getClassInstance().get_device().CreateBindGroup(&bindGroupDesc);
+
     wgpu::BindGroup bindGroupRGB2LAB;
     wgpu::BindGroup bindGroupLAB2RGB;
 
@@ -171,7 +170,6 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
 
     // 7. Dispatch Compute Pass
     wgpu::CommandEncoder encoder = GPU::getClassInstance().get_device().CreateCommandEncoder();
-    
 
     if (color_space == COLOR_SPACE_OPTION_CIELAB) {
         wgpu::ComputePassEncoder pass1 = encoder.BeginComputePass();
@@ -200,7 +198,8 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
 
     // 8. Prepare for Readback (Copy Texture -> Buffer)
     // We cannot read textures directly on CPU. We must copy to a MapRead buffer.
-    uint32_t alignedBytesPerRow = GPU::getAlignedBytesPerRow(width, static_cast<uint32_t>(bytesPerPixel));
+    uint32_t alignedBytesPerRow =
+        GPU::getAlignedBytesPerRow(width, static_cast<uint32_t>(bytesPerPixel));
     uint32_t bufferSize = alignedBytesPerRow * height;
 
     wgpu::BufferDescriptor readBufDesc = {};
@@ -210,7 +209,7 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
 
     wgpu::TexelCopyTextureInfo srcTex = {};
     srcTex.texture = outputTexture;
-    
+
     wgpu::TexelCopyBufferInfo dstBuf = {};
     dstBuf.buffer = readBuffer;
     dstBuf.layout.bytesPerRow = alignedBytesPerRow;
@@ -233,51 +232,45 @@ void bilateral_filter_gpu(uint8_t *image, size_t width, size_t height,
         int height;
     };
 
+    readBuffer.MapAsync(wgpu::MapMode::Read, 0, bufferSize, wgpu::CallbackMode::AllowProcessEvents,
+                        [&](wgpu::MapAsyncStatus status, wgpu::StringView message) {
+                            if (status == wgpu::MapAsyncStatus::Success) {
+                                std::cout << "Map success: " << message.data << std::endl;
+                                // Get the raw pointer
+                                const uint8_t* mappedData =
+                                    (const uint8_t*)readBuffer.GetConstMappedRange(0, bufferSize);
+                                // copy to cpu buffer
+                                for (size_t y = 0; y < height; ++y) {
+                                    const uint8_t* rowPtr = mappedData + (y * alignedBytesPerRow);
+                                    for (size_t x = 0; x < width; ++x) {
+                                        const uint8_t* pixelPtr = rowPtr + (x * bytesPerPixel);
+                                        size_t dstIndex = 4 * (y * width + x);  // RGBA
 
-    readBuffer.MapAsync(
-        wgpu::MapMode::Read, 
-        0, 
-        bufferSize,
-        wgpu::CallbackMode::AllowProcessEvents,
-        [&](wgpu::MapAsyncStatus status, wgpu::StringView message) {
-            
-            if (status == wgpu::MapAsyncStatus::Success) {
-                std::cout << "Map success: " << message.data << std::endl;
-                // Get the raw pointer
-                const uint8_t* mappedData = (const uint8_t*)readBuffer.GetConstMappedRange(0, bufferSize);
-                // copy to cpu buffer
-                for (size_t y = 0; y < height; ++y) {
-                    const uint8_t* rowPtr = mappedData + (y * alignedBytesPerRow);
-                    for (size_t x = 0; x < width; ++x) {
-                        const uint8_t* pixelPtr = rowPtr + (x * bytesPerPixel);
-                        size_t dstIndex = 4 * (y * width + x); //RGBA
+                                        result[dstIndex] = *pixelPtr;
+                                        result[dstIndex + 1] = *(pixelPtr + 1);
+                                        result[dstIndex + 2] = *(pixelPtr + 2);
+                                        result[dstIndex + 3] = *(pixelPtr + 3);
+                                    }
+                                }
 
-                        result[dstIndex] = *pixelPtr;
-                        result[dstIndex + 1] = *(pixelPtr + 1);
-                        result[dstIndex + 2] = *(pixelPtr + 2);
-                        result[dstIndex + 3] = *(pixelPtr + 3);
-                    }
-                }
-                
-                readBuffer.Unmap();
-            } else {
-                // Handle error
-                std::cerr << "Map failed: " << message.data << std::endl;
-            }
+                                readBuffer.Unmap();
+                            } else {
+                                // Handle error
+                                std::cerr << "Map failed: " << message.data << std::endl;
+                            }
 
-            // CRITICAL: This modifies the 'waiting' variable in the outer scope
-            waiting = false; 
-        }
-    );
-    
+                            // CRITICAL: This modifies the 'waiting' variable in the outer scope
+                            waiting = false;
+                        });
+
     std::cout << "waiting " << waiting << std::endl;
-    
+
     while (waiting) {
-        // std::cout << "waiting, " << std::endl; 
+        // std::cout << "waiting, " << std::endl;
         GPU::getClassInstance().get_instance().ProcessEvents();
-        #if defined(__EMSCRIPTEN__)
+#if defined(__EMSCRIPTEN__)
         emscripten_sleep(10);
-        #endif
+#endif
     }
     std::cout << "done wgpu" << std::endl;
 

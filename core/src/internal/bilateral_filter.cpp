@@ -6,9 +6,9 @@
 #include <vector>
 
 #include "img2num.h"
-#include "internal/gpu.h"
-#include "internal/cielab.h"
 #include "internal/bilateral_filter_gpu.h"
+#include "internal/cielab.h"
+#include "internal/gpu.h"
 
 static constexpr double SIGMA_RADIUS_FACTOR{3.0};  // 3 standard deviations
 static constexpr int MAX_KERNEL_RADIUS{50};
@@ -154,7 +154,7 @@ void _process(const uint8_t *image, const std::vector<double> &cie_image,
 }
 
 void bilateral_filter_cpu(uint8_t *image, size_t width, size_t height, double sigma_spatial,
-                      double sigma_range, uint8_t color_space) {
+                          double sigma_range, uint8_t color_space) {
     // bad data -> return
     if (sigma_spatial <= 0.0 || sigma_range <= 0.0 || width <= 0 || height <= 0) return;
     if (color_space != COLOR_SPACE_OPTION_CIELAB && color_space != COLOR_SPACE_OPTION_RGB) return;
@@ -219,16 +219,14 @@ void bilateral_filter_cpu(uint8_t *image, size_t width, size_t height, double si
 }
 
 namespace img2num {
-    void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_spatial,
+void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_spatial,
                       double sigma_range, uint8_t color_space) {
+    GPU::getClassInstance().init_gpu();
 
-        GPU::getClassInstance().init_gpu();
-
-        if (GPU::getClassInstance().is_initialized()) {
-            bilateral_filter_gpu(image, width, height, sigma_spatial, sigma_range, color_space);
-        }
-        else {
-            bilateral_filter_cpu(image, width, height, sigma_spatial, sigma_range, color_space);
-        }
+    if (GPU::getClassInstance().is_initialized()) {
+        bilateral_filter_gpu(image, width, height, sigma_spatial, sigma_range, color_space);
+    } else {
+        bilateral_filter_cpu(image, width, height, sigma_spatial, sigma_range, color_space);
     }
+}
 }  // namespace img2num

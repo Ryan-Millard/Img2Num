@@ -122,17 +122,17 @@ self.onmessage = async ({ data }) => {
     console.log(funcName);
     // result = wasmModule[exportName](...argsMap.values());
     const cArgTypes = Array(argsMap.size).fill("number");
-    const ccallReturnType = (returnType && returnType !== "void") ? "number" : null;
+    const ccallReturnType = returnType && returnType !== "void" ? "number" : null;
     result = wasmModule.ccall(
-      funcName,          // Name WITHOUT the underscore (e.g. "bilateral_filter_gpu")
-        ccallReturnType, // Return type
-        cArgTypes,         // Argument types
-        [...argsMap.values()],             // Arguments
-        { async: true }    // <--- This works here!
+      funcName, // Name WITHOUT the underscore (e.g. "bilateral_filter_gpu")
+      ccallReturnType, // Return type
+      cArgTypes, // Argument types
+      [...argsMap.values()], // Arguments
+      { async: true }, // <--- This works here!
     );
 
     //Handle the result
-    if (result && typeof result.then === 'function') {
+    if (result && typeof result.then === "function") {
       console.log("Asyncify: Pausing JS for C++...");
       result = await result;
       console.log(result);
@@ -147,7 +147,7 @@ self.onmessage = async ({ data }) => {
     });
 
     // Handle return value
-    console.log("read results")
+    console.log("read results");
     console.log(result);
     let returnValue = result;
     if (returnType && WASM_TYPES[returnType] !== WASM_TYPES["void"]) returnValue = WASM_TYPES[returnType].read(result);
