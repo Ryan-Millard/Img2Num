@@ -45,7 +45,7 @@ else()
     set(DAWN_SUPPORTS_GLFW_FOR_WINDOWING OFF CACHE BOOL "Disable GLFW support for windowing" FORCE)
     set(DAWN_USE_X11 OFF CACHE BOOL "Disable X11 support" FORCE)
     set(DAWN_FETCH_DEPENDENCIES ON)
-    add_subdirectory("../third_party/dawn" ${CMAKE_CURRENT_SOURCE_DIR} EXCLUDE_FROM_ALL)
+    add_subdirectory("../third_party/dawn" "../third_party/dawn/build/" EXCLUDE_FROM_ALL)
   endif()
 
   # PUBLIC: only expose the directory that contains img2num.h
