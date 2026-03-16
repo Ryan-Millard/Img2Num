@@ -34,8 +34,6 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
     if (color_space != COLOR_SPACE_OPTION_CIELAB && color_space != COLOR_SPACE_OPTION_RGB) return;
 
     std::vector<uint8_t> result(width * height * 4, 255);
-    std::vector<float> result_lab(width * height * 4, 0.0);
-
     // CIELAB conversion will run as shader
 
     std::cout << "begin wgpu portion" << std::endl;
@@ -77,9 +75,6 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
     std::cout << "create buffer" << std::endl;
     // 3. Create Uniform Buffer
     float sr = static_cast<float>(sigma_range);
-    /*if (color_space == COLOR_SPACE_OPTION_CIELAB) {
-        sr /= 255.f;
-    }*/
     FilterParams params = {static_cast<float>(sigma_spatial), sr, 0.0f, 0.0f};
     wgpu::BufferDescriptor bufDesc = {};
     bufDesc.size = sizeof(FilterParams);
