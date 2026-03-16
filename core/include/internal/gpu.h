@@ -1,10 +1,11 @@
 #ifndef GPU_H
 #define GPU_H
 
-#include <webgpu/webgpu_cpp.h>
 #if defined(__EMSCRIPTEN__)
 #include <emscripten/html5.h>
 #endif
+
+#include <webgpu/webgpu_cpp.h>
 #include <fstream>
 #include <iostream>
 #include <iterator>
