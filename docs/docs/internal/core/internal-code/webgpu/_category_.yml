@@ -1,0 +1,20 @@
+label: WebGPU
+
+link:
+  type: generated-index
+  title: WebGPU GPU Pipeline
+  description: |
+    Internal documentation of the WebGPU compute pipeline used by Img2Num,
+    including GPU architecture, the GPU manager implementation,
+    and GPU-accelerated algorithms such as LAB conversion,
+    bilateral filtering, and K-Means clustering.
+
+    This documentation covers all code in the "resources/" folder and those suffixed with "_gpu".
+
+  keywords:
+    - WebGPU
+    - GPGPU
+    - WGSL
+    - GPU computing
+    - image processing
+    - Img2Num
