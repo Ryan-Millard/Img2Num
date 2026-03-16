@@ -33,7 +33,9 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
     if (sigma_spatial <= 0.0 || sigma_range <= 0.0 || width <= 0 || height <= 0) return;
     if (color_space != COLOR_SPACE_OPTION_CIELAB && color_space != COLOR_SPACE_OPTION_RGB) return;
 
-    std::vector<uint8_t> result(width * height * 4, 255);
+    std::vector<uint8_t> result(width * height * 4);
+    // copy image data to result incase filter fails
+    std::memcpy(result.data(), image, width * height * 4);
     // CIELAB conversion will run as shader
 
     std::cout << "begin wgpu portion" << std::endl;
