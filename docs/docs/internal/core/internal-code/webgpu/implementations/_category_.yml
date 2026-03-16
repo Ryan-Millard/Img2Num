@@ -1,0 +1,15 @@
+label: "Part 3: Implementations"
+
+link:
+  type: generated-index
+  title: "Part 3: Algorithm Implementations"
+  description: |
+    GPU implementations of image-processing algorithms for Img2Num, 
+    including RGB-to-CIELAB conversion, bilateral filtering, and K-Means clustering.
+  keywords:
+    - WebGPU
+    - WebGPU implementation
+    - GPGPU
+    - WGSL
+    - GPU computing
+    - Img2Num
