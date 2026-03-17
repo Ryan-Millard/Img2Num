@@ -2,6 +2,7 @@
 #define LABPIXEL_H
 
 #include <cmath>
+#include <iostream>
 
 #include "internal/Pixel.h"
 
@@ -43,6 +44,13 @@ struct LABPixel : public Pixel<NumberT> {
     }
 
 } __attribute__((packed));
+
+template <typename NumberT>
+std::ostream& operator<<(std::ostream &out, const ImageLib::LABPixel<NumberT>& pixel) {
+    out << "( " << pixel.l << "," << pixel.a << ","  << pixel.b << " )";
+    return out;
+}
+
 }  // namespace ImageLib
 
 #endif  // LABPIXEL_H

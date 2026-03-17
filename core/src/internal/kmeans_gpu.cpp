@@ -212,7 +212,6 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT>& pixels,
 
                     // Add new centroid
                     centroids.push_back(pixels[selected_index]);
-
                     readBuffer.Unmap();
                     done = true;
                 }
@@ -509,7 +508,7 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
     std::cout << "done iterations" << std::endl;
 
     // 3. Readback (After Loop Finishes)
-    
+
     wgpu::CommandEncoder readEncoder = GPU::getClassInstance().get_device().CreateCommandEncoder();
     // Copy Labels
     wgpu::TexelCopyTextureInfo srcLabels = {};
@@ -568,10 +567,12 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
                 std::cout << "mapping centroids" << std::endl;
                 for (int i = 0; i < k; i++) {
                     // if CIELAB color space these represent l, a, b, alpha
-                    float r = *(mappedData);
-                    float g = *(mappedData + 1);
-                    float b = *(mappedData + 2);
-                    float a = *(mappedData + 3);
+                    const float* centroidPtr = mappedData + (i * 4);
+
+                    float r = *(centroidPtr);
+                    float g = *(centroidPtr + 1);
+                    float b = *(centroidPtr + 2);
+                    float a = *(centroidPtr + 3);
                     switch (color_space) {
                         case COLOR_SPACE_OPTION_RGB: {
                             centroids[i] = ImageLib::RGBAPixel<float>(r * 255.f, g * 255.f,

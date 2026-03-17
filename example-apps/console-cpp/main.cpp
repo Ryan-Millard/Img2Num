@@ -38,8 +38,13 @@ int main(int argc, char** argv) {
     const double sigma{width * SIGMA_WIDTH_RATIO};
     img2num::bilateral_filter(img_data, width, height, sigma, 50.0, 0);
 
+    uint8_t* out_data{new uint8_t[width * height * NUM_CHANNELS]};
+    int32_t* out_labels{new int32_t[width * height]};
+
+    img2num::kmeans(img_data, out_data, out_labels, width, height, 16, 100, 1);
     // Save the blurred image
     std::string out_path{"console-cpp-output.png"};
+    std::string kmeans_path{"console-cpp-kmeans.png"};
     int exit_code{0};
     if (!stbi_write_png(out_path.c_str(), width, height, NUM_CHANNELS, img_data, width * NUM_CHANNELS)) {
         std::cerr << "Failed to save blurred image!" << std::endl;
@@ -48,7 +53,16 @@ int main(int argc, char** argv) {
         std::cout << "Blurred image saved to: " << out_path << std::endl;
     }
 
+    if (!stbi_write_png(kmeans_path.c_str(), width, height, NUM_CHANNELS, out_data, width * NUM_CHANNELS)) {
+        std::cerr << "Failed to save kmeans image!" << std::endl;
+        exit_code = 1;
+    } else {
+        std::cout << "Kmeans image saved to: " << kmeans_path << std::endl;
+    }
+
     stbi_image_free(image_data_original);
     delete[] img_data;
+    delete[] out_data;
+    delete[] out_labels;
     return exit_code;
 }

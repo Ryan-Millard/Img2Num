@@ -2,6 +2,7 @@
 #define RGBPIXEL_H
 
 #include <cmath>
+#include <iostream>
 
 #include "internal/Pixel.h"
 
@@ -39,6 +40,13 @@ struct RGBPixel : public Pixel<NumberT> {
     }
 
 } __attribute__((packed));
+
+template <typename NumberT>
+std::ostream& operator<<(std::ostream &out, const ImageLib::RGBPixel<NumberT>& pixel) {
+    out << "( " << pixel.red << "," << pixel.green << ","  << pixel.blue << " )";
+    return out;
+}
+
 }  // namespace ImageLib
 
 #endif  // RGBPIXEL_H
