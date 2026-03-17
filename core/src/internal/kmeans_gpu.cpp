@@ -230,46 +230,26 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT>& pixels,
     std::copy(centroids.begin(), centroids.end(), out_centroids.begin());
 }
 
-void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, const int32_t width,
-                const int32_t height, const int32_t k, const int32_t max_iter,
-                const uint8_t color_space) {
-    ImageLib::Image<ImageLib::RGBAPixel<float>> pixels;
-    pixels.loadFromBuffer(data, width, height, ImageLib::RGBA_CONVERTER<float>);
+void setup(
+    ImageLib::Image<ImageLib::RGBAPixel<float>>& pixels, 
+    ImageLib::Image<ImageLib::LABAPixel<float>>& lab, 
+    ImageLib::Image<ImageLib::RGBAPixel<float>>& centroids,
+    ImageLib::Image<ImageLib::LABAPixel<float>>& centroids_lab,
+    const int32_t width,
+    const int32_t height,
+    const int32_t k,
+    wgpu::Texture& labelTexture, 
+    wgpu::Texture& centroidTexture,
+    wgpu::TextureDescriptor& labelDesc,
+    wgpu::TextureDescriptor& centroidDesc,
+    wgpu::ComputePipeline& pipeline1,
+    wgpu::ComputePipeline& pipeline2, 
+    wgpu::BindGroup& bindGroup1,
+    wgpu::BindGroup& bindGroup2,
+    const uint8_t color_space
+) {
+    int bytesPerPixel{16};
     const int32_t num_pixels{pixels.getSize()};
-
-    // width = k, height = 1
-    // k centroids, initialized to rgba(0,0,0,255)
-    // Init of each pixel is from default in Image constructor
-    ImageLib::Image<ImageLib::RGBAPixel<float>> centroids{k, 1};
-    ImageLib::Image<ImageLib::LABAPixel<float>> centroids_lab{k, 1};
-    std::vector<int32_t> labels(num_pixels, -1);
-
-    ImageLib::Image<ImageLib::LABAPixel<float>> lab(pixels.getWidth(), pixels.getHeight());
-
-    if (color_space == COLOR_SPACE_OPTION_CIELAB) {
-        for (int i{0}; i < pixels.getSize(); ++i) {
-            rgb_to_lab<float, float>(pixels[i], lab[i]);
-        }
-    }
-
-    std::cout << "starting" << std::endl;
-    // Step 2: Initialize centroids
-
-    switch (color_space) {
-        case COLOR_SPACE_OPTION_RGB: {
-            kMeansPlusPlusInitGpu<ImageLib::RGBAPixel<float>>(pixels, centroids, k, color_space);
-            break;
-        }
-        case COLOR_SPACE_OPTION_CIELAB: {
-            kMeansPlusPlusInitGpu<ImageLib::LABAPixel<float>>(lab, centroids_lab, k, color_space);
-            break;
-        }
-    }
-    std::cout << "kmeans++ init done" << std::endl;
-
-    // Step 3: Run k-means iterations
-
-    int bytesPerPixel{16};  // float pixels
 
     wgpu::TextureDescriptor texDesc = {};
     texDesc.size = {static_cast<uint32_t>(width), static_cast<uint32_t>(height), 1};
@@ -311,13 +291,12 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
         &dst, pixels_.data(), pixels_.size() * sizeof(float), &layout, &texDesc.size);
 
     // centroids
-    wgpu::TextureDescriptor centroidDesc = {};
     centroidDesc.size = {static_cast<uint32_t>(k), 1, 1};
     centroidDesc.format = wgpu::TextureFormat::RGBA32Float;
     centroidDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::StorageBinding |
                          wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
     centroidDesc.label = "centroidTexture";
-    wgpu::Texture centroidTexture =
+    centroidTexture =
         GPU::getClassInstance().get_device().CreateTexture(&centroidDesc);
 
     wgpu::TexelCopyTextureInfo cdst = {};
@@ -355,13 +334,12 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
         &cdst, centroids_.data(), centroids_.size() * sizeof(float), &clayout, &centroidDesc.size);
 
     // labels
-    wgpu::TextureDescriptor labelDesc = {};
     labelDesc.size = {static_cast<uint32_t>(width), static_cast<uint32_t>(height), 1};
     labelDesc.format = wgpu::TextureFormat::RGBA32Uint;
     labelDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::StorageBinding |
                       wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
     labelDesc.label = "labelTexture";
-    wgpu::Texture labelTexture = GPU::getClassInstance().get_device().CreateTexture(&labelDesc);
+    labelTexture = GPU::getClassInstance().get_device().CreateTexture(&labelDesc);
 
     // params
     Params params = {static_cast<uint32_t>(num_pixels), static_cast<uint32_t>(k)};
@@ -381,10 +359,8 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
                                                     accDesc.size);
 
     // shaders
-    wgpu::ComputePipeline pipeline1 =
-        GPU::getClassInstance().createPipeline("assign_update_shader", "assignUpdateShader");
-    wgpu::ComputePipeline pipeline3 =
-        GPU::getClassInstance().createPipeline("resolve_shader", "resolveShader");
+    pipeline1 = GPU::getClassInstance().createPipeline("assign_update_shader", "assignUpdateShader");
+    pipeline2 = GPU::getClassInstance().createPipeline("resolve_shader", "resolveShader");
 
     // binding groups
     wgpu::BindGroupDescriptor bindGroupDesc1 = {};
@@ -410,21 +386,83 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
 
     bindGroupDesc1.entryCount = 5;  // 4;
     bindGroupDesc1.entries = entries1;
-    wgpu::BindGroup bindGroup1 =
-        GPU::getClassInstance().get_device().CreateBindGroup(&bindGroupDesc1);
+    bindGroup1 = GPU::getClassInstance().get_device().CreateBindGroup(&bindGroupDesc1);
 
-    wgpu::BindGroupDescriptor bindGroupDesc3 = {};
-    bindGroupDesc3.layout = pipeline3.GetBindGroupLayout(0);
-    wgpu::BindGroupEntry entries3[2];
-    entries3[0].binding = 0;
-    entries3[0].buffer = accBuffer;
-    entries3[0].size = accDesc.size;
-    entries3[1].binding = 1;
-    entries3[1].textureView = centroidTexture.CreateView();
-    bindGroupDesc3.entryCount = 2;
-    bindGroupDesc3.entries = entries3;
-    wgpu::BindGroup bindGroup3 =
-        GPU::getClassInstance().get_device().CreateBindGroup(&bindGroupDesc3);
+    wgpu::BindGroupDescriptor bindGroupDesc2 = {};
+    bindGroupDesc2.layout = pipeline2.GetBindGroupLayout(0);
+    wgpu::BindGroupEntry entries2[2];
+    entries2[0].binding = 0;
+    entries2[0].buffer = accBuffer;
+    entries2[0].size = accDesc.size;
+    entries2[1].binding = 1;
+    entries2[1].textureView = centroidTexture.CreateView();
+    bindGroupDesc2.entryCount = 2;
+    bindGroupDesc2.entries = entries2;
+    bindGroup2 = GPU::getClassInstance().get_device().CreateBindGroup(&bindGroupDesc2);
+}
+
+void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, const int32_t width,
+                const int32_t height, const int32_t k, const int32_t max_iter,
+                const uint8_t color_space) {
+    ImageLib::Image<ImageLib::RGBAPixel<float>> pixels;
+    pixels.loadFromBuffer(data, width, height, ImageLib::RGBA_CONVERTER<float>);
+    const int32_t num_pixels{pixels.getSize()};
+
+    // width = k, height = 1
+    // k centroids, initialized to rgba(0,0,0,255)
+    // Init of each pixel is from default in Image constructor
+    ImageLib::Image<ImageLib::RGBAPixel<float>> centroids{k, 1};
+    ImageLib::Image<ImageLib::LABAPixel<float>> centroids_lab{k, 1};
+    std::vector<int32_t> labels(num_pixels, -1);
+
+    ImageLib::Image<ImageLib::LABAPixel<float>> lab(pixels.getWidth(), pixels.getHeight());
+
+    if (color_space == COLOR_SPACE_OPTION_CIELAB) {
+        for (int i{0}; i < pixels.getSize(); ++i) {
+            rgb_to_lab<float, float>(pixels[i], lab[i]);
+        }
+    }
+
+    std::cout << "starting" << std::endl;
+    // Step 2: Initialize centroids
+
+    switch (color_space) {
+        case COLOR_SPACE_OPTION_RGB: {
+            kMeansPlusPlusInitGpu<ImageLib::RGBAPixel<float>>(pixels, centroids, k, color_space);
+            break;
+        }
+        case COLOR_SPACE_OPTION_CIELAB: {
+            kMeansPlusPlusInitGpu<ImageLib::LABAPixel<float>>(lab, centroids_lab, k, color_space);
+            break;
+        }
+    }
+    std::cout << "kmeans++ init done" << std::endl;
+
+    // Step 3: Run k-means iterations
+
+    int bytesPerPixel{16};  // float pixels
+
+    // shaders - 2 pipelines:
+    // 1. assign and update clusters
+    // 2. resolve cluster centroids
+    wgpu::ComputePipeline pipeline1;
+    wgpu::ComputePipeline pipeline2;
+    wgpu::BindGroup bindGroup1;
+    wgpu::BindGroup bindGroup2;
+    wgpu::Texture labelTexture;
+    wgpu::Texture centroidTexture;
+    wgpu::TextureDescriptor labelDesc = {};
+    wgpu::TextureDescriptor centroidDesc = {};
+
+    // setup all textures and buffers needed for the kmeans loop on gpu
+    setup(
+        pixels, lab, centroids, centroids_lab, 
+        width, height, k, 
+        labelTexture, centroidTexture,
+        labelDesc, centroidDesc,
+        pipeline1, pipeline2, bindGroup1, bindGroup2, 
+        color_space
+    );
 
     uint32_t wgX = (width + 15) / 16;
     uint32_t wgY = (height + 15) / 16;
@@ -447,12 +485,10 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
     wgpu::Buffer readCentroidsBuffer =
         GPU::getClassInstance().get_device().CreateBuffer(&readCentroidsDesc);
 
+    // This is the actual KMeans loop
     std::cout << "start iterations" << std::endl;
     wgpu::CommandEncoder encoder = GPU::getClassInstance().get_device().CreateCommandEncoder();
     for (int32_t iter{0}; iter < max_iter; ++iter) {
-        // will reset in resolver shader
-        // GPU::getClassInstance().get_queue().WriteBuffer(accBuffer, 0, reset_centroids.data(),
-        // accDesc.size);
 
         wgpu::ComputePassEncoder pass1 = encoder.BeginComputePass();
         pass1.SetPipeline(pipeline1);
@@ -460,19 +496,21 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
         pass1.DispatchWorkgroups(wgX, wgY);
         pass1.End();
 
-        wgpu::ComputePassEncoder pass3 = encoder.BeginComputePass();
-        pass3.SetPipeline(pipeline3);
-        pass3.SetBindGroup(0, bindGroup3);
-        pass3.DispatchWorkgroups((k + 255) / 256, 1);
-        pass3.End();
+        wgpu::ComputePassEncoder pass2 = encoder.BeginComputePass();
+        pass2.SetPipeline(pipeline2);
+        pass2.SetBindGroup(0, bindGroup2);
+        pass2.DispatchWorkgroups((k + 255) / 256, 1);
+        pass2.End();
+
     }
     wgpu::CommandBuffer commands = encoder.Finish();
     GPU::getClassInstance().get_queue().Submit(1, &commands);
 
     std::cout << "done iterations" << std::endl;
-    // 3. Readback (After Loop Finishes)
-    wgpu::CommandEncoder readEncoder = GPU::getClassInstance().get_device().CreateCommandEncoder();
 
+    // 3. Readback (After Loop Finishes)
+    
+    wgpu::CommandEncoder readEncoder = GPU::getClassInstance().get_device().CreateCommandEncoder();
     // Copy Labels
     wgpu::TexelCopyTextureInfo srcLabels = {};
     srcLabels.texture = labelTexture;
@@ -502,9 +540,6 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
         wgpu::MapMode::Read, 0, readLabelsDesc.size, wgpu::CallbackMode::AllowProcessEvents,
         [&](wgpu::MapAsyncStatus status, wgpu::StringView msg) {
             if (status == wgpu::MapAsyncStatus::Success) {
-                // rgba uint32
-                // const uint32_t* mappedData = (const
-                // uint32_t*)readLabelsBuffer.GetConstMappedRange();
                 const uint8_t* mappedData = (const uint8_t*)readLabelsBuffer.GetConstMappedRange();
                 // ... Copy data to your C++ vector ...
                 // Copy row by row to remove padding and put data into 'result'
@@ -512,17 +547,12 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
                 for (size_t y = 0; y < height; ++y) {
                     const uint8_t* rowPtr = mappedData + (y * bytesPerRowLabels);
                     for (size_t x = 0; x < width; ++x) {
-                        // size_t srcIndex = y * bytesPerRowLabels + x * 16;
                         const uint8_t* pixelPtr = rowPtr + (x * bytesPerPixel);
                         uint32_t r = *(const uint32_t*)pixelPtr;
 
                         size_t dstIndex = y * width + x;
-                        // just grab the first one (r)
-                        // const uint32_t l = *(mappedData + srcIndex);
                         labels[dstIndex] = static_cast<int32_t>(r);
                     }
-                    // std::memcpy(labels.data() + dstIndex, mappedData + srcIndex, width *
-                    // sizeof(int32_t));
                 }
                 readLabelsBuffer.Unmap();
             }
