@@ -7,8 +7,15 @@
 #include <cstdint>
 #include <string>
 #include <cstring>
+#include <filesystem>
 
 #include <img2num.h>
+
+#ifndef OUTPUT_DIR
+#define OUTPUT_DIR "./console-cpp-outputs"
+#endif
+
+constexpr const char* OUT_DIR{OUTPUT_DIR};
 
 constexpr int NUM_CHANNELS{4};
 constexpr double SIGMA_WIDTH_RATIO{0.005};
@@ -28,6 +35,14 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    // Ensure output directory exists
+    std::error_code ec;
+    std::filesystem::create_directories(OUT_DIR, ec);
+    if (ec) {
+        std::cerr << "Failed to create directory: " << ec.message() << "\n";
+        return 1;
+    }
+
     std::cout << "Image loaded: " << width << "x" << height << " with " << NUM_CHANNELS << " channel(s)." << std::endl;
 
     // Allocate a copy of the original image
@@ -42,22 +57,19 @@ int main(int argc, char** argv) {
     int32_t* out_labels{new int32_t[width * height]};
 
     img2num::kmeans(img_data, out_data, out_labels, width, height, 16, 100, 1);
-    // Save the blurred image
-    std::string out_path{"console-cpp-output.png"};
-    std::string kmeans_path{"console-cpp-kmeans.png"};
-    int exit_code{0};
-    if (!stbi_write_png(out_path.c_str(), width, height, NUM_CHANNELS, img_data, width * NUM_CHANNELS)) {
-        std::cerr << "Failed to save blurred image!" << std::endl;
-        exit_code = 1;
-    } else {
-        std::cout << "Blurred image saved to: " << out_path << std::endl;
-    }
 
-    if (!stbi_write_png(kmeans_path.c_str(), width, height, NUM_CHANNELS, out_data, width * NUM_CHANNELS)) {
-        std::cerr << "Failed to save kmeans image!" << std::endl;
-        exit_code = 1;
+    // Save the blurred image
+    std::string out_path{std::string(OUT_DIR) + "/console-cpp-output.png"};
+    std::string kmeans_path{std::string(OUT_DIR) + "/console-cpp-kmeans.png"};
+
+    int exit_code{0};
+    const bool blur_save_success{stbi_write_png(out_path.c_str(), width, height, NUM_CHANNELS, img_data, width * NUM_CHANNELS) == 1 ? true : false};
+    const bool kmeans_save_success{stbi_write_png(kmeans_path.c_str(), width, height, NUM_CHANNELS, out_data, width * NUM_CHANNELS) == 1 ? true : false};
+    if (blur_save_success && kmeans_save_success) {
+        std::cout << "\n\nSUCCESS!\nThe below images have been saved:\n\t- " << out_path << "\n\t- " << kmeans_path << std::endl;
     } else {
-        std::cout << "Kmeans image saved to: " << kmeans_path << std::endl;
+        std::cerr << "Failed to save images!" << std::endl;
+        exit_code = 1;
     }
 
     stbi_image_free(image_data_original);
