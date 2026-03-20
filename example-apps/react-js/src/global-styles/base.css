@@ -19,9 +19,6 @@ body {
   background-attachment: fixed;
   background-color: var(--color-bg);
 }
-button, input, select, textarea, a {
-  font: inherit;
-}
 
 h1 {
   font-size: 2rem;
@@ -63,6 +60,11 @@ img {
 }
 
 /* General link style */
+button.anchor-style {
+  padding: auto;
+  background: none;
+  border: none;
+}
 a,
 .anchor-style {
   color: var(--color-primary);
@@ -72,6 +74,7 @@ a,
     text-decoration 0.3s;
   cursor: pointer;
   text-decoration: underline;
+  cursor: pointer;
 }
 
 /* Hover/focus states */

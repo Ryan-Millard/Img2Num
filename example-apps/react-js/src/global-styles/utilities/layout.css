@@ -26,6 +26,10 @@
   display: flex;
   justify-content: space-between;
 }
+.flex-wrap-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
 
 .grid {
   display: grid;

@@ -52,13 +52,17 @@ export default function GlassModal({
         }}
       >
         {showCloseButton && (
-          <button
-            className={`button ${styles.closeButton}`}
-            onClick={onClose}
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              onClose();
+            }}
+            className={`${styles.closeButton}`}
             aria-label="Close modal"
           >
             <X size={20} />
-          </button>
+          </a>
         )}
         {children}
       </GlassCard>

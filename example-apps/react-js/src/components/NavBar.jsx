@@ -1,11 +1,10 @@
-import React from "react";
-import { Home, Users, Info, Github, SquareArrowOutUpRight } from "lucide-react";
+import React, { useState } from "react";
+import { Home, Users, Info, Github, SquareArrowOutUpRight, Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./NavBar.module.css";
 import GlassCard from "@components/GlassCard";
 import ThemeSwitch from "@components/ThemeSwitch";
 import Tooltip from "@components/Tooltip";
-import HamburgerMenu from "@components/HamburgerMenu";
 
 const INTERNAL_LINKS = [
   { path: "/", label: "Home", icon: Home, tooltip: "Go to the home page" },
@@ -24,51 +23,65 @@ const EXTERNAL_LINKS = [
 ];
 
 export default function NavBar() {
+  const [isOpen, setIsOpen] = useState(false);
   const { pathname } = useLocation();
 
+  const closeMenu = () => setIsOpen(false);
+
   return (
-    <GlassCard as="nav" className={styles.navbar}>
-      {/* Logo */}
-      <Tooltip content="Go to home page">
-        <Link to="/" className={styles.logo}>
-          <img src="/Img2Num/favicon.svg" alt="" className={styles.logoIcon} />
-          <span>Img2Num</span>
-        </Link>
-      </Tooltip>
+    <>
+      {/* Backdrop to capture dismiss clicks on mobile - rendered outside nav for proper full-screen coverage */}
+      {isOpen && <div className={styles.backdrop} onClick={closeMenu} aria-hidden="true" />}
 
-      {/* Nav links are provided as children — HamburgerMenu will handle responsive behavior */}
-      <HamburgerMenu>
-        {INTERNAL_LINKS.map(({ path, label, icon, tooltip }) => (
-          <li key={path} role="none">
-            <Tooltip content={tooltip}>
-              <Link
-                to={path}
-                role="menuitem"
-                className={pathname === path ? styles.active : ""}
-              >
-                {React.createElement(icon, { size: 16 })}
-                <span>{label}</span>
-              </Link>
-            </Tooltip>
+      <GlassCard as="nav" className={styles.navbar}>
+        {/* Logo */}
+        <Tooltip content="Go to home page">
+          <Link to="/" className={styles.logo} onClick={closeMenu}>
+            <img src="/Img2Num/favicon.svg" alt="" className={styles.logoIcon} />
+            <span>Img2Num</span>
+          </Link>
+        </Tooltip>
+
+        {/* Mobile Toggle */}
+        <Tooltip content={isOpen ? "Close menu" : "Open menu"}>
+          <button className={styles.menuToggle} onClick={() => setIsOpen(!isOpen)} aria-expanded={isOpen} aria-controls="nav-menu" aria-label={isOpen ? "Close menu" : "Open menu"}>
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </Tooltip>
+
+        {/* Navigation */}
+        <ul id="nav-menu" className={`${styles.navList} ${isOpen ? styles.open : ""}`} role="menubar">
+          {INTERNAL_LINKS.map(({ path, label, icon, tooltip }) => (
+            <li key={path} role="none">
+              <Tooltip content={tooltip}>
+                <Link to={path} role="menuitem" className={`${styles.navLink} ${pathname === path ? styles.active : ""}`} onClick={closeMenu}>
+                  {/* Supress eslint "no-unused-vars" rule */}
+                  {React.createElement(icon, { size: 16 })}
+                  <span>{label}</span>
+                </Link>
+              </Tooltip>
+            </li>
+          ))}
+
+          {EXTERNAL_LINKS.map(({ href, label, icon, tooltip }) => (
+            <li key={href} role="none">
+              <Tooltip content={`${tooltip} (opens in a new tab)`}>
+                <a href={href} target="_blank" rel="noopener noreferrer" role="menuitem" className={styles.navLink}>
+                  {/* Supress eslint "no-unused-vars" rule */}
+                  {React.createElement(icon, { size: 16 })}
+                  <span>{label}</span>
+                  <SquareArrowOutUpRight size={12} className={styles.externalIcon} />
+                </a>
+              </Tooltip>
+            </li>
+          ))}
+
+          {/* Theme Switch */}
+          <li role="none" className={styles.themeToggle}>
+            <ThemeSwitch />
           </li>
-        ))}
-
-        {EXTERNAL_LINKS.map(({ href, label, icon, tooltip }) => (
-          <li key={href} role="none">
-            <Tooltip content={`${tooltip} (opens in a new tab)`}>
-              <a href={href} target="_blank" rel="noopener noreferrer" role="menuitem">
-                {React.createElement(icon, { size: 16 })}
-                <span>{label}</span>
-                <SquareArrowOutUpRight size={12} className={styles.externalIcon} />
-              </a>
-            </Tooltip>
-          </li>
-        ))}
-
-        <li role="none" className={styles.themeToggle}>
-          <ThemeSwitch />
-        </li>
-      </HamburgerMenu>
-    </GlassCard>
+        </ul>
+      </GlassCard>
+    </>
   );
 }

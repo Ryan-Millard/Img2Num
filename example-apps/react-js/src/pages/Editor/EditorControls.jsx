@@ -1,10 +1,12 @@
 import GlassModal from "@components/GlassModal";
 import GlassSwitch from "@components/GlassSwitch";
 import Tooltip from "@components/Tooltip";
-import { useMemo, useState } from "react";
-import { Undo, Redo, Ellipsis, Save, Eye, Brush, Printer, Download, Copy, RotateCcw, Share2 } from "lucide-react";
+import { useMemo, useState, useId } from "react";
+import {
+  Undo, Redo, Save, Eye, Brush,
+  Printer, Download, Copy, RotateCcw, Share2, FileText,
+} from "lucide-react";
 import styles from "./EditorControls.module.css";
-import HamburgerMenu from "@components/HamburgerMenu";
 
 const EditorControls = ({
   svg,
@@ -16,12 +18,13 @@ const EditorControls = ({
   onRedo = () => {},
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
-
   const [copied, setCopied] = useState(false);
+  const switchId = useId();
+
   const copySvg = () => {
     navigator.clipboard.writeText(svg).then(() => {
       setCopied(true);
-      setTimeout(() => setCopied(false), 1500); // hide after 1.5s
+      setTimeout(() => setCopied(false), 1500);
     });
   };
 
@@ -32,33 +35,23 @@ const EditorControls = ({
   }, [svg]);
 
   const download = (content, name, type) => {
-    const blob = new Blob([content], { type });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = name;
+    const a = Object.assign(document.createElement("a"), {
+      href: URL.createObjectURL(new Blob([content], { type })),
+      download: name,
+    });
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(a.href);
   };
 
   const printSvg = () => {
     const iframe = document.createElement("iframe");
-    iframe.style.position = "absolute";
-    iframe.style.width = "0";
-    iframe.style.height = "0";
-    iframe.style.border = "0";
+    Object.assign(iframe.style, { position: "absolute", width: "0", height: "0", border: "0" });
     document.body.appendChild(iframe);
-
-    const doc = iframe.contentWindow.document;
-    doc.open();
-    doc.write(svg);
-    doc.close();
-
-    // Give browser a moment to render
+    iframe.contentWindow.document.open();
+    iframe.contentWindow.document.write(svg);
+    iframe.contentWindow.document.close();
     setTimeout(() => {
       iframe.contentWindow.focus();
       iframe.contentWindow.print();
@@ -66,114 +59,163 @@ const EditorControls = ({
     }, 100);
   };
 
-  const shareSvg = () => {
-    if (!navigator.canShare || !svg) return alert("Sharing not supported!");
-
+  const shareSvg = async () => {
+    if (!navigator.canShare || !svg) {
+      alert("Sharing not supported on this device.");
+      return;
+    }
     const file = new File([svg], `${fileName}.svg`, { type: "image/svg+xml" });
-
     if (navigator.canShare({ files: [file] })) {
-      navigator.share({
-        files: [file],
-        title: fileName,
-        text: "Check out this SVG!",
-      }).catch(console.error);
+      await navigator.share({ files: [file], title: fileName }).catch(console.error);
     } else {
-      alert("Sharing this file is not supported on your device.");
+      alert("Sharing this file type is not supported on your device.");
     }
   };
 
   if (!svg) return null;
 
   return (
-    <div className="flex-center flex-space-between glass">
-        <GlassModal
-          isOpen={modalOpen}
-          onClose={() => setModalOpen(false)}
-        >
-          <h2>Download Image</h2>
-          <div className="flex-column container" style={{ maxWidth: "max-content" }}>
-            <Tooltip content="Download original SVG file">
-              <a href={svgUrl} download={`${fileName}.svg`} className="button">
-                <Download />
-                <span>Original SVG</span>
-              </a>
-            </Tooltip>
-
-            <Tooltip content="Download raw SVG as text file">
-              <button onClick={() => download(svg, `${fileName}-raw.txt`, "text/plain")} className="button">
-                <Download />
-                Raw Text
-              </button>
-            </Tooltip>
-
-            <Tooltip content={copied ? "Copied!" : "Copy SVG"}>
-              <button onClick={copySvg} className="button">
-                <Copy />
-                Copy SVG
-              </button>
-            </Tooltip>
-
-            <Tooltip content="Print SVG">
-              <button onClick={printSvg} className="button">
-                <Printer />
-                <span>Print</span>
-              </button>
-            </Tooltip>
-          </div>
-        </GlassModal>
-
-      <div className="flex-space-evenly">
-        <Tooltip content="Reset all colored shapes">
-          <button
-            className="flex-center gap-sm"
-            onClick={onReset}
-          >
-            <RotateCcw />
-          </button>
-        </Tooltip>
-
-        <Tooltip content="Undo last change">
-          <button onClick={onUndo}>
-            <Undo />
-          </button>
-        </Tooltip>
-
-        <Tooltip content="Redo last change">
-          <button onClick={onRedo}>
-            <Redo />
-          </button>
-        </Tooltip>
+    <>
+      {/* Screen reader live region for copy feedback */}
+      <div aria-live="polite" className={styles.srOnly}>
+        {copied ? "SVG copied to clipboard." : ""}
       </div>
 
-      <HamburgerMenu className={`styles.hamburger`} CloseMenuIcon={<Ellipsis />}>
-        <li>
-          <Tooltip content="Share the image with others">
-            <span onClick={() => setModalOpen(true)}>
-              <Save />
-              <span>Save</span>
-            </span>
-          </Tooltip>
-        </li>
+      <GlassModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title="Save image"
+        size="sm"
+      >
+        <ul className={styles.actionList} role="list">
+          <li>
+            <Tooltip content="Download the original SVG file">
+              <a
+                href={svgUrl}
+                download={`${fileName}.svg`}
+                className={`flex-center gap-sm button ${styles.actionItem}`}
+              >
+                <Download size={20} aria-hidden="true" />
+                <span>
+                  <big>Original SVG</big>
+                  <small>Download the .svg file</small>
+                </span>
+              </a>
+            </Tooltip>
+          </li>
+          <li>
+            <Tooltip content="Download SVG markup as a plain text file">
+              <button
+                className={`flex-center gap-sm button ${styles.actionItem}`}
+                onClick={() => download(svg, `${fileName}-raw.txt`, "text/plain")}
+              >
+                <FileText size={20} aria-hidden="true" />
+                <span>
+                  <big>Raw text file</big>
+                  <small>Download SVG as .txt</small>
+                </span>
+              </button>
+            </Tooltip>
+          </li>
+          <li>
+            <Tooltip content={copied ? "Copied!" : "Copy SVG markup to clipboard"}>
+              <button
+                className={`flex-center gap-sm button ${styles.actionItem}`}
+                onClick={copySvg}
+                aria-pressed={copied}
+              >
+                <Copy size={20} aria-hidden="true" />
+                <span>
+                  <big>{copied ? "Copied!" : "Copy SVG code"}</big>
+                  <small>Paste anywhere as markup</small>
+                </span>
+              </button>
+            </Tooltip>
+          </li>
+          <li>
+            <Tooltip content="Open the browser print dialog">
+              <button className={`flex-center gap-sm button ${styles.actionItem}`} onClick={printSvg}>
+                <Printer size={20} aria-hidden="true" />
+                <span>
+                  <big>Print</big>
+                  <small>Open print dialog</small>
+                </span>
+              </button>
+            </Tooltip>
+          </li>
+        </ul>
+      </GlassModal>
 
-        <li>
-          <Tooltip content="Share SVG">
-            <span onClick={shareSvg}>
-              <Share2 />
-              <span>Share</span>
-            </span>
-          </Tooltip>
-        </li>
+      <div className={`flex-center flex-space-between gap-sm ${styles.wrapper}`} role="toolbar" aria-label="Editor actions">
 
-        <li>
+        <div className="flex-center gap-sm">
           <GlassSwitch
+            id={switchId}
             isOn={isColorMode}
             onChange={() => setIsColorMode((prev) => !prev)}
-            ariaLabel={`Switch to ${isColorMode ? "preview" : "color"} mode`}
-            thumbContent={isColorMode ? <Eye /> : <Brush />}
+            thumbContent={isColorMode ? <Brush /> : <Eye />}
+            aria-checked={isColorMode}
+            role="switch"
           />
-        </li>
-      </HamburgerMenu>
-    </div>
+          <label htmlFor={switchId} className={styles.switchLabel}>
+            {isColorMode ? "Color" : "Preview"} mode
+          </label>
+        </div>
+
+        <div className={styles.divider} aria-hidden="true" />
+
+        <div className="flex-center gap-sm">
+          <Tooltip content="Save or export the image">
+            <button
+              className={`button flex-center gap-xs`}
+              onClick={() => setModalOpen(true)}
+              aria-haspopup="dialog"
+            >
+              <Save size={20} aria-hidden="true" />
+              Save
+            </button>
+          </Tooltip>
+          <Tooltip content="Share SVG with others">
+            <button className="button flex-center gap-xs" onClick={shareSvg}>
+              <Share2 size={20} aria-hidden="true" />
+              Share
+            </button>
+          </Tooltip>
+        </div>
+
+        <div className={styles.divider} aria-hidden="true" />
+
+        <div className="flex-center gap-sm" role="group" aria-label="History">
+          <Tooltip content="Reset all coloured shapes">
+            <button
+              className="button"
+              onClick={onReset}
+              aria-label="Reset all coloured shapes"
+            >
+              <RotateCcw size={18} aria-hidden="true" />
+            </button>
+          </Tooltip>
+          <Tooltip content="Undo · Ctrl Z">
+            <button
+              className="button"
+              onClick={onUndo}
+              aria-label="Undo last change"
+            >
+              <Undo size={18} aria-hidden="true" />
+            </button>
+          </Tooltip>
+          <Tooltip content="Redo · Ctrl Y">
+            <button
+              className="button"
+              onClick={onRedo}
+              aria-label="Redo last change"
+            >
+              <Redo size={18} aria-hidden="true" />
+            </button>
+          </Tooltip>
+        </div>
+      </div>
+    </>
   );
 };
 
