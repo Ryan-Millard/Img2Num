@@ -34,11 +34,12 @@ set(COMMON_FLAGS
     "SHELL:-s ENVIRONMENT=web,worker"
     "SHELL:-s EXPORTED_FUNCTIONS=['_malloc','_free']"
     "SHELL:-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPU8','HEAP32','UTF8ToString','stringToUTF8','lengthBytesUTF8']"
-    "SHELL:-s INITIAL_MEMORY=128MB"
-    "SHELL:-s MAXIMUM_MEMORY=2048MB"
+    "SHELL:-s INITIAL_MEMORY=2GB"
+    "SHELL:-s MAXIMUM_MEMORY=4GB"
     "SHELL:-s ALLOW_MEMORY_GROWTH=1"
     "SHELL:-s EXPORT_NAME=createImg2NumModule"
     "SHELL:-s ASYNCIFY=1"
+    "SHELL:-s ASYNCIFY_STACK_SIZE=2GB" # <-- Increases stack buffer to 64KB
     "SHELL:--use-port=emdawnwebgpu"
 )
 

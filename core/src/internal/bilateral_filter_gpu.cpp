@@ -217,7 +217,7 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
     GPU::getClassInstance().get_queue().Submit(1, &commands);
     std::cout << "queue submit" << std::endl;
 
-    bool waiting = true;
+    static volatile bool waiting = true;
 
     // 9. Map Async (To read data back to C++)
     // In a real app, you likely pass a callback function here.
@@ -228,37 +228,28 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
         int width;
         int height;
     };
+    
+    uint8_t* result_ptr = result.data();
+    // auto is_waiting = std::make_shared<bool>(true);
 
     readBuffer.MapAsync(wgpu::MapMode::Read, 0, bufferSize, wgpu::CallbackMode::AllowProcessEvents,
-                        [&](wgpu::MapAsyncStatus status, wgpu::StringView message) {
-                            if (status == wgpu::MapAsyncStatus::Success) {
-                                std::cout << "Map success: " << message.data << std::endl;
-                                // Get the raw pointer
-                                const uint8_t* mappedData =
-                                    (const uint8_t*)readBuffer.GetConstMappedRange(0, bufferSize);
-                                // copy to cpu buffer
-                                for (size_t y = 0; y < height; ++y) {
-                                    const uint8_t* rowPtr = mappedData + (y * alignedBytesPerRow);
-                                    for (size_t x = 0; x < width; ++x) {
-                                        const uint8_t* pixelPtr = rowPtr + (x * bytesPerPixel);
-                                        size_t dstIndex = 4 * (y * width + x);  // RGBA
+        [](wgpu::MapAsyncStatus status, wgpu::StringView message) {
+            if (status == wgpu::MapAsyncStatus::Success) {
+                std::cout << "Map success: " << message.data << std::endl;
+                // Get the raw pointer
+                
+                //readBuffer.Unmap();
+                //std::cout << "unmap done" << std::endl;
+            } else {
+                // Handle error
+                std::cerr << "Map failed: " << message.data << std::endl;
+            }
 
-                                        result[dstIndex] = *pixelPtr;
-                                        result[dstIndex + 1] = *(pixelPtr + 1);
-                                        result[dstIndex + 2] = *(pixelPtr + 2);
-                                        result[dstIndex + 3] = *(pixelPtr + 3);
-                                    }
-                                }
-
-                                readBuffer.Unmap();
-                            } else {
-                                // Handle error
-                                std::cerr << "Map failed: " << message.data << std::endl;
-                            }
-
-                            // CRITICAL: This modifies the 'waiting' variable in the outer scope
-                            waiting = false;
-                        });
+            // CRITICAL: This modifies the 'waiting' variable in the outer scope
+            waiting = false;
+            //*is_waiting = false;
+        }
+    );
 
     std::cout << "waiting " << waiting << std::endl;
 
@@ -266,11 +257,31 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
         // std::cout << "waiting, " << std::endl;
         GPU::getClassInstance().get_instance().ProcessEvents();
 #if defined(__EMSCRIPTEN__)
-        emscripten_sleep(10);
+        emscripten_sleep(100);
 #endif
     }
     std::cout << "done wgpu" << std::endl;
+    std::cout << "Result vector size: " << result.size() << std::endl;
+    const uint8_t* mappedData =
+        (const uint8_t*)readBuffer.GetConstMappedRange(0, bufferSize);
+    // copy to cpu buffer
+    std::cout << "copying" << std::endl;
+    for (size_t y = 0; y < height; ++y) {
+        const uint8_t* rowPtr = mappedData + (y * alignedBytesPerRow);
+        for (size_t x = 0; x < width; ++x) {
+            const uint8_t* pixelPtr = rowPtr + (x * bytesPerPixel);
+            size_t dstIndex = 4 * (y * width + x);  // RGBA
 
+            result_ptr[dstIndex] = *pixelPtr;
+            result_ptr[dstIndex + 1] = *(pixelPtr + 1);
+            result_ptr[dstIndex + 2] = *(pixelPtr + 2);
+            result_ptr[dstIndex + 3] = *(pixelPtr + 3);
+        }
+    }
+    std::cout << "done copying" << std::endl;
+    readBuffer.Unmap();
+    std::cout << "unmap done" << std::endl;
+    std::cout << "Result vector size: " << result.size() << std::endl;
     std::memcpy(image, result.data(), result.size());
     std::cout << "done memcpy" << std::endl;
 }

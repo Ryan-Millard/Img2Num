@@ -38,6 +38,8 @@ struct ClusterAccumulator {
     uint32_t count;
 };
 
+static volatile bool done = false;
+
 // The K-Means++ Initialization Function
 template <typename PixelT>
 void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT>& pixels,
@@ -149,7 +151,9 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT>& pixels,
     centroids.push_back(pixels[first_index]);
 
     // --- Step 2 & 3: Repeat until we have k centroids ---
+    
     for (int i = 1; i < k; ++i) {
+        done = false;
         // A. Upload Current Centroid to GPU
         PixelT c = centroids.back();
         CentroidParams params;
@@ -178,52 +182,57 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT>& pixels,
         GPU::getClassInstance().get_queue().Submit(1, &commands);
 
         // D. Map and Read
-        bool done = false;
+        
         readBuffer.MapAsync(
             wgpu::MapMode::Read, 0, readDesc.size, wgpu::CallbackMode::AllowProcessEvents,
-            [&](wgpu::MapAsyncStatus status, wgpu::StringView) {
+            [](wgpu::MapAsyncStatus status, wgpu::StringView msg) {
                 if (status == wgpu::MapAsyncStatus::Success) {
-                    const float* dists = (const float*)readBuffer.GetConstMappedRange();
-
-                    // --- CPU SIDE: Selection Logic ---
-                    double sum_dist_sq = 0.0;
-
-                    // 1. Sum (We have to iterate anyway for roulette, so sum here)
-                    // Note: dists[] contains the SQUARED distance because shader calculated distSq
-                    for (size_t j = 0; j < num_pixels; ++j) {
-                        sum_dist_sq += dists[j];
-                    }
-
-                    // 2. Select
-                    std::uniform_real_distribution<> dist_selector(0.0, sum_dist_sq);
-                    double random_value = dist_selector(gen);
-                    double current_sum = 0.0;
-                    int selected_index = -1;
-
-                    for (size_t j = 0; j < num_pixels; ++j) {
-                        current_sum += dists[j];
-                        if (current_sum >= random_value) {
-                            selected_index = j;
-                            break;
-                        }
-                    }
-
-                    if (selected_index == -1) selected_index = num_pixels - 1;
-
-                    // Add new centroid
-                    centroids.push_back(pixels[selected_index]);
-                    readBuffer.Unmap();
-                    done = true;
+                    std::cout << "Map success: " << msg.data << std::endl;
+                } else {
+                    // Handle error
+                    std::cerr << "Map failed: " << msg.data << std::endl;
                 }
-            });
+                done = true;
+            }
+        );
 
         // E. Wait for GPU
         while (!done) {
             GPU::getClassInstance().get_instance().ProcessEvents();
 #if defined(__EMSCRIPTEN__)
-            emscripten_sleep(1);
+            emscripten_sleep(100);
 #endif
         }
+
+        const float* dists = (const float*)readBuffer.GetConstMappedRange();
+        // --- CPU SIDE: Selection Logic ---
+        double sum_dist_sq = 0.0;
+
+        // 1. Sum (We have to iterate anyway for roulette, so sum here)
+        // Note: dists[] contains the SQUARED distance because shader calculated distSq
+        for (size_t j = 0; j < num_pixels; ++j) {
+            sum_dist_sq += dists[j];
+        }
+
+        // 2. Select
+        std::uniform_real_distribution<> dist_selector(0.0, sum_dist_sq);
+        double random_value = dist_selector(gen);
+        double current_sum = 0.0;
+        int selected_index = -1;
+
+        for (size_t j = 0; j < num_pixels; ++j) {
+            current_sum += dists[j];
+            if (current_sum >= random_value) {
+                selected_index = j;
+                break;
+            }
+        }
+
+        if (selected_index == -1) selected_index = num_pixels - 1;
+
+        // Add new centroid
+        centroids.push_back(pixels[selected_index]);
+        readBuffer.Unmap();
     }
 
     std::copy(centroids.begin(), centroids.end(), out_centroids.begin());
@@ -463,6 +472,8 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
         color_space
     );
 
+    // static volatile bool done = false;
+
     uint32_t wgX = (width + 15) / 16;
     uint32_t wgY = (height + 15) / 16;
 
@@ -532,71 +543,86 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
     GPU::getClassInstance().get_queue().Submit(1, &readCmd);
 
     // 4. Map Async & Wait
-    bool done = false;
     std::cout << "read out" << std::endl;
+    done = false;
     // Map Labels
     readLabelsBuffer.MapAsync(
         wgpu::MapMode::Read, 0, readLabelsDesc.size, wgpu::CallbackMode::AllowProcessEvents,
-        [&](wgpu::MapAsyncStatus status, wgpu::StringView msg) {
+        [](wgpu::MapAsyncStatus status, wgpu::StringView msg) {
             if (status == wgpu::MapAsyncStatus::Success) {
-                const uint8_t* mappedData = (const uint8_t*)readLabelsBuffer.GetConstMappedRange();
-                // ... Copy data to your C++ vector ...
-                // Copy row by row to remove padding and put data into 'result'
-                std::cout << "mapping labels" << std::endl;
-                for (size_t y = 0; y < height; ++y) {
-                    const uint8_t* rowPtr = mappedData + (y * bytesPerRowLabels);
-                    for (size_t x = 0; x < width; ++x) {
-                        const uint8_t* pixelPtr = rowPtr + (x * bytesPerPixel);
-                        uint32_t r = *(const uint32_t*)pixelPtr;
-
-                        size_t dstIndex = y * width + x;
-                        labels[dstIndex] = static_cast<int32_t>(r);
-                    }
-                }
-                readLabelsBuffer.Unmap();
+                std::cout << "Map success: " << msg.data << std::endl;
             }
-        });
-
-    // Map Centroids
-    readCentroidsBuffer.MapAsync(
-        wgpu::MapMode::Read, 0, readCentroidsDesc.size, wgpu::CallbackMode::AllowProcessEvents,
-        [&](wgpu::MapAsyncStatus status, wgpu::StringView msg) {
-            if (status == wgpu::MapAsyncStatus::Success) {
-                const float* mappedData = (const float*)readCentroidsBuffer.GetConstMappedRange();
-                // ... Copy data to your C++ vector ...
-                std::cout << "mapping centroids" << std::endl;
-                for (int i = 0; i < k; i++) {
-                    // if CIELAB color space these represent l, a, b, alpha
-                    const float* centroidPtr = mappedData + (i * 4);
-
-                    float r = *(centroidPtr);
-                    float g = *(centroidPtr + 1);
-                    float b = *(centroidPtr + 2);
-                    float a = *(centroidPtr + 3);
-                    switch (color_space) {
-                        case COLOR_SPACE_OPTION_RGB: {
-                            centroids[i] = ImageLib::RGBAPixel<float>(r * 255.f, g * 255.f,
-                                                                      b * 255.f, a * 255.f);
-                            break;
-                        }
-                        case COLOR_SPACE_OPTION_CIELAB: {
-                            centroids_lab[i] = ImageLib::LABAPixel<float>(r * 255.f, g * 255.f,
-                                                                          b * 255.f, a * 255.f);
-                            break;
-                        }
-                    }
-                }
-                readCentroidsBuffer.Unmap();
-                done = true;  // Signal completion
-            }
+            done = true;
         });
 
     while (!done) {
         GPU::getClassInstance().get_instance().ProcessEvents();
 #if defined(__EMSCRIPTEN__)
-        emscripten_sleep(10);
+        emscripten_sleep(100);
 #endif
     }
+
+    std::cout << "mapping labels" << std::endl;
+    const uint8_t* mappedData = (const uint8_t*)readLabelsBuffer.GetConstMappedRange();
+    // ... Copy data to your C++ vector ...
+    // Copy row by row to remove padding and put data into 'result'
+    for (size_t y = 0; y < height; ++y) {
+        const uint8_t* rowPtr = mappedData + (y * bytesPerRowLabels);
+        for (size_t x = 0; x < width; ++x) {
+            const uint8_t* pixelPtr = rowPtr + (x * bytesPerPixel);
+            uint32_t r = *(const uint32_t*)pixelPtr;
+
+            size_t dstIndex = y * width + x;
+            labels[dstIndex] = static_cast<int32_t>(r);
+        }
+    }
+    readLabelsBuffer.Unmap();
+
+    done = false;
+
+    // Map Centroids
+    readCentroidsBuffer.MapAsync(
+        wgpu::MapMode::Read, 0, readCentroidsDesc.size, wgpu::CallbackMode::AllowProcessEvents,
+        [](wgpu::MapAsyncStatus status, wgpu::StringView msg) {
+            if (status == wgpu::MapAsyncStatus::Success) {
+                std::cout << "Map success: " << msg.data << std::endl;
+            }
+            done = true;  // Signal completion
+        });
+
+    while (!done) {
+        GPU::getClassInstance().get_instance().ProcessEvents();
+#if defined(__EMSCRIPTEN__)
+        emscripten_sleep(100);
+#endif
+    }
+
+    std::cout << "mapping centroids" << std::endl;
+    const float* mappedDataFloat = (const float*)readCentroidsBuffer.GetConstMappedRange();
+    // ... Copy data to your C++ vector ...
+    
+    for (int i = 0; i < k; i++) {
+        // if CIELAB color space these represent l, a, b, alpha
+        const float* centroidPtr = mappedDataFloat + (i * 4);
+
+        float r = *(centroidPtr);
+        float g = *(centroidPtr + 1);
+        float b = *(centroidPtr + 2);
+        float a = *(centroidPtr + 3);
+        switch (color_space) {
+            case COLOR_SPACE_OPTION_RGB: {
+                centroids[i] = ImageLib::RGBAPixel<float>(r * 255.f, g * 255.f,
+                                                            b * 255.f, a * 255.f);
+                break;
+            }
+            case COLOR_SPACE_OPTION_CIELAB: {
+                centroids_lab[i] = ImageLib::LABAPixel<float>(r * 255.f, g * 255.f,
+                                                                b * 255.f, a * 255.f);
+                break;
+            }
+        }
+    }
+    readCentroidsBuffer.Unmap();
 
     // Write the final centroid values to each pixel in the cluster
     if (color_space == COLOR_SPACE_OPTION_CIELAB) {
