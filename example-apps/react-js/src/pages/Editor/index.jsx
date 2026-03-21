@@ -348,7 +348,7 @@ export default function Editor() {
         >
           <h2>Reset your progress</h2>
           <p>If you click confirm, all of your progress will be reset and you will start coloring in the image from scratch.</p>
-          <div className="flex-center">
+          <div className="flex-center gap-md">
             <button onClick={() => setModalOpen(false)} className="button">
               Cancel
             </button>
