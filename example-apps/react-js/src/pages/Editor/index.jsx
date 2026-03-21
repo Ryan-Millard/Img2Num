@@ -224,7 +224,6 @@ export default function Editor() {
       // Record history snapshot
       const currentShapes = Array.from(svgRoot.querySelectorAll(`.${styles.coloredRegion}`)).map(el => el.dataset.id);
 
-
       const newHistory = history.slice(0, historyIndex + 1); // drop redo steps
       newHistory.push(currentShapes);
 
