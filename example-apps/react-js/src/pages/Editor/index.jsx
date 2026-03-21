@@ -354,6 +354,8 @@ export default function Editor() {
             </button>
             <button onClick={() => {
                 restoreHistory(initialSnapshot);
+                setHistory([initialSnapshot]);
+                setHistoryIndex(0);
                 setModalOpen(false);
               }}
               className="button"
