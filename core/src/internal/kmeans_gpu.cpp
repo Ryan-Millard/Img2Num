@@ -250,6 +250,7 @@ void setup(
     const int32_t width,
     const int32_t height,
     const int32_t k,
+    wgpu::Texture& inputTexture,
     wgpu::Texture& labelTexture, 
     wgpu::Texture& centroidTexture,
     wgpu::TextureDescriptor& labelDesc,
@@ -268,7 +269,7 @@ void setup(
     texDesc.format = wgpu::TextureFormat::RGBA32Float;
     texDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst;
     texDesc.label = "inputTexture";
-    wgpu::Texture inputTexture = GPU::getClassInstance().get_device().CreateTexture(&texDesc);
+    inputTexture = GPU::getClassInstance().get_device().CreateTexture(&texDesc);
 
     wgpu::TexelCopyTextureInfo dst = {};
     dst.texture = inputTexture;
@@ -461,6 +462,7 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
     wgpu::ComputePipeline pipeline2;
     wgpu::BindGroup bindGroup1;
     wgpu::BindGroup bindGroup2;
+    wgpu::Texture inputTexture;
     wgpu::Texture labelTexture;
     wgpu::Texture centroidTexture;
     wgpu::TextureDescriptor labelDesc = {};
@@ -470,7 +472,7 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
     setup(
         pixels, lab, centroids, centroids_lab, 
         width, height, k, 
-        labelTexture, centroidTexture,
+        inputTexture, labelTexture, centroidTexture,
         labelDesc, centroidDesc,
         pipeline1, pipeline2, bindGroup1, bindGroup2, 
         color_space
@@ -491,14 +493,14 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
         GPU::getClassInstance().get_device().CreateBuffer(&readLabelsDesc);
 
     // Centroid Readback
-    /*uint32_t bytesPerRowCentroids =
+    uint32_t bytesPerRowCentroids =
         GPU::getAlignedBytesPerRow(width, static_cast<uint32_t>(bytesPerPixel));
     wgpu::BufferDescriptor readCentroidsDesc = {};
     readCentroidsDesc.size = bytesPerRowCentroids;  // Height is 1
     readCentroidsDesc.usage = wgpu::BufferUsage::MapRead | wgpu::BufferUsage::CopyDst;
     wgpu::Buffer readCentroidsBuffer =
         GPU::getClassInstance().get_device().CreateBuffer(&readCentroidsDesc);
-    */
+    
     // This is the actual KMeans loop
     std::cout << "start iterations" << std::endl;
     wgpu::CommandEncoder encoder = GPU::getClassInstance().get_device().CreateCommandEncoder();
@@ -534,14 +536,13 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
     encoder.CopyTextureToBuffer(&srcLabels, &dstLabels, &labelDesc.size);
 
     // Copy Centroids
-    /*wgpu::TexelCopyTextureInfo srcCentroids = {};
+    wgpu::TexelCopyTextureInfo srcCentroids = {};
     srcCentroids.texture = centroidTexture;
     wgpu::TexelCopyBufferInfo dstCentroids = {};
     dstCentroids.buffer = readCentroidsBuffer;
     dstCentroids.layout.bytesPerRow = bytesPerRowCentroids;
     dstCentroids.layout.rowsPerImage = 1;
     encoder.CopyTextureToBuffer(&srcCentroids, &dstCentroids, &centroidDesc.size);
-    */
     // readCmd = readEncoder.Finish();
     // GPU::getClassInstance().get_queue().Submit(1, &readCmd);
 
@@ -571,11 +572,11 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
     while (!done1) {
         GPU::getClassInstance().get_instance().ProcessEvents();
 #if defined(__EMSCRIPTEN__)
-        emscripten_sleep(100);
+        emscripten_sleep(10);
 #endif
     }
 
-    /*
+    
     // Map Centroids
     readCentroidsBuffer.MapAsync(
         wgpu::MapMode::Read, 0, readCentroidsDesc.size, 
@@ -593,7 +594,7 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
         emscripten_sleep(10);
 #endif
     }
-    */
+    
     std::cout << "mapping labels" << std::endl;
     const uint8_t* mappedData = (const uint8_t*)readLabelsBuffer.GetConstMappedRange();
     // ... Copy data to your C++ vector ...
@@ -619,7 +620,7 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
         emscripten_sleep(100);
 #endif
     }*/
-    /*
+    
     std::cout << "mapping centroids" << std::endl;
     const float* mappedDataFloat = (const float*)readCentroidsBuffer.GetConstMappedRange();
     // ... Copy data to your C++ vector ...
@@ -645,12 +646,12 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
             }
         }
     }
-    */
+    
     readLabelsBuffer.Unmap();
-    // readCentroidsBuffer.Unmap();
+    readCentroidsBuffer.Unmap();
 
     // Write the final centroid values to each pixel in the cluster
-    /*if (color_space == COLOR_SPACE_OPTION_CIELAB) {
+    if (color_space == COLOR_SPACE_OPTION_CIELAB) {
         for (int32_t i{0}; i < k; ++i) {
             lab_to_rgb<float, float>(centroids_lab[i], centroids[i]);
         }
@@ -662,9 +663,15 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
         out_data[i * 4 + 1] = static_cast<uint8_t>(centroids[cluster].green);
         out_data[i * 4 + 2] = static_cast<uint8_t>(centroids[cluster].blue);
         out_data[i * 4 + 3] = 255;
-    }*/
+    }
 
     // Write labels to out_labels
     std::cout << "copying labels out" << std::endl;
     std::memcpy(out_labels, labels.data(), labels.size() * sizeof(int32_t));
+
+    if (inputTexture) inputTexture.Destroy();
+    if (labelTexture) labelTexture.Destroy();
+    if (centroidTexture) centroidTexture.Destroy();
+    readLabelsBuffer.Destroy();
+    readCentroidsBuffer.Destroy();
 }

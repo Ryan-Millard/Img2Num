@@ -39,11 +39,11 @@ set(COMMON_FLAGS
     "SHELL:-s ALLOW_MEMORY_GROWTH=1"
     "SHELL:-s EXPORT_NAME=createImg2NumModule"
     "SHELL:-s ASYNCIFY=1"
-    "SHELL:-s ASYNCIFY_STACK_SIZE=16777216" # <-- Increases stack buffer to 64KB
+    # "SHELL:-s ASYNCIFY_STACK_SIZE=16777216" # <-- Increases stack buffer to 64KB
     # "SHELL:-s ASYNCIFY_DEBUG=1"
     "SHELL:--use-port=emdawnwebgpu"
-    "SHELL:-s DISABLE_EXCEPTION_CATCHING=0"
-    "SHELL:-s STACK_OVERFLOW_CHECK=1"
+    # "SHELL:-s DISABLE_EXCEPTION_CATCHING=0"
+    # "SHELL:-s STACK_OVERFLOW_CHECK=1"
 )
 
 target_compile_options(img2num_wasm PRIVATE -msimd128 "--use-port=emdawnwebgpu")
