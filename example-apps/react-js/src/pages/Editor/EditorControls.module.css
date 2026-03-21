@@ -1,11 +1,3 @@
-.divider {
-  width: 1px;
-  height: 24px;
-  background: rgba(255, 255, 255, 0.55);
-  border-radius: 1px;
-  flex-shrink: 0;
-}
-
 /* ── Switch label ── */
 .switchLabel {
   color: var(--color-text);
@@ -53,11 +45,8 @@
   border: 0;
 }
 
-@media (max-width: 560px) {
-  .wrapper {
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
-    justify-content: center;
-  }
-  .divider { display: none; }
+@media (min-width: 800px) {
+.wrapper {
+  justify-content: space-between;
+}
 }

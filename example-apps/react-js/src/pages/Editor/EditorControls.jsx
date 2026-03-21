@@ -76,7 +76,6 @@ const EditorControls = ({
 
   return (
     <>
-      {/* Screen reader live region for copy feedback */}
       <div aria-live="polite" className={styles.srOnly}>
         {copied ? "SVG copied to clipboard." : ""}
       </div>
@@ -90,9 +89,8 @@ const EditorControls = ({
         <ul className={styles.actionList} role="list">
           <li>
             <Tooltip content="Download the original SVG file">
-              <a
-                href={svgUrl}
-                download={`${fileName}.svg`}
+              <button
+                onClick={() => download(svg, `${fileName}.svg`, "image/svg+xml;charset=utf-8")}
                 className={`flex-center gap-sm button ${styles.actionItem}`}
               >
                 <Download size={20} aria-hidden="true" />
@@ -100,7 +98,7 @@ const EditorControls = ({
                   <big>Original SVG</big>
                   <small>Download the .svg file</small>
                 </span>
-              </a>
+              </button>
             </Tooltip>
           </li>
           <li>
@@ -146,7 +144,7 @@ const EditorControls = ({
         </ul>
       </GlassModal>
 
-      <div className={`flex-center flex-space-between gap-sm ${styles.wrapper}`} role="toolbar" aria-label="Editor actions">
+      <div className={`container flex-center flex-wrap-wrap gap-xl ${styles.wrapper}`} role="toolbar" aria-label="Editor actions">
 
         <div className="flex-center gap-sm">
           <GlassSwitch
@@ -155,14 +153,13 @@ const EditorControls = ({
             onChange={() => setIsColorMode((prev) => !prev)}
             thumbContent={isColorMode ? <Brush /> : <Eye />}
             aria-checked={isColorMode}
+            ariaLabel={`Switch to ${isColorMode ? "preview" : "edit"} mode`}
             role="switch"
           />
           <label htmlFor={switchId} className={styles.switchLabel}>
             {isColorMode ? "Color" : "Preview"} mode
           </label>
         </div>
-
-        <div className={styles.divider} aria-hidden="true" />
 
         <div className="flex-center gap-sm">
           <Tooltip content="Save or export the image">
@@ -182,8 +179,6 @@ const EditorControls = ({
             </button>
           </Tooltip>
         </div>
-
-        <div className={styles.divider} aria-hidden="true" />
 
         <div className="flex-center gap-sm" role="group" aria-label="History">
           <Tooltip content="Reset all coloured shapes">
