@@ -217,7 +217,7 @@ export default function Editor() {
         .elementFromPoint(e.clientX, e.clientY)
         ?.closest(SHAPE_SELECTOR);
 
-      if (!shape || !svgRoot.contains(shape)) return;
+      if (!shape || !svgRoot.contains(shape) || shape.classList.contains(styles.coloredRegion)) return;
 
       shape.classList.add(styles.coloredRegion);
 
@@ -284,14 +284,21 @@ export default function Editor() {
   useEffect(() => {
     const handler = (e) => {
       const mod = e.ctrlKey || e.metaKey;
-      if (!mod) {
+      const target = e.target;
+      const isEditable =
+        target instanceof HTMLElement &&
+        (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName));
+
+      if (!mod || isEditable) {
         return;
       }
 
-      e.preventDefault();
-      if (e.key === "z") {
+      const key = e.key.toLowerCase();
+      if (key === "z" && !e.shiftKey) {
+        e.preventDefault();
         undo();
-      } else if (e.key === "y") {
+      } else if ((key === "y" && !e.shiftKey) || (key === "z" && e.shiftKey)) {
+        e.preventDefault();
         redo();
       }
     };
