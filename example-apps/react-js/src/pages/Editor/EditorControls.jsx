@@ -1,11 +1,8 @@
 import GlassModal from "@components/GlassModal";
 import GlassSwitch from "@components/GlassSwitch";
 import Tooltip from "@components/Tooltip";
-import { useMemo, useState, useId } from "react";
-import {
-  Undo, Redo, Save, Eye, Brush,
-  Printer, Download, Copy, RotateCcw, Share2, FileText,
-} from "lucide-react";
+import { useMemo, useState, useId, useEffect } from "react";
+import { Undo, Redo, Save, Eye, Brush, Printer, Download, Copy, RotateCcw, Share2, FileText } from "lucide-react";
 import styles from "./EditorControls.module.css";
 
 const EditorControls = ({
@@ -21,18 +18,24 @@ const EditorControls = ({
   const [copied, setCopied] = useState(false);
   const switchId = useId();
 
+  const [svgUrl, setSvgUrl] = useState(null);
+  useEffect(() => {
+    if (!svg) {
+      setSvgUrl(null);
+      return;
+    }
+    const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    setSvgUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [svg]);
+
   const copySvg = () => {
     navigator.clipboard.writeText(svg).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     });
   };
-
-  const svgUrl = useMemo(() => {
-    if (!svg) return null;
-    const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
-    return URL.createObjectURL(blob);
-  }, [svg]);
 
   const download = (content, name, type) => {
     const a = Object.assign(document.createElement("a"), {
