@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['home_5fpage_2edox_2',['home_page.dox',['../home__page_8dox.html',1,'']]]
+  ['bindings_0',['bindings',['../index.html#building_sec',1,'Building the C Bindings'],['../index.html',1,'Img2Num C Bindings']]],
+  ['building_20the_20c_20bindings_1',['Building the C Bindings',['../index.html#building_sec',1,'']]]
 ];

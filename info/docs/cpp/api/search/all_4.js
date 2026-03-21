@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['labels_5fto_5fsvg_9',['labels_to_svg',['../namespaceimg2num.html#a708ed5cf60adc770e80c238cf95876e0',1,'img2num']]]
+  ['features_0',['Key Features',['../index.html#features_sec',1,'']]],
+  ['functions_1',['Img2Num Core Functions',['../group__IMG2NUM__H.html',1,'']]]
 ];

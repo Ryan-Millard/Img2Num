@@ -25,15 +25,8 @@
 var NAVTREE =
 [
   [ "Img2Num C++ (Internal Developer Docs)", "index.html", [
-    [ "Img2Num Core Library", "index.html", [
-      [ "Introduction", "index.html#intro_sec", null ],
-      [ "Key Features", "index.html#features_sec", null ],
-      [ "Building Img2Num", "index.html#building_sec", null ],
-      [ "Installation", "index.html#install_sec", null ],
-      [ "Usage Example", "index.html#usage_sec", null ],
-      [ "API Reference", "index.html#api_sec", null ]
-    ] ],
-    [ "Modules", "modules.html", "modules" ],
+    [ "Img2Num Core Library", "index.html", "index" ],
+    [ "Topics", "topics.html", "topics" ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -54,8 +47,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"Error_8cpp_source.html",
-"structImageLib_1_1RGBPixel.html#ac119855f033cef020fafabbd23028e9a"
+"Error_8cpp_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

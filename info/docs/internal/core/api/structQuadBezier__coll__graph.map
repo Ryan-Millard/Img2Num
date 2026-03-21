@@ -1,4 +1,5 @@
 <map id="QuadBezier" name="QuadBezier">
-<area shape="rect" id="node1" title=" " alt="" coords="19,263,116,340"/>
-<area shape="rect" id="node2" href="$structPoint.html" title=" " alt="" coords="5,5,129,171"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="19,283,108,348"/>
+<area shape="rect" id="Node000002" href="$structPoint.html" title=" " alt="" coords="5,5,121,191"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="66,191,66,266,61,266,61,191"/>
 </map>

@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['gaussian_5fblur_5ffft_2',['gaussian_blur_fft',['../namespaceimg2num.html#a365bbbd4976477bdf515be023a73d63f',1,'img2num']]]
+  ['bilateral_5ffilter_0',['bilateral_filter',['../namespaceimg2num.html#a48d9a04a535198b5fc47905e359961ac',1,'img2num']]],
+  ['black_5fthreshold_5fimage_1',['black_threshold_image',['../namespaceimg2num.html#a0b00cb7b162b17498d9c816ac5e38563',1,'img2num']]],
+  ['building_20img2num_2',['Building Img2Num',['../index.html#building_sec',1,'']]]
 ];

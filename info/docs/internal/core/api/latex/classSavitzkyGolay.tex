@@ -1,5 +1,5 @@
-\hypertarget{classSavitzkyGolay}{}\doxysection{Savitzky\+Golay Class Reference}
-\label{classSavitzkyGolay}\index{SavitzkyGolay@{SavitzkyGolay}}
+\doxysection{Savitzky\+Golay Class Reference}
+\hypertarget{classSavitzkyGolay}{}\label{classSavitzkyGolay}\index{SavitzkyGolay@{SavitzkyGolay}}
 
 
 Collaboration diagram for Savitzky\+Golay\+:
@@ -7,54 +7,301 @@ Collaboration diagram for Savitzky\+Golay\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=215pt]{classSavitzkyGolay__coll__graph}
+\includegraphics[width=213pt]{classSavitzkyGolay__coll__graph}
 \end{center}
 \end{figure}
-\doxysubsection*{Public Member Functions}
+\doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classSavitzkyGolay_a30010024f286b67ce6ac764eddfd2e91}\label{classSavitzkyGolay_a30010024f286b67ce6ac764eddfd2e91}} 
-{\bfseries Savitzky\+Golay} (int radius, int poly\+\_\+order)
+\mbox{\hyperlink{classSavitzkyGolay_a30010024f286b67ce6ac764eddfd2e91}{Savitzky\+Golay}} (int radius, int poly\+\_\+order)
 \item 
-\mbox{\Hypertarget{classSavitzkyGolay_ad1d9f9045c0dbb8af582d306b4f96650}\label{classSavitzkyGolay_ad1d9f9045c0dbb8af582d306b4f96650}} 
-std\+::vector$<$ \mbox{\hyperlink{structPoint}{Point}} $>$ {\bfseries filter} (const std\+::vector$<$ \mbox{\hyperlink{structPoint}{Point}} $>$ \&data)
+std\+::vector$<$ \mbox{\hyperlink{structPoint}{Point}} $>$ \mbox{\hyperlink{classSavitzkyGolay_ad1d9f9045c0dbb8af582d306b4f96650}{filter}} (const std\+::vector$<$ \mbox{\hyperlink{structPoint}{Point}} $>$ \&data)
 \item 
-\mbox{\Hypertarget{classSavitzkyGolay_aa4e4f99f9a8cf615287a10314126bf3b}\label{classSavitzkyGolay_aa4e4f99f9a8cf615287a10314126bf3b}} 
-std\+::vector$<$ \mbox{\hyperlink{structPoint}{Point}} $>$ {\bfseries filter\+\_\+wrap} (const std\+::vector$<$ \mbox{\hyperlink{structPoint}{Point}} $>$ \&data)
+std\+::vector$<$ \mbox{\hyperlink{structPoint}{Point}} $>$ \mbox{\hyperlink{classSavitzkyGolay_aa4e4f99f9a8cf615287a10314126bf3b}{filter\+\_\+wrap}} (const std\+::vector$<$ \mbox{\hyperlink{structPoint}{Point}} $>$ \&data)
 \item 
-\mbox{\Hypertarget{classSavitzkyGolay_a2f99778064c4e1e58ed35431f8560cad}\label{classSavitzkyGolay_a2f99778064c4e1e58ed35431f8560cad}} 
-std\+::vector$<$ float $>$ {\bfseries get\+\_\+coeffs} () const
+std\+::vector$<$ float $>$ \mbox{\hyperlink{classSavitzkyGolay_ad9f17e97a8b03db9ec87c66ecdb56e6e}{get\+\_\+coeffs}} () const
 \end{DoxyCompactItemize}
-\doxysubsection*{Private Member Functions}
+\doxysubsubsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classSavitzkyGolay_aa06dcb1f2610dcaa54e39503d8eac743}\label{classSavitzkyGolay_aa06dcb1f2610dcaa54e39503d8eac743}} 
-std\+::vector$<$ std\+::vector$<$ float $>$ $>$ {\bfseries invert\+\_\+matrix} (std\+::vector$<$ std\+::vector$<$ float $>$$>$ A)
+std\+::vector$<$ std\+::vector$<$ float $>$ $>$ \mbox{\hyperlink{classSavitzkyGolay_a64d4c6eec0042162299c6956acb484f1}{invert\+\_\+matrix}} (std\+::vector$<$ std\+::vector$<$ float $>$ $>$ A)
 \item 
-\mbox{\Hypertarget{classSavitzkyGolay_a69507cde87725b5ffc2efb9ad10fe816}\label{classSavitzkyGolay_a69507cde87725b5ffc2efb9ad10fe816}} 
-void {\bfseries compute\+\_\+coefficients} ()
+void \mbox{\hyperlink{classSavitzkyGolay_a69507cde87725b5ffc2efb9ad10fe816}{compute\+\_\+coefficients}} ()
 \end{DoxyCompactItemize}
-\doxysubsection*{Private Attributes}
+\doxysubsubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classSavitzkyGolay_a5648ebf68397ea37a0e0ea4278328cba}\label{classSavitzkyGolay_a5648ebf68397ea37a0e0ea4278328cba}} 
-int {\bfseries window\+\_\+size\+\_\+}
+int \mbox{\hyperlink{classSavitzkyGolay_a5648ebf68397ea37a0e0ea4278328cba}{window\+\_\+size\+\_\+}}
 \item 
-\mbox{\Hypertarget{classSavitzkyGolay_ad8b97bb3fb56ae7573c4729372dc3dda}\label{classSavitzkyGolay_ad8b97bb3fb56ae7573c4729372dc3dda}} 
-int {\bfseries window\+\_\+radius\+\_\+}
+int \mbox{\hyperlink{classSavitzkyGolay_ad8b97bb3fb56ae7573c4729372dc3dda}{window\+\_\+radius\+\_\+}}
 \item 
-\mbox{\Hypertarget{classSavitzkyGolay_a6fa965aa82f9dbd272a06e2b12cf97e5}\label{classSavitzkyGolay_a6fa965aa82f9dbd272a06e2b12cf97e5}} 
-int {\bfseries poly\+\_\+order\+\_\+}
+int \mbox{\hyperlink{classSavitzkyGolay_a6fa965aa82f9dbd272a06e2b12cf97e5}{poly\+\_\+order\+\_\+}}
 \item 
-\mbox{\Hypertarget{classSavitzkyGolay_a057a039178bfcb561b8f14a715cb09c1}\label{classSavitzkyGolay_a057a039178bfcb561b8f14a715cb09c1}} 
-std\+::vector$<$ float $>$ {\bfseries coeffs\+\_\+}
+std\+::vector$<$ float $>$ \mbox{\hyperlink{classSavitzkyGolay_a057a039178bfcb561b8f14a715cb09c1}{coeffs\+\_\+}}
 \end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
 
 
-Definition at line 10 of file Savitsky\+Golay.\+h.
+Definition at line \mbox{\hyperlink{SavitskyGolay_8h_source_l00010}{10}} of file \mbox{\hyperlink{SavitskyGolay_8h_source}{Savitsky\+Golay.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classSavitzkyGolay_a30010024f286b67ce6ac764eddfd2e91}\label{classSavitzkyGolay_a30010024f286b67ce6ac764eddfd2e91} 
+\index{SavitzkyGolay@{SavitzkyGolay}!SavitzkyGolay@{SavitzkyGolay}}
+\index{SavitzkyGolay@{SavitzkyGolay}!SavitzkyGolay@{SavitzkyGolay}}
+\doxysubsubsection{\texorpdfstring{SavitzkyGolay()}{SavitzkyGolay()}}
+{\footnotesize\ttfamily Savitzky\+Golay\+::\+Savitzky\+Golay (\begin{DoxyParamCaption}\item[{int}]{radius,  }\item[{int}]{poly\+\_\+order }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{SavitskyGolay_8cpp_source_l00008}{8}} of file \mbox{\hyperlink{SavitskyGolay_8cpp_source}{Savitsky\+Golay.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00009\ \ \ \ \ :\ window\_radius\_(radius),\ window\_size\_(2\ *\ radius\ +\ 1),\ poly\_order\_(poly\_order)\ \{}
+\DoxyCodeLine{00010\ \ \ \ \ assert(radius\ >=\ 0);}
+\DoxyCodeLine{00011\ \ \ \ \ assert(window\_size\_\ >\ poly\_order\_);}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \ \ \ \ compute\_coefficients();}
+\DoxyCodeLine{00014\ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classSavitzkyGolay_a69507cde87725b5ffc2efb9ad10fe816}\label{classSavitzkyGolay_a69507cde87725b5ffc2efb9ad10fe816} 
+\index{SavitzkyGolay@{SavitzkyGolay}!compute\_coefficients@{compute\_coefficients}}
+\index{compute\_coefficients@{compute\_coefficients}!SavitzkyGolay@{SavitzkyGolay}}
+\doxysubsubsection{\texorpdfstring{compute\_coefficients()}{compute\_coefficients()}}
+{\footnotesize\ttfamily void Savitzky\+Golay\+::compute\+\_\+coefficients (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{SavitskyGolay_8cpp_source_l00101}{101}} of file \mbox{\hyperlink{SavitskyGolay_8cpp_source}{Savitsky\+Golay.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{comment}{//\ 1.\ Create\ the\ matrix\ J\ =\ (A\string^T\ *\ A)}}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{comment}{//\ Size\ is\ (poly\_order\ +\ 1)\ x\ (poly\_order\ +\ 1)}}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{comment}{//\ Element\ J[i][j]\ is\ the\ sum\ of\ k\string^(i+j)\ for\ k\ in\ -\/m..m}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordtype}{int}\ rows\ =\ poly\_order\_\ +\ 1;}
+\DoxyCodeLine{00107\ \ \ \ \ std::vector<std::vector<float>>\ J(rows,\ std::vector<float>(rows));}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ rows;\ ++i)\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ rows;\ ++j)\ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ sum\ =\ 0;}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ -\/window\_radius\_;\ k\ <=\ window\_radius\_;\ ++k)\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sum\ +=\ std::pow(k,\ i\ +\ j);}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ J[i][j]\ =\ sum;}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ \}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{comment}{//\ 2.\ Invert\ J\ to\ solve\ the\ normal\ equations}}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{auto}\ J\_inv\ =\ invert\_matrix(J);}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{comment}{//\ 3.\ Compute\ the\ weights}}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{comment}{//\ The\ smoothed\ value\ is\ the\ coefficient\ c\_0\ of\ the\ polynomial.}}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{comment}{//\ c\_0\ =\ sum(\ weight\_k\ *\ y\_k\ )}}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{comment}{//\ weight\_k\ =\ sum(\ J\_inv[0][j]\ *\ k\string^j\ )\ for\ j=0..order}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \ \ \ \ coeffs\_.resize(window\_size\_);}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ -\/window\_radius\_;\ k\ <=\ window\_radius\_;\ ++k)\ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ weight\ =\ 0.0;}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ rows;\ ++j)\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ weight\ +=\ J\_inv[0][j]\ *\ std::pow(k,\ j);}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ coeffs\_[k\ +\ window\_radius\_]\ =\ weight;}
+\DoxyCodeLine{00134\ \ \ \ \ \}}
+\DoxyCodeLine{00135\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classSavitzkyGolay_ad1d9f9045c0dbb8af582d306b4f96650}\label{classSavitzkyGolay_ad1d9f9045c0dbb8af582d306b4f96650} 
+\index{SavitzkyGolay@{SavitzkyGolay}!filter@{filter}}
+\index{filter@{filter}!SavitzkyGolay@{SavitzkyGolay}}
+\doxysubsubsection{\texorpdfstring{filter()}{filter()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{structPoint}{Point}} $>$ Savitzky\+Golay\+::filter (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{structPoint}{Point}} $>$ \&}]{data }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{SavitskyGolay_8cpp_source_l00016}{16}} of file \mbox{\hyperlink{SavitskyGolay_8cpp_source}{Savitsky\+Golay.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordflow}{if}\ (data.size()\ <\ window\_size\_)\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data;\ \ \textcolor{comment}{//\ Data\ too\ short\ to\ filter}}
+\DoxyCodeLine{00019\ \ \ \ \ \}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ \ \ std::vector<Point>\ result(data.size());}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{comment}{//\ 1.\ Convolution\ for\ the\ valid\ range}}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ window\_radius\_;\ i\ <\ data.size()\ -\/\ window\_radius\_;\ ++i)\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ val\{0.0,\ 0.0\};}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ -\/window\_radius\_;\ j\ <=\ window\_radius\_;\ ++j)\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ val\ +=\ data[i\ +\ j]\ *\ coeffs\_[j\ +\ window\_radius\_];}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ result[i]\ =\ val;}
+\DoxyCodeLine{00030\ \ \ \ \ \}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//\ 2.\ Handle\ Edges\ (Simple\ Repeat/Nearest\ padding\ strategy)}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{comment}{//\ For\ a\ robust\ production\ app,\ you\ might\ calculate\ asymmetric\ kernels\ here.}}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ window\_radius\_;\ ++i)\ result[i]\ =\ data[i];}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ data.size()\ -\/\ window\_radius\_;\ i\ <\ data.size();\ ++i)\ result[i]\ =\ data[i];}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00038\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classSavitzkyGolay_aa4e4f99f9a8cf615287a10314126bf3b}\label{classSavitzkyGolay_aa4e4f99f9a8cf615287a10314126bf3b} 
+\index{SavitzkyGolay@{SavitzkyGolay}!filter\_wrap@{filter\_wrap}}
+\index{filter\_wrap@{filter\_wrap}!SavitzkyGolay@{SavitzkyGolay}}
+\doxysubsubsection{\texorpdfstring{filter\_wrap()}{filter\_wrap()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{structPoint}{Point}} $>$ Savitzky\+Golay\+::filter\+\_\+wrap (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{structPoint}{Point}} $>$ \&}]{data }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{SavitskyGolay_8cpp_source_l00040}{40}} of file \mbox{\hyperlink{SavitskyGolay_8cpp_source}{Savitsky\+Golay.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{comment}{//\ wrap\ around}}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{if}\ (data.size()\ <\ window\_size\_)\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data;\ \ \textcolor{comment}{//\ Data\ too\ short\ to\ filter}}
+\DoxyCodeLine{00044\ \ \ \ \ \}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ std::vector<Point>\ result(data.size());}
+\DoxyCodeLine{00047\ \ \ \ \ std::copy(data.begin(),\ data.end(),\ result.begin());}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ data.size();\ ++i)\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ val\{0.0,\ 0.0\};}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ -\/window\_radius\_;\ j\ <=\ window\_radius\_;\ ++j)\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ k\ =\ i\ +\ j;}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (k\ <\ 0)\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ k\ =\ data.size()\ +\ k;}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (k\ >=\ data.size())\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ k\ =\ k\ -\/\ data.size();}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ val\ =\ val\ +\ data[k]\ *\ coeffs\_[j\ +\ window\_radius\_];}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ result[i]\ =\ val;}
+\DoxyCodeLine{00061\ \ \ \ \ \}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00064\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classSavitzkyGolay_ad9f17e97a8b03db9ec87c66ecdb56e6e}\label{classSavitzkyGolay_ad9f17e97a8b03db9ec87c66ecdb56e6e} 
+\index{SavitzkyGolay@{SavitzkyGolay}!get\_coeffs@{get\_coeffs}}
+\index{get\_coeffs@{get\_coeffs}!SavitzkyGolay@{SavitzkyGolay}}
+\doxysubsubsection{\texorpdfstring{get\_coeffs()}{get\_coeffs()}}
+{\footnotesize\ttfamily std\+::vector$<$ float $>$ Savitzky\+Golay\+::get\+\_\+coeffs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{SavitskyGolay_8h_source_l00024}{24}} of file \mbox{\hyperlink{SavitskyGolay_8h_source}{Savitsky\+Golay.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ coeffs\_;}
+\DoxyCodeLine{00026\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classSavitzkyGolay_a64d4c6eec0042162299c6956acb484f1}\label{classSavitzkyGolay_a64d4c6eec0042162299c6956acb484f1} 
+\index{SavitzkyGolay@{SavitzkyGolay}!invert\_matrix@{invert\_matrix}}
+\index{invert\_matrix@{invert\_matrix}!SavitzkyGolay@{SavitzkyGolay}}
+\doxysubsubsection{\texorpdfstring{invert\_matrix()}{invert\_matrix()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::vector$<$ float $>$ $>$ Savitzky\+Golay\+::invert\+\_\+matrix (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::vector$<$ float $>$ $>$}]{A }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{SavitskyGolay_8cpp_source_l00068}{68}} of file \mbox{\hyperlink{SavitskyGolay_8cpp_source}{Savitsky\+Golay.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{int}\ n\ =\ A.size();}
+\DoxyCodeLine{00070\ \ \ \ \ std::vector<std::vector<float>>\ inv(n,\ std::vector<float>(n,\ 0.0));}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{comment}{//\ Initialize\ inverse\ as\ identity}}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n;\ ++i)\ inv[i][i]\ =\ 1.0;}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n;\ ++i)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Find\ pivot}}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ pivot\ =\ A[i][i];}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ (Simple\ pivot\ check,\ typically\ you'd\ swap\ rows\ for\ stability)}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (std::abs(pivot)\ <\ 1e-\/10)\ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}Matrix\ singular,\ cannot\ invert."{}});}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Normalize\ row}}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ n;\ ++j)\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ A[i][j]\ /=\ pivot;}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ inv[i][j]\ /=\ pivot;}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Eliminate\ other\ rows}}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ n;\ ++k)\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (k\ !=\ i)\ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ factor\ =\ A[k][i];}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ n;\ ++j)\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ A[k][j]\ -\/=\ factor\ *\ A[i][j];}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ inv[k][j]\ -\/=\ factor\ *\ inv[i][j];}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{return}\ inv;}
+\DoxyCodeLine{00099\ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classSavitzkyGolay_a057a039178bfcb561b8f14a715cb09c1}\label{classSavitzkyGolay_a057a039178bfcb561b8f14a715cb09c1} 
+\index{SavitzkyGolay@{SavitzkyGolay}!coeffs\_@{coeffs\_}}
+\index{coeffs\_@{coeffs\_}!SavitzkyGolay@{SavitzkyGolay}}
+\doxysubsubsection{\texorpdfstring{coeffs\_}{coeffs\_}}
+{\footnotesize\ttfamily std\+::vector$<$float$>$ Savitzky\+Golay\+::coeffs\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{SavitskyGolay_8h_source_l00015}{15}} of file \mbox{\hyperlink{SavitskyGolay_8h_source}{Savitsky\+Golay.\+h}}.
+
+\Hypertarget{classSavitzkyGolay_a6fa965aa82f9dbd272a06e2b12cf97e5}\label{classSavitzkyGolay_a6fa965aa82f9dbd272a06e2b12cf97e5} 
+\index{SavitzkyGolay@{SavitzkyGolay}!poly\_order\_@{poly\_order\_}}
+\index{poly\_order\_@{poly\_order\_}!SavitzkyGolay@{SavitzkyGolay}}
+\doxysubsubsection{\texorpdfstring{poly\_order\_}{poly\_order\_}}
+{\footnotesize\ttfamily int Savitzky\+Golay\+::poly\+\_\+order\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{SavitskyGolay_8h_source_l00014}{14}} of file \mbox{\hyperlink{SavitskyGolay_8h_source}{Savitsky\+Golay.\+h}}.
+
+\Hypertarget{classSavitzkyGolay_ad8b97bb3fb56ae7573c4729372dc3dda}\label{classSavitzkyGolay_ad8b97bb3fb56ae7573c4729372dc3dda} 
+\index{SavitzkyGolay@{SavitzkyGolay}!window\_radius\_@{window\_radius\_}}
+\index{window\_radius\_@{window\_radius\_}!SavitzkyGolay@{SavitzkyGolay}}
+\doxysubsubsection{\texorpdfstring{window\_radius\_}{window\_radius\_}}
+{\footnotesize\ttfamily int Savitzky\+Golay\+::window\+\_\+radius\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{SavitskyGolay_8h_source_l00013}{13}} of file \mbox{\hyperlink{SavitskyGolay_8h_source}{Savitsky\+Golay.\+h}}.
+
+\Hypertarget{classSavitzkyGolay_a5648ebf68397ea37a0e0ea4278328cba}\label{classSavitzkyGolay_a5648ebf68397ea37a0e0ea4278328cba} 
+\index{SavitzkyGolay@{SavitzkyGolay}!window\_size\_@{window\_size\_}}
+\index{window\_size\_@{window\_size\_}!SavitzkyGolay@{SavitzkyGolay}}
+\doxysubsubsection{\texorpdfstring{window\_size\_}{window\_size\_}}
+{\footnotesize\ttfamily int Savitzky\+Golay\+::window\+\_\+size\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{SavitskyGolay_8h_source_l00012}{12}} of file \mbox{\hyperlink{SavitskyGolay_8h_source}{Savitsky\+Golay.\+h}}.
 
 
 

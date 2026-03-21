@@ -5,6 +5,6 @@ var img2num_8h =
     [ "gaussian_blur_fft", "img2num_8h.html#a365bbbd4976477bdf515be023a73d63f", null ],
     [ "invert_image", "img2num_8h.html#adcf00084d90ead66510dadc459d0990e", null ],
     [ "kmeans", "img2num_8h.html#ae73563e9dd25a8dd2120fd519ef87abd", null ],
-    [ "labels_to_svg", "img2num_8h.html#a708ed5cf60adc770e80c238cf95876e0", null ],
+    [ "labels_to_svg", "img2num_8h.html#a5822dd3722c40a8d1cff368c6848c15d", null ],
     [ "threshold_image", "img2num_8h.html#ad36f12c85016e28c7427c356783dea03", null ]
 ];
