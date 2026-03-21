@@ -284,4 +284,11 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
     std::cout << "Result vector size: " << result.size() << std::endl;
     std::memcpy(image, result.data(), result.size());
     std::cout << "done memcpy" << std::endl;
+
+    // explicit clean up
+    if (inputTexture) inputTexture.Destroy();
+    if (outputTexture) outputTexture.Destroy();
+    if (texLabRaw) texLabRaw.Destroy();
+    if (texLabFiltered) texLabFiltered.Destroy();
+    readBuffer.Destroy();
 }

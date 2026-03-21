@@ -34,13 +34,16 @@ set(COMMON_FLAGS
     "SHELL:-s ENVIRONMENT=web,worker"
     "SHELL:-s EXPORTED_FUNCTIONS=['_malloc','_free']"
     "SHELL:-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPU8','HEAP32','UTF8ToString','stringToUTF8','lengthBytesUTF8']"
-    "SHELL:-s INITIAL_MEMORY=2GB"
+    "SHELL:-s INITIAL_MEMORY=3GB"
     "SHELL:-s MAXIMUM_MEMORY=4GB"
     "SHELL:-s ALLOW_MEMORY_GROWTH=1"
     "SHELL:-s EXPORT_NAME=createImg2NumModule"
     "SHELL:-s ASYNCIFY=1"
-    "SHELL:-s ASYNCIFY_STACK_SIZE=2GB" # <-- Increases stack buffer to 64KB
+    "SHELL:-s ASYNCIFY_STACK_SIZE=16777216" # <-- Increases stack buffer to 64KB
+    # "SHELL:-s ASYNCIFY_DEBUG=1"
     "SHELL:--use-port=emdawnwebgpu"
+    "SHELL:-s DISABLE_EXCEPTION_CATCHING=0"
+    "SHELL:-s STACK_OVERFLOW_CHECK=1"
 )
 
 target_compile_options(img2num_wasm PRIVATE -msimd128 "--use-port=emdawnwebgpu")
@@ -51,7 +54,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_options(img2num_wasm PRIVATE -O2 -g4)
     target_link_options(img2num_wasm PRIVATE "SHELL:-s ASSERTIONS=2" -g4)
 else()
-    target_compile_options(img2num_wasm PRIVATE -O3)
+    target_compile_options(img2num_wasm PRIVATE -O3 -g4)
     target_link_options(img2num_wasm PRIVATE "SHELL:-s SINGLE_FILE=0")
 endif()
 
