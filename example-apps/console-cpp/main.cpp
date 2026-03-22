@@ -43,21 +43,26 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    uint8_t* img_data{new uint8_t[width * height * NUM_CHANNELS]};
+    uint8_t* out_data{new uint8_t[width * height * NUM_CHANNELS]};
+    int32_t* out_labels{new int32_t[width * height]};
+
+    for (int ITER=0; ITER<2; ITER++){
     std::cout << "Image loaded: " << width << "x" << height << " with " << NUM_CHANNELS << " channel(s)." << std::endl;
 
     // Allocate a copy of the original image
-    uint8_t* img_data{new uint8_t[width * height * NUM_CHANNELS]};
+    // uint8_t* img_data{new uint8_t[width * height * NUM_CHANNELS]};
     std::memcpy(img_data, image_data_original, static_cast<size_t>(width) * static_cast<size_t>(height) * NUM_CHANNELS);
 
     // Apply bilateral
     const double sigma{width * SIGMA_WIDTH_RATIO};
     img2num::bilateral_filter(img_data, width, height, sigma, 50.0, 0);
 
-    uint8_t* out_data{new uint8_t[width * height * NUM_CHANNELS]};
-    int32_t* out_labels{new int32_t[width * height]};
+    
 
     img2num::kmeans(img_data, out_data, out_labels, width, height, 16, 100, 1);
-
+    
+    }
     // Save the blurred image
     std::string out_path{std::string(OUT_DIR) + "/console-cpp-output.png"};
     std::string kmeans_path{std::string(OUT_DIR) + "/console-cpp-kmeans.png"};

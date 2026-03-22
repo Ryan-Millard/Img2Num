@@ -217,7 +217,7 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
     GPU::getClassInstance().get_queue().Submit(1, &commands);
     std::cout << "queue submit" << std::endl;
 
-    static volatile bool waiting = true;
+    // static volatile bool waiting = true;
 
     // 9. Map Async (To read data back to C++)
     // In a real app, you likely pass a callback function here.
@@ -230,10 +230,11 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
     };
     
     uint8_t* result_ptr = result.data();
-    // auto is_waiting = std::make_shared<bool>(true);
+    bool *waiting = new bool(true);
 
     readBuffer.MapAsync(wgpu::MapMode::Read, 0, bufferSize, wgpu::CallbackMode::AllowProcessEvents,
-        [](wgpu::MapAsyncStatus status, wgpu::StringView message) {
+        [](wgpu::MapAsyncStatus status, wgpu::StringView message, void* userdata) {
+            bool *flag = static_cast<bool*>(userdata);
             if (status == wgpu::MapAsyncStatus::Success) {
                 std::cout << "Map success: " << message.data << std::endl;
                 // Get the raw pointer
@@ -246,14 +247,16 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
             }
 
             // CRITICAL: This modifies the 'waiting' variable in the outer scope
-            waiting = false;
+            // *waiting = false;
             //*is_waiting = false;
-        }
+            *flag = false;
+        },
+        (void *)waiting
     );
 
-    std::cout << "waiting " << waiting << std::endl;
+    std::cout << "waiting " << *waiting << std::endl;
 
-    while (waiting) {
+    while (*waiting) {
         // std::cout << "waiting, " << std::endl;
         GPU::getClassInstance().get_instance().ProcessEvents();
 #if defined(__EMSCRIPTEN__)
@@ -286,9 +289,14 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
     std::cout << "done memcpy" << std::endl;
 
     // explicit clean up
+
     if (inputTexture) inputTexture.Destroy();
     if (outputTexture) outputTexture.Destroy();
     if (texLabRaw) texLabRaw.Destroy();
     if (texLabFiltered) texLabFiltered.Destroy();
     readBuffer.Destroy();
+    delete waiting;
+#if defined(__EMSCRIPTEN__)
+    emscripten_sleep(50);
+#endif
 }

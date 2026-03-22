@@ -186,13 +186,13 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT>& pixels,
         readBuffer.MapAsync(
             wgpu::MapMode::Read, 0, readDesc.size, wgpu::CallbackMode::AllowProcessEvents,
             [](wgpu::MapAsyncStatus status, wgpu::StringView msg, void* userdata) {
+                bool *flag = static_cast<bool*>(userdata);
                 if (status == wgpu::MapAsyncStatus::Success) {
                     std::cout << "Map success: " << msg.data << std::endl;
                 } else {
                     // Handle error
                     std::cerr << "Map failed: " << msg.data << std::endl;
                 }
-                bool *flag = static_cast<bool*>(userdata);
                 *flag = true;
             },
             (void *)done
@@ -202,7 +202,7 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT>& pixels,
         while (!*done) {
             GPU::getClassInstance().get_instance().ProcessEvents();
 #if defined(__EMSCRIPTEN__)
-            emscripten_sleep(10);
+            emscripten_sleep(100);
 #endif
         }
 
@@ -235,6 +235,9 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT>& pixels,
         // Add new centroid
         centroids.push_back(pixels[selected_index]);
         readBuffer.Unmap();
+#if defined(__EMSCRIPTEN__)
+        emscripten_sleep(10);
+#endif
     }
 
     std::copy(centroids.begin(), centroids.end(), out_centroids.begin());
@@ -243,7 +246,12 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT>& pixels,
     if (inputTexture) inputTexture.Destroy();
     readBuffer.Destroy();
     minDistBuffer.Destroy();
+    paramBuffer.Destroy();
     delete done;
+
+#if defined(__EMSCRIPTEN__)
+        emscripten_sleep(50);
+#endif
 }
 
 void setup(
@@ -454,7 +462,6 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
         }
     }
     std::cout << "kmeans++ init done" << std::endl;
-
     // Step 3: Run k-means iterations
 
     int bytesPerPixel{16};  // float pixels
@@ -555,50 +562,34 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
     std::cout << "done iterations" << std::endl;
 
     // 4. Map Async & Wait
-    static volatile bool done1 = false;
-    static volatile bool done2 = false;
+    bool *done1 = new bool(false);
+    bool *done2 = new bool(false);
 
     int32_t* label_ptr = labels.data();
     // Map Labels
     readLabelsBuffer.MapAsync(
         wgpu::MapMode::Read, 0, readLabelsDesc.size, 
         wgpu::CallbackMode::AllowProcessEvents,
-        [](wgpu::MapAsyncStatus status, wgpu::StringView msg) {
+        [](wgpu::MapAsyncStatus status, wgpu::StringView msg, void* userdata) {
+            bool *flag = static_cast<bool*>(userdata);
             if (status == wgpu::MapAsyncStatus::Success) {
                 std::cout << "Map success" << std::endl;
             }
-            done1 = true;
-        });
+            *flag = true;
+        },
+        (void *)done1
+    );
 
     std::cout << "read out" << std::endl;
     std::cout << "[DEBUG] K-Means readLabelsDesc.size: " << readLabelsDesc.size << std::endl;
-    std::cout << "done1: " << done1 << std::endl;
-    while (!done1) {
+    std::cout << "done1: " << *done1 << std::endl;
+    while (!*done1) {
         GPU::getClassInstance().get_instance().ProcessEvents();
 #if defined(__EMSCRIPTEN__)
         emscripten_sleep(10);
 #endif
     }
 
-    
-    // Map Centroids
-    readCentroidsBuffer.MapAsync(
-        wgpu::MapMode::Read, 0, readCentroidsDesc.size, 
-        wgpu::CallbackMode::AllowProcessEvents,
-        [](wgpu::MapAsyncStatus status, wgpu::StringView msg) {
-            if (status == wgpu::MapAsyncStatus::Success) {
-                std::cout << "Map success" << std::endl;
-            }
-            done2 = true;  // Signal completion
-        });
-
-    while (!done2) {
-        GPU::getClassInstance().get_instance().ProcessEvents();
-#if defined(__EMSCRIPTEN__)
-        emscripten_sleep(10);
-#endif
-    }
-    
     std::cout << "mapping labels" << std::endl;
     const uint8_t* mappedData = (const uint8_t*)readLabelsBuffer.GetConstMappedRange();
     // ... Copy data to your C++ vector ...
@@ -614,16 +605,29 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
         }
     }
     
-    // readLabelsBuffer.Unmap();
+    readLabelsBuffer.Unmap();
 
-    // done = false;
+    
+    // Map Centroids
+    readCentroidsBuffer.MapAsync(
+        wgpu::MapMode::Read, 0, readCentroidsDesc.size, 
+        wgpu::CallbackMode::AllowProcessEvents,
+        [](wgpu::MapAsyncStatus status, wgpu::StringView msg, void *userdata) {
+            bool *flag = static_cast<bool*>(userdata);
+            if (status == wgpu::MapAsyncStatus::Success) {
+                std::cout << "Map success" << std::endl;
+            }
+            *flag = true;  // Signal completion
+        },
+        (void *)done2
+    );
 
-    /*while (!done2) {
+    while (!*done2) {
         GPU::getClassInstance().get_instance().ProcessEvents();
 #if defined(__EMSCRIPTEN__)
-        emscripten_sleep(100);
+        emscripten_sleep(10);
 #endif
-    }*/
+    }
     
     std::cout << "mapping centroids" << std::endl;
     const float* mappedDataFloat = (const float*)readCentroidsBuffer.GetConstMappedRange();
@@ -650,8 +654,8 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
             }
         }
     }
-    
-    readLabelsBuffer.Unmap();
+
+    // readLabelsBuffer.Unmap();
     readCentroidsBuffer.Unmap();
 
     // Write the final centroid values to each pixel in the cluster
@@ -678,4 +682,9 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
     if (centroidTexture) centroidTexture.Destroy();
     readLabelsBuffer.Destroy();
     readCentroidsBuffer.Destroy();
+    delete done1;
+    delete done2;
+#if defined(__EMSCRIPTEN__)
+    emscripten_sleep(50);
+#endif
 }
