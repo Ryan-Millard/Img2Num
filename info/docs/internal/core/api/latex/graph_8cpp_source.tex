@@ -1,0 +1,353 @@
+\doxysection{graph.\+cpp}
+\hypertarget{graph_8cpp_source}{}\label{graph_8cpp_source}\index{src/internal/graph.cpp@{src/internal/graph.cpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00001}00001\ \textcolor{preprocessor}{\#include\ "{}internal/graph.h"{}}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00002}00002\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00003}00003\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00004}00004\ \textcolor{preprocessor}{\#include\ <iterator>}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00005}00005\ \textcolor{preprocessor}{\#include\ <queue>}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00006}00006\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}internal/Pixel.h"{}}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00009}00009\ \textcolor{preprocessor}{\#include\ "{}internal/bezier.h"{}}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00010}00010\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00011}00011\ \textcolor{comment}{\ Graph\ class\ -\/\ manages\ Node\ class}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00012}00012\ \textcolor{comment}{*/}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00013}00013\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00014}00014\ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ colorDistance(\textcolor{keyword}{const}\ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{ImageLib::RGBPixel<uint8\_t>}}\ \&a,}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00015}00015\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{ImageLib::RGBPixel<uint8\_t>}}\ \&b)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00016}00016\ \ \ \ \ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{ImageLib::RGBPixel<float>}}\ af\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a.red),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a.green),}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00017}00017\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a.blue)\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00018}00018\ \ \ \ \ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{ImageLib::RGBPixel<float>}}\ bf\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(b.red),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(b.green),}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00019}00019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(b.blue)\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00020}00020\ \ \ \ \ \textcolor{keywordflow}{return}\ std::sqrt((af.red\ -\/\ bf.red)\ *\ (af.red\ -\/\ bf.red)\ +}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00021}00021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (af.green\ -\/\ bf.green)\ *\ (af.green\ -\/\ bf.green)\ +}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00022}00022\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (af.blue\ -\/\ bf.blue)\ *\ (af.blue\ -\/\ bf.blue));}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00023}00023\ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00025}00025\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00026}00026\ \textcolor{comment}{To\ quickly\ search\ m\_nodes\ (std::vector)\ for\ the\ index\ of\ a\ node\ id}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00027}00027\ \textcolor{comment}{create\ an\ std::unordered\_map\ of\ node\ id\ -\/\ index\ pairs}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00028}00028\ \textcolor{comment}{indexing\ time\ of\ std::vector\ by\ value\ is\ O(N)}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00029}00029\ \textcolor{comment}{lookup\ time\ of\ std::unordered\_map\ by\ key\ is\ O(log(N))}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00030}00030\ \textcolor{comment}{*/}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00031}00031\ \textcolor{keywordtype}{void}\ Graph::hash\_node\_ids()\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00032}00032\ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ i\{0\};\ i\ <\ m\_nodes-\/>size();\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00033}00033\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ key\{m\_nodes-\/>at(i)-\/>id()\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00034}00034\ \ \ \ \ \ \ \ \ m\_node\_ids[key]\ =\ i;}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00035}00035\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00036}00036\ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00037}00037\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00038}00038\ \textcolor{keywordtype}{bool}\ Graph::all\_areas\_bigger\_than(int32\_t\ min\_area)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00039}00039\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&n\ :\ *m\_nodes)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00040}00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ <\ min\_area)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00041}00041\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00042}00042\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00043}00043\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00044}00044\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00045}00045\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00046}00046\ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00047}00047\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00048}00048\ \textcolor{keywordtype}{bool}\ Graph::add\_edge(int32\_t\ node\_id1,\ int32\_t\ node\_id2)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00049}00049\ \ \ \ \ \textcolor{keyword}{auto}\ end\_node\_ids\{m\_node\_ids.end()\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00050}00050\ \ \ \ \ \textcolor{keyword}{auto}\ node1\_it\{m\_node\_ids.find(node\_id1)\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00051}00051\ \ \ \ \ \textcolor{keyword}{auto}\ node2\_it\{m\_node\_ids.find(node\_id2)\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00053}00053\ \ \ \ \ \textcolor{keywordflow}{if}\ (node1\_it\ ==\ end\_node\_ids\ ||\ node2\_it\ ==\ end\_node\_ids)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00054}00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00055}00055\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00057}00057\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ idx1\{node1\_it-\/>second\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00058}00058\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ idx2\{node2\_it-\/>second\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00060}00060\ \ \ \ \ m\_nodes-\/>at(idx1)-\/>add\_edge(m\_nodes-\/>at(idx2));}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00061}00061\ \ \ \ \ m\_nodes-\/>at(idx2)-\/>add\_edge(m\_nodes-\/>at(idx1));}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00062}00062\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00063}00063\ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00064}00064\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00065}00065\ \textcolor{keywordtype}{bool}\ Graph::merge\_nodes(\textcolor{keyword}{const}\ Node\_ptr\ \&node\_to\_keep,\ \textcolor{keyword}{const}\ Node\_ptr\ \&node\_to\_remove)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00066}00066\ \ \ \ \ \textcolor{keyword}{auto}\ end\_node\_ids\{m\_node\_ids.end()\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00067}00067\ \ \ \ \ \textcolor{keyword}{auto}\ node1\_it\{m\_node\_ids.find(node\_to\_keep-\/>id())\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00068}00068\ \ \ \ \ \textcolor{keyword}{auto}\ node2\_it\{m\_node\_ids.find(node\_to\_remove-\/>id())\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00069}00069\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00070}00070\ \ \ \ \ \textcolor{keywordflow}{if}\ (node1\_it\ ==\ end\_node\_ids\ ||\ node2\_it\ ==\ end\_node\_ids)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00071}00071\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00072}00072\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00074}00074\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ idx\_k\{node1\_it-\/>second\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00075}00075\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ idx\_r\{node2\_it-\/>second\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00076}00076\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00077}00077\ \ \ \ \ \textcolor{comment}{//\ transfer\ edges\ from\ node\_to\_remove\ to\ node\_to\_keep}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00078}00078\ \ \ \ \ \textcolor{keywordflow}{for}\ (Node\_ptr\ n\ :\ m\_nodes-\/>at(idx\_r)-\/>edges())\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00079}00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>id()\ !=\ node\_to\_keep-\/>id())\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ prevents\ self\ referencing}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ n-\/>remove\_edge(node\_to\_remove);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ n-\/>add\_edge(node\_to\_keep);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \ \ node\_to\_keep-\/>add\_edge(n);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00084}00084\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00085}00085\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00086}00086\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00087}00087\ \ \ \ \ node\_to\_keep-\/>add\_pixels(node\_to\_remove-\/>get\_pixels());}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00088}00088\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00089}00089\ \ \ \ \ node\_to\_remove-\/>clear\_all();}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00090}00090\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00091}00091\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00092}00092\ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00093}00093\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00094}00094\ \textcolor{keywordtype}{void}\ Graph::clear\_unconnected\_nodes()\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00095}00095\ \ \ \ \ std::vector<Node\_ptr>\ \&nodes\{*m\_nodes\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00096}00096\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00097}00097\ \ \ \ \ nodes.erase(std::remove\_if(nodes.begin(),\ nodes.end(),}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ [](\textcolor{keyword}{const}\ Node\_ptr\ \&n)\ \{\ return\ n-\/>area()\ ==\ 0;\ \}),}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00099}00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nodes.end());}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00100}00100\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00101}00101\ \ \ \ \ hash\_node\_ids();}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00102}00102\ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00103}00103\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00104}00104\ \textcolor{keywordtype}{void}\ Graph::discover\_edges(\textcolor{keyword}{const}\ std::vector<int32\_t>\ \&region\_labels,\ \textcolor{keyword}{const}\ int32\_t\ width,}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00105}00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ height)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00106}00106\ \ \ \ \ \textcolor{comment}{//\ Moore\ 8-\/connected\ neighbourhood}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00107}00107\ \ \ \ \ \textcolor{keyword}{constexpr}\ int8\_t\ dirs[8][2]\{\{1,\ 0\},\ \{-\/1,\ 0\},\ \ \{0,\ 1\},\ \ \{0,\ -\/1\},}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{1,\ 1\},\ \{-\/1,\ -\/1\},\ \{-\/1,\ 1\},\ \{1,\ -\/1\}\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00110}00110\ \ \ \ \ int32\_t\ rneigh[8];}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00111}00111\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00112}00112\ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ y\{0\};\ y\ <\ height;\ ++y)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00113}00113\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ x\{0\};\ x\ <\ width;\ ++x)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00114}00114\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ idx\{y\ *\ width\ +\ x\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ rid\{region\_labels[idx]\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00116}00116\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00117}00117\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ k\{0\};\ k\ <\ 8;\ ++k)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00118}00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ nx\{x\ +\ dirs[k][0]\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00119}00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ ny\{y\ +\ dirs[k][1]\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00120}00120\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00121}00121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (nx\ >=\ 0\ \&\&\ nx\ <\ width\ \&\&\ ny\ >=\ 0\ \&\&\ ny\ <\ height)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00122}00122\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rneigh[k]\ =\ region\_labels[ny\ *\ width\ +\ nx];}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rneigh[k]\ =\ rid;\ \ \textcolor{comment}{//\ ignore\ out-\/of-\/bounds}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00126}00126\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00127}00127\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ r\ :\ rneigh)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00129}00129\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (r\ !=\ rid)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ add\_edge(rid,\ r);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00131}00131\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00132}00132\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00133}00133\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00134}00134\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00135}00135\ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00136}00136\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00137}00137\ \textcolor{keywordtype}{void}\ Graph::compute\_contours()\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00138}00138\ \ \ \ \ \textcolor{comment}{//\ overlap\ edge\ pixels}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00139}00139\ \ \ \ \ \textcolor{comment}{//\ then\ compute\ contours}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00140}00140\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00141}00141\ \ \ \ \ std::set<std::pair<int,\ int>>\ adjusted\_neighbors\{\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00142}00142\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00143}00143\ \ \ \ \ \textcolor{keyword}{constexpr}\ int8\_t\ dirs[8][2]\{\{1,\ 0\},\ \{-\/1,\ 0\},\ \ \{0,\ 1\},\ \ \{0,\ -\/1\},}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00144}00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{1,\ 1\},\ \{-\/1,\ -\/1\},\ \{-\/1,\ 1\},\ \{1,\ -\/1\}\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00145}00145\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00146}00146\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ Node\_ptr\ \&n\ :\ get\_nodes())\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00147}00147\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)\ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00148}00148\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00149}00149\ \ \ \ \ \ \ \ \ std::vector<std::vector<uint8\_t>>\ full\_neighborhood;}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00150}00150\ \ \ \ \ \ \ \ \ std::vector<std::array<int32\_t,\ 4>>\ xywh;}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00151}00151\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00152}00152\ \ \ \ \ \ \ \ \ std::vector<uint8\_t>\ node\_binary;}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00153}00153\ \ \ \ \ \ \ \ \ std::array<int32\_t,\ 4>\ xywh0\ =\ n-\/>create\_binary\_image(node\_binary);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00154}00154\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00155}00155\ \ \ \ \ \ \ \ \ full\_neighborhood.push\_back(node\_binary);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00156}00156\ \ \ \ \ \ \ \ \ xywh.push\_back(xywh0);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00157}00157\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00158}00158\ \ \ \ \ \ \ \ \ std::vector<Node\_ptr>\ considered\_neigbors;}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00159}00159\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ \&neighbor\ :\ n-\/>edges())\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00160}00160\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (neighbor-\/>area()\ ==\ 0)\ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00161}00161\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00162}00162\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ check\ if\ this\ neighbor\ pairing\ has\ already\ been\ addressed}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00163}00163\ \ \ \ \ \ \ \ \ \ \ \ \ std::pair<int,\ int>\ id1\ =\ std::make\_pair(n-\/>id(),\ neighbor-\/>id());}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00164}00164\ \ \ \ \ \ \ \ \ \ \ \ \ std::pair<int,\ int>\ id2\ =\ std::make\_pair(neighbor-\/>id(),\ n-\/>id());}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00165}00165\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \_end\{adjusted\_neighbors.end()\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00166}00166\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \_it1\{adjusted\_neighbors.find(id1)\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00167}00167\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \_it2\{adjusted\_neighbors.find(id2)\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00168}00168\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00169}00169\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_it1\ !=\ \_end\ ||\ \_it2\ !=\ \_end)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00170}00170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00171}00171\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00172}00172\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00173}00173\ \ \ \ \ \ \ \ \ \ \ \ \ considered\_neigbors.push\_back(neighbor);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00174}00174\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00175}00175\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<uint8\_t>\ neighbor\_binary;}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00176}00176\ \ \ \ \ \ \ \ \ \ \ \ \ std::array<int32\_t,\ 4>\ xywh1\ =\ neighbor-\/>create\_binary\_image(neighbor\_binary);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00177}00177\ \ \ \ \ \ \ \ \ \ \ \ \ full\_neighborhood.push\_back(neighbor\_binary);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00178}00178\ \ \ \ \ \ \ \ \ \ \ \ \ xywh.push\_back(xywh1);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00179}00179\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00180}00180\ \ \ \ \ \ \ \ \ \ \ \ \ adjusted\_neighbors.insert(id1);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00181}00181\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00182}00182\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00183}00183\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ address\ overlaps}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00184}00184\ \ \ \ \ \ \ \ \ std::vector<uint8\_t>\ neighborhood;}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00185}00185\ \ \ \ \ \ \ \ \ std::array<int32\_t,\ 4>\ bounds\ =\ \{std::numeric\_limits<int>::max(),}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00186}00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::numeric\_limits<int>::max(),\ -\/1,\ -\/1\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00187}00187\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&\_xywh\ :\ xywh)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00188}00188\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_xywh[0]\ <\ bounds[0])\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00189}00189\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bounds[0]\ =\ \_xywh[0];}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00190}00190\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \ \textcolor{comment}{//\ xmin}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00191}00191\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_xywh[1]\ <\ bounds[1])\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00192}00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bounds[1]\ =\ \_xywh[1];}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00193}00193\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \ \textcolor{comment}{//\ ymin}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00194}00194\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_xywh[2]\ +\ \_xywh[0]\ -\/\ 1\ >\ bounds[2])\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00195}00195\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bounds[2]\ =\ \_xywh[2]\ +\ \_xywh[0]\ -\/\ 1;}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00196}00196\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \ \textcolor{comment}{//\ xmax}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00197}00197\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_xywh[3]\ +\ \_xywh[1]\ -\/\ 1\ >\ bounds[3])\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00198}00198\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bounds[3]\ =\ \_xywh[3]\ +\ \_xywh[1]\ -\/\ 1;}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00199}00199\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \ \textcolor{comment}{//\ ymax}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00200}00200\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00201}00201\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00202}00202\ \ \ \ \ \ \ \ \ bounds[2]\ =\ bounds[2]\ -\/\ bounds[0]\ +\ 1;\ \ \textcolor{comment}{//\ w}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00203}00203\ \ \ \ \ \ \ \ \ bounds[3]\ =\ bounds[3]\ -\/\ bounds[1]\ +\ 1;\ \ \textcolor{comment}{//\ h}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00204}00204\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00205}00205\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ build\ joined\ neighborhood\ map}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00206}00206\ \ \ \ \ \ \ \ \ neighborhood.resize(}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00207}00207\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}std::size\_t\textcolor{keyword}{>}(bounds[2])\ *\ \textcolor{keyword}{static\_cast<}std::size\_t\textcolor{keyword}{>}(bounds[3]),\ 0);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00208}00208\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00209}00209\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ full\_neighborhood.size();\ ++i)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00210}00210\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ y\ =\ 0;\ y\ <\ xywh[i][3];\ ++y)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00211}00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ x\ =\ 0;\ x\ <\ xywh[i][2];\ ++x)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00212}00212\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ global\_y\ =\ y\ +\ xywh[i][1]\ -\/\ bounds[1];}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00213}00213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ global\_x\ =\ x\ +\ xywh[i][0]\ -\/\ bounds[0];}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00214}00214\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ val\ =\ full\_neighborhood[i][y\ *\ xywh[i][2]\ +\ x];}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00215}00215\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (val\ !=\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00216}00216\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ neighborhood[global\_y\ *\ bounds[2]\ +\ global\_x]\ =\ (i\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00217}00217\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00218}00218\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00219}00219\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00220}00220\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00221}00221\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00222}00222\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 0\ =\ background,\ 1\ =\ this\ node,\ 2+\ =\ neighboring\ nodes}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00223}00223\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00224}00224\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ find\ touching\ edges}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00225}00225\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ y\ =\ 0;\ y\ <\ bounds[3];\ ++y)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00226}00226\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ x\ =\ 0;\ x\ <\ bounds[2];\ ++x)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00227}00227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ val\ =\ neighborhood[y\ *\ bounds[2]\ +\ x];}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00228}00228\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ check\ neighbors}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00229}00229\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (val\ ==\ 1)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00230}00230\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ k\{0\};\ k\ <\ 8;\ ++k)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00231}00231\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int32\_t\ nx\{x\ +\ dirs[k][0]\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00232}00232\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int32\_t\ ny\{y\ +\ dirs[k][1]\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00233}00233\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nx\ =\ std::clamp(nx,\ 0,\ bounds[2]\ -\/\ 1);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00234}00234\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ny\ =\ std::clamp(ny,\ 0,\ bounds[3]\ -\/\ 1);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00235}00235\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ n\_val\ =\ neighborhood[ny\ *\ bounds[2]\ +\ nx];}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00236}00236\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((n\_val\ !=\ val)\ \&\ (n\_val\ !=\ 0))\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00237}00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ need\ a\ smarter\ approach\ to\ prevent\ pinching}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00238}00238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_too\_thin\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00239}00239\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ check\ around\ (nx,ny)\ if\ we\ can\ stretch\ into\ another\ region,}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00240}00240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ then\ it's\ too\ thin}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00241}00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ k\{0\};\ k\ <\ 8;\ ++k)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00242}00242\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int32\_t\ mx\{nx\ +\ dirs[k][0]\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00243}00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int32\_t\ my\{ny\ +\ dirs[k][1]\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00244}00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mx\ =\ std::clamp(mx,\ 0,\ bounds[2]\ -\/\ 1);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00245}00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ my\ =\ std::clamp(my,\ 0,\ bounds[3]\ -\/\ 1);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00246}00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ m\_val\ =\ neighborhood[my\ *\ bounds[2]\ +\ mx];}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00247}00247\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00248}00248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((m\_val\ !=\ val)\ \&\ (m\_val\ !=\ n\_val))\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00249}00249\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ is\_too\_thin\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00250}00250\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00251}00251\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00252}00252\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00253}00253\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (is\_too\_thin)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00254}00254\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ considered\_neigbors[n\_val\ -\/\ 2]-\/>add\_edge\_pixel(}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00255}00255\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structXY}{XY}}\{x\ +\ bounds[0],\ y\ +\ bounds[1]\});}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00256}00256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00257}00257\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ n-\/>add\_edge\_pixel(\mbox{\hyperlink{structXY}{XY}}\{nx\ +\ bounds[0],\ ny\ +\ bounds[1]\});}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00258}00258\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00259}00259\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00260}00260\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00261}00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00262}00262\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00263}00263\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00264}00264\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00265}00265\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00266}00266\ \ \ \ \ \textcolor{comment}{//\ ask\ each\ Node\ to\ compute\ contours}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00267}00267\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ Node\_ptr\ \&n\ :\ get\_nodes())\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00268}00268\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)\ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00269}00269\ \ \ \ \ \ \ \ \ n-\/>compute\_contour();}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00270}00270\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00271}00271\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00272}00272\ \ \ \ \ \textcolor{comment}{//\ smoothing}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00273}00273\ \ \ \ \ std::vector<std::vector<Point>>\ all\_contours;}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00274}00274\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ Node\_ptr\ \&n\ :\ get\_nodes())\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00275}00275\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)\ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00276}00276\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00277}00277\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structColoredContours}{ColoredContours}}\ *c0\ =\ \&n-\/>m\_contours;}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00278}00278\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ c0-\/>contours.size();\ ++i)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00279}00279\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.push\_back(c0-\/>contours[i]);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00280}00280\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00281}00281\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00282}00282\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00283}00283\ \ \ \ \ contours::coupled\_smooth(}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00284}00284\ \ \ \ \ \ \ \ \ all\_contours,\ \mbox{\hyperlink{structRect}{Rect}}\{0.0f,\ 0.0f,\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(m\_width),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(m\_height)\});}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00285}00285\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00286}00286\ \ \ \ \ std::vector<std::vector<QuadBezier>>\ all\_curves;}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00287}00287\ \ \ \ \ fit\_curve\_reduction(all\_contours,\ all\_curves,\ 0.5f);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00288}00288\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00289}00289\ \ \ \ \ \textcolor{keywordtype}{int}\ j\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00290}00290\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ Node\_ptr\ \&n\ :\ get\_nodes())\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00291}00291\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)\ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00292}00292\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00293}00293\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structColoredContours}{ColoredContours}}\ *c0\ =\ \&n-\/>m\_contours;}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00294}00294\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ c0-\/>contours.size();\ ++i)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00295}00295\ \ \ \ \ \ \ \ \ \ \ \ \ std::copy(all\_contours[j].begin(),\ all\_contours[j].end(),\ c0-\/>contours[i].begin());}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00296}00296\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00297}00297\ \ \ \ \ \ \ \ \ \ \ \ \ c0-\/>curves[i].resize(all\_curves[j].size());}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00298}00298\ \ \ \ \ \ \ \ \ \ \ \ \ std::copy(all\_curves[j].begin(),\ all\_curves[j].end(),\ c0-\/>curves[i].begin());}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00299}00299\ \ \ \ \ \ \ \ \ \ \ \ \ j++;}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00300}00300\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00301}00301\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00302}00302\ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00303}00303\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00304}00304\ \textcolor{keywordtype}{void}\ Graph::merge\_small\_area\_nodes(\textcolor{keyword}{const}\ int32\_t\ min\_area)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00305}00305\ \ \ \ \ int32\_t\ counter\{0\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00306}00306\ \ \ \ \ \textcolor{keywordflow}{while}\ (!all\_areas\_bigger\_than(min\_area))\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00307}00307\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ Node\_ptr\ \&n\ :\ get\_nodes())\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00308}00308\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ <\ min\_area)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00309}00309\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<Node\_ptr>\ neighbors;}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00310}00310\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ neighbors.reserve(n-\/>num\_edges());}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00311}00311\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::copy(n-\/>edges().begin(),\ n-\/>edges().end(),\ std::back\_inserter(neighbors));}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00312}00312\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00313}00313\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{ImageLib::RGBPixel<uint8\_t>}}\ col\ =\ n-\/>color();}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00314}00314\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ sort\ by\ size\ and\ color\ similarity}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00315}00315\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::sort(neighbors.begin(),\ neighbors.end(),\ [col](Node\_ptr\ a,\ Node\_ptr\ b)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00316}00316\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ float\ cdista\ =\ ImageLib::RGBPixel<uint8\_t>::colorDistance(a-\/>color(),\ col);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00317}00317\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ float\ cdistb\ =\ ImageLib::RGBPixel<uint8\_t>::colorDistance(b-\/>color(),\ col);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00318}00318\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ return\ (static\_cast<float>(a-\/>area())\ +\ 10.f\ *\ cdista)\ <}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00319}00319\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (static\_cast<float>(b-\/>area())\ +\ 10.f\ *\ cdistb);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00320}00320\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00321}00321\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00322}00322\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int32\_t\ idx\{0\};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00323}00323\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ find\ first\ non-\/zero\ area\ neighbor}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00324}00324\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (Node\_ptr\ \&ne\ :\ neighbors)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00325}00325\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ne-\/>area()\ >\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00326}00326\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00327}00327\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00328}00328\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++idx;}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00329}00329\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00330}00330\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00331}00331\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ no\ valid\ neighbor\ found,\ skip\ this\ node}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00332}00332\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ >=\ \textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(neighbors.size()))\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00333}00333\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00334}00334\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00335}00335\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00336}00336\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (neighbors[idx]-\/>area()\ >=\ n-\/>area())\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00337}00337\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ merge\_nodes(neighbors[idx],\ n);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00338}00338\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00339}00339\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ merge\_nodes(n,\ neighbors[idx]);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00340}00340\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00341}00341\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00342}00342\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00343}00343\ }
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00344}00344\ \ \ \ \ \ \ \ \ clear\_unconnected\_nodes();}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00345}00345\ \ \ \ \ \ \ \ \ ++counter;}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00346}00346\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00347}00347\ \}}
+
+\end{DoxyCode}
