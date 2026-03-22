@@ -2,6 +2,7 @@
 #define GPU_H
 
 #if defined(__EMSCRIPTEN__)
+#include <emscripten/emscripten.h>
 #include <emscripten/html5.h>
 #endif
 

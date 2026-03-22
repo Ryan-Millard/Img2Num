@@ -38,8 +38,6 @@ struct ClusterAccumulator {
     uint32_t count;
 };
 
-static volatile bool done = false;
-
 // The K-Means++ Initialization Function
 template <typename PixelT>
 void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT>& pixels,
@@ -151,9 +149,11 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT>& pixels,
     centroids.push_back(pixels[first_index]);
 
     // --- Step 2 & 3: Repeat until we have k centroids ---
-    
+    // static volatile bool done = false;
+    bool *done = new bool(false);
+
     for (int i = 1; i < k; ++i) {
-        done = false;
+        *done = false;
         // A. Upload Current Centroid to GPU
         PixelT c = centroids.back();
         CentroidParams params;
@@ -185,19 +185,21 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT>& pixels,
         
         readBuffer.MapAsync(
             wgpu::MapMode::Read, 0, readDesc.size, wgpu::CallbackMode::AllowProcessEvents,
-            [](wgpu::MapAsyncStatus status, wgpu::StringView msg) {
+            [](wgpu::MapAsyncStatus status, wgpu::StringView msg, void* userdata) {
                 if (status == wgpu::MapAsyncStatus::Success) {
                     std::cout << "Map success: " << msg.data << std::endl;
                 } else {
                     // Handle error
                     std::cerr << "Map failed: " << msg.data << std::endl;
                 }
-                done = true;
-            }
+                bool *flag = static_cast<bool*>(userdata);
+                *flag = true;
+            },
+            (void *)done
         );
 
         // E. Wait for GPU
-        while (!done) {
+        while (!*done) {
             GPU::getClassInstance().get_instance().ProcessEvents();
 #if defined(__EMSCRIPTEN__)
             emscripten_sleep(10);
@@ -240,6 +242,8 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT>& pixels,
     // explicit clean up
     if (inputTexture) inputTexture.Destroy();
     readBuffer.Destroy();
+    minDistBuffer.Destroy();
+    delete done;
 }
 
 void setup(

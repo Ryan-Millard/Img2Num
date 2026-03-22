@@ -44,10 +44,13 @@ set(COMMON_FLAGS
     "SHELL:--use-port=emdawnwebgpu"
     # "SHELL:-s DISABLE_EXCEPTION_CATCHING=0"
     # "SHELL:-s STACK_OVERFLOW_CHECK=1"
+    "SHELL:-s NO_DISABLE_EXCEPTION_CATCHING=1"
 )
 
-target_compile_options(img2num_wasm PRIVATE -msimd128 "--use-port=emdawnwebgpu")
-target_link_options(img2num_wasm PRIVATE ${COMMON_FLAGS} -msimd128 "--use-port=emdawnwebgpu")
+target_compile_options(img2num_wasm PRIVATE -msimd128)
+# "--use-port=emdawnwebgpu")
+target_link_options(img2num_wasm PRIVATE ${COMMON_FLAGS} -msimd128)
+# "--use-port=emdawnwebgpu")
 
 # Build type flags
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")

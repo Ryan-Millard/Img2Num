@@ -33,8 +33,9 @@ target_include_directories(Img2Num
 )
 
 if (EMSCRIPTEN)
-  target_compile_options(Img2Num PRIVATE -msimd128 "--use-port=emdawnwebgpu")
-  target_link_options(Img2Num PRIVATE -msimd128 "--use-port=emdawnwebgpu")
+  message("using emdawnwebgpu port")
+  target_compile_options(Img2Num PRIVATE "--use-port=emdawnwebgpu")
+  target_link_options(Img2Num PRIVATE "--use-port=emdawnwebgpu" "SHELL:-s ASYNCIFY=1")
 else()
   
   find_package(Dawn QUIET)
