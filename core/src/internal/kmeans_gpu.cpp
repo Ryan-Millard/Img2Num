@@ -29,14 +29,21 @@ static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
 struct Params {
     uint32_t numPoints;
     uint32_t numCentroids;
-};
+    uint32_t pad[2];
+}__attribute__((packed));
 
 struct ClusterAccumulator {
     int32_t sumR;
     int32_t sumG;
     int32_t sumB;
     uint32_t count;
-};
+}__attribute__((packed));
+
+struct CentroidParams {
+    float r, g, b, a;
+    uint32_t width;
+    uint32_t pad[3];  // Padding to align to 16 bytes
+}__attribute__((packed));
 
 // The K-Means++ Initialization Function
 template <typename PixelT>
@@ -101,11 +108,7 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT>& pixels,
                                                     distDesc.size);
 
     // 3. Create Uniform Buffer (For passing new centroid color)
-    struct CentroidParams {
-        float r, g, b, a;
-        uint32_t width;
-        uint32_t pad[3];  // Padding to align to 16 bytes
-    };
+
     wgpu::BufferDescriptor uniDesc = {};
     uniDesc.size = sizeof(CentroidParams);
     uniDesc.usage = wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst;
@@ -202,7 +205,7 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT>& pixels,
         while (!*done) {
             GPU::getClassInstance().get_instance().ProcessEvents();
 #if defined(__EMSCRIPTEN__)
-            emscripten_sleep(100);
+            emscripten_sleep(10);
 #endif
         }
 
@@ -565,7 +568,7 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
     bool *done1 = new bool(false);
     bool *done2 = new bool(false);
 
-    int32_t* label_ptr = labels.data();
+    // int32_t* label_ptr = labels.data();
     // Map Labels
     readLabelsBuffer.MapAsync(
         wgpu::MapMode::Read, 0, readLabelsDesc.size, 
@@ -598,10 +601,13 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
         const uint8_t* rowPtr = mappedData + (y * bytesPerRowLabels);
         for (size_t x = 0; x < width; ++x) {
             const uint8_t* pixelPtr = rowPtr + (x * bytesPerPixel);
-            uint32_t r = *(const uint32_t*)pixelPtr;
+            // uint32_t r = *(const uint32_t*)pixelPtr;
+            uint32_t r = 0;
+            std::memcpy(&r, pixelPtr, sizeof(uint32_t));
 
             size_t dstIndex = y * width + x;
-            label_ptr[dstIndex] = static_cast<int32_t>(r);
+            labels[dstIndex] = static_cast<int32_t>(r);
+            
         }
     }
     
@@ -684,6 +690,9 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
     readCentroidsBuffer.Destroy();
     delete done1;
     delete done2;
+
+    labels.clear();
+    labels.shrink_to_fit();
 #if defined(__EMSCRIPTEN__)
     emscripten_sleep(50);
 #endif

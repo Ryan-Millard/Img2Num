@@ -26,7 +26,7 @@ struct FilterParams {
     // However, it is safer to pad to 16 bytes to be sure.
     float _pad1;
     float _pad2;
-};
+}__attribute__((packed));
 
 void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double sigma_spatial,
                           double sigma_range, uint8_t color_space) {
@@ -234,6 +234,7 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
 
     readBuffer.MapAsync(wgpu::MapMode::Read, 0, bufferSize, wgpu::CallbackMode::AllowProcessEvents,
         [](wgpu::MapAsyncStatus status, wgpu::StringView message, void* userdata) {
+            std::cout << "In callback" << std::endl;
             bool *flag = static_cast<bool*>(userdata);
             if (status == wgpu::MapAsyncStatus::Success) {
                 std::cout << "Map success: " << message.data << std::endl;
@@ -275,10 +276,14 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
             const uint8_t* pixelPtr = rowPtr + (x * bytesPerPixel);
             size_t dstIndex = 4 * (y * width + x);  // RGBA
 
-            result_ptr[dstIndex] = *pixelPtr;
+            /*result_ptr[dstIndex] = *pixelPtr;
             result_ptr[dstIndex + 1] = *(pixelPtr + 1);
             result_ptr[dstIndex + 2] = *(pixelPtr + 2);
-            result_ptr[dstIndex + 3] = *(pixelPtr + 3);
+            result_ptr[dstIndex + 3] = *(pixelPtr + 3);*/
+            std::memcpy(&result_ptr[dstIndex], pixelPtr, sizeof(uint8_t));
+            std::memcpy(&result_ptr[dstIndex + 1], pixelPtr + 1, sizeof(uint8_t));
+            std::memcpy(&result_ptr[dstIndex + 2], pixelPtr + 2, sizeof(uint8_t));
+            std::memcpy(&result_ptr[dstIndex + 3], pixelPtr + 3, sizeof(uint8_t));
         }
     }
     std::cout << "done copying" << std::endl;
@@ -299,4 +304,6 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
 #if defined(__EMSCRIPTEN__)
     emscripten_sleep(50);
 #endif
+    result.clear();
+    result.shrink_to_fit();
 }
