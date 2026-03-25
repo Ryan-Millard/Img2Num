@@ -27,6 +27,7 @@ const EditorControls = ({
     const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     setSvgUrl(url);
+
     return () => URL.revokeObjectURL(url);
   }, [svg]);
 
