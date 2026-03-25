@@ -268,15 +268,35 @@ export default function Editor() {
     ? styles.colorMode
     : styles.previewMode;
 
-  // Speed boost - better than React version
+  // useEffect for pointer moves with RAF batching and raw/fallback support
   useEffect(() => {
     const el = viewportRef.current;
     if (!el) return;
 
-    el.addEventListener("pointerrawupdate", onPointerMove);
+    const queuedEvent = { e: null };
+    let ticking = false;
+
+    const handlePointerMove = (e) => {
+      queuedEvent.e = e;
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          if (queuedEvent.e) {
+            onPointerMove(queuedEvent.e);
+            queuedEvent.e = null;
+          }
+          ticking = false;
+        });
+      }
+    };
+
+    const supportsRawUpdate = typeof window !== "undefined" && "onpointerrawupdate" in window;
+    const pointerEventType = supportsRawUpdate ? "pointerrawupdate" : "pointermove";
+
+    el.addEventListener(pointerEventType, handlePointerMove);
 
     return () => {
-      el.removeEventListener("pointerrawupdate", onPointerMove);
+      el.removeEventListener(pointerEventType, handlePointerMove);
     };
   }, []);
 
