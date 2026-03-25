@@ -81,8 +81,7 @@ const WASM_TYPES = {
      * @param {number} len
      * @returns {Int32Array}
      */
-    read: (ptr, len) =>
-    new Int32Array(wasmModule.HEAP32.buffer, ptr, len).slice(),
+    read: (ptr, len) => new Int32Array(wasmModule.HEAP32.buffer, ptr, len).slice(),
   },
 
   Uint8Array: {
@@ -100,8 +99,7 @@ const WASM_TYPES = {
       wasmModule.HEAPU8.set(arr, ptr);
       return ptr;
     },
-    read: (ptr, len) =>
-    new Uint8ClampedArray(wasmModule.HEAPU8.slice(ptr, ptr + len)),
+    read: (ptr, len) => new Uint8ClampedArray(wasmModule.HEAPU8.slice(ptr, ptr + len)),
   },
 
   string: {
@@ -140,13 +138,7 @@ async function callWasm(funcName, argsMap, returnType) {
   const argTypes = Array(argsMap.size).fill("number");
   const retType = returnType !== "void" ? "number" : null;
 
-  return await wasmModule.ccall(
-    funcName,
-    retType,
-    argTypes,
-    [...argsMap.values()],
-    { async: true }
-  );
+  return await wasmModule.ccall(funcName, retType, argTypes, [...argsMap.values()], { async: true });
 }
 
 // --------------------

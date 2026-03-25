@@ -26,7 +26,7 @@ struct FilterParams {
     // However, it is safer to pad to 16 bytes to be sure.
     float _pad1;
     float _pad2;
-}__attribute__((packed));
+} __attribute__((packed));
 
 void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double sigma_spatial,
                           double sigma_range, uint8_t color_space) {
@@ -228,14 +228,15 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
         int width;
         int height;
     };
-    
-    uint8_t* result_ptr = result.data();
-    bool *waiting = new bool(true);
 
-    readBuffer.MapAsync(wgpu::MapMode::Read, 0, bufferSize, wgpu::CallbackMode::AllowProcessEvents,
+    uint8_t* result_ptr = result.data();
+    bool* waiting = new bool(true);
+
+    readBuffer.MapAsync(
+        wgpu::MapMode::Read, 0, bufferSize, wgpu::CallbackMode::AllowProcessEvents,
         [](wgpu::MapAsyncStatus status, wgpu::StringView message, void* userdata) {
             std::cout << "In callback" << std::endl;
-            bool *flag = static_cast<bool*>(userdata);
+            bool* flag = static_cast<bool*>(userdata);
             bool success = false;
             if (status == wgpu::MapAsyncStatus::Success) {
                 success = true;
@@ -243,12 +244,11 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
             } else {
                 // Handle error
                 success = false;
-                //std::cerr << "Map failed: " << message.data << std::endl;
+                // std::cerr << "Map failed: " << message.data << std::endl;
             }
             *flag = false;
         },
-        (void *)waiting
-    );
+        (void*)waiting);
 
     std::cout << "waiting " << *waiting << std::endl;
 
@@ -259,15 +259,14 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
 #endif
     }
     std::cout << "done wgpu" << std::endl;
-    const uint8_t* mappedData =
-        (const uint8_t*)readBuffer.GetConstMappedRange(0, bufferSize);
+    const uint8_t* mappedData = (const uint8_t*)readBuffer.GetConstMappedRange(0, bufferSize);
     // copy to cpu buffer
     for (size_t y = 0; y < height; ++y) {
         const uint8_t* rowPtr = mappedData + (y * alignedBytesPerRow);
         for (size_t x = 0; x < width; ++x) {
             const uint8_t* pixelPtr = rowPtr + (x * bytesPerPixel);
             size_t dstIndex = 4 * (y * width + x);  // RGBA
-            
+
             std::memcpy(&result_ptr[dstIndex], pixelPtr, sizeof(uint8_t));
             std::memcpy(&result_ptr[dstIndex + 1], pixelPtr + 1, sizeof(uint8_t));
             std::memcpy(&result_ptr[dstIndex + 2], pixelPtr + 2, sizeof(uint8_t));

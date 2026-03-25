@@ -7,6 +7,7 @@
 #endif
 
 #include <webgpu/webgpu_cpp.h>
+
 #include <fstream>
 #include <iostream>
 #include <iterator>
@@ -166,17 +167,17 @@ class GPU {
                 std::cerr << "WEBGPU ERROR: " << msg.data << std::endl;
             });
         */
-        deviceDesc.SetUncapturedErrorCallback(
-            [](const wgpu::Device&, wgpu::ErrorType type, wgpu::StringView msg) {
-                // 1. Safely extract the string using the provided length
-                std::string err_str = (msg.data && msg.length > 0) 
-                    ? std::string(msg.data, msg.length) 
-                    : "Unknown Error (Null message)";
-                    
-                // 2. Print it safely
-                std::cerr << "\n[WEBGPU FATAL ERROR] Type: " << static_cast<uint32_t>(type) 
-                        << " | Msg: " << err_str << "\n" << std::endl;
-            });
+        deviceDesc.SetUncapturedErrorCallback([](const wgpu::Device&, wgpu::ErrorType type,
+                                                 wgpu::StringView msg) {
+            // 1. Safely extract the string using the provided length
+            std::string err_str = (msg.data && msg.length > 0) ? std::string(msg.data, msg.length)
+                                                               : "Unknown Error (Null message)";
+
+            // 2. Print it safely
+            std::cerr << "\n[WEBGPU FATAL ERROR] Type: " << static_cast<uint32_t>(type)
+                      << " | Msg: " << err_str << "\n"
+                      << std::endl;
+        });
 
         adapter.RequestDevice(
             &deviceDesc,
