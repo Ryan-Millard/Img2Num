@@ -569,8 +569,10 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
         wgpu::CallbackMode::AllowProcessEvents,
         [](wgpu::MapAsyncStatus status, wgpu::StringView msg, void* userdata) {
             bool *flag = static_cast<bool*>(userdata);
+            bool success = false;
             if (status == wgpu::MapAsyncStatus::Success) {
-                std::cout << "Map success" << std::endl;
+                // std::cout << "Map success" << std::endl;
+                success = true;
             }
             *flag = true;
         },
@@ -611,8 +613,10 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
         wgpu::CallbackMode::AllowProcessEvents,
         [](wgpu::MapAsyncStatus status, wgpu::StringView msg, void *userdata) {
             bool *flag = static_cast<bool*>(userdata);
+            bool success = false;
             if (status == wgpu::MapAsyncStatus::Success) {
-                std::cout << "Map success" << std::endl;
+                // std::cout << "Map success" << std::endl;
+                success = true;
             }
             *flag = true;  // Signal completion
         },

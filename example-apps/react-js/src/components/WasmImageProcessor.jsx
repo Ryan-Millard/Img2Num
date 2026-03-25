@@ -87,14 +87,12 @@ const WasmImageProcessor = () => {
       const { labels } = await kmeans({
         ...fileData,
         pixels: imgBilateralFiltered,
-        // pixels: fileData.pixels,
         num_colors: 16,
       });
 
       step(95);
       const { svg } = await findContours({
         pixels: imgBilateralFiltered,
-        // pixels: fileData.pixels,
         labels,
         width,
         height,
