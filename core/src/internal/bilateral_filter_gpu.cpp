@@ -238,18 +238,10 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
             bool *flag = static_cast<bool*>(userdata);
             if (status == wgpu::MapAsyncStatus::Success) {
                 std::cout << "Map success: " << message.data << std::endl;
-                // Get the raw pointer
-                
-                //readBuffer.Unmap();
-                //std::cout << "unmap done" << std::endl;
             } else {
                 // Handle error
                 std::cerr << "Map failed: " << message.data << std::endl;
             }
-
-            // CRITICAL: This modifies the 'waiting' variable in the outer scope
-            // *waiting = false;
-            //*is_waiting = false;
             *flag = false;
         },
         (void *)waiting
@@ -258,10 +250,9 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
     std::cout << "waiting " << *waiting << std::endl;
 
     while (*waiting) {
-        // std::cout << "waiting, " << std::endl;
         GPU::getClassInstance().get_instance().ProcessEvents();
 #if defined(__EMSCRIPTEN__)
-        emscripten_sleep(100);
+        emscripten_sleep(10);
 #endif
     }
     std::cout << "done wgpu" << std::endl;
@@ -275,11 +266,7 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
         for (size_t x = 0; x < width; ++x) {
             const uint8_t* pixelPtr = rowPtr + (x * bytesPerPixel);
             size_t dstIndex = 4 * (y * width + x);  // RGBA
-
-            /*result_ptr[dstIndex] = *pixelPtr;
-            result_ptr[dstIndex + 1] = *(pixelPtr + 1);
-            result_ptr[dstIndex + 2] = *(pixelPtr + 2);
-            result_ptr[dstIndex + 3] = *(pixelPtr + 3);*/
+            
             std::memcpy(&result_ptr[dstIndex], pixelPtr, sizeof(uint8_t));
             std::memcpy(&result_ptr[dstIndex + 1], pixelPtr + 1, sizeof(uint8_t));
             std::memcpy(&result_ptr[dstIndex + 2], pixelPtr + 2, sizeof(uint8_t));
