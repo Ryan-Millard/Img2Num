@@ -18,9 +18,8 @@ jobs:
 
     steps:
       - name: Checkout code
+        # No need for submodules since we are not running code
         uses: actions/checkout@v6
-        with:
-          submodules: recursive
 
       - name: Install PNPM dependencies
         run: pnpm install

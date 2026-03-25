@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
-          submodules: recursive
+          submodules: true
 
       - name: Run emcmake
         run: emcmake cmake -B build-wasm/ .
@@ -39,7 +39,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
-          submodules: recursive
+          submodules: true
 
       - name: Check toolchain
         run: |
