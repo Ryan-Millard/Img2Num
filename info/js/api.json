@@ -399,7 +399,7 @@
 			"sources": [
 				{
 					"fileName": "safeWasmWrappers.js",
-					"line": 197,
+					"line": 195,
 					"character": 13
 				}
 			],
@@ -427,15 +427,7 @@
 								"content": [
 									{
 										"kind": "text",
-										"text": "Default path: convert an input image and its labeled regions into an SVG.\n"
-									},
-									{
-										"kind": "code",
-										"text": "`draw_contour_borders`"
-									},
-									{
-										"kind": "text",
-										"text": "=true: the input image with its contours traced and marked with unique colors."
+										"text": "Convert an input image and its labeled regions into an SVG."
 									}
 								]
 							},
@@ -507,7 +499,7 @@
 					"sources": [
 						{
 							"fileName": "safeWasmWrappers.js",
-							"line": 197,
+							"line": 195,
 							"character": 28
 						}
 					],
@@ -558,7 +550,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 189,
+													"line": 187,
 													"character": 22
 												}
 											],
@@ -576,7 +568,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 189,
+													"line": 187,
 													"character": 35
 												}
 											],

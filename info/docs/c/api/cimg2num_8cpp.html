@@ -128,9 +128,9 @@ Functions</h2></td></tr>
 <tr class="memitem:adb95035702beba616395f6fe92036f10" id="r_adb95035702beba616395f6fe92036f10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cimg2num_8cpp.html#adb95035702beba616395f6fe92036f10">img2num_bilateral_filter</a> (uint8_t *image, size_t width, size_t height, double sigma_spatial, double sigma_range, uint8_t color_space)</td></tr>
 <tr class="memdesc:adb95035702beba616395f6fe92036f10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply bilateral filtering to an image.    <br /></td></tr>
 <tr class="separator:adb95035702beba616395f6fe92036f10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85f9c146b8fbbff8712dd2b1650ce47d" id="r_a85f9c146b8fbbff8712dd2b1650ce47d"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cimg2num_8cpp.html#a85f9c146b8fbbff8712dd2b1650ce47d">img2num_labels_to_svg</a> (uint8_t *data, int32_t *labels, const int width, const int height, const int min_area, const bool draw_contour_borders)</td></tr>
-<tr class="memdesc:a85f9c146b8fbbff8712dd2b1650ce47d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert labeled regions of an image into an SVG string.    <br /></td></tr>
-<tr class="separator:a85f9c146b8fbbff8712dd2b1650ce47d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a169bee7a27e362ee70f55fd34cb2ac44" id="r_a169bee7a27e362ee70f55fd34cb2ac44"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cimg2num_8cpp.html#a169bee7a27e362ee70f55fd34cb2ac44">img2num_labels_to_svg</a> (const uint8_t *data, const int32_t *labels, const int width, const int height, const int min_area)</td></tr>
+<tr class="memdesc:a169bee7a27e362ee70f55fd34cb2ac44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert labeled regions of an image into an SVG string.    <br /></td></tr>
+<tr class="separator:a169bee7a27e362ee70f55fd34cb2ac44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="adb95035702beba616395f6fe92036f10" name="adb95035702beba616395f6fe92036f10"></a>
@@ -466,8 +466,8 @@ Dox File: <code><a class="el" href="img2num_8h_8dox.html">doxygen/img2num.h.dox<
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a85f9c146b8fbbff8712dd2b1650ce47d" name="a85f9c146b8fbbff8712dd2b1650ce47d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a85f9c146b8fbbff8712dd2b1650ce47d">&#9670;&#160;</a></span>img2num_labels_to_svg()</h2>
+<a id="a169bee7a27e362ee70f55fd34cb2ac44" name="a169bee7a27e362ee70f55fd34cb2ac44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a169bee7a27e362ee70f55fd34cb2ac44">&#9670;&#160;</a></span>img2num_labels_to_svg()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -475,13 +475,13 @@ Dox File: <code><a class="el" href="img2num_8h_8dox.html">doxygen/img2num.h.dox<
         <tr>
           <td class="memname">char * img2num_labels_to_svg </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int32_t *&#160;</td>
+          <td class="paramtype">const int32_t *&#160;</td>
           <td class="paramname"><em>labels</em>, </td>
         </tr>
         <tr>
@@ -500,13 +500,7 @@ Dox File: <code><a class="el" href="img2num_8h_8dox.html">doxygen/img2num.h.dox<
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>min_area</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const bool&#160;</td>
-          <td class="paramname"><em>draw_contour_borders</em>&#160;</td>
+          <td class="paramname"><em>min_area</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -524,7 +518,6 @@ Dox File: <code><a class="el" href="img2num_8h_8dox.html">doxygen/img2num.h.dox<
     <tr><td class="paramname">width</td><td>Width of the image in pixels. </td></tr>
     <tr><td class="paramname">height</td><td>Height of the image in pixels. </td></tr>
     <tr><td class="paramname">min_area</td><td>Minimum area (in pixels) for a region to be included in the SVG. </td></tr>
-    <tr><td class="paramname">draw_contour_borders</td><td>If true, contours of labeled regions will be drawn. </td></tr>
   </table>
   </dd>
 </dl>
@@ -534,15 +527,15 @@ Dox File: <code><a class="el" href="img2num_8h_8dox.html">doxygen/img2num.h.dox<
 Dox File: <code><a class="el" href="img2num_8h_8dox.html">doxygen/img2num.h.dox</a></code>   </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="cimg2num_8cpp_source.html#l00041">41</a> of file <a class="el" href="cimg2num_8cpp_source.html">cimg2num.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>                                                                                 {</div>
-<div class="line"><span class="lineno">   43</span>    <span class="keywordtype">char</span> *result{<span class="keyword">nullptr</span>};</div>
-<div class="line"><span class="lineno">   44</span>    img2num::clear_last_error_and_catch(</div>
-<div class="line"><span class="lineno">   45</span>        [&amp;](uint8_t *d, int32_t *l, <span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h, <span class="keywordtype">int</span> min_a, <span class="keywordtype">bool</span> draw_contours) {</div>
-<div class="line"><span class="lineno">   46</span>            result = img2num::labels_to_svg(d, l, w, h, min_a, draw_contours);</div>
-<div class="line"><span class="lineno">   47</span>        },</div>
-<div class="line"><span class="lineno">   48</span>        data, labels, width, height, min_area, draw_contour_borders);</div>
-<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> result;</div>
-<div class="line"><span class="lineno">   50</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>                                                {</div>
+<div class="line"><span class="lineno">   44</span>    <span class="keywordtype">char</span> *result{<span class="keyword">nullptr</span>};</div>
+<div class="line"><span class="lineno">   45</span>    img2num::clear_last_error_and_catch(</div>
+<div class="line"><span class="lineno">   46</span>        [&amp;](<span class="keyword">const</span> uint8_t *d, <span class="keyword">const</span> int32_t *l, <span class="keyword">const</span> <span class="keywordtype">int</span> w, <span class="keyword">const</span> <span class="keywordtype">int</span> h, <span class="keyword">const</span> <span class="keywordtype">int</span> min_a) {</div>
+<div class="line"><span class="lineno">   47</span>            result = img2num::labels_to_svg(d, l, w, h, min_a);</div>
+<div class="line"><span class="lineno">   48</span>        },</div>
+<div class="line"><span class="lineno">   49</span>        data, labels, width, height, min_area);</div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">return</span> result;</div>
+<div class="line"><span class="lineno">   51</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -131,9 +131,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a48d9a04a535198b5fc47905e359961ac" id="r_a48d9a04a535198b5fc47905e359961ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceimg2num.html#a48d9a04a535198b5fc47905e359961ac">bilateral_filter</a> (uint8_t *image, size_t width, size_t height, double sigma_spatial, double sigma_range, uint8_t color_space)</td></tr>
 <tr class="memdesc:a48d9a04a535198b5fc47905e359961ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply bilateral filtering to an image.    <br /></td></tr>
 <tr class="separator:a48d9a04a535198b5fc47905e359961ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5822dd3722c40a8d1cff368c6848c15d" id="r_a5822dd3722c40a8d1cff368c6848c15d"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceimg2num.html#a5822dd3722c40a8d1cff368c6848c15d">labels_to_svg</a> (uint8_t *data, int32_t *labels, const int width, const int height, const int min_area, const bool draw_contour_borders)</td></tr>
-<tr class="memdesc:a5822dd3722c40a8d1cff368c6848c15d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert labeled regions of an image into an SVG string.    <br /></td></tr>
-<tr class="separator:a5822dd3722c40a8d1cff368c6848c15d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c28d91338348dc56fe44eb0b0b830e1" id="r_a4c28d91338348dc56fe44eb0b0b830e1"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceimg2num.html#a4c28d91338348dc56fe44eb0b0b830e1">labels_to_svg</a> (const uint8_t *data, const int32_t *labels, const int width, const int height, const int min_area)</td></tr>
+<tr class="memdesc:a4c28d91338348dc56fe44eb0b0b830e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert labeled regions of an image into an SVG string.    <br /></td></tr>
+<tr class="separator:a4c28d91338348dc56fe44eb0b0b830e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9448b2dfdb823340970d0b0bb51fc4e3" id="r_a9448b2dfdb823340970d0b0bb51fc4e3"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceimg2num.html#a9448b2dfdb823340970d0b0bb51fc4e3">get_last_error</a> ()</td></tr>
 <tr class="separator:a9448b2dfdb823340970d0b0bb51fc4e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9dd188fc7d492dc81d7343ae06c0a3aa" id="r_a9dd188fc7d492dc81d7343ae06c0a3aa"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceimg2num.html#a9dd188fc7d492dc81d7343ae06c0a3aa">get_last_error_message</a> ()</td></tr>
@@ -921,8 +921,8 @@ Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a5822dd3722c40a8d1cff368c6848c15d" name="a5822dd3722c40a8d1cff368c6848c15d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5822dd3722c40a8d1cff368c6848c15d">&#9670;&#160;</a></span>labels_to_svg()</h2>
+<a id="a4c28d91338348dc56fe44eb0b0b830e1" name="a4c28d91338348dc56fe44eb0b0b830e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c28d91338348dc56fe44eb0b0b830e1">&#9670;&#160;</a></span>labels_to_svg()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -930,13 +930,13 @@ Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
         <tr>
           <td class="memname">char * img2num::labels_to_svg </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int32_t *&#160;</td>
+          <td class="paramtype">const int32_t *&#160;</td>
           <td class="paramname"><em>labels</em>, </td>
         </tr>
         <tr>
@@ -955,13 +955,7 @@ Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>min_area</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const bool&#160;</td>
-          <td class="paramname"><em>draw_contour_borders</em>&#160;</td>
+          <td class="paramname"><em>min_area</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -979,7 +973,6 @@ Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
     <tr><td class="paramname">width</td><td>Width of the image in pixels. </td></tr>
     <tr><td class="paramname">height</td><td>Height of the image in pixels. </td></tr>
     <tr><td class="paramname">min_area</td><td>Minimum area (in pixels) for a region to be included in the SVG. </td></tr>
-    <tr><td class="paramname">draw_contour_borders</td><td>If true, contours of labeled regions will be drawn. </td></tr>
   </table>
   </dd>
 </dl>
@@ -989,83 +982,75 @@ Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="labels__to__svg_8cpp_source.html#l00189">189</a> of file <a class="el" href="labels__to__svg_8cpp_source.html">labels_to_svg.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  190</span>                                                                         {</div>
-<div class="line"><span class="lineno">  191</span>    <span class="keyword">const</span> int32_t num_pixels{width * height};</div>
-<div class="line"><span class="lineno">  192</span>    std::vector&lt;int32_t&gt; labels_vector{labels, labels + num_pixels};</div>
-<div class="line"><span class="lineno">  193</span>    std::vector&lt;int32_t&gt; region_labels;</div>
-<div class="line"><span class="lineno">  194</span> </div>
-<div class="line"><span class="lineno">  195</span>    <span class="comment">// 1. enumerate regions and convert to Nodes</span></div>
-<div class="line"><span class="lineno">  196</span>    std::vector&lt;Node_ptr&gt; nodes;</div>
-<div class="line"><span class="lineno">  197</span>    region_labeling(data, labels_vector, region_labels, width, height, nodes);</div>
-<div class="line"><span class="lineno">  198</span> </div>
-<div class="line"><span class="lineno">  199</span>    <span class="comment">// 2. initialize Graph from all Nodes</span></div>
-<div class="line"><span class="lineno">  200</span>    std::unique_ptr&lt;std::vector&lt;Node_ptr&gt;&gt; node_ptr =</div>
-<div class="line"><span class="lineno">  201</span>        std::make_unique&lt;std::vector&lt;Node_ptr&gt;&gt;(std::move(nodes));</div>
-<div class="line"><span class="lineno">  202</span>    <a class="code hl_class" href="classGraph.html">Graph</a> G(node_ptr, width, height);</div>
-<div class="line"><span class="lineno">  203</span> </div>
-<div class="line"><span class="lineno">  204</span>    <span class="comment">// 3. Discover node adjacencies - add edges to Graph</span></div>
-<div class="line"><span class="lineno">  205</span>    G.discover_edges(region_labels, width, height);</div>
-<div class="line"><span class="lineno">  206</span> </div>
-<div class="line"><span class="lineno">  207</span>    <span class="comment">// 4. Merge small area nodes until all nodes are minArea or larger</span></div>
-<div class="line"><span class="lineno">  208</span>    G.merge_small_area_nodes(min_area);</div>
-<div class="line"><span class="lineno">  209</span> </div>
-<div class="line"><span class="lineno">  210</span>    <span class="comment">// 5. recolor image on new regions</span></div>
-<div class="line"><span class="lineno">  211</span>    <a class="code hl_class" href="classImageLib_1_1Image.html">ImageLib::Image&lt;ImageLib::RGBAPixel&lt;uint8_t&gt;</a>&gt; results{width, height};</div>
-<div class="line"><span class="lineno">  212</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;n : G.get_nodes()) {</div>
-<div class="line"><span class="lineno">  213</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0) <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  214</span> </div>
-<div class="line"><span class="lineno">  215</span>        <span class="keyword">auto</span> [r, g, b] = n-&gt;color();</div>
-<div class="line"><span class="lineno">  216</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;[_, p] : n-&gt;get_pixels()) {</div>
-<div class="line"><span class="lineno">  217</span>            results(p.x, p.y) = {r, g, b};</div>
-<div class="line"><span class="lineno">  218</span>        }</div>
-<div class="line"><span class="lineno">  219</span>    }</div>
-<div class="line"><span class="lineno">  220</span> </div>
-<div class="line"><span class="lineno">  221</span>    <span class="comment">// 6. Contours</span></div>
-<div class="line"><span class="lineno">  222</span>    <span class="comment">// graph will manage computing contours</span></div>
-<div class="line"><span class="lineno">  223</span>    G.compute_contours();</div>
-<div class="line"><span class="lineno">  224</span> </div>
-<div class="line"><span class="lineno">  225</span>    <span class="comment">// accumulate all contours for svg export</span></div>
-<div class="line"><span class="lineno">  226</span>    <a class="code hl_struct" href="structColoredContours.html">ColoredContours</a> all_contours;</div>
-<div class="line"><span class="lineno">  227</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;n : G.get_nodes()) {</div>
-<div class="line"><span class="lineno">  228</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0) <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  229</span>        <a class="code hl_struct" href="structColoredContours.html">ColoredContours</a> node_contours = n-&gt;get_contours();</div>
-<div class="line"><span class="lineno">  230</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;c : node_contours.contours) {</div>
-<div class="line"><span class="lineno">  231</span>            all_contours.contours.push_back(c);</div>
-<div class="line"><span class="lineno">  232</span>        }</div>
-<div class="line"><span class="lineno">  233</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;c : node_contours.hierarchy) {</div>
-<div class="line"><span class="lineno">  234</span>            all_contours.hierarchy.push_back(c);</div>
-<div class="line"><span class="lineno">  235</span>        }</div>
-<div class="line"><span class="lineno">  236</span>        <span class="keywordflow">for</span> (<span class="keywordtype">bool</span> b : node_contours.is_hole) {</div>
-<div class="line"><span class="lineno">  237</span>            all_contours.is_hole.push_back(b);</div>
-<div class="line"><span class="lineno">  238</span>        }</div>
-<div class="line"><span class="lineno">  239</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;c : node_contours.colors) {</div>
-<div class="line"><span class="lineno">  240</span>            all_contours.colors.push_back(c);</div>
-<div class="line"><span class="lineno">  241</span>        }</div>
-<div class="line"><span class="lineno">  242</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;c : node_contours.curves) {</div>
-<div class="line"><span class="lineno">  243</span>            all_contours.curves.push_back(c);</div>
-<div class="line"><span class="lineno">  244</span>        }</div>
-<div class="line"><span class="lineno">  245</span>    }</div>
-<div class="line"><span class="lineno">  246</span> </div>
-<div class="line"><span class="lineno">  247</span>    <span class="comment">// 7. Copy recolored image back</span></div>
-<div class="line"><span class="lineno">  248</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;modified = results.getData();</div>
-<div class="line"><span class="lineno">  249</span>    std::memcpy(data, modified.data(), modified.size() * <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel&lt;uint8_t&gt;</a>));</div>
+<div class="fragment"><div class="line"><span class="lineno">  191</span>                                        {</div>
+<div class="line"><span class="lineno">  192</span>    <span class="keyword">const</span> int32_t num_pixels{width * height};</div>
+<div class="line"><span class="lineno">  193</span>    std::vector&lt;int32_t&gt; labels_vector{labels, labels + num_pixels};</div>
+<div class="line"><span class="lineno">  194</span>    std::vector&lt;int32_t&gt; region_labels;</div>
+<div class="line"><span class="lineno">  195</span> </div>
+<div class="line"><span class="lineno">  196</span>    <span class="comment">// 1. enumerate regions and convert to Nodes</span></div>
+<div class="line"><span class="lineno">  197</span>    std::vector&lt;Node_ptr&gt; nodes;</div>
+<div class="line"><span class="lineno">  198</span>    region_labeling(data, labels_vector, region_labels, width, height, nodes);</div>
+<div class="line"><span class="lineno">  199</span> </div>
+<div class="line"><span class="lineno">  200</span>    <span class="comment">// 2. initialize Graph from all Nodes</span></div>
+<div class="line"><span class="lineno">  201</span>    std::unique_ptr&lt;std::vector&lt;Node_ptr&gt;&gt; node_ptr =</div>
+<div class="line"><span class="lineno">  202</span>        std::make_unique&lt;std::vector&lt;Node_ptr&gt;&gt;(std::move(nodes));</div>
+<div class="line"><span class="lineno">  203</span>    <a class="code hl_class" href="classGraph.html">Graph</a> G(node_ptr, width, height);</div>
+<div class="line"><span class="lineno">  204</span> </div>
+<div class="line"><span class="lineno">  205</span>    <span class="comment">// 3. Discover node adjacencies - add edges to Graph</span></div>
+<div class="line"><span class="lineno">  206</span>    G.discover_edges(region_labels, width, height);</div>
+<div class="line"><span class="lineno">  207</span> </div>
+<div class="line"><span class="lineno">  208</span>    <span class="comment">// 4. Merge small area nodes until all nodes are minArea or larger</span></div>
+<div class="line"><span class="lineno">  209</span>    G.merge_small_area_nodes(min_area);</div>
+<div class="line"><span class="lineno">  210</span> </div>
+<div class="line"><span class="lineno">  211</span>    <span class="comment">// 5. recolor image on new regions</span></div>
+<div class="line"><span class="lineno">  212</span>    <a class="code hl_class" href="classImageLib_1_1Image.html">ImageLib::Image&lt;ImageLib::RGBAPixel&lt;uint8_t&gt;</a>&gt; results{width, height};</div>
+<div class="line"><span class="lineno">  213</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;n : G.get_nodes()) {</div>
+<div class="line"><span class="lineno">  214</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0) <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  215</span> </div>
+<div class="line"><span class="lineno">  216</span>        <span class="keyword">auto</span> [r, g, b] = n-&gt;color();</div>
+<div class="line"><span class="lineno">  217</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;[_, p] : n-&gt;get_pixels()) {</div>
+<div class="line"><span class="lineno">  218</span>            results(p.x, p.y) = {r, g, b};</div>
+<div class="line"><span class="lineno">  219</span>        }</div>
+<div class="line"><span class="lineno">  220</span>    }</div>
+<div class="line"><span class="lineno">  221</span> </div>
+<div class="line"><span class="lineno">  222</span>    <span class="comment">// 6. Contours</span></div>
+<div class="line"><span class="lineno">  223</span>    <span class="comment">// graph will manage computing contours</span></div>
+<div class="line"><span class="lineno">  224</span>    G.compute_contours();</div>
+<div class="line"><span class="lineno">  225</span> </div>
+<div class="line"><span class="lineno">  226</span>    <span class="comment">// accumulate all contours for svg export</span></div>
+<div class="line"><span class="lineno">  227</span>    <a class="code hl_struct" href="structColoredContours.html">ColoredContours</a> all_contours;</div>
+<div class="line"><span class="lineno">  228</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;n : G.get_nodes()) {</div>
+<div class="line"><span class="lineno">  229</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0) <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  230</span>        <a class="code hl_struct" href="structColoredContours.html">ColoredContours</a> node_contours = n-&gt;get_contours();</div>
+<div class="line"><span class="lineno">  231</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;c : node_contours.contours) {</div>
+<div class="line"><span class="lineno">  232</span>            all_contours.contours.push_back(c);</div>
+<div class="line"><span class="lineno">  233</span>        }</div>
+<div class="line"><span class="lineno">  234</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;c : node_contours.hierarchy) {</div>
+<div class="line"><span class="lineno">  235</span>            all_contours.hierarchy.push_back(c);</div>
+<div class="line"><span class="lineno">  236</span>        }</div>
+<div class="line"><span class="lineno">  237</span>        <span class="keywordflow">for</span> (<span class="keywordtype">bool</span> b : node_contours.is_hole) {</div>
+<div class="line"><span class="lineno">  238</span>            all_contours.is_hole.push_back(b);</div>
+<div class="line"><span class="lineno">  239</span>        }</div>
+<div class="line"><span class="lineno">  240</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;c : node_contours.colors) {</div>
+<div class="line"><span class="lineno">  241</span>            all_contours.colors.push_back(c);</div>
+<div class="line"><span class="lineno">  242</span>        }</div>
+<div class="line"><span class="lineno">  243</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;c : node_contours.curves) {</div>
+<div class="line"><span class="lineno">  244</span>            all_contours.curves.push_back(c);</div>
+<div class="line"><span class="lineno">  245</span>        }</div>
+<div class="line"><span class="lineno">  246</span>    }</div>
+<div class="line"><span class="lineno">  247</span> </div>
+<div class="line"><span class="lineno">  248</span>    <span class="comment">// 8. Return SVG</span></div>
+<div class="line"><span class="lineno">  249</span>    std::string svg{contoursResultToSVG(all_contours, width, height)};</div>
 <div class="line"><span class="lineno">  250</span> </div>
-<div class="line"><span class="lineno">  251</span>    <span class="comment">// 8. Return SVG if requested</span></div>
-<div class="line"><span class="lineno">  252</span>    <span class="keywordflow">if</span> (!draw_contour_borders) {</div>
-<div class="line"><span class="lineno">  253</span>        std::string svg{contoursResultToSVG(all_contours, width, height)};</div>
-<div class="line"><span class="lineno">  254</span> </div>
-<div class="line"><span class="lineno">  255</span>        <span class="comment">// Dynamic C-style allocation (since returned over C ABI)</span></div>
-<div class="line"><span class="lineno">  256</span>        <span class="keywordtype">char</span> *res_svg{<span class="keyword">static_cast&lt;</span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(std::malloc(svg.size() + 1))};</div>
-<div class="line"><span class="lineno">  257</span>        <span class="keywordflow">if</span> (!res_svg) {</div>
-<div class="line"><span class="lineno">  258</span>            <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;  <span class="comment">// Allocation failed</span></div>
-<div class="line"><span class="lineno">  259</span>        }</div>
-<div class="line"><span class="lineno">  260</span>        std::memcpy(res_svg, svg.c_str(), svg.size() + 1);</div>
-<div class="line"><span class="lineno">  261</span> </div>
-<div class="line"><span class="lineno">  262</span>        <span class="keywordflow">return</span> res_svg;</div>
-<div class="line"><span class="lineno">  263</span>    }</div>
-<div class="line"><span class="lineno">  264</span> </div>
-<div class="line"><span class="lineno">  265</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;  <span class="comment">// no SVG</span></div>
-<div class="line"><span class="lineno">  266</span>}</div>
+<div class="line"><span class="lineno">  251</span>    <span class="comment">// Dynamic C-style allocation (since returned over C ABI)</span></div>
+<div class="line"><span class="lineno">  252</span>    <span class="keywordtype">char</span> *res_svg{<span class="keyword">static_cast&lt;</span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(std::malloc(svg.size() + 1))};</div>
+<div class="line"><span class="lineno">  253</span>    <span class="keywordflow">if</span> (!res_svg) {</div>
+<div class="line"><span class="lineno">  254</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;  <span class="comment">// Allocation failed</span></div>
+<div class="line"><span class="lineno">  255</span>    }</div>
+<div class="line"><span class="lineno">  256</span>    std::memcpy(res_svg, svg.c_str(), svg.size() + 1);</div>
+<div class="line"><span class="lineno">  257</span> </div>
+<div class="line"><span class="lineno">  258</span>    <span class="keywordflow">return</span> res_svg;</div>
+<div class="line"><span class="lineno">  259</span>}</div>
 <div class="ttc" id="aclassGraph_html"><div class="ttname"><a href="classGraph.html">Graph</a></div><div class="ttdef"><b>Definition</b> <a href="graph_8h_source.html#l00033">graph.h:33</a></div></div>
 <div class="ttc" id="astructColoredContours_html"><div class="ttname"><a href="structColoredContours.html">ColoredContours</a></div><div class="ttdef"><b>Definition</b> <a href="contours_8h_source.html#l00040">contours.h:40</a></div></div>
 </div><!-- fragment -->
