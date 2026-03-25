@@ -1,0 +1,79 @@
+\doxysection{src/cimg2num/img2num\+\_\+error\+\_\+t.cpp File Reference}
+\hypertarget{img2num__error__t_8cpp}{}\label{img2num__error__t_8cpp}\index{src/cimg2num/img2num\_error\_t.cpp@{src/cimg2num/img2num\_error\_t.cpp}}
+{\ttfamily \#include "{}cimg2num/img2num\+\_\+error\+\_\+t.\+h"{}}\newline
+{\ttfamily \#include $<$cstring$>$}\newline
+{\ttfamily \#include "{}img2num/\+Error.\+h"{}}\newline
+Include dependency graph for img2num\+\_\+error\+\_\+t.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{img2num__error__t_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{img2num__error__t_8h_a208debf202796bb5ac21d27878829bb2}{img2num\+\_\+error\+\_\+t}} \mbox{\hyperlink{img2num__error__t_8cpp_a19e8b982f542ab10e701fe3557582340}{img2num\+\_\+get\+\_\+last\+\_\+error}} ()
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{img2num__error__t_8cpp_a41d48f4c353c389bd2657f5191479577}{img2num\+\_\+get\+\_\+last\+\_\+error\+\_\+message}} ()
+\item 
+void \mbox{\hyperlink{img2num__error__t_8cpp_a6e18e50086049cc81d6ab0babacf2dee}{img2num\+\_\+clear\+\_\+last\+\_\+error}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{img2num__error__t_8cpp_a6e18e50086049cc81d6ab0babacf2dee}\label{img2num__error__t_8cpp_a6e18e50086049cc81d6ab0babacf2dee} 
+\index{img2num\_error\_t.cpp@{img2num\_error\_t.cpp}!img2num\_clear\_last\_error@{img2num\_clear\_last\_error}}
+\index{img2num\_clear\_last\_error@{img2num\_clear\_last\_error}!img2num\_error\_t.cpp@{img2num\_error\_t.cpp}}
+\doxysubsubsection{\texorpdfstring{img2num\_clear\_last\_error()}{img2num\_clear\_last\_error()}}
+{\footnotesize\ttfamily void img2num\+\_\+clear\+\_\+last\+\_\+error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{img2num__error__t_8cpp_source_l00034}{34}} of file \mbox{\hyperlink{img2num__error__t_8cpp_source}{img2num\+\_\+error\+\_\+t.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00035\ \ \ \ \ img2num::clear\_last\_error();}
+\DoxyCodeLine{00036\ \}}
+
+\end{DoxyCode}
+\Hypertarget{img2num__error__t_8cpp_a19e8b982f542ab10e701fe3557582340}\label{img2num__error__t_8cpp_a19e8b982f542ab10e701fe3557582340} 
+\index{img2num\_error\_t.cpp@{img2num\_error\_t.cpp}!img2num\_get\_last\_error@{img2num\_get\_last\_error}}
+\index{img2num\_get\_last\_error@{img2num\_get\_last\_error}!img2num\_error\_t.cpp@{img2num\_error\_t.cpp}}
+\doxysubsubsection{\texorpdfstring{img2num\_get\_last\_error()}{img2num\_get\_last\_error()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{img2num__error__t_8h_a208debf202796bb5ac21d27878829bb2}{img2num\+\_\+error\+\_\+t}} img2num\+\_\+get\+\_\+last\+\_\+error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{img2num__error__t_8cpp_source_l00023}{23}} of file \mbox{\hyperlink{img2num__error__t_8cpp_source}{img2num\+\_\+error\+\_\+t.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{const}\ img2num::Error\ cpp\_err\{img2num::get\_last\_error()\};}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordflow}{return}\ cpp\_error\_to\_c\_error(cpp\_err);}
+\DoxyCodeLine{00026\ \}}
+
+\end{DoxyCode}
+\Hypertarget{img2num__error__t_8cpp_a41d48f4c353c389bd2657f5191479577}\label{img2num__error__t_8cpp_a41d48f4c353c389bd2657f5191479577} 
+\index{img2num\_error\_t.cpp@{img2num\_error\_t.cpp}!img2num\_get\_last\_error\_message@{img2num\_get\_last\_error\_message}}
+\index{img2num\_get\_last\_error\_message@{img2num\_get\_last\_error\_message}!img2num\_error\_t.cpp@{img2num\_error\_t.cpp}}
+\doxysubsubsection{\texorpdfstring{img2num\_get\_last\_error\_message()}{img2num\_get\_last\_error\_message()}}
+{\footnotesize\ttfamily const char \texorpdfstring{$\ast$}{*} img2num\+\_\+get\+\_\+last\+\_\+error\+\_\+message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{img2num__error__t_8cpp_source_l00028}{28}} of file \mbox{\hyperlink{img2num__error__t_8cpp_source}{img2num\+\_\+error\+\_\+t.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{thread\_local}\ std::string\ msg;}
+\DoxyCodeLine{00030\ \ \ \ \ msg\ =\ img2num::get\_last\_error\_message();}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordflow}{return}\ msg.c\_str();}
+\DoxyCodeLine{00032\ \}}
+
+\end{DoxyCode}

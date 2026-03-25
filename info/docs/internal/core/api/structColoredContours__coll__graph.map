@@ -1,0 +1,23 @@
+<map id="ColoredContours" name="ColoredContours">
+<area shape="rect" id="Node000001" title=" " alt="" coords="490,728,613,793"/>
+<area shape="rect" id="Node000002" href="$structContoursResult.html" title=" " alt="" coords="411,593,524,658"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="497,668,534,726,529,729,492,671"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,413,172,493"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="138,491,185,520,238,546,294,568,396,602,394,607,292,573,236,551,182,525,135,495"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="196,413,363,493"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="324,491,422,580,419,584,321,495"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="387,413,547,493"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="470,493,470,576,465,576,465,493"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="398,187,537,253"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="470,253,470,396,465,396,465,253"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="571,420,713,485"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="620,487,589,525,552,563,527,584,524,580,548,559,585,521,616,484"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="615,585,795,665"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="662,667,602,719,598,715,658,663"/>
+<area shape="rect" id="Node000009" href="$structImageLib_1_1RGBAPixel.html" title=" " alt="" coords="737,383,888,523"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="771,525,740,573,736,570,766,522"/>
+<area shape="rect" id="Node000010" href="$structImageLib_1_1RGBPixel.html" title=" " alt="" coords="742,120,883,320"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="815,334,815,382,810,382,810,334"/>
+<area shape="rect" id="Node000011" href="$structImageLib_1_1Pixel.html" title=" " alt="" coords="711,5,914,71"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="815,85,815,120,810,120,810,85"/>
+</map>

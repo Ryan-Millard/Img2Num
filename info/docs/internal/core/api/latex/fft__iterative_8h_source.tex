@@ -1,0 +1,54 @@
+\doxysection{fft\+\_\+iterative.\+h}
+\hypertarget{fft__iterative_8h_source}{}\label{fft__iterative_8h_source}\index{include/internal/fft\_iterative.h@{include/internal/fft\_iterative.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00001}00001\ \textcolor{preprocessor}{\#ifndef\ ITERATIVE\_FFT\_H}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00002}00002\ \textcolor{preprocessor}{\#define\ ITERATIVE\_FFT\_H}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00003}00003\ }
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00004}00004\ \textcolor{preprocessor}{\#include\ <complex>}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00005}00005\ \textcolor{preprocessor}{\#include\ <cstddef>}\ \ \textcolor{comment}{//\ for\ size\_t}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00006}00006\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00008}00008\ \textcolor{keyword}{namespace\ }fft\ \{}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00009}00009\ \textcolor{keyword}{using\ }cd\ =\ std::complex<double>;}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00011}00011\ \textcolor{comment}{//\ Check\ if\ an\ integer\ is\ a\ power\ of\ two.}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00012}00012\ \textcolor{keywordtype}{bool}\ is\_power\_of\_two(\textcolor{keywordtype}{size\_t}\ n);}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00013}00013\ }
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00014}00014\ \textcolor{comment}{//\ Return\ the\ next\ power\ of\ two\ >=\ n.}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00015}00015\ \textcolor{keywordtype}{size\_t}\ next\_power\_of\_two(\textcolor{keywordtype}{size\_t}\ n);}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00017}00017\ \textcolor{comment}{//\ In-\/place\ bit-\/reversal\ permutation\ of\ vector\ a\ (length\ must\ be\ power\ of\ two).}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00018}00018\ \textcolor{keywordtype}{void}\ bit\_reverse\_permute(std::vector<cd>\ \&a);}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00020}00020\ \textcolor{keywordtype}{void}\ pad\_to\_pow\_two(std::vector<cd>\ \&a,\ \textcolor{keywordtype}{size\_t}\ \&N);}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00022}00022\ \textcolor{comment}{//\ Iterative\ in-\/place\ FFT.}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00023}00023\ \textcolor{comment}{//\ Parameters:}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00024}00024\ \textcolor{comment}{//\ \ -\/\ a:\ input/output\ buffer\ (modified\ in-\/place).}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00025}00025\ \textcolor{comment}{//\ \ -\/\ inverse:\ false\ for\ forward\ FFT,\ true\ for\ inverse\ FFT.}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00026}00026\ \textcolor{keywordtype}{void}\ iterative\_fft(std::vector<cd>\ \&a,\ \textcolor{keywordtype}{bool}\ inverse\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00028}00028\ \textcolor{comment}{//\ Convenience\ wrapper:\ return\ FFT\ result\ as\ a\ new\ vector.}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00029}00029\ \textcolor{comment}{//\ Parameters:}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00030}00030\ \textcolor{comment}{//\ \ -\/\ input:\ const\ input\ vector.}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00031}00031\ \textcolor{comment}{//\ \ -\/\ inverse:\ false\ for\ forward\ FFT,\ true\ for\ inverse\ FFT.}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00032}00032\ std::vector<cd>\ fft\_copy(\textcolor{keyword}{const}\ std::vector<cd>\ \&input,\ \textcolor{keywordtype}{bool}\ inverse\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00034}00034\ \textcolor{comment}{//\ Iterative\ in-\/place\ 2D\ FFT.}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00035}00035\ \textcolor{comment}{//\ Parameters:}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00036}00036\ \textcolor{comment}{//\ \ -\/\ data:\ input/output\ buffer\ (modified\ in-\/place).}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00037}00037\ \textcolor{comment}{//\ \ -\/\ inverse:\ false\ for\ forward\ FFT,\ true\ for\ inverse\ FFT.}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00038}00038\ \textcolor{keywordtype}{void}\ iterative\_fft\_2d(std::vector<cd>\ \&a,\ \textcolor{keywordtype}{size\_t}\ width,\ \textcolor{keywordtype}{size\_t}\ height,\ \textcolor{keywordtype}{bool}\ inverse\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00039}00039\ }
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00040}00040\ \textcolor{comment}{//\ Convenience\ wrapper:\ return\ 2D\ FFT\ result\ as\ a\ new\ vector.}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00041}00041\ \textcolor{comment}{//\ Parameters:}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00042}00042\ \textcolor{comment}{//\ \ -\/\ input:\ const\ input\ vector.}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00043}00043\ \textcolor{comment}{//\ \ -\/\ inverse:\ false\ for\ forward\ FFT,\ true\ for\ inverse\ FFT.}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00044}00044\ std::vector<cd>\ iterative\_fft\_2d\_copy(\textcolor{keyword}{const}\ std::vector<cd>\ \&input,\ \textcolor{keywordtype}{size\_t}\ width,\ \textcolor{keywordtype}{size\_t}\ height,}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00045}00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ inverse\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00046}00046\ \}\ \ \textcolor{comment}{//\ namespace\ fft}}
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00047}00047\ }
+\DoxyCodeLine{\Hypertarget{fft__iterative_8h_source_l00048}00048\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ ITERATIVE\_FFT\_H}}
+
+\end{DoxyCode}

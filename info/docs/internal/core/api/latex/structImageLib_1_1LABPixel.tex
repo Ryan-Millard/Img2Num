@@ -1,0 +1,204 @@
+\doxysection{Image\+Lib\+::LABPixel\texorpdfstring{$<$}{<} NumberT \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structImageLib_1_1LABPixel}{}\label{structImageLib_1_1LABPixel}\index{ImageLib::LABPixel$<$ NumberT $>$@{ImageLib::LABPixel$<$ NumberT $>$}}
+
+
+Inheritance diagram for Image\+Lib\+::LABPixel\texorpdfstring{$<$}{<} NumberT \texorpdfstring{$>$}{>}\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=232pt]{structImageLib_1_1LABPixel__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Image\+Lib\+::LABPixel\texorpdfstring{$<$}{<} NumberT \texorpdfstring{$>$}{>}\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=232pt]{structImageLib_1_1LABPixel__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+constexpr \mbox{\hyperlink{structImageLib_1_1LABPixel_ae97c8222b5887e1d719cbf292730aad2}{LABPixel}} (NumberT l=0, NumberT a=0, NumberT b=0)
+\item 
+bool \mbox{\hyperlink{structImageLib_1_1LABPixel_a531082f0189cd721e08dbc966bf56b58}{operator==}} (const \mbox{\hyperlink{structImageLib_1_1LABPixel}{LABPixel}} \&other) const
+\item 
+bool \mbox{\hyperlink{structImageLib_1_1LABPixel_ace880bdcfe49d833372f5a6fe8c534e4}{operator!=}} (const \mbox{\hyperlink{structImageLib_1_1LABPixel}{LABPixel}} \&other) const
+\item 
+void \mbox{\hyperlink{structImageLib_1_1LABPixel_a3a4c055d7c39fda7b9d7d5cefc556ce6}{set\+Gray}} (NumberT new\+\_\+luma)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static float \mbox{\hyperlink{structImageLib_1_1LABPixel_a2c150e7c1231f74a26c2ef3afcb5a316}{color\+Distance}} (const \mbox{\hyperlink{structImageLib_1_1LABPixel}{LABPixel}}$<$ NumberT $>$ \&a, const \mbox{\hyperlink{structImageLib_1_1LABPixel}{LABPixel}}$<$ NumberT $>$ \&b)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+NumberT \mbox{\hyperlink{structImageLib_1_1LABPixel_ac9df2cb7d51756288836c90f601ad04a}{l}}
+\item 
+NumberT \mbox{\hyperlink{structImageLib_1_1LABPixel_a816c3422e6c149cd3de6bb9c24f03a04}{a}}
+\item 
+NumberT \mbox{\hyperlink{structImageLib_1_1LABPixel_aae7c9cfcb7679a6016b732f2c0e76f53}{b}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{structImageLib_1_1Pixel}{Image\+Lib\+::\+Pixel$<$ Number\+T $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{structImageLib_1_1Pixel_a49faecbd0ccddfc2832f987883f333e1}{value\+\_\+type}} = NumberT
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename NumberT$>$\newline
+struct Image\+Lib\+::\+LABPixel$<$ Number\+T $>$}
+
+
+Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00015}{15}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structImageLib_1_1LABPixel_ae97c8222b5887e1d719cbf292730aad2}\label{structImageLib_1_1LABPixel_ae97c8222b5887e1d719cbf292730aad2} 
+\index{ImageLib::LABPixel$<$ NumberT $>$@{ImageLib::LABPixel$<$ NumberT $>$}!LABPixel@{LABPixel}}
+\index{LABPixel@{LABPixel}!ImageLib::LABPixel$<$ NumberT $>$@{ImageLib::LABPixel$<$ NumberT $>$}}
+\doxysubsubsection{\texorpdfstring{LABPixel()}{LABPixel()}}
+{\footnotesize\ttfamily template$<$typename NumberT $>$ \\
+constexpr \mbox{\hyperlink{structImageLib_1_1LABPixel}{Image\+Lib\+::\+LABPixel}}$<$ NumberT $>$\+::\+LABPixel (\begin{DoxyParamCaption}\item[{NumberT}]{l = {\ttfamily 0},  }\item[{NumberT}]{a = {\ttfamily 0},  }\item[{NumberT}]{b = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+
+
+
+Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00019}{19}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ l(l),\ a(a),\ b(b)\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structImageLib_1_1LABPixel_a2c150e7c1231f74a26c2ef3afcb5a316}\label{structImageLib_1_1LABPixel_a2c150e7c1231f74a26c2ef3afcb5a316} 
+\index{ImageLib::LABPixel$<$ NumberT $>$@{ImageLib::LABPixel$<$ NumberT $>$}!colorDistance@{colorDistance}}
+\index{colorDistance@{colorDistance}!ImageLib::LABPixel$<$ NumberT $>$@{ImageLib::LABPixel$<$ NumberT $>$}}
+\doxysubsubsection{\texorpdfstring{colorDistance()}{colorDistance()}}
+{\footnotesize\ttfamily template$<$typename NumberT $>$ \\
+static float \mbox{\hyperlink{structImageLib_1_1LABPixel}{Image\+Lib\+::\+LABPixel}}$<$ NumberT $>$\+::color\+Distance (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structImageLib_1_1LABPixel}{LABPixel}}$<$ NumberT $>$ \&}]{a,  }\item[{const \mbox{\hyperlink{structImageLib_1_1LABPixel}{LABPixel}}$<$ NumberT $>$ \&}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00036}{36}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ LABPixel<float>\ af\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a.l),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a.a),}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a.b)\};}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ LABPixel<float>\ bf\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(b.l),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(b.a),}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(b.b)\};}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::sqrt((a.l\ -\/\ b.l)\ *\ (a.l\ -\/\ b.l)\ +\ (a.a\ -\/\ b.a)\ *\ (a.a\ -\/\ b.a)\ +}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (a.b\ -\/\ b.b)\ *\ (a.b\ -\/\ b.b));}
+\DoxyCodeLine{00043\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{structImageLib_1_1LABPixel_ace880bdcfe49d833372f5a6fe8c534e4}\label{structImageLib_1_1LABPixel_ace880bdcfe49d833372f5a6fe8c534e4} 
+\index{ImageLib::LABPixel$<$ NumberT $>$@{ImageLib::LABPixel$<$ NumberT $>$}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!ImageLib::LABPixel$<$ NumberT $>$@{ImageLib::LABPixel$<$ NumberT $>$}}
+\doxysubsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily template$<$typename NumberT $>$ \\
+bool \mbox{\hyperlink{structImageLib_1_1LABPixel}{Image\+Lib\+::\+LABPixel}}$<$ NumberT $>$\+::operator!= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structImageLib_1_1LABPixel}{LABPixel}}$<$ NumberT $>$ \&}]{other }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00026}{26}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !(*\textcolor{keyword}{this}\ ==\ other);}
+\DoxyCodeLine{00028\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{structImageLib_1_1LABPixel_a531082f0189cd721e08dbc966bf56b58}\label{structImageLib_1_1LABPixel_a531082f0189cd721e08dbc966bf56b58} 
+\index{ImageLib::LABPixel$<$ NumberT $>$@{ImageLib::LABPixel$<$ NumberT $>$}!operator==@{operator==}}
+\index{operator==@{operator==}!ImageLib::LABPixel$<$ NumberT $>$@{ImageLib::LABPixel$<$ NumberT $>$}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily template$<$typename NumberT $>$ \\
+bool \mbox{\hyperlink{structImageLib_1_1LABPixel}{Image\+Lib\+::\+LABPixel}}$<$ NumberT $>$\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structImageLib_1_1LABPixel}{LABPixel}}$<$ NumberT $>$ \&}]{other }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00023}{23}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ l\ ==\ other.l\ \&\&\ a\ ==\ other.a\ \&\&\ b\ ==\ other.b;}
+\DoxyCodeLine{00025\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{structImageLib_1_1LABPixel_a3a4c055d7c39fda7b9d7d5cefc556ce6}\label{structImageLib_1_1LABPixel_a3a4c055d7c39fda7b9d7d5cefc556ce6} 
+\index{ImageLib::LABPixel$<$ NumberT $>$@{ImageLib::LABPixel$<$ NumberT $>$}!setGray@{setGray}}
+\index{setGray@{setGray}!ImageLib::LABPixel$<$ NumberT $>$@{ImageLib::LABPixel$<$ NumberT $>$}}
+\doxysubsubsection{\texorpdfstring{setGray()}{setGray()}}
+{\footnotesize\ttfamily template$<$typename NumberT $>$ \\
+void \mbox{\hyperlink{structImageLib_1_1LABPixel}{Image\+Lib\+::\+LABPixel}}$<$ NumberT $>$\+::set\+Gray (\begin{DoxyParamCaption}\item[{NumberT}]{new\+\_\+luma }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00031}{31}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ l\ =\ new\_luma;}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ a\ =\ b\ =\ 0;}
+\DoxyCodeLine{00034\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structImageLib_1_1LABPixel_a816c3422e6c149cd3de6bb9c24f03a04}\label{structImageLib_1_1LABPixel_a816c3422e6c149cd3de6bb9c24f03a04} 
+\index{ImageLib::LABPixel$<$ NumberT $>$@{ImageLib::LABPixel$<$ NumberT $>$}!a@{a}}
+\index{a@{a}!ImageLib::LABPixel$<$ NumberT $>$@{ImageLib::LABPixel$<$ NumberT $>$}}
+\doxysubsubsection{\texorpdfstring{a}{a}}
+{\footnotesize\ttfamily template$<$typename NumberT $>$ \\
+NumberT \mbox{\hyperlink{structImageLib_1_1LABPixel}{Image\+Lib\+::\+LABPixel}}$<$ NumberT $>$\+::a}
+
+
+
+Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00017}{17}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
+
+\Hypertarget{structImageLib_1_1LABPixel_aae7c9cfcb7679a6016b732f2c0e76f53}\label{structImageLib_1_1LABPixel_aae7c9cfcb7679a6016b732f2c0e76f53} 
+\index{ImageLib::LABPixel$<$ NumberT $>$@{ImageLib::LABPixel$<$ NumberT $>$}!b@{b}}
+\index{b@{b}!ImageLib::LABPixel$<$ NumberT $>$@{ImageLib::LABPixel$<$ NumberT $>$}}
+\doxysubsubsection{\texorpdfstring{b}{b}}
+{\footnotesize\ttfamily template$<$typename NumberT $>$ \\
+NumberT \mbox{\hyperlink{structImageLib_1_1LABPixel}{Image\+Lib\+::\+LABPixel}}$<$ NumberT $>$\+::b}
+
+
+
+Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00017}{17}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
+
+\Hypertarget{structImageLib_1_1LABPixel_ac9df2cb7d51756288836c90f601ad04a}\label{structImageLib_1_1LABPixel_ac9df2cb7d51756288836c90f601ad04a} 
+\index{ImageLib::LABPixel$<$ NumberT $>$@{ImageLib::LABPixel$<$ NumberT $>$}!l@{l}}
+\index{l@{l}!ImageLib::LABPixel$<$ NumberT $>$@{ImageLib::LABPixel$<$ NumberT $>$}}
+\doxysubsubsection{\texorpdfstring{l}{l}}
+{\footnotesize\ttfamily template$<$typename NumberT $>$ \\
+NumberT \mbox{\hyperlink{structImageLib_1_1LABPixel}{Image\+Lib\+::\+LABPixel}}$<$ NumberT $>$\+::l}
+
+
+
+Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00017}{17}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/internal/LABPixel.\+h\end{DoxyCompactItemize}
