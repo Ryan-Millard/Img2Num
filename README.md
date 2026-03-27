@@ -35,6 +35,20 @@ Try it out now by [clicking here](https://ryan-millard.github.io/Img2Num/)!
 
 This README is intentionally short — full installation steps, guides and references live in the docs site (see below).
 
+## Quick Start (JavaScript)
+
+Install the package via npm:
+```bash
+npm install img2num
+```
+
+Basic usage:
+```javascript
+import { vectorize } from 'img2num';
+
+const svg = await vectorize(imageFile, { colors: 16 });
+```
+
 ## Essential links
 
 Visit the docs site for full guides, API references and troubleshooting:
@@ -70,9 +84,3 @@ to request its addition to the docs and someone will assist you with finding or 
 [<img src="https://github.com/Ryan-Millard.png" width="20" height="20" valign="middle" alt="Ryan-Millard avatar"> `@Ryan-Millard`](https://github.com/Ryan-Millard) $\cdot$
 [<img src="https://github.com/hjmillard.png" width="20" height="20" valign="middle" alt="hjmillard avatar"> `@hjmillard`](https://github.com/hjmillard) $\cdot$
 [<img src="https://github.com/krasner.png" width="20" height="20" valign="middle" alt="krasner avatar"> `@krasner`](https://github.com/krasner)
-
-## Contributors & Credits
-
-Thanks to all of our contributors - your impact on this project has been greatly appreciated!
-
-[![GitHub Contributors Image](https://contrib.rocks/image?repo=Ryan-Millard/Img2Num)](https://github.com/Ryan-Millard/Img2Num/graphs/contributors)
