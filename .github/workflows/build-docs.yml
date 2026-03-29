@@ -21,9 +21,8 @@ jobs:
       image: ryanmillard/img2num-dev:latest
     steps:
       - name: Checkout code
+        # No need for submodules since docs uses NPM
         uses: actions/checkout@v6
-        with:
-          submodules: recursive
 
       - name: Install Dependendencies
         run: pnpm --filter docs install

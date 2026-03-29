@@ -1,7 +1,7 @@
 # ------------------------
 # Img2Num Dockerfile.dev
 # ------------------------
-FROM node:22-bullseye
+FROM node:22-trixie
 
 ENV EMSDK_VERSION=4.0.10
 ENV EMSDK_DIR=/opt/emsdk
@@ -9,6 +9,7 @@ ENV EMSDK_DIR=/opt/emsdk
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     build-essential \
+    clang \
     cmake \
     python3 \
     git \
@@ -20,7 +21,14 @@ RUN apt-get update \
     libvips-dev \
     # graphviz enables diagrams in doxygen
     doxygen graphviz \
+    # vulkan drivers
+    vulkan-tools libvulkan1 mesa-vulkan-drivers \
+    libgl1-mesa-dev libglu1-mesa-dev \
   && rm -rf /var/lib/apt/lists/*
+
+# CMake preferred compiler (Dawn requires it and it's easier to just use it for everything)
+ENV CC=gcc-14
+ENV CXX=g++-14
 
 # Install EMSDK once, cached by Docker layers
 RUN git clone --depth 1 https://github.com/emscripten-core/emsdk.git $EMSDK_DIR \
@@ -31,6 +39,14 @@ RUN git clone --depth 1 https://github.com/emscripten-core/emsdk.git $EMSDK_DIR 
   && ./emsdk activate $EMSDK_VERSION
 ENV PATH=$EMSDK_DIR:$EMSDK_DIR/upstream/emscripten:$PATH
 ENV EMSDK=$EMSDK_DIR
+
+RUN git clone https://github.com/google/dawn.git \
+  && cd dawn \
+  && cmake -DDAWN_SUPPORTS_GLFW_FOR_WINDOWING=OFF \
+      -DDAWN_USE_X11=OFF -DDAWN_FETCH_DEPENDENCIES=ON \
+      -DDAWN_ENABLE_INSTALL=ON \
+      -DCMAKE_BUILD_TYPE=Release . \
+  && make install
 
 # Install pnpm
 RUN corepack enable \
@@ -44,6 +60,9 @@ WORKDIR /usr/src/app
 
 ENV CHOKIDAR_USEPOLLING=true
 ENV CHOKIDAR_INTERVAL=100
+
+# Make the mounted working directory safe for Git
+RUN git config --global --add safe.directory /usr/src/app
 
 EXPOSE 5173 3000
 

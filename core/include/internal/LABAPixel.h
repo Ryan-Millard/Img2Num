@@ -29,6 +29,13 @@ struct LABAPixel : public ImageLib::LABPixel<NumberT> {
     }
 
 } __attribute__((packed));
+
+template <typename NumberT>
+std::ostream &operator<<(std::ostream &out, const ImageLib::LABAPixel<NumberT> &pixel) {
+    out << "( " << pixel.l << "," << pixel.a << "," << pixel.b << "," << pixel.alpha << " )";
+    return out;
+}
+
 }  // namespace ImageLib
 
 #endif  // LABAPixel_H
