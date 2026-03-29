@@ -6,45 +6,53 @@
 \DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00002}00002\ \textcolor{preprocessor}{\#define\ RGBPIXEL\_H}}
 \DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00003}00003\ }
 \DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00004}00004\ \textcolor{preprocessor}{\#include\ <cmath>}}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00005}00005\ }
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00006}00006\ \textcolor{preprocessor}{\#include\ "{}internal/Pixel.h"{}}}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00007}00007\ }
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00008}00008\ \textcolor{keyword}{namespace\ }ImageLib\ \{}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00009}00009\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ NumberT>}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00010}\mbox{\hyperlink{structImageLib_1_1RGBPixel}{00010}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structImageLib_1_1RGBPixel}{RGBPixel}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structImageLib_1_1Pixel}{Pixel}}<NumberT>\ \{}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00011}00011\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/\ Members\ -\/-\/-\/-\/-\/}}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00012}00012\ \ \ \ \ NumberT\ red,\ green,\ blue;}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00013}00013\ }
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00014}00014\ \ \ \ \ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{RGBPixel}}(NumberT\ red\ =\ 0,\ NumberT\ green\ =\ 0,\ NumberT\ blue\ =\ 0)}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00015}00015\ \ \ \ \ \ \ \ \ :\ red(red),\ green(green),\ blue(blue)\ \{}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00016}00016\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00017}00017\ }
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00018}00018\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/\ Modifiers\ -\/-\/-\/-\/-\/}}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00019}00019\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{RGBPixel}}\ \&other)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00020}00020\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ red\ ==\ other.red\ \&\&\ green\ ==\ other.green\ \&\&\ blue\ ==\ other.blue;}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00021}00021\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00022}00022\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ operator!=(\textcolor{keyword}{const}\ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{RGBPixel}}\ \&other)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00023}00023\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !(*\textcolor{keyword}{this}\ ==\ other);}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00024}00024\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00025}00025\ }
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00026}00026\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/\ Utilities\ -\/-\/-\/-\/-\/}}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00027}00027\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ setGray(NumberT\ gray)\ \{}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00028}00028\ \ \ \ \ \ \ \ \ red\ =\ green\ =\ blue\ =\ gray;}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00029}00029\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00030}00030\ }
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00031}00031\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ colorDistance(\textcolor{keyword}{const}\ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{RGBPixel<NumberT>}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{RGBPixel<NumberT>}}\ \&b)\ \{}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00032}00032\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{RGBPixel<float>}}\ af\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a.red),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a.green),}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00033}00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a.blue)\};}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00034}00034\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{RGBPixel<float>}}\ bf\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(b.red),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(b.green),}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00035}00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(b.blue)\};}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00036}00036\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::sqrt((af.red\ -\/\ bf.red)\ *\ (af.red\ -\/\ bf.red)\ +}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00037}00037\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (af.green\ -\/\ bf.green)\ *\ (af.green\ -\/\ bf.green)\ +}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (af.blue\ -\/\ bf.blue)\ *\ (af.blue\ -\/\ bf.blue));}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00039}00039\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00040}00040\ }
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00041}00041\ \}\ \_\_attribute\_\_((packed));}
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00042}00042\ \}\ \ \textcolor{comment}{//\ namespace\ ImageLib}}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00005}00005\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00007}00007\ \textcolor{preprocessor}{\#include\ "{}internal/Pixel.h"{}}}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00009}00009\ \textcolor{keyword}{namespace\ }ImageLib\ \{}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00010}00010\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ NumberT>}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00011}\mbox{\hyperlink{structImageLib_1_1RGBPixel}{00011}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structImageLib_1_1RGBPixel}{RGBPixel}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structImageLib_1_1Pixel}{Pixel}}<NumberT>\ \{}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00012}00012\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/\ Members\ -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00013}00013\ \ \ \ \ NumberT\ red,\ green,\ blue;}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00014}00014\ }
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00015}00015\ \ \ \ \ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{RGBPixel}}(NumberT\ red\ =\ 0,\ NumberT\ green\ =\ 0,\ NumberT\ blue\ =\ 0)}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00016}00016\ \ \ \ \ \ \ \ \ :\ red(red),\ green(green),\ blue(blue)\ \{}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00017}00017\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00019}00019\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/\ Modifiers\ -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00020}00020\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{RGBPixel}}\ \&other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00021}00021\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ red\ ==\ other.red\ \&\&\ green\ ==\ other.green\ \&\&\ blue\ ==\ other.blue;}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00022}00022\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00023}00023\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ operator!=(\textcolor{keyword}{const}\ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{RGBPixel}}\ \&other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00024}00024\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !(*\textcolor{keyword}{this}\ ==\ other);}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00025}00025\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00027}00027\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/\ Utilities\ -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00028}00028\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ setGray(NumberT\ gray)\ \{}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00029}00029\ \ \ \ \ \ \ \ \ red\ =\ green\ =\ blue\ =\ gray;}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00030}00030\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00032}00032\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ colorDistance(\textcolor{keyword}{const}\ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{RGBPixel<NumberT>}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{RGBPixel<NumberT>}}\ \&b)\ \{}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00033}00033\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{RGBPixel<float>}}\ af\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a.red),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a.green),}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00034}00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a.blue)\};}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00035}00035\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{RGBPixel<float>}}\ bf\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(b.red),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(b.green),}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00036}00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(b.blue)\};}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00037}00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::sqrt((af.red\ -\/\ bf.red)\ *\ (af.red\ -\/\ bf.red)\ +}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (af.green\ -\/\ bf.green)\ *\ (af.green\ -\/\ bf.green)\ +}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00039}00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (af.blue\ -\/\ bf.blue)\ *\ (af.blue\ -\/\ bf.blue));}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00040}00040\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00042}00042\ \}\ \_\_attribute\_\_((packed));}
 \DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00043}00043\ }
-\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00044}00044\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ RGBPIXEL\_H}}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00044}00044\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ NumberT>}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00045}00045\ std::ostream\ \&operator<<(std::ostream\ \&out,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{ImageLib::RGBPixel<NumberT>}}\ \&pixel)\ \{}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00046}00046\ \ \ \ \ out\ <<\ \textcolor{stringliteral}{"{}(\ "{}}\ <<\ pixel.red\ <<\ \textcolor{stringliteral}{"{},"{}}\ <<\ pixel.green\ <<\ \textcolor{stringliteral}{"{},"{}}\ <<\ pixel.blue\ <<\ \textcolor{stringliteral}{"{}\ )"{}};}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00047}00047\ \ \ \ \ \textcolor{keywordflow}{return}\ out;}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00048}00048\ \}}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00050}00050\ \}\ \ \textcolor{comment}{//\ namespace\ ImageLib}}
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{RGBPixel_8h_source_l00052}00052\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ RGBPIXEL\_H}}
 
 \end{DoxyCode}

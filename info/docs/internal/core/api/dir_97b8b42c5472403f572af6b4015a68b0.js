@@ -1,13 +1,16 @@
 var dir_97b8b42c5472403f572af6b4015a68b0 =
 [
     [ "bezier.h", "bezier_8h_source.html", null ],
+    [ "bilateral_filter_gpu.h", "bilateral__filter__gpu_8h_source.html", null ],
     [ "cielab.h", "cielab_8h_source.html", null ],
     [ "cielab_impl.h", "cielab__impl_8h_source.html", null ],
     [ "contours.h", "contours_8h_source.html", null ],
     [ "fft_iterative.h", "fft__iterative_8h_source.html", null ],
+    [ "gpu.h", "gpu_8h_source.html", null ],
     [ "graph.h", "graph_8h_source.html", null ],
     [ "Image.h", "Image_8h_source.html", null ],
     [ "image_utils.h", "image__utils_8h_source.html", null ],
+    [ "kmeans_gpu.h", "kmeans__gpu_8h_source.html", null ],
     [ "LABAPixel.h", "LABAPixel_8h_source.html", null ],
     [ "LABPixel.h", "LABPixel_8h_source.html", null ],
     [ "node.h", "node_8h_source.html", null ],

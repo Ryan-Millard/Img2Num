@@ -248,70 +248,16 @@ Variables</h2></td></tr>
 <dd>
 Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="bilateral__filter_8cpp_source.html#l00155">155</a> of file <a class="el" href="bilateral__filter_8cpp_source.html">bilateral_filter.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  156</span>                                                               {</div>
-<div class="line"><span class="lineno">  157</span>    <span class="comment">// bad data -&gt; return</span></div>
-<div class="line"><span class="lineno">  158</span>    <span class="keywordflow">if</span> (sigma_spatial &lt;= 0.0 || sigma_range &lt;= 0.0 || width &lt;= 0 || height &lt;= 0) <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  159</span>    <span class="keywordflow">if</span> (color_space != COLOR_SPACE_OPTION_CIELAB &amp;&amp; color_space != COLOR_SPACE_OPTION_RGB) <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  160</span> </div>
-<div class="line"><span class="lineno">  161</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> raw_radius{<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::ceil(SIGMA_RADIUS_FACTOR * sigma_spatial))};</div>
-<div class="line"><span class="lineno">  162</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> radius{std::min(raw_radius, MAX_KERNEL_RADIUS)};</div>
-<div class="line"><span class="lineno">  163</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> kernel_diameter{2 * radius + 1};</div>
-<div class="line"><span class="lineno">  164</span> </div>
-<div class="line"><span class="lineno">  165</span>    std::vector&lt;uint8_t&gt; result(width * height * 4);</div>
-<div class="line"><span class="lineno">  166</span> </div>
-<div class="line"><span class="lineno">  167</span>    std::vector&lt;double&gt; spatial_weights(kernel_diameter * kernel_diameter);</div>
-<div class="line"><span class="lineno">  168</span> </div>
-<div class="line"><span class="lineno">  169</span>    <span class="comment">// Precompute Spatial Weights (Gaussian Kernel)</span></div>
-<div class="line"><span class="lineno">  170</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> ky{-radius}; ky &lt;= radius; ++ky) {</div>
-<div class="line"><span class="lineno">  171</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> kx{-radius}; kx &lt;= radius; ++kx) {</div>
-<div class="line"><span class="lineno">  172</span>            <span class="keyword">const</span> <span class="keywordtype">double</span> dist{<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(std::sqrt(kx * kx + ky * ky))};</div>
-<div class="line"><span class="lineno">  173</span>            spatial_weights[(ky + radius) * kernel_diameter + (kx + radius)] =</div>
-<div class="line"><span class="lineno">  174</span>                gaussian(dist, sigma_spatial);</div>
-<div class="line"><span class="lineno">  175</span>        }</div>
-<div class="line"><span class="lineno">  176</span>    }</div>
-<div class="line"><span class="lineno">  177</span> </div>
-<div class="line"><span class="lineno">  178</span>    <span class="comment">// ========= RGB-only section start =========</span></div>
-<div class="line"><span class="lineno">  179</span>    <span class="comment">// Precompute Range Weights</span></div>
-<div class="line"><span class="lineno">  180</span>    std::vector&lt;double&gt; range_lut;</div>
-<div class="line"><span class="lineno">  181</span>    <span class="keywordflow">if</span> (color_space == COLOR_SPACE_OPTION_RGB) {</div>
-<div class="line"><span class="lineno">  182</span>        range_lut.resize(MAX_RGB_DIST_SQ + 1);</div>
-<div class="line"><span class="lineno">  183</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i{0}; i &lt;= MAX_RGB_DIST_SQ; ++i) {</div>
-<div class="line"><span class="lineno">  184</span>            range_lut[i] = gaussian(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(std::sqrt(i)), sigma_range);</div>
-<div class="line"><span class="lineno">  185</span>        }</div>
-<div class="line"><span class="lineno">  186</span>    }</div>
-<div class="line"><span class="lineno">  187</span>    <span class="comment">// ========= RGB-only section end =========</span></div>
-<div class="line"><span class="lineno">  188</span> </div>
-<div class="line"><span class="lineno">  189</span>    <span class="comment">// ========= CIELAB section start =========</span></div>
-<div class="line"><span class="lineno">  190</span>    <span class="comment">// Compute full image RGB - CIELAB conversion</span></div>
-<div class="line"><span class="lineno">  191</span>    std::vector&lt;double&gt; cie_image;</div>
-<div class="line"><span class="lineno">  192</span>    <span class="keywordflow">if</span> (color_space == COLOR_SPACE_OPTION_CIELAB) {</div>
-<div class="line"><span class="lineno">  193</span>        cie_image.resize(width * height * 4);</div>
-<div class="line"><span class="lineno">  194</span> </div>
-<div class="line"><span class="lineno">  195</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y{0}; y &lt; height; y++) {</div>
-<div class="line"><span class="lineno">  196</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x{0}; x &lt; width; x++) {</div>
-<div class="line"><span class="lineno">  197</span>                <span class="keywordtype">int</span> center_idx{(y * <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(width) + x) * 4};</div>
-<div class="line"><span class="lineno">  198</span>                uint8_t r0{image[center_idx]};</div>
-<div class="line"><span class="lineno">  199</span>                uint8_t g0{image[center_idx + 1]};</div>
-<div class="line"><span class="lineno">  200</span>                uint8_t b0{image[center_idx + 2]};</div>
-<div class="line"><span class="lineno">  201</span>                uint8_t a0{image[center_idx + 3]};</div>
-<div class="line"><span class="lineno">  202</span>                <span class="keywordtype">double</span> L0, A0, B0;</div>
-<div class="line"><span class="lineno">  203</span>                rgb_to_lab&lt;uint8_t, double&gt;(r0, g0, b0, L0, A0, B0);</div>
-<div class="line"><span class="lineno">  204</span> </div>
-<div class="line"><span class="lineno">  205</span>                cie_image[center_idx] = L0;</div>
-<div class="line"><span class="lineno">  206</span>                cie_image[center_idx + 1] = A0;</div>
-<div class="line"><span class="lineno">  207</span>                cie_image[center_idx + 2] = B0;</div>
-<div class="line"><span class="lineno">  208</span>                cie_image[center_idx + 3] = 0.0;  <span class="comment">// unused but keep for indexing purposes</span></div>
-<div class="line"><span class="lineno">  209</span>            }</div>
-<div class="line"><span class="lineno">  210</span>        }</div>
-<div class="line"><span class="lineno">  211</span>    }</div>
-<div class="line"><span class="lineno">  212</span>    <span class="comment">// ========= CIELAB section end =========</span></div>
-<div class="line"><span class="lineno">  213</span> </div>
-<div class="line"><span class="lineno">  214</span>    _process(image, cie_image, result, spatial_weights, range_lut, radius, sigma_range, 0,</div>
-<div class="line"><span class="lineno">  215</span>             <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(height), height, width, color_space);</div>
-<div class="line"><span class="lineno">  216</span> </div>
-<div class="line"><span class="lineno">  217</span>    std::memcpy(image, result.data(), result.size());</div>
-<div class="line"><span class="lineno">  218</span>}</div>
+<p class="definition">Definition at line <a class="el" href="bilateral__filter_8cpp_source.html#l00222">222</a> of file <a class="el" href="bilateral__filter_8cpp_source.html">bilateral_filter.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  223</span>                                                               {</div>
+<div class="line"><span class="lineno">  224</span>    GPU::getClassInstance().init_gpu();</div>
+<div class="line"><span class="lineno">  225</span> </div>
+<div class="line"><span class="lineno">  226</span>    <span class="keywordflow">if</span> (GPU::getClassInstance().is_initialized()) {</div>
+<div class="line"><span class="lineno">  227</span>        bilateral_filter_gpu(image, width, height, sigma_spatial, sigma_range, color_space);</div>
+<div class="line"><span class="lineno">  228</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  229</span>        bilateral_filter_cpu(image, width, height, sigma_spatial, sigma_range, color_space);</div>
+<div class="line"><span class="lineno">  230</span>    }</div>
+<div class="line"><span class="lineno">  231</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -773,151 +719,18 @@ Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 <dd>
 Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="kmeans_8cpp_source.html#l00091">91</a> of file <a class="el" href="kmeans_8cpp_source.html">kmeans.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   93</span>                                       {</div>
-<div class="line"><span class="lineno">   94</span>    <a class="code hl_class" href="classImageLib_1_1Image.html">ImageLib::Image&lt;ImageLib::RGBAPixel&lt;float&gt;</a>&gt; pixels;</div>
-<div class="line"><span class="lineno">   95</span>    pixels.loadFromBuffer(data, width, height, ImageLib::RGBA_CONVERTER&lt;float&gt;);</div>
-<div class="line"><span class="lineno">   96</span>    <span class="keyword">const</span> int32_t num_pixels{pixels.getSize()};</div>
-<div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span>    <span class="comment">// width = k, height = 1</span></div>
-<div class="line"><span class="lineno">   99</span>    <span class="comment">// k centroids, initialized to rgba(0,0,0,255)</span></div>
-<div class="line"><span class="lineno">  100</span>    <span class="comment">// Init of each pixel is from default in Image constructor</span></div>
-<div class="line"><span class="lineno">  101</span>    <a class="code hl_class" href="classImageLib_1_1Image.html">ImageLib::Image&lt;ImageLib::RGBAPixel&lt;float&gt;</a>&gt; centroids{k, 1};</div>
-<div class="line"><span class="lineno">  102</span>    <a class="code hl_class" href="classImageLib_1_1Image.html">ImageLib::Image&lt;ImageLib::LABAPixel&lt;float&gt;</a>&gt; centroids_lab{k, 1};</div>
-<div class="line"><span class="lineno">  103</span>    std::vector&lt;int32_t&gt; labels(num_pixels, 0);</div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span>    <a class="code hl_class" href="classImageLib_1_1Image.html">ImageLib::Image&lt;ImageLib::LABAPixel&lt;float&gt;</a>&gt; lab(pixels.getWidth(), pixels.getHeight());</div>
-<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">if</span> (color_space == COLOR_SPACE_OPTION_CIELAB) {</div>
-<div class="line"><span class="lineno">  107</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i{0}; i &lt; pixels.getSize(); ++i) {</div>
-<div class="line"><span class="lineno">  108</span>            rgb_to_lab&lt;float, float&gt;(pixels[i], lab[i]);</div>
-<div class="line"><span class="lineno">  109</span>        }</div>
-<div class="line"><span class="lineno">  110</span>    }</div>
-<div class="line"><span class="lineno">  111</span> </div>
-<div class="line"><span class="lineno">  112</span>    <span class="comment">// Step 2: Initialize centroids randomly</span></div>
-<div class="line"><span class="lineno">  113</span> </div>
-<div class="line"><span class="lineno">  114</span>    <span class="keywordflow">switch</span> (color_space) {</div>
-<div class="line"><span class="lineno">  115</span>        <span class="keywordflow">case</span> COLOR_SPACE_OPTION_RGB: {</div>
-<div class="line"><span class="lineno">  116</span>            kMeansPlusPlusInit&lt;ImageLib::RGBAPixel&lt;float&gt;&gt;(pixels, centroids, k);</div>
-<div class="line"><span class="lineno">  117</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  118</span>        }</div>
-<div class="line"><span class="lineno">  119</span>        <span class="keywordflow">case</span> COLOR_SPACE_OPTION_CIELAB: {</div>
-<div class="line"><span class="lineno">  120</span>            kMeansPlusPlusInit&lt;ImageLib::LABAPixel&lt;float&gt;&gt;(lab, centroids_lab, k);</div>
-<div class="line"><span class="lineno">  121</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  122</span>        }</div>
-<div class="line"><span class="lineno">  123</span>    }</div>
-<div class="line"><span class="lineno">  124</span> </div>
-<div class="line"><span class="lineno">  125</span>    <span class="comment">// Step 3: Run k-means iterations</span></div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span>    <span class="comment">// Assignment step</span></div>
-<div class="line"><span class="lineno">  128</span>    <span class="keywordflow">for</span> (int32_t iter{0}; iter &lt; max_iter; ++iter) {</div>
-<div class="line"><span class="lineno">  129</span>        <span class="keywordtype">bool</span> changed{<span class="keyword">false</span>};</div>
-<div class="line"><span class="lineno">  130</span> </div>
-<div class="line"><span class="lineno">  131</span>        <span class="comment">// Iterate over pixels</span></div>
-<div class="line"><span class="lineno">  132</span>        <span class="keywordflow">for</span> (int32_t i{0}; i &lt; num_pixels; ++i) {</div>
-<div class="line"><span class="lineno">  133</span>            <span class="keywordtype">float</span> min_color_dist{std::numeric_limits&lt;float&gt;::max()};</div>
-<div class="line"><span class="lineno">  134</span>            int32_t best_cluster{0};</div>
-<div class="line"><span class="lineno">  135</span> </div>
-<div class="line"><span class="lineno">  136</span>            <span class="comment">// Iterate over centroids to find centroid with most similar color to</span></div>
-<div class="line"><span class="lineno">  137</span>            <span class="comment">// pixels[i]</span></div>
-<div class="line"><span class="lineno">  138</span>            <span class="keywordtype">float</span> dist;</div>
-<div class="line"><span class="lineno">  139</span>            <span class="keywordflow">for</span> (int32_t j{0}; j &lt; k; ++j) {</div>
-<div class="line"><span class="lineno">  140</span>                <span class="keywordflow">switch</span> (color_space) {</div>
-<div class="line"><span class="lineno">  141</span>                    <span class="keywordflow">case</span> COLOR_SPACE_OPTION_RGB: {</div>
-<div class="line"><span class="lineno">  142</span>                        dist = <a class="code hl_struct" href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel&lt;float&gt;::colorDistance</a>(pixels[i], centroids[j]);</div>
-<div class="line"><span class="lineno">  143</span>                        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  144</span>                    }</div>
-<div class="line"><span class="lineno">  145</span>                    <span class="keywordflow">case</span> COLOR_SPACE_OPTION_CIELAB: {</div>
-<div class="line"><span class="lineno">  146</span>                        dist = <a class="code hl_struct" href="structImageLib_1_1LABAPixel.html">ImageLib::LABAPixel&lt;float&gt;::colorDistance</a>(lab[i], centroids_lab[j]);</div>
-<div class="line"><span class="lineno">  147</span>                        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  148</span>                    }</div>
-<div class="line"><span class="lineno">  149</span>                }</div>
-<div class="line"><span class="lineno">  150</span>                <span class="keywordflow">if</span> (dist &lt; min_color_dist) {</div>
-<div class="line"><span class="lineno">  151</span>                    min_color_dist = dist;</div>
-<div class="line"><span class="lineno">  152</span>                    best_cluster = j;</div>
-<div class="line"><span class="lineno">  153</span>                }</div>
-<div class="line"><span class="lineno">  154</span>            }</div>
-<div class="line"><span class="lineno">  155</span> </div>
-<div class="line"><span class="lineno">  156</span>            <span class="keywordflow">if</span> (labels[i] != best_cluster) {</div>
-<div class="line"><span class="lineno">  157</span>                changed = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  158</span>                labels[i] = best_cluster;</div>
-<div class="line"><span class="lineno">  159</span>            }</div>
-<div class="line"><span class="lineno">  160</span>        }</div>
-<div class="line"><span class="lineno">  161</span> </div>
-<div class="line"><span class="lineno">  162</span>        <span class="comment">// Stop if no changes</span></div>
-<div class="line"><span class="lineno">  163</span>        <span class="keywordflow">if</span> (!changed) {</div>
-<div class="line"><span class="lineno">  164</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  165</span>        }</div>
-<div class="line"><span class="lineno">  166</span> </div>
-<div class="line"><span class="lineno">  167</span>        <span class="comment">// Update step</span></div>
-<div class="line"><span class="lineno">  168</span>        <a class="code hl_class" href="classImageLib_1_1Image.html">ImageLib::Image&lt;ImageLib::RGBAPixel&lt;float&gt;</a>&gt; new_centroids(k, 1, 0);</div>
-<div class="line"><span class="lineno">  169</span>        <a class="code hl_class" href="classImageLib_1_1Image.html">ImageLib::Image&lt;ImageLib::LABAPixel&lt;float&gt;</a>&gt; new_centroids_lab(k, 1, 0);</div>
-<div class="line"><span class="lineno">  170</span>        std::vector&lt;int32_t&gt; counts(k, 0);</div>
-<div class="line"><span class="lineno">  171</span> </div>
-<div class="line"><span class="lineno">  172</span>        <span class="keywordflow">for</span> (int32_t i = 0; i &lt; num_pixels; ++i) {</div>
-<div class="line"><span class="lineno">  173</span>            int32_t cluster = labels[i];</div>
-<div class="line"><span class="lineno">  174</span>            <span class="keywordflow">switch</span> (color_space) {</div>
-<div class="line"><span class="lineno">  175</span>                <span class="keywordflow">case</span> COLOR_SPACE_OPTION_RGB: {</div>
-<div class="line"><span class="lineno">  176</span>                    new_centroids[cluster].red += pixels[i].red;</div>
-<div class="line"><span class="lineno">  177</span>                    new_centroids[cluster].green += pixels[i].green;</div>
-<div class="line"><span class="lineno">  178</span>                    new_centroids[cluster].blue += pixels[i].blue;</div>
-<div class="line"><span class="lineno">  179</span>                    <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  180</span>                }</div>
-<div class="line"><span class="lineno">  181</span>                <span class="keywordflow">case</span> COLOR_SPACE_OPTION_CIELAB: {</div>
-<div class="line"><span class="lineno">  182</span>                    new_centroids_lab[cluster].l += lab[i].l;</div>
-<div class="line"><span class="lineno">  183</span>                    new_centroids_lab[cluster].a += lab[i].a;</div>
-<div class="line"><span class="lineno">  184</span>                    new_centroids_lab[cluster].b += lab[i].b;</div>
-<div class="line"><span class="lineno">  185</span>                    <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  186</span>                }</div>
-<div class="line"><span class="lineno">  187</span>            }</div>
-<div class="line"><span class="lineno">  188</span>            counts[cluster]++;</div>
-<div class="line"><span class="lineno">  189</span>        }</div>
-<div class="line"><span class="lineno">  190</span> </div>
-<div class="line"><span class="lineno">  191</span>        <span class="keywordflow">for</span> (int32_t j = 0; j &lt; k; ++j) {</div>
-<div class="line"><span class="lineno">  192</span>            <span class="comment">/*</span></div>
-<div class="line"><span class="lineno">  193</span><span class="comment">               A centroid may become a dead centroid if it never gets pixels assigned</span></div>
-<div class="line"><span class="lineno">  194</span><span class="comment">               to it. May be good idea to reinitialize these dead centroids.</span></div>
-<div class="line"><span class="lineno">  195</span><span class="comment">               */</span></div>
-<div class="line"><span class="lineno">  196</span>            <span class="keywordflow">if</span> (counts[j] &gt; 0) {</div>
-<div class="line"><span class="lineno">  197</span>                <span class="keywordflow">switch</span> (color_space) {</div>
-<div class="line"><span class="lineno">  198</span>                    <span class="keywordflow">case</span> COLOR_SPACE_OPTION_RGB: {</div>
-<div class="line"><span class="lineno">  199</span>                        centroids[j].red = new_centroids[j].red / counts[j];</div>
-<div class="line"><span class="lineno">  200</span>                        centroids[j].green = new_centroids[j].green / counts[j];</div>
-<div class="line"><span class="lineno">  201</span>                        centroids[j].blue = new_centroids[j].blue / counts[j];</div>
-<div class="line"><span class="lineno">  202</span>                        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  203</span>                    }</div>
-<div class="line"><span class="lineno">  204</span>                    <span class="keywordflow">case</span> COLOR_SPACE_OPTION_CIELAB: {</div>
-<div class="line"><span class="lineno">  205</span>                        centroids_lab[j].l = new_centroids_lab[j].l / counts[j];</div>
-<div class="line"><span class="lineno">  206</span>                        centroids_lab[j].a = new_centroids_lab[j].a / counts[j];</div>
-<div class="line"><span class="lineno">  207</span>                        centroids_lab[j].b = new_centroids_lab[j].b / counts[j];</div>
-<div class="line"><span class="lineno">  208</span>                        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  209</span>                    }</div>
-<div class="line"><span class="lineno">  210</span>                }</div>
-<div class="line"><span class="lineno">  211</span>            }</div>
-<div class="line"><span class="lineno">  212</span>        }</div>
-<div class="line"><span class="lineno">  213</span>    }</div>
-<div class="line"><span class="lineno">  214</span> </div>
-<div class="line"><span class="lineno">  215</span>    <span class="keywordflow">if</span> (color_space == COLOR_SPACE_OPTION_CIELAB) {</div>
-<div class="line"><span class="lineno">  216</span>        <span class="keywordflow">for</span> (int32_t i{0}; i &lt; k; ++i) {</div>
-<div class="line"><span class="lineno">  217</span>            lab_to_rgb&lt;float, float&gt;(centroids_lab[i], centroids[i]);</div>
-<div class="line"><span class="lineno">  218</span>        }</div>
-<div class="line"><span class="lineno">  219</span>    }</div>
-<div class="line"><span class="lineno">  220</span> </div>
-<div class="line"><span class="lineno">  221</span>    <span class="comment">// Write the final centroid values to each pixel in the cluster</span></div>
-<div class="line"><span class="lineno">  222</span>    <span class="keywordflow">for</span> (int32_t i = 0; i &lt; num_pixels; ++i) {</div>
-<div class="line"><span class="lineno">  223</span>        <span class="keyword">const</span> int32_t cluster = labels[i];</div>
-<div class="line"><span class="lineno">  224</span>        out_data[i * 4 + 0] =</div>
-<div class="line"><span class="lineno">  225</span>            <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(std::clamp(centroids[cluster].red, 0.0f, 255.0f));</div>
-<div class="line"><span class="lineno">  226</span>        out_data[i * 4 + 1] =</div>
-<div class="line"><span class="lineno">  227</span>            <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(std::clamp(centroids[cluster].green, 0.0f, 255.0f));</div>
-<div class="line"><span class="lineno">  228</span>        out_data[i * 4 + 2] =</div>
-<div class="line"><span class="lineno">  229</span>            <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(std::clamp(centroids[cluster].blue, 0.0f, 255.0f));</div>
-<div class="line"><span class="lineno">  230</span>        out_data[i * 4 + 3] = 255;</div>
-<div class="line"><span class="lineno">  231</span>    }</div>
-<div class="line"><span class="lineno">  232</span> </div>
-<div class="line"><span class="lineno">  233</span>    <span class="comment">// Write labels to out_labels</span></div>
-<div class="line"><span class="lineno">  234</span>    std::memcpy(out_labels, labels.data(), labels.size() * <span class="keyword">sizeof</span>(int32_t));</div>
-<div class="line"><span class="lineno">  235</span>}</div>
-<div class="ttc" id="astructImageLib_1_1LABAPixel_html"><div class="ttname"><a href="structImageLib_1_1LABAPixel.html">ImageLib::LABAPixel</a></div><div class="ttdef"><b>Definition</b> <a href="LABAPixel_8h_source.html#l00008">LABAPixel.h:8</a></div></div>
+<p class="definition">Definition at line <a class="el" href="kmeans_8cpp_source.html#l00240">240</a> of file <a class="el" href="kmeans_8cpp_source.html">kmeans.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  242</span>                                       {</div>
+<div class="line"><span class="lineno">  243</span>    GPU::getClassInstance().init_gpu();</div>
+<div class="line"><span class="lineno">  244</span> </div>
+<div class="line"><span class="lineno">  245</span>    <span class="keywordflow">if</span> (GPU::getClassInstance().is_initialized()) {</div>
+<div class="line"><span class="lineno">  246</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;kmeans gpu&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  247</span>        kmeans_gpu(data, out_data, out_labels, width, height, k, max_iter, color_space);</div>
+<div class="line"><span class="lineno">  248</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  249</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;kmeans cpu&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  250</span>        kmeans_cpu(data, out_data, out_labels, width, height, k, max_iter, color_space);</div>
+<div class="line"><span class="lineno">  251</span>    }</div>
+<div class="line"><span class="lineno">  252</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

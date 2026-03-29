@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xy_0',['XY',['../structXY.html',1,'']]]
+  ['savitzkygolay_0',['SavitzkyGolay',['../classSavitzkyGolay.html',1,'']]]
 ];

@@ -1,12 +1,17 @@
 var hierarchy =
 [
+    [ "CentroidParams", "structCentroidParams.html", null ],
+    [ "ClusterAccumulator", "structClusterAccumulator.html", null ],
     [ "ContoursResult", "structContoursResult.html", [
       [ "ColoredContours", "structColoredContours.html", null ]
     ] ],
     [ "contours::Coord", "structcontours_1_1Coord.html", null ],
+    [ "FilterParams", "structFilterParams.html", null ],
+    [ "GPU", "classGPU.html", null ],
     [ "Graph", "classGraph.html", null ],
     [ "ImageLib::Image< PixelT >", "classImageLib_1_1Image.html", null ],
     [ "Node", "classNode.html", null ],
+    [ "Params", "structParams.html", null ],
     [ "ImageLib::Pixel< NumberT >", "structImageLib_1_1Pixel.html", [
       [ "ImageLib::RGBPixel< uint8_t >", "structImageLib_1_1RGBPixel.html", null ],
       [ "ImageLib::LABPixel< NumberT >", "structImageLib_1_1LABPixel.html", [
