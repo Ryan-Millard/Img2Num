@@ -1,0 +1,37 @@
+\doxysection{Pixel\+Converters.\+h}
+\hypertarget{PixelConverters_8h_source}{}\label{PixelConverters_8h_source}\index{include/internal/PixelConverters.h@{include/internal/PixelConverters.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00001}00001\ \textcolor{preprocessor}{\#ifndef\ PIXELCONVERTERS\_H}}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00002}00002\ \textcolor{preprocessor}{\#define\ PIXELCONVERTERS\_H}}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00003}00003\ }
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00004}00004\ \textcolor{preprocessor}{\#include\ "{}internal/Pixel.h"{}}}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00005}00005\ \textcolor{preprocessor}{\#include\ "{}internal/PixelConverter.h"{}}}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00006}00006\ \textcolor{preprocessor}{\#include\ "{}internal/RGBAPixel.h"{}}}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00007}00007\ \textcolor{preprocessor}{\#include\ "{}internal/RGBPixel.h"{}}}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00009}00009\ \textcolor{keyword}{namespace\ }ImageLib\ \{}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00010}00010\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ NumberT>}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00011}00011\ \textcolor{keyword}{inline}\ RGBPixel<NumberT>\ convertRGB(\textcolor{keyword}{const}\ uint8\_t\ *p)\ \{}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00012}00012\ \ \ \ \ \textcolor{keywordflow}{return}\ RGBPixel<NumberT>\{\textcolor{keyword}{static\_cast<}NumberT\textcolor{keyword}{>}(p[0]),\ \textcolor{keyword}{static\_cast<}NumberT\textcolor{keyword}{>}(p[1]),}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00013}00013\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}NumberT\textcolor{keyword}{>}(p[2])\};}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00014}00014\ \}}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00016}00016\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ NumberT>}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00017}00017\ \textcolor{keyword}{inline}\ RGBAPixel<NumberT>\ convertRGBA(\textcolor{keyword}{const}\ uint8\_t\ *p)\ \{}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00018}00018\ \ \ \ \ \textcolor{keywordflow}{return}\ RGBAPixel<NumberT>\{\textcolor{keyword}{static\_cast<}NumberT\textcolor{keyword}{>}(p[0]),\ \textcolor{keyword}{static\_cast<}NumberT\textcolor{keyword}{>}(p[1]),}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00019}00019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}NumberT\textcolor{keyword}{>}(p[2]),\ \textcolor{keyword}{static\_cast<}NumberT\textcolor{keyword}{>}(p[3])\};}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00020}00020\ \}}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00022}00022\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ NumberT>}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00023}00023\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ PixelConverter<RGBPixel<NumberT>\ (*)(\textcolor{keyword}{const}\ uint8\_t\ *)>\ RGB\_CONVERTER\{}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00024}00024\ \ \ \ \ convertRGB,\ 3\};\ \ \textcolor{comment}{//\ 3\ bytes\ per\ pixel}}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00025}00025\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ NumberT>}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00026}00026\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ PixelConverter<RGBAPixel<NumberT>\ (*)(\textcolor{keyword}{const}\ uint8\_t\ *)>\ RGBA\_CONVERTER\{}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00027}00027\ \ \ \ \ convertRGBA,\ 4\};\ \ \textcolor{comment}{//\ 4\ bytes\ per\ pixel}}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00029}00029\ \}\ \ \textcolor{comment}{//\ namespace\ ImageLib}}
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{PixelConverters_8h_source_l00031}00031\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

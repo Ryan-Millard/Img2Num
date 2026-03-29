@@ -1,0 +1,158 @@
+\doxysection{bezier.\+cpp}
+\hypertarget{bezier_8cpp_source}{}\label{bezier_8cpp_source}\index{src/internal/bezier.cpp@{src/internal/bezier.cpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00001}00001\ \textcolor{preprocessor}{\#include\ "{}internal/bezier.h"{}}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00002}00002\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00003}00003\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00004}00004\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00005}00005\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00007}00007\ \textcolor{comment}{//\ -\/-\/-\/\ Vector\ Math\ Helpers\ -\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00008}00008\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ dot(\mbox{\hyperlink{structPoint}{Point}}\ a,\ \mbox{\hyperlink{structPoint}{Point}}\ b)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00009}00009\ \ \ \ \ \textcolor{keywordflow}{return}\ a.x\ *\ b.x\ +\ a.y\ *\ b.y;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00010}00010\ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00011}00011\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ len(\mbox{\hyperlink{structPoint}{Point}}\ a,\ \mbox{\hyperlink{structPoint}{Point}}\ b)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00012}00012\ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ c\ =\ a\ -\/\ b;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00013}00013\ \ \ \ \ \textcolor{keywordflow}{return}\ std::sqrt(c.x\ *\ c.x\ +\ c.y\ *\ c.y);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00014}00014\ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00016}00016\ \textcolor{comment}{//\ -\/-\/-\/\ Evaluate\ Quadratic\ Bezier\ at\ t\ -\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00017}00017\ \mbox{\hyperlink{structPoint}{Point}}\ evalBezier(\textcolor{keyword}{const}\ \mbox{\hyperlink{structQuadBezier}{QuadBezier}}\ \&b,\ \textcolor{keywordtype}{float}\ t)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00018}00018\ \ \ \ \ \textcolor{comment}{//\ B(t)\ =\ (1-\/t)\string^2\ *\ P0\ +\ 2*t*(1-\/t)\ *\ P1\ +\ t\string^2\ *\ P2}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00019}00019\ \ \ \ \ \textcolor{keywordtype}{float}\ invT\ =\ 1.0\ -\/\ t;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00020}00020\ \ \ \ \ \textcolor{keywordtype}{float}\ c0\ =\ invT\ *\ invT;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00021}00021\ \ \ \ \ \textcolor{keywordtype}{float}\ c1\ =\ 2.0f\ *\ t\ *\ invT;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00022}00022\ \ \ \ \ \textcolor{keywordtype}{float}\ c2\ =\ t\ *\ t;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00024}00024\ \ \ \ \ \textcolor{keywordflow}{return}\ c0\ *\ b.p0\ +\ c1\ *\ b.p1\ +\ c2\ *\ b.p2;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00025}00025\ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00027}00027\ \textcolor{comment}{//\ -\/-\/-\/\ Chord\ Length\ Parameterization\ -\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00028}00028\ \textcolor{comment}{//\ Assigns\ a\ 't'\ value\ (0.0\ to\ 1.0)\ to\ each\ point\ based\ on\ distance}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00029}00029\ std::vector<float>\ chordLengthParameterize(\textcolor{keyword}{const}\ std::vector<Point>\ \&points)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00030}00030\ \ \ \ \ std::vector<float>\ u;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00031}00031\ \ \ \ \ u.reserve(points.size());}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00032}00032\ \ \ \ \ u.push\_back(0.0f);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00034}00034\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 1;\ i\ <\ points.size();\ ++i)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00035}00035\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ dist\ =\ len(points[i],\ points[i\ -\/\ 1]);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00036}00036\ \ \ \ \ \ \ \ \ u.push\_back(u.back()\ +\ dist);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00037}00037\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00039}00039\ \ \ \ \ \textcolor{keywordtype}{float}\ totalLen\ =\ u.back();}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00040}00040\ \ \ \ \ \textcolor{keywordflow}{if}\ (totalLen\ ==\ 0)\ \textcolor{keywordflow}{return}\ u;\ \ \textcolor{comment}{//\ Should\ not\ happen\ for\ valid\ ranges}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00042}00042\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{float}\ \&val\ :\ u)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00043}00043\ \ \ \ \ \ \ \ \ val\ /=\ totalLen;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00044}00044\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00045}00045\ \ \ \ \ \textcolor{keywordflow}{return}\ u;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00046}00046\ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00047}00047\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00048}00048\ \textcolor{comment}{//\ -\/-\/-\/\ Least\ Squares\ Fit\ for\ Control\ Point\ Q1\ -\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00049}00049\ \textcolor{comment}{//\ We\ know\ Q0\ (Start)\ and\ Q2\ (End).\ We\ need\ to\ find\ Q1\ that\ minimizes\ error.}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00050}00050\ \textcolor{comment}{//\ Based\ on\ equation:\ P(t)\ =\ (1-\/t)\string^2\ Q0\ +\ 2t(1-\/t)\ Q1\ +\ t\string^2\ Q2}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00051}00051\ \textcolor{comment}{//\ Rearranged:\ Q1\ *\ [2t(1-\/t)]\ =\ P(t)\ -\/\ (1-\/t)\string^2\ Q0\ -\/\ t\string^2\ Q2}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00052}00052\ \mbox{\hyperlink{structPoint}{Point}}\ generateQuadBezier(\textcolor{keyword}{const}\ std::vector<Point>\ \&points,\ \textcolor{keyword}{const}\ std::vector<float>\ \&u)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00053}00053\ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ Q0\ =\ points.front();}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00054}00054\ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ Q2\ =\ points.back();}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00055}00055\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00056}00056\ \ \ \ \ \textcolor{keywordtype}{float}\ numX\ =\ 0.0,\ numY\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00057}00057\ \ \ \ \ \textcolor{keywordtype}{float}\ den\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00059}00059\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ u.size();\ ++i)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00060}00060\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ t\ =\ u[i];}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00061}00061\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ invT\ =\ 1.0f\ -\/\ t;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00062}00062\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00063}00063\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ A\ =\ 2t(1-\/t)}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00064}00064\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ A\ =\ 2.0f\ *\ t\ *\ invT;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00066}00066\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ V\ =\ P\_actual\ -\/\ (Contribution\ of\ Q0\ and\ Q2)}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00067}00067\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ V\ =\ P[i]\ -\/\ (1-\/t)\string^2\ *\ Q0\ -\/\ t\string^2\ *\ Q2}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00068}00068\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ B0\ =\ invT\ *\ invT;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00069}00069\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ B2\ =\ t\ *\ t;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00070}00070\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ V\ =\ points[i]\ -\/\ (Q0\ *\ B0\ +\ Q2\ *\ B2);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00072}00072\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Least\ Squares\ Sums}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00073}00073\ \ \ \ \ \ \ \ \ numX\ +=\ A\ *\ V.x;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00074}00074\ \ \ \ \ \ \ \ \ numY\ +=\ A\ *\ V.y;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00075}00075\ \ \ \ \ \ \ \ \ den\ +=\ A\ *\ A;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00076}00076\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00078}00078\ \ \ \ \ \textcolor{keywordflow}{if}\ (den\ <\ 1e-\/9)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00079}00079\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fallback\ for\ straight\ lines\ (den\ is\ 0\ if\ all\ t\ are\ 0\ or\ 1)}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00080}00080\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Q0\ +\ (Q2\ -\/\ Q0)\ *\ 0.5;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00081}00081\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00082}00082\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00083}00083\ \ \ \ \ \textcolor{keywordflow}{return}\ \{numX\ /\ den,\ numY\ /\ den\};}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00084}00084\ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00086}00086\ \textcolor{comment}{//\ -\/-\/-\/\ Recursive\ Fit\ Function\ -\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00087}00087\ \textcolor{keywordtype}{void}\ fitRecursive(\textcolor{keyword}{const}\ std::vector<Point>\ \&points,\ \textcolor{keywordtype}{float}\ errorLimit,}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<QuadBezier>\ \&outCurves)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00089}00089\ \ \ \ \ \textcolor{comment}{//\ Base\ Case:\ Not\ enough\ points,\ just\ connect\ them}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00090}00090\ \ \ \ \ \textcolor{keywordflow}{if}\ (points.size()\ <=\ 2)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00091}00091\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Just\ a\ line\ segment}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00092}00092\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ mid\ =\ points.front()\ +\ (points.back()\ -\/\ points.front())\ *\ 0.5;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00093}00093\ \ \ \ \ \ \ \ \ outCurves.push\_back(\{points.front(),\ mid,\ points.back()\});}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00094}00094\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00095}00095\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00096}00096\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00097}00097\ \ \ \ \ \textcolor{comment}{//\ 1.\ Parameterize\ Points}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00098}00098\ \ \ \ \ std::vector<float>\ u\ =\ chordLengthParameterize(points);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00099}00099\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00100}00100\ \ \ \ \ \textcolor{comment}{//\ 2.\ Find\ Optimal\ Control\ Point\ (Q1)}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00101}00101\ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ Q1\ =\ generateQuadBezier(points,\ u);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00102}00102\ \ \ \ \ \mbox{\hyperlink{structQuadBezier}{QuadBezier}}\ curve\ =\ \{points.front(),\ Q1,\ points.back()\};}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00103}00103\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00104}00104\ \ \ \ \ \textcolor{comment}{//\ 3.\ Calculate\ Maximum\ Error}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00105}00105\ \ \ \ \ \textcolor{keywordtype}{float}\ maxDistSq\ =\ 0.0f;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00106}00106\ \ \ \ \ \textcolor{keywordtype}{int}\ splitPoint\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00107}00107\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00108}00108\ \ \ \ \ \textcolor{comment}{//\ Check\ distance\ of\ every\ intermediate\ point\ to\ the\ curve}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00109}00109\ \ \ \ \ \textcolor{comment}{//\ Note:\ Technically\ we\ should\ find\ the\ nearest\ point\ on\ curve,}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00110}00110\ \ \ \ \ \textcolor{comment}{//\ but\ evaluating\ at\ parameter\ 't'\ is\ a\ standard\ approximation\ for\ speed.}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00111}00111\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ u.size();\ ++i)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00112}00112\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ P\ =\ points[i];}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00113}00113\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ CurveP\ =\ evalBezier(curve,\ u[i]);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00114}00114\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ d2\ =\ Point::distSq(P,\ CurveP);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00116}00116\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (d2\ >\ maxDistSq)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00117}00117\ \ \ \ \ \ \ \ \ \ \ \ \ maxDistSq\ =\ d2;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00118}00118\ \ \ \ \ \ \ \ \ \ \ \ \ splitPoint\ =\ i;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00119}00119\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00120}00120\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00121}00121\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00122}00122\ \ \ \ \ \textcolor{comment}{//\ 4.\ Check\ Error\ Threshold}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00123}00123\ \ \ \ \ \textcolor{keywordflow}{if}\ (maxDistSq\ <\ (errorLimit\ *\ errorLimit))\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00124}00124\ \ \ \ \ \ \ \ \ outCurves.push\_back(curve);\ \ \textcolor{comment}{//\ Fit\ is\ good!}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00125}00125\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00126}00126\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fit\ is\ bad,\ split\ at\ the\ point\ of\ maximum\ error}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00127}00127\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Important:\ Prevent\ infinite\ recursion\ if\ split\ doesn't\ advance}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00128}00128\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (splitPoint\ ==\ 0\ ||\ splitPoint\ ==\ points.size()\ -\/\ 1)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00129}00129\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fallback:\ simply\ bisect\ indices\ if\ geometric\ split\ fails}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ splitPoint\ =\ points.size()\ /\ 2;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00131}00131\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00132}00132\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00133}00133\ \ \ \ \ \ \ \ \ std::vector<Point>\ p1(points.begin(),\ points.begin()\ +\ splitPoint\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00134}00134\ \ \ \ \ \ \ \ \ std::vector<Point>\ p2(points.begin()\ +\ splitPoint,\ points.end());}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00135}00135\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00136}00136\ \ \ \ \ \ \ \ \ fitRecursive(p1,\ errorLimit,\ outCurves);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00137}00137\ \ \ \ \ \ \ \ \ fitRecursive(p2,\ errorLimit,\ outCurves);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00138}00138\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00139}00139\ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00140}00140\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00141}00141\ \textcolor{comment}{//\ -\/-\/-\/\ Main\ Wrapper\ -\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00142}00142\ \textcolor{keywordtype}{void}\ fit\_curve\_reduction(\textcolor{keyword}{const}\ std::vector<std::vector<Point>>\ \&chains,}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00143}00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<std::vector<QuadBezier>>\ \&results,\ \textcolor{keywordtype}{float}\ tolerance)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00144}00144\ \ \ \ \ \textcolor{comment}{//\ if\ (chain.empty())\ return\ result;}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00145}00145\ \ \ \ \ \textcolor{comment}{//\ results.resize(chains.size());}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00146}00146\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ chains.size();\ ++i)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00147}00147\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Start\ recursion\ on\ the\ whole\ chain}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00148}00148\ \ \ \ \ \ \ \ \ std::vector<QuadBezier>\ result;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00149}00149\ \ \ \ \ \ \ \ \ fitRecursive(chains[i],\ tolerance,\ result);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00150}00150\ \ \ \ \ \ \ \ \ results.push\_back(result);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00151}00151\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00152}00152\ \}}
+
+\end{DoxyCode}
