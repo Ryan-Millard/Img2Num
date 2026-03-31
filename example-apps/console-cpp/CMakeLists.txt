@@ -18,5 +18,10 @@ target_include_directories(console_cpp_app PRIVATE
   ${CMAKE_SOURCE_DIR}/third_party
 )
 
+# Location to store the output images
+target_compile_definitions(console_cpp_app PRIVATE
+  OUTPUT_DIR="${CMAKE_BINARY_DIR}/outputs/console-cpp"
+)
+
 # Link against the core Img2Num library
 target_link_libraries(console_cpp_app PRIVATE Img2Num)

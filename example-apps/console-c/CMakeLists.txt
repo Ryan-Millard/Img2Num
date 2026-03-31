@@ -18,5 +18,10 @@ target_include_directories(console_c_app PRIVATE
   ${CMAKE_SOURCE_DIR}/third_party
 )
 
+# Location to store the output images
+target_compile_definitions(console_c_app PRIVATE
+  OUTPUT_DIR="${CMAKE_BINARY_DIR}/outputs/console-c"
+)
+
 # Link against the C bindings
 target_link_libraries(console_c_app PRIVATE CImg2Num Img2Num m)
