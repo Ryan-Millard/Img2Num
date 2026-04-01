@@ -29,6 +29,14 @@ struct RGBAPixel : public ImageLib::RGBPixel<NumberT> {
     }
 
 } __attribute__((packed));
+
+template <typename NumberT>
+std::ostream &operator<<(std::ostream &out, const ImageLib::RGBAPixel<NumberT> &pixel) {
+    out << "( " << pixel.red << "," << pixel.green << "," << pixel.blue << "," << pixel.alpha
+        << " )";
+    return out;
+}
+
 }  // namespace ImageLib
 
 #endif  // RGBAPIXEL_H

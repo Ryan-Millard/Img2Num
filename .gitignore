@@ -6,10 +6,6 @@ node_modules/
 build*/
 install/
 
-# C & C++ Example apps
-console-cpp-output.png
-console-c-output.png
-
 # Logs
 logs
 *.log

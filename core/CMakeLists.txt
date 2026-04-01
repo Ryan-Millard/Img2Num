@@ -10,13 +10,57 @@ file(GLOB_RECURSE CORE_SRC
 
 add_library(Img2Num ${CORE_SRC})
 
+file(GLOB WGSL_SHADERS ${CMAKE_CURRENT_SOURCE_DIR}/src/internal/resources/*.wgsl)
+
+message(STATUS ${CMAKE_BINARY_DIR})
+add_custom_command(
+    OUTPUT ${CMAKE_BINARY_DIR}/embedded_shaders.h
+    COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/tools/embed_shaders.py
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/internal/resources
+            ${CMAKE_BINARY_DIR}/embedded_shaders.h
+    DEPENDS ${WGSL_SHADERS}
+)
+
+set_property(SOURCE ${CORE_SRC} APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_BINARY_DIR}/embedded_shaders.h)
+
 target_include_directories(Img2Num
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/img2num>
   PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
+    ${CMAKE_BINARY_DIR}
 )
+
+if (EMSCRIPTEN)
+  message("using emdawnwebgpu port")
+  target_compile_options(Img2Num PRIVATE "--use-port=emdawnwebgpu")
+  target_link_options(Img2Num PRIVATE "--use-port=emdawnwebgpu" "SHELL:-s ASYNCIFY=1")
+else()
+  
+  find_package(Dawn QUIET)
+  if (Dawn_FOUND)
+    message("Found system Dawn")
+  else()
+    message("Building Dawn from third_party")
+    set(DAWN_SUPPORTS_GLFW_FOR_WINDOWING OFF CACHE BOOL "Disable GLFW support for windowing" FORCE)
+    set(DAWN_USE_X11 OFF CACHE BOOL "Disable X11 support" FORCE)
+    set(DAWN_FETCH_DEPENDENCIES ON)
+    add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../third_party/dawn" "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/dawn/build/" EXCLUDE_FROM_ALL)
+  endif()
+
+  # PUBLIC: only expose the directory that contains img2num.h
+  # PRIVATE: internal headers
+  target_include_directories(Img2Num
+    PUBLIC
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+      $<BUILD_INTERFACE:${DAWN_INCLUDE_DIR}>
+    PRIVATE
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
+  )
+
+  target_link_libraries(Img2Num PRIVATE $<BUILD_INTERFACE:webgpu_dawn>)
+endif()
 
 # --- Install targets for packaging ---
 install(TARGETS Img2Num

@@ -4,6 +4,7 @@
 #include <cstring>
 #include <ctime>
 #include <functional>
+#include <iostream>
 #include <limits>
 #include <numeric>
 #include <random>
@@ -15,6 +16,8 @@
 #include "internal/PixelConverters.h"
 #include "internal/RGBAPixel.h"
 #include "internal/cielab.h"
+#include "internal/gpu.h"
+#include "internal/kmeans_gpu.h"
 
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB{0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
@@ -87,10 +90,9 @@ void kMeansPlusPlusInit(const ImageLib::Image<PixelT> &pixels,
     std::copy(centroids.begin(), centroids.end(), out_centroids.begin());
 }
 
-namespace img2num {
-void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels, const int32_t width,
-            const int32_t height, const int32_t k, const int32_t max_iter,
-            const uint8_t color_space) {
+void kmeans_cpu(const uint8_t *data, uint8_t *out_data, int32_t *out_labels, const int32_t width,
+                const int32_t height, const int32_t k, const int32_t max_iter,
+                const uint8_t color_space) {
     ImageLib::Image<ImageLib::RGBAPixel<float>> pixels;
     pixels.loadFromBuffer(data, width, height, ImageLib::RGBA_CONVERTER<float>);
     const int32_t num_pixels{pixels.getSize()};
@@ -232,5 +234,20 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels, const i
 
     // Write labels to out_labels
     std::memcpy(out_labels, labels.data(), labels.size() * sizeof(int32_t));
+}
+
+namespace img2num {
+void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels, const int32_t width,
+            const int32_t height, const int32_t k, const int32_t max_iter,
+            const uint8_t color_space) {
+    GPU::getClassInstance().init_gpu();
+
+    if (GPU::getClassInstance().is_initialized()) {
+        std::cout << "kmeans gpu" << std::endl;
+        kmeans_gpu(data, out_data, out_labels, width, height, k, max_iter, color_space);
+    } else {
+        std::cout << "kmeans cpu" << std::endl;
+        kmeans_cpu(data, out_data, out_labels, width, height, k, max_iter, color_space);
+    }
 }
 }  // namespace img2num
