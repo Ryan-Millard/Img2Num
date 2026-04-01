@@ -31,6 +31,18 @@ class GPU {
 
     GPU() = default;
 
+    bool validate_device() {
+        if (!device) return false;
+
+        // Try creating a trivial buffer to ensure the device is usable
+        wgpu::BufferDescriptor desc = {};
+        desc.size = 4;
+        desc.usage = wgpu::BufferUsage::CopyDst;
+
+        wgpu::Buffer test = device.CreateBuffer(&desc);
+        return test != nullptr;
+    }
+
    public:
     // makes a single global instance that other files can reference
     static GPU& getClassInstance() {
@@ -162,11 +174,6 @@ class GPU {
         device_ready = false;
 
         wgpu::DeviceDescriptor deviceDesc = {};
-        /*deviceDesc.SetUncapturedErrorCallback(
-            [](const wgpu::Device&, wgpu::ErrorType, wgpu::StringView msg) {
-                std::cerr << "WEBGPU ERROR: " << msg.data << std::endl;
-            });
-        */
         deviceDesc.SetUncapturedErrorCallback([](const wgpu::Device&, wgpu::ErrorType type,
                                                  wgpu::StringView msg) {
             // 1. Safely extract the string using the provided length
@@ -178,6 +185,14 @@ class GPU {
                       << " | Msg: " << err_str << "\n"
                       << std::endl;
         });
+        deviceDesc.SetDeviceLostCallback(
+            wgpu::CallbackMode::AllowProcessEvents,
+            [](const wgpu::Device&, wgpu::DeviceLostReason reason, wgpu::StringView msg) {
+                std::string err_msg = (msg.data && msg.length > 0) ? std::string(msg.data, msg.length)
+                                                                   : "Unknown device lost reason";
+                std::cerr << "[DEVICE LOST] Reason: " << static_cast<int>(reason)
+                          << " Msg: " << err_msg << std::endl;
+            });
 
         adapter.RequestDevice(
             &deviceDesc,
@@ -201,6 +216,11 @@ class GPU {
         }
 
         if (!device) {
+            std::cerr << "Fatal: Could not get WebGPU Device." << std::endl;
+            return;
+        }
+
+        if (!validate_device()) {
             std::cerr << "Fatal: Could not get WebGPU Device." << std::endl;
             return;
         }
