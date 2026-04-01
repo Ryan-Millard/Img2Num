@@ -28,41 +28,37 @@ jobs:
       ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
       ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME }}
 
-  deploy-react-app:
-    name: Deploy React App to GitHub Pages
-    needs: build-react-app
+  deploy:
+    name: Deploy site to GH Pages
+    needs: [build-react-app, build-docs]
     runs-on: ubuntu-latest
     steps:
       - name: Download React build artifacts
         uses: actions/download-artifact@v8
         with:
           name: react-build
-          path: ./react-dist
+          path: ./new-react-build
+
+      - name: Download Docs build artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: docs-build
+          path: ./new-docs-build
+
+      - name: Prepare built assets
+        run: |
+          mkdir -p ./new-build/info
+          # We could just mv, but cp keeps the structure and works like a log for debugging if necessary
+          cp -r ./new-react-build/* ./new-build
+          cp -r ./new-docs-build/* ./new-build/info
 
       - name: Deploy React App
         uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./react-dist
+          publish_dir: ./new-build
           user_name: "github-actions[bot]"
           user_email: "github-actions[bot]@users.noreply.github.com"
 
-  deploy-docs:
-    name: Deploy Documentation to GitHub Pages
-    needs: build-docs
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Docs build artifacts
-        uses: actions/download-artifact@v8
-        with:
-          name: docs-build
-          path: ./docs-dist
-
-      - name: Deploy Documentation
-        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs-dist
-          destination_dir: info
-          user_name: "github-actions[bot]"
-          user_email: "github-actions[bot]@users.noreply.github.com"
+      - name: Clean temp folders
+        run: rm -rf ./new-react-build ./new-docs-build
