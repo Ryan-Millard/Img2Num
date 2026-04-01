@@ -213,7 +213,7 @@ class GPU {
 #if defined(__EMSCRIPTEN__)
             emscripten_sleep(10);
 #else // Native
-            device.Tick();
+            if (device) { device.Tick(); }
 #endif
         }
 
