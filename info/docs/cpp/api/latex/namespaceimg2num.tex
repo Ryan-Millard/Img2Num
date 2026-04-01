@@ -1,0 +1,214 @@
+\doxysection{img2num Namespace Reference}
+\hypertarget{namespaceimg2num}{}\label{namespaceimg2num}\index{img2num@{img2num}}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class {\bfseries Error} \{ \newline
+{\bfseries OK} = 0
+, {\bfseries BAD\+\_\+\+ALLOC} = 1
+, {\bfseries INVALID\+\_\+\+ARGUMENT} = 2
+, {\bfseries RUNTIME} = 3
+, \newline
+{\bfseries UNKNOWN} = 4
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+Error \mbox{\hyperlink{namespaceimg2num_a9448b2dfdb823340970d0b0bb51fc4e3}{get\+\_\+last\+\_\+error}} ()
+\item 
+const std\+::string \mbox{\hyperlink{namespaceimg2num_a9dd188fc7d492dc81d7343ae06c0a3aa}{get\+\_\+last\+\_\+error\+\_\+message}} ()
+\item 
+\Hypertarget{namespaceimg2num_a70ec94a56c6cdb94a28ed67d6a32e575}\label{namespaceimg2num_a70ec94a56c6cdb94a28ed67d6a32e575} 
+void {\bfseries clear\+\_\+last\+\_\+error} ()
+\item 
+\Hypertarget{namespaceimg2num_a9f4cebf6c051efd2bcb6e6cc83382aaf}\label{namespaceimg2num_a9f4cebf6c051efd2bcb6e6cc83382aaf} 
+void {\bfseries set\+\_\+error} (Error code, const std\+::string message)
+\item 
+{\footnotesize template$<$typename Func , typename... Args$>$ }\\void \mbox{\hyperlink{namespaceimg2num_a7ffd5576f76ea580b3029c985129bfde}{clear\+\_\+last\+\_\+error\+\_\+and\+\_\+catch}} (Func \&\&exception\+\_\+prone\+\_\+func, Args \&\&... args)
+\item 
+void \mbox{\hyperlink{namespaceimg2num_a365bbbd4976477bdf515be023a73d63f}{gaussian\+\_\+blur\+\_\+fft}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}image, size\+\_\+t width, size\+\_\+t height, double sigma)
+\item 
+void \mbox{\hyperlink{namespaceimg2num_adcf00084d90ead66510dadc459d0990e}{invert\+\_\+image}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}ptr, int width, int height)
+\item 
+void \mbox{\hyperlink{namespaceimg2num_ad36f12c85016e28c7427c356783dea03}{threshold\+\_\+image}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}ptr, const int width, const int height, const int num\+\_\+thresholds)
+\item 
+void \mbox{\hyperlink{namespaceimg2num_a0b00cb7b162b17498d9c816ac5e38563}{black\+\_\+threshold\+\_\+image}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}ptr, const int width, const int height, const int num\+\_\+thresholds)
+\item 
+void \mbox{\hyperlink{namespaceimg2num_ae73563e9dd25a8dd2120fd519ef87abd}{kmeans}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, uint8\+\_\+t \texorpdfstring{$\ast$}{*}out\+\_\+data, int32\+\_\+t \texorpdfstring{$\ast$}{*}out\+\_\+labels, const int32\+\_\+t width, const int32\+\_\+t height, const int32\+\_\+t k, const int32\+\_\+t max\+\_\+iter, const uint8\+\_\+t color\+\_\+space)
+\item 
+void \mbox{\hyperlink{namespaceimg2num_a48d9a04a535198b5fc47905e359961ac}{bilateral\+\_\+filter}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}image, size\+\_\+t width, size\+\_\+t height, double sigma\+\_\+spatial, double sigma\+\_\+range, uint8\+\_\+t color\+\_\+space)
+\item 
+char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{namespaceimg2num_a5822dd3722c40a8d1cff368c6848c15d}{labels\+\_\+to\+\_\+svg}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, int32\+\_\+t \texorpdfstring{$\ast$}{*}labels, const int width, const int height, const int min\+\_\+area, const bool draw\+\_\+contour\+\_\+borders)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespaceimg2num_a4166893eb0cb1ab12933961746f68661}\label{namespaceimg2num_a4166893eb0cb1ab12933961746f68661} 
+thread\+\_\+local Error {\bfseries last\+\_\+error}
+\item 
+\Hypertarget{namespaceimg2num_aa1962427954e19635e27660bedfe13d0}\label{namespaceimg2num_aa1962427954e19635e27660bedfe13d0} 
+thread\+\_\+local std\+::string {\bfseries last\+\_\+error\+\_\+message}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyNote}{Note}
+All image buffers are assumed to be stored in row-\/major order, unless otherwise noted. 
+\end{DoxyNote}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{namespaceimg2num_acb23d3a1a65158fb81244be9f4b4fbb3}\label{namespaceimg2num_acb23d3a1a65158fb81244be9f4b4fbb3} 
+\index{img2num@{img2num}!Error@{Error}}
+\index{Error@{Error}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{Error}{Error}}
+{\footnotesize\ttfamily enum class img2num\+::\+Error\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Definition at line \mbox{\hyperlink{Error_8h_source_l00008}{8}} of file \mbox{\hyperlink{Error_8h_source}{Error.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00008\ \{\ OK\ =\ 0,\ BAD\_ALLOC\ =\ 1,\ INVALID\_ARGUMENT\ =\ 2,\ RUNTIME\ =\ 3,\ UNKNOWN\ =\ 4\ \};}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespaceimg2num_a48d9a04a535198b5fc47905e359961ac}\label{namespaceimg2num_a48d9a04a535198b5fc47905e359961ac} 
+\index{img2num@{img2num}!bilateral\_filter@{bilateral\_filter}}
+\index{bilateral\_filter@{bilateral\_filter}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{bilateral\_filter()}{bilateral\_filter()}}
+{\footnotesize\ttfamily void img2num\+::bilateral\+\_\+filter (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{image,  }\item[{size\+\_\+t}]{width,  }\item[{size\+\_\+t}]{height,  }\item[{double}]{sigma\+\_\+spatial,  }\item[{double}]{sigma\+\_\+range,  }\item[{uint8\+\_\+t}]{color\+\_\+space }\end{DoxyParamCaption})}
+
+
+
+
+
+\Hypertarget{namespaceimg2num_a0b00cb7b162b17498d9c816ac5e38563}\label{namespaceimg2num_a0b00cb7b162b17498d9c816ac5e38563} 
+\index{img2num@{img2num}!black\_threshold\_image@{black\_threshold\_image}}
+\index{black\_threshold\_image@{black\_threshold\_image}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{black\_threshold\_image()}{black\_threshold\_image()}}
+{\footnotesize\ttfamily void img2num\+::black\+\_\+threshold\+\_\+image (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{ptr,  }\item[{const int}]{width,  }\item[{const int}]{height,  }\item[{const int}]{num\+\_\+thresholds }\end{DoxyParamCaption})}
+
+
+
+
+
+\Hypertarget{namespaceimg2num_a7ffd5576f76ea580b3029c985129bfde}\label{namespaceimg2num_a7ffd5576f76ea580b3029c985129bfde} 
+\index{img2num@{img2num}!clear\_last\_error\_and\_catch@{clear\_last\_error\_and\_catch}}
+\index{clear\_last\_error\_and\_catch@{clear\_last\_error\_and\_catch}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{clear\_last\_error\_and\_catch()}{clear\_last\_error\_and\_catch()}}
+{\footnotesize\ttfamily template$<$typename Func , typename... Args$>$ \\
+void img2num\+::clear\+\_\+last\+\_\+error\+\_\+and\+\_\+catch (\begin{DoxyParamCaption}\item[{Func \&\&}]{exception\+\_\+prone\+\_\+func,  }\item[{Args \&\&...}]{args }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{Error_8h_source_l00025}{25}} of file \mbox{\hyperlink{Error_8h_source}{Error.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00026\ \ \ \ \ clear\_last\_error();\ \ \textcolor{comment}{//\ Clear\ any\ previous\ error\ state}}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ exception\_prone\_func(std::forward<Args>(args)...);\ \ \textcolor{comment}{//\ Call\ the\ passed\ function}}
+\DoxyCodeLine{00029\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ std::bad\_alloc\&\ e)\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ set\_error(Error::BAD\_ALLOC,\ e.what());}
+\DoxyCodeLine{00031\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ std::invalid\_argument\&\ e)\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ set\_error(Error::INVALID\_ARGUMENT,\ e.what());}
+\DoxyCodeLine{00033\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ std::runtime\_error\&\ e)\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ set\_error(Error::RUNTIME,\ e.what());}
+\DoxyCodeLine{00035\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ std::exception\&\ e)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ set\_error(Error::UNKNOWN,\ e.what());}
+\DoxyCodeLine{00037\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (...)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ set\_error(Error::UNKNOWN,\ \textcolor{stringliteral}{"{}Unknown\ exception\ occurred"{}});}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ \}}
+
+\end{DoxyCode}
+\Hypertarget{namespaceimg2num_a365bbbd4976477bdf515be023a73d63f}\label{namespaceimg2num_a365bbbd4976477bdf515be023a73d63f} 
+\index{img2num@{img2num}!gaussian\_blur\_fft@{gaussian\_blur\_fft}}
+\index{gaussian\_blur\_fft@{gaussian\_blur\_fft}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{gaussian\_blur\_fft()}{gaussian\_blur\_fft()}}
+{\footnotesize\ttfamily void img2num\+::gaussian\+\_\+blur\+\_\+fft (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{image,  }\item[{size\+\_\+t}]{width,  }\item[{size\+\_\+t}]{height,  }\item[{double}]{sigma }\end{DoxyParamCaption})}
+
+
+
+
+
+\Hypertarget{namespaceimg2num_a9448b2dfdb823340970d0b0bb51fc4e3}\label{namespaceimg2num_a9448b2dfdb823340970d0b0bb51fc4e3} 
+\index{img2num@{img2num}!get\_last\_error@{get\_last\_error}}
+\index{get\_last\_error@{get\_last\_error}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{get\_last\_error()}{get\_last\_error()}}
+{\footnotesize\ttfamily Error img2num\+::get\+\_\+last\+\_\+error (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Error_8h_source_l00013}{13}} of file \mbox{\hyperlink{Error_8h_source}{Error.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordflow}{return}\ last\_error;}
+\DoxyCodeLine{00015\ \}}
+
+\end{DoxyCode}
+\Hypertarget{namespaceimg2num_a9dd188fc7d492dc81d7343ae06c0a3aa}\label{namespaceimg2num_a9dd188fc7d492dc81d7343ae06c0a3aa} 
+\index{img2num@{img2num}!get\_last\_error\_message@{get\_last\_error\_message}}
+\index{get\_last\_error\_message@{get\_last\_error\_message}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{get\_last\_error\_message()}{get\_last\_error\_message()}}
+{\footnotesize\ttfamily const std\+::string img2num\+::get\+\_\+last\+\_\+error\+\_\+message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Error_8h_source_l00016}{16}} of file \mbox{\hyperlink{Error_8h_source}{Error.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordflow}{return}\ last\_error\_message;}
+\DoxyCodeLine{00018\ \}}
+
+\end{DoxyCode}
+\Hypertarget{namespaceimg2num_adcf00084d90ead66510dadc459d0990e}\label{namespaceimg2num_adcf00084d90ead66510dadc459d0990e} 
+\index{img2num@{img2num}!invert\_image@{invert\_image}}
+\index{invert\_image@{invert\_image}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{invert\_image()}{invert\_image()}}
+{\footnotesize\ttfamily void img2num\+::invert\+\_\+image (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{ptr,  }\item[{int}]{width,  }\item[{int}]{height }\end{DoxyParamCaption})}
+
+
+
+
+
+\Hypertarget{namespaceimg2num_ae73563e9dd25a8dd2120fd519ef87abd}\label{namespaceimg2num_ae73563e9dd25a8dd2120fd519ef87abd} 
+\index{img2num@{img2num}!kmeans@{kmeans}}
+\index{kmeans@{kmeans}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{kmeans()}{kmeans()}}
+{\footnotesize\ttfamily void img2num\+::kmeans (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{data,  }\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{out\+\_\+data,  }\item[{int32\+\_\+t \texorpdfstring{$\ast$}{*}}]{out\+\_\+labels,  }\item[{const int32\+\_\+t}]{width,  }\item[{const int32\+\_\+t}]{height,  }\item[{const int32\+\_\+t}]{k,  }\item[{const int32\+\_\+t}]{max\+\_\+iter,  }\item[{const uint8\+\_\+t}]{color\+\_\+space }\end{DoxyParamCaption})}
+
+
+
+
+
+\Hypertarget{namespaceimg2num_a5822dd3722c40a8d1cff368c6848c15d}\label{namespaceimg2num_a5822dd3722c40a8d1cff368c6848c15d} 
+\index{img2num@{img2num}!labels\_to\_svg@{labels\_to\_svg}}
+\index{labels\_to\_svg@{labels\_to\_svg}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{labels\_to\_svg()}{labels\_to\_svg()}}
+{\footnotesize\ttfamily char \texorpdfstring{$\ast$}{*} img2num\+::labels\+\_\+to\+\_\+svg (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{data,  }\item[{int32\+\_\+t \texorpdfstring{$\ast$}{*}}]{labels,  }\item[{const int}]{width,  }\item[{const int}]{height,  }\item[{const int}]{min\+\_\+area,  }\item[{const bool}]{draw\+\_\+contour\+\_\+borders }\end{DoxyParamCaption})}
+
+
+
+
+
+\Hypertarget{namespaceimg2num_ad36f12c85016e28c7427c356783dea03}\label{namespaceimg2num_ad36f12c85016e28c7427c356783dea03} 
+\index{img2num@{img2num}!threshold\_image@{threshold\_image}}
+\index{threshold\_image@{threshold\_image}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{threshold\_image()}{threshold\_image()}}
+{\footnotesize\ttfamily void img2num\+::threshold\+\_\+image (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{ptr,  }\item[{const int}]{width,  }\item[{const int}]{height,  }\item[{const int}]{num\+\_\+thresholds }\end{DoxyParamCaption})}
+
+
+
+
+

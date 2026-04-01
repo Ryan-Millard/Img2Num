@@ -1,0 +1,544 @@
+\doxysection{Image\+Lib\+::Image\texorpdfstring{$<$}{<} PixelT \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classImageLib_1_1Image}{}\label{classImageLib_1_1Image}\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+
+
+Collaboration diagram for Image\+Lib\+::Image\texorpdfstring{$<$}{<} PixelT \texorpdfstring{$>$}{>}\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=224pt]{classImageLib_1_1Image__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{classImageLib_1_1Image_a8215fba763ec3d779a6757d60ef47dac}{iter}} = typename std\+::vector$<$ PixelT $>$\+::iterator
+\item 
+using \mbox{\hyperlink{classImageLib_1_1Image_a2b0d6c0e1b0d86b0ce7bd1ab35c67607}{const\+\_\+iter}} = typename std\+::vector$<$ PixelT $>$\+::const\+\_\+iterator
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classImageLib_1_1Image_a81c50159e3d311f359f8d77ab76f1096}{Image}} (int width, int height, PixelT fill=PixelT())
+\item 
+{\footnotesize template$<$typename ConverterT $>$ }\\void \mbox{\hyperlink{classImageLib_1_1Image_a3b12bc1ac29c945eacc3cebc79ad1e86}{load\+From\+Buffer}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}buffer, int width, int height, \mbox{\hyperlink{structImageLib_1_1PixelConverter}{Pixel\+Converter}}$<$ ConverterT $>$ converter)
+\item 
+void \mbox{\hyperlink{classImageLib_1_1Image_a9e589c54da207dee8b0ec95ef48d07cc}{fill}} (const PixelT \&color)
+\item 
+iter \mbox{\hyperlink{classImageLib_1_1Image_a4c6e254e4f0a6725e5a737aa7bcd247b}{begin}} ()
+\item 
+iter \mbox{\hyperlink{classImageLib_1_1Image_aa50c261f696f7fc1ca36ae278691de6f}{end}} ()
+\item 
+const\+\_\+iter \mbox{\hyperlink{classImageLib_1_1Image_ab1d1799443e6cbb60444f4a8de58e814}{begin}} () const
+\item 
+const\+\_\+iter \mbox{\hyperlink{classImageLib_1_1Image_afc8f87874b4a2c488f8c664885d61658}{end}} () const
+\item 
+int \mbox{\hyperlink{classImageLib_1_1Image_aee1d2442bf2d7f5cfc6c5bd61dabf8d3}{get\+Width}} () const
+\item 
+int \mbox{\hyperlink{classImageLib_1_1Image_aacc12689a567af38957b99156861f87b}{get\+Height}} () const
+\item 
+int \mbox{\hyperlink{classImageLib_1_1Image_ad0e1573cee45769acb01a1c1d52af88b}{get\+Pixel\+Count}} () const
+\item 
+int \mbox{\hyperlink{classImageLib_1_1Image_a829b0384543379f0b9cb0b3025ac26bf}{get\+Size}} () const
+\item 
+const std\+::vector$<$ PixelT $>$ \& \mbox{\hyperlink{classImageLib_1_1Image_aff37d5fbba98ff8e033d4d818e28edfa}{get\+Data}} () const
+\item 
+const PixelT \& \mbox{\hyperlink{classImageLib_1_1Image_a1957f40b318ce6e943d22383d31b4aea}{get\+Pixel}} (int x, int y) const
+\item 
+PixelT \& \mbox{\hyperlink{classImageLib_1_1Image_a355a6fdcd67580162eb2f3701e465bc2}{get\+Pixel}} (int x, int y)
+\item 
+void \mbox{\hyperlink{classImageLib_1_1Image_a835be9568d55d9c629a9c9803d619e46}{set\+Pixel}} (int x, int y, const PixelT \&p)
+\item 
+PixelT \& \mbox{\hyperlink{classImageLib_1_1Image_aaac89b21f003f739cadeffb1d63902ba}{operator\mbox{[}$\,$\mbox{]}}} (int idx)
+\item 
+const PixelT \& \mbox{\hyperlink{classImageLib_1_1Image_a0f7c45c3747ec5bf72fa2798a18ccfa4}{operator\mbox{[}$\,$\mbox{]}}} (int idx) const
+\item 
+PixelT \& \mbox{\hyperlink{classImageLib_1_1Image_aba383ae8709e412aec35422157d29691}{operator()}} (int x, int y)
+\item 
+const PixelT \& \mbox{\hyperlink{classImageLib_1_1Image_a092381312fef0cedeb043f425bdd7932}{operator()}} (int x, int y) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classImageLib_1_1Image_ae911d4bb737e1f896b70a127086f2d77}{index}} (int x, int y) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ PixelT $>$ \mbox{\hyperlink{classImageLib_1_1Image_a00e64fe2564655a0eb901eed8b024cde}{data}}
+\item 
+int \mbox{\hyperlink{classImageLib_1_1Image_aacc54cbdf5b20190e5a2739979dd917e}{width}}
+\item 
+int \mbox{\hyperlink{classImageLib_1_1Image_ab3cbfc4a8a0e2096a700a1ee3f66a46d}{height}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename PixelT$>$\newline
+class Image\+Lib\+::\+Image$<$ Pixel\+T $>$}
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00014}{14}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{classImageLib_1_1Image_a2b0d6c0e1b0d86b0ce7bd1ab35c67607}\label{classImageLib_1_1Image_a2b0d6c0e1b0d86b0ce7bd1ab35c67607} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!const\_iter@{const\_iter}}
+\index{const\_iter@{const\_iter}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{const\_iter}{const\_iter}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+using \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::const\+\_\+iter =  typename std\+::vector$<$PixelT$>$\+::const\+\_\+iterator}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00052}{52}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+\Hypertarget{classImageLib_1_1Image_a8215fba763ec3d779a6757d60ef47dac}\label{classImageLib_1_1Image_a8215fba763ec3d779a6757d60ef47dac} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!iter@{iter}}
+\index{iter@{iter}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{iter}{iter}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+using \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::iter =  typename std\+::vector$<$PixelT$>$\+::iterator}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00045}{45}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classImageLib_1_1Image_a0b40c28c3857adc05261e246913c0cdc}\label{classImageLib_1_1Image_a0b40c28c3857adc05261e246913c0cdc} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!Image@{Image}}
+\index{Image@{Image}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{Image()}{Image()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+\mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::\+Image (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00019}{19}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ :\ width(0),\ height(0)\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_a81c50159e3d311f359f8d77ab76f1096}\label{classImageLib_1_1Image_a81c50159e3d311f359f8d77ab76f1096} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!Image@{Image}}
+\index{Image@{Image}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{Image()}{Image()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+\mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::\+Image (\begin{DoxyParamCaption}\item[{int}]{width,  }\item[{int}]{height,  }\item[{PixelT}]{fill = {\ttfamily PixelT()} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00021}{21}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ :\ width(width),\ height(height),\ data(width\ *\ height,\ fill)\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classImageLib_1_1Image_a4c6e254e4f0a6725e5a737aa7bcd247b}\label{classImageLib_1_1Image_a4c6e254e4f0a6725e5a737aa7bcd247b} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!begin@{begin}}
+\index{begin@{begin}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{begin()}{begin()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+iter \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00046}{46}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data.begin();}
+\DoxyCodeLine{00048\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_ab1d1799443e6cbb60444f4a8de58e814}\label{classImageLib_1_1Image_ab1d1799443e6cbb60444f4a8de58e814} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!begin@{begin}}
+\index{begin@{begin}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{begin()}{begin()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+const\+\_\+iter \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00053}{53}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data.begin();}
+\DoxyCodeLine{00055\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_aa50c261f696f7fc1ca36ae278691de6f}\label{classImageLib_1_1Image_aa50c261f696f7fc1ca36ae278691de6f} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!end@{end}}
+\index{end@{end}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{end()}{end()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+iter \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00049}{49}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data.end();}
+\DoxyCodeLine{00051\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_afc8f87874b4a2c488f8c664885d61658}\label{classImageLib_1_1Image_afc8f87874b4a2c488f8c664885d61658} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!end@{end}}
+\index{end@{end}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{end()}{end()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+const\+\_\+iter \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00056}{56}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data.end();}
+\DoxyCodeLine{00058\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_a9e589c54da207dee8b0ec95ef48d07cc}\label{classImageLib_1_1Image_a9e589c54da207dee8b0ec95ef48d07cc} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!fill@{fill}}
+\index{fill@{fill}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{fill()}{fill()}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+void \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::fill (\begin{DoxyParamCaption}\item[{const PixelT \&}]{color }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00041}{41}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ std::fill(data.begin(),\ data.end(),\ color);}
+\DoxyCodeLine{00043\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_aff37d5fbba98ff8e033d4d818e28edfa}\label{classImageLib_1_1Image_aff37d5fbba98ff8e033d4d818e28edfa} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!getData@{getData}}
+\index{getData@{getData}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{getData()}{getData()}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+const std\+::vector$<$ PixelT $>$ \& \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::get\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00073}{73}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data;}
+\DoxyCodeLine{00075\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_aacc12689a567af38957b99156861f87b}\label{classImageLib_1_1Image_aacc12689a567af38957b99156861f87b} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!getHeight@{getHeight}}
+\index{getHeight@{getHeight}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{getHeight()}{getHeight()}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+int \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::get\+Height (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00063}{63}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ height;}
+\DoxyCodeLine{00065\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_a355a6fdcd67580162eb2f3701e465bc2}\label{classImageLib_1_1Image_a355a6fdcd67580162eb2f3701e465bc2} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!getPixel@{getPixel}}
+\index{getPixel@{getPixel}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{getPixel()}{getPixel()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+PixelT \& \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::get\+Pixel (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00080}{80}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data[index(x,\ y)];}
+\DoxyCodeLine{00082\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_a1957f40b318ce6e943d22383d31b4aea}\label{classImageLib_1_1Image_a1957f40b318ce6e943d22383d31b4aea} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!getPixel@{getPixel}}
+\index{getPixel@{getPixel}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{getPixel()}{getPixel()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+const PixelT \& \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::get\+Pixel (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00077}{77}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data[index(x,\ y)];}
+\DoxyCodeLine{00079\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_ad0e1573cee45769acb01a1c1d52af88b}\label{classImageLib_1_1Image_ad0e1573cee45769acb01a1c1d52af88b} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!getPixelCount@{getPixelCount}}
+\index{getPixelCount@{getPixelCount}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{getPixelCount()}{getPixelCount()}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+int \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::get\+Pixel\+Count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00066}{66}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ width\ *\ height;}
+\DoxyCodeLine{00068\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_a829b0384543379f0b9cb0b3025ac26bf}\label{classImageLib_1_1Image_a829b0384543379f0b9cb0b3025ac26bf} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!getSize@{getSize}}
+\index{getSize@{getSize}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{getSize()}{getSize()}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+int \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::get\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00069}{69}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ getPixelCount();}
+\DoxyCodeLine{00071\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_aee1d2442bf2d7f5cfc6c5bd61dabf8d3}\label{classImageLib_1_1Image_aee1d2442bf2d7f5cfc6c5bd61dabf8d3} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!getWidth@{getWidth}}
+\index{getWidth@{getWidth}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{getWidth()}{getWidth()}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+int \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::get\+Width (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00060}{60}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ width;}
+\DoxyCodeLine{00062\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_ae911d4bb737e1f896b70a127086f2d77}\label{classImageLib_1_1Image_ae911d4bb737e1f896b70a127086f2d77} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!index@{index}}
+\index{index@{index}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{index()}{index()}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+int \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::index (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00108}{108}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (x\ <\ 0\ ||\ y\ <\ 0\ ||\ x\ >=\ width\ ||\ y\ >=\ height)}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::out\_of\_range(\textcolor{stringliteral}{"{}Pixel\ coordinates\ out\ of\ bounds"{}});}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ y\ *\ width\ +\ x;}
+\DoxyCodeLine{00112\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_a3b12bc1ac29c945eacc3cebc79ad1e86}\label{classImageLib_1_1Image_a3b12bc1ac29c945eacc3cebc79ad1e86} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!loadFromBuffer@{loadFromBuffer}}
+\index{loadFromBuffer@{loadFromBuffer}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{loadFromBuffer()}{loadFromBuffer()}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+template$<$typename ConverterT $>$ \\
+void \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::load\+From\+Buffer (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{buffer,  }\item[{int}]{width,  }\item[{int}]{height,  }\item[{\mbox{\hyperlink{structImageLib_1_1PixelConverter}{Pixel\+Converter}}$<$ ConverterT $>$}]{converter }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00026}{26}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ converter.convert\ must\ return\ exactly\ PixelT}}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_same\_v<\textcolor{keyword}{decltype}(converter.convert((\textcolor{keyword}{const}\ uint8\_t\ *)\textcolor{keyword}{nullptr})),\ PixelT>,}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Converter\ return\ type\ must\ match\ PixelT"{}});}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ this-\/>width\ =\ width;}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ this-\/>height\ =\ height;}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ pixelCount\ =\ getPixelCount();}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ data.resize(pixelCount);}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ pixelCount;\ ++i)\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ data[i]\ =\ converter.convert(\&buffer[i\ *\ converter.bytesPerPixel]);}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_aba383ae8709e412aec35422157d29691}\label{classImageLib_1_1Image_aba383ae8709e412aec35422157d29691} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!operator()@{operator()}}
+\index{operator()@{operator()}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+PixelT \& \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::operator() (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00097}{97}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data.at(index(x,\ y));}
+\DoxyCodeLine{00099\ \ \ \ \ \}\ \ \textcolor{comment}{//\ set}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_a092381312fef0cedeb043f425bdd7932}\label{classImageLib_1_1Image_a092381312fef0cedeb043f425bdd7932} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!operator()@{operator()}}
+\index{operator()@{operator()}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+const PixelT \& \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::operator() (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00100}{100}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data.at(index(x,\ y));}
+\DoxyCodeLine{00102\ \ \ \ \ \}\ \ \textcolor{comment}{//\ get}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_aaac89b21f003f739cadeffb1d63902ba}\label{classImageLib_1_1Image_aaac89b21f003f739cadeffb1d63902ba} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+PixelT \& \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{int}]{idx }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00089}{89}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data.at(idx);}
+\DoxyCodeLine{00091\ \ \ \ \ \}\ \ \textcolor{comment}{//\ set}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_a0f7c45c3747ec5bf72fa2798a18ccfa4}\label{classImageLib_1_1Image_a0f7c45c3747ec5bf72fa2798a18ccfa4} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+const PixelT \& \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{int}]{idx }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00092}{92}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data.at(idx);}
+\DoxyCodeLine{00094\ \ \ \ \ \}\ \ \textcolor{comment}{//\ get}}
+
+\end{DoxyCode}
+\Hypertarget{classImageLib_1_1Image_a835be9568d55d9c629a9c9803d619e46}\label{classImageLib_1_1Image_a835be9568d55d9c629a9c9803d619e46} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!setPixel@{setPixel}}
+\index{setPixel@{setPixel}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{setPixel()}{setPixel()}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+void \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::set\+Pixel (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{const PixelT \&}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00084}{84}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ data[index(x,\ y)]\ =\ p;}
+\DoxyCodeLine{00086\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classImageLib_1_1Image_a00e64fe2564655a0eb901eed8b024cde}\label{classImageLib_1_1Image_a00e64fe2564655a0eb901eed8b024cde} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!data@{data}}
+\index{data@{data}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+std\+::vector$<$PixelT$>$ \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::data\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00105}{105}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+\Hypertarget{classImageLib_1_1Image_ab3cbfc4a8a0e2096a700a1ee3f66a46d}\label{classImageLib_1_1Image_ab3cbfc4a8a0e2096a700a1ee3f66a46d} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!height@{height}}
+\index{height@{height}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{height}{height}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+int \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::height\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00106}{106}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+\Hypertarget{classImageLib_1_1Image_aacc54cbdf5b20190e5a2739979dd917e}\label{classImageLib_1_1Image_aacc54cbdf5b20190e5a2739979dd917e} 
+\index{ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}!width@{width}}
+\index{width@{width}!ImageLib::Image$<$ PixelT $>$@{ImageLib::Image$<$ PixelT $>$}}
+\doxysubsubsection{\texorpdfstring{width}{width}}
+{\footnotesize\ttfamily template$<$typename PixelT $>$ \\
+int \mbox{\hyperlink{classImageLib_1_1Image}{Image\+Lib\+::\+Image}}$<$ PixelT $>$\+::width\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{Image_8h_source_l00106}{106}} of file \mbox{\hyperlink{Image_8h_source}{Image.\+h}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/internal/Image.\+h\end{DoxyCompactItemize}

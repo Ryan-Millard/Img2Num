@@ -1,0 +1,47 @@
+\doxysection{LABAPixel.\+h}
+\hypertarget{LABAPixel_8h_source}{}\label{LABAPixel_8h_source}\index{include/internal/LABAPixel.h@{include/internal/LABAPixel.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00001}00001\ \textcolor{preprocessor}{\#ifndef\ LABAPixel\_H}}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00002}00002\ \textcolor{preprocessor}{\#define\ LABAPixel\_H}}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00003}00003\ }
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00004}00004\ \textcolor{preprocessor}{\#include\ "{}internal/LABPixel.h"{}}}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00006}00006\ \textcolor{keyword}{namespace\ }ImageLib\ \{}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00007}00007\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ NumberT>}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00008}\mbox{\hyperlink{structImageLib_1_1LABAPixel}{00008}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structImageLib_1_1LABAPixel}{LABAPixel}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structImageLib_1_1LABPixel}{ImageLib::LABPixel}}<NumberT>\ \{}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00009}00009\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/\ Members\ -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00010}00010\ \ \ \ \ NumberT\ alpha;}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00012}00012\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/\ Constructors\ -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00013}00013\ \ \ \ \ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structImageLib_1_1LABAPixel}{LABAPixel}}(NumberT\ l\ =\ 0,\ NumberT\ a\ =\ 0,\ NumberT\ b\ =\ 0,\ NumberT\ alpha\ =\ 255)}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00014}00014\ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{structImageLib_1_1LABPixel}{LABPixel<NumberT>}}(l,\ a,\ b),\ alpha(alpha)\ \{}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00015}00015\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00017}00017\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/\ Modifiers\ -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00018}00018\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{structImageLib_1_1LABAPixel}{LABAPixel}}\ \&other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00019}00019\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structImageLib_1_1LABPixel}{LABPixel<NumberT>::operator==}}(other)\ \&\&\ alpha\ ==\ other.alpha;}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00020}00020\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00021}00021\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ operator!=(\textcolor{keyword}{const}\ \mbox{\hyperlink{structImageLib_1_1LABAPixel}{LABAPixel}}\ \&other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00022}00022\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !(*\textcolor{keyword}{this}\ ==\ other);}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00023}00023\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00025}00025\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/\ Utilities\ -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00026}00026\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ setGray(NumberT\ gray,\ NumberT\ alpha\ =\ 255)\ \{}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00027}00027\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageLib_1_1LABPixel}{LABPixel<NumberT>::setGray}}(gray);}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00028}00028\ \ \ \ \ \ \ \ \ this-\/>alpha\ =\ alpha;}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00029}00029\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00031}00031\ \}\ \_\_attribute\_\_((packed));}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00033}00033\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ NumberT>}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00034}00034\ std::ostream\ \&operator<<(std::ostream\ \&out,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structImageLib_1_1LABAPixel}{ImageLib::LABAPixel<NumberT>}}\ \&pixel)\ \{}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00035}00035\ \ \ \ \ out\ <<\ \textcolor{stringliteral}{"{}(\ "{}}\ <<\ pixel.l\ <<\ \textcolor{stringliteral}{"{},"{}}\ <<\ pixel.a\ <<\ \textcolor{stringliteral}{"{},"{}}\ <<\ pixel.b\ <<\ \textcolor{stringliteral}{"{},"{}}\ <<\ pixel.alpha\ <<\ \textcolor{stringliteral}{"{}\ )"{}};}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00036}00036\ \ \ \ \ \textcolor{keywordflow}{return}\ out;}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00037}00037\ \}}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00039}00039\ \}\ \ \textcolor{comment}{//\ namespace\ ImageLib}}
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{LABAPixel_8h_source_l00041}00041\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ LABAPixel\_H}}
+
+\end{DoxyCode}
