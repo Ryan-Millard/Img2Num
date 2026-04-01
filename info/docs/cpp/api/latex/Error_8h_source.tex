@@ -1,0 +1,49 @@
+\doxysection{Error.\+h}
+\hypertarget{Error_8h_source}{}\label{Error_8h_source}\index{include/img2num/Error.h@{include/img2num/Error.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00001}00001\ \textcolor{preprocessor}{\#ifndef\ IMG2NUM\_ERROR\_H}}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00002}00002\ \textcolor{preprocessor}{\#define\ IMG2NUM\_ERROR\_H}}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00003}00003\ }
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00004}00004\ \textcolor{preprocessor}{\#include\ <stdexcept>}}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00005}00005\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00007}\mbox{\hyperlink{namespaceimg2num}{00007}}\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceimg2num}{img2num}}\ \{}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00008}00008\ \textcolor{keyword}{enum\ class}\ Error\ \{\ OK\ =\ 0,\ BAD\_ALLOC\ =\ 1,\ INVALID\_ARGUMENT\ =\ 2,\ RUNTIME\ =\ 3,\ UNKNOWN\ =\ 4\ \};}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00010}00010\ \textcolor{keyword}{extern}\ \textcolor{keyword}{thread\_local}\ Error\ last\_error;}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00011}00011\ \textcolor{keyword}{extern}\ \textcolor{keyword}{thread\_local}\ std::string\ last\_error\_message;}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00012}00012\ }
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00013}00013\ \textcolor{keyword}{inline}\ Error\ get\_last\_error()\ \{}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00014}00014\ \ \ \ \ \textcolor{keywordflow}{return}\ last\_error;}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00015}00015\ \}}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00016}00016\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ std::string\ get\_last\_error\_message()\ \{}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00017}00017\ \ \ \ \ \textcolor{keywordflow}{return}\ last\_error\_message;}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00018}00018\ \}}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00019}00019\ \textcolor{keywordtype}{void}\ clear\_last\_error();}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00021}00021\ \textcolor{keywordtype}{void}\ set\_error(Error\ code,\ \textcolor{keyword}{const}\ std::string\ message);}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00023}00023\ \textcolor{comment}{//\ Template\ function\ for\ catching\ and\ handling\ exceptions}}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00024}00024\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Func,\ \textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00025}00025\ \textcolor{keywordtype}{void}\ clear\_last\_error\_and\_catch(Func\&\&\ exception\_prone\_func,\ Args\&\&...\ args)\ \{}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00026}00026\ \ \ \ \ clear\_last\_error();\ \ \textcolor{comment}{//\ Clear\ any\ previous\ error\ state}}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00027}00027\ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00028}00028\ \ \ \ \ \ \ \ \ exception\_prone\_func(std::forward<Args>(args)...);\ \ \textcolor{comment}{//\ Call\ the\ passed\ function}}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00029}00029\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ std::bad\_alloc\&\ e)\ \{}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00030}00030\ \ \ \ \ \ \ \ \ set\_error(Error::BAD\_ALLOC,\ e.what());}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00031}00031\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ std::invalid\_argument\&\ e)\ \{}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00032}00032\ \ \ \ \ \ \ \ \ set\_error(Error::INVALID\_ARGUMENT,\ e.what());}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00033}00033\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ std::runtime\_error\&\ e)\ \{}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00034}00034\ \ \ \ \ \ \ \ \ set\_error(Error::RUNTIME,\ e.what());}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00035}00035\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ std::exception\&\ e)\ \{}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00036}00036\ \ \ \ \ \ \ \ \ set\_error(Error::UNKNOWN,\ e.what());}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00037}00037\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (...)\ \{}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00038}00038\ \ \ \ \ \ \ \ \ set\_error(Error::UNKNOWN,\ \textcolor{stringliteral}{"{}Unknown\ exception\ occurred"{}});}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00039}00039\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00040}00040\ \}}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00041}00041\ \}\ \ \textcolor{comment}{//\ namespace\ img2num}}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00043}00043\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ IMG2NUM\_ERROR\_H}}
+
+\end{DoxyCode}

@@ -1,0 +1,627 @@
+\doxysection{Node Class Reference}
+\hypertarget{classNode}{}\label{classNode}\index{Node@{Node}}
+
+
+Collaboration diagram for Node\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classNode__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classNode_a1b0f3a77ad1f417f4bdeb09e480aa45e}{Node}} (int32\+\_\+t id, std\+::unique\+\_\+ptr$<$ std\+::vector$<$ \mbox{\hyperlink{structRGBXY}{RGBXY}} $>$ $>$ \&pixels)
+\item 
+\mbox{\hyperlink{structXY}{XY}} \mbox{\hyperlink{classNode_a78606bde7a4aebcc0ee6a44cfb910b41}{centroid}} () const
+\item 
+\mbox{\hyperlink{structImageLib_1_1RGBPixel}{Image\+Lib\+::\+RGBPixel}}$<$ uint8\+\_\+t $>$ \mbox{\hyperlink{classNode_a4b41d57ada02261f3d6adf1297439883}{color}} () const
+\item 
+std\+::array$<$ int32\+\_\+t, 4 $>$ \mbox{\hyperlink{classNode_a1b03dd34e2ac098d361fa42be0ad0df2}{bounding\+\_\+box\+\_\+xywh}} () const
+\item 
+std\+::array$<$ int, 4 $>$ \mbox{\hyperlink{classNode_ac5c6533ec81dddd711dcdc276e25fc23}{create\+\_\+binary\+\_\+image}} (std\+::vector$<$ uint8\+\_\+t $>$ \&binary) const
+\item 
+void \mbox{\hyperlink{classNode_a6759fac0e9a0670a86d11eb784595f8a}{clear\+\_\+contour}} ()
+\item 
+void \mbox{\hyperlink{classNode_a41923e52e28429019fbd3e608e124714}{compute\+\_\+contour}} ()
+\item 
+int32\+\_\+t \mbox{\hyperlink{classNode_ac778ddfbe8b17883170d86cba5ed63d3}{id}} () const
+\item 
+size\+\_\+t \mbox{\hyperlink{classNode_ad225f26654b5fa72e806b1b3a9022d35}{area}} () const
+\item 
+const std\+::set$<$ Node\+\_\+ptr $>$ \& \mbox{\hyperlink{classNode_ae6f75d8b66072c86bc57b4bba5a697ad}{edges}} () const
+\item 
+size\+\_\+t \mbox{\hyperlink{classNode_a8d8f2c2af03a189148f367d61ff03a2d}{num\+\_\+edges}} () const
+\item 
+const std\+::vector$<$ \mbox{\hyperlink{structRGBXY}{RGBXY}} $>$ \& \mbox{\hyperlink{classNode_ae189e4d4b4171b996749aad8a183c409}{get\+\_\+pixels}} () const
+\item 
+\mbox{\hyperlink{structColoredContours}{Colored\+Contours}} \& \mbox{\hyperlink{classNode_a181b633c22d09bea5f54b126ab41e053}{get\+\_\+contours}} ()
+\item 
+void \mbox{\hyperlink{classNode_a77464ecba532719e4302ed3461fc4f35}{add\+\_\+pixels}} (const std\+::vector$<$ \mbox{\hyperlink{structRGBXY}{RGBXY}} $>$ \&new\+\_\+pixels)
+\item 
+void \mbox{\hyperlink{classNode_ac9d4cb213b3ffc955b9f1bee846a7cd7}{add\+\_\+edge\+\_\+pixel}} (const \mbox{\hyperlink{structXY}{XY}} edge\+\_\+pixel)
+\item 
+void \mbox{\hyperlink{classNode_ab13207a55df073dd5b25c3fee1be94c0}{clear\+\_\+edge\+\_\+pixels}} ()
+\item 
+void \mbox{\hyperlink{classNode_a6c1f7c18651cdea9e28832ac6bde6e4c}{clear\+\_\+all}} ()
+\item 
+void \mbox{\hyperlink{classNode_aaa8507ca227d8fb34f02e8002f771053}{add\+\_\+edge}} (const Node\+\_\+ptr \&node)
+\item 
+void \mbox{\hyperlink{classNode_afeb853a2c74316010c4850cbde459660}{remove\+\_\+edge}} (const Node\+\_\+ptr \&node)
+\item 
+void \mbox{\hyperlink{classNode_aba1ec085d600582bae407077bd2b01c8}{remove\+\_\+all\+\_\+edges}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structColoredContours}{Colored\+Contours}} \mbox{\hyperlink{classNode_a209f24302cf5e19142ebd450e6a5861b}{m\+\_\+contours}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int32\+\_\+t \mbox{\hyperlink{classNode_ae290d5afb95c73d6f7fe1fef4a57d476}{m\+\_\+id}}
+\item 
+std\+::unique\+\_\+ptr$<$ std\+::vector$<$ \mbox{\hyperlink{structRGBXY}{RGBXY}} $>$ $>$ \mbox{\hyperlink{classNode_a2c8e15307d10a4e2bde9ec6a6e21ae67}{m\+\_\+pixels}}
+\item 
+std\+::set$<$ Node\+\_\+ptr $>$ \mbox{\hyperlink{classNode_abb919cd0f676365dc222d284dde9c6ef}{m\+\_\+edges}} \{\}
+\item 
+std\+::set$<$ \mbox{\hyperlink{structXY}{XY}} $>$ \mbox{\hyperlink{classNode_a5d00228b34cbe37be40ebc0053f4b309}{m\+\_\+edge\+\_\+pixels}} \{\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{node_8h_source_l00065}{65}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classNode_a1b0f3a77ad1f417f4bdeb09e480aa45e}\label{classNode_a1b0f3a77ad1f417f4bdeb09e480aa45e} 
+\index{Node@{Node}!Node@{Node}}
+\index{Node@{Node}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{Node()}{Node()}}
+{\footnotesize\ttfamily Node\+::\+Node (\begin{DoxyParamCaption}\item[{int32\+\_\+t}]{id,  }\item[{std\+::unique\+\_\+ptr$<$ std\+::vector$<$ \mbox{\hyperlink{structRGBXY}{RGBXY}} $>$ $>$ \&}]{pixels }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{node_8h_source_l00076}{76}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ :\ m\_id(\textcolor{keywordtype}{id}),\ m\_pixels(std::move(pixels))\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classNode_aaa8507ca227d8fb34f02e8002f771053}\label{classNode_aaa8507ca227d8fb34f02e8002f771053} 
+\index{Node@{Node}!add\_edge@{add\_edge}}
+\index{add\_edge@{add\_edge}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{add\_edge()}{add\_edge()}}
+{\footnotesize\ttfamily void Node\+::add\+\_\+edge (\begin{DoxyParamCaption}\item[{const Node\+\_\+ptr \&}]{node }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{node_8h_source_l00119}{119}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ m\_edges.insert(node);}
+\DoxyCodeLine{00121\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classNode_ac9d4cb213b3ffc955b9f1bee846a7cd7}\label{classNode_ac9d4cb213b3ffc955b9f1bee846a7cd7} 
+\index{Node@{Node}!add\_edge\_pixel@{add\_edge\_pixel}}
+\index{add\_edge\_pixel@{add\_edge\_pixel}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{add\_edge\_pixel()}{add\_edge\_pixel()}}
+{\footnotesize\ttfamily void Node\+::add\+\_\+edge\+\_\+pixel (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structXY}{XY}}}]{edge\+\_\+pixel }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{node_8cpp_source_l00170}{170}} of file \mbox{\hyperlink{node_8cpp_source}{node.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00171\ \ \ \ \ m\_edge\_pixels.insert(edge\_pixel);}
+\DoxyCodeLine{00172\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classNode_a77464ecba532719e4302ed3461fc4f35}\label{classNode_a77464ecba532719e4302ed3461fc4f35} 
+\index{Node@{Node}!add\_pixels@{add\_pixels}}
+\index{add\_pixels@{add\_pixels}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{add\_pixels()}{add\_pixels()}}
+{\footnotesize\ttfamily void Node\+::add\+\_\+pixels (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{structRGBXY}{RGBXY}} $>$ \&}]{new\+\_\+pixels }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{node_8cpp_source_l00164}{164}} of file \mbox{\hyperlink{node_8cpp_source}{node.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&c\ :\ new\_pixels)\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ m\_pixels-\/>push\_back(c);}
+\DoxyCodeLine{00167\ \ \ \ \ \}}
+\DoxyCodeLine{00168\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classNode_ad225f26654b5fa72e806b1b3a9022d35}\label{classNode_ad225f26654b5fa72e806b1b3a9022d35} 
+\index{Node@{Node}!area@{area}}
+\index{area@{area}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{area()}{area()}}
+{\footnotesize\ttfamily size\+\_\+t Node\+::area (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{node_8h_source_l00096}{96}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_pixels-\/>size();}
+\DoxyCodeLine{00098\ \ \ \ \ \};}
+
+\end{DoxyCode}
+\Hypertarget{classNode_a1b03dd34e2ac098d361fa42be0ad0df2}\label{classNode_a1b03dd34e2ac098d361fa42be0ad0df2} 
+\index{Node@{Node}!bounding\_box\_xywh@{bounding\_box\_xywh}}
+\index{bounding\_box\_xywh@{bounding\_box\_xywh}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{bounding\_box\_xywh()}{bounding\_box\_xywh()}}
+{\footnotesize\ttfamily std\+::array$<$ int32\+\_\+t, 4 $>$ Node\+::bounding\+\_\+box\+\_\+xywh (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line \mbox{\hyperlink{node_8cpp_source_l00054}{54}} of file \mbox{\hyperlink{node_8cpp_source}{node.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_pixels-\/>empty())\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{0,\ 0,\ 0,\ 0\};}
+\DoxyCodeLine{00057\ \ \ \ \ \}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ int32\_t\ x\_min\{INT\_MAX\};}
+\DoxyCodeLine{00060\ \ \ \ \ int32\_t\ y\_min\{INT\_MAX\};}
+\DoxyCodeLine{00061\ \ \ \ \ int32\_t\ x\_max\{0\};}
+\DoxyCodeLine{00062\ \ \ \ \ int32\_t\ y\_max\{0\};}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&[\_,\ p]\ :\ *m\_pixels)\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p.x\ <\ x\_min)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ x\_min\ =\ p.x;}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p.x\ >\ x\_max)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ x\_max\ =\ p.x;}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p.y\ <\ y\_min)\ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ y\_min\ =\ p.y;}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p.y\ >\ y\_max)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ y\_max\ =\ p.y;}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \ \ \}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&p\ :\ m\_edge\_pixels)\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p.x\ <\ x\_min)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ x\_min\ =\ p.x;}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p.x\ >\ x\_max)\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ x\_max\ =\ p.x;}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p.y\ <\ y\_min)\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ y\_min\ =\ p.y;}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p.y\ >\ y\_max)\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ y\_max\ =\ p.y;}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \ \ \}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ w\{x\_max\ -\/\ x\_min\ +\ 1\};}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ h\{y\_max\ -\/\ y\_min\ +\ 1\};}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{return}\ std::array<int32\_t,\ 4>\{x\_min,\ y\_min,\ w,\ h\};}
+\DoxyCodeLine{00097\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classNode_a78606bde7a4aebcc0ee6a44cfb910b41}\label{classNode_a78606bde7a4aebcc0ee6a44cfb910b41} 
+\index{Node@{Node}!centroid@{centroid}}
+\index{centroid@{centroid}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{centroid()}{centroid()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structXY}{XY}} Node\+::centroid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line \mbox{\hyperlink{node_8cpp_source_l00009}{9}} of file \mbox{\hyperlink{node_8cpp_source}{node.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00009\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00010\ \ \ \ \ \mbox{\hyperlink{structXY}{XY}}\ centroid\{0,\ 0\};}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ m\_pixels\_size\{\textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(m\_pixels-\/>size())\};}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{comment}{//\ Guard\ against\ division\ by\ zero\ after\ loop}}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_pixels\_size\ ==\ 0)\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ centroid;}
+\DoxyCodeLine{00016\ \ \ \ \ \}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&[\_,\ pos]\ :\ *m\_pixels)\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ centroid.x\ +=\ pos.x;}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ centroid.y\ +=\ pos.y;}
+\DoxyCodeLine{00021\ \ \ \ \ \}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ centroid.x\ /=\ m\_pixels\_size;}
+\DoxyCodeLine{00024\ \ \ \ \ centroid.y\ /=\ m\_pixels\_size;}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordflow}{return}\ centroid;}
+\DoxyCodeLine{00027\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classNode_a6c1f7c18651cdea9e28832ac6bde6e4c}\label{classNode_a6c1f7c18651cdea9e28832ac6bde6e4c} 
+\index{Node@{Node}!clear\_all@{clear\_all}}
+\index{clear\_all@{clear\_all}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{clear\_all()}{clear\_all()}}
+{\footnotesize\ttfamily void Node\+::clear\+\_\+all (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{node_8cpp_source_l00178}{178}} of file \mbox{\hyperlink{node_8cpp_source}{node.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00179\ \ \ \ \ m\_edges.clear();}
+\DoxyCodeLine{00180\ \ \ \ \ m\_pixels-\/>clear();}
+\DoxyCodeLine{00181\ \ \ \ \ m\_edge\_pixels.clear();}
+\DoxyCodeLine{00182\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classNode_a6759fac0e9a0670a86d11eb784595f8a}\label{classNode_a6759fac0e9a0670a86d11eb784595f8a} 
+\index{Node@{Node}!clear\_contour@{clear\_contour}}
+\index{clear\_contour@{clear\_contour}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{clear\_contour()}{clear\_contour()}}
+{\footnotesize\ttfamily void Node\+::clear\+\_\+contour (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{node_8cpp_source_l00120}{120}} of file \mbox{\hyperlink{node_8cpp_source}{node.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00121\ \ \ \ \ m\_contours.contours.clear();}
+\DoxyCodeLine{00122\ \ \ \ \ m\_contours.hierarchy.clear();}
+\DoxyCodeLine{00123\ \ \ \ \ m\_contours.is\_hole.clear();}
+\DoxyCodeLine{00124\ \ \ \ \ m\_contours.colors.clear();}
+\DoxyCodeLine{00125\ \ \ \ \ m\_contours.curves.clear();}
+\DoxyCodeLine{00126\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classNode_ab13207a55df073dd5b25c3fee1be94c0}\label{classNode_ab13207a55df073dd5b25c3fee1be94c0} 
+\index{Node@{Node}!clear\_edge\_pixels@{clear\_edge\_pixels}}
+\index{clear\_edge\_pixels@{clear\_edge\_pixels}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{clear\_edge\_pixels()}{clear\_edge\_pixels()}}
+{\footnotesize\ttfamily void Node\+::clear\+\_\+edge\+\_\+pixels (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{node_8cpp_source_l00174}{174}} of file \mbox{\hyperlink{node_8cpp_source}{node.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00175\ \ \ \ \ m\_edge\_pixels.clear();}
+\DoxyCodeLine{00176\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classNode_a4b41d57ada02261f3d6adf1297439883}\label{classNode_a4b41d57ada02261f3d6adf1297439883} 
+\index{Node@{Node}!color@{color}}
+\index{color@{color}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{color()}{color()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structImageLib_1_1RGBPixel}{Image\+Lib\+::\+RGBPixel}}$<$ uint8\+\_\+t $>$ Node\+::color (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line \mbox{\hyperlink{node_8cpp_source_l00029}{29}} of file \mbox{\hyperlink{node_8cpp_source}{node.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ m\_pixels\_size\{\textcolor{keyword}{static\_cast<}int32\_t\textcolor{keyword}{>}(m\_pixels-\/>size())\};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//\ Guard\ against\ division\ by\ zero\ after\ loop}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_pixels\_size\ ==\ 0)\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{0,\ 0,\ 0\};}
+\DoxyCodeLine{00035\ \ \ \ \ \}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{float}\ r\{0\};}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{float}\ g\{0\};}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{float}\ b\{0\};}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&[color,\ \_]\ :\ *m\_pixels)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ r\ +=\ color.red;}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ g\ +=\ color.green;}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ b\ +=\ color.blue;}
+\DoxyCodeLine{00044\ \ \ \ \ \}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ r\ /=\ m\_pixels\_size;}
+\DoxyCodeLine{00047\ \ \ \ \ g\ /=\ m\_pixels\_size;}
+\DoxyCodeLine{00048\ \ \ \ \ b\ /=\ m\_pixels\_size;}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{comment}{//\ Accept\ lossy\ conversion\ -\/\ the\ difference\ is\ very\ minimal}}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{return}\ \{\textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(r),\ \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(g),\ \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(b)\};}
+\DoxyCodeLine{00052\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classNode_a41923e52e28429019fbd3e608e124714}\label{classNode_a41923e52e28429019fbd3e608e124714} 
+\index{Node@{Node}!compute\_contour@{compute\_contour}}
+\index{compute\_contour@{compute\_contour}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{compute\_contour()}{compute\_contour()}}
+{\footnotesize\ttfamily void Node\+::compute\+\_\+contour (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{node_8cpp_source_l00128}{128}} of file \mbox{\hyperlink{node_8cpp_source}{node.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{comment}{//\ return\ list\ of\ all\ contours\ present\ in\ Node.}}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{comment}{//\ usually\ 1\ sometimes\ more\ if\ holes\ are\ present}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \ \ clear\_contour();}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \ \ \ \ std::vector<uint8\_t>\ binary;}
+\DoxyCodeLine{00135\ \ \ \ \ std::array<int,\ 4>\ xywh\{create\_binary\_image(binary)\};}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordtype}{int}\ xmin\ =\ xywh[0];}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordtype}{int}\ ymin\ =\ xywh[1];}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordtype}{int}\ bw\ =\ xywh[2];}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordtype}{int}\ bh\ =\ xywh[3];}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ \ \ \mbox{\hyperlink{structContoursResult}{ContoursResult}}\ contour\_res\ =\ contours::find\_contours(binary,\ bw,\ bh);}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ cidx\ =\ 0;\ cidx\ <\ contour\_res.contours.size();\ ++cidx)\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \&contour\ =\ contour\_res.contours[cidx];}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&p\ :\ contour)\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ p.x\ +=\ xmin;}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ p.y\ +=\ ymin;}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ if\ (contour\_res.is\_hole[cidx])\ \{\ continue;\ \}}}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{ImageLib::RGBPixel<uint8\_t>}}\ \_col\ =\ color();}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\ col\{\_col.red,\ \_col.green,\ \_col.blue,\ 255\};}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ m\_contours.contours.push\_back(contour);}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ m\_contours.hierarchy.push\_back(contour\_res.hierarchy[cidx]);}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ m\_contours.is\_hole.push\_back(contour\_res.is\_hole[cidx]);}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ m\_contours.colors.push\_back(col);}
+\DoxyCodeLine{00159\ \ \ \ \ \}}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \ \ \ \ m\_contours.curves.resize(m\_contours.contours.size());}
+\DoxyCodeLine{00162\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classNode_ac5c6533ec81dddd711dcdc276e25fc23}\label{classNode_ac5c6533ec81dddd711dcdc276e25fc23} 
+\index{Node@{Node}!create\_binary\_image@{create\_binary\_image}}
+\index{create\_binary\_image@{create\_binary\_image}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{create\_binary\_image()}{create\_binary\_image()}}
+{\footnotesize\ttfamily std\+::array$<$ int, 4 $>$ Node\+::create\+\_\+binary\+\_\+image (\begin{DoxyParamCaption}\item[{std\+::vector$<$ uint8\+\_\+t $>$ \&}]{binary }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line \mbox{\hyperlink{node_8cpp_source_l00099}{99}} of file \mbox{\hyperlink{node_8cpp_source}{node.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00100\ \ \ \ \ std::array<int,\ 4>\ xywh\{bounding\_box\_xywh()\};}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \ \ binary.resize(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(xywh[2])\ *\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(xywh[3]),\ 0);}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&[\_,\ p]\ :\ *m\_pixels)\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ int32\_t\ \_x\ =\ p.x\ -\/\ xywh[0];}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ int32\_t\ \_y\ =\ p.y\ -\/\ xywh[1];}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ binary[\_y\ *\ xywh[2]\ +\ \_x]\ =\ 1;}
+\DoxyCodeLine{00108\ \ \ \ \ \}}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{comment}{//\ include\ the\ edge\ pixels\ to\ ensure\ contour\ overlap\ with\ neighbor}}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&p\ :\ m\_edge\_pixels)\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ int32\_t\ \_x\ =\ p.x\ -\/\ xywh[0];}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ int32\_t\ \_y\ =\ p.y\ -\/\ xywh[1];}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ binary[\_y\ *\ xywh[2]\ +\ \_x]\ =\ 1;}
+\DoxyCodeLine{00115\ \ \ \ \ \}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{return}\ xywh;}
+\DoxyCodeLine{00118\ \}}
+
+\end{DoxyCode}
+\Hypertarget{classNode_ae6f75d8b66072c86bc57b4bba5a697ad}\label{classNode_ae6f75d8b66072c86bc57b4bba5a697ad} 
+\index{Node@{Node}!edges@{edges}}
+\index{edges@{edges}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{edges()}{edges()}}
+{\footnotesize\ttfamily const std\+::set$<$ Node\+\_\+ptr $>$ \& Node\+::edges (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{node_8h_source_l00099}{99}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_edges;}
+\DoxyCodeLine{00101\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classNode_a181b633c22d09bea5f54b126ab41e053}\label{classNode_a181b633c22d09bea5f54b126ab41e053} 
+\index{Node@{Node}!get\_contours@{get\_contours}}
+\index{get\_contours@{get\_contours}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{get\_contours()}{get\_contours()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structColoredContours}{Colored\+Contours}} \& Node\+::get\+\_\+contours (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{node_8h_source_l00108}{108}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_contours;}
+\DoxyCodeLine{00110\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classNode_ae189e4d4b4171b996749aad8a183c409}\label{classNode_ae189e4d4b4171b996749aad8a183c409} 
+\index{Node@{Node}!get\_pixels@{get\_pixels}}
+\index{get\_pixels@{get\_pixels}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{get\_pixels()}{get\_pixels()}}
+{\footnotesize\ttfamily const std\+::vector$<$ \mbox{\hyperlink{structRGBXY}{RGBXY}} $>$ \& Node\+::get\+\_\+pixels (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{node_8h_source_l00105}{105}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *m\_pixels;}
+\DoxyCodeLine{00107\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classNode_ac778ddfbe8b17883170d86cba5ed63d3}\label{classNode_ac778ddfbe8b17883170d86cba5ed63d3} 
+\index{Node@{Node}!id@{id}}
+\index{id@{id}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{id()}{id()}}
+{\footnotesize\ttfamily int32\+\_\+t Node\+::id (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{node_8h_source_l00093}{93}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_id;}
+\DoxyCodeLine{00095\ \ \ \ \ \};}
+
+\end{DoxyCode}
+\Hypertarget{classNode_a8d8f2c2af03a189148f367d61ff03a2d}\label{classNode_a8d8f2c2af03a189148f367d61ff03a2d} 
+\index{Node@{Node}!num\_edges@{num\_edges}}
+\index{num\_edges@{num\_edges}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{num\_edges()}{num\_edges()}}
+{\footnotesize\ttfamily size\+\_\+t Node\+::num\+\_\+edges (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{node_8h_source_l00102}{102}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_edges.size();}
+\DoxyCodeLine{00104\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classNode_aba1ec085d600582bae407077bd2b01c8}\label{classNode_aba1ec085d600582bae407077bd2b01c8} 
+\index{Node@{Node}!remove\_all\_edges@{remove\_all\_edges}}
+\index{remove\_all\_edges@{remove\_all\_edges}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{remove\_all\_edges()}{remove\_all\_edges()}}
+{\footnotesize\ttfamily void Node\+::remove\+\_\+all\+\_\+edges (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{node_8h_source_l00125}{125}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ m\_edges.clear();}
+\DoxyCodeLine{00127\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classNode_afeb853a2c74316010c4850cbde459660}\label{classNode_afeb853a2c74316010c4850cbde459660} 
+\index{Node@{Node}!remove\_edge@{remove\_edge}}
+\index{remove\_edge@{remove\_edge}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{remove\_edge()}{remove\_edge()}}
+{\footnotesize\ttfamily void Node\+::remove\+\_\+edge (\begin{DoxyParamCaption}\item[{const Node\+\_\+ptr \&}]{node }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{node_8h_source_l00122}{122}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ m\_edges.erase(node);}
+\DoxyCodeLine{00124\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classNode_a209f24302cf5e19142ebd450e6a5861b}\label{classNode_a209f24302cf5e19142ebd450e6a5861b} 
+\index{Node@{Node}!m\_contours@{m\_contours}}
+\index{m\_contours@{m\_contours}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{m\_contours}{m\_contours}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structColoredContours}{Colored\+Contours}} Node\+::m\+\_\+contours}
+
+
+
+Definition at line \mbox{\hyperlink{node_8h_source_l00088}{88}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+
+\Hypertarget{classNode_a5d00228b34cbe37be40ebc0053f4b309}\label{classNode_a5d00228b34cbe37be40ebc0053f4b309} 
+\index{Node@{Node}!m\_edge\_pixels@{m\_edge\_pixels}}
+\index{m\_edge\_pixels@{m\_edge\_pixels}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{m\_edge\_pixels}{m\_edge\_pixels}}
+{\footnotesize\ttfamily std\+::set$<$\mbox{\hyperlink{structXY}{XY}}$>$ Node\+::m\+\_\+edge\+\_\+pixels \{\}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{node_8h_source_l00073}{73}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00073\ \{\};}
+
+\end{DoxyCode}
+\Hypertarget{classNode_abb919cd0f676365dc222d284dde9c6ef}\label{classNode_abb919cd0f676365dc222d284dde9c6ef} 
+\index{Node@{Node}!m\_edges@{m\_edges}}
+\index{m\_edges@{m\_edges}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{m\_edges}{m\_edges}}
+{\footnotesize\ttfamily std\+::set$<$Node\+\_\+ptr$>$ Node\+::m\+\_\+edges \{\}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{node_8h_source_l00069}{69}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00069\ \{\};}
+
+\end{DoxyCode}
+\Hypertarget{classNode_ae290d5afb95c73d6f7fe1fef4a57d476}\label{classNode_ae290d5afb95c73d6f7fe1fef4a57d476} 
+\index{Node@{Node}!m\_id@{m\_id}}
+\index{m\_id@{m\_id}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{m\_id}{m\_id}}
+{\footnotesize\ttfamily int32\+\_\+t Node\+::m\+\_\+id\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{node_8h_source_l00067}{67}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+
+\Hypertarget{classNode_a2c8e15307d10a4e2bde9ec6a6e21ae67}\label{classNode_a2c8e15307d10a4e2bde9ec6a6e21ae67} 
+\index{Node@{Node}!m\_pixels@{m\_pixels}}
+\index{m\_pixels@{m\_pixels}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{m\_pixels}{m\_pixels}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$std\+::vector$<$\mbox{\hyperlink{structRGBXY}{RGBXY}}$>$ $>$ Node\+::m\+\_\+pixels\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{node_8h_source_l00068}{68}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/internal/node.\+h\item 
+src/internal/node.\+cpp\end{DoxyCompactItemize}
