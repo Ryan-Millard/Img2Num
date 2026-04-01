@@ -212,8 +212,6 @@ class GPU {
             instance.ProcessEvents();
 #if defined(__EMSCRIPTEN__)
             emscripten_sleep(10);
-#else // Native
-            if (device) { device.Tick(); }
 #endif
         }
 
