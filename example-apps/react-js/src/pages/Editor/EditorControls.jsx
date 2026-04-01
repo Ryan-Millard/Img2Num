@@ -1,7 +1,7 @@
 import GlassModal from "@components/GlassModal";
 import GlassSwitch from "@components/GlassSwitch";
 import Tooltip from "@components/Tooltip";
-import { useMemo, useState, useId, useEffect } from "react";
+import { useState, useId, useEffect } from "react";
 import { Undo, Redo, Save, Eye, Brush, Printer, Download, Copy, RotateCcw, Share2, FileText } from "lucide-react";
 import styles from "./EditorControls.module.css";
 
@@ -10,7 +10,6 @@ const EditorControls = ({ svg, fileName, isColorMode = false, setIsColorMode = (
   const [copied, setCopied] = useState(false);
   const switchId = useId();
 
-  const [svgUrl, setSvgUrl] = useState(null);
   useEffect(() => {
     if (!svg) {
       setSvgUrl(null);

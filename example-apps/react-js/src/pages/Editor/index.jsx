@@ -289,7 +289,7 @@ export default function Editor() {
     return () => {
       el.removeEventListener(pointerEventType, handlePointerMove);
     };
-  }, []);
+  }, [onPointerMove]);
 
   // Keybindings
   useEffect(() => {
@@ -313,7 +313,7 @@ export default function Editor() {
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [historyIndex, history]);
+  }, [historyIndex, history, redo, undo]);
 
   useEffect(() => {
     const svgRoot = innerRef.current?.querySelector("svg");
