@@ -48,6 +48,11 @@ static uint32\+\_\+t \mbox{\hyperlink{classGPU_a541ba171b95a07c516903327f529c8bf
 \item 
 static void \mbox{\hyperlink{classGPU_aa6030c110482dee69748ac010a8b221c}{print\+Shader\+Error}} (wgpu\+::\+Shader\+Module shader\+Module)
 \end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classGPU_aa964c6d8f930dafbc142652aeb473f6f}{validate\+\_\+device}} ()
+\end{DoxyCompactItemize}
 \doxysubsubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -83,16 +88,16 @@ Definition at line \mbox{\hyperlink{gpu_8h_source_l00021}{21}} of file \mbox{\hy
 
 
 
-Definition at line \mbox{\hyperlink{gpu_8h_source_l00213}{213}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
+Definition at line \mbox{\hyperlink{gpu_8h_source_l00233}{233}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ device\ =\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ adapter\ =\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ queue\ =\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ instance\ =\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{00218\ \ \ \ \ \};}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ device\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ adapter\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ queue\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ instance\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00238\ \ \ \ \ \};}
 
 \end{DoxyCode}
 
@@ -106,27 +111,27 @@ Definition at line \mbox{\hyperlink{gpu_8h_source_l00213}{213}} of file \mbox{\h
 
 
 
-Definition at line \mbox{\hyperlink{gpu_8h_source_l00068}{68}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
+Definition at line \mbox{\hyperlink{gpu_8h_source_l00080}{80}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ wgpu::ShaderSourceWGSL\ wgsl;}
-\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ std::string\ shaderCode\ =\ readWGSLFile(filename);}
-\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ wgsl.code\ =\ shaderCode.c\_str();}
-\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ wgpu::ShaderModuleDescriptor\ md\ =\ \{\};}
-\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ md.nextInChain\ =\ \&wgsl;}
-\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ md.label\ =\ label.c\_str();}
-\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ wgpu::ShaderModule\ sm\ =\ device.CreateShaderModule(\&md);}
-\DoxyCodeLine{00076\ }
-\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Debug\ print}}
-\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ printShaderError(sm);}
-\DoxyCodeLine{00079\ }
-\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ wgpu::ComputePipelineDescriptor\ cpd\ =\ \{\};}
-\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ cpd.compute.module\ =\ sm;}
-\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ cpd.compute.entryPoint\ =\ \textcolor{stringliteral}{"{}main"{}};}
-\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ device.CreateComputePipeline(\&cpd);}
-\DoxyCodeLine{00084\ \ \ \ \ \};}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ wgpu::ShaderSourceWGSL\ wgsl;}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ std::string\ shaderCode\ =\ readWGSLFile(filename);}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ wgsl.code\ =\ shaderCode.c\_str();}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ wgpu::ShaderModuleDescriptor\ md\ =\ \{\};}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ md.nextInChain\ =\ \&wgsl;}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ md.label\ =\ label.c\_str();}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ wgpu::ShaderModule\ sm\ =\ device.CreateShaderModule(\&md);}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Debug\ print}}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ printShaderError(sm);}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ wgpu::ComputePipelineDescriptor\ cpd\ =\ \{\};}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ cpd.compute.module\ =\ sm;}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ cpd.compute.entryPoint\ =\ \textcolor{stringliteral}{"{}main"{}};}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ device.CreateComputePipeline(\&cpd);}
+\DoxyCodeLine{00096\ \ \ \ \ \};}
 
 \end{DoxyCode}
 \Hypertarget{classGPU_afe0e5807f34893bb8008cb04ca9967e4}\label{classGPU_afe0e5807f34893bb8008cb04ca9967e4} 
@@ -137,13 +142,13 @@ Definition at line \mbox{\hyperlink{gpu_8h_source_l00068}{68}} of file \mbox{\hy
 
 
 
-Definition at line \mbox{\hyperlink{gpu_8h_source_l00041}{41}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
+Definition at line \mbox{\hyperlink{gpu_8h_source_l00053}{53}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ device;}
-\DoxyCodeLine{00043\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ device;}
+\DoxyCodeLine{00055\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{classGPU_a5a3373ad67c0e81b9b0a76b16038fe0f}\label{classGPU_a5a3373ad67c0e81b9b0a76b16038fe0f} 
@@ -154,13 +159,13 @@ Definition at line \mbox{\hyperlink{gpu_8h_source_l00041}{41}} of file \mbox{\hy
 
 
 
-Definition at line \mbox{\hyperlink{gpu_8h_source_l00045}{45}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
+Definition at line \mbox{\hyperlink{gpu_8h_source_l00057}{57}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ instance;}
-\DoxyCodeLine{00047\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ instance;}
+\DoxyCodeLine{00059\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{classGPU_af6c49b1ea3c71938677acd5731883a8e}\label{classGPU_af6c49b1ea3c71938677acd5731883a8e} 
@@ -171,13 +176,13 @@ Definition at line \mbox{\hyperlink{gpu_8h_source_l00045}{45}} of file \mbox{\hy
 
 
 
-Definition at line \mbox{\hyperlink{gpu_8h_source_l00049}{49}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
+Definition at line \mbox{\hyperlink{gpu_8h_source_l00061}{61}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ queue;}
-\DoxyCodeLine{00051\ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ queue;}
+\DoxyCodeLine{00063\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{classGPU_a541ba171b95a07c516903327f529c8bf}\label{classGPU_a541ba171b95a07c516903327f529c8bf} 
@@ -188,15 +193,15 @@ Definition at line \mbox{\hyperlink{gpu_8h_source_l00049}{49}} of file \mbox{\hy
 
 
 
-Definition at line \mbox{\hyperlink{gpu_8h_source_l00086}{86}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
+Definition at line \mbox{\hyperlink{gpu_8h_source_l00098}{98}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ uint32\_t\ unaligned\ =\ width\ *\ bytesPerPixel;}
-\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ uint32\_t\ align\ =\ 256;}
-\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (unaligned\ +\ align\ -\/\ 1)\ \&\ \string~(align\ -\/\ 1);}
-\DoxyCodeLine{00090\ \ \ \ \ \};}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ uint32\_t\ unaligned\ =\ width\ *\ bytesPerPixel;}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ uint32\_t\ align\ =\ 256;}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (unaligned\ +\ align\ -\/\ 1)\ \&\ \string~(align\ -\/\ 1);}
+\DoxyCodeLine{00102\ \ \ \ \ \};}
 
 \end{DoxyCode}
 \Hypertarget{classGPU_a646c52ed7baa98838e61408be62f2261}\label{classGPU_a646c52ed7baa98838e61408be62f2261} 
@@ -207,14 +212,14 @@ Definition at line \mbox{\hyperlink{gpu_8h_source_l00086}{86}} of file \mbox{\hy
 
 
 
-Definition at line \mbox{\hyperlink{gpu_8h_source_l00036}{36}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
+Definition at line \mbox{\hyperlink{gpu_8h_source_l00048}{48}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classGPU}{GPU}}\ gpuInstance;}
-\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ gpuInstance;}
-\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classGPU}{GPU}}\ gpuInstance;}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ gpuInstance;}
+\DoxyCodeLine{00051\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{classGPU_a054fdf16c7f2b0fda6cfbfc87def4dd6}\label{classGPU_a054fdf16c7f2b0fda6cfbfc87def4dd6} 
@@ -225,110 +230,118 @@ Definition at line \mbox{\hyperlink{gpu_8h_source_l00036}{36}} of file \mbox{\hy
 
 
 
-Definition at line \mbox{\hyperlink{gpu_8h_source_l00112}{112}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
+Definition at line \mbox{\hyperlink{gpu_8h_source_l00124}{124}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \ \textcolor{comment}{//\ wgpu::Instance\&\ instance,\ wgpu::Adapter\&\ adapter,\ wgpu::Device\&\ device,}}
-\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ wgpu::Queue\&\ queue)\ \{}}
-\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (gpu\_initialized)\ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{00115\ }
-\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ wgpu::InstanceDescriptor\ instanceDesc\ =\ \{\};}
-\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ instance\ =\ wgpu::CreateInstance(\&instanceDesc);}
-\DoxyCodeLine{00118\ }
-\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!instance)\ \{}
-\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Fatal:\ WebGPU\ instance\ creation\ failed."{}}\ <<\ std::endl;}
-\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00123\ }
-\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 1.\ Get\ Adapter}}
-\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Requesting\ Adapter..."{}}\ <<\ std::endl;}
-\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ adapter\_ready\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00129\ }
-\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ instance.RequestAdapter(}
-\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ wgpu::CallbackMode::AllowProcessEvents,\ \ \textcolor{comment}{//\ <-\/-\/-\/\ ALLOW\ EVENTS}}
-\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ [\textcolor{keyword}{this}](wgpu::RequestAdapterStatus\ status,\ wgpu::Adapter\ a,\ wgpu::StringView\ msg)\ \{}
-\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (status\ ==\ wgpu::RequestAdapterStatus::Success)\ \{}
-\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ adapter\ =\ std::move(a);}
-\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Adapter\ Acquired"{}}\ <<\ std::endl;}
-\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Adapter\ Failed:\ "{}}}
-\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ std::string\_view(msg.data\ ?\ msg.data\ :\ \textcolor{stringliteral}{"{}"{}},\ msg.length)}
-\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ std::endl;}
-\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ adapter\_ready\ =\ \textcolor{keyword}{true};\ \ \textcolor{comment}{//\ Unblock\ the\ loop}}
-\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \});}
-\DoxyCodeLine{00144\ }
-\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ WAIT\ LOOP:\ Yield\ to\ browser\ so\ it\ can\ actually\ find\ the\ adapter}}
-\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!adapter\_ready)\ \{}
-\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ instance.ProcessEvents();}
-\DoxyCodeLine{00148\ \textcolor{preprocessor}{\#if\ defined(\_\_EMSCRIPTEN\_\_)}}
-\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \ \ \ \ emscripten\_sleep(10);\ \ \textcolor{comment}{//\ Sleep\ 10ms}}
-\DoxyCodeLine{00150\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00152\ }
-\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!adapter)\ \{}
-\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Fatal:\ Could\ not\ get\ WebGPU\ Adapter."{}}\ <<\ std::endl;}
-\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00157\ }
-\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 2.\ Get\ Device}}
-\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Requesting\ Device..."{}}\ <<\ std::endl;}
-\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ device\_ready\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00163\ }
-\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ wgpu::DeviceDescriptor\ deviceDesc\ =\ \{\};}
-\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*deviceDesc.SetUncapturedErrorCallback(}}
-\DoxyCodeLine{00166\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ [](const\ wgpu::Device\&,\ wgpu::ErrorType,\ wgpu::StringView\ msg)\ \{}}
-\DoxyCodeLine{00167\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ "{}WEBGPU\ ERROR:\ "{}\ <<\ msg.data\ <<\ std::endl;}}
-\DoxyCodeLine{00168\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \});}}
-\DoxyCodeLine{00169\ \textcolor{comment}{\ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ deviceDesc.SetUncapturedErrorCallback([](\textcolor{keyword}{const}\ wgpu::Device\&,\ wgpu::ErrorType\ type,}
-\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ wgpu::StringView\ msg)\ \{}
-\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 1.\ Safely\ extract\ the\ string\ using\ the\ provided\ length}}
-\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ err\_str\ =\ (msg.data\ \&\&\ msg.length\ >\ 0)\ ?\ std::string(msg.data,\ msg.length)}
-\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \textcolor{stringliteral}{"{}Unknown\ Error\ (Null\ message)"{}};}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \ \textcolor{comment}{//\ wgpu::Instance\&\ instance,\ wgpu::Adapter\&\ adapter,\ wgpu::Device\&\ device,}}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ wgpu::Queue\&\ queue)\ \{}}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (gpu\_initialized)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ wgpu::InstanceDescriptor\ instanceDesc\ =\ \{\};}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ instance\ =\ wgpu::CreateInstance(\&instanceDesc);}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!instance)\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Fatal:\ WebGPU\ instance\ creation\ failed."{}}\ <<\ std::endl;}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 1.\ Get\ Adapter}}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Requesting\ Adapter..."{}}\ <<\ std::endl;}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ adapter\_ready\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ instance.RequestAdapter(}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ wgpu::CallbackMode::AllowProcessEvents,\ \ \textcolor{comment}{//\ <-\/-\/-\/\ ALLOW\ EVENTS}}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ [\textcolor{keyword}{this}](wgpu::RequestAdapterStatus\ status,\ wgpu::Adapter\ a,\ wgpu::StringView\ msg)\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (status\ ==\ wgpu::RequestAdapterStatus::Success)\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ adapter\ =\ std::move(a);}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Adapter\ Acquired"{}}\ <<\ std::endl;}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Adapter\ Failed:\ "{}}}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ std::string\_view(msg.data\ ?\ msg.data\ :\ \textcolor{stringliteral}{"{}"{}},\ msg.length)}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ std::endl;}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ adapter\_ready\ =\ \textcolor{keyword}{true};\ \ \textcolor{comment}{//\ Unblock\ the\ loop}}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ WAIT\ LOOP:\ Yield\ to\ browser\ so\ it\ can\ actually\ find\ the\ adapter}}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!adapter\_ready)\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ instance.ProcessEvents();}
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#if\ defined(\_\_EMSCRIPTEN\_\_)}}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \ \ emscripten\_sleep(10);\ \ \textcolor{comment}{//\ Sleep\ 10ms}}
+\DoxyCodeLine{00162\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!adapter)\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Fatal:\ Could\ not\ get\ WebGPU\ Adapter."{}}\ <<\ std::endl;}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 2.\ Get\ Device}}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Requesting\ Device..."{}}\ <<\ std::endl;}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ device\_ready\ =\ \textcolor{keyword}{false};}
 \DoxyCodeLine{00175\ }
-\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 2.\ Print\ it\ safely}}
-\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n[WEBGPU\ FATAL\ ERROR]\ Type:\ "{}}\ <<\ \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(type)}
-\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}\ |\ Msg:\ "{}}\ <<\ err\_str\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}}}
-\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ std::endl;}
-\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \});}
-\DoxyCodeLine{00181\ }
-\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ adapter.RequestDevice(}
-\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \ \ \&deviceDesc,}
-\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ \ \ wgpu::CallbackMode::AllowProcessEvents,\ \ \textcolor{comment}{//\ <-\/-\/-\/\ ALLOW\ EVENTS}}
-\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ [\textcolor{keyword}{this}](wgpu::RequestDeviceStatus\ status,\ wgpu::Device\ d,\ wgpu::StringView\ msg)\ \{}
-\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (status\ ==\ wgpu::RequestDeviceStatus::Success)\ \{}
-\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ device\ =\ std::move(d);}
-\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Device\ Acquired"{}}\ <<\ std::endl;}
-\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Device\ Failed:\ "{}}\ <<\ msg.data\ <<\ std::endl;}
-\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ device\_ready\ =\ \textcolor{keyword}{true};\ \ \textcolor{comment}{//\ Unblock\ the\ loop}}
-\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ \});}
-\DoxyCodeLine{00194\ }
-\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ WAIT\ LOOP}}
-\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!device\_ready)\ \{}
-\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ instance.ProcessEvents();}
-\DoxyCodeLine{00198\ \textcolor{preprocessor}{\#if\ defined(\_\_EMSCRIPTEN\_\_)}}
-\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \ \ emscripten\_sleep(10);}
-\DoxyCodeLine{00200\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00202\ }
-\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!device)\ \{}
-\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Fatal:\ Could\ not\ get\ WebGPU\ Device."{}}\ <<\ std::endl;}
-\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00207\ }
-\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ queue\ =\ device.GetQueue();}
-\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ gpu\_initialized\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}GPU\ Fully\ Initialized."{}}\ <<\ std::endl;}
-\DoxyCodeLine{00211\ \ \ \ \ \};}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ wgpu::DeviceDescriptor\ deviceDesc\ =\ \{\};}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ deviceDesc.SetUncapturedErrorCallback([](\textcolor{keyword}{const}\ wgpu::Device\&,\ wgpu::ErrorType\ type,}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ wgpu::StringView\ msg)\ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 1.\ Safely\ extract\ the\ string\ using\ the\ provided\ length}}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ err\_str\ =\ (msg.data\ \&\&\ msg.length\ >\ 0)\ ?\ std::string(msg.data,\ msg.length)}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \textcolor{stringliteral}{"{}Unknown\ Error\ (Null\ message)"{}};}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 2.\ Print\ it\ safely}}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n[WEBGPU\ FATAL\ ERROR]\ Type:\ "{}}\ <<\ \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(type)}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}\ |\ Msg:\ "{}}\ <<\ err\_str\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}}}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ std::endl;}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ deviceDesc.SetDeviceLostCallback(}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ wgpu::CallbackMode::AllowProcessEvents,}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \ \ [](\textcolor{keyword}{const}\ wgpu::Device\&,\ wgpu::DeviceLostReason\ reason,\ wgpu::StringView\ msg)\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ err\_msg\ =\ (msg.data\ \&\&\ msg.length\ >\ 0)\ ?\ std::string(msg.data,\ msg.length)}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \textcolor{stringliteral}{"{}Unknown\ device\ lost\ reason"{}};}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}[DEVICE\ LOST]\ Reason:\ "{}}\ <<\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(reason)}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}\ Msg:\ "{}}\ <<\ err\_msg\ <<\ std::endl;}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ adapter.RequestDevice(}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \ \ \&deviceDesc,}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \ \ wgpu::CallbackMode::AllowProcessEvents,\ \ \textcolor{comment}{//\ <-\/-\/-\/\ ALLOW\ EVENTS}}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \ \ [\textcolor{keyword}{this}](wgpu::RequestDeviceStatus\ status,\ wgpu::Device\ d,\ wgpu::StringView\ msg)\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (status\ ==\ wgpu::RequestDeviceStatus::Success)\ \{}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ device\ =\ std::move(d);}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Device\ Acquired"{}}\ <<\ std::endl;}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Device\ Failed:\ "{}}\ <<\ msg.data\ <<\ std::endl;}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ device\_ready\ =\ \textcolor{keyword}{true};\ \ \textcolor{comment}{//\ Unblock\ the\ loop}}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ WAIT\ LOOP}}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!device\_ready)\ \{}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \ \ instance.ProcessEvents();}
+\DoxyCodeLine{00213\ \textcolor{preprocessor}{\#if\ defined(\_\_EMSCRIPTEN\_\_)}}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ emscripten\_sleep(10);}
+\DoxyCodeLine{00215\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!device)\ \{}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Fatal:\ Could\ not\ get\ WebGPU\ Device."{}}\ <<\ std::endl;}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!validate\_device())\ \{}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Fatal:\ Could\ not\ get\ WebGPU\ Device."{}}\ <<\ std::endl;}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ queue\ =\ device.GetQueue();}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ gpu\_initialized\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}GPU\ Fully\ Initialized."{}}\ <<\ std::endl;}
+\DoxyCodeLine{00231\ \ \ \ \ \};}
 
 \end{DoxyCode}
 \Hypertarget{classGPU_a2ac10d40222e92c96518cb9e99c5db22}\label{classGPU_a2ac10d40222e92c96518cb9e99c5db22} 
@@ -339,13 +352,13 @@ Definition at line \mbox{\hyperlink{gpu_8h_source_l00112}{112}} of file \mbox{\h
 
 
 
-Definition at line \mbox{\hyperlink{gpu_8h_source_l00053}{53}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
+Definition at line \mbox{\hyperlink{gpu_8h_source_l00065}{65}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ gpu\_initialized;}
-\DoxyCodeLine{00055\ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ gpu\_initialized;}
+\DoxyCodeLine{00067\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{classGPU_aa6030c110482dee69748ac010a8b221c}\label{classGPU_aa6030c110482dee69748ac010a8b221c} 
@@ -356,29 +369,29 @@ Definition at line \mbox{\hyperlink{gpu_8h_source_l00053}{53}} of file \mbox{\hy
 
 
 
-Definition at line \mbox{\hyperlink{gpu_8h_source_l00092}{92}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
+Definition at line \mbox{\hyperlink{gpu_8h_source_l00104}{104}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ shaderModule.GetCompilationInfo(}
-\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Callback\ Mode\ (New\ API\ Requirement)}}
-\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ wgpu::CallbackMode::AllowProcessEvents,}
-\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Callback\ Lambda}}
-\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ [](wgpu::CompilationInfoRequestStatus\ status,\ \textcolor{keyword}{const}\ wgpu::CompilationInfo*\ info)\ \{}
-\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (status\ !=\ wgpu::CompilationInfoRequestStatus::Success\ ||\ !info)\ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{00099\ }
-\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint32\_t\ i\ =\ 0;\ i\ <\ info-\/>messageCount;\ ++i)\ \{}
-\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ msg\ =\ info-\/>messages[i];}
-\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Shader\ Error\ ["{}}}
-\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ (msg.type\ ==\ wgpu::CompilationMessageType::Error\ ?\ \textcolor{stringliteral}{"{}ERR"{}}\ :\ \textcolor{stringliteral}{"{}WARN"{}})}
-\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}]"{}}}
-\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}\ Line\ "{}}\ <<\ msg.lineNum\ <<\ \textcolor{stringliteral}{"{}:"{}}\ <<\ msg.linePos\ <<\ \textcolor{stringliteral}{"{}\ -\/\ "{}}}
-\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ msg.message.data\ \ \textcolor{comment}{//\ .data\ for\ StringView}}
-\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ std::endl;}
-\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \});}
-\DoxyCodeLine{00110\ \ \ \ \ \};}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ shaderModule.GetCompilationInfo(}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Callback\ Mode\ (New\ API\ Requirement)}}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ wgpu::CallbackMode::AllowProcessEvents,}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Callback\ Lambda}}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ [](wgpu::CompilationInfoRequestStatus\ status,\ \textcolor{keyword}{const}\ wgpu::CompilationInfo*\ info)\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (status\ !=\ wgpu::CompilationInfoRequestStatus::Success\ ||\ !info)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint32\_t\ i\ =\ 0;\ i\ <\ info-\/>messageCount;\ ++i)\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ msg\ =\ info-\/>messages[i];}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Shader\ Error\ ["{}}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ (msg.type\ ==\ wgpu::CompilationMessageType::Error\ ?\ \textcolor{stringliteral}{"{}ERR"{}}\ :\ \textcolor{stringliteral}{"{}WARN"{}})}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}]"{}}}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}\ Line\ "{}}\ <<\ msg.lineNum\ <<\ \textcolor{stringliteral}{"{}:"{}}\ <<\ msg.linePos\ <<\ \textcolor{stringliteral}{"{}\ -\/\ "{}}}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ msg.message.data\ \ \textcolor{comment}{//\ .data\ for\ StringView}}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ std::endl;}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{00122\ \ \ \ \ \};}
 
 \end{DoxyCode}
 \Hypertarget{classGPU_a928555d06e80a4a9fed51fe056578373}\label{classGPU_a928555d06e80a4a9fed51fe056578373} 
@@ -389,14 +402,39 @@ Definition at line \mbox{\hyperlink{gpu_8h_source_l00092}{92}} of file \mbox{\hy
 
 
 
-Definition at line \mbox{\hyperlink{gpu_8h_source_l00063}{63}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
+Definition at line \mbox{\hyperlink{gpu_8h_source_l00075}{75}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ wgsl\ =\ embedded\_shaders::shaders[shader\_id];}
-\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ wgsl.data();}
-\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ wgsl\ =\ embedded\_shaders::shaders[shader\_id];}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ wgsl.data();}
+\DoxyCodeLine{00078\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classGPU_aa964c6d8f930dafbc142652aeb473f6f}\label{classGPU_aa964c6d8f930dafbc142652aeb473f6f} 
+\index{GPU@{GPU}!validate\_device@{validate\_device}}
+\index{validate\_device@{validate\_device}!GPU@{GPU}}
+\doxysubsubsection{\texorpdfstring{validate\_device()}{validate\_device()}}
+{\footnotesize\ttfamily bool GPU\+::validate\+\_\+device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{gpu_8h_source_l00034}{34}} of file \mbox{\hyperlink{gpu_8h_source}{gpu.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!device)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Try\ creating\ a\ trivial\ buffer\ to\ ensure\ the\ device\ is\ usable}}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ wgpu::BufferDescriptor\ desc\ =\ \{\};}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ desc.size\ =\ 4;}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ desc.usage\ =\ wgpu::BufferUsage::CopyDst;}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ wgpu::Buffer\ test\ =\ device.CreateBuffer(\&desc);}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ test\ !=\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00044\ \ \ \ \ \}}
 
 \end{DoxyCode}
 
