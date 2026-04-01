@@ -5,15 +5,7 @@ import { useMemo, useState, useId, useEffect } from "react";
 import { Undo, Redo, Save, Eye, Brush, Printer, Download, Copy, RotateCcw, Share2, FileText } from "lucide-react";
 import styles from "./EditorControls.module.css";
 
-const EditorControls = ({
-  svg,
-  fileName,
-  isColorMode = false,
-  setIsColorMode = () => {},
-  onReset = () => {},
-  onUndo = () => {},
-  onRedo = () => {},
-}) => {
+const EditorControls = ({ svg, fileName, isColorMode = false, setIsColorMode = () => {}, onReset = () => {}, onUndo = () => {}, onRedo = () => {} }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const switchId = useId();
@@ -84,19 +76,11 @@ const EditorControls = ({
         {copied ? "SVG copied to clipboard." : ""}
       </div>
 
-      <GlassModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        title="Save image"
-        size="sm"
-      >
+      <GlassModal isOpen={modalOpen} onClose={() => setModalOpen(false)} title="Save image" size="sm">
         <ul className={styles.actionList} role="list">
           <li>
             <Tooltip content="Download the original SVG file">
-              <button
-                onClick={() => download(svg, `${fileName}.svg`, "image/svg+xml;charset=utf-8")}
-                className={`flex-center gap-sm button ${styles.actionItem}`}
-              >
+              <button onClick={() => download(svg, `${fileName}.svg`, "image/svg+xml;charset=utf-8")} className={`flex-center gap-sm button ${styles.actionItem}`}>
                 <Download size={20} aria-hidden="true" />
                 <span>
                   <big>Original SVG</big>
@@ -107,10 +91,7 @@ const EditorControls = ({
           </li>
           <li>
             <Tooltip content="Download SVG markup as a plain text file">
-              <button
-                className={`flex-center gap-sm button ${styles.actionItem}`}
-                onClick={() => download(svg, `${fileName}-raw.txt`, "text/plain")}
-              >
+              <button className={`flex-center gap-sm button ${styles.actionItem}`} onClick={() => download(svg, `${fileName}-raw.txt`, "text/plain")}>
                 <FileText size={20} aria-hidden="true" />
                 <span>
                   <big>Raw text file</big>
@@ -121,11 +102,7 @@ const EditorControls = ({
           </li>
           <li>
             <Tooltip content={copied ? "Copied!" : "Copy SVG markup to clipboard"}>
-              <button
-                className={`flex-center gap-sm button ${styles.actionItem}`}
-                onClick={copySvg}
-                aria-pressed={copied}
-              >
+              <button className={`flex-center gap-sm button ${styles.actionItem}`} onClick={copySvg} aria-pressed={copied}>
                 <Copy size={20} aria-hidden="true" />
                 <span>
                   <big>{copied ? "Copied!" : "Copy SVG code"}</big>
@@ -149,7 +126,6 @@ const EditorControls = ({
       </GlassModal>
 
       <div className={`container flex-center flex-wrap-wrap gap-xl ${styles.wrapper}`} role="toolbar" aria-label="Editor actions">
-
         <div className="flex-center gap-sm">
           <GlassSwitch
             id={switchId}
@@ -167,11 +143,7 @@ const EditorControls = ({
 
         <div className="flex-center gap-sm">
           <Tooltip content="Save or export the image">
-            <button
-              className={`button flex-center gap-xs`}
-              onClick={() => setModalOpen(true)}
-              aria-haspopup="dialog"
-            >
+            <button className={`button flex-center gap-xs`} onClick={() => setModalOpen(true)} aria-haspopup="dialog">
               <Save size={20} aria-hidden="true" />
               Save
             </button>
@@ -186,29 +158,17 @@ const EditorControls = ({
 
         <div className="flex-center gap-sm" role="group" aria-label="History">
           <Tooltip content="Reset all coloured shapes">
-            <button
-              className="button"
-              onClick={onReset}
-              aria-label="Reset all coloured shapes"
-            >
+            <button className="button" onClick={onReset} aria-label="Reset all coloured shapes">
               <RotateCcw size={18} aria-hidden="true" />
             </button>
           </Tooltip>
           <Tooltip content="Undo · Ctrl Z">
-            <button
-              className="button"
-              onClick={onUndo}
-              aria-label="Undo last change"
-            >
+            <button className="button" onClick={onUndo} aria-label="Undo last change">
               <Undo size={18} aria-hidden="true" />
             </button>
           </Tooltip>
           <Tooltip content="Redo · Ctrl Y">
-            <button
-              className="button"
-              onClick={onRedo}
-              aria-label="Redo last change"
-            >
+            <button className="button" onClick={onRedo} aria-label="Redo last change">
               <Redo size={18} aria-hidden="true" />
             </button>
           </Tooltip>

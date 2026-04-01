@@ -63,8 +63,7 @@ export default function Editor() {
       const { scale, tx, ty } = transformRef.current;
 
       if (innerRef.current) {
-        innerRef.current.style.transform =
-          `translate(${tx}px, ${ty}px) scale(${scale})`;
+        innerRef.current.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
       }
     });
   };
@@ -147,11 +146,7 @@ export default function Editor() {
       if (pinchRef.current.startDist > 0) {
         const scaleFactor = dist / pinchRef.current.startDist;
 
-        const nextScale = clamp(
-          pinchRef.current.startScale * scaleFactor,
-          0.25,
-          6
-        );
+        const nextScale = clamp(pinchRef.current.startScale * scaleFactor, 0.25, 6);
 
         const nextTx = midX - pinchRef.current.startCx * nextScale;
         const nextTy = midY - pinchRef.current.startCy * nextScale;
@@ -213,16 +208,14 @@ export default function Editor() {
       const svgRoot = innerRef.current?.querySelector("svg");
       if (!svgRoot) return;
 
-      const shape = document
-        .elementFromPoint(e.clientX, e.clientY)
-        ?.closest(SHAPE_SELECTOR);
+      const shape = document.elementFromPoint(e.clientX, e.clientY)?.closest(SHAPE_SELECTOR);
 
       if (!shape || !svgRoot.contains(shape) || shape.classList.contains(styles.coloredRegion)) return;
 
       shape.classList.add(styles.coloredRegion);
 
       // Record history snapshot
-      const currentShapes = Array.from(svgRoot.querySelectorAll(`.${styles.coloredRegion}`)).map(el => el.dataset.id);
+      const currentShapes = Array.from(svgRoot.querySelectorAll(`.${styles.coloredRegion}`)).map((el) => el.dataset.id);
 
       const newHistory = history.slice(0, historyIndex + 1); // drop redo steps
       newHistory.push(currentShapes);
@@ -253,20 +246,18 @@ export default function Editor() {
     if (!svgRoot) return;
 
     // Remove all colored classes
-    svgRoot.querySelectorAll(`.${styles.coloredRegion}`).forEach(el => {
+    svgRoot.querySelectorAll(`.${styles.coloredRegion}`).forEach((el) => {
       el.classList.remove(styles.coloredRegion);
     });
 
     // Apply snapshot
-    snapshot.forEach(id => {
+    snapshot.forEach((id) => {
       const el = svgRoot.querySelector(`[data-id="${id}"]`);
       if (el) el.classList.add(styles.coloredRegion);
     });
   };
 
-  const cardClass = isColorMode
-    ? styles.colorMode
-    : styles.previewMode;
+  const cardClass = isColorMode ? styles.colorMode : styles.previewMode;
 
   // useEffect for pointer moves with RAF batching and raw/fallback support
   useEffect(() => {
@@ -305,9 +296,7 @@ export default function Editor() {
     const handler = (e) => {
       const mod = e.ctrlKey || e.metaKey;
       const target = e.target;
-      const isEditable =
-        target instanceof HTMLElement &&
-        (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName));
+      const isEditable = target instanceof HTMLElement && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName));
 
       if (!mod || isEditable) {
         return;
@@ -352,33 +341,22 @@ export default function Editor() {
     );
   }
 
-
   return (
     <>
       <EditorHelmet />
 
       <GlassCard className={cardClass}>
-        <EditorControls
-          svg={svg}
-          fileName={"edited-image"}
-          isColorMode={isColorMode}
-          setIsColorMode={setIsColorMode}
-          onReset={() => setModalOpen(true)}
-          onUndo={undo}
-          onRedo={redo}
-        />
+        <EditorControls svg={svg} fileName={"edited-image"} isColorMode={isColorMode} setIsColorMode={setIsColorMode} onReset={() => setModalOpen(true)} onUndo={undo} onRedo={redo} />
 
-        <GlassModal
-          isOpen={modalOpen}
-          onClose={() => setModalOpen(false)}
-        >
+        <GlassModal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
           <h2>Reset your progress</h2>
           <p>If you click confirm, all of your progress will be reset and you will start coloring in the image from scratch.</p>
           <div className="flex-center gap-md">
             <button onClick={() => setModalOpen(false)} className="button">
               Cancel
             </button>
-            <button onClick={() => {
+            <button
+              onClick={() => {
                 restoreHistory(initialSnapshot);
                 setHistory([initialSnapshot]);
                 setHistoryIndex(0);
@@ -391,18 +369,9 @@ export default function Editor() {
           </div>
         </GlassModal>
 
-        <div className={styles.hint}>
-          Click shapes to reveal their original colour.
-        </div>
+        <div className={styles.hint}>Click shapes to reveal their original colour.</div>
 
-        <GlassCard
-          className={`flex-center ${styles.viewport}`}
-          ref={viewportRef}
-          onWheel={handleWheel}
-          onPointerDown={onPointerDown}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}
-        >
+        <GlassCard className={`flex-center ${styles.viewport}`} ref={viewportRef} onWheel={handleWheel} onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
           <div ref={innerRef} className={styles.inner}>
             {svgElements}
           </div>

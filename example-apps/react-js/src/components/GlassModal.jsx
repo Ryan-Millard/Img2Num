@@ -13,7 +13,7 @@ export default function GlassModal({
   showCloseButton = true,
   closeOnBackdropClick = true,
   className = "",
-  style = {}
+  style = {},
 }) {
   useEffect(() => {
     const handleKey = (e) => {
@@ -31,17 +31,10 @@ export default function GlassModal({
     }
   };
 
-  const width = size === "sm" ? "300px"
-                : size === "md" ? "500px"
-                : size === "lg" ? "800px"
-                : size;
+  const width = size === "sm" ? "300px" : size === "md" ? "500px" : size === "lg" ? "800px" : size;
 
   const modal = (
-    <div
-      className={styles.backdrop}
-      onClick={handleBackdropClick}
-      role="dialog"
-    >
+    <div className={styles.backdrop} onClick={handleBackdropClick} role="dialog">
       <GlassCard
         as="div"
         className={`${styles.modal} ${className}`}

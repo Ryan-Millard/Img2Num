@@ -37,8 +37,10 @@
 /* ── Screen-reader only ── */
 .srOnly {
   position: absolute;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
@@ -46,7 +48,7 @@
 }
 
 @media (min-width: 800px) {
-.wrapper {
-  justify-content: space-between;
-}
+  .wrapper {
+    justify-content: space-between;
+  }
 }

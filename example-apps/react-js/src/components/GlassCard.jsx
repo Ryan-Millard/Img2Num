@@ -1,9 +1,9 @@
-import { forwardRef } from 'react';
+import { forwardRef } from "react";
 import PropTypes from "prop-types";
 import styles from "./GlassCard.module.css";
 
 // eslint-disable-next-line no-unused-vars
-const GlassCard = forwardRef( ({ as: Tag = "div", children, ...rest }, ref) => (
+const GlassCard = forwardRef(({ as: Tag = "div", children, ...rest }, ref) => (
   <Tag {...rest} className={`text-center glass ${styles.card} ${rest.className || ""}`} ref={ref}>
     {children}
   </Tag>
