@@ -1,31 +1,29 @@
-# ===============================================================
-# @Krasner
-# Krasner is a core C/C++ and Python maintainer.
-# ---------------------------------------------------------------
-# C/C++ & building it
-/.clang-format                     @Krasner
-/core                              @Krasner
-/bindings                          @Krasner
-/.gitmodules                       @Krasner
-*.cpp                              @Krasner
-*.c                                @Krasner
-*.hpp                              @Krasner
-*.h                                @Krasner
-**/CMakeLists.txt                  @Krasner
-/.github/workflows/cmake-build.yml @Krasner
-/packages                          @Krasner
-/third_party                       @Krasner
-
-# WebGPU
-*.wgsl                             @Krasner
-
-# Python
-*.py                               @Krasner
-
-
-# ===============================================================
 # @Ryan-Millard
 # Ryan is the author and oversees most of the code in the project
 # ---------------------------------------------------------------
+# @Krasner
+# Krasner is a core C/C++ and Python maintainer.
+
+# C/C++ & building it
+/.clang-format                     @Ryan-Millard @Krasner
+/core                              @Ryan-Millard @Krasner
+/bindings                          @Ryan-Millard @Krasner
+/.gitmodules                       @Ryan-Millard @Krasner
+*.cpp                              @Ryan-Millard @Krasner
+*.c                                @Ryan-Millard @Krasner
+*.hpp                              @Ryan-Millard @Krasner
+*.h                                @Ryan-Millard @Krasner
+**/CMakeLists.txt                  @Ryan-Millard @Krasner
+/.github/workflows/cmake-build.yml @Ryan-Millard @Krasner
+/packages                          @Ryan-Millard @Krasner
+/third_party                       @Ryan-Millard @Krasner
+
+# WebGPU
+*.wgsl                             @Ryan-Millard @Krasner
+
+# Python
+*.py                               @Ryan-Millard @Krasner
+
+
 * @Ryan-Millard
-# Do not put code after @Ryan-Millard as it is the catch-all
+# Do not put code after this catch-all
