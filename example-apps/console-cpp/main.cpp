@@ -93,6 +93,5 @@ int main(int argc, char** argv) {
     delete[] img_data;
     delete[] out_data;
     delete[] out_labels;
-    delete[] res_svg;
     return exit_code;
 }
