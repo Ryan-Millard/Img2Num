@@ -210,12 +210,6 @@ void Graph::process_overlapping_edges() {
 void Graph::compute_contours() {
     // overlap edge pixels
     // then compute contours
-
-    std::set<std::pair<int, int>> adjusted_neighbors{};
-
-    constexpr int8_t dirs[8][2]{{1, 0}, {-1, 0},  {0, 1},  {0, -1},
-                                {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};
-
     auto t0 = std::chrono::steady_clock::now();
     process_overlapping_edges();
     auto t1 = std::chrono::steady_clock::now();
