@@ -13,7 +13,6 @@
 #include <set>
 #include <sstream>
 #include <vector>
-#include <chrono>
 
 #include "img2num.h"
 #include "internal/bezier.h"
@@ -194,29 +193,20 @@ char *labels_to_svg(uint8_t *data, int32_t *labels, const int width, const int h
     std::vector<int32_t> region_labels;
 
     // 1. enumerate regions and convert to Nodes
-    auto t0 = std::chrono::steady_clock::now();
     std::vector<Node_ptr> nodes;
     region_labeling(data, labels_vector, region_labels, width, height, nodes);
-    auto t1 = std::chrono::steady_clock::now();
-    std::cout << "region labeling: " << std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count() << std::endl;
     
     // 2. initialize Graph from all Nodes
     std::unique_ptr<std::vector<Node_ptr>> node_ptr =
         std::make_unique<std::vector<Node_ptr>>(std::move(nodes));
     Graph G(node_ptr, width, height);
 
-    t0 = std::chrono::steady_clock::now();
     // 3. Discover node adjacencies - add edges to Graph
     G.discover_edges(region_labels, width, height);
-    t1 = std::chrono::steady_clock::now();
-    std::cout << "discover edges: " << std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count() << std::endl;
-
+    
     // 4. Merge small area nodes until all nodes are minArea or larger
-    t0 = std::chrono::steady_clock::now();
     G.merge_small_area_nodes(min_area);
-    t1 = std::chrono::steady_clock::now();
-    std::cout << "merge small areas: " << std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count() << std::endl;
-
+    
     // 5. recolor image on new regions
     ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> results{width, height};
     for (auto &n : G.get_nodes()) {
@@ -230,11 +220,8 @@ char *labels_to_svg(uint8_t *data, int32_t *labels, const int width, const int h
 
     // 6. Contours
     // graph will manage computing contours
-    t0 = std::chrono::steady_clock::now();
     G.compute_contours();
-    t1 = std::chrono::steady_clock::now();
-    std::cout << "compute contours: " << std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count() << std::endl;
-
+    
     // accumulate all contours for svg export
     ColoredContours all_contours;
     for (auto &n : G.get_nodes()) {

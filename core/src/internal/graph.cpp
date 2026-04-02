@@ -4,7 +4,6 @@
 #include <iterator>
 #include <queue>
 #include <string>
-#include <chrono>
 
 #include "internal/Pixel.h"
 #include "internal/bezier.h"
@@ -210,21 +209,14 @@ void Graph::process_overlapping_edges() {
 void Graph::compute_contours() {
     // overlap edge pixels
     // then compute contours
-    auto t0 = std::chrono::steady_clock::now();
     process_overlapping_edges();
-    auto t1 = std::chrono::steady_clock::now();
-    std::cout << "edge adjust: " << std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count() << std::endl;
     // ask each Node to compute contours
-    t0 = std::chrono::steady_clock::now();
     for (const Node_ptr &n : get_nodes()) {
         if (n->area() == 0) continue;
         n->compute_contour();
     }
-    t1 = std::chrono::steady_clock::now();
-    std::cout << "recompute contours: " << std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count() << std::endl;
-
+    
     // smoothing
-    t0 = std::chrono::steady_clock::now();
     std::vector<std::vector<Point>> all_contours;
     for (const Node_ptr &n : get_nodes()) {
         if (n->area() == 0) continue;
@@ -254,8 +246,6 @@ void Graph::compute_contours() {
             j++;
         }
     }
-    t1 = std::chrono::steady_clock::now();
-    std::cout << "smooth contours: " << std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count() << std::endl;
 }
 
 void Graph::merge_small_area_nodes(const int32_t min_area) {
