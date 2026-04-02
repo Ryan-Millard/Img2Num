@@ -141,8 +141,6 @@ void Graph::process_overlapping_edges() {
     for (const Node_ptr &n : get_nodes()) {
         if (n->area() == 0) continue;
         
-        // Assuming you have a way to get the pixels of a node directly.
-        // If not, you can use your create_binary_image logic here just ONE time per node.
         for (auto &[_, p] : n->get_pixels()) {
             label_map[p.y * m_width + p.x] = n->id();
         }
