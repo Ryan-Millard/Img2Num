@@ -19,7 +19,7 @@ jobs:
           submodules: true
 
       - name: Run emcmake
-        run: emcmake cmake -B build-wasm/ .
+        run: emcmake cmake -DCMAKE_BUILD_TYPE=Release -B build-wasm/ .
 
       - name: Build using Emscripten
         run: cmake --build build-wasm/
