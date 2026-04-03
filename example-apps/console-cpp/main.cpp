@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
     const bool blur_save_success{stbi_write_png(out_path.c_str(), width, height, NUM_CHANNELS, img_data, width * NUM_CHANNELS) == 1 ? true : false};
     const bool kmeans_save_success{stbi_write_png(kmeans_path.c_str(), width, height, NUM_CHANNELS, out_data, width * NUM_CHANNELS) == 1 ? true : false};
     if (blur_save_success && kmeans_save_success) {
-        std::cout << "\n\nSUCCESS!\nThe below images have been saved:\n\t- " << out_path << "\n\t- " << kmeans_path << std::endl;
+        std::cout << "\n\nSUCCESS!\nThe below images have been saved:\n\t- " << out_path << "\n\t- " << kmeans_path << "\n\t- " << svg_path << std::endl;
     } else {
         std::cerr << "Failed to save images!" << std::endl;
         exit_code = 1;
