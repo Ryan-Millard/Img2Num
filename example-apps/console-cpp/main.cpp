@@ -72,13 +72,7 @@ int main(int argc, char** argv) {
     int exit_code{0};
     const bool blur_save_success{stbi_write_png(out_path.c_str(), width, height, NUM_CHANNELS, img_data, width * NUM_CHANNELS) == 1 ? true : false};
     const bool kmeans_save_success{stbi_write_png(kmeans_path.c_str(), width, height, NUM_CHANNELS, out_data, width * NUM_CHANNELS) == 1 ? true : false};
-    if (blur_save_success && kmeans_save_success) {
-        std::cout << "\n\nSUCCESS!\nThe below images have been saved:\n\t- " << out_path << "\n\t- " << kmeans_path << "\n\t- " << svg_path << std::endl;
-    } else {
-        std::cerr << "Failed to save images!" << std::endl;
-        exit_code = 1;
-    }
-
+    
     std::ofstream svgFile(svg_path);
     if (!svgFile.is_open()) {
         std::cerr << "Error: Could not open the file!" << std::endl;
@@ -87,6 +81,13 @@ int main(int argc, char** argv) {
     if (exit_code == 0) {
         svgFile << res_svg;
         svgFile.close();
+    }
+
+    if (blur_save_success && kmeans_save_success && (exit_code == 0)) {
+        std::cout << "\n\nSUCCESS!\nThe below images have been saved:\n\t- " << out_path << "\n\t- " << kmeans_path << "\n\t- " << svg_path << std::endl;
+    } else {
+        std::cerr << "Failed to save images!" << std::endl;
+        exit_code = 1;
     }
 
     stbi_image_free(image_data_original);
