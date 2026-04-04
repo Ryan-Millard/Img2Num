@@ -1,7 +1,7 @@
 import GlassModal from "@components/GlassModal";
 import GlassSwitch from "@components/GlassSwitch";
 import Tooltip from "@components/Tooltip";
-import { useState, useId, useEffect } from "react";
+import { useState, useId } from "react";
 import { Undo, Redo, Save, Eye, Brush, Printer, Download, Copy, RotateCcw, Share2, FileText, Expand } from "lucide-react";
 import styles from "./EditorControls.module.css";
 
@@ -9,19 +9,6 @@ const EditorControls = ({ svg, fileName, isColorMode = false, setIsColorMode = (
   const [modalOpen, setModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const switchId = useId();
-
-  const [svgUrl, setSvgUrl] = useState(null);
-  useEffect(() => {
-    if (!svg) {
-      setSvgUrl(null);
-      return;
-    }
-    const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    setSvgUrl(url);
-
-    return () => URL.revokeObjectURL(url);
-  }, [svg]);
 
   const copySvg = () => {
     navigator.clipboard.writeText(svg).then(() => {
@@ -79,7 +66,7 @@ const EditorControls = ({ svg, fileName, isColorMode = false, setIsColorMode = (
       <GlassModal isOpen={modalOpen} onClose={() => setModalOpen(false)} title="Save image" size="sm">
         <ul className={styles.actionList} role="list">
           <li>
-            <Tooltip content="Download the original SVG file">
+            <Tooltip position="top" content="Download the original SVG file">
               <button onClick={() => download(svg, `${fileName}.svg`, "image/svg+xml;charset=utf-8")} className={`flex-center gap-sm button ${styles.actionItem}`}>
                 <Download size={20} aria-hidden="true" />
                 <span>
@@ -90,7 +77,7 @@ const EditorControls = ({ svg, fileName, isColorMode = false, setIsColorMode = (
             </Tooltip>
           </li>
           <li>
-            <Tooltip content="Download SVG markup as a plain text file">
+            <Tooltip position="top" content="Download SVG markup as a plain text file">
               <button className={`flex-center gap-sm button ${styles.actionItem}`} onClick={() => download(svg, `${fileName}-raw.txt`, "text/plain")}>
                 <FileText size={20} aria-hidden="true" />
                 <span>
@@ -101,7 +88,7 @@ const EditorControls = ({ svg, fileName, isColorMode = false, setIsColorMode = (
             </Tooltip>
           </li>
           <li>
-            <Tooltip content={copied ? "Copied!" : "Copy SVG markup to clipboard"}>
+            <Tooltip position="top" content={copied ? "Copied!" : "Copy SVG markup to clipboard"}>
               <button className={`flex-center gap-sm button ${styles.actionItem}`} onClick={copySvg} aria-pressed={copied}>
                 <Copy size={20} aria-hidden="true" />
                 <span>
@@ -112,7 +99,7 @@ const EditorControls = ({ svg, fileName, isColorMode = false, setIsColorMode = (
             </Tooltip>
           </li>
           <li>
-            <Tooltip content="Open the browser print dialog">
+            <Tooltip position="top" content="Open the browser print dialog">
               <button className={`flex-center gap-sm button ${styles.actionItem}`} onClick={printSvg}>
                 <Printer size={20} aria-hidden="true" />
                 <span>
@@ -142,13 +129,13 @@ const EditorControls = ({ svg, fileName, isColorMode = false, setIsColorMode = (
         </div>
 
         <div className="flex-center gap-sm">
-          <Tooltip content="Save or export the image">
+          <Tooltip position="top" content="Save or export the image">
             <button className={`button flex-center gap-xs`} onClick={() => setModalOpen(true)} aria-haspopup="dialog">
               <Save size={20} aria-hidden="true" />
               Save
             </button>
           </Tooltip>
-          <Tooltip content="Share SVG with others">
+          <Tooltip position="top" content="Share SVG with others">
             <button className="button flex-center gap-xs" onClick={shareSvg}>
               <Share2 size={20} aria-hidden="true" />
               Share
@@ -157,22 +144,22 @@ const EditorControls = ({ svg, fileName, isColorMode = false, setIsColorMode = (
         </div>
 
         <div className="flex-center gap-sm" role="group" aria-label="History">
-          <Tooltip content="Reset all coloured shapes">
+          <Tooltip position="top" content="Reset all coloured shapes">
             <button className="button" onClick={onReset} aria-label="Reset all coloured shapes">
               <RotateCcw size={18} aria-hidden="true" />
             </button>
           </Tooltip>
-          <Tooltip content="Undo · Ctrl Z">
+          <Tooltip position="top" content="Undo · Ctrl Z">
             <button className="button" onClick={onUndo} aria-label="Undo last change">
               <Undo size={18} aria-hidden="true" />
             </button>
           </Tooltip>
-          <Tooltip content="Redo · Ctrl Y">
+          <Tooltip position="top" content="Redo · Ctrl Y">
             <button className="button" onClick={onRedo} aria-label="Redo last change">
               <Redo size={18} aria-hidden="true" />
             </button>
           </Tooltip>
-          <Tooltip content="Enter fullscreen">
+          <Tooltip position="top" content="Enter fullscreen">
             <button className="button" onClick={onFullscreen} aria-label="Enter fullscreen mode">
               <Expand size={18} aria-hidden="true" />
             </button>

@@ -14,7 +14,8 @@ import { useEffect, useRef, useCallback } from "react";
  * }}
  */
 export default function useFullscreen(initialRef) {
-  const ref = initialRef || useRef(document.documentElement);
+  const _fallbackRef = useRef(document.documentElement);
+  const ref = initialRef || _fallbackRef;
 
   const open = useCallback(() => {
     const elem = ref.current;
@@ -31,7 +32,7 @@ export default function useFullscreen(initialRef) {
     // Push state to detect back button
     window.history.pushState({}, "");
     window.addEventListener("popstate", close);
-  }, [ref]);
+  }, [ref, close]);
 
   const close = useCallback(() => {
     if (document.exitFullscreen) {

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import parse from "html-react-parser";
 import { useLocation } from "react-router-dom";
 import GlassCard from "@components/GlassCard";
@@ -14,7 +14,6 @@ const SHAPE_SELECTOR = "path,rect,circle,polygon,ellipse";
 export default function Editor() {
   const { state } = useLocation();
   const { svg } = state || {};
-  const { ref, toggle } = useFullscreen();
 
   const [svgElements] = useState(() => (svg ? parse(svg) : null));
   const [isColorMode, setIsColorMode] = useState(true);
@@ -79,7 +78,7 @@ export default function Editor() {
   };
 
   // Wheel zoom
-  const handleWheel = (e) => {
+  const handleWheel = useCallback((e) => {
     e.preventDefault();
 
     const delta = Math.sign(e.deltaY);
@@ -89,7 +88,7 @@ export default function Editor() {
       let nextScale = delta > 0 ? t.scale / step : t.scale * step;
       t.scale = clamp(nextScale, 0.25, 6);
     });
-  };
+  }, [updateTransform]);
   useEffect(() => {
     const el = viewportRef.current;
     if (!el) return;
@@ -97,7 +96,7 @@ export default function Editor() {
     el.addEventListener("wheel", handleWheel, { passive: false });
 
     return () => el.removeEventListener("wheel", handleWheel);
-  }, []);
+  }, [handleWheel]);
 
   const onPointerDown = (e) => {
     if (!viewportRef.current) return;
@@ -140,7 +139,7 @@ export default function Editor() {
     viewportRef.current.classList.add(styles.grabbing);
   };
 
-  const onPointerMove = (e) => {
+  const onPointerMove = useCallback((e) => {
     if (!pointerState.current.dragging) return;
 
     if (activePointersRef.current.has(e.pointerId)) {
@@ -194,7 +193,7 @@ export default function Editor() {
         t.ty += dy;
       });
     }
-  };
+  }, []);
 
   const onPointerUp = (e) => {
     const moved = pointerState.current.moved;
@@ -240,21 +239,21 @@ export default function Editor() {
     }
   };
 
-  const undo = () => {
+  const undo = useCallback(() => {
     if (historyIndex <= 0) return;
 
     const newIndex = historyIndex - 1;
     setHistoryIndex(newIndex);
     restoreHistory(history[newIndex]);
-  };
+  }, [history, historyIndex]);
 
-  const redo = () => {
+  const redo = useCallback(() => {
     if (historyIndex >= history.length - 1) return;
 
     const newIndex = historyIndex + 1;
     setHistoryIndex(newIndex);
     restoreHistory(history[newIndex]);
-  };
+}, [history, historyIndex]);
 
   const restoreHistory = (snapshot) => {
     const svgRoot = innerRef.current?.querySelector("svg");
