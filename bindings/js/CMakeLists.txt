@@ -1,65 +1,54 @@
-# =================================================================
-# JS/WASM binding using core object library
-# =================================================================
 cmake_minimum_required(VERSION 3.16)
 project(JSBindings LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Must be built with Emscripten
 if(NOT EMSCRIPTEN)
     message(FATAL_ERROR "Emscripten is required to build JS bindings.")
 endif()
 
-# Collect binding sources
-file(GLOB_RECURSE BINDING_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-file(GLOB_RECURSE BINDING_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
+file(GLOB_RECURSE BINDING_SRC CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
-# Build WASM module
 add_executable(img2num_wasm ${BINDING_SRC})
 
-# Link core library object files
 target_link_libraries(img2num_wasm PRIVATE CImg2Num)
 
-# Include directories
 target_include_directories(img2num_wasm PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
 # Emscripten options
 set(COMMON_FLAGS
-    "SHELL:-s MODULARIZE=1"
-    "SHELL:-s EXPORT_ES6=1"
-    "SHELL:-s ENVIRONMENT=web,worker"
-    "SHELL:-s EXPORTED_FUNCTIONS=['_malloc','_free']"
-    "SHELL:-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPU8','HEAP32','UTF8ToString','stringToUTF8','lengthBytesUTF8']"
-    "SHELL:-s INITIAL_MEMORY=3072MB"
-    "SHELL:-s MAXIMUM_MEMORY=4096MB"
-    "SHELL:-s ALLOW_MEMORY_GROWTH=1"
-    "SHELL:-s EXPORT_NAME=createImg2NumModule"
-    "SHELL:-s ASYNCIFY=1"
-    # "SHELL:-s ASYNCIFY_STACK_SIZE=1GB" # <-- Increases stack buffer to 64KB
+    "SHELL:-sMODULARIZE=1"
+    "SHELL:-sEXPORT_ES6=1"
+    "SHELL:-sENVIRONMENT=web,worker"
+    "SHELL:-sEXPORTED_FUNCTIONS=['_malloc','_free']"
+    "SHELL:-sEXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPU8','HEAP32','UTF8ToString','stringToUTF8','lengthBytesUTF8']"
+    "SHELL:-sINITIAL_MEMORY=2GB"
+    "SHELL:-sMAXIMUM_MEMORY=4GB"
+    "SHELL:-sALLOW_MEMORY_GROWTH=1"
+    "SHELL:-sEXPORT_NAME=createImg2NumModule"
+    "SHELL:-sASYNCIFY=1"
+    "SHELL:-sSTACK_OVERFLOW_CHECK=1"
+    "SHELL:-sABORTING_MALLOC=0"
+    "SHELL:-sNO_DISABLE_EXCEPTION_CATCHING"
     "SHELL:--use-port=emdawnwebgpu"
-    "SHELL:-s STACK_OVERFLOW_CHECK=1"
-    "SHELL:-s ABORTING_MALLOC=0"
 )
 
-target_compile_options(img2num_wasm PRIVATE -msimd128 "SHELL:-s ALLOW_MEMORY_GROWTH=1")
-# "--use-port=emdawnwebgpu")
-target_link_options(img2num_wasm PRIVATE ${COMMON_FLAGS} -msimd128)
-# "--use-port=emdawnwebgpu")
+target_compile_options(img2num_wasm PRIVATE -msimd128 -fexceptions)
 
-# Build type flags
+target_link_options(img2num_wasm PRIVATE ${COMMON_FLAGS} -msimd128)
+
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_options(img2num_wasm PRIVATE -O0 -g4 -fwasm-exceptions "-fsanitize=alignment" "SHELL:-s ASSERTIONS=2")
-    target_link_options(img2num_wasm PRIVATE "SHELL:-s ASSERTIONS=2" -g4 -fwasm-exceptions "-fsanitize=alignment")
+    target_compile_options(img2num_wasm PRIVATE -O0 -gsource-map -fsanitize=alignment)
+    target_link_options(img2num_wasm PRIVATE -gsource-map -fsanitize=alignment)
 else()
-    target_compile_options(img2num_wasm PRIVATE -O3 -g4)
-    target_link_options(img2num_wasm PRIVATE "SHELL:-s SINGLE_FILE=0")
+    # -Oz: smallest size. This is critical for websites as WASM is loaded almost every time
+    target_compile_options(img2num_wasm PRIVATE -Oz)
+    target_link_options(img2num_wasm PRIVATE "SHELL:-sSINGLE_FILE=0")
 endif()
 
-# Output location
 set_target_properties(img2num_wasm PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/packages/js/build-wasm"
     OUTPUT_NAME "index"
@@ -67,3 +56,5 @@ set_target_properties(img2num_wasm PROPERTIES
 )
 
 message(STATUS "WASM module configured: img2num_wasm")
+message(STATUS "Build output directory: ${CMAKE_SOURCE_DIR}/packages/js/build-wasm")
+message(STATUS "Generated JS file: ${CMAKE_SOURCE_DIR}/packages/js/build-wasm/index.js")

@@ -9,6 +9,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(IMG2NUM_BUILD_EXAMPLES "Build example applications" ON)
 
+# Force a safe default to avoid the weirdness of CMake's `None`
+if(NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
+  message(STATUS "CMAKE_BUILD_TYPE unspecified - defaulting to \"Release\"")
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build" FORCE)
+endif()
+
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+
 # Core library
 add_subdirectory(core)
 
