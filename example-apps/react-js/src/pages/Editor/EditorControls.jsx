@@ -1,5 +1,7 @@
+import { jsPDF } from "jspdf";
 import GlassModal from "@components/GlassModal";
 import GlassSwitch from "@components/GlassSwitch";
+import GlassCard from "@components/GlassCard";
 import Tooltip from "@components/Tooltip";
 import { useState, useId } from "react";
 import { Undo, Redo, Save, Eye, Brush, Printer, Download, Copy, RotateCcw, Share2, FileText, Expand } from "lucide-react";
@@ -55,6 +57,44 @@ const EditorControls = ({ svg, fileName, isColorMode = false, setIsColorMode = (
     }
   };
 
+  // Raster export (PNG / JPEG) — no dependencies needed
+  const exportRaster = (mimeType) => {
+    const img = new Image();
+    const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.naturalWidth || 800;
+      canvas.height = img.naturalHeight || 600;
+      canvas.getContext("2d").drawImage(img, 0, 0);
+      canvas.toBlob((pngBlob) => {
+        const ext = mimeType === "image/jpeg" ? "jpg" : "png";
+        download(pngBlob, `${fileName}.${ext}`, mimeType);
+        URL.revokeObjectURL(url);
+      }, mimeType);
+    };
+    img.src = url;
+  };
+
+  // PDF export — using jsPDF (lightweight, ~200 kB gzipped)
+  const exportPDF = () => {
+    const img = new Image();
+    const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    img.onload = () => {
+      const w = img.naturalWidth || 800;
+      const h = img.naturalHeight || 600;
+      const pdf = new jsPDF({ orientation: w > h ? "landscape" : "portrait", unit: "px", format: [w, h] });
+      const canvas = document.createElement("canvas");
+      canvas.width = w; canvas.height = h;
+      canvas.getContext("2d").drawImage(img, 0, 0);
+      pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, w, h);
+      pdf.save(`${fileName}.pdf`);
+      URL.revokeObjectURL(url);
+    };
+    img.src = url;
+  };
+
   if (!svg) return null;
 
   return (
@@ -63,56 +103,104 @@ const EditorControls = ({ svg, fileName, isColorMode = false, setIsColorMode = (
         {copied ? "SVG copied to clipboard." : ""}
       </div>
 
-      <GlassModal isOpen={modalOpen} onClose={() => setModalOpen(false)} title="Save image" size="sm">
-        <ul className={styles.actionList} role="list">
-          <li>
-            <Tooltip position="top" content="Download the original SVG file">
-              <button onClick={() => download(svg, `${fileName}.svg`, "image/svg+xml;charset=utf-8")} className={`flex-center gap-sm button ${styles.actionItem}`}>
-                <Download size={20} aria-hidden="true" />
-                <span>
-                  <big>Original SVG</big>
-                  <small>Download the .svg file</small>
-                </span>
-              </button>
-            </Tooltip>
-          </li>
-          <li>
-            <Tooltip position="top" content="Download SVG markup as a plain text file">
-              <button className={`flex-center gap-sm button ${styles.actionItem}`} onClick={() => download(svg, `${fileName}-raw.txt`, "text/plain")}>
-                <FileText size={20} aria-hidden="true" />
-                <span>
-                  <big>Raw text file</big>
-                  <small>Download SVG as .txt</small>
-                </span>
-              </button>
-            </Tooltip>
-          </li>
-          <li>
-            <Tooltip position="top" content={copied ? "Copied!" : "Copy SVG markup to clipboard"}>
-              <button className={`flex-center gap-sm button ${styles.actionItem}`} onClick={copySvg} aria-pressed={copied}>
-                <Copy size={20} aria-hidden="true" />
-                <span>
-                  <big>{copied ? "Copied!" : "Copy SVG code"}</big>
-                  <small>Paste anywhere as markup</small>
-                </span>
-              </button>
-            </Tooltip>
-          </li>
-          <li>
-            <Tooltip position="top" content="Open the browser print dialog">
-              <button className={`flex-center gap-sm button ${styles.actionItem}`} onClick={printSvg}>
-                <Printer size={20} aria-hidden="true" />
-                <span>
-                  <big>Print</big>
-                  <small>Open print dialog</small>
-                </span>
-              </button>
-            </Tooltip>
-          </li>
-        </ul>
+      <GlassModal isOpen={modalOpen} className="flex-column gap-md" onClose={() => setModalOpen(false)} title="Save image">
+        <GlassCard className={styles.modalGroupContainer}>
+          <h4>Export</h4>
+          <ul className={styles.actionList} role="list">
+            <li>
+              <Tooltip position="top" content="Download the original SVG file">
+                <button onClick={() => download(svg, `${fileName}.svg`, "image/svg+xml;charset=utf-8")} className={`flex-center gap-sm button ${styles.actionItem}`}>
+                  <Download size={20} aria-hidden="true" />
+                  <span>
+                    <big>Original SVG</big>
+                    <small>Download the .svg file</small>
+                  </span>
+                </button>
+              </Tooltip>
+            </li>
+            <li>
+              <Tooltip position="top" content="Download PNG">
+                <button className={`flex-center gap-sm button ${styles.actionItem}`} onClick={() => exportRaster("png")}>
+                  <Download size={20} aria-hidden="true" />
+                  <span>
+                    <big>PNG</big>
+                    <small>Download as a .png</small>
+                  </span>
+                </button>
+              </Tooltip>
+            </li>
+            <li>
+              <Tooltip position="top" content="Download JPG">
+                <button className={`flex-center gap-sm button ${styles.actionItem}`} onClick={() => exportRaster("jpg")}>
+                  <Download size={20} aria-hidden="true" />
+                  <span>
+                    <big>JPG</big>
+                    <small>Download as a .jpg</small>
+                  </span>
+                </button>
+              </Tooltip>
+            </li>
+            <li>
+              <Tooltip position="top" content="Download PDF">
+                <button className={`flex-center gap-sm button ${styles.actionItem}`} onClick={() => exportPDF()}>
+                  <Download size={20} aria-hidden="true" />
+                  <span>
+                    <big>PDF</big>
+                    <small>Download as a .pdf</small>
+                  </span>
+                </button>
+              </Tooltip>
+            </li>
+          </ul>
+        </GlassCard>
+
+        <GlassCard className={styles.modalGroupContainer}>
+          <h4>Clipboard</h4>
+          <ul className={styles.actionList} role="list">
+            <li>
+              <Tooltip position="top" content={copied ? "Copied!" : "Copy SVG markup to clipboard"}>
+                <button className={`flex-center gap-sm button ${styles.actionItem}`} onClick={copySvg} aria-pressed={copied}>
+                  <Copy size={20} aria-hidden="true" />
+                  <span>
+                    <big>{copied ? "Copied!" : "Copy SVG code"}</big>
+                    <small>Paste anywhere as markup</small>
+                  </span>
+                </button>
+              </Tooltip>
+            </li>
+          </ul>
+        </GlassCard>
+
+        <GlassCard className={styles.modalGroupContainer}>
+          <h4>Other</h4>
+          <ul className={styles.actionList} role="list">
+            <li>
+              <Tooltip position="top" content="Download SVG as a text file">
+                <button className={`flex-center gap-sm button ${styles.actionItem}`} onClick={() => download(svg, `${fileName}-raw.txt`, "text/plain")}>
+                  <FileText size={20} aria-hidden="true" />
+                  <span>
+                    <big>Raw text file</big>
+                    <small>Download SVG as .txt</small>
+                  </span>
+                </button>
+              </Tooltip>
+            </li>
+            <li>
+              <Tooltip position="top" content="Open the browser print dialog">
+                <button className={`flex-center gap-sm button ${styles.actionItem}`} onClick={printSvg}>
+                  <Printer size={20} aria-hidden="true" />
+                  <span>
+                    <big>Print</big>
+                    <small>Open print dialog</small>
+                  </span>
+                </button>
+              </Tooltip>
+            </li>
+          </ul>
+        </GlassCard>
       </GlassModal>
 
-      <div className={`container flex-center flex-wrap-wrap gap-xl ${styles.wrapper}`} role="toolbar" aria-label="Editor actions">
+      <div className={`container flex-center flex-wrap-wrap gap-md ${styles.wrapper}`} role="toolbar" aria-label="Editor actions">
         <div className={`flex-center gap-sm ${styles.switchWrapper}`}>
           <GlassSwitch
             id={switchId}

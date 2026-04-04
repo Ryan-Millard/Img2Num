@@ -12,11 +12,16 @@
     display: none;
   }
 }
+@media screen and (max-width: 666px) {
+  .switchWrapper {
+    justify-content: center;
+  }
+}
 
 /* ── Modal action list ── */
 .actionList {
   list-style: none;
-  margin: var(--spacing-md);
+  margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -61,5 +66,15 @@
 @media (min-width: 800px) {
   .wrapper {
     justify-content: space-between;
+  }
+}
+
+.modalGroupContainer {
+  padding: var(--spacing-md);
+  display: grid;
+  gap: var(--spacing-sm);
+  h4 {
+    text-transform: uppercase;
+    margin: 0;
   }
 }
