@@ -140,7 +140,7 @@ void Graph::process_overlapping_edges() {
 
     for (const Node_ptr &n : get_nodes()) {
         if (n->area() == 0) continue;
-        
+
         for (auto &[_, p] : n->get_pixels()) {
             label_map[p.y * m_width + p.x] = n->id();
         }
@@ -170,7 +170,6 @@ void Graph::process_overlapping_edges() {
 
                 // Is it a neighbor? AND have we not processed this pairing yet?
                 if (n_val != 0 && n_val != val && val < n_val) {
-                    
                     bool is_too_thin = false;
 
                     // Check around the neighbor pixel for a 3rd region (pinching)
@@ -181,16 +180,18 @@ void Graph::process_overlapping_edges() {
                         if (mx < 0 || mx >= m_width || my < 0 || my >= m_height) continue;
 
                         int32_t m_val = label_map[my * m_width + mx];
-                        
+
                         if (m_val != 0 && m_val != val && m_val != n_val) {
                             is_too_thin = true;
-                            break; // CRITICAL: Stop checking immediately once proven thin!
+                            break;  // CRITICAL: Stop checking immediately once proven thin!
                         }
                     }
 
                     if (is_too_thin) {
                         // Give our pixel to the neighbor
-                        Node_ptr neighbor_node = m_nodes->at(m_node_ids[n_val]); // get_node_by_id(n_val); // Assuming you have this lookup
+                        Node_ptr neighbor_node =
+                            m_nodes->at(m_node_ids[n_val]);  // get_node_by_id(n_val); // Assuming
+                                                             // you have this lookup
                         if (neighbor_node) {
                             neighbor_node->add_edge_pixel(XY{x, y});
                         }
@@ -213,7 +214,7 @@ void Graph::compute_contours() {
         if (n->area() == 0) continue;
         n->compute_contour();
     }
-    
+
     // smoothing
     std::vector<std::vector<Point>> all_contours;
     for (const Node_ptr &n : get_nodes()) {
@@ -256,7 +257,7 @@ void Graph::merge_small_area_nodes(const int32_t min_area) {
                 std::copy(n->edges().begin(), n->edges().end(), std::back_inserter(neighbors));
 
                 ImageLib::RGBPixel<uint8_t> col = n->color();
-                
+
                 Node_ptr best_neighbor = nullptr;
                 float best_score = std::numeric_limits<float>::max();
                 for (const Node_ptr &ne : n->edges()) {
@@ -271,8 +272,10 @@ void Graph::merge_small_area_nodes(const int32_t min_area) {
                 }
 
                 // no valid neighbor found, skip this node
-                if (!best_neighbor) { continue; }
-                
+                if (!best_neighbor) {
+                    continue;
+                }
+
                 if (best_neighbor->area() >= n->area()) {
                     merge_nodes(best_neighbor, n);
                 } else {

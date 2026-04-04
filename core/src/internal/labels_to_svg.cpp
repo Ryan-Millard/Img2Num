@@ -195,7 +195,7 @@ char *labels_to_svg(uint8_t *data, int32_t *labels, const int width, const int h
     // 1. enumerate regions and convert to Nodes
     std::vector<Node_ptr> nodes;
     region_labeling(data, labels_vector, region_labels, width, height, nodes);
-    
+
     // 2. initialize Graph from all Nodes
     std::unique_ptr<std::vector<Node_ptr>> node_ptr =
         std::make_unique<std::vector<Node_ptr>>(std::move(nodes));
@@ -203,10 +203,10 @@ char *labels_to_svg(uint8_t *data, int32_t *labels, const int width, const int h
 
     // 3. Discover node adjacencies - add edges to Graph
     G.discover_edges(region_labels, width, height);
-    
+
     // 4. Merge small area nodes until all nodes are minArea or larger
     G.merge_small_area_nodes(min_area);
-    
+
     // 5. recolor image on new regions
     ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> results{width, height};
     for (auto &n : G.get_nodes()) {
@@ -221,7 +221,7 @@ char *labels_to_svg(uint8_t *data, int32_t *labels, const int width, const int h
     // 6. Contours
     // graph will manage computing contours
     G.compute_contours();
-    
+
     // accumulate all contours for svg export
     ColoredContours all_contours;
     for (auto &n : G.get_nodes()) {

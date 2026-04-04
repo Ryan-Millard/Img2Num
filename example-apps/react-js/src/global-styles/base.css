@@ -4,7 +4,8 @@
   box-sizing: border-box;
 }
 
-body {
+body,
+:not(:root):fullscreen::backdrop {
   margin: 0;
   padding: var(--spacing-lg);
   color: var(--color-text);
@@ -60,6 +61,11 @@ img {
 }
 
 /* General link style */
+button.anchor-style {
+  padding: auto;
+  background: none;
+  border: none;
+}
 a,
 .anchor-style {
   color: var(--color-primary);
@@ -69,6 +75,7 @@ a,
     text-decoration 0.3s;
   cursor: pointer;
   text-decoration: underline;
+  cursor: pointer;
 }
 
 /* Hover/focus states */
