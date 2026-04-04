@@ -192,56 +192,57 @@
 \DoxyCodeLine{\Hypertarget{gpu_8h_source_l00188}00188\ \ \ \ \ \ \ \ \ deviceDesc.SetDeviceLostCallback(}
 \DoxyCodeLine{\Hypertarget{gpu_8h_source_l00189}00189\ \ \ \ \ \ \ \ \ \ \ \ \ wgpu::CallbackMode::AllowProcessEvents,}
 \DoxyCodeLine{\Hypertarget{gpu_8h_source_l00190}00190\ \ \ \ \ \ \ \ \ \ \ \ \ [](\textcolor{keyword}{const}\ wgpu::Device\&,\ wgpu::DeviceLostReason\ reason,\ wgpu::StringView\ msg)\ \{}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00191}00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ err\_msg\ =\ (msg.data\ \&\&\ msg.length\ >\ 0)\ ?\ std::string(msg.data,\ msg.length)}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00192}00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \textcolor{stringliteral}{"{}Unknown\ device\ lost\ reason"{}};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00193}00193\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}[DEVICE\ LOST]\ Reason:\ "{}}\ <<\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(reason)}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00194}00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}\ Msg:\ "{}}\ <<\ err\_msg\ <<\ std::endl;}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00195}00195\ \ \ \ \ \ \ \ \ \ \ \ \ \});}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00196}00196\ }
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00197}00197\ \ \ \ \ \ \ \ \ adapter.RequestDevice(}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00198}00198\ \ \ \ \ \ \ \ \ \ \ \ \ \&deviceDesc,}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00199}00199\ \ \ \ \ \ \ \ \ \ \ \ \ wgpu::CallbackMode::AllowProcessEvents,\ \ \textcolor{comment}{//\ <-\/-\/-\/\ ALLOW\ EVENTS}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00200}00200\ \ \ \ \ \ \ \ \ \ \ \ \ [\textcolor{keyword}{this}](wgpu::RequestDeviceStatus\ status,\ wgpu::Device\ d,\ wgpu::StringView\ msg)\ \{}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00201}00201\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (status\ ==\ wgpu::RequestDeviceStatus::Success)\ \{}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00202}00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ device\ =\ std::move(d);}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00203}00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Device\ Acquired"{}}\ <<\ std::endl;}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00204}00204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00205}00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Device\ Failed:\ "{}}\ <<\ msg.data\ <<\ std::endl;}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00206}00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00207}00207\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ device\_ready\ =\ \textcolor{keyword}{true};\ \ \textcolor{comment}{//\ Unblock\ the\ loop}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00208}00208\ \ \ \ \ \ \ \ \ \ \ \ \ \});}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00209}00209\ }
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00210}00210\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ WAIT\ LOOP}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00211}00211\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!device\_ready)\ \{}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00212}00212\ \ \ \ \ \ \ \ \ \ \ \ \ instance.ProcessEvents();}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00213}00213\ \textcolor{preprocessor}{\#if\ defined(\_\_EMSCRIPTEN\_\_)}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00214}00214\ \ \ \ \ \ \ \ \ \ \ \ \ emscripten\_sleep(10);}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00215}00215\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00216}00216\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00217}00217\ }
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00218}00218\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!device)\ \{}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00219}00219\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Fatal:\ Could\ not\ get\ WebGPU\ Device."{}}\ <<\ std::endl;}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00220}00220\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00221}00221\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00222}00222\ }
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00223}00223\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!validate\_device())\ \{}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00224}00224\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Fatal:\ Could\ not\ get\ WebGPU\ Device."{}}\ <<\ std::endl;}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00225}00225\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00226}00226\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00227}00227\ }
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00228}00228\ \ \ \ \ \ \ \ \ queue\ =\ device.GetQueue();}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00229}00229\ \ \ \ \ \ \ \ \ gpu\_initialized\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00230}00230\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}GPU\ Fully\ Initialized."{}}\ <<\ std::endl;}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00231}00231\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00232}00232\ }
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00233}00233\ \ \ \ \ \mbox{\hyperlink{classGPU}{\string~GPU}}()\ \{}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00234}00234\ \ \ \ \ \ \ \ \ device\ =\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00235}00235\ \ \ \ \ \ \ \ \ adapter\ =\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00236}00236\ \ \ \ \ \ \ \ \ queue\ =\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00237}00237\ \ \ \ \ \ \ \ \ instance\ =\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00238}00238\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00239}00239\ \};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00240}00240\ }
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00241}00241\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00191}00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ err\_msg\ =\ (msg.data\ \&\&\ msg.length\ >\ 0)}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00192}00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ std::string(msg.data,\ msg.length)}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00193}00193\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \textcolor{stringliteral}{"{}Unknown\ device\ lost\ reason"{}};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00194}00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}[DEVICE\ LOST]\ Reason:\ "{}}\ <<\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(reason)}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00195}00195\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}\ Msg:\ "{}}\ <<\ err\_msg\ <<\ std::endl;}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00196}00196\ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00197}00197\ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00198}00198\ \ \ \ \ \ \ \ \ adapter.RequestDevice(}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00199}00199\ \ \ \ \ \ \ \ \ \ \ \ \ \&deviceDesc,}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00200}00200\ \ \ \ \ \ \ \ \ \ \ \ \ wgpu::CallbackMode::AllowProcessEvents,\ \ \textcolor{comment}{//\ <-\/-\/-\/\ ALLOW\ EVENTS}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00201}00201\ \ \ \ \ \ \ \ \ \ \ \ \ [\textcolor{keyword}{this}](wgpu::RequestDeviceStatus\ status,\ wgpu::Device\ d,\ wgpu::StringView\ msg)\ \{}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00202}00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (status\ ==\ wgpu::RequestDeviceStatus::Success)\ \{}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00203}00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ device\ =\ std::move(d);}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00204}00204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Device\ Acquired"{}}\ <<\ std::endl;}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00205}00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00206}00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Device\ Failed:\ "{}}\ <<\ msg.data\ <<\ std::endl;}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00207}00207\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00208}00208\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ device\_ready\ =\ \textcolor{keyword}{true};\ \ \textcolor{comment}{//\ Unblock\ the\ loop}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00209}00209\ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00210}00210\ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00211}00211\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ WAIT\ LOOP}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00212}00212\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!device\_ready)\ \{}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00213}00213\ \ \ \ \ \ \ \ \ \ \ \ \ instance.ProcessEvents();}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00214}00214\ \textcolor{preprocessor}{\#if\ defined(\_\_EMSCRIPTEN\_\_)}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00215}00215\ \ \ \ \ \ \ \ \ \ \ \ \ emscripten\_sleep(10);}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00216}00216\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00217}00217\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00218}00218\ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00219}00219\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!device)\ \{}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00220}00220\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Fatal:\ Could\ not\ get\ WebGPU\ Device."{}}\ <<\ std::endl;}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00221}00221\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00222}00222\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00223}00223\ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00224}00224\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!validate\_device())\ \{}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00225}00225\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Fatal:\ Could\ not\ get\ WebGPU\ Device."{}}\ <<\ std::endl;}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00226}00226\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00227}00227\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00228}00228\ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00229}00229\ \ \ \ \ \ \ \ \ queue\ =\ device.GetQueue();}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00230}00230\ \ \ \ \ \ \ \ \ gpu\_initialized\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00231}00231\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}GPU\ Fully\ Initialized."{}}\ <<\ std::endl;}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00232}00232\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00233}00233\ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00234}00234\ \ \ \ \ \mbox{\hyperlink{classGPU}{\string~GPU}}()\ \{}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00235}00235\ \ \ \ \ \ \ \ \ device\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00236}00236\ \ \ \ \ \ \ \ \ adapter\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00237}00237\ \ \ \ \ \ \ \ \ queue\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00238}00238\ \ \ \ \ \ \ \ \ instance\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00239}00239\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00240}00240\ \};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00241}00241\ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00242}00242\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}
