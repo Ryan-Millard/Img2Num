@@ -17,6 +17,17 @@ export default function useFullscreen(initialRef) {
   const _fallbackRef = useRef(document.documentElement);
   const ref = initialRef || _fallbackRef;
 
+  const close = useCallback(() => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+    window.removeEventListener("popstate", close);
+  }, []);
+
   const open = useCallback(() => {
     const elem = ref.current;
     if (!elem) return;
@@ -33,17 +44,6 @@ export default function useFullscreen(initialRef) {
     window.history.pushState({}, "");
     window.addEventListener("popstate", close);
   }, [ref, close]);
-
-  const close = useCallback(() => {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    }
-    window.removeEventListener("popstate", close);
-  }, []);
 
   const toggle = useCallback(() => {
     if (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
