@@ -234,217 +234,157 @@ $(document).ready(function(){initNavTree('graph_8cpp_source.html',''); initResiz
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    }</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>}</div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="keywordtype">void</span> Graph::compute_contours() {</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="comment">// overlap edge pixels</span></div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="comment">// then compute contours</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="keywordtype">void</span> Graph::process_overlapping_edges() {</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="comment">// 1. Build the Global Label Map ONCE (0 = background, else = node-&gt;id())</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    std::vector&lt;int32_t&gt; label_map(m_width * m_height, 0);</div>
 <div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    std::set&lt;std::pair&lt;int, int&gt;&gt; adjusted_neighbors{};</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="keyword">constexpr</span> int8_t dirs[8][2]{{1, 0}, {-1, 0},  {0, 1},  {0, -1},</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>                                {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr &amp;n : get_nodes()) {</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr &amp;n : get_nodes()) {</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;[_, p] : n-&gt;get_pixels()) {</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>            label_map[p.y * m_width + p.x] = n-&gt;id();</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>        }</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    }</div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        std::vector&lt;std::vector&lt;uint8_t&gt;&gt; full_neighborhood;</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        std::vector&lt;std::array&lt;int32_t, 4&gt;&gt; xywh;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    <span class="keyword">constexpr</span> int8_t dirs[8][2]{{1, 0}, {-1, 0},  {0, 1},  {0, -1},</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>                                {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        std::vector&lt;uint8_t&gt; node_binary;</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        std::array&lt;int32_t, 4&gt; xywh0 = n-&gt;create_binary_image(node_binary);</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        full_neighborhood.push_back(node_binary);</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        xywh.push_back(xywh0);</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        std::vector&lt;Node_ptr&gt; considered_neigbors;</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;neighbor : n-&gt;edges()) {</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>            <span class="keywordflow">if</span> (neighbor-&gt;area() == 0) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>            <span class="comment">// check if this neighbor pairing has already been addressed</span></div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>            std::pair&lt;int, int&gt; id1 = std::make_pair(n-&gt;id(), neighbor-&gt;id());</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>            std::pair&lt;int, int&gt; id2 = std::make_pair(neighbor-&gt;id(), n-&gt;id());</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>            <span class="keyword">auto</span> _end{adjusted_neighbors.end()};</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>            <span class="keyword">auto</span> _it1{adjusted_neighbors.find(id1)};</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>            <span class="keyword">auto</span> _it2{adjusted_neighbors.find(id2)};</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="comment">// 2. Iterate directly over the pixels of each node</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr &amp;n : get_nodes()) {</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        int32_t val = n-&gt;id();</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;[_, p] : n-&gt;get_pixels()) {</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>            <span class="keywordtype">int</span> x = p.x;</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>            <span class="keywordtype">int</span> y = p.y;</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>            <span class="comment">// Check 8 neighbors in the global map</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; 8; ++k) {</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>                <span class="keywordtype">int</span> nx = x + dirs[k][0];</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>                <span class="keywordtype">int</span> ny = y + dirs[k][1];</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>                <span class="comment">// Fast boundary check (replaces std::clamp)</span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>                <span class="keywordflow">if</span> (nx &lt; 0 || nx &gt;= m_width || ny &lt; 0 || ny &gt;= m_height) <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>            <span class="keywordflow">if</span> (_it1 != _end || _it2 != _end) {</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>                <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>            }</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>            considered_neigbors.push_back(neighbor);</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>            std::vector&lt;uint8_t&gt; neighbor_binary;</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>            std::array&lt;int32_t, 4&gt; xywh1 = neighbor-&gt;create_binary_image(neighbor_binary);</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>            full_neighborhood.push_back(neighbor_binary);</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>            xywh.push_back(xywh1);</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>            adjusted_neighbors.insert(id1);</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>        }</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>                int32_t n_val = label_map[ny * m_width + nx];</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>                <span class="comment">// Is it a neighbor? AND have we not processed this pairing yet?</span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>                <span class="keywordflow">if</span> (n_val != 0 &amp;&amp; n_val != val &amp;&amp; val &lt; n_val) {</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>                    </div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>                    <span class="keywordtype">bool</span> is_too_thin = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>                    <span class="comment">// Check around the neighbor pixel for a 3rd region (pinching)</span></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>                    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> mk = 0; mk &lt; 8; ++mk) {</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>                        <span class="keywordtype">int</span> mx = nx + dirs[mk][0];</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>                        <span class="keywordtype">int</span> my = ny + dirs[mk][1];</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>                        <span class="keywordflow">if</span> (mx &lt; 0 || mx &gt;= m_width || my &lt; 0 || my &gt;= m_height) <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        <span class="comment">// address overlaps</span></div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        std::vector&lt;uint8_t&gt; neighborhood;</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        std::array&lt;int32_t, 4&gt; bounds = {std::numeric_limits&lt;int&gt;::max(),</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>                                         std::numeric_limits&lt;int&gt;::max(), -1, -1};</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;_xywh : xywh) {</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>            <span class="keywordflow">if</span> (_xywh[0] &lt; bounds[0]) {</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                bounds[0] = _xywh[0];</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>            }  <span class="comment">// xmin</span></div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>            <span class="keywordflow">if</span> (_xywh[1] &lt; bounds[1]) {</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                bounds[1] = _xywh[1];</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>            }  <span class="comment">// ymin</span></div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>            <span class="keywordflow">if</span> (_xywh[2] + _xywh[0] - 1 &gt; bounds[2]) {</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>                bounds[2] = _xywh[2] + _xywh[0] - 1;</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>            }  <span class="comment">// xmax</span></div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>            <span class="keywordflow">if</span> (_xywh[3] + _xywh[1] - 1 &gt; bounds[3]) {</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>                bounds[3] = _xywh[3] + _xywh[1] - 1;</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>            }  <span class="comment">// ymax</span></div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>        }</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>        bounds[2] = bounds[2] - bounds[0] + 1;  <span class="comment">// w</span></div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        bounds[3] = bounds[3] - bounds[1] + 1;  <span class="comment">// h</span></div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>        <span class="comment">// build joined neighborhood map</span></div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        neighborhood.resize(</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>            <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(bounds[2]) * <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(bounds[3]), 0);</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; full_neighborhood.size(); ++i) {</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; xywh[i][3]; ++y) {</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; xywh[i][2]; ++x) {</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>                    <span class="keywordtype">int</span> global_y = y + xywh[i][1] - bounds[1];</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>                    <span class="keywordtype">int</span> global_x = x + xywh[i][0] - bounds[0];</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>                    uint8_t val = full_neighborhood[i][y * xywh[i][2] + x];</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>                    <span class="keywordflow">if</span> (val != 0) {</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>                        neighborhood[global_y * bounds[2] + global_x] = (i + 1);</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>                    }</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>                }</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>            }</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        }</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>                        int32_t m_val = label_map[my * m_width + mx];</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>                        </div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>                        <span class="keywordflow">if</span> (m_val != 0 &amp;&amp; m_val != val &amp;&amp; m_val != n_val) {</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>                            is_too_thin = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>                            <span class="keywordflow">break</span>; <span class="comment">// CRITICAL: Stop checking immediately once proven thin!</span></div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>                        }</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                    }</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>                    <span class="keywordflow">if</span> (is_too_thin) {</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                        <span class="comment">// Give our pixel to the neighbor</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>                        Node_ptr neighbor_node = m_nodes-&gt;at(m_node_ids[n_val]); <span class="comment">// get_node_by_id(n_val); // Assuming you have this lookup</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>                        <span class="keywordflow">if</span> (neighbor_node) {</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>                            neighbor_node-&gt;add_edge_pixel(<a class="code hl_struct" href="structXY.html">XY</a>{x, y});</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>                        }</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>                    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>                        <span class="comment">// Take the neighbor&#39;s pixel</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>                        n-&gt;add_edge_pixel(<a class="code hl_struct" href="structXY.html">XY</a>{nx, ny});</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>                    }</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>                }</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>            }</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        }</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    }</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>}</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="keywordtype">void</span> Graph::compute_contours() {</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    <span class="comment">// overlap edge pixels</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    <span class="comment">// then compute contours</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    process_overlapping_edges();</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    <span class="comment">// ask each Node to compute contours</span></div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr &amp;n : get_nodes()) {</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        n-&gt;compute_contour();</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    }</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    </div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    <span class="comment">// smoothing</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    std::vector&lt;std::vector&lt;Point&gt;&gt; all_contours;</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr &amp;n : get_nodes()) {</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0) <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>        <span class="comment">// 0 = background, 1 = this node, 2+ = neighboring nodes</span></div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>        <span class="comment">// find touching edges</span></div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; bounds[3]; ++y) {</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; bounds[2]; ++x) {</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>                uint8_t val = neighborhood[y * bounds[2] + x];</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>                <span class="comment">// check neighbors</span></div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>                <span class="keywordflow">if</span> (val == 1) {</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>                    <span class="keywordflow">for</span> (int32_t k{0}; k &lt; 8; ++k) {</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>                        int32_t nx{x + dirs[k][0]};</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>                        int32_t ny{y + dirs[k][1]};</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>                        nx = std::clamp(nx, 0, bounds[2] - 1);</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>                        ny = std::clamp(ny, 0, bounds[3] - 1);</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>                        uint8_t n_val = neighborhood[ny * bounds[2] + nx];</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>                        <span class="keywordflow">if</span> ((n_val != val) &amp; (n_val != 0)) {</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>                            <span class="comment">// need a smarter approach to prevent pinching</span></div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>                            <span class="keywordtype">bool</span> is_too_thin = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>                            <span class="comment">// check around (nx,ny) if we can stretch into another region,</span></div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>                            <span class="comment">// then it&#39;s too thin</span></div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>                            <span class="keywordflow">for</span> (int32_t k{0}; k &lt; 8; ++k) {</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>                                int32_t mx{nx + dirs[k][0]};</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>                                int32_t my{ny + dirs[k][1]};</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>                                mx = std::clamp(mx, 0, bounds[2] - 1);</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>                                my = std::clamp(my, 0, bounds[3] - 1);</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>                                uint8_t m_val = neighborhood[my * bounds[2] + mx];</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>                                <span class="keywordflow">if</span> ((m_val != val) &amp; (m_val != n_val)) {</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>                                    is_too_thin = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>                                }</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>                            }</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>                            <span class="keywordflow">if</span> (is_too_thin) {</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>                                considered_neigbors[n_val - 2]-&gt;add_edge_pixel(</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>                                    <a class="code hl_struct" href="structXY.html">XY</a>{x + bounds[0], y + bounds[1]});</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>                            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>                                n-&gt;add_edge_pixel(<a class="code hl_struct" href="structXY.html">XY</a>{nx + bounds[0], ny + bounds[1]});</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>                            }</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>                        }</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>                    }</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>                }</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>            }</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>        }</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    }</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    <span class="comment">// ask each Node to compute contours</span></div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr &amp;n : get_nodes()) {</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>        n-&gt;compute_contour();</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    }</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    <span class="comment">// smoothing</span></div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    std::vector&lt;std::vector&lt;Point&gt;&gt; all_contours;</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr &amp;n : get_nodes()) {</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span> </div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>        <a class="code hl_struct" href="structColoredContours.html">ColoredContours</a> *c0 = &amp;n-&gt;m_contours;</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; c0-&gt;contours.size(); ++i) {</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>            all_contours.push_back(c0-&gt;contours[i]);</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>        }</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    }</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    contours::coupled_smooth(</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>        all_contours, <a class="code hl_struct" href="structRect.html">Rect</a>{0.0f, 0.0f, <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(m_width), <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(m_height)});</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    std::vector&lt;std::vector&lt;QuadBezier&gt;&gt; all_curves;</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    fit_curve_reduction(all_contours, all_curves, 0.5f);</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span> </div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    <span class="keywordtype">int</span> j = 0;</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr &amp;n : get_nodes()) {</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>        <a class="code hl_struct" href="structColoredContours.html">ColoredContours</a> *c0 = &amp;n-&gt;m_contours;</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; c0-&gt;contours.size(); ++i) {</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>            std::copy(all_contours[j].begin(), all_contours[j].end(), c0-&gt;contours[i].begin());</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>            c0-&gt;curves[i].resize(all_curves[j].size());</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>            std::copy(all_curves[j].begin(), all_curves[j].end(), c0-&gt;curves[i].begin());</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>            j++;</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>        }</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    }</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>}</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span><span class="keywordtype">void</span> Graph::merge_small_area_nodes(<span class="keyword">const</span> int32_t min_area) {</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>    int32_t counter{0};</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>    <span class="keywordflow">while</span> (!all_areas_bigger_than(min_area)) {</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr &amp;n : get_nodes()) {</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>            <span class="keywordflow">if</span> (n-&gt;area() &lt; min_area) {</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>                std::vector&lt;Node_ptr&gt; neighbors;</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>                neighbors.reserve(n-&gt;num_edges());</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>                std::copy(n-&gt;edges().begin(), n-&gt;edges().end(), std::back_inserter(neighbors));</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span> </div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>                <a class="code hl_struct" href="structImageLib_1_1RGBPixel.html">ImageLib::RGBPixel&lt;uint8_t&gt;</a> col = n-&gt;color();</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>                <span class="comment">// sort by size and color similarity</span></div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>                std::sort(neighbors.begin(), neighbors.end(), [col](Node_ptr a, Node_ptr b) {</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>                    float cdista = ImageLib::RGBPixel&lt;uint8_t&gt;::colorDistance(a-&gt;color(), col);</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>                    float cdistb = ImageLib::RGBPixel&lt;uint8_t&gt;::colorDistance(b-&gt;color(), col);</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>                    return (static_cast&lt;float&gt;(a-&gt;area()) + 10.f * cdista) &lt;</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>                           (static_cast&lt;float&gt;(b-&gt;area()) + 10.f * cdistb);</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>                });</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span> </div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>                int32_t idx{0};</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>                <span class="comment">// find first non-zero area neighbor</span></div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>                <span class="keywordflow">for</span> (Node_ptr &amp;ne : neighbors) {</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>                    <span class="keywordflow">if</span> (ne-&gt;area() &gt; 0) {</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>                        <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>                    }</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>                    ++idx;</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>                }</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span> </div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>                <span class="comment">// no valid neighbor found, skip this node</span></div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>                <span class="keywordflow">if</span> (idx &gt;= <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(neighbors.size())) {</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>                    <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>                }</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>                <span class="keywordflow">if</span> (neighbors[idx]-&gt;area() &gt;= n-&gt;area()) {</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>                    merge_nodes(neighbors[idx], n);</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>                } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>                    merge_nodes(n, neighbors[idx]);</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>                }</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>            }</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>        }</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span> </div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>        clear_unconnected_nodes();</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>        ++counter;</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    }</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>}</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>        <a class="code hl_struct" href="structColoredContours.html">ColoredContours</a> *c0 = &amp;n-&gt;m_contours;</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; c0-&gt;contours.size(); ++i) {</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>            all_contours.push_back(c0-&gt;contours[i]);</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>        }</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    }</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span> </div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    contours::coupled_smooth(</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        all_contours, <a class="code hl_struct" href="structRect.html">Rect</a>{0.0f, 0.0f, <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(m_width), <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(m_height)});</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    std::vector&lt;std::vector&lt;QuadBezier&gt;&gt; all_curves;</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    fit_curve_reduction(all_contours, all_curves, 0.5f);</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    <span class="keywordtype">int</span> j = 0;</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr &amp;n : get_nodes()) {</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        <a class="code hl_struct" href="structColoredContours.html">ColoredContours</a> *c0 = &amp;n-&gt;m_contours;</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; c0-&gt;contours.size(); ++i) {</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>            std::copy(all_contours[j].begin(), all_contours[j].end(), c0-&gt;contours[i].begin());</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>            c0-&gt;curves[i].resize(all_curves[j].size());</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>            std::copy(all_curves[j].begin(), all_curves[j].end(), c0-&gt;curves[i].begin());</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>            j++;</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        }</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    }</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>}</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><span class="keywordtype">void</span> Graph::merge_small_area_nodes(<span class="keyword">const</span> int32_t min_area) {</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    int32_t counter{0};</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <span class="keywordflow">while</span> (!all_areas_bigger_than(min_area)) {</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr &amp;n : get_nodes()) {</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>            <span class="keywordflow">if</span> (n-&gt;area() &lt; min_area) {</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>                std::vector&lt;Node_ptr&gt; neighbors;</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>                neighbors.reserve(n-&gt;num_edges());</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>                std::copy(n-&gt;edges().begin(), n-&gt;edges().end(), std::back_inserter(neighbors));</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>                <a class="code hl_struct" href="structImageLib_1_1RGBPixel.html">ImageLib::RGBPixel&lt;uint8_t&gt;</a> col = n-&gt;color();</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>                </div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>                Node_ptr best_neighbor = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>                <span class="keywordtype">float</span> best_score = std::numeric_limits&lt;float&gt;::max();</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>                <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr &amp;ne : n-&gt;edges()) {</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>                    <span class="keywordflow">if</span> (ne-&gt;area() &gt; 0) {</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>                        <span class="keywordtype">float</span> cdist = <a class="code hl_struct" href="structImageLib_1_1RGBPixel.html">ImageLib::RGBPixel&lt;uint8_t&gt;::colorDistance</a>(ne-&gt;color(), col);</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>                        <span class="keywordtype">float</span> score = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(ne-&gt;area()) + 10.f * cdist;</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>                        <span class="keywordflow">if</span> (score &lt; best_score) {</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>                            best_score = score;</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>                            best_neighbor = ne;</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>                        }</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>                    }</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>                }</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>                <span class="comment">// no valid neighbor found, skip this node</span></div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>                <span class="keywordflow">if</span> (!best_neighbor) { <span class="keywordflow">continue</span>; }</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>                </div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>                <span class="keywordflow">if</span> (best_neighbor-&gt;area() &gt;= n-&gt;area()) {</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>                    merge_nodes(best_neighbor, n);</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>                } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>                    merge_nodes(n, best_neighbor);</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>                }</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>            }</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>        }</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>        clear_unconnected_nodes();</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>        ++counter;</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    }</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>}</div>
 <div class="ttc" id="astructColoredContours_html"><div class="ttname"><a href="structColoredContours.html">ColoredContours</a></div><div class="ttdef"><b>Definition</b> <a href="contours_8h_source.html#l00040">contours.h:40</a></div></div>
 <div class="ttc" id="astructImageLib_1_1RGBPixel_html"><div class="ttname"><a href="structImageLib_1_1RGBPixel.html">ImageLib::RGBPixel</a></div><div class="ttdef"><b>Definition</b> <a href="RGBPixel_8h_source.html#l00011">RGBPixel.h:11</a></div></div>
 <div class="ttc" id="astructRect_html"><div class="ttname"><a href="structRect.html">Rect</a></div><div class="ttdef"><b>Definition</b> <a href="contours_8h_source.html#l00022">contours.h:22</a></div></div>

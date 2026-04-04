@@ -487,7 +487,7 @@ Definition at line \mbox{\hyperlink{labels__to__svg_8cpp_source_l00189}{189}} of
 \DoxyCodeLine{00195\ \ \ \ \ \textcolor{comment}{//\ 1.\ enumerate\ regions\ and\ convert\ to\ Nodes}}
 \DoxyCodeLine{00196\ \ \ \ \ std::vector<Node\_ptr>\ nodes;}
 \DoxyCodeLine{00197\ \ \ \ \ region\_labeling(data,\ labels\_vector,\ region\_labels,\ width,\ height,\ nodes);}
-\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00198\ \ \ \ \ }
 \DoxyCodeLine{00199\ \ \ \ \ \textcolor{comment}{//\ 2.\ initialize\ Graph\ from\ all\ Nodes}}
 \DoxyCodeLine{00200\ \ \ \ \ std::unique\_ptr<std::vector<Node\_ptr>>\ node\_ptr\ =}
 \DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ std::make\_unique<std::vector<Node\_ptr>>(std::move(nodes));}
@@ -495,10 +495,10 @@ Definition at line \mbox{\hyperlink{labels__to__svg_8cpp_source_l00189}{189}} of
 \DoxyCodeLine{00203\ }
 \DoxyCodeLine{00204\ \ \ \ \ \textcolor{comment}{//\ 3.\ Discover\ node\ adjacencies\ -\/\ add\ edges\ to\ Graph}}
 \DoxyCodeLine{00205\ \ \ \ \ G.discover\_edges(region\_labels,\ width,\ height);}
-\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00206\ \ \ \ \ }
 \DoxyCodeLine{00207\ \ \ \ \ \textcolor{comment}{//\ 4.\ Merge\ small\ area\ nodes\ until\ all\ nodes\ are\ minArea\ or\ larger}}
 \DoxyCodeLine{00208\ \ \ \ \ G.merge\_small\_area\_nodes(min\_area);}
-\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00209\ \ \ \ \ }
 \DoxyCodeLine{00210\ \ \ \ \ \textcolor{comment}{//\ 5.\ recolor\ image\ on\ new\ regions}}
 \DoxyCodeLine{00211\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ results\{width,\ height\};}
 \DoxyCodeLine{00212\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&n\ :\ G.get\_nodes())\ \{}
@@ -513,7 +513,7 @@ Definition at line \mbox{\hyperlink{labels__to__svg_8cpp_source_l00189}{189}} of
 \DoxyCodeLine{00221\ \ \ \ \ \textcolor{comment}{//\ 6.\ Contours}}
 \DoxyCodeLine{00222\ \ \ \ \ \textcolor{comment}{//\ graph\ will\ manage\ computing\ contours}}
 \DoxyCodeLine{00223\ \ \ \ \ G.compute\_contours();}
-\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00224\ \ \ \ \ }
 \DoxyCodeLine{00225\ \ \ \ \ \textcolor{comment}{//\ accumulate\ all\ contours\ for\ svg\ export}}
 \DoxyCodeLine{00226\ \ \ \ \ \mbox{\hyperlink{structColoredContours}{ColoredContours}}\ all\_contours;}
 \DoxyCodeLine{00227\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&n\ :\ G.get\_nodes())\ \{}
