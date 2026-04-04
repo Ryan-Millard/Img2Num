@@ -2,14 +2,24 @@ import GlassModal from "@components/GlassModal";
 import GlassSwitch from "@components/GlassSwitch";
 import Tooltip from "@components/Tooltip";
 import { useState, useId, useEffect } from "react";
-import { Undo, Redo, Save, Eye, Brush, Printer, Download, Copy, RotateCcw, Share2, FileText } from "lucide-react";
+import { Undo, Redo, Save, Eye, Brush, Printer, Download, Copy, RotateCcw, Share2, FileText, Expand } from "lucide-react";
 import styles from "./EditorControls.module.css";
 
-const EditorControls = ({ svg, fileName, isColorMode = false, setIsColorMode = () => {}, onReset = () => {}, onUndo = () => {}, onRedo = () => {} }) => {
+const EditorControls = ({
+  svg,
+	fileName,
+	isColorMode = false,
+	setIsColorMode = () => {},
+	onReset = () => {},
+	onUndo = () => {},
+	onRedo = () => {},
+	onFullscreen = () => {}
+}) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const switchId = useId();
 
+  const [svgUrl, setSvgUrl] = useState(null);
   useEffect(() => {
     if (!svg) {
       setSvgUrl(null);
@@ -125,7 +135,7 @@ const EditorControls = ({ svg, fileName, isColorMode = false, setIsColorMode = (
       </GlassModal>
 
       <div className={`container flex-center flex-wrap-wrap gap-xl ${styles.wrapper}`} role="toolbar" aria-label="Editor actions">
-        <div className="flex-center gap-sm">
+        <div className={`flex-center gap-sm ${styles.switchWrapper}`}>
           <GlassSwitch
             id={switchId}
             isOn={isColorMode}
@@ -169,6 +179,11 @@ const EditorControls = ({ svg, fileName, isColorMode = false, setIsColorMode = (
           <Tooltip content="Redo · Ctrl Y">
             <button className="button" onClick={onRedo} aria-label="Redo last change">
               <Redo size={18} aria-hidden="true" />
+            </button>
+          </Tooltip>
+          <Tooltip content="Enter fullscreen">
+            <button className="button" onClick={onFullscreen} aria-label="Enter fullscreen mode">
+              <Expand size={18} aria-hidden="true" />
             </button>
           </Tooltip>
         </div>

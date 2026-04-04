@@ -3,15 +3,18 @@ import parse from "html-react-parser";
 import { useLocation } from "react-router-dom";
 import GlassCard from "@components/GlassCard";
 import GlassModal from "@components/GlassModal";
-import styles from "./Editor.module.css";
 import EditorHelmet from "./EditorHelmet";
 import EditorControls from "./EditorControls";
+import useFullscreen from "@hooks/useFullscreen";
+
+import styles from "./Editor.module.css";
 
 const SHAPE_SELECTOR = "path,rect,circle,polygon,ellipse";
 
 export default function Editor() {
   const { state } = useLocation();
   const { svg } = state || {};
+  const { ref, toggle } = useFullscreen();
 
   const [svgElements] = useState(() => (svg ? parse(svg) : null));
   const [isColorMode, setIsColorMode] = useState(true);
@@ -32,6 +35,8 @@ export default function Editor() {
     tx: 0,
     ty: 0,
   });
+
+  const { ref: fsRef, toggle: toggleFullscreen } = useFullscreen();
 
   const pointerState = useRef({
     dragging: false,
@@ -75,6 +80,8 @@ export default function Editor() {
 
   // Wheel zoom
   const handleWheel = (e) => {
+    e.preventDefault();
+
     const delta = Math.sign(e.deltaY);
 
     updateTransform((t) => {
@@ -83,6 +90,14 @@ export default function Editor() {
       t.scale = clamp(nextScale, 0.25, 6);
     });
   };
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+
+    el.addEventListener("wheel", handleWheel, { passive: false });
+
+    return () => el.removeEventListener("wheel", handleWheel);
+  }, []);
 
   const onPointerDown = (e) => {
     if (!viewportRef.current) return;
@@ -346,7 +361,16 @@ export default function Editor() {
       <EditorHelmet />
 
       <GlassCard className={cardClass}>
-        <EditorControls svg={svg} fileName={"edited-image"} isColorMode={isColorMode} setIsColorMode={setIsColorMode} onReset={() => setModalOpen(true)} onUndo={undo} onRedo={redo} />
+        <EditorControls
+          svg={svg}
+          fileName={"edited-image"}
+          isColorMode={isColorMode}
+          setIsColorMode={setIsColorMode}
+          onReset={() => setModalOpen(true)}
+          onUndo={undo}
+          onRedo={redo}
+          onFullscreen={toggleFullscreen}
+        />
 
         <GlassModal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
           <h2>Reset your progress</h2>
@@ -371,7 +395,16 @@ export default function Editor() {
 
         <div className={styles.hint}>Click shapes to reveal their original colour.</div>
 
-        <GlassCard className={`flex-center ${styles.viewport}`} ref={viewportRef} onWheel={handleWheel} onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
+        <GlassCard
+          className={`flex-center ${styles.viewport}`}
+          ref={(el) => {
+            viewportRef.current = el;
+            fsRef.current = el; // link fullscreen ref to viewport
+          }}
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+        >
           <div ref={innerRef} className={styles.inner}>
             {svgElements}
           </div>

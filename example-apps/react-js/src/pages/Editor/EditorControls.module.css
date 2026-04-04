@@ -4,6 +4,14 @@
   cursor: pointer;
   user-select: none;
 }
+@media screen and (max-width: 757px) {
+  .switchWrapper {
+    justify-content: left;
+  }
+  .switchLabel {
+    display: none;
+  }
+}
 
 /* ── Modal action list ── */
 .actionList {
@@ -47,6 +55,9 @@
   border: 0;
 }
 
+.wrapper > * {
+  flex: 1;
+}
 @media (min-width: 800px) {
   .wrapper {
     justify-content: space-between;
