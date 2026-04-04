@@ -86,7 +86,8 @@ const EditorControls = ({ svg, fileName, isColorMode = false, setIsColorMode = (
       const h = img.naturalHeight || 600;
       const pdf = new jsPDF({ orientation: w > h ? "landscape" : "portrait", unit: "px", format: [w, h] });
       const canvas = document.createElement("canvas");
-      canvas.width = w; canvas.height = h;
+      canvas.width = w;
+      canvas.height = h;
       canvas.getContext("2d").drawImage(img, 0, 0);
       pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, w, h);
       pdf.save(`${fileName}.pdf`);

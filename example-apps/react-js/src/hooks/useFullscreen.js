@@ -20,10 +20,7 @@ export default function useFullscreen(initialRef) {
   // Track whether THIS hook pushed history
   const hasPushedRef = useRef(false);
 
-  const getFullscreenElement = () =>
-    document.fullscreenElement ||
-    document.webkitFullscreenElement ||
-    document.msFullscreenElement;
+  const getFullscreenElement = () => document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
 
   const exitFullscreen = () => {
     if (document.exitFullscreen) return document.exitFullscreen();
