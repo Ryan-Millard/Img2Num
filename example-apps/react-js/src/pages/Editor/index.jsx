@@ -78,17 +78,20 @@ export default function Editor() {
   };
 
   // Wheel zoom
-  const handleWheel = useCallback((e) => {
-    e.preventDefault();
+  const handleWheel = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    const delta = Math.sign(e.deltaY);
+      const delta = Math.sign(e.deltaY);
 
-    updateTransform((t) => {
-      const step = 1.12;
-      let nextScale = delta > 0 ? t.scale / step : t.scale * step;
-      t.scale = clamp(nextScale, 0.25, 6);
-    });
-  }, [updateTransform]);
+      updateTransform((t) => {
+        const step = 1.12;
+        let nextScale = delta > 0 ? t.scale / step : t.scale * step;
+        t.scale = clamp(nextScale, 0.25, 6);
+      });
+    },
+    [updateTransform],
+  );
   useEffect(() => {
     const el = viewportRef.current;
     if (!el) return;
@@ -253,7 +256,7 @@ export default function Editor() {
     const newIndex = historyIndex + 1;
     setHistoryIndex(newIndex);
     restoreHistory(history[newIndex]);
-}, [history, historyIndex]);
+  }, [history, historyIndex]);
 
   const restoreHistory = (snapshot) => {
     const svgRoot = innerRef.current?.querySelector("svg");
