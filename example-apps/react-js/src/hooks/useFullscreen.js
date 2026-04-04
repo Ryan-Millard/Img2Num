@@ -17,36 +17,42 @@ export default function useFullscreen(initialRef) {
   const _fallbackRef = useRef(document.documentElement);
   const ref = initialRef || _fallbackRef;
 
+  // Track whether THIS hook pushed history
+  const hasPushedRef = useRef(false);
+
+  const getFullscreenElement = () =>
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.msFullscreenElement;
+
+  const exitFullscreen = () => {
+    if (document.exitFullscreen) return document.exitFullscreen();
+    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+    if (document.msExitFullscreen) return document.msExitFullscreen();
+  };
+
+  const requestFullscreen = (elem) => {
+    if (elem.requestFullscreen) return elem.requestFullscreen();
+    if (elem.webkitRequestFullscreen) return elem.webkitRequestFullscreen();
+    if (elem.msRequestFullscreen) return elem.msRequestFullscreen();
+  };
+
   const close = useCallback(() => {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
+    if (getFullscreenElement()) {
+      exitFullscreen();
     }
-    window.removeEventListener("popstate", close);
   }, []);
 
   const open = useCallback(() => {
     const elem = ref.current;
     if (!elem) return;
 
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-      elem.msRequestFullscreen();
-    }
-
-    // Push state to detect back button
-    window.history.pushState({}, "");
-    window.addEventListener("popstate", close);
-  }, [ref, close]);
+    // Only request fullscreen — NO history manipulation here
+    requestFullscreen(elem);
+  }, [ref]);
 
   const toggle = useCallback(() => {
-    if (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
+    if (getFullscreenElement()) {
       close();
     } else {
       open();
@@ -54,11 +60,48 @@ export default function useFullscreen(initialRef) {
   }, [open, close]);
 
   useEffect(() => {
+    const handleFullscreenChange = () => {
+      const isFullscreen = !!getFullscreenElement();
+
+      if (isFullscreen && !hasPushedRef.current) {
+        // Entered fullscreen → push history
+        window.history.pushState({ fullscreen: true }, "");
+        window.addEventListener("popstate", close);
+        hasPushedRef.current = true;
+      }
+
+      if (!isFullscreen && hasPushedRef.current) {
+        // Exited fullscreen → clean up history
+        window.removeEventListener("popstate", close);
+
+        // Go back ONLY if we added a state
+        if (window.history.state?.fullscreen) {
+          window.history.back();
+        }
+
+        hasPushedRef.current = false;
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+    document.addEventListener("MSFullscreenChange", handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener("webkitfullscreenchange", handleFullscreenChange);
+      document.removeEventListener("MSFullscreenChange", handleFullscreenChange);
+    };
+  }, [close]);
+
+  useEffect(() => {
     const handleEscape = (e) => {
-      if (e.key === "Escape") {
+      // Only act if actually in fullscreen
+      if (e.key === "Escape" && getFullscreenElement()) {
         close();
       }
     };
+
     document.addEventListener("keydown", handleEscape);
     return () => {
       document.removeEventListener("keydown", handleEscape);
