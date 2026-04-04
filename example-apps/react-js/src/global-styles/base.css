@@ -4,7 +4,8 @@
   box-sizing: border-box;
 }
 
-body, :not(:root):fullscreen::backdrop {
+body,
+:not(:root):fullscreen::backdrop {
   margin: 0;
   padding: var(--spacing-lg);
   color: var(--color-text);

@@ -5,16 +5,7 @@ import { useState, useId, useEffect } from "react";
 import { Undo, Redo, Save, Eye, Brush, Printer, Download, Copy, RotateCcw, Share2, FileText, Expand } from "lucide-react";
 import styles from "./EditorControls.module.css";
 
-const EditorControls = ({
-  svg,
-	fileName,
-	isColorMode = false,
-	setIsColorMode = () => {},
-	onReset = () => {},
-	onUndo = () => {},
-	onRedo = () => {},
-	onFullscreen = () => {}
-}) => {
+const EditorControls = ({ svg, fileName, isColorMode = false, setIsColorMode = () => {}, onReset = () => {}, onUndo = () => {}, onRedo = () => {}, onFullscreen = () => {} }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const switchId = useId();

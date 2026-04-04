@@ -45,11 +45,7 @@ export default function useFullscreen(initialRef) {
   }, []);
 
   const toggle = useCallback(() => {
-    if (
-      document.fullscreenElement ||
-      document.webkitFullscreenElement ||
-      document.msFullscreenElement
-    ) {
+    if (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
       close();
     } else {
       open();
