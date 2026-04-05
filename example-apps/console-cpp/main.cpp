@@ -20,6 +20,7 @@ constexpr const char* OUT_DIR{OUTPUT_DIR};
 
 constexpr int NUM_CHANNELS{4};
 constexpr double SIGMA_WIDTH_RATIO{0.005};
+constexpr int MAX_ITER{100};
 
 int main(int argc, char** argv) {
     if (argc < 2) {
@@ -49,7 +50,7 @@ int main(int argc, char** argv) {
     int32_t* out_labels{new int32_t[width * height]};
     char* res_svg;
 
-    for (int ITER=0; ITER<2; ITER++){
+    for (int ITER=0; ITER<MAX_ITER; ITER++){
         std::cout << "Image loaded: " << width << "x" << height << " with " << NUM_CHANNELS << " channel(s)." << std::endl;
     
         // Allocate a copy of the original image

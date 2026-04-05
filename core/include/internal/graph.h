@@ -45,6 +45,13 @@ class Graph {
         hash_node_ids();
     }
 
+    inline ~Graph() {
+        // Break the circular references so the shared_ptrs can reach 0
+        for (auto& node : *m_nodes) {
+            node->clear_all(); 
+        }
+    }
+
     bool add_edge(int32_t node_id1, int32_t node_id2);
     bool merge_nodes(const Node_ptr &node_to_keep, const Node_ptr &node_to_remove);
 
