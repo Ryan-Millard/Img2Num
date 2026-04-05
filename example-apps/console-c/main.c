@@ -74,7 +74,7 @@ int main(int argc, char** argv) {
     img2num_kmeans(img_data, out_data, out_labels, width, height, 16, 100, 1);
 
     // Generate SVG
-    res_svg = img2num_labels_to_svg(img_data, out_labels, width, height, 100, false);
+    res_svg = img2num_labels_to_svg(img_data, out_labels, width, height, 100);
 
     // Save outputs
     char out_path[512];
@@ -87,7 +87,7 @@ int main(int argc, char** argv) {
     int exit_code = 0;
     const bool blur_save_success = stbi_write_png(out_path, width, height, NUM_CHANNELS, img_data, width * NUM_CHANNELS);
     const bool kmeans_save_success = stbi_write_png(kmeans_path, width, height, NUM_CHANNELS, out_data, width * NUM_CHANNELS);
-    
+
     FILE* file = fopen(svg_path, "w");
     if (file == NULL) {
         printf("Error: Could not open the file!\n");
@@ -98,7 +98,7 @@ int main(int argc, char** argv) {
         fputs(res_svg, file);
         fclose(file);
     }
-    
+
     if (blur_save_success && kmeans_save_success && (exit_code == 0)) {
         printf("\n\nSUCCESS!\nThe below images have been saved:\n\t- %s\n\t- %s\n\t- %s\n", out_path, kmeans_path, svg_path);
     } else {
