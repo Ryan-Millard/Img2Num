@@ -37,6 +37,7 @@ class Graph {
     std::unordered_map<int32_t, int32_t> m_node_ids;
 
     void hash_node_ids(void);
+    void process_overlapping_edges();
 
    public:
     inline Graph(std::unique_ptr<std::vector<Node_ptr>> &nodes, int width, int height)
