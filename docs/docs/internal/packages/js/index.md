@@ -131,7 +131,11 @@ Messages **optionally** specify bufferKeys as structured descriptors:
 
 ```js title="Arguments passed to WASM function"
 args: {
-  (pixels, labels, width, height, min_area);
+  pixels,
+  labels,
+  width,
+  height,
+  min_area,
 }
 ```
 
