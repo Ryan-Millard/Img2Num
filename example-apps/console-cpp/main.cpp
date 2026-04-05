@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <string>
 #include <cstring>
+#include <cstdlib>
 #include <filesystem>
 
 #include <img2num.h>
@@ -48,8 +49,7 @@ int main(int argc, char** argv) {
     uint8_t* img_data{new uint8_t[width * height * NUM_CHANNELS]};
     uint8_t* out_data{new uint8_t[width * height * NUM_CHANNELS]};
     int32_t* out_labels{new int32_t[width * height]};
-    char* res_svg;
-
+    char* res_svg = nullptr;
     for (int ITER=0; ITER<MAX_ITER; ITER++){
         std::cout << "Image loaded: " << width << "x" << height << " with " << NUM_CHANNELS << " channel(s)." << std::endl;
     
@@ -63,6 +63,9 @@ int main(int argc, char** argv) {
         // Apply kmeans
         img2num::kmeans(img_data, out_data, out_labels, width, height, 32, 100, 1);
         // Generate SVG
+        if (res_svg != nullptr) {
+            std::free(res_svg);
+        }
         res_svg = img2num::labels_to_svg(img_data, out_labels, width, height, 100, false);
     }
     // Save the blurred image
@@ -95,5 +98,7 @@ int main(int argc, char** argv) {
     delete[] img_data;
     delete[] out_data;
     delete[] out_labels;
+    std::free(res_svg);
+    res_svg = nullptr;
     return exit_code;
 }
