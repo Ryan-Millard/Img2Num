@@ -1,0 +1,54 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease forwards;
+}
+
+.modal {
+  position: relative;
+  border-radius: 1rem;
+  background: var(--color-bg);
+  padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-lg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  animation: scaleIn 0.2s ease forwards;
+  max-height: 90vh;
+  max-width: 95vw;
+  overflow-y: auto;
+  z-index: 1001;
+}
+
+.closeButton {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

@@ -15,11 +15,7 @@
   background: transparent;
 }
 /* Default shape appearance in color mode: hide original fills until revealed */
-.colorMode .viewport svg path:not(.coloredRegion),
-.colorMode .viewport svg rect:not(.coloredRegion),
-.colorMode .viewport svg circle:not(.coloredRegion),
-.colorMode .viewport svg polygon:not(.coloredRegion),
-.colorMode .viewport svg ellipse:not(.coloredRegion) {
+.colorMode .viewport svg *:not(.coloredRegion) {
   fill: white;
   cursor: pointer;
   transition: 150ms ease;
@@ -32,7 +28,7 @@
 
 /* Inner wrapper where we apply transform(scale/translate) */
 .inner {
-  transform-origin: 0 0;
+  transform-origin: center center;
   will-change: transform;
   transition: transform 50ms linear;
   display: inline-block;
@@ -82,9 +78,18 @@
 }
 
 .hint {
-  margin-top: 12px;
+  margin-top: var(--spacing-sm);
   font-size: 0.85rem;
   text-align: center;
+}
+@media screen and (max-width: 757px) {
+  .hint {
+    display: none;
+  }
+
+  .viewport {
+    margin-top: var(--spacing-sm);
+  }
 }
 
 /* responsiveness */
@@ -95,4 +100,8 @@
   .viewport {
     min-height: 240px;
   }
+}
+
+.historyContainer {
+  width: 100%;
 }

@@ -134,135 +134,81 @@ void Graph::discover_edges(const std::vector<int32_t> &region_labels, const int3
     }
 }
 
-void Graph::compute_contours() {
-    // overlap edge pixels
-    // then compute contours
-
-    std::set<std::pair<int, int>> adjusted_neighbors{};
-
-    constexpr int8_t dirs[8][2]{{1, 0}, {-1, 0},  {0, 1},  {0, -1},
-                                {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};
+void Graph::process_overlapping_edges() {
+    // 1. Build the Global Label Map ONCE (0 = background, else = node->id())
+    std::vector<int32_t> label_map(m_width * m_height, 0);
 
     for (const Node_ptr &n : get_nodes()) {
         if (n->area() == 0) continue;
 
-        std::vector<std::vector<uint8_t>> full_neighborhood;
-        std::vector<std::array<int32_t, 4>> xywh;
-
-        std::vector<uint8_t> node_binary;
-        std::array<int32_t, 4> xywh0 = n->create_binary_image(node_binary);
-
-        full_neighborhood.push_back(node_binary);
-        xywh.push_back(xywh0);
-
-        std::vector<Node_ptr> considered_neigbors;
-        for (const auto &neighbor : n->edges()) {
-            if (neighbor->area() == 0) continue;
-
-            // check if this neighbor pairing has already been addressed
-            std::pair<int, int> id1 = std::make_pair(n->id(), neighbor->id());
-            std::pair<int, int> id2 = std::make_pair(neighbor->id(), n->id());
-            auto _end{adjusted_neighbors.end()};
-            auto _it1{adjusted_neighbors.find(id1)};
-            auto _it2{adjusted_neighbors.find(id2)};
-
-            if (_it1 != _end || _it2 != _end) {
-                continue;
-            }
-
-            considered_neigbors.push_back(neighbor);
-
-            std::vector<uint8_t> neighbor_binary;
-            std::array<int32_t, 4> xywh1 = neighbor->create_binary_image(neighbor_binary);
-            full_neighborhood.push_back(neighbor_binary);
-            xywh.push_back(xywh1);
-
-            adjusted_neighbors.insert(id1);
+        for (auto &[_, p] : n->get_pixels()) {
+            label_map[p.y * m_width + p.x] = n->id();
         }
+    }
 
-        // address overlaps
-        std::vector<uint8_t> neighborhood;
-        std::array<int32_t, 4> bounds = {std::numeric_limits<int>::max(),
-                                         std::numeric_limits<int>::max(), -1, -1};
-        for (auto &_xywh : xywh) {
-            if (_xywh[0] < bounds[0]) {
-                bounds[0] = _xywh[0];
-            }  // xmin
-            if (_xywh[1] < bounds[1]) {
-                bounds[1] = _xywh[1];
-            }  // ymin
-            if (_xywh[2] + _xywh[0] - 1 > bounds[2]) {
-                bounds[2] = _xywh[2] + _xywh[0] - 1;
-            }  // xmax
-            if (_xywh[3] + _xywh[1] - 1 > bounds[3]) {
-                bounds[3] = _xywh[3] + _xywh[1] - 1;
-            }  // ymax
-        }
+    constexpr int8_t dirs[8][2]{{1, 0}, {-1, 0},  {0, 1},  {0, -1},
+                                {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};
 
-        bounds[2] = bounds[2] - bounds[0] + 1;  // w
-        bounds[3] = bounds[3] - bounds[1] + 1;  // h
+    // 2. Iterate directly over the pixels of each node
+    for (const Node_ptr &n : get_nodes()) {
+        if (n->area() == 0) continue;
+        int32_t val = n->id();
 
-        // build joined neighborhood map
-        neighborhood.resize(
-            static_cast<std::size_t>(bounds[2]) * static_cast<std::size_t>(bounds[3]), 0);
+        for (auto &[_, p] : n->get_pixels()) {
+            int x = p.x;
+            int y = p.y;
 
-        for (int i = 0; i < full_neighborhood.size(); ++i) {
-            for (int y = 0; y < xywh[i][3]; ++y) {
-                for (int x = 0; x < xywh[i][2]; ++x) {
-                    int global_y = y + xywh[i][1] - bounds[1];
-                    int global_x = x + xywh[i][0] - bounds[0];
-                    uint8_t val = full_neighborhood[i][y * xywh[i][2] + x];
-                    if (val != 0) {
-                        neighborhood[global_y * bounds[2] + global_x] = (i + 1);
-                    }
-                }
-            }
-        }
+            // Check 8 neighbors in the global map
+            for (int k = 0; k < 8; ++k) {
+                int nx = x + dirs[k][0];
+                int ny = y + dirs[k][1];
 
-        // 0 = background, 1 = this node, 2+ = neighboring nodes
+                // Fast boundary check (replaces std::clamp)
+                if (nx < 0 || nx >= m_width || ny < 0 || ny >= m_height) continue;
 
-        // find touching edges
-        for (int y = 0; y < bounds[3]; ++y) {
-            for (int x = 0; x < bounds[2]; ++x) {
-                uint8_t val = neighborhood[y * bounds[2] + x];
-                // check neighbors
-                if (val == 1) {
-                    for (int32_t k{0}; k < 8; ++k) {
-                        int32_t nx{x + dirs[k][0]};
-                        int32_t ny{y + dirs[k][1]};
-                        nx = std::clamp(nx, 0, bounds[2] - 1);
-                        ny = std::clamp(ny, 0, bounds[3] - 1);
-                        uint8_t n_val = neighborhood[ny * bounds[2] + nx];
-                        if ((n_val != val) & (n_val != 0)) {
-                            // need a smarter approach to prevent pinching
-                            bool is_too_thin = false;
-                            // check around (nx,ny) if we can stretch into another region,
-                            // then it's too thin
-                            for (int32_t k{0}; k < 8; ++k) {
-                                int32_t mx{nx + dirs[k][0]};
-                                int32_t my{ny + dirs[k][1]};
-                                mx = std::clamp(mx, 0, bounds[2] - 1);
-                                my = std::clamp(my, 0, bounds[3] - 1);
-                                uint8_t m_val = neighborhood[my * bounds[2] + mx];
+                int32_t n_val = label_map[ny * m_width + nx];
 
-                                if ((m_val != val) & (m_val != n_val)) {
-                                    is_too_thin = true;
-                                }
-                            }
+                // Is it a neighbor? AND have we not processed this pairing yet?
+                if (n_val != 0 && n_val != val && val < n_val) {
+                    bool is_too_thin = false;
 
-                            if (is_too_thin) {
-                                considered_neigbors[n_val - 2]->add_edge_pixel(
-                                    XY{x + bounds[0], y + bounds[1]});
-                            } else {
-                                n->add_edge_pixel(XY{nx + bounds[0], ny + bounds[1]});
-                            }
+                    // Check around the neighbor pixel for a 3rd region (pinching)
+                    for (int mk = 0; mk < 8; ++mk) {
+                        int mx = nx + dirs[mk][0];
+                        int my = ny + dirs[mk][1];
+
+                        if (mx < 0 || mx >= m_width || my < 0 || my >= m_height) continue;
+
+                        int32_t m_val = label_map[my * m_width + mx];
+
+                        if (m_val != 0 && m_val != val && m_val != n_val) {
+                            is_too_thin = true;
+                            break;  // CRITICAL: Stop checking immediately once proven thin!
                         }
+                    }
+
+                    if (is_too_thin) {
+                        // Give our pixel to the neighbor
+                        Node_ptr neighbor_node =
+                            m_nodes->at(m_node_ids[n_val]);  // get_node_by_id(n_val); // Assuming
+                                                             // you have this lookup
+                        if (neighbor_node) {
+                            neighbor_node->add_edge_pixel(XY{x, y});
+                        }
+                    } else {
+                        // Take the neighbor's pixel
+                        n->add_edge_pixel(XY{nx, ny});
                     }
                 }
             }
         }
     }
+}
 
+void Graph::compute_contours() {
+    // overlap edge pixels
+    // then compute contours
+    process_overlapping_edges();
     // ask each Node to compute contours
     for (const Node_ptr &n : get_nodes()) {
         if (n->area() == 0) continue;
@@ -311,32 +257,29 @@ void Graph::merge_small_area_nodes(const int32_t min_area) {
                 std::copy(n->edges().begin(), n->edges().end(), std::back_inserter(neighbors));
 
                 ImageLib::RGBPixel<uint8_t> col = n->color();
-                // sort by size and color similarity
-                std::sort(neighbors.begin(), neighbors.end(), [col](Node_ptr a, Node_ptr b) {
-                    float cdista = ImageLib::RGBPixel<uint8_t>::colorDistance(a->color(), col);
-                    float cdistb = ImageLib::RGBPixel<uint8_t>::colorDistance(b->color(), col);
-                    return (static_cast<float>(a->area()) + 10.f * cdista) <
-                           (static_cast<float>(b->area()) + 10.f * cdistb);
-                });
 
-                int32_t idx{0};
-                // find first non-zero area neighbor
-                for (Node_ptr &ne : neighbors) {
+                Node_ptr best_neighbor = nullptr;
+                float best_score = std::numeric_limits<float>::max();
+                for (const Node_ptr &ne : n->edges()) {
                     if (ne->area() > 0) {
-                        break;
+                        float cdist = ImageLib::RGBPixel<uint8_t>::colorDistance(ne->color(), col);
+                        float score = static_cast<float>(ne->area()) + 10.f * cdist;
+                        if (score < best_score) {
+                            best_score = score;
+                            best_neighbor = ne;
+                        }
                     }
-                    ++idx;
                 }
 
                 // no valid neighbor found, skip this node
-                if (idx >= static_cast<int32_t>(neighbors.size())) {
+                if (!best_neighbor) {
                     continue;
                 }
 
-                if (neighbors[idx]->area() >= n->area()) {
-                    merge_nodes(neighbors[idx], n);
+                if (best_neighbor->area() >= n->area()) {
+                    merge_nodes(best_neighbor, n);
                 } else {
-                    merge_nodes(n, neighbors[idx]);
+                    merge_nodes(n, best_neighbor);
                 }
             }
         }

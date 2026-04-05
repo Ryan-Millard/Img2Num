@@ -1,0 +1,80 @@
+/* ── Switch label ── */
+.switchLabel {
+  color: var(--color-text);
+  cursor: pointer;
+  user-select: none;
+}
+@media screen and (max-width: 757px) {
+  .switchWrapper {
+    justify-content: left;
+  }
+  .switchLabel {
+    display: none;
+  }
+}
+@media screen and (max-width: 666px) {
+  .switchWrapper {
+    justify-content: center;
+  }
+}
+
+/* ── Modal action list ── */
+.actionList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.actionItem {
+  width: 100%;
+  font: inherit;
+}
+.actionItem svg {
+  color: var(--color-bg);
+}
+.actionItem span {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+.actionItem big {
+  font-weight: bold;
+}
+.actionItem small {
+  color: var(--color-muted);
+}
+
+/* ── Screen-reader only ── */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.wrapper > * {
+  flex: 1;
+}
+@media (min-width: 800px) {
+  .wrapper {
+    justify-content: space-between;
+  }
+}
+
+.modalGroupContainer {
+  padding: var(--spacing-md);
+  display: grid;
+  gap: var(--spacing-sm);
+  h4 {
+    text-transform: uppercase;
+    margin: 0;
+  }
+}

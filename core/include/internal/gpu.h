@@ -188,8 +188,9 @@ class GPU {
         deviceDesc.SetDeviceLostCallback(
             wgpu::CallbackMode::AllowProcessEvents,
             [](const wgpu::Device&, wgpu::DeviceLostReason reason, wgpu::StringView msg) {
-                std::string err_msg = (msg.data && msg.length > 0) ? std::string(msg.data, msg.length)
-                                                                   : "Unknown device lost reason";
+                std::string err_msg = (msg.data && msg.length > 0)
+                                          ? std::string(msg.data, msg.length)
+                                          : "Unknown device lost reason";
                 std::cerr << "[DEVICE LOST] Reason: " << static_cast<int>(reason)
                           << " Msg: " << err_msg << std::endl;
             });
