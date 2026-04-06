@@ -198,6 +198,39 @@ Protected Attributes</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="a902c5b3eacb66d60752525ab23297a95" name="a902c5b3eacb66d60752525ab23297a95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a902c5b3eacb66d60752525ab23297a95">&#9670;&#160;</a></span>~Graph()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Graph::~Graph </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="graph_8h_source.html#l00048">48</a> of file <a class="el" href="graph_8h_source.html">graph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>                    {</div>
+<div class="line"><span class="lineno">   49</span>        <span class="comment">// Break the circular references so the shared_ptrs can reach 0</span></div>
+<div class="line"><span class="lineno">   50</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; node : *m_nodes) {</div>
+<div class="line"><span class="lineno">   51</span>            node-&gt;clear_all(); </div>
+<div class="line"><span class="lineno">   52</span>        }</div>
+<div class="line"><span class="lineno">   53</span>    }</div>
+</div><!-- fragment -->
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a4a368ae692687c0f2414d55311689c19" name="a4a368ae692687c0f2414d55311689c19"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4a368ae692687c0f2414d55311689c19">&#9670;&#160;</a></span>add_edge()</h2>
@@ -454,10 +487,10 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="graph_8h_source.html#l00053">53</a> of file <a class="el" href="graph_8h_source.html">graph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span>                                                        {</div>
-<div class="line"><span class="lineno">   54</span>        <span class="keywordflow">return</span> *m_nodes;</div>
-<div class="line"><span class="lineno">   55</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="graph_8h_source.html#l00060">60</a> of file <a class="el" href="graph_8h_source.html">graph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   60</span>                                                        {</div>
+<div class="line"><span class="lineno">   61</span>        <span class="keywordflow">return</span> *m_nodes;</div>
+<div class="line"><span class="lineno">   62</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -736,10 +769,10 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="graph_8h_source.html#l00058">58</a> of file <a class="el" href="graph_8h_source.html">graph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span>                               {</div>
-<div class="line"><span class="lineno">   59</span>        <span class="keywordflow">return</span> m_nodes-&gt;size();</div>
-<div class="line"><span class="lineno">   60</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="graph_8h_source.html#l00065">65</a> of file <a class="el" href="graph_8h_source.html">graph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   65</span>                               {</div>
+<div class="line"><span class="lineno">   66</span>        <span class="keywordflow">return</span> m_nodes-&gt;size();</div>
+<div class="line"><span class="lineno">   67</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>

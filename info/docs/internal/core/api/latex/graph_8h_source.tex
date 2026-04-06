@@ -49,26 +49,33 @@
 \DoxyCodeLine{\Hypertarget{graph_8h_source_l00045}00045\ \ \ \ \ \ \ \ \ hash\_node\_ids();}
 \DoxyCodeLine{\Hypertarget{graph_8h_source_l00046}00046\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{graph_8h_source_l00047}00047\ }
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00048}00048\ \ \ \ \ \textcolor{keywordtype}{bool}\ add\_edge(int32\_t\ node\_id1,\ int32\_t\ node\_id2);}
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00049}00049\ \ \ \ \ \textcolor{keywordtype}{bool}\ merge\_nodes(\textcolor{keyword}{const}\ Node\_ptr\ \&node\_to\_keep,\ \textcolor{keyword}{const}\ Node\_ptr\ \&node\_to\_remove);}
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00050}00050\ }
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00051}00051\ \ \ \ \ \textcolor{keywordtype}{void}\ clear\_unconnected\_nodes();}
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00052}00052\ }
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00053}00053\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ std::vector<Node\_ptr>\ \&get\_nodes()\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00054}00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *m\_nodes;}
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00055}00055\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00056}00056\ }
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00057}00057\ \ \ \ \ \textcolor{keywordtype}{bool}\ all\_areas\_bigger\_than(int32\_t\ min\_area);}
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00058}00058\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ size()\ \{}
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00059}00059\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_nodes-\/>size();}
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00060}00060\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00061}00061\ }
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00062}00062\ \ \ \ \ \textcolor{keywordtype}{void}\ discover\_edges(\textcolor{keyword}{const}\ std::vector<int32\_t>\ \&region\_labels,\ \textcolor{keyword}{const}\ int32\_t\ width,}
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ height);}
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00064}00064\ \ \ \ \ \textcolor{keywordtype}{void}\ merge\_small\_area\_nodes(\textcolor{keyword}{const}\ int32\_t\ min\_area);}
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00065}00065\ \ \ \ \ \textcolor{keywordtype}{void}\ compute\_contours();}
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00066}00066\ \};}
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00067}00067\ }
-\DoxyCodeLine{\Hypertarget{graph_8h_source_l00068}00068\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00048}00048\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{classGraph}{\string~Graph}}()\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00049}00049\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Break\ the\ circular\ references\ so\ the\ shared\_ptrs\ can\ reach\ 0}}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00050}00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ node\ :\ *m\_nodes)\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00051}00051\ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>clear\_all();\ }
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00052}00052\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00053}00053\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00055}00055\ \ \ \ \ \textcolor{keywordtype}{bool}\ add\_edge(int32\_t\ node\_id1,\ int32\_t\ node\_id2);}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00056}00056\ \ \ \ \ \textcolor{keywordtype}{bool}\ merge\_nodes(\textcolor{keyword}{const}\ Node\_ptr\ \&node\_to\_keep,\ \textcolor{keyword}{const}\ Node\_ptr\ \&node\_to\_remove);}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00058}00058\ \ \ \ \ \textcolor{keywordtype}{void}\ clear\_unconnected\_nodes();}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00060}00060\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ std::vector<Node\_ptr>\ \&get\_nodes()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00061}00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *m\_nodes;}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00062}00062\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00063}00063\ }
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00064}00064\ \ \ \ \ \textcolor{keywordtype}{bool}\ all\_areas\_bigger\_than(int32\_t\ min\_area);}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00065}00065\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ size()\ \{}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00066}00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_nodes-\/>size();}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00067}00067\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00068}00068\ }
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00069}00069\ \ \ \ \ \textcolor{keywordtype}{void}\ discover\_edges(\textcolor{keyword}{const}\ std::vector<int32\_t>\ \&region\_labels,\ \textcolor{keyword}{const}\ int32\_t\ width,}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00070}00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ height);}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00071}00071\ \ \ \ \ \textcolor{keywordtype}{void}\ merge\_small\_area\_nodes(\textcolor{keyword}{const}\ int32\_t\ min\_area);}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00072}00072\ \ \ \ \ \textcolor{keywordtype}{void}\ compute\_contours();}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00073}00073\ \};}
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{graph_8h_source_l00075}00075\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

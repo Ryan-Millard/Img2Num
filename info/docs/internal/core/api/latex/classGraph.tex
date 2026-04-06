@@ -78,6 +78,26 @@ Definition at line \mbox{\hyperlink{graph_8h_source_l00043}{43}} of file \mbox{\
 \DoxyCodeLine{00046\ \ \ \ \ \}}
 
 \end{DoxyCode}
+\Hypertarget{classGraph_a902c5b3eacb66d60752525ab23297a95}\label{classGraph_a902c5b3eacb66d60752525ab23297a95} 
+\index{Graph@{Graph}!````~Graph@{\texorpdfstring{$\sim$}{\string~}Graph}}
+\index{````~Graph@{\texorpdfstring{$\sim$}{\string~}Graph}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}Graph()}{\string~Graph()}}
+{\footnotesize\ttfamily Graph\+::\texorpdfstring{$\sim$}{\string~}\+Graph (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{graph_8h_source_l00048}{48}} of file \mbox{\hyperlink{graph_8h_source}{graph.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Break\ the\ circular\ references\ so\ the\ shared\_ptrs\ can\ reach\ 0}}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ node\ :\ *m\_nodes)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>clear\_all();\ }
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \ \ \}}
+
+\end{DoxyCode}
 
 
 \doxysubsection{Member Function Documentation}
@@ -265,13 +285,13 @@ Definition at line \mbox{\hyperlink{graph_8cpp_source_l00104}{104}} of file \mbo
 
 
 
-Definition at line \mbox{\hyperlink{graph_8h_source_l00053}{53}} of file \mbox{\hyperlink{graph_8h_source}{graph.\+h}}.
+Definition at line \mbox{\hyperlink{graph_8h_source_l00060}{60}} of file \mbox{\hyperlink{graph_8h_source}{graph.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *m\_nodes;}
-\DoxyCodeLine{00055\ \ \ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *m\_nodes;}
+\DoxyCodeLine{00062\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{classGraph_ad525b30787e9784e86e20f2b9596d7c9}\label{classGraph_ad525b30787e9784e86e20f2b9596d7c9} 
@@ -483,13 +503,13 @@ Definition at line \mbox{\hyperlink{graph_8cpp_source_l00137}{137}} of file \mbo
 
 
 
-Definition at line \mbox{\hyperlink{graph_8h_source_l00058}{58}} of file \mbox{\hyperlink{graph_8h_source}{graph.\+h}}.
+Definition at line \mbox{\hyperlink{graph_8h_source_l00065}{65}} of file \mbox{\hyperlink{graph_8h_source}{graph.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_nodes-\/>size();}
-\DoxyCodeLine{00060\ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_nodes-\/>size();}
+\DoxyCodeLine{00067\ \ \ \ \ \}}
 
 \end{DoxyCode}
 
