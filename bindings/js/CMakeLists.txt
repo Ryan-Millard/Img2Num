@@ -27,6 +27,7 @@ set(COMMON_FLAGS
     "SHELL:-sEXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPU8','HEAP32','UTF8ToString','stringToUTF8','lengthBytesUTF8']"
     "SHELL:-sINITIAL_MEMORY=2GB"
     "SHELL:-sMAXIMUM_MEMORY=4GB"
+    "SHELL:-sASYNCIFY_STACK_SIZE=131272"
     "SHELL:-sALLOW_MEMORY_GROWTH=1"
     "SHELL:-sEXPORT_NAME=createImg2NumModule"
     "SHELL:-sASYNCIFY=1"
@@ -42,7 +43,7 @@ target_link_options(img2num_wasm PRIVATE ${COMMON_FLAGS} -msimd128)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_options(img2num_wasm PRIVATE -O0 -gsource-map -fsanitize=alignment)
-    target_link_options(img2num_wasm PRIVATE -gsource-map -fsanitize=alignment)
+    target_link_options(img2num_wasm PRIVATE -gsource-map -fsanitize=alignment "SHELL:-sASSERTIONS=2")
 else()
     # -Oz: smallest size. This is critical for websites as WASM is loaded almost every time
     target_compile_options(img2num_wasm PRIVATE -Oz)
