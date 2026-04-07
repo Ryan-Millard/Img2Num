@@ -55,8 +55,6 @@ int main(int argc, char** argv) {
     uint8_t* img_data = (uint8_t*)malloc(img_size);
     uint8_t* out_data = (uint8_t*)malloc(img_size);
     int32_t* out_labels = (int32_t*)malloc(width * height * sizeof(int32_t));
-    char* res_svg;
-
     if (!img_data || !out_data || !out_labels) {
         fprintf(stderr, "Failed to allocate memory\n");
         stbi_image_free(image_data_original);
@@ -69,12 +67,17 @@ int main(int argc, char** argv) {
     // Apply bilateral (C API)
     double sigma = width * SIGMA_WIDTH_RATIO;
     img2num_bilateral_filter(img_data, width, height, sigma, 50.0, 0);
-
     // Apply kmeans (C API)
     img2num_kmeans(img_data, out_data, out_labels, width, height, 16, 100, 1);
-
     // Generate SVG
-    res_svg = img2num_labels_to_svg(img_data, out_labels, width, height, 100);
+    char* res_svg = img2num_labels_to_svg(img_data, out_labels, width, height, 100);
+
+    if (res_svg == NULL) {
+        fprintf(stderr, "Failed to generate SVG\n");
+        stbi_image_free(image_data_original);
+        free(img_data); free(out_data); free(out_labels);
+        return 1;
+    }
 
     // Save outputs
     char out_path[512];
@@ -91,7 +94,7 @@ int main(int argc, char** argv) {
     FILE* file = fopen(svg_path, "w");
     if (file == NULL) {
         printf("Error: Could not open the file!\n");
-        exit_code == 1;
+        exit_code = 1;
     }
 
     if (exit_code == 0) {
@@ -110,5 +113,6 @@ int main(int argc, char** argv) {
     free(img_data);
     free(out_data);
     free(out_labels);
+    free(res_svg);
     return exit_code;
 }
