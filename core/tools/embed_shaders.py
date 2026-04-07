@@ -3,7 +3,8 @@ import sys, pathlib
 shader_dir = pathlib.Path(sys.argv[1])
 out = pathlib.Path(sys.argv[2])
 
-files = list(shader_dir.glob("*.wgsl"))
+# Must always appear in the same order for predictability
+files = sorted(shader_dir.glob("*.wgsl"))
 
 with open(out, "w") as f:
     f.write("#include <array>\n")
@@ -23,8 +24,9 @@ with open(out, "w") as f:
 
         # escape for C++ raw string
         f.write(f'constexpr char {name}[] = R"WGSL(\n{text}\n)WGSL";\n')
-    
+
     f.write(f"constexpr std::array<ShaderEntry, {len(files)}> shaders = {{{{\n")
+
     for file in files:
         name = file.stem
         f.write(f'    {{"{name}", {name}}},\n')
