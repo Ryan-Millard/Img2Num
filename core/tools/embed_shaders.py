@@ -42,5 +42,9 @@ namespace embedded_shaders {{
 #endif // EMBEDDED_SHADERS_H
 """
 
-with open(OUTPUT_FILE, "w") as f:
-    f.write(file_contents)
+# Only write if the file doesn't exist or contents differ
+if not OUTPUT_FILE.exists() or OUTPUT_FILE.read_text() != file_contents:
+    OUTPUT_FILE.write_text(file_contents)
+    print(f"Writing to {OUTPUT_FILE}")
+else:
+    print(f"No changes in {OUTPUT_FILE}, skipping write")

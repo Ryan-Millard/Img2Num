@@ -8,25 +8,29 @@ file(GLOB_RECURSE CORE_SRC
   "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
 )
 
-add_library(Img2Num ${CORE_SRC})
-
 message(STATUS ${CMAKE_BINARY_DIR})
 
 file(GLOB WGSL_SHADERS CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/internal/resources/*.wgsl
 )
 
-add_custom_command(
-    OUTPUT ${CMAKE_BINARY_DIR}/embedded_shaders.h
+set(EMBEDDED_SHADERS_OUT "${CMAKE_BINARY_DIR}/embedded_shaders.h")
+
+add_custom_target(Img2Num_shaders ALL
     COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/tools/embed_shaders.py
             ${CMAKE_CURRENT_SOURCE_DIR}/src/internal/resources
-            ${CMAKE_BINARY_DIR}/embedded_shaders.h
+            ${EMBEDDED_SHADERS_OUT}
     DEPENDS 
         ${WGSL_SHADERS}
         ${CMAKE_CURRENT_SOURCE_DIR}/tools/embed_shaders.py
+    VERBATIM
 )
 
-target_sources(Img2Num PRIVATE ${CMAKE_BINARY_DIR}/embedded_shaders.h)
+add_library(Img2Num ${CORE_SRC})
+
+add_dependencies(Img2Num Img2Num_shaders)
+
+target_sources(Img2Num PRIVATE ${EMBEDDED_SHADERS_OUT})
 
 target_include_directories(Img2Num
   PUBLIC
