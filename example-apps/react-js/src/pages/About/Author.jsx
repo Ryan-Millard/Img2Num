@@ -45,7 +45,7 @@ const Author = () => (
         </a>
       </Tooltip>
 
-      <Tooltip content="Visit Ryan Millard's LinkedIn profile">
+      <Tooltip content="Visit Alex Krasner's LinkedIn profile">
         <a href="https://www.linkedin.com/in/alex-krasner-72090329" target="_blank" rel="noopener noreferrer">
           LinkedIn
         </a>
