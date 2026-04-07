@@ -18,8 +18,9 @@ file(GLOB WGSL_SHADERS CONFIGURE_DEPENDS
 set(EMBEDDED_SHADERS_OUT "${CMAKE_BINARY_DIR}/embedded_shaders.h")
 set_source_files_properties(${EMBEDDED_SHADERS_OUT} PROPERTIES GENERATED TRUE)
 
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
 add_custom_target(Img2Num_shaders ALL
-    COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/tools/embed_shaders.py
+    COMMAND "${Python3_EXECUTABLE}" ${CMAKE_CURRENT_SOURCE_DIR}/tools/embed_shaders.py
             ${CMAKE_CURRENT_SOURCE_DIR}/src/internal/resources
             ${EMBEDDED_SHADERS_OUT}
     DEPENDS 
