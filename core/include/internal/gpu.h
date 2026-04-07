@@ -72,9 +72,17 @@ class GPU {
     GPU(GPU&&) = delete;
     GPU& operator=(GPU&&) = delete;
 
-    std::string readWGSLFile(const std::string& shader_id) {
-        auto wgsl = embedded_shaders::shaders[shader_id];
-        return wgsl.data();
+    std::string readWGSLFile(std::string_view shader_id) {
+        // A simple linear search over 9 items is blazingly fast in C++
+        for (const auto& entry : embedded_shaders::shaders) {
+            if (entry.id == shader_id) {
+                // Safely convert the string_view back to a std::string for Dawn
+                return std::string(entry.source);
+            }
+        }
+        
+        // Always good to handle the "not found" case gracefully!
+        return ""; 
     }
 
     wgpu::ComputePipeline createPipeline(const std::string& filename, const std::string& label) {
@@ -85,9 +93,6 @@ class GPU {
         md.nextInChain = &wgsl;
         md.label = label.c_str();
         wgpu::ShaderModule sm = device.CreateShaderModule(&md);
-
-        // Debug print
-        printShaderError(sm);
 
         wgpu::ComputePipelineDescriptor cpd = {};
         cpd.compute.module = sm;
