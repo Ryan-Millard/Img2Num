@@ -1,30 +1,66 @@
 c/cpp:
   - changed-files:
-      - any-glob-to-any-file:
-          - "**/*.c"
-          - "**/*.cpp"
-          - "**/*.h"
-          - "**/*.hpp"
+    - any-glob-to-any-file:
+      - "**/*.c"
+      - "**/*.cpp"
+      - "**/*.h"
+      - "**/*.hpp"
 
 docs:
   - changed-files:
-      - any-glob-to-any-file:
-          - "**/*.md"
+    - any-glob-to-any-file:
+      - "docs/**"
+      - "**/*.md"
+      - "**/*.dox"
+      - "!CHANGELOG.md"
 
 ci:
   - changed-files:
-      - any-glob-to-any-file:
-          - ".github/**"
+    - any-glob-to-any-file:
+      - ".github/**"
+
 
 js/ts:
   - changed-files:
-      - any-glob-to-any-file:
-          - "**/*.js"
-          - "**/*.jsx"
-          - "**/*.ts"
-          - "**/*.tsx"
-          - "vite.config.*"
-          - "vite.*.js"
-          - "package.json"
-          - "package-lock.json"
-          - "yarn.lock"
+    - any-glob-to-any-file:
+      - "**/*.js"
+      - "**/*.jsx"
+      - "**/*.ts"
+      - "**/*.tsx"
+      - "vite.config.*"
+      - "vite.*.js"
+      - "**/*.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+
+webgpu:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "**/*.wgsl"
+
+core:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "core/**"
+
+scripts:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "scripts/**"
+      - "*.sh"
+      - "*.ps1"
+      - "*.bat"
+
+example-app:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "example-apps/**"
+
+build-system:
+  - changed-files:
+    - any-glob-to-any-file:
+      - "CMakeLists.txt"
+      - "cmake/**"
+      - "**/*.cmake"
+      - "Dockerfile*"
+      - "docker-compose.yml"
