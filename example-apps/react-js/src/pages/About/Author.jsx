@@ -5,7 +5,7 @@ import Tooltip from "@components/Tooltip";
 
 const Author = () => (
   <GlassCard className={styles.container}>
-    <h2>About the Author</h2>
+    <h2>About the Authors</h2>
 
     <p>
       Hi, I’m Ryan! I’m a software developer passionate about image processing, web tools, and creative coding. Img2Num started as a learning experiment and evolved into a tribute to Joan, my
@@ -33,6 +33,24 @@ const Author = () => (
       </Tooltip>
       &nbsp;for details.
     </p>
+
+    <p>
+      Hi, I'm Alex Krasner.
+    </p>
+
+    <div className="flex-space-evenly">
+      <Tooltip content="Visit Alex Krasner's GitHub profile">
+        <a href="https://github.com/Krasner" target="_blank" rel="noopener noreferrer">
+          GitHub
+        </a>
+      </Tooltip>
+
+      <Tooltip content="Visit Ryan Millard's LinkedIn profile">
+        <a href="https://www.linkedin.com/in/alex-krasner-72090329" target="_blank" rel="noopener noreferrer">
+          LinkedIn
+        </a>
+      </Tooltip>
+    </div>
   </GlassCard>
 );
 
