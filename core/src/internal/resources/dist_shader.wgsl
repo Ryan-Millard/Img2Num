@@ -9,14 +9,19 @@ struct Params {
 };
 @group(0) @binding(2) var<uniform> params : Params;
 
-@compute @workgroup_size(256)
+@compute @workgroup_size(16, 16)
 fn main(@builtin(global_invocation_id) global_id : vec3<u32>) {
-    let index = global_id.x;
+    // let index = global_id.x;
     let width = params.width;
     
     // Map 1D Global ID to 2D Texture Coordinates
-    let y = index / width;
-    let x = index % width;
+    // let y = index / width;
+    // let x = index % width;
+
+    let x = global_id.x;
+    let y = global_id.y;
+
+    let index = params.width * y + x;
     
     let dims = textureDimensions(inputTex);
     if (x >= dims.x || y >= dims.y) { return; }
