@@ -84,7 +84,6 @@
 /// @param width Width of the image in pixels.
 /// @param height Height of the image in pixels.
 /// @param min_area Minimum area (in pixels) for a region to be included in the SVG.
-/// @param draw_contour_borders If true, contours of labeled regions will be drawn.
 /// @return Pointer to a dynamically allocated C-string containing the SVG data.
 /// @note Caller is responsible for freeing the returned string.
 /// @note Dox File: `doxygen/img2num.h.dox`

@@ -34,8 +34,7 @@ EMSCRIPTEN_KEEPALIVE void bilateral_filter(uint8_t *image, size_t width, size_t 
 }
 
 EMSCRIPTEN_KEEPALIVE char *labels_to_svg(uint8_t *data, int32_t *labels, const int width,
-                                         const int height, const int min_area,
-                                         const bool draw_contour_borders) {
-    return img2num_labels_to_svg(data, labels, width, height, min_area, draw_contour_borders);
+                                         const int height, const int min_area) {
+    return img2num_labels_to_svg(data, labels, width, height, min_area);
 }
 }

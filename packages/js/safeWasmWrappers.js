@@ -174,8 +174,7 @@ export const kmeans = async ({
  * @summary Convert labeled regions to SVG contours.
  *
  * @description
- * Default path: convert an input image and its labeled regions into an SVG.
- * `draw_contour_borders`=true: the input image with its contours traced and marked with unique colors.
+ * Convert an input image and its labeled regions into an SVG.
  *
  * @async
  * @function findContours
@@ -185,7 +184,6 @@ export const kmeans = async ({
  * @property {number} __named_parameters.width - Image width.
  * @property {number} __named_parameters.height - Image height.
  * @property {number} [__named_parameters.min_area=100] - Minimum area of a region to be considered a contour.
- * @property {boolean} [__named_parameters.draw_contour_borders=false] - Whether to draw contour borders in visualization.
  * @returns {Promise<{svg: string, visualization: Uint8ClampedArray}>} Generated SVG and optionally pixels with visualized contours.
  * @throws {Error} If the WASM function fails or input labels are invalid.
  * @example
@@ -194,10 +192,10 @@ export const kmeans = async ({
  * @variation Contour extraction with optional visualization
  * @since 0.0.0
  */
-export const findContours = async ({ pixels, labels, width, height, min_area = 100, draw_contour_borders = false }) => {
+export const findContours = async ({ pixels, labels, width, height, min_area = 100 }) => {
   const result = await callWasm({
     funcName: "labels_to_svg",
-    args: { pixels, labels, width, height, min_area, draw_contour_borders },
+    args: { pixels, labels, width, height, min_area },
     bufferKeys: [
       { key: "pixels", type: "Uint8ClampedArray" },
       { key: "labels", type: "Int32Array" },
