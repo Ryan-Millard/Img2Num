@@ -186,8 +186,9 @@ format ([r,g,b,a, r,g,b,a, ...]) labels: int32_t* -> output of labelled regions
 from K-Means, should be 1/4 the size of data since data is RGBA labels : width *
 height : number of pixels in image = 1 : 1 : 1
 */
-char *labels_to_svg(uint8_t *data, int32_t *labels, const int width, const int height,
-                    const int min_area, const bool draw_contour_borders) {
+char *labels_to_svg(const uint8_t *data, const int32_t *labels,
+                    const int width, const int height,
+                    const int min_area) {
     const int32_t num_pixels{width * height};
     std::vector<int32_t> labels_vector{labels, labels + num_pixels};
     std::vector<int32_t> region_labels;
@@ -244,24 +245,16 @@ char *labels_to_svg(uint8_t *data, int32_t *labels, const int width, const int h
         }
     }
 
-    // 7. Copy recolored image back
-    const auto &modified = results.getData();
-    std::memcpy(data, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
+    // 7. Return SVG
+    std::string svg{contoursResultToSVG(all_contours, width, height)};
 
-    // 8. Return SVG if requested
-    if (!draw_contour_borders) {
-        std::string svg{contoursResultToSVG(all_contours, width, height)};
-
-        // Dynamic C-style allocation (since returned over C ABI)
-        char *res_svg{static_cast<char *>(std::malloc(svg.size() + 1))};
-        if (!res_svg) {
-            return nullptr;  // Allocation failed
-        }
-        std::memcpy(res_svg, svg.c_str(), svg.size() + 1);
-
-        return res_svg;
+    // Dynamic C-style allocation (since returned over C ABI)
+    char *res_svg{static_cast<char *>(std::malloc(svg.size() + 1))};
+    if (!res_svg) {
+        return nullptr;  // Allocation failed
     }
+    std::memcpy(res_svg, svg.c_str(), svg.size() + 1);
 
-    return nullptr;  // no SVG
+    return res_svg;
 }
 }  // namespace img2num
