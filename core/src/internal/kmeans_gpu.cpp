@@ -176,7 +176,6 @@ void kMeansPlusPlusInitGpu(const ImageLib::Image<PixelT>& pixels,
         wgpu::ComputePassEncoder pass = encoder.BeginComputePass();
         pass.SetPipeline(pipeline);
         pass.SetBindGroup(0, bindGroup);
-        // pass.DispatchWorkgroups((num_pixels + 255) / 256, 1, 1);
         pass.DispatchWorkgroups((width + 15) / 16, (height + 15) / 16, 1);
         pass.End();
 
