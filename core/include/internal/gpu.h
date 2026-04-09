@@ -200,6 +200,21 @@ class GPU {
                           << " Msg: " << err_msg << std::endl;
             });
 
+        // Set maximum possible device hardware memory
+        wgpu::Limits supportedLimits;
+        wgpu::Limits requiredLimits;
+        if (adapter.GetLimits(&supportedLimits)) {
+            // nominally the device Buffer limit is 256MB
+            
+            // Copy the adapter's physical limits over to your requested limits
+            requiredLimits = supportedLimits;
+            
+            std::cout << "maxBufferSize: " << requiredLimits.maxBufferSize << std::endl;
+            std::cout << "maxStorageBufferBindingSize: " << requiredLimits.maxStorageBufferBindingSize << std::endl;
+
+            deviceDesc.requiredLimits = &requiredLimits;
+        }
+
         adapter.RequestDevice(
             &deviceDesc,
             wgpu::CallbackMode::AllowProcessEvents,  // <--- ALLOW EVENTS
