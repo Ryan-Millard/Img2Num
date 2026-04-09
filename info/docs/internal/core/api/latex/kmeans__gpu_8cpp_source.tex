@@ -180,7 +180,7 @@
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00176}00176\ \ \ \ \ \ \ \ \ wgpu::ComputePassEncoder\ pass\ =\ encoder.BeginComputePass();}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00177}00177\ \ \ \ \ \ \ \ \ pass.SetPipeline(pipeline);}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00178}00178\ \ \ \ \ \ \ \ \ pass.SetBindGroup(0,\ bindGroup);}
-\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00179}00179\ \ \ \ \ \ \ \ \ pass.DispatchWorkgroups((num\_pixels\ +\ 255)\ /\ 256,\ 1,\ 1);}
+\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00179}00179\ \ \ \ \ \ \ \ \ pass.DispatchWorkgroups((width\ +\ 15)\ /\ 16,\ (height\ +\ 15)\ /\ 16,\ 1);}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00180}00180\ \ \ \ \ \ \ \ \ pass.End();}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00181}00181\ }
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00182}00182\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ C.\ Copy\ Result\ to\ ReadBuffer}}
