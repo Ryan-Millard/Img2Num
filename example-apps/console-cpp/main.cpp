@@ -49,25 +49,29 @@ int main(int argc, char** argv) {
     uint8_t* img_data{new uint8_t[width * height * NUM_CHANNELS]};
     uint8_t* out_data{new uint8_t[width * height * NUM_CHANNELS]};
     int32_t* out_labels{new int32_t[width * height]};
-    char* res_svg = nullptr;
-    for (int ITER=0; ITER<MAX_ITER; ITER++){
-        std::cout << "Image loaded: " << width << "x" << height << " with " << NUM_CHANNELS << " channel(s)." << std::endl;
-    
-        // Allocate a copy of the original image
-        // uint8_t* img_data{new uint8_t[width * height * NUM_CHANNELS]};
-        std::memcpy(img_data, image_data_original, static_cast<size_t>(width) * static_cast<size_t>(height) * NUM_CHANNELS);
-    
-        // Apply bilateral
-        const double sigma{width * SIGMA_WIDTH_RATIO};
-        img2num::bilateral_filter(img_data, width, height, sigma, 50.0, 0);
-        // Apply kmeans
-        img2num::kmeans(img_data, out_data, out_labels, width, height, 32, 100, 1);
-        // Generate SVG
-        if (res_svg != nullptr) {
-            std::free(res_svg);
-        }
-        res_svg = img2num::labels_to_svg(img_data, out_labels, width, height, 100, false);
+
+    std::cout << "Image loaded: " << width << "x" << height << " with " << NUM_CHANNELS << " channel(s)." << std::endl;
+
+    // Allocate a copy of the original image
+    // uint8_t* img_data{new uint8_t[width * height * NUM_CHANNELS]};
+    std::memcpy(img_data, image_data_original, static_cast<size_t>(width) * static_cast<size_t>(height) * NUM_CHANNELS);
+
+    // Apply bilateral
+    const double sigma{width * SIGMA_WIDTH_RATIO};
+    img2num::bilateral_filter(img_data, width, height, sigma, 50.0, 0);
+    // Apply kmeans
+    img2num::kmeans(img_data, out_data, out_labels, width, height, 32, 100, 1);
+    // Generate SVG
+    char* res_svg{img2num::labels_to_svg(img_data, out_labels, width, height, 100)};
+    if (!res_svg) {
+        std::cerr << "Failed to generate SVG: allocation failed" << std::endl;
+        stbi_image_free(image_data_original);
+        delete[] img_data;
+        delete[] out_data;
+        delete[] out_labels;
+        return 1;
     }
+
     // Save the blurred image
     std::string out_path{std::string(OUT_DIR) + "/console-cpp-output.png"};
     std::string kmeans_path{std::string(OUT_DIR) + "/console-cpp-kmeans.png"};
@@ -76,7 +80,7 @@ int main(int argc, char** argv) {
     int exit_code{0};
     const bool blur_save_success{stbi_write_png(out_path.c_str(), width, height, NUM_CHANNELS, img_data, width * NUM_CHANNELS) == 1 ? true : false};
     const bool kmeans_save_success{stbi_write_png(kmeans_path.c_str(), width, height, NUM_CHANNELS, out_data, width * NUM_CHANNELS) == 1 ? true : false};
-    
+
     std::ofstream svgFile(svg_path);
     if (!svgFile.is_open()) {
         std::cerr << "Error: Could not open the file!" << std::endl;
