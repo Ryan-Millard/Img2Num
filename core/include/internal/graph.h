@@ -47,8 +47,8 @@ class Graph {
 
     inline ~Graph() {
         // Break the circular references so the shared_ptrs can reach 0
-        for (auto& node : *m_nodes) {
-            node->clear_all(); 
+        for (auto &node : *m_nodes) {
+            node->clear_all();
         }
     }
 

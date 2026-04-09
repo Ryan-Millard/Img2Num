@@ -38,9 +38,8 @@ void img2num_bilateral_filter(uint8_t *image, size_t width, size_t height, doubl
                                         sigma_spatial, sigma_range, color_space);
 }
 
-char *img2num_labels_to_svg(const uint8_t *data, const int32_t *labels,
-                            const int width, const int height,
-                            const int min_area) {
+char *img2num_labels_to_svg(const uint8_t *data, const int32_t *labels, const int width,
+                            const int height, const int min_area) {
     char *result{nullptr};
     img2num::clear_last_error_and_catch(
         [&](const uint8_t *d, const int32_t *l, const int w, const int h, const int min_a) {

@@ -80,9 +80,9 @@ class GPU {
                 return std::string(entry.source);
             }
         }
-        
+
         // Always good to handle the "not found" case gracefully!
-        return ""; 
+        return "";
     }
 
     wgpu::ComputePipeline createPipeline(const std::string& filename, const std::string& label) {

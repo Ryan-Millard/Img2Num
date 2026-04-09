@@ -37,8 +37,7 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
                       double sigma_range, uint8_t color_space);
 
 /// @copydoc IMG2NUM_H_LABELS_TO_SVG_DOC
-char *labels_to_svg(const uint8_t *data, const int32_t *labels,
-                    const int width, const int height,
+char *labels_to_svg(const uint8_t *data, const int32_t *labels, const int width, const int height,
                     const int min_area);
 }  // namespace img2num
 
