@@ -34,9 +34,7 @@ const Author = () => (
       &nbsp;for details.
     </p>
 
-    <p>
-      Hi, I'm Alex Krasner.
-    </p>
+    <p>Hi, I'm Alex Krasner. I'm an experienced computer scientist interested in computer vision, and developing optimized and efficient algorithms.</p>
 
     <div className="flex-space-evenly">
       <Tooltip content="Visit Alex Krasner's GitHub profile">
