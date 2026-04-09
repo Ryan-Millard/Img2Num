@@ -6,7 +6,7 @@ var namespaces_dup =
       [ "gaussian_blur_fft", "namespaceimg2num.html#a365bbbd4976477bdf515be023a73d63f", null ],
       [ "invert_image", "namespaceimg2num.html#adcf00084d90ead66510dadc459d0990e", null ],
       [ "kmeans", "namespaceimg2num.html#ae73563e9dd25a8dd2120fd519ef87abd", null ],
-      [ "labels_to_svg", "namespaceimg2num.html#a5822dd3722c40a8d1cff368c6848c15d", null ],
+      [ "labels_to_svg", "namespaceimg2num.html#a4c28d91338348dc56fe44eb0b0b830e1", null ],
       [ "threshold_image", "namespaceimg2num.html#ad36f12c85016e28c7427c356783dea03", null ]
     ] ]
 ];
