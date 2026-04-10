@@ -1,37 +1,82 @@
 import { Link } from "react-router-dom";
 import GlassCard from "@components/GlassCard";
-import styles from "./About.module.css";
 import Tooltip from "@components/Tooltip";
+import styles from "./About.module.css";
+
+const AuthorCard = ({ name, bio, github, linkedin, avatar }) => (
+  <GlassCard className="flex flex-column gap-lg">
+    <div className={styles.header}>
+      <img src={avatar} alt={name} className={styles.avatar} />
+
+      <div className="flex flex-column gap-sm p-3">
+        <h3 className={styles.name}>{name}</h3>
+
+        <div className={styles.links}>
+          <Tooltip content={`Visit ${name}'s GitHub profile`}>
+            <a href={github} target="_blank" rel="noopener noreferrer">
+              GitHub
+            </a>
+          </Tooltip>
+
+          {linkedin && (
+            <Tooltip content={`Visit ${name}'s LinkedIn profile`}>
+              <a href={linkedin} target="_blank" rel="noopener noreferrer">
+                LinkedIn
+              </a>
+            </Tooltip>
+          )}
+        </div>
+      </div>
+    </div>
+
+    {/* BIO BELOW */}
+    <div className={styles.bio}>{bio}</div>
+  </GlassCard>
+);
 
 const Author = () => (
   <GlassCard className={styles.container}>
-    <h2>About the Author</h2>
+    <h2 className={styles.title}>About the Authors</h2>
 
-    <p>
-      Hi, I’m Ryan! I’m a software developer passionate about image processing, web tools, and creative coding. Img2Num started as a learning experiment and evolved into a tribute to Joan, my
-      hedgehog.
-    </p>
+    <div className={styles.grid}>
+      <AuthorCard
+        name="Ryan Millard"
+        avatar="https://github.com/Ryan-Millard.png"
+        github="https://github.com/Ryan-Millard"
+        bio={
+          <>
+            Hi, I’m Ryan Millard! 🦔
+            <p>
+              I like understanding how things work - wrecking them, then building them better.
+              <br />I build software with a focus on performance and clear, predictable behavior.
+            </p>
+          </>
+        }
+      />
 
-    <div className="flex-space-evenly">
-      <Tooltip content="Visit Ryan Millard's GitHub profile">
-        <a href="https://github.com/Ryan-Millard" target="_blank" rel="noopener noreferrer">
-          GitHub
-        </a>
-      </Tooltip>
-
-      <Tooltip content="Visit Ryan Millard's LinkedIn profile">
-        <a href="https://www.linkedin.com/in/ryan-millard/" target="_blank" rel="noopener noreferrer">
-          LinkedIn
-        </a>
-      </Tooltip>
+      <AuthorCard
+        name="Alex Krasner"
+        avatar="https://github.com/Krasner.png"
+        github="https://github.com/Krasner"
+        linkedin="https://www.linkedin.com/in/alex-krasner-72090329"
+        bio={
+          <>
+            Hi, I'm Alex Krasner. ⚡
+            <p>
+              I'm an experienced computer scientist focused on computer vision and building efficient, optimized algorithms. Img2Num uses Google Dawn WebGPU to accelerate image processing and enable
+              cross-platform deployment.
+            </p>
+          </>
+        }
+      />
     </div>
 
-    <p className={`flex-center ${styles.authorNote}`}>
-      While I led this project, I had some help from others—see the&nbsp;
+    <p className={`flex-center ${styles.note}`}>
+      While we led this project, there were contributions from others — see the&nbsp;
       <Tooltip content="View project credits">
         <Link to="/credits">Credits page</Link>
       </Tooltip>
-      &nbsp;for details.
+      .
     </p>
   </GlassCard>
 );

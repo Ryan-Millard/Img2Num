@@ -2,13 +2,72 @@
   text-align: justify;
 }
 
-.authorNote {
-  font-style: italic;
-  font-size: 0.9em;
-}
 .coverImage {
   width: 10vw;
   min-width: 100px;
   margin: 0 auto;
   display: block;
+}
+
+.container {
+  padding: 2rem;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40vw, 1fr));
+  gap: 2rem;
+  align-items: stretch;
+}
+
+.header {
+  display: flex;
+  align-items: stretch; /* makes right side match avatar height */
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0;
+}
+
+.avatar {
+  width: min(30vw, 120px);
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.name {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.links {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.links a:hover {
+  opacity: 1;
+}
+
+.bio {
+  font-style: italic;
+}
+
+.note {
+  margin-top: 2rem;
+  font-style: italic;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.card {
+  display: flex-column;
 }
