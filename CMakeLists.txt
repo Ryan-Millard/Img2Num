@@ -23,13 +23,13 @@ add_subdirectory(core)
 # C bindings
 add_subdirectory(bindings/c)
 
-# Python bindings
-add_subdirectory(bindings/python)
-
 if(EMSCRIPTEN)
   # JS bindings
   add_subdirectory(bindings/js)
 else()
+  # Python bindings
+  add_subdirectory(bindings/python)
+  
   if(IMG2NUM_BUILD_EXAMPLES)
     # Example console app (C++)
     add_subdirectory(example-apps/console-cpp)
