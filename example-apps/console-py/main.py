@@ -22,7 +22,7 @@ img2num.bilateral_filter(img, width, height, 3, 50, 0)
 cv2.imwrite(os.path.join(OUTDIR, "bilateral_image.png"), cv2.cvtColor(img, cv2.COLOR_RGBA2BGR))
 
 # kmeans
-img_kmeans, labels = img2num.kmeans(img, width, height, 16, 100, 1)
+img_kmeans, labels = img2num.kmeans(img, width, height, 16, 100, 0)
 cv2.imwrite(os.path.join(OUTDIR, "kmeans_image.png"), cv2.cvtColor(img_kmeans, cv2.COLOR_RGBA2BGR))
 # svg file
 res_svg = img2num.labels_to_svg(img, labels, width, height, 100)
