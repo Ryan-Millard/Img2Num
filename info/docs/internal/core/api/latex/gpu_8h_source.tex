@@ -84,9 +84,9 @@
 \DoxyCodeLine{\Hypertarget{gpu_8h_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::string(entry.source);}
 \DoxyCodeLine{\Hypertarget{gpu_8h_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{gpu_8h_source_l00082}00082\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00083}00083\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00083}00083\ }
 \DoxyCodeLine{\Hypertarget{gpu_8h_source_l00084}00084\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Always\ good\ to\ handle\ the\ "{}not\ found"{}\ case\ gracefully!}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00085}00085\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}"{}};\ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00085}00085\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}"{}};}
 \DoxyCodeLine{\Hypertarget{gpu_8h_source_l00086}00086\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{gpu_8h_source_l00087}00087\ }
 \DoxyCodeLine{\Hypertarget{gpu_8h_source_l00088}00088\ \ \ \ \ wgpu::ComputePipeline\ createPipeline(\textcolor{keyword}{const}\ std::string\&\ filename,\ \textcolor{keyword}{const}\ std::string\&\ label)\ \{}
@@ -209,60 +209,61 @@
 \DoxyCodeLine{\Hypertarget{gpu_8h_source_l00205}00205\ \ \ \ \ \ \ \ \ wgpu::Limits\ requiredLimits;}
 \DoxyCodeLine{\Hypertarget{gpu_8h_source_l00206}00206\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (adapter.GetLimits(\&supportedLimits))\ \{}
 \DoxyCodeLine{\Hypertarget{gpu_8h_source_l00207}00207\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ nominally\ the\ device\ Buffer\ limit\ is\ 256MB}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00208}00208\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00208}00208\ }
 \DoxyCodeLine{\Hypertarget{gpu_8h_source_l00209}00209\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ the\ adapter's\ physical\ limits\ over\ to\ your\ requested\ limits}}
 \DoxyCodeLine{\Hypertarget{gpu_8h_source_l00210}00210\ \ \ \ \ \ \ \ \ \ \ \ \ requiredLimits\ =\ supportedLimits;}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00211}00211\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00211}00211\ }
 \DoxyCodeLine{\Hypertarget{gpu_8h_source_l00212}00212\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}maxBufferSize:\ "{}}\ <<\ requiredLimits.maxBufferSize\ <<\ std::endl;}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00213}00213\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}maxStorageBufferBindingSize:\ "{}}\ <<\ requiredLimits.maxStorageBufferBindingSize\ <<\ std::endl;}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00214}00214\ }
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00215}00215\ \ \ \ \ \ \ \ \ \ \ \ \ deviceDesc.requiredLimits\ =\ \&requiredLimits;}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00216}00216\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00217}00217\ }
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00218}00218\ \ \ \ \ \ \ \ \ adapter.RequestDevice(}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00219}00219\ \ \ \ \ \ \ \ \ \ \ \ \ \&deviceDesc,}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00220}00220\ \ \ \ \ \ \ \ \ \ \ \ \ wgpu::CallbackMode::AllowProcessEvents,\ \ \textcolor{comment}{//\ <-\/-\/-\/\ ALLOW\ EVENTS}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00221}00221\ \ \ \ \ \ \ \ \ \ \ \ \ [\textcolor{keyword}{this}](wgpu::RequestDeviceStatus\ status,\ wgpu::Device\ d,\ wgpu::StringView\ msg)\ \{}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00222}00222\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (status\ ==\ wgpu::RequestDeviceStatus::Success)\ \{}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00223}00223\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ device\ =\ std::move(d);}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00224}00224\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Device\ Acquired"{}}\ <<\ std::endl;}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00225}00225\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00226}00226\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Device\ Failed:\ "{}}\ <<\ msg.data\ <<\ std::endl;}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00227}00227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00228}00228\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ device\_ready\ =\ \textcolor{keyword}{true};\ \ \textcolor{comment}{//\ Unblock\ the\ loop}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00229}00229\ \ \ \ \ \ \ \ \ \ \ \ \ \});}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00230}00230\ }
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00231}00231\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ WAIT\ LOOP}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00232}00232\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!device\_ready)\ \{}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00233}00233\ \ \ \ \ \ \ \ \ \ \ \ \ instance.ProcessEvents();}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00234}00234\ \textcolor{preprocessor}{\#if\ defined(\_\_EMSCRIPTEN\_\_)}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00235}00235\ \ \ \ \ \ \ \ \ \ \ \ \ emscripten\_sleep(10);}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00236}00236\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00237}00237\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00238}00238\ }
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00239}00239\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!device)\ \{}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00240}00240\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Fatal:\ Could\ not\ get\ WebGPU\ Device."{}}\ <<\ std::endl;}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00241}00241\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00242}00242\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00243}00243\ }
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00244}00244\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!validate\_device())\ \{}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00245}00245\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Fatal:\ Could\ not\ get\ WebGPU\ Device."{}}\ <<\ std::endl;}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00246}00246\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00247}00247\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00248}00248\ }
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00249}00249\ \ \ \ \ \ \ \ \ queue\ =\ device.GetQueue();}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00250}00250\ \ \ \ \ \ \ \ \ gpu\_initialized\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00251}00251\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}GPU\ Fully\ Initialized."{}}\ <<\ std::endl;}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00252}00252\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00253}00253\ }
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00254}00254\ \ \ \ \ \mbox{\hyperlink{classGPU}{\string~GPU}}()\ \{}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00255}00255\ \ \ \ \ \ \ \ \ device\ =\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00256}00256\ \ \ \ \ \ \ \ \ adapter\ =\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00257}00257\ \ \ \ \ \ \ \ \ queue\ =\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00258}00258\ \ \ \ \ \ \ \ \ instance\ =\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00259}00259\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00260}00260\ \};}
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00261}00261\ }
-\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00262}00262\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00213}00213\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}maxStorageBufferBindingSize:\ "{}}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00214}00214\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ requiredLimits.maxStorageBufferBindingSize\ <<\ std::endl;}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00215}00215\ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00216}00216\ \ \ \ \ \ \ \ \ \ \ \ \ deviceDesc.requiredLimits\ =\ \&requiredLimits;}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00217}00217\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00218}00218\ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00219}00219\ \ \ \ \ \ \ \ \ adapter.RequestDevice(}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00220}00220\ \ \ \ \ \ \ \ \ \ \ \ \ \&deviceDesc,}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00221}00221\ \ \ \ \ \ \ \ \ \ \ \ \ wgpu::CallbackMode::AllowProcessEvents,\ \ \textcolor{comment}{//\ <-\/-\/-\/\ ALLOW\ EVENTS}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00222}00222\ \ \ \ \ \ \ \ \ \ \ \ \ [\textcolor{keyword}{this}](wgpu::RequestDeviceStatus\ status,\ wgpu::Device\ d,\ wgpu::StringView\ msg)\ \{}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00223}00223\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (status\ ==\ wgpu::RequestDeviceStatus::Success)\ \{}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00224}00224\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ device\ =\ std::move(d);}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00225}00225\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Device\ Acquired"{}}\ <<\ std::endl;}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00226}00226\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00227}00227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Device\ Failed:\ "{}}\ <<\ msg.data\ <<\ std::endl;}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00228}00228\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00229}00229\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ device\_ready\ =\ \textcolor{keyword}{true};\ \ \textcolor{comment}{//\ Unblock\ the\ loop}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00230}00230\ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00231}00231\ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00232}00232\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ WAIT\ LOOP}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00233}00233\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!device\_ready)\ \{}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00234}00234\ \ \ \ \ \ \ \ \ \ \ \ \ instance.ProcessEvents();}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00235}00235\ \textcolor{preprocessor}{\#if\ defined(\_\_EMSCRIPTEN\_\_)}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00236}00236\ \ \ \ \ \ \ \ \ \ \ \ \ emscripten\_sleep(10);}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00237}00237\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00238}00238\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00239}00239\ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00240}00240\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!device)\ \{}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00241}00241\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Fatal:\ Could\ not\ get\ WebGPU\ Device."{}}\ <<\ std::endl;}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00242}00242\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00243}00243\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00244}00244\ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00245}00245\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!validate\_device())\ \{}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00246}00246\ \ \ \ \ \ \ \ \ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Fatal:\ Could\ not\ get\ WebGPU\ Device."{}}\ <<\ std::endl;}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00247}00247\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00248}00248\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00249}00249\ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00250}00250\ \ \ \ \ \ \ \ \ queue\ =\ device.GetQueue();}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00251}00251\ \ \ \ \ \ \ \ \ gpu\_initialized\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00252}00252\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}GPU\ Fully\ Initialized."{}}\ <<\ std::endl;}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00253}00253\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00254}00254\ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00255}00255\ \ \ \ \ \mbox{\hyperlink{classGPU}{\string~GPU}}()\ \{}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00256}00256\ \ \ \ \ \ \ \ \ device\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00257}00257\ \ \ \ \ \ \ \ \ adapter\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00258}00258\ \ \ \ \ \ \ \ \ queue\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00259}00259\ \ \ \ \ \ \ \ \ instance\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00260}00260\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00261}00261\ \};}
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00262}00262\ }
+\DoxyCodeLine{\Hypertarget{gpu_8h_source_l00263}00263\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

@@ -224,8 +224,8 @@ Protected Attributes</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="graph_8h_source.html#l00048">48</a> of file <a class="el" href="graph_8h_source.html">graph.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   48</span>                    {</div>
 <div class="line"><span class="lineno">   49</span>        <span class="comment">// Break the circular references so the shared_ptrs can reach 0</span></div>
-<div class="line"><span class="lineno">   50</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; node : *m_nodes) {</div>
-<div class="line"><span class="lineno">   51</span>            node-&gt;clear_all(); </div>
+<div class="line"><span class="lineno">   50</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;node : *m_nodes) {</div>
+<div class="line"><span class="lineno">   51</span>            node-&gt;clear_all();</div>
 <div class="line"><span class="lineno">   52</span>        }</div>
 <div class="line"><span class="lineno">   53</span>    }</div>
 </div><!-- fragment -->

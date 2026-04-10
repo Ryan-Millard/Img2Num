@@ -190,77 +190,76 @@
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00186}00186\ \textcolor{comment}{from\ K-\/Means,\ should\ be\ 1/4\ the\ size\ of\ data\ since\ data\ is\ RGBA\ labels\ :\ width\ *}}
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00187}00187\ \textcolor{comment}{height\ :\ number\ of\ pixels\ in\ image\ =\ 1\ :\ 1\ :\ 1}}
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00188}00188\ \textcolor{comment}{*/}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00189}\mbox{\hyperlink{namespaceimg2num_a4c28d91338348dc56fe44eb0b0b830e1}{00189}}\ \textcolor{keywordtype}{char}\ *\mbox{\hyperlink{namespaceimg2num_a4c28d91338348dc56fe44eb0b0b830e1}{labels\_to\_svg}}(\textcolor{keyword}{const}\ uint8\_t\ *data,\ \textcolor{keyword}{const}\ int32\_t\ *labels,}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00190}00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00191}00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_area)\ \{}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00192}00192\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ num\_pixels\{width\ *\ height\};}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00193}00193\ \ \ \ \ std::vector<int32\_t>\ labels\_vector\{labels,\ labels\ +\ num\_pixels\};}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00194}00194\ \ \ \ \ std::vector<int32\_t>\ region\_labels;}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00195}00195\ }
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00196}00196\ \ \ \ \ \textcolor{comment}{//\ 1.\ enumerate\ regions\ and\ convert\ to\ Nodes}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00197}00197\ \ \ \ \ std::vector<Node\_ptr>\ nodes;}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00198}00198\ \ \ \ \ region\_labeling(data,\ labels\_vector,\ region\_labels,\ width,\ height,\ nodes);}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00199}00199\ }
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00200}00200\ \ \ \ \ \textcolor{comment}{//\ 2.\ initialize\ Graph\ from\ all\ Nodes}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00201}00201\ \ \ \ \ std::unique\_ptr<std::vector<Node\_ptr>>\ node\_ptr\ =}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00202}00202\ \ \ \ \ \ \ \ \ std::make\_unique<std::vector<Node\_ptr>>(std::move(nodes));}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00203}00203\ \ \ \ \ \mbox{\hyperlink{classGraph}{Graph}}\ G(node\_ptr,\ width,\ height);}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00204}00204\ }
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00205}00205\ \ \ \ \ \textcolor{comment}{//\ 3.\ Discover\ node\ adjacencies\ -\/\ add\ edges\ to\ Graph}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00206}00206\ \ \ \ \ G.discover\_edges(region\_labels,\ width,\ height);}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00207}00207\ }
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00208}00208\ \ \ \ \ \textcolor{comment}{//\ 4.\ Merge\ small\ area\ nodes\ until\ all\ nodes\ are\ minArea\ or\ larger}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00209}00209\ \ \ \ \ G.merge\_small\_area\_nodes(min\_area);}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00210}00210\ }
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00211}00211\ \ \ \ \ \textcolor{comment}{//\ 5.\ recolor\ image\ on\ new\ regions}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00212}00212\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ results\{width,\ height\};}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00213}00213\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&n\ :\ G.get\_nodes())\ \{}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00214}00214\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)\ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00215}00215\ }
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00216}00216\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ [r,\ g,\ b]\ =\ n-\/>color();}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00217}00217\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&[\_,\ p]\ :\ n-\/>get\_pixels())\ \{}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00218}00218\ \ \ \ \ \ \ \ \ \ \ \ \ results(p.x,\ p.y)\ =\ \{r,\ g,\ b\};}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00219}00219\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00220}00220\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00221}00221\ }
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00222}00222\ \ \ \ \ \textcolor{comment}{//\ 6.\ Contours}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00223}00223\ \ \ \ \ \textcolor{comment}{//\ graph\ will\ manage\ computing\ contours}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00224}00224\ \ \ \ \ G.compute\_contours();}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00225}00225\ }
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00226}00226\ \ \ \ \ \textcolor{comment}{//\ accumulate\ all\ contours\ for\ svg\ export}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00227}00227\ \ \ \ \ \mbox{\hyperlink{structColoredContours}{ColoredContours}}\ all\_contours;}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00228}00228\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&n\ :\ G.get\_nodes())\ \{}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00229}00229\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)\ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00230}00230\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structColoredContours}{ColoredContours}}\ node\_contours\ =\ n-\/>get\_contours();}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00231}00231\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&c\ :\ node\_contours.contours)\ \{}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00232}00232\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.contours.push\_back(c);}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00233}00233\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00234}00234\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&c\ :\ node\_contours.hierarchy)\ \{}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00235}00235\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.hierarchy.push\_back(c);}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00236}00236\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00237}00237\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{bool}\ b\ :\ node\_contours.is\_hole)\ \{}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00238}00238\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.is\_hole.push\_back(b);}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00239}00239\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00240}00240\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&c\ :\ node\_contours.colors)\ \{}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00241}00241\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.colors.push\_back(c);}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00242}00242\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00243}00243\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&c\ :\ node\_contours.curves)\ \{}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00244}00244\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.curves.push\_back(c);}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00245}00245\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00246}00246\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00247}00247\ }
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00248}00248\ \ \ \ \ \textcolor{comment}{//\ 7.\ Return\ SVG}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00249}00249\ \ \ \ \ std::string\ svg\{contoursResultToSVG(all\_contours,\ width,\ height)\};}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00250}00250\ }
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00251}00251\ \ \ \ \ \textcolor{comment}{//\ Dynamic\ C-\/style\ allocation\ (since\ returned\ over\ C\ ABI)}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00252}00252\ \ \ \ \ \textcolor{keywordtype}{char}\ *res\_svg\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{char}\ *\textcolor{keyword}{>}(std::malloc(svg.size()\ +\ 1))\};}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00253}00253\ \ \ \ \ \textcolor{keywordflow}{if}\ (!res\_svg)\ \{}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00254}00254\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};\ \ \textcolor{comment}{//\ Allocation\ failed}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00255}00255\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00256}00256\ \ \ \ \ std::memcpy(res\_svg,\ svg.c\_str(),\ svg.size()\ +\ 1);}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00257}00257\ }
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00258}00258\ \ \ \ \ \textcolor{keywordflow}{return}\ res\_svg;}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00259}00259\ \}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00260}00260\ \}\ \ \textcolor{comment}{//\ namespace\ img2num}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00189}\mbox{\hyperlink{namespaceimg2num_a4c28d91338348dc56fe44eb0b0b830e1}{00189}}\ \textcolor{keywordtype}{char}\ *\mbox{\hyperlink{namespaceimg2num_a4c28d91338348dc56fe44eb0b0b830e1}{labels\_to\_svg}}(\textcolor{keyword}{const}\ uint8\_t\ *data,\ \textcolor{keyword}{const}\ int32\_t\ *labels,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00190}00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_area)\ \{}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00191}00191\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ num\_pixels\{width\ *\ height\};}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00192}00192\ \ \ \ \ std::vector<int32\_t>\ labels\_vector\{labels,\ labels\ +\ num\_pixels\};}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00193}00193\ \ \ \ \ std::vector<int32\_t>\ region\_labels;}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00194}00194\ }
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00195}00195\ \ \ \ \ \textcolor{comment}{//\ 1.\ enumerate\ regions\ and\ convert\ to\ Nodes}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00196}00196\ \ \ \ \ std::vector<Node\_ptr>\ nodes;}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00197}00197\ \ \ \ \ region\_labeling(data,\ labels\_vector,\ region\_labels,\ width,\ height,\ nodes);}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00198}00198\ }
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00199}00199\ \ \ \ \ \textcolor{comment}{//\ 2.\ initialize\ Graph\ from\ all\ Nodes}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00200}00200\ \ \ \ \ std::unique\_ptr<std::vector<Node\_ptr>>\ node\_ptr\ =}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00201}00201\ \ \ \ \ \ \ \ \ std::make\_unique<std::vector<Node\_ptr>>(std::move(nodes));}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00202}00202\ \ \ \ \ \mbox{\hyperlink{classGraph}{Graph}}\ G(node\_ptr,\ width,\ height);}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00203}00203\ }
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00204}00204\ \ \ \ \ \textcolor{comment}{//\ 3.\ Discover\ node\ adjacencies\ -\/\ add\ edges\ to\ Graph}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00205}00205\ \ \ \ \ G.discover\_edges(region\_labels,\ width,\ height);}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00206}00206\ }
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00207}00207\ \ \ \ \ \textcolor{comment}{//\ 4.\ Merge\ small\ area\ nodes\ until\ all\ nodes\ are\ minArea\ or\ larger}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00208}00208\ \ \ \ \ G.merge\_small\_area\_nodes(min\_area);}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00209}00209\ }
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00210}00210\ \ \ \ \ \textcolor{comment}{//\ 5.\ recolor\ image\ on\ new\ regions}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00211}00211\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ results\{width,\ height\};}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00212}00212\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&n\ :\ G.get\_nodes())\ \{}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00213}00213\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)\ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00214}00214\ }
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00215}00215\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ [r,\ g,\ b]\ =\ n-\/>color();}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00216}00216\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&[\_,\ p]\ :\ n-\/>get\_pixels())\ \{}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00217}00217\ \ \ \ \ \ \ \ \ \ \ \ \ results(p.x,\ p.y)\ =\ \{r,\ g,\ b\};}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00218}00218\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00219}00219\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00220}00220\ }
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00221}00221\ \ \ \ \ \textcolor{comment}{//\ 6.\ Contours}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00222}00222\ \ \ \ \ \textcolor{comment}{//\ graph\ will\ manage\ computing\ contours}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00223}00223\ \ \ \ \ G.compute\_contours();}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00224}00224\ }
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00225}00225\ \ \ \ \ \textcolor{comment}{//\ accumulate\ all\ contours\ for\ svg\ export}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00226}00226\ \ \ \ \ \mbox{\hyperlink{structColoredContours}{ColoredContours}}\ all\_contours;}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00227}00227\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&n\ :\ G.get\_nodes())\ \{}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00228}00228\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)\ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00229}00229\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structColoredContours}{ColoredContours}}\ node\_contours\ =\ n-\/>get\_contours();}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00230}00230\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&c\ :\ node\_contours.contours)\ \{}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00231}00231\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.contours.push\_back(c);}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00232}00232\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00233}00233\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&c\ :\ node\_contours.hierarchy)\ \{}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00234}00234\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.hierarchy.push\_back(c);}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00235}00235\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00236}00236\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{bool}\ b\ :\ node\_contours.is\_hole)\ \{}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00237}00237\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.is\_hole.push\_back(b);}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00238}00238\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00239}00239\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&c\ :\ node\_contours.colors)\ \{}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00240}00240\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.colors.push\_back(c);}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00241}00241\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00242}00242\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&c\ :\ node\_contours.curves)\ \{}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00243}00243\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.curves.push\_back(c);}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00244}00244\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00245}00245\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00246}00246\ }
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00247}00247\ \ \ \ \ \textcolor{comment}{//\ 7.\ Return\ SVG}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00248}00248\ \ \ \ \ std::string\ svg\{contoursResultToSVG(all\_contours,\ width,\ height)\};}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00249}00249\ }
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00250}00250\ \ \ \ \ \textcolor{comment}{//\ Dynamic\ C-\/style\ allocation\ (since\ returned\ over\ C\ ABI)}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00251}00251\ \ \ \ \ \textcolor{keywordtype}{char}\ *res\_svg\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{char}\ *\textcolor{keyword}{>}(std::malloc(svg.size()\ +\ 1))\};}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00252}00252\ \ \ \ \ \textcolor{keywordflow}{if}\ (!res\_svg)\ \{}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00253}00253\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};\ \ \textcolor{comment}{//\ Allocation\ failed}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00254}00254\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00255}00255\ \ \ \ \ std::memcpy(res\_svg,\ svg.c\_str(),\ svg.size()\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00256}00256\ }
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00257}00257\ \ \ \ \ \textcolor{keywordflow}{return}\ res\_svg;}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00258}00258\ \}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00259}00259\ \}\ \ \textcolor{comment}{//\ namespace\ img2num}}
 
 \end{DoxyCode}

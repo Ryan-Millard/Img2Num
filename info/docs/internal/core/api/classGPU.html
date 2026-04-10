@@ -194,13 +194,13 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gpu_8h_source.html#l00254">254</a> of file <a class="el" href="gpu_8h_source.html">gpu.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  254</span>           {</div>
-<div class="line"><span class="lineno">  255</span>        device = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  256</span>        adapter = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  257</span>        queue = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  258</span>        instance = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  259</span>    };</div>
+<p class="definition">Definition at line <a class="el" href="gpu_8h_source.html#l00255">255</a> of file <a class="el" href="gpu_8h_source.html">gpu.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  255</span>           {</div>
+<div class="line"><span class="lineno">  256</span>        device = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  257</span>        adapter = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  258</span>        queue = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  259</span>        instance = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  260</span>    };</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -525,51 +525,52 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  205</span>        wgpu::Limits requiredLimits;</div>
 <div class="line"><span class="lineno">  206</span>        <span class="keywordflow">if</span> (adapter.GetLimits(&amp;supportedLimits)) {</div>
 <div class="line"><span class="lineno">  207</span>            <span class="comment">// nominally the device Buffer limit is 256MB</span></div>
-<div class="line"><span class="lineno">  208</span>            </div>
+<div class="line"><span class="lineno">  208</span> </div>
 <div class="line"><span class="lineno">  209</span>            <span class="comment">// Copy the adapter&#39;s physical limits over to your requested limits</span></div>
 <div class="line"><span class="lineno">  210</span>            requiredLimits = supportedLimits;</div>
-<div class="line"><span class="lineno">  211</span>            </div>
+<div class="line"><span class="lineno">  211</span> </div>
 <div class="line"><span class="lineno">  212</span>            std::cout &lt;&lt; <span class="stringliteral">&quot;maxBufferSize: &quot;</span> &lt;&lt; requiredLimits.maxBufferSize &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  213</span>            std::cout &lt;&lt; <span class="stringliteral">&quot;maxStorageBufferBindingSize: &quot;</span> &lt;&lt; requiredLimits.maxStorageBufferBindingSize &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  214</span> </div>
-<div class="line"><span class="lineno">  215</span>            deviceDesc.requiredLimits = &amp;requiredLimits;</div>
-<div class="line"><span class="lineno">  216</span>        }</div>
-<div class="line"><span class="lineno">  217</span> </div>
-<div class="line"><span class="lineno">  218</span>        adapter.RequestDevice(</div>
-<div class="line"><span class="lineno">  219</span>            &amp;deviceDesc,</div>
-<div class="line"><span class="lineno">  220</span>            wgpu::CallbackMode::AllowProcessEvents,  <span class="comment">// &lt;--- ALLOW EVENTS</span></div>
-<div class="line"><span class="lineno">  221</span>            [<span class="keyword">this</span>](wgpu::RequestDeviceStatus status, wgpu::Device d, wgpu::StringView msg) {</div>
-<div class="line"><span class="lineno">  222</span>                <span class="keywordflow">if</span> (status == wgpu::RequestDeviceStatus::Success) {</div>
-<div class="line"><span class="lineno">  223</span>                    device = std::move(d);</div>
-<div class="line"><span class="lineno">  224</span>                    std::cout &lt;&lt; <span class="stringliteral">&quot;Device Acquired&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  225</span>                } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  226</span>                    std::cerr &lt;&lt; <span class="stringliteral">&quot;Device Failed: &quot;</span> &lt;&lt; msg.data &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  227</span>                }</div>
-<div class="line"><span class="lineno">  228</span>                device_ready = <span class="keyword">true</span>;  <span class="comment">// Unblock the loop</span></div>
-<div class="line"><span class="lineno">  229</span>            });</div>
-<div class="line"><span class="lineno">  230</span> </div>
-<div class="line"><span class="lineno">  231</span>        <span class="comment">// WAIT LOOP</span></div>
-<div class="line"><span class="lineno">  232</span>        <span class="keywordflow">while</span> (!device_ready) {</div>
-<div class="line"><span class="lineno">  233</span>            instance.ProcessEvents();</div>
-<div class="line"><span class="lineno">  234</span><span class="preprocessor">#if defined(__EMSCRIPTEN__)</span></div>
-<div class="line"><span class="lineno">  235</span>            emscripten_sleep(10);</div>
-<div class="line"><span class="lineno">  236</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">  237</span>        }</div>
-<div class="line"><span class="lineno">  238</span> </div>
-<div class="line"><span class="lineno">  239</span>        <span class="keywordflow">if</span> (!device) {</div>
-<div class="line"><span class="lineno">  240</span>            std::cerr &lt;&lt; <span class="stringliteral">&quot;Fatal: Could not get WebGPU Device.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  241</span>            <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  242</span>        }</div>
-<div class="line"><span class="lineno">  243</span> </div>
-<div class="line"><span class="lineno">  244</span>        <span class="keywordflow">if</span> (!validate_device()) {</div>
-<div class="line"><span class="lineno">  245</span>            std::cerr &lt;&lt; <span class="stringliteral">&quot;Fatal: Could not get WebGPU Device.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  246</span>            <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  247</span>        }</div>
-<div class="line"><span class="lineno">  248</span> </div>
-<div class="line"><span class="lineno">  249</span>        queue = device.GetQueue();</div>
-<div class="line"><span class="lineno">  250</span>        gpu_initialized = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  251</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;GPU Fully Initialized.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  252</span>    };</div>
+<div class="line"><span class="lineno">  213</span>            std::cout &lt;&lt; <span class="stringliteral">&quot;maxStorageBufferBindingSize: &quot;</span></div>
+<div class="line"><span class="lineno">  214</span>                      &lt;&lt; requiredLimits.maxStorageBufferBindingSize &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  215</span> </div>
+<div class="line"><span class="lineno">  216</span>            deviceDesc.requiredLimits = &amp;requiredLimits;</div>
+<div class="line"><span class="lineno">  217</span>        }</div>
+<div class="line"><span class="lineno">  218</span> </div>
+<div class="line"><span class="lineno">  219</span>        adapter.RequestDevice(</div>
+<div class="line"><span class="lineno">  220</span>            &amp;deviceDesc,</div>
+<div class="line"><span class="lineno">  221</span>            wgpu::CallbackMode::AllowProcessEvents,  <span class="comment">// &lt;--- ALLOW EVENTS</span></div>
+<div class="line"><span class="lineno">  222</span>            [<span class="keyword">this</span>](wgpu::RequestDeviceStatus status, wgpu::Device d, wgpu::StringView msg) {</div>
+<div class="line"><span class="lineno">  223</span>                <span class="keywordflow">if</span> (status == wgpu::RequestDeviceStatus::Success) {</div>
+<div class="line"><span class="lineno">  224</span>                    device = std::move(d);</div>
+<div class="line"><span class="lineno">  225</span>                    std::cout &lt;&lt; <span class="stringliteral">&quot;Device Acquired&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  226</span>                } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  227</span>                    std::cerr &lt;&lt; <span class="stringliteral">&quot;Device Failed: &quot;</span> &lt;&lt; msg.data &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  228</span>                }</div>
+<div class="line"><span class="lineno">  229</span>                device_ready = <span class="keyword">true</span>;  <span class="comment">// Unblock the loop</span></div>
+<div class="line"><span class="lineno">  230</span>            });</div>
+<div class="line"><span class="lineno">  231</span> </div>
+<div class="line"><span class="lineno">  232</span>        <span class="comment">// WAIT LOOP</span></div>
+<div class="line"><span class="lineno">  233</span>        <span class="keywordflow">while</span> (!device_ready) {</div>
+<div class="line"><span class="lineno">  234</span>            instance.ProcessEvents();</div>
+<div class="line"><span class="lineno">  235</span><span class="preprocessor">#if defined(__EMSCRIPTEN__)</span></div>
+<div class="line"><span class="lineno">  236</span>            emscripten_sleep(10);</div>
+<div class="line"><span class="lineno">  237</span><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="lineno">  238</span>        }</div>
+<div class="line"><span class="lineno">  239</span> </div>
+<div class="line"><span class="lineno">  240</span>        <span class="keywordflow">if</span> (!device) {</div>
+<div class="line"><span class="lineno">  241</span>            std::cerr &lt;&lt; <span class="stringliteral">&quot;Fatal: Could not get WebGPU Device.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  242</span>            <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  243</span>        }</div>
+<div class="line"><span class="lineno">  244</span> </div>
+<div class="line"><span class="lineno">  245</span>        <span class="keywordflow">if</span> (!validate_device()) {</div>
+<div class="line"><span class="lineno">  246</span>            std::cerr &lt;&lt; <span class="stringliteral">&quot;Fatal: Could not get WebGPU Device.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  247</span>            <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  248</span>        }</div>
+<div class="line"><span class="lineno">  249</span> </div>
+<div class="line"><span class="lineno">  250</span>        queue = device.GetQueue();</div>
+<div class="line"><span class="lineno">  251</span>        gpu_initialized = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  252</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;GPU Fully Initialized.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  253</span>    };</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -683,9 +684,9 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   80</span>                <span class="keywordflow">return</span> std::string(entry.source);</div>
 <div class="line"><span class="lineno">   81</span>            }</div>
 <div class="line"><span class="lineno">   82</span>        }</div>
-<div class="line"><span class="lineno">   83</span>        </div>
+<div class="line"><span class="lineno">   83</span> </div>
 <div class="line"><span class="lineno">   84</span>        <span class="comment">// Always good to handle the &quot;not found&quot; case gracefully!</span></div>
-<div class="line"><span class="lineno">   85</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>; </div>
+<div class="line"><span class="lineno">   85</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
 <div class="line"><span class="lineno">   86</span>    }</div>
 </div><!-- fragment -->
 </div>
