@@ -19,6 +19,11 @@ set(EMBEDDED_SHADERS_OUT "${CMAKE_BINARY_DIR}/embedded_shaders.h")
 set_source_files_properties(${EMBEDDED_SHADERS_OUT} PROPERTIES GENERATED TRUE)
 
 find_package(Python3 COMPONENTS Interpreter REQUIRED)
+message("Python Version: ${Python3_VERSION}")
+message("Python Version: ${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}")
+message("Python Library: ${Python3_LIBRARIES}")
+message("Python Include: ${Python3_INCLUDE_DIRS}")
+
 add_custom_target(Img2Num_shaders ALL
     COMMAND "${Python3_EXECUTABLE}" ${CMAKE_CURRENT_SOURCE_DIR}/tools/embed_shaders.py
             ${CMAKE_CURRENT_SOURCE_DIR}/src/internal/resources
@@ -30,6 +35,8 @@ add_custom_target(Img2Num_shaders ALL
 )
 
 add_library(Img2Num ${CORE_SRC})
+
+set_property(TARGET Img2Num PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 add_dependencies(Img2Num Img2Num_shaders)
 

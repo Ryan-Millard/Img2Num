@@ -8,6 +8,7 @@ set(C_BINDINGS_SRC
 )
 
 add_library(CImg2Num ${C_BINDINGS_SRC})
+set_property(TARGET CImg2Num PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 # Link against the core C++ library
 target_link_libraries(CImg2Num PRIVATE Img2Num)

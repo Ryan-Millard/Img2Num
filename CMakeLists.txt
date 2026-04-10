@@ -23,6 +23,9 @@ add_subdirectory(core)
 # C bindings
 add_subdirectory(bindings/c)
 
+# Python bindings
+add_subdirectory(bindings/python)
+
 if(EMSCRIPTEN)
   # JS bindings
   add_subdirectory(bindings/js)
