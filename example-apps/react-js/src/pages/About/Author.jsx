@@ -48,8 +48,7 @@ const Author = () => (
             Hi, I’m Ryan Millard! 🦔
             <p>
               I like understanding how things work - wrecking them, then building them better.
-              <br />
-              I build software with a focus on performance and clear, predictable behavior.
+              <br />I build software with a focus on performance and clear, predictable behavior.
             </p>
           </>
         }
@@ -64,8 +63,8 @@ const Author = () => (
           <>
             Hi, I'm Alex Krasner. ⚡
             <p>
-              I'm an experienced computer scientist focused on computer vision and building efficient, optimized algorithms.
-              Img2Num uses Google Dawn WebGPU to accelerate image processing and enable cross-platform deployment.
+              I'm an experienced computer scientist focused on computer vision and building efficient, optimized algorithms. Img2Num uses Google Dawn WebGPU to accelerate image processing and enable
+              cross-platform deployment.
             </p>
           </>
         }
