@@ -4,11 +4,11 @@ import Tooltip from "@components/Tooltip";
 import styles from "./About.module.css";
 
 const AuthorCard = ({ name, bio, github, linkedin, avatar }) => (
-  <GlassCard className={styles.card}>
+  <GlassCard>
     <div className={styles.header}>
       <img src={avatar} alt={name} className={styles.avatar} />
 
-      <div className="flex flex-column p-3">
+      <div className="flex flex-column gap-sm p-3">
         <h3 className={styles.name}>{name}</h3>
 
         <div className={styles.links}>

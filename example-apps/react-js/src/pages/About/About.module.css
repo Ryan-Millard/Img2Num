@@ -57,8 +57,10 @@
   opacity: 1;
 }
 
-/* BIO */
-/* NOTE */
+.bio {
+  font-style: italic;
+}
+
 .note {
   margin-top: 2rem;
   font-style: italic;
