@@ -1,9 +1,8 @@
 import numpy as np
 import cv2
 import os
-
 import sys
-sys.path.append("../../build-c-cpp/bindings/python/")
+
 import img2num
 
 """

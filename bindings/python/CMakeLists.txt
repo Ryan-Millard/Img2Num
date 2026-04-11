@@ -20,10 +20,14 @@ target_include_directories(img2num PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
-include(GNUInstallDirs)
+# include(GNUInstallDirs)
+# install(TARGETS img2num
+#     COMPONENT python
+#     LIBRARY DESTINATION "${Python3_SITEARCH}"
+#     RUNTIME DESTINATION "${Python3_SITEARCH}"
+# )
 
-install(TARGETS img2num
-    COMPONENT python
-    LIBRARY DESTINATION "${Python3_SITEARCH}"
-    RUNTIME DESTINATION "${Python3_SITEARCH}"
+message(STATUS "${Python3_SITEARCH}")
+set_target_properties(img2num PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY "${Python3_SITEARCH}"
 )
