@@ -80,15 +80,15 @@ jobs:
       message: |
         🐳 **Docker image built successfully!**
 
-        |                |                                                       |
-        |----------------|-------------------------------------------------------|
-        | **Image**      | `${{ needs.build.outputs.tags }}`                     |
-        | **Cache**      | `${{ needs.build.outputs.cache_ref }}`                |
-        | **Docker Hub** | https://hub.docker.com/r/ryanmillard/img2num-dev/tags |
+        |                |                                                                                                                               |
+        |----------------|-------------------------------------------------------------------------------------------------------------------------------|
+        | **Image**      | `${{ env.IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}_commit-sha-${{ github.sha }}`                               |
+        | **Cache**      | `${{ env.IMAGE_NAME }}:cache-pr-${{ github.event.pull_request.number }}`                                                      |
+        | **Docker Hub** | https://hub.docker.com/r/ryanmillard/img2num-dev/tags/pr-${{ github.event.pull_request.number }}_commit-sha-${{ github.sha }} |
 
         **Run it locally:**
         ```bash
-        IMG2NUM_IMAGE=${{ needs.build.outputs.tags }} ./img2num sh
+        IMG2NUM_IMAGE=${{ env.IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}_commit-sha-${{ github.sha }} ./img2num sh
         ```
 
   # Cleanup old PR images and cache when a PR is closed

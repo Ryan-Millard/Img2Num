@@ -60,14 +60,14 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     && rm -rf /var/lib/apt/lists/*
 
 RUN cmake -S third_party/dawn -B build/dawn \
-  -DDAWN_SUPPORTS_GLFW_FOR_WINDOWING=OFF \
-  -DDAWN_USE_X11=OFF \
-  -DDAWN_FETCH_DEPENDENCIES=ON \
-  -DDAWN_ENABLE_INSTALL=ON \
-  -DDAWN_BUILD_TESTS=OFF \
-  -DCMAKE_BUILD_TYPE=Release \
- && cmake --build build/dawn --parallel $(nproc) \
- && cmake --install build/dawn
+    -DDAWN_SUPPORTS_GLFW_FOR_WINDOWING=OFF \
+    -DDAWN_USE_X11=OFF \
+    -DDAWN_FETCH_DEPENDENCIES=ON \
+    -DDAWN_ENABLE_INSTALL=ON \
+    -DDAWN_BUILD_TESTS=OFF \
+    -DCMAKE_BUILD_TYPE=Release \
+  && cmake --build build/dawn --parallel $(nproc) \
+  && cmake --install build/dawn
 
 # --------------------------------------------------------------------------------------------------------------
 # 4. Set up Doxygen.
