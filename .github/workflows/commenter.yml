@@ -1,86 +1,77 @@
-# Reusable PR/Issue Commenter Workflow
-#
-# Example usage from another workflow:
-#
-# jobs:
-#   comment_on_failure:
-#     uses: ./.github/workflows/commenter.yml
-#     with:
-#       issue_number: ${{ github.event.pull_request.number }}
-#       message: "⚠️ **Tests failed**"
-#       marker: "test-failure-comment"  # optional, enables update-in-place
-#       is_pr: true
-#
-# Notes:
-# - If marker is provided, the comment will be updated in place on subsequent calls
-# - If marker is omitted, a new comment is created each time
-# - Set is_pr: false to comment on a regular issue instead of a PR
 name: Reusable PR/Issue Commenter
+
 on:
   workflow_call:
     inputs:
       issue_number:
-        description: "The PR or issue number to comment on"
+        description: "PR or issue number to comment on"
         required: true
         type: number
+
       message:
-        description: "The comment body text"
+        description: "Comment body (supports multiline markdown)"
         required: true
         type: string
+
       marker:
-        description: "Optional unique marker to find and update an existing comment instead of creating a new one"
+        description: "Optional marker to update an existing comment instead of creating new ones"
         required: false
-        default: ""
         type: string
-      is_pr:
-        description: "If true, target a PR; if false, target an issue"
-        required: false
-        default: true
-        type: boolean
+        default: ""
+
 permissions:
   issues: write
   pull-requests: write
   contents: read
+
 jobs:
   comment:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Post or update comment
-        uses: actions/github-script@v8
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
-            const number = ${{ inputs.issue_number }};
-            const marker = `${{ inputs.marker }}`;
-            const body = marker
-              ? `<!-- ${marker} -->\n${{ inputs.message }}`
-              : `${{ inputs.message }}`;
+      - name: Post or update PR/issue comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE: ${{ inputs.issue_number }}
+          MARKER: ${{ inputs.marker }}
+          MESSAGE: ${{ inputs.message }}
 
-            if (marker) {
-              const comments = await github.rest.issues.listComments({
-                owner,
-                repo,
-                issue_number: number,
-              });
+        run: |
+          set -euo pipefail
 
-              const existing = comments.data.find(c => c.body.includes(`<!-- ${marker} -->`));
+          # ------------------------------------------------------------
+          # Build the final comment body
+          # If a marker is provided, embed it so we can find/update later
+          # ------------------------------------------------------------
+          BODY="$MESSAGE"
 
-              if (existing) {
-                await github.rest.issues.updateComment({
-                  owner,
-                  repo,
-                  comment_id: existing.id,
-                  body,
-                });
-                return;
-              }
-            }
+          if [ -n "$MARKER" ]; then
+            BODY="<!-- $MARKER -->"$'\n'"$MESSAGE"
+          fi
 
-            await github.rest.issues.createComment({
-              owner,
-              repo,
-              issue_number: number,
-              body,
-            });
+          # ------------------------------------------------------------
+          # If marker exists, try to find an existing comment
+          # ------------------------------------------------------------
+          if [ -n "$MARKER" ]; then
+            COMMENT_ID=$(gh api \
+              repos/${{ github.repository }}/issues/$ISSUE/comments \
+              --jq ".[] | select(.body | contains(\"<!-- $MARKER -->\")) | .id" \
+              | head -n 1 || true)
+
+            # --------------------------------------------------------
+            # If found, update it instead of creating a new comment
+            # --------------------------------------------------------
+            if [ -n "$COMMENT_ID" ]; then
+              gh api -X PATCH \
+                repos/${{ github.repository }}/issues/comments/$COMMENT_ID \
+                -f body="$BODY"
+              exit 0
+            fi
+          fi
+
+          # ------------------------------------------------------------
+          # Otherwise create a new comment
+          # ------------------------------------------------------------
+          gh api \
+            repos/${{ github.repository }}/issues/$ISSUE/comments \
+            -f body="$BODY"

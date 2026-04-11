@@ -20,6 +20,8 @@ jobs:
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     outputs:
+      clean_core_tag: ${{ steps.meta.outputs.CLEAN_CORE_TAG }}
+      core_tag: ${{ steps.meta.outputs.CORE_TAG }}
       tags: ${{ steps.meta.outputs.TAGS }}
       cache_ref: ${{ steps.meta.outputs.CACHE_REF }}
 
@@ -43,11 +45,17 @@ jobs:
         id: meta
         run: |
           # Default: main branch
-          TAGS="${{ env.IMAGE_NAME }}:latest"
+          CLEAN_CORE_TAG="latest"
+          CORE_TAG="${{ env.IMAGE_NAME }}:$CLEAN_CORE_TAG"
+          TAGS="$CORE_TAG"
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            TAGS="${{ env.IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}_commit-sha-${{ github.sha }}"
+            CLEAN_CORE_TAG="pr-${{ github.event.pull_request.number }}_commit-sha-${{ github.sha }}"
+            CORE_TAG="${{ env.IMAGE_NAME }}:$CLEAN_CORE_TAG"
+            TAGS="$CORE_TAG"
           elif [[ "${{ github.ref_type }}" == "tag" ]]; then
-            TAGS="${{ env.IMAGE_NAME }}:${GITHUB_REF_NAME},${{ env.IMAGE_NAME }}:latest"
+            CLEAN_CORE_TAG="${GITHUB_REF_NAME}"
+            CORE_TAG="${{ env.IMAGE_NAME }}:$CLEAN_CORE_TAG"
+            TAGS="${{ env.IMAGE_NAME }}:$CLEAN_CORE_TAG,$CORE_TAG"
           fi
 
           # PRs get per-PR caching.
@@ -57,8 +65,10 @@ jobs:
             CACHE_REF="${{ env.IMAGE_NAME }}:cache-pr-${{ github.event.pull_request.number }}"
           fi
 
-          echo "TAGS=${TAGS}" >> $GITHUB_OUTPUT
-          echo "CACHE_REF=${CACHE_REF}" >> $GITHUB_OUTPUT
+          echo "CLEAN_CORE_TAG=$CLEAN_CORE_TAG" >> "$GITHUB_OUTPUT"
+          echo "CORE_TAG=$CORE_TAG" >> "$GITHUB_OUTPUT"
+          echo "TAGS=$TAGS" >> "$GITHUB_OUTPUT"
+          echo "CACHE_REF=$CACHE_REF" >> "$GITHUB_OUTPUT"
 
       - name: Build & Push Docker image
         uses: docker/build-push-action@v5
@@ -72,24 +82,36 @@ jobs:
 
   notify:
     needs: build
-    if: github.event_name == 'pull_request' && github.event.action != 'closed'
-    uses: ./.github/workflows/commenter.yml
-    with:
-      issue_number: ${{ github.event.pull_request.number }}
-      marker: docker-image-comment
-      message: |
-        🐳 **Docker image built successfully!**
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Post comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CLEAN_CORE_TAG: ${{ needs.build.outputs.clean_core_tag }}
+        run: |
+          CORE_TAG="${{ env.IMAGE_NAME }}:${CLEAN_CORE_TAG}"
+          CACHE_REF="${{ env.IMAGE_NAME }}:buildcache"
+          if [[ "$CLEAN_CORE_TAG" == pr-* ]]; then
+            PR_NUMBER=$(echo "$CLEAN_CORE_TAG" | cut -d_ -f1 | sed 's/pr-//')
+            CACHE_REF="${{ env.IMAGE_NAME }}:cache-pr-${PR_NUMBER}"
+          fi
 
-        |                |                                                                                                                               |
-        |----------------|-------------------------------------------------------------------------------------------------------------------------------|
-        | **Image**      | `${{ env.IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}_commit-sha-${{ github.sha }}`                               |
-        | **Cache**      | `${{ env.IMAGE_NAME }}:cache-pr-${{ github.event.pull_request.number }}`                                                      |
-        | **Docker Hub** | https://hub.docker.com/r/ryanmillard/img2num-dev/tags/pr-${{ github.event.pull_request.number }}_commit-sha-${{ github.sha }} |
+          gh api repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments \
+            -f body="## 🐳 Docker image built successfully!
 
-        **Run it locally:**
-        ```bash
-        IMG2NUM_IMAGE=${{ env.IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}_commit-sha-${{ github.sha }} ./img2num sh
-        ```
+          ### Image
+          [\`${CORE_TAG}\`](https://hub.docker.com/r/ryanmillard/img2num-dev/tags?name=${CLEAN_CORE_TAG})
+
+          ### Cache
+          [\`${CACHE_REF}\`](https://hub.docker.com/r/ryanmillard/img2num-dev/tags?name=${CACHE_REF})
+
+          ### Run it locally:
+          \`\`\`bash
+          IMG2NUM_IMAGE=${CORE_TAG} ./img2num sh
+          \`\`\`"
 
   # Cleanup old PR images and cache when a PR is closed
   cleanup:
