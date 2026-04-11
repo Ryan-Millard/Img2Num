@@ -64,6 +64,7 @@ RUN cmake -S third_party/dawn -B build/dawn \
   -DDAWN_USE_X11=OFF \
   -DDAWN_FETCH_DEPENDENCIES=ON \
   -DDAWN_ENABLE_INSTALL=ON \
+  -DDAWN_BUILD_TESTS=OFF \
   -DCMAKE_BUILD_TYPE=Release \
  && cmake --build build/dawn --parallel $(nproc) \
  && cmake --install build/dawn
