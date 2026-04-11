@@ -4,14 +4,11 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     container_name: img2num-dev
-    image: ryanmillard/img2num-dev:latest
+    image: ${IMG2NUM_IMAGE:-ryanmillard/img2num-dev:latest} # Allow specifying the image
     working_dir: /usr/src/app
     volumes:
       - .:/usr/src/app:cached
       - pnpm-store:/pnpm
-    environment:
-      CHOKIDAR_USEPOLLING: "true"
-      CHOKIDAR_INTERVAL: "100"
     ports:
       - "5173:5173" # Vite dev
       - "4173:4173" # Vite preview
