@@ -80,9 +80,9 @@ class GPU {
                 return std::string(entry.source);
             }
         }
-        
+
         // Always good to handle the "not found" case gracefully!
-        return ""; 
+        return "";
     }
 
     wgpu::ComputePipeline createPipeline(const std::string& filename, const std::string& label) {
@@ -205,12 +205,13 @@ class GPU {
         wgpu::Limits requiredLimits;
         if (adapter.GetLimits(&supportedLimits)) {
             // nominally the device Buffer limit is 256MB
-            
+
             // Copy the adapter's physical limits over to your requested limits
             requiredLimits = supportedLimits;
-            
+
             std::cout << "maxBufferSize: " << requiredLimits.maxBufferSize << std::endl;
-            std::cout << "maxStorageBufferBindingSize: " << requiredLimits.maxStorageBufferBindingSize << std::endl;
+            std::cout << "maxStorageBufferBindingSize: "
+                      << requiredLimits.maxStorageBufferBindingSize << std::endl;
 
             deviceDesc.requiredLimits = &requiredLimits;
         }
