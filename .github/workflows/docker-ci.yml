@@ -19,6 +19,9 @@ jobs:
   build:
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.meta.outputs.TAGS }}
+      cache_ref: ${{ steps.meta.outputs.CACHE_REF }}
 
     steps:
       - name: Checkout
@@ -39,17 +42,24 @@ jobs:
       - name: Compute tags
         id: meta
         run: |
+          # Default: main branch
+          TAGS="${{ env.IMAGE_NAME }}:latest"
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            echo "TAGS=${{ env.IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}_commit-sha-${{ github.sha }}" >> $GITHUB_OUTPUT
-
+            TAGS="${{ env.IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}_commit-sha-${{ github.sha }}"
           elif [[ "${{ github.ref_type }}" == "tag" ]]; then
-            echo "TAGS=${{ env.IMAGE_NAME }}:${GITHUB_REF_NAME},${{ env.IMAGE_NAME }}:latest" >> $GITHUB_OUTPUT
-
-          else
-            echo "TAGS=${{ env.IMAGE_NAME }}:latest" >> $GITHUB_OUTPUT
+            TAGS="${{ env.IMAGE_NAME }}:${GITHUB_REF_NAME},${{ env.IMAGE_NAME }}:latest"
           fi
 
-      # Build + Push with caching
+          # PRs get per-PR caching.
+          # Main and tag pushes are assumed final so they share 'buildcache'
+          CACHE_REF="${{ env.IMAGE_NAME }}:buildcache"
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            CACHE_REF="${{ env.IMAGE_NAME }}:cache-pr-${{ github.event.pull_request.number }}"
+          fi
+
+          echo "TAGS=${TAGS}" >> $GITHUB_OUTPUT
+          echo "CACHE_REF=${CACHE_REF}" >> $GITHUB_OUTPUT
+
       - name: Build & Push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -57,18 +67,37 @@ jobs:
           file: Dockerfile.dev
           push: true
           tags: ${{ steps.meta.outputs.TAGS }}
+          cache-from: type=registry,ref=${{ steps.meta.outputs.CACHE_REF }}
+          cache-to: type=registry,ref=${{ steps.meta.outputs.CACHE_REF }},mode=max
 
-          # 🔥 critical for your setup
-          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
-          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache,mode=max
+  notify:
+    needs: build
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    uses: ./.github/workflows/commenter.yml
+    with:
+      issue_number: ${{ github.event.pull_request.number }}
+      marker: docker-image-comment
+      message: |
+        🐳 **Docker image built successfully!**
 
-  # Cleanup old PR images
+        |                |                                                       |
+        |----------------|-------------------------------------------------------|
+        | **Image**      | `${{ needs.build.outputs.tags }}`                     |
+        | **Cache**      | `${{ needs.build.outputs.cache_ref }}`                |
+        | **Docker Hub** | https://hub.docker.com/r/ryanmillard/img2num-dev/tags |
+
+        **Run it locally:**
+        ```bash
+        IMG2NUM_IMAGE=${{ needs.build.outputs.tags }} ./img2num sh
+        ```
+
+  # Cleanup old PR images and cache when a PR is closed
   cleanup:
     if: github.event.action == 'closed'
     runs-on: ubuntu-latest
 
     steps:
-      - name: Delete PR images
+      - name: Delete PR images and caches
         run: |
           PR_NUMBER=${{ github.event.pull_request.number }}
           TOKEN=$(curl -s -X POST \
@@ -76,7 +105,7 @@ jobs:
             -d '{"username":"${{ secrets.DOCKERHUB_USERNAME }}","password":"${{ secrets.DOCKERHUB_TOKEN }}"}' \
             https://hub.docker.com/v2/users/login/ | jq -r .token)
 
-          # Fetch all tags matching pr-NUMBER_*
+          # Fetch and delete all image tags matching pr-NUMBER_*
           # This is because new tags are created for each commit
           TAGS=$(curl -s \
             -H "Authorization: JWT ${TOKEN}" \
@@ -88,3 +117,8 @@ jobs:
               -H "Authorization: JWT ${TOKEN}" \
               "https://hub.docker.com/v2/repositories/${{ env.IMAGE_NAME }}/tags/${TAG}/"
           done
+
+          # Delete the per-PR cache tag
+          curl -X DELETE \
+            -H "Authorization: JWT ${TOKEN}" \
+            "https://hub.docker.com/v2/repositories/${{ env.IMAGE_NAME }}/tags/cache-pr-${PR_NUMBER}/"

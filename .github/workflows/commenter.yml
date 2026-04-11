@@ -7,21 +7,15 @@
 #     uses: ./.github/workflows/commenter.yml
 #     with:
 #       issue_number: ${{ github.event.pull_request.number }}
-#       message: |
-#         ⚠️ **Tests failed**
-#         Your changes caused some tests to fail. Please check the logs:
-#         ```
-#         ${{ steps.run_tests.outputs.logs }}
-#         ```
-#       is_pr: true  # optional, defaults to true
+#       message: "⚠️ **Tests failed**"
+#       marker: "test-failure-comment"  # optional, enables update-in-place
+#       is_pr: true
 #
 # Notes:
-# - This workflow creates a new comment for each call (does not edit existing comments)
+# - If marker is provided, the comment will be updated in place on subsequent calls
+# - If marker is omitted, a new comment is created each time
 # - Set is_pr: false to comment on a regular issue instead of a PR
-# - Make sure to use "continue-on-error: true" in your previous jobs in case they fail
-
 name: Reusable PR/Issue Commenter
-
 on:
   workflow_call:
     inputs:
@@ -33,22 +27,25 @@ on:
         description: "The comment body text"
         required: true
         type: string
+      marker:
+        description: "Optional unique marker to find and update an existing comment instead of creating a new one"
+        required: false
+        default: ""
+        type: string
       is_pr:
         description: "If true, target a PR; if false, target an issue"
         required: false
         default: true
         type: boolean
-
 permissions:
   issues: write
   pull-requests: write
   contents: read
-
 jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
-      - name: Post comment
+      - name: Post or update comment
         uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -56,12 +53,34 @@ jobs:
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const number = ${{ inputs.issue_number }};
-            const body = `${{ inputs.message }}`;
+            const marker = `${{ inputs.marker }}`;
+            const body = marker
+              ? `<!-- ${marker} -->\n${{ inputs.message }}`
+              : `${{ inputs.message }}`;
 
-            // GitHub API treats PR comments as issue comments
+            if (marker) {
+              const comments = await github.rest.issues.listComments({
+                owner,
+                repo,
+                issue_number: number,
+              });
+
+              const existing = comments.data.find(c => c.body.includes(`<!-- ${marker} -->`));
+
+              if (existing) {
+                await github.rest.issues.updateComment({
+                  owner,
+                  repo,
+                  comment_id: existing.id,
+                  body,
+                });
+                return;
+              }
+            }
+
             await github.rest.issues.createComment({
               owner,
               repo,
               issue_number: number,
-              body
+              body,
             });
