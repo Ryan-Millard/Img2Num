@@ -1,23 +1,43 @@
+# Reusable PR/Issue Commenter Workflow
+#
+# Example usage from another workflow:
+#
+# jobs:
+#   comment_on_failure:
+#     uses: ./.github/workflows/commenter.yml
+#     with:
+#       issue_number: ${{ github.event.pull_request.number }}
+#       message: |
+#         ⚠️ **Tests failed**
+#         Your changes caused some tests to fail. Please check the logs:
+#         ```
+#         ${{ steps.run_tests.outputs.logs }}
+#         ```
+#       is_pr: true  # optional, defaults to true
+#
+# Notes:
+# - This workflow creates a new comment for each call (does not edit existing comments)
+# - Set is_pr: false to comment on a regular issue instead of a PR
+# - Make sure to use "continue-on-error: true" in your previous jobs in case they fail
+
 name: Reusable PR/Issue Commenter
 
 on:
   workflow_call:
     inputs:
       issue_number:
-        description: "PR or issue number to comment on"
+        description: "The PR or issue number to comment on"
         required: true
         type: number
-
       message:
-        description: "Comment body (supports multiline markdown)"
+        description: "The comment body text"
         required: true
         type: string
-
-      marker:
-        description: "Optional marker to update an existing comment instead of creating new ones"
+      is_pr:
+        description: "If true, target a PR; if false, target an issue"
         required: false
-        type: string
-        default: ""
+        default: true
+        type: boolean
 
 permissions:
   issues: write
@@ -27,51 +47,21 @@ permissions:
 jobs:
   comment:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Post or update PR/issue comment
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ISSUE: ${{ inputs.issue_number }}
-          MARKER: ${{ inputs.marker }}
-          MESSAGE: ${{ inputs.message }}
+      - name: Post comment
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const number = ${{ inputs.issue_number }};
+            const body = `${{ inputs.message }}`;
 
-        run: |
-          set -euo pipefail
-
-          # ------------------------------------------------------------
-          # Build the final comment body
-          # If a marker is provided, embed it so we can find/update later
-          # ------------------------------------------------------------
-          BODY="$MESSAGE"
-
-          if [ -n "$MARKER" ]; then
-            BODY="<!-- $MARKER -->"$'\n'"$MESSAGE"
-          fi
-
-          # ------------------------------------------------------------
-          # If marker exists, try to find an existing comment
-          # ------------------------------------------------------------
-          if [ -n "$MARKER" ]; then
-            COMMENT_ID=$(gh api \
-              repos/${{ github.repository }}/issues/$ISSUE/comments \
-              --jq ".[] | select(.body | contains(\"<!-- $MARKER -->\")) | .id" \
-              | head -n 1 || true)
-
-            # --------------------------------------------------------
-            # If found, update it instead of creating a new comment
-            # --------------------------------------------------------
-            if [ -n "$COMMENT_ID" ]; then
-              gh api -X PATCH \
-                repos/${{ github.repository }}/issues/comments/$COMMENT_ID \
-                -f body="$BODY"
-              exit 0
-            fi
-          fi
-
-          # ------------------------------------------------------------
-          # Otherwise create a new comment
-          # ------------------------------------------------------------
-          gh api \
-            repos/${{ github.repository }}/issues/$ISSUE/comments \
-            -f body="$BODY"
+            // GitHub API treats PR comments as issue comments
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: number,
+              body
+            });
