@@ -2,27 +2,9 @@
 MODE="$1"
 shift || true
 
-ensure_container() {
-  # Check if the dev service container is running, start it if not
-  container_id=$(docker compose ps -q dev)
-
-  # Container does not exist → create & start
-  if [ -z "$container_id" ]; then
-    echo "Starting dev container..."
-    docker compose up -d dev
-    return
-  fi
-
-  # Container exists but is stopped → start it
-  if ! docker inspect -f '{{.State.Running}}' "$container_id" 2>/dev/null | grep -q true; then
-    echo "Dev container exists but is stopped. Starting..."
-    docker compose start dev
-  fi
-}
-
 # Run a command inside the dev container
 run_in_container() {
-  ensure_container
+  docker compose up -d dev
   docker compose exec dev "$@"
 }
 

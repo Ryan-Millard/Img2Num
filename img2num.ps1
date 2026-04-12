@@ -8,30 +8,11 @@ param(
     [string[]]$RemainingArgs
 )
 
-function Ensure-Container {
-    # Get container ID (may exist but be stopped)
-    $containerId = docker compose ps -q dev
-
-    # Container does not exist → create & start
-    if (-not $containerId) {
-        Write-Host "Starting dev container..."
-        docker compose up -d dev
-        return
-    }
-
-    # Container exists but is stopped → start it
-    $running = docker inspect -f '{{.State.Running}}' $containerId 2>$null
-    if ($running -ne "true") {
-        Write-Host "Dev container exists but is stopped. Starting..."
-        docker compose start dev
-    }
-}
-
 # Run a command inside the dev container
 function Run-InContainer {
     param([string[]]$CmdArgs)
 
-    Ensure-Container
+    docker compose up -d dev
     docker compose exec dev @CmdArgs
 }
 
