@@ -46,8 +46,6 @@ ENV EMSDK=$EMSDK_DIR
 
 # --------------------------------------------------------------------------------------------------------------
 # 3. Set up Dawn. It takes the longest, so it must be built first.
-COPY third_party/dawn third_party/dawn
-
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && apt-get install -y --no-install-recommends \
@@ -58,6 +56,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
       vulkan-tools \
       libvips-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# After installing deps since Dawn is likely to change, not its deps
+COPY third_party/dawn third_party/dawn
 
 RUN cmake -S third_party/dawn -B build/dawn \
     -DDAWN_SUPPORTS_GLFW_FOR_WINDOWING=OFF \
