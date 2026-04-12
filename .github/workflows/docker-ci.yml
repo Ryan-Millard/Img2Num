@@ -115,8 +115,8 @@ jobs:
             CACHE_REF="${{ env.IMAGE_NAME }}:cache-pr-${PR_NUMBER}"
           fi
 
-          gh api repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments \
-            -f body="## 🐳 Docker image built successfully!
+          gh api repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments -f body="$(cat <<EOF
+          ## 🐳 Docker image built successfully!
 
           ### Image
           [\`${CORE_TAG}\`](https://hub.docker.com/r/ryanmillard/img2num-dev/tags?name=${CLEAN_CORE_TAG})
@@ -127,7 +127,10 @@ jobs:
           ### Run it locally:
           \`\`\`bash
           IMG2NUM_IMAGE=${CORE_TAG} ./img2num sh
-          \`\`\`"
+          \`\`\`
+          > You can always verify the image you are running by checking the `IMG2NUM_IMAGE` environment variable.
+          EOF
+          )"
 
   # Cleanup old PR images and cache when a PR is closed
   cleanup:

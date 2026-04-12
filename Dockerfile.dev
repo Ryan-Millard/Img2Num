@@ -93,5 +93,13 @@ EXPOSE 5173 3000
 ENV PATH=/root/.local/share/pnpm:$PATH
 ENV PNPM_STORE_DIR=/pnpm/store
 
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .
+COPY packages/js/package.json packages/js/package.json
+COPY docs/package.json docs/package.json
+COPY example-apps/react-js/package.json example-apps/react-js/package.json
+COPY scripts/img2num-dev-scripts/package.json scripts/img2num-dev-scripts/package.json
+
+RUN pnpm install --no-frozen-lockfile
+
 # --------------------------------------------------------------------------------------------------------------
 CMD ["bash"]
