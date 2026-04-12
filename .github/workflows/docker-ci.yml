@@ -12,6 +12,9 @@ on:
     branches: [main]
     tags: ["v*"]
 
+permissions:
+  contents: read
+
 env:
   IMAGE_NAME: ryanmillard/img2num-dev
 
