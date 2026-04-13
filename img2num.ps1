@@ -40,7 +40,7 @@ switch ($Mode) {
     { $_ -in @("purge","destroy") } {
         docker compose down --volumes --remove-orphans
         if ($Mode -eq "destroy") {
-            docker rmi img2num-dev
+            docker rmi img2num-dev:latest
         }
     }
 

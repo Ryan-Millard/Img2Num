@@ -26,7 +26,7 @@ case "$MODE" in
   down) docker compose down ;;
   purge|destroy)
     docker compose down --volumes --remove-orphans
-    [ "$MODE" = "destroy" ] && docker rmi img2num-dev
+    [ "$MODE" = "destroy" ] && docker rmi ryanmillard/img2num-dev:latest
     ;;
 
   # Tail logs
