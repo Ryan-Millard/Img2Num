@@ -109,9 +109,10 @@ PYBIND11_MODULE(img2num, m) {
         "labels_to_svg",
         [](pybind11::array_t<uint8_t, pybind11::array::c_style> data,
            pybind11::array_t<int32_t, pybind11::array::c_style> labels, int width, int height, int min_area) {
-            char* svg_c_str = img2num_labels_to_svg(
-                static_cast<const uint8_t*>(data.request().ptr),
-                static_cast<const int32_t*>(labels.request().ptr), width, height, min_area);
+            
+            const uint8_t* data_ptr{static_cast<const uint8_t*>(data.request().ptr)};
+            const int32_t* labels_ptr{static_cast<const int32_t*>(labels.request().ptr)};
+            char* svg_c_str = img2num_labels_to_svg(data_ptr, labels_ptr, width, height, min_area);
 
             if (!svg_c_str) {
                 throw std::runtime_error("img2num_labels_to_svg returned a null pointer.");
@@ -123,7 +124,7 @@ PYBIND11_MODULE(img2num, m) {
             // NOTE: If your C library dynamically allocates this string using malloc/calloc,
             // you MUST free it here to prevent a memory leak. If it returns a static pointer,
             // remove this line.
-            free(svg_c_str);
+            std::free(svg_c_str);
 
             return svg_py_str;
         },
