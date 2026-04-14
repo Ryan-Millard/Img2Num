@@ -63,7 +63,7 @@ PYBIND11_MODULE(img2num, m) {
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"), pybind11::arg("num_thresholds"),
-        "Apply black thresholding to the image (modifies image in-place)");
+        "Apply black thresholding to the image");
 
     m.def(
         "bilateral_filter",
@@ -109,7 +109,7 @@ PYBIND11_MODULE(img2num, m) {
         "labels_to_svg",
         [](pybind11::array_t<uint8_t, pybind11::array::c_style> data,
            pybind11::array_t<int32_t, pybind11::array::c_style> labels, int width, int height, int min_area) {
-            
+
             const uint8_t* data_ptr{static_cast<const uint8_t*>(data.request().ptr)};
             const int32_t* labels_ptr{static_cast<const int32_t*>(labels.request().ptr)};
             char* svg_c_str = img2num_labels_to_svg(data_ptr, labels_ptr, width, height, min_area);
