@@ -4,7 +4,7 @@
 
 #include <cstdlib>
 
-PYBIND11_MODULE(img2num, m) {
+PYBIND11_MODULE(_img2num, m) {
     m.doc() = "Python bindings for the img2num C library";
 
     // -----------------------------------------------------------------------

@@ -1,0 +1,18 @@
+[build-system]
+requires = [
+  "scikit-build-core>=0.10",
+  "pybind11>=2.10"
+]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "img2num"
+version = "0.0.0"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy"
+]
+
+[tool.scikit-build]
+cmake.build-type = "Release"
+cmake.args = ["-DBUILD_PYTHON=ON"]
