@@ -59,10 +59,6 @@ RUN corepack enable \
 ENV PATH=/root/.local/share/pnpm:$PATH
 ENV PNPM_STORE_DIR=/pnpm/store
 
-# Install some pip packages
-RUN python3 -m pip install numpy --break-system-packages
-RUN python3 -m pip install opencv-python --break-system-packages
-
 WORKDIR /usr/src/app
 
 ENV CHOKIDAR_USEPOLLING=true

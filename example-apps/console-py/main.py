@@ -1,9 +1,12 @@
-import numpy as np
-import cv2
 import os
 import sys
 
 import img2num
+
+# if not preset install these with
+# python3 -m pip install -r requirements.txt --break-system-packages
+import numpy as np
+import cv2
 
 """
 Note: Images sent to img2num functions must be RGBA
@@ -11,7 +14,7 @@ Note: Images sent to img2num functions must be RGBA
 OUTDIR = "outputs"
 os.makedirs(OUTDIR, exist_ok=True)
 
-img = cv2.imread("../../IMG_5554.jpg")
+img = cv2.imread(sys.argv[1])
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA) # VERY IMPORTANT!!!
 
 height, width = img.shape[:2]
