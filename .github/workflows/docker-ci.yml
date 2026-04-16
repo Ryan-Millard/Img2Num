@@ -31,12 +31,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
         with:
           submodules: true
 
       - name: Check changed files
-        uses: dorny/paths-filter@v3
+        uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v3
         id: filter
         with:
           base: ${{ github.event.before }}
@@ -48,11 +48,11 @@ jobs:
 
       - name: Set up Docker Buildx
         if: steps.filter.outputs.docker == 'true'
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v3
 
       - name: Login to Docker Hub
         if: steps.filter.outputs.docker == 'true'
-        uses: docker/login-action@v3
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -90,7 +90,7 @@ jobs:
 
       - name: Build & Push Docker image
         if: github.event.action != 'closed' && (steps.filter.outputs.docker == 'true' || github.event_name != 'pull_request')
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v5
         with:
           context: .
           file: Dockerfile.dev
@@ -120,7 +120,12 @@ jobs:
         uses: peter-evans/find-comment@b30e6a3c0ed37e7c023ccd3f1db5c6c0b0c23aad # v4
         with:
           issue-number: ${{ github.event.pull_request.number }}
-          body-includes: "<!-- docker-image-comment -->"
+          body-includes: "<!-- docker-image-comment:pr -->"
+
+      - name: Debug comment detection
+        if: steps.fc.outputs.comment-id != ''
+        run: |
+          echo "Found comment ID: ${{ steps.fc.outputs.comment-id }}"
       
       - name: Create Docker comment
         if: steps.fc.outputs.comment-id == ''
