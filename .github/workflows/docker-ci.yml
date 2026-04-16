@@ -123,7 +123,10 @@ jobs:
           EXISTS=$(gh api repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments \
             --jq '.[] | select(.body | contains("<!-- docker-image-comment -->")) | .id' \
             | head -n 1)
-          EXISTS && echo "Comment already exists, skipping." && exit 0
+          if [ -n "$EXISTS" ]; then
+            echo "Comment already exists, skipping."
+            exit 0
+          fi
 
           gh api repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments -f body="$(cat <<EOF
           <!-- docker-image-comment -->
