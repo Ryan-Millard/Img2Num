@@ -3,6 +3,9 @@ name: Build React App
 on:
   workflow_call:
     inputs:
+      image:
+        required: true
+        type: string
       wasm-artifacts-path:
         required: false
         type: string
@@ -15,7 +18,7 @@ jobs:
     name: Build React Example App
     runs-on: ubuntu-latest
     container:
-      image: ryanmillard/img2num-dev:latest
+      image: ${{ inputs.image }}
     steps:
       - name: Checkout code
         # No need for submodules since docs uses NPM
