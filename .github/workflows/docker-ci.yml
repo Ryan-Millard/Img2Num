@@ -3,10 +3,6 @@ name: Docker CI
 on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
-    paths:
-      - Dockerfile.dev
-      - .devcontainer/**
-      - .dockerignore
 
   push:
     branches: [main]
@@ -27,7 +23,6 @@ jobs:
       clean_core_tag: ${{ steps.meta.outputs.clean_core_tag }}
       tags: ${{ steps.meta.outputs.tags }}
       cache_ref: ${{ steps.meta.outputs.cache_ref }}
-      docker_changed: ${{ steps.filter.outputs.docker }}
 
     steps:
       - name: Checkout
@@ -35,30 +30,16 @@ jobs:
         with:
           submodules: true
 
-      - name: Check changed files
-        uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v3
-        id: filter
-        with:
-          base: ${{ github.event.before }}
-          filters: |
-            docker:
-              - Dockerfile.dev
-              - .devcontainer/**
-              - .dockerignore
-
       - name: Set up Docker Buildx
-        if: steps.filter.outputs.docker == 'true'
         uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v3
 
       - name: Login to Docker Hub
-        if: steps.filter.outputs.docker == 'true'
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Compute tags
-        if: steps.filter.outputs.docker == 'true'
         id: meta
         run: |
           IMAGE="${{ env.IMAGE_NAME }}"
@@ -89,7 +70,7 @@ jobs:
           echo "cache_ref=$CACHE_REF" >> $GITHUB_OUTPUT
 
       - name: Build & Push Docker image
-        if: github.event.action != 'closed' && (steps.filter.outputs.docker == 'true' || github.event_name != 'pull_request')
+        if: (github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name != 'pull_request'
         uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v5
         with:
           context: .
@@ -102,7 +83,7 @@ jobs:
 
   notify:
     needs: build
-    if: github.event_name == 'pull_request' && needs.build.outputs.docker_changed == 'true'
+    if: github.event_name == 'pull_request' && needs.build.result == 'success'
 
     runs-on: ubuntu-latest
     permissions:
