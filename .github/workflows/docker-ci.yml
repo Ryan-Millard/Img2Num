@@ -111,37 +111,33 @@ jobs:
     env:
       IMAGE_NAME: ryanmillard/img2num-dev
       CLEAN_CORE_TAG: ${{ needs.build.outputs.clean_core_tag }}
+      CORE_TAG: ${{ needs.build.outputs.clean_core_tag }}
 
     steps:
-      - name: Post comment
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          CORE_TAG="${IMAGE_NAME}:${CLEAN_CORE_TAG}"
-          
-          # Avoid spamming the PR with comments by checking for an existing comment
-          EXISTS=$(gh api repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments \
-            --jq '.[] | select(.body | contains("<!-- docker-image-comment -->")) | .id' \
-            | head -n 1)
-          if [ -n "$EXISTS" ]; then
-            echo "Comment already exists, skipping."
-            exit 0
-          fi
-
-          gh api repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments -f body="$(cat <<EOF
-          <!-- docker-image-comment -->
-          ## 🐳 Docker image built successfully!
-
-          ### Image
-          [\`${CORE_TAG}\`](https://hub.docker.com/r/ryanmillard/img2num-dev/tags?name=pr-${{ github.event.pull_request.number }})
-
-          ### Run it locally:
-          \`\`\`bash
-          IMG2NUM_IMAGE=${CORE_TAG} ./img2num sh
-          \`\`\`
-
-          EOF
-          )"
+      # Avoid chat spamming by checking for an existing comment
+      - name: Find Docker comment
+        id: fc
+        uses: peter-evans/find-comment@v3
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body-includes: "<!-- docker-image-comment:pr -->"
+        
+      - name: Create Docker comment
+        if: steps.fc.outputs.comment-id == ''
+        uses: peter-evans/create-comment@v1
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            <!-- docker-image-comment:pr -->
+            ## 🐳 Docker image built successfully!
+  
+            ### Image
+            [`${CORE_TAG}`](https://hub.docker.com/r/ryanmillard/img2num-dev/tags?name=pr-${{ github.event.pull_request.number }})
+  
+            ### Run it locally:
+            ```bash
+            IMG2NUM_IMAGE=${CORE_TAG} ./img2num sh
+            ```
 
 
   cleanup:
