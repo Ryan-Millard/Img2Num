@@ -135,14 +135,13 @@ jobs:
           body: |
             <!-- docker-image-comment:pr -->
             ## 🐳 Docker image built successfully!
-  
+          
             ### Image
-            [`${{ env.CORE_TAG }}`](https://hub.docker.com/r/ryanmillard/img2num-dev/tags?name=pr-${{ github.event.pull_request.number }})
-  
+            [`${{ env.IMAGE_NAME }}:${{ env.CORE_TAG }}`](https://hub.docker.com/r/${{ env.IMAGE_NAME }}/tags?name=${{ env.CORE_TAG }})
+          
             ### Run it locally:
             ```bash
-            IMG2NUM_IMAGE=${CORE_TAG} ./img2num sh
-            ```
+            IMG2NUM_IMAGE=${{ env.IMAGE_NAME }}:${{ env.CORE_TAG }} ./img2num sh
 
 
   cleanup:
