@@ -1,0 +1,30 @@
+[project]
+name = "img2num"
+version = "0.0.0"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy"
+]
+
+[build-system]
+requires = [
+  "scikit-build-core>=0.10",
+  "pybind11>=2.10",
+  "numpy"
+]
+build-backend = "scikit_build_core.build"
+
+[tool.scikit-build]
+cmake.source-dir = "../.."
+cmake.build-type = "Release"
+cmake.args = ["-DBUILD_PYTHON=ON"]
+# Disable broken sdist isolation
+sdist.include = [
+  "../../CMakeLists.txt",
+  "../../core",
+  "../../bindings",
+  "../../cmake"
+]
+
+[tool.uv]
+package = true

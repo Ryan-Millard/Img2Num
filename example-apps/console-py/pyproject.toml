@@ -1,0 +1,14 @@
+[project]
+name = "console-py"
+version = "0.0.0"
+dependencies = [
+  "numpy",
+  "opencv-python",
+  "img2num"
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+img2num = { workspace = true }

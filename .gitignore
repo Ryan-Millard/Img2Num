@@ -6,6 +6,9 @@ node_modules/
 build*/
 install/
 
+# uv (Python) and JavaScript
+dist
+
 # Logs
 logs
 *.log

@@ -21,4 +21,5 @@ target_include_directories(_img2num PRIVATE
 
 install(TARGETS _img2num
     LIBRARY DESTINATION img2num
+    RUNTIME DESTINATION img2num
 )

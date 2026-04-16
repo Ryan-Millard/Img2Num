@@ -30,7 +30,7 @@ if(EMSCRIPTEN)
 else()
   # Python bindings
   if(BUILD_PYTHON)
-    add_subdirectory(bindings/python)
+    add_subdirectory(bindings/py)
   endif()
   
   if(IMG2NUM_BUILD_EXAMPLES)
@@ -69,7 +69,7 @@ install(FILES
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Img2Num
 )
 
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/packages/python/img2num/
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/packages/py/img2num/
     DESTINATION img2num
     FILES_MATCHING PATTERN "*.py"
 )
