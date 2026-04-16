@@ -11,7 +11,7 @@ find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 find_package(pybind11 REQUIRED)
 pybind11_add_module(img2num ${BINDING_SRC})
 
-target_link_libraries(img2num PRIVATE CImg2Num)
+target_link_libraries(img2num PRIVATE Img2Num)
 
 target_include_directories(img2num PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/include"

@@ -1,4 +1,4 @@
-#include <cimg2num.h>
+#include <img2num.h>
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 
@@ -19,7 +19,7 @@ PYBIND11_MODULE(img2num, m) {
             pybind11::array_t<uint8_t, pybind11::array::c_style> out_image(buf.shape);
             std::memcpy(out_image.mutable_data(), buf.ptr, buf.size * sizeof(uint8_t));
 
-            img2num_gaussian_blur_fft(out_image.mutable_data(), width, height, sigma);
+            img2num::gaussian_blur_fft(out_image.mutable_data(), width, height, sigma);
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"), pybind11::arg("sigma"),
@@ -32,7 +32,7 @@ PYBIND11_MODULE(img2num, m) {
             pybind11::array_t<uint8_t, pybind11::array::c_style> out_image(buf.shape);
             std::memcpy(out_image.mutable_data(), buf.ptr, buf.size * sizeof(uint8_t));
 
-            img2num_invert_image(out_image.mutable_data(), width, height);
+            img2num::invert_image(out_image.mutable_data(), width, height);
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"),
@@ -45,7 +45,7 @@ PYBIND11_MODULE(img2num, m) {
             pybind11::buffer_info buf = image.request();
             pybind11::array_t<uint8_t, pybind11::array::c_style> out_image(buf.shape);
             std::memcpy(out_image.mutable_data(), buf.ptr, buf.size * sizeof(uint8_t));
-            img2num_threshold_image(out_image.mutable_data(), width, height, num_thresholds);
+            img2num::threshold_image(out_image.mutable_data(), width, height, num_thresholds);
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"), pybind11::arg("num_thresholds"),
@@ -59,7 +59,7 @@ PYBIND11_MODULE(img2num, m) {
             pybind11::array_t<uint8_t, pybind11::array::c_style> out_image(buf.shape);
             std::memcpy(out_image.mutable_data(), buf.ptr, buf.size * sizeof(uint8_t));
 
-            img2num_black_threshold_image(out_image.mutable_data(), width, height, num_thresholds);
+            img2num::black_threshold_image(out_image.mutable_data(), width, height, num_thresholds);
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"), pybind11::arg("num_thresholds"),
@@ -73,7 +73,7 @@ PYBIND11_MODULE(img2num, m) {
             pybind11::array_t<uint8_t, pybind11::array::c_style> out_image(buf.shape);
             std::memcpy(out_image.mutable_data(), buf.ptr, buf.size * sizeof(uint8_t));
 
-            img2num_bilateral_filter(out_image.mutable_data(), width, height, sigma_spatial,
+            img2num::bilateral_filter(out_image.mutable_data(), width, height, sigma_spatial,
                                      sigma_range, color_space);
             return out_image;
         },
@@ -95,7 +95,7 @@ PYBIND11_MODULE(img2num, m) {
             auto out_labels_ptr = static_cast<int32_t*>(out_labels.mutable_data());
 
             // Call C function
-            img2num_kmeans(static_cast<const uint8_t*>(data_buf.ptr), out_data_ptr, out_labels_ptr,
+            img2num::kmeans(static_cast<const uint8_t*>(data_buf.ptr), out_data_ptr, out_labels_ptr,
                            width, height, k, max_iter, color_space);
 
             // Return a tuple of (out_data, out_labels)
@@ -112,10 +112,10 @@ PYBIND11_MODULE(img2num, m) {
 
             const uint8_t* data_ptr{static_cast<const uint8_t*>(data.request().ptr)};
             const int32_t* labels_ptr{static_cast<const int32_t*>(labels.request().ptr)};
-            char* svg_c_str = img2num_labels_to_svg(data_ptr, labels_ptr, width, height, min_area);
+            char* svg_c_str = img2num::labels_to_svg(data_ptr, labels_ptr, width, height, min_area);
 
             if (!svg_c_str) {
-                throw std::runtime_error("img2num_labels_to_svg returned a null pointer.");
+                throw std::runtime_error("img2num::labels_to_svg returned a null pointer.");
             }
 
             // Convert to Python string
