@@ -123,7 +123,7 @@ jobs:
           ## 🐳 Docker image built successfully!
 
           ### Image
-          \`[${CORE_TAG}](https://hub.docker.com/r/ryanmillard/img2num-dev/tags?name=${CLEAN_TAG})\`
+          [\`${CORE_TAG}\`](https://hub.docker.com/r/ryanmillard/img2num-dev/tags?name=pr-${{ github.event.pull_request.number }})
 
           ### Run it locally:
           \`\`\`bash
