@@ -3,10 +3,6 @@ name: Docker CI
 on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
-    paths:
-      - Dockerfile.dev
-      - .devcontainer
-      - .dockerignore
 
   push:
     branches: [main]
@@ -22,147 +18,137 @@ jobs:
   build:
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
+
     outputs:
-      clean_core_tag: ${{ steps.meta.outputs.CLEAN_CORE_TAG }}
-      core_tag: ${{ steps.meta.outputs.CORE_TAG }}
-      tags: ${{ steps.meta.outputs.TAGS }}
-      cache_ref: ${{ steps.meta.outputs.CACHE_REF }}
-      docker_changed: ${{ steps.filter.outputs.docker }}
+      clean_core_tag: ${{ steps.meta.outputs.clean_core_tag }}
+      tags: ${{ steps.meta.outputs.tags }}
+      cache_ref: ${{ steps.meta.outputs.cache_ref }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
         with:
           submodules: true
 
-      - name: Check changed files
-        uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          base: ${{ github.event.before }}
-          filters: |
-            docker:
-              - Dockerfile.dev
-              - .devcontainer/**
-              - .dockerignore
-
       - name: Set up Docker Buildx
-        if: steps.filter.outputs.docker == 'true'
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v3
 
       - name: Login to Docker Hub
-        if: steps.filter.outputs.docker == 'true'
-        uses: docker/login-action@v3
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Decide what we are building
       - name: Compute tags
-        if: steps.filter.outputs.docker == 'true'
         id: meta
         run: |
-          # Default: main branch
-          CLEAN_CORE_TAG="latest"
-          CORE_TAG="${{ env.IMAGE_NAME }}:$CLEAN_CORE_TAG"
-          TAGS="$CORE_TAG"
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            CLEAN_CORE_TAG="pr-${{ github.event.pull_request.number }}_commit-sha-${{ github.sha }}"
-            CORE_TAG="${{ env.IMAGE_NAME }}:$CLEAN_CORE_TAG"
-            TAGS="$CORE_TAG"
-          elif [[ "${{ github.ref_type }}" == "tag" ]]; then
-            CLEAN_CORE_TAG="${GITHUB_REF_NAME}"
-            CORE_TAG="${{ env.IMAGE_NAME }}:$CLEAN_CORE_TAG"
-            TAGS="${{ env.IMAGE_NAME }}:$CLEAN_CORE_TAG,$CORE_TAG"
+          IMAGE="${{ env.IMAGE_NAME }}"
+          EVENT="${{ github.event_name }}"
+
+          if [[ "$EVENT" == "pull_request" ]]; then
+            PR="${{ github.event.pull_request.number }}"
+
+            CLEAN_CORE_TAG="pr-${PR}"
+            TAGS="${IMAGE}:pr-${PR}"
+            CACHE_REF="${IMAGE}:cache-pr-${PR}"
+
+          elif [[ "$EVENT" == "push" && "${{ github.ref_type }}" == "tag" ]]; then
+            VERSION="${GITHUB_REF_NAME}"
+
+            CLEAN_CORE_TAG="$VERSION"
+            TAGS="${IMAGE}:${VERSION},${IMAGE}:latest"
+            CACHE_REF="${IMAGE}:buildcache"
+
+          else
+            CLEAN_CORE_TAG="main"
+            TAGS="${IMAGE}:main,${IMAGE}:latest"
+            CACHE_REF="${IMAGE}:buildcache"
           fi
 
-          # PRs get per-PR caching.
-          # Main and tag pushes are assumed final so they share 'buildcache'
-          CACHE_REF="${{ env.IMAGE_NAME }}:buildcache"
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            CACHE_REF="${{ env.IMAGE_NAME }}:cache-pr-${{ github.event.pull_request.number }}"
-          fi
-
-          echo "CLEAN_CORE_TAG=$CLEAN_CORE_TAG" >> "$GITHUB_OUTPUT"
-          echo "CORE_TAG=$CORE_TAG" >> "$GITHUB_OUTPUT"
-          echo "TAGS=$TAGS" >> "$GITHUB_OUTPUT"
-          echo "CACHE_REF=$CACHE_REF" >> "$GITHUB_OUTPUT"
+          echo "clean_core_tag=$CLEAN_CORE_TAG" >> $GITHUB_OUTPUT
+          echo "tags=$TAGS" >> $GITHUB_OUTPUT
+          echo "cache_ref=$CACHE_REF" >> $GITHUB_OUTPUT
 
       - name: Build & Push Docker image
-        if: steps.filter.outputs.docker == 'true'
-        uses: docker/build-push-action@v5
+        if: (github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name != 'pull_request'
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v5
         with:
           context: .
           file: Dockerfile.dev
           push: true
-          tags: ${{ steps.meta.outputs.TAGS }}
-          cache-from: type=registry,ref=${{ steps.meta.outputs.CACHE_REF }}
-          cache-to: type=registry,ref=${{ steps.meta.outputs.CACHE_REF }},mode=max
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=registry,ref=${{ steps.meta.outputs.cache_ref }}
+          cache-to: type=registry,ref=${{ steps.meta.outputs.cache_ref }},mode=max
+
 
   notify:
     needs: build
-    if: github.event_name == 'pull_request' && needs.build.outputs.docker_changed == 'true'
+    if: github.event_name == 'pull_request' && needs.build.result == 'success'
+
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
+
+    env:
+      IMAGE_NAME: ryanmillard/img2num-dev
+      CLEAN_CORE_TAG: ${{ needs.build.outputs.clean_core_tag }}
+      CORE_TAG: ${{ needs.build.outputs.clean_core_tag }}
+
     steps:
-      - name: Post comment
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CLEAN_CORE_TAG: ${{ needs.build.outputs.clean_core_tag }}
+      # Avoid chat spamming by checking for an existing comment
+      - name: Find Docker comment
+        id: fc
+        uses: peter-evans/find-comment@b30e6a3c0ed37e7c023ccd3f1db5c6c0b0c23aad # v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body-includes: "<!-- docker-image-comment:pr -->"
+
+      - name: Debug comment detection
+        if: steps.fc.outputs.comment-id != ''
         run: |
-          CORE_TAG="${{ env.IMAGE_NAME }}:${CLEAN_CORE_TAG}"
-          CACHE_REF="${{ env.IMAGE_NAME }}:buildcache"
-          if [[ "$CLEAN_CORE_TAG" == pr-* ]]; then
-            PR_NUMBER=$(echo "$CLEAN_CORE_TAG" | cut -d_ -f1 | sed 's/pr-//')
-            CACHE_REF="${{ env.IMAGE_NAME }}:cache-pr-${PR_NUMBER}"
-          fi
+          echo "Found comment ID: ${{ steps.fc.outputs.comment-id }}"
+      
+      - name: Create Docker comment
+        if: steps.fc.outputs.comment-id == ''
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            <!-- docker-image-comment:pr -->
+            ## 🐳 Docker image built successfully!
+          
+            ### Image
+            [`${{ env.IMAGE_NAME }}:${{ env.CORE_TAG }}`](https://hub.docker.com/r/${{ env.IMAGE_NAME }}/tags?name=${{ env.CORE_TAG }})
+          
+            ### Run it locally:
+            ```bash
+            IMG2NUM_IMAGE=${{ env.IMAGE_NAME }}:${{ env.CORE_TAG }} ./img2num sh
 
-          gh api repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments -f body="$(cat <<EOF
-          ## 🐳 Docker image built successfully!
 
-          ### Image
-          [\`${CORE_TAG}\`](https://hub.docker.com/r/ryanmillard/img2num-dev/tags?name=${CLEAN_CORE_TAG})
-
-          ### Cache
-          [\`${CACHE_REF}\`](https://hub.docker.com/r/ryanmillard/img2num-dev/tags?name=${CACHE_REF})
-
-          ### Run it locally:
-          \`\`\`bash
-          IMG2NUM_IMAGE=${CORE_TAG} ./img2num sh
-          \`\`\`
-          > You can always verify the image you are running by checking the `IMG2NUM_IMAGE` environment variable.
-          EOF
-          )"
-
-  # Cleanup old PR images and cache when a PR is closed
   cleanup:
     if: github.event.action == 'closed'
     runs-on: ubuntu-latest
 
     steps:
-      - name: Delete PR images and caches
+      - name: Delete PR images
         run: |
           PR_NUMBER=${{ github.event.pull_request.number }}
+
           TOKEN=$(curl -s -X POST \
             -H "Content-Type: application/json" \
             -d '{"username":"${{ secrets.DOCKERHUB_USERNAME }}","password":"${{ secrets.DOCKERHUB_TOKEN }}"}' \
             https://hub.docker.com/v2/users/login/ | jq -r .token)
-
-          # Fetch and delete all image tags matching pr-NUMBER_*
-          # This is because new tags are created for each commit
-          TAGS=$(curl -s \
-            -H "Authorization: JWT ${TOKEN}" \
-            "https://hub.docker.com/v2/repositories/${{ env.IMAGE_NAME }}/tags/?page_size=100" \
-            | jq -r ".results[].name | select(startswith(\"pr-${PR_NUMBER}_\"))")
-
-          for TAG in $TAGS; do
-            curl -X DELETE \
+          
+          IMAGE="${{ env.IMAGE_NAME }}"
+          
+          TAGS=(
+            "pr-${PR_NUMBER}"
+            "cache-pr-${PR_NUMBER}"
+          )
+          
+          for TAG in "${TAGS[@]}"; do
+            curl -s -X DELETE \
               -H "Authorization: JWT ${TOKEN}" \
-              "https://hub.docker.com/v2/repositories/${{ env.IMAGE_NAME }}/tags/${TAG}/"
+              "https://hub.docker.com/v2/repositories/${IMAGE}/tags/${TAG}/" \
+            || echo "Tag $TAG not found or already deleted"
           done
-
-          # Delete the per-PR cache tag
-          curl -X DELETE \
-            -H "Authorization: JWT ${TOKEN}" \
-            "https://hub.docker.com/v2/repositories/${{ env.IMAGE_NAME }}/tags/cache-pr-${PR_NUMBER}/"

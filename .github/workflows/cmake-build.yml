@@ -2,6 +2,10 @@ name: Build C & C++
 
 on:
   workflow_call:
+    inputs:
+      image:
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -11,7 +15,7 @@ jobs:
     name: Build WASM (bindings/js)
     runs-on: ubuntu-latest
     container:
-      image: ryanmillard/img2num-dev:latest
+      image: ${{ inputs.image }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -34,7 +38,7 @@ jobs:
     name: Build C & C++
     runs-on: ubuntu-latest
     container:
-      image: ryanmillard/img2num-dev:latest
+      image: ${{ inputs.image }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v6

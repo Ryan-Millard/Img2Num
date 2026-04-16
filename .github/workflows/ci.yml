@@ -14,7 +14,12 @@ jobs:
     name: Lint & Validate Code
     runs-on: ubuntu-latest
     container:
-      image: ryanmillard/img2num-dev:latest
+      image: >-
+        ${{
+          github.event_name == 'pull_request'
+          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
+          || 'ryanmillard/img2num-dev:latest'
+        }}
 
     steps:
       - name: Checkout code
@@ -39,17 +44,37 @@ jobs:
   cmake-build:
     name: Build C/C++
     uses: ./.github/workflows/cmake-build.yml
+    with:
+      image: >-
+        ${{
+          github.event_name == 'pull_request'
+          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
+          || 'ryanmillard/img2num-dev:latest'
+        }}
 
   build-react-app:
     name: Build React App
     uses: ./.github/workflows/build-react-app.yml
     needs: cmake-build
     with:
+      image: >-
+        ${{
+          github.event_name == 'pull_request'
+          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
+          || 'ryanmillard/img2num-dev:latest'
+        }}
       wasm-artifacts-path: packages/js/build-wasm/
 
   build-docs:
     name: Build Documentation Site
     uses: ./.github/workflows/build-docs.yml
+    with:
+      image: >-
+        ${{
+          github.event_name == 'pull_request'
+          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
+          || 'ryanmillard/img2num-dev:latest'
+        }}
     secrets:
       ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
       ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}

@@ -2,6 +2,10 @@ name: Build Documentation
 
 on:
   workflow_call:
+    inputs:
+      image:
+        required: true
+        type: string
     secrets:
       ALGOLIA_APP_ID:
         required: true
@@ -18,7 +22,7 @@ jobs:
     name: Build Docusaurus Site
     runs-on: ubuntu-latest
     container:
-      image: ryanmillard/img2num-dev:latest
+      image: ${{ inputs.image }}
     steps:
       - name: Checkout code
         # No need for submodules since docs uses NPM
