@@ -89,7 +89,7 @@ jobs:
           echo "cache_ref=$CACHE_REF" >> $GITHUB_OUTPUT
 
       - name: Build & Push Docker image
-        if: steps.filter.outputs.docker == 'true'
+        if: github.event.action != 'closed' && (steps.filter.outputs.docker == 'true' || github.event_name != 'pull_request')
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -118,8 +118,15 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           CORE_TAG="${IMAGE_NAME}:${CLEAN_CORE_TAG}"
+          
+          # Avoid spamming the PR with comments by checking for an existing comment
+          EXISTS=$(gh api repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments \
+            --jq '.[] | select(.body | contains("<!-- docker-image-comment -->")) | .id' \
+            | head -n 1)
+          EXISTS && echo "Comment already exists, skipping." && exit 0
 
           gh api repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments -f body="$(cat <<EOF
+          <!-- docker-image-comment -->
           ## 🐳 Docker image built successfully!
 
           ### Image
@@ -147,14 +154,17 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{"username":"${{ secrets.DOCKERHUB_USERNAME }}","password":"${{ secrets.DOCKERHUB_TOKEN }}"}' \
             https://hub.docker.com/v2/users/login/ | jq -r .token)
-
-          TAGS=$(curl -s \
-            -H "Authorization: JWT ${TOKEN}" \
-            "https://hub.docker.com/v2/repositories/${{ env.IMAGE_NAME }}/tags/?page_size=100" \
-            | jq -r ".results[].name | select(startswith(\"pr-${PR_NUMBER}\"))")
-
-          for TAG in $TAGS; do
-            curl -X DELETE \
+          
+          IMAGE="${{ env.IMAGE_NAME }}"
+          
+          TAGS=(
+            "pr-${PR_NUMBER}"
+            "cache-pr-${PR_NUMBER}"
+          )
+          
+          for TAG in "${TAGS[@]}"; do
+            curl -s -X DELETE \
               -H "Authorization: JWT ${TOKEN}" \
-              "https://hub.docker.com/v2/repositories/${{ env.IMAGE_NAME }}/tags/${TAG}/"
+              "https://hub.docker.com/v2/repositories/${IMAGE}/tags/${TAG}/" \
+            || echo "Tag $TAG not found or already deleted"
           done
