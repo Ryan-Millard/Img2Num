@@ -9,6 +9,7 @@ dependencies = [
 
 [tool.uv]
 package = false
+no-build-isolation-package = ["img2num"]
 
 [tool.uv.sources]
 img2num = { workspace = true }

@@ -4,6 +4,7 @@ version = "0.0.0"
 description = "A fast and accurate raster image to SVG conversion library"
 requires-python = ">=3.10"
 dependencies = [
+  "scikit-build-core>=0.10",
   "numpy"
 ]
 
@@ -26,6 +27,8 @@ sdist.include = [
   "../../bindings",
   "../../cmake"
 ]
+editable.rebuild = true
+build-dir = "build-py"
 
 [tool.uv]
 package = true
