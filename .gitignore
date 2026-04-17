@@ -6,8 +6,17 @@ node_modules/
 build*/
 install/
 
+# uv (Python)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+build/
+.venv/
+
 # uv (Python) and JavaScript
-dist
+dist/
 
 # Logs
 logs
@@ -29,3 +38,5 @@ logs
 *:Zone.Identifier
 
 .env
+
+console-py_outputs

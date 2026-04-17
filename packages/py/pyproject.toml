@@ -1,6 +1,7 @@
 [project]
 name = "img2num"
 version = "0.0.0"
+description = "A fast and accurate raster image to SVG conversion library"
 requires-python = ">=3.10"
 dependencies = [
   "numpy"

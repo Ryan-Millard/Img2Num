@@ -10,14 +10,14 @@ resolution-markers = [
 members = [
     "console-py",
     "img2num",
+    "img2num-uv-workspace",
 ]
 
 [[package]]
 name = "console-py"
 version = "0.0.0"
-source = { virtual = "example-apps/console-py" }
+source = { editable = "example-apps/console-py" }
 dependencies = [
-    { name = "img2num" },
     { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "numpy", version = "2.4.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "opencv-python" },
@@ -25,7 +25,6 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "img2num", editable = "packages/py" },
     { name = "numpy" },
     { name = "opencv-python" },
 ]
@@ -41,6 +40,17 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [{ name = "numpy" }]
+
+[[package]]
+name = "img2num-uv-workspace"
+version = "0.0.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "img2num" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "img2num", editable = "packages/py" }]
 
 [[package]]
 name = "numpy"
