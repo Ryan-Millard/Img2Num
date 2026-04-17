@@ -34,13 +34,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download React build artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: react-build
           path: ./new-react-build
 
       - name: Download Docs build artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: docs-build
           path: ./new-docs-build
