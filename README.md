@@ -18,9 +18,9 @@ _Img2Num_ converts raster images into clean SVGs with _high accuracy and perform
 
 | Original | Vectorized (SVG) |
 |----------|------------------|
-| <img src="docs/static/img/readme-demo/aerial-view-mountains_pexels-pixabay-51373.jpg" width="300" alt="Mountains Original Input Image"> | <img src="docs/static/img/readme-demo/aerial-view-mountains_colored_pexels-pixabay-51373.jpg" width="300" alt="Mountains Final After Coloring"> |
-| <img width="300" alt="Original raster image" src="https://github.com/user-attachments/assets/f9597e1b-0c46-49be-99b2-6943b4d2d42a" /> | <img width="300" alt="Final SVG image (rasterized for display)" src="https://github.com/user-attachments/assets/9b35cdff-f7a7-4742-bae2-99e0544b109c" /> |
-| <img width="300" alt="Original raster image" src="https://github.com/user-attachments/assets/3f037f46-cb46-4c9b-8bf4-04466964786e" /> | <img width="300" alt="Final SVG image (rasterized for display)" src="https://github.com/user-attachments/assets/aa48fee4-8937-4ef2-b886-9cfa1d5c9c5b" /> |
+| <img src="docs/static/img/readme-demo/aerial-view-mountains_pexels-pixabay-51373.jpg" width="300" alt="Original input raster image (Aerial view of mountains)"> | <img src="docs/static/img/readme-demo/output-aerial-view-mountains_pexels-pixabay-51373.svg" width="300" alt="Final output SVG image (Aerial view of mountains)"> |
+| <img src="docs/static/img/readme-demo/margate-garden.jpg" width="300" alt="Original input raster image (A garden in Margate, South Africa)" /> | <img width="300" alt="Final output SVG image (A garden in Margate, South Africa)" src="docs/static/img/readme-demo/output-margate-garden.svg" /> |
+| <img src="docs/static/img/readme-demo/ring-on-hand.jpg" width="300" alt="Original input raster image (A ring on a woman's hand)" /> | <img width="300" alt="Final output SVG image  (A ring on a woman's hand)" src="docs/static/img/readme-demo/output-ring-on-hand.svg" /> |
 
 ### What are you waiting for?
 
