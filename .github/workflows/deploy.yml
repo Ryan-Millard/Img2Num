@@ -8,10 +8,15 @@ on:
 permissions:
   contents: write
 
+env:
+  image: ryanmillard/img2num-dev:main
+
 jobs:
   cmake-build:
     name: Build WASM
     uses: ./.github/workflows/cmake-build.yml
+    with:
+      image: ${{ env.image }}
 
   build-react-app:
     name: Build React App
@@ -19,10 +24,13 @@ jobs:
     needs: cmake-build
     with:
       wasm-artifacts-path: packages/js/build-wasm/
+      image: ${{ env.image }}
 
   build-docs:
     name: Build Documentation Site
     uses: ./.github/workflows/build-docs.yml
+    with:
+      image: ${{ env.image }}
     secrets:
       ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
       ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
