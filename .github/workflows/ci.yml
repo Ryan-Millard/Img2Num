@@ -8,31 +8,36 @@ on:
 
 permissions:
   contents: read
+  packages: read
 
 jobs:
+  set-image:
+    name: Set Docker image
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.set.outputs.image }}
+    steps:
+      - name: Set image
+        id: set
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "image=ghcr.io/ryan-millard/img2num-dev:pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+          else
+            echo "image=ghcr.io/ryan-millard/img2num-dev:main" >> $GITHUB_OUTPUT
+          fi
   wait-for-image:
-    name: Wait for Docker image to be pushed to Docker Hub
+    needs: set-image
+    name: Wait for Docker image to be pushed to GHCR
     uses: ./.github/workflows/wait-for-docker-image.yml
     with:
-      image: >-
-        ${{
-          github.event_name == 'pull_request'
-          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
-          || 'ryanmillard/img2num-dev:main'
-        }}
+      ghcr_image: ${{ needs.set-image.outputs.image }}
 
   lint:
     name: Lint & Validate Code
-    needs: wait-for-image
+    needs: [set-image, wait-for-image]
     runs-on: ubuntu-latest
     container:
-      image: >-
-        ${{
-          github.event_name == 'pull_request'
-          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
-          || 'ryanmillard/img2num-dev:main'
-        }}
-
+      image: ${{ needs.set-image.outputs.image }}
     steps:
       - name: Checkout code
         # No need for submodules since we are not running code
@@ -56,39 +61,24 @@ jobs:
   cmake-build:
     name: Build C/C++
     uses: ./.github/workflows/cmake-build.yml
-    needs: wait-for-image
+    needs: [set-image, wait-for-image]
     with:
-      image: >-
-        ${{
-          github.event_name == 'pull_request'
-          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
-          || 'ryanmillard/img2num-dev:main'
-        }}
+      image: ${{ needs.set-image.outputs.image }}
 
   build-react-app:
     name: Build React App
     uses: ./.github/workflows/build-react-app.yml
-    needs: [cmake-build, wait-for-image]
+    needs: [set-image, cmake-build, wait-for-image]
     with:
-      image: >-
-        ${{
-          github.event_name == 'pull_request'
-          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
-          || 'ryanmillard/img2num-dev:main'
-        }}
+      image: ${{ needs.set-image.outputs.image }}
       wasm-artifacts-path: packages/js/build-wasm/
 
   build-docs:
     name: Build Documentation Site
     uses: ./.github/workflows/build-docs.yml
-    needs: wait-for-image
+    needs: [set-image, wait-for-image]
     with:
-      image: >-
-        ${{
-          github.event_name == 'pull_request'
-          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
-          || 'ryanmillard/img2num-dev:main'
-        }}
+      image: ${{ needs.set-image.outputs.image }}
     secrets:
       ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
       ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
