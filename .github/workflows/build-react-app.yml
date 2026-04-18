@@ -3,6 +3,9 @@ name: Build React App
 on:
   workflow_call:
     inputs:
+      image:
+        required: true
+        type: string
       wasm-artifacts-path:
         required: false
         type: string
@@ -15,18 +18,18 @@ jobs:
     name: Build React Example App
     runs-on: ubuntu-latest
     container:
-      image: ryanmillard/img2num-dev:latest
+      image: ${{ inputs.image }}
     steps:
       - name: Checkout code
         # No need for submodules since docs uses NPM
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
 
       - name: Install Dependendencies
         run: pnpm --filter react-example install
 
       - name: Download WASM artifacts
         if: ${{ inputs.wasm-artifacts-path }}
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: wasm-build
           path: ${{ inputs.wasm-artifacts-path }}
@@ -35,7 +38,7 @@ jobs:
         run: pnpm -F react-example run build
 
       - name: Upload React build artifacts
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: react-build
           path: example-apps/react-js/dist/
