@@ -159,6 +159,9 @@ jobs:
           package-name: img2num-dev
           package-type: container
           delete-untagged-versions: false
+          dry-run: true
           # Deletes both pr-N and cache-pr-N tags
+          # $ anchors each alternative so pr-5 does not match pr-50, pr-51, etc.
+          #   (See CodeRabbit's related review comment: https://github.com/Ryan-Millard/Img2Num/pull/312#discussion_r3105632912)
           min-versions-to-keep: 0
-          ignore-versions: "^(?!pr-${{ github.event.pull_request.number }}|cache-pr-${{ github.event.pull_request.number }}).*"
+          ignore-versions: "^(?!pr-${{ github.event.pull_request.number }}$|cache-pr-${{ github.event.pull_request.number }}$).*"
