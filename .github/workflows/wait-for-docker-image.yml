@@ -47,15 +47,33 @@ jobs:
           DELAY=${{ inputs.initial_delay_seconds }}
           IMAGE_NAME="${IMAGE%%:*}"
           TAG="${IMAGE##*:}"
+          WORKFLOW_STARTED_AT="${{ github.event.repository.updated_at }}"
+          WORKFLOW_START_TS=$(date -d "$WORKFLOW_STARTED_AT" +%s)
 
           for i in $(seq 1 $MAX_ATTEMPTS); do
-            echo "Attempt $i of $MAX_ATTEMPTS: pulling $IMAGE..."
-            curl -sf "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags/${TAG}/" > /dev/null && exit 0
+            echo "Attempt $i of $MAX_ATTEMPTS: checking $IMAGE..."
 
-            echo "Not available yet, waiting ${DELAY}s..."
+            LAST_PUSHED=$(curl -sf "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags/${TAG}/" \
+              | jq -r '.tag_last_pushed // empty')
+
+            if [[ -n "$LAST_PUSHED" ]]; then
+              LAST_PUSHED_TS=$(date -d "$LAST_PUSHED" +%s)
+              echo "Image last pushed at: $LAST_PUSHED (workflow started at: $WORKFLOW_STARTED_AT)"
+
+              if [[ "$LAST_PUSHED_TS" -ge "$WORKFLOW_START_TS" ]]; then
+                echo "Image is fresh, proceeding."
+                exit 0
+              else
+                echo "Image exists but is stale."
+              fi
+            else
+              echo "Image not found yet."
+            fi
+
+            echo "Waiting ${DELAY}s..."
             sleep $DELAY
             DELAY=$((DELAY * 2))
           done
 
-          echo "Image never became available after $MAX_ATTEMPTS attempts"
+          echo "Image never became fresh after $MAX_ATTEMPTS attempts"
           exit 1
