@@ -26,22 +26,20 @@ jobs:
     needs: [wait-for-image, setup]
     uses: ./.github/workflows/cmake-build.yml
     with:
-      image: ${{ steps.set.outputs.image }}
-
+      image: ${{ needs.setup.outputs.image }}
   build-react-app:
     name: Build React App
     uses: ./.github/workflows/build-react-app.yml
     needs: [cmake-build, wait-for-image, setup]
     with:
       wasm-artifacts-path: packages/js/build-wasm/
-      image: ${{ steps.set.outputs.image }}
-
+      image: ${{ needs.setup.outputs.image }}
   build-docs:
     name: Build Documentation Site
     needs: [wait-for-image, setup]
     uses: ./.github/workflows/build-docs.yml
     with:
-      image: ${{ steps.set.outputs.image }}
+      image: ${{ needs.setup.outputs.image }}
     secrets:
       ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
       ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
