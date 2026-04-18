@@ -45,14 +45,16 @@ jobs:
           IMAGE="${{ inputs.image }}"
           MAX_ATTEMPTS=${{ inputs.max_attempts }}
           DELAY=${{ inputs.initial_delay_seconds }}
+          IMAGE_NAME="${IMAGE%%:*}"
+          TAG="${IMAGE##*:}"
 
           for i in $(seq 1 $MAX_ATTEMPTS); do
             echo "Attempt $i of $MAX_ATTEMPTS: pulling $IMAGE..."
-            docker pull "$IMAGE" && exit 0
+            curl -sf "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags/${TAG}/" > /dev/null && exit 0
 
-            DELAY=$((DELAY * 2))
             echo "Not available yet, waiting ${DELAY}s..."
             sleep $DELAY
+            DELAY=$((DELAY * 2))
           done
 
           echo "Image never became available after $MAX_ATTEMPTS attempts"
