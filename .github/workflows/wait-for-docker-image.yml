@@ -32,6 +32,8 @@ on:
           Initial delay in seconds between attempts. Doubles after each failure.
           With the default of 15s and 8 attempts, worst-case wait is ~63 minutes.
 
+permissions: {}
+
 jobs:
   wait-for-image:
     name: Wait for Docker Image
