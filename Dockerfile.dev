@@ -1,36 +1,40 @@
-# ------------------------
+# --------------------------------------------------------------------------------------------------------------
 # Img2Num Dockerfile.dev
-# ------------------------
+#
+# Be careful of how you update this file. Updating layer 2 forces the layers below it to rebuild, too!
+# --------------------------------------------------------------------------------------------------------------
+
+# --------------------------------------------------------------------------------------------------------------
+# 1. OS setup & tooling.
 FROM node:22-trixie
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends \
+      build-essential \
+      clang \
+      cmake \
+      python3 \
+      git \
+      curl \
+      unzip \
+      pkg-config \
+      bash \
+      ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
-ENV EMSDK_VERSION=4.0.10
-ENV EMSDK_DIR=/opt/emsdk
-
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends \
-    build-essential \
-    clang \
-    cmake \
-    python3 \
-    git \
-    curl \
-    unzip \
-    pkg-config \
-    bash \
-    ca-certificates \
-    libvips-dev \
-    # graphviz enables diagrams in doxygen
-    doxygen graphviz \
-    # vulkan drivers
-    vulkan-tools libvulkan1 mesa-vulkan-drivers \
-    libgl1-mesa-dev libglu1-mesa-dev \
-  && rm -rf /var/lib/apt/lists/*
+# Make the mounted working directory safe for Git
+RUN git config --global --add safe.directory /usr/src/app
 
 # CMake preferred compiler (Dawn requires it and it's easier to just use it for everything)
 ENV CC=gcc-14
 ENV CXX=g++-14
 
-# Install EMSDK once, cached by Docker layers
+WORKDIR /usr/src/app
+
+# --------------------------------------------------------------------------------------------------------------
+# 2. Set up Emscripten. The compiler won't change often.
+ENV EMSDK_VERSION=4.0.10
+ENV EMSDK_DIR=/opt/emsdk
 RUN git clone --depth 1 https://github.com/emscripten-core/emsdk.git $EMSDK_DIR \
   && cd $EMSDK_DIR \
   && git fetch --tags \
@@ -40,32 +44,43 @@ RUN git clone --depth 1 https://github.com/emscripten-core/emsdk.git $EMSDK_DIR 
 ENV PATH=$EMSDK_DIR:$EMSDK_DIR/upstream/emscripten:$PATH
 ENV EMSDK=$EMSDK_DIR
 
-RUN git clone https://github.com/google/dawn.git \
-  && cd dawn \
-  && cmake -DDAWN_SUPPORTS_GLFW_FOR_WINDOWING=OFF \
-      -DDAWN_USE_X11=OFF -DDAWN_FETCH_DEPENDENCIES=ON \
-      -DDAWN_ENABLE_INSTALL=ON \
-      -DCMAKE_BUILD_TYPE=Release . \
-  && make install
+# --------------------------------------------------------------------------------------------------------------
+# 3. Set up Dawn. It takes the longest, so it must be built first.
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends \
+      libvulkan1 \
+      mesa-vulkan-drivers \
+      libgl1-mesa-dev \
+      libglu1-mesa-dev \
+      vulkan-tools \
+      libvips-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install pnpm
-RUN corepack enable \
-  && corepack prepare pnpm@10.29.1 --activate
+# After installing deps since Dawn is likely to change, not its deps
+COPY third_party/dawn third_party/dawn
 
-# Corepack installs pnpm here for root
-ENV PATH=/root/.local/share/pnpm:$PATH
-ENV PNPM_STORE_DIR=/pnpm/store
+RUN cmake -S third_party/dawn -B build/dawn \
+    -DDAWN_SUPPORTS_GLFW_FOR_WINDOWING=OFF \
+    -DDAWN_USE_X11=OFF \
+    -DDAWN_FETCH_DEPENDENCIES=ON \
+    -DDAWN_ENABLE_INSTALL=ON \
+    -DDAWN_BUILD_TESTS=OFF \
+    -DCMAKE_BUILD_TYPE=Release \
+  && cmake --build build/dawn --parallel $(nproc) \
+  && cmake --install build/dawn
 
-WORKDIR /usr/src/app
+# --------------------------------------------------------------------------------------------------------------
+# 4. Set up Doxygen.
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends \
+      doxygen \
+      graphviz \
+    && rm -rf /var/lib/apt/lists/*
 
-ENV CHOKIDAR_USEPOLLING=true
-ENV CHOKIDAR_INTERVAL=100
-
-# Make the mounted working directory safe for Git
-RUN git config --global --add safe.directory /usr/src/app
-
-EXPOSE 5173 3000
-
+# --------------------------------------------------------------------------------------------------------------
+# 4. Set up uv & Python requirements.
 # Python development setup (for bindings, not core)
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
@@ -74,9 +89,32 @@ RUN apt-get update \
     python3-wheel \
     python3-pybind11 \
   && rm -rf /var/lib/apt/lists/*
-# uv package manager
-RUN curl -Ls https://astral.sh/uv/install.sh | sh
-ENV PATH="/root/.local/bin:${PATH}"
-COPY pyproject.toml .
 
+RUN curl -LsSf https://astral.sh/uv/0.5.1/install.sh | sh
+ENV PATH="/root/.local/bin:${PATH}"
+
+# --------------------------------------------------------------------------------------------------------------
+# 6. Set up pnpm & JS app requirements.
+RUN corepack enable \
+  && corepack prepare pnpm@10.29.1 --activate
+
+ENV CHOKIDAR_USEPOLLING=true
+ENV CHOKIDAR_INTERVAL=100
+
+# React Example & Documentation ports.
+EXPOSE 5173 3000
+
+# Corepack installs pnpm here for root
+ENV PATH=/root/.local/share/pnpm:$PATH
+ENV PNPM_STORE_DIR=/pnpm/store
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .
+COPY packages/js/package.json packages/js/package.json
+COPY docs/package.json docs/package.json
+COPY example-apps/react-js/package.json example-apps/react-js/package.json
+COPY scripts/img2num-dev-scripts/package.json scripts/img2num-dev-scripts/package.json
+
+RUN pnpm install --no-frozen-lockfile
+
+# --------------------------------------------------------------------------------------------------------------
 CMD ["bash"]

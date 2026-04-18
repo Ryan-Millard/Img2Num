@@ -10,16 +10,33 @@ permissions:
   contents: read
 
 jobs:
+  wait-for-image:
+    name: Wait for Docker image to be pushed to Docker Hub
+    uses: ./.github/workflows/wait-for-docker-image.yml
+    with:
+      image: >-
+        ${{
+          github.event_name == 'pull_request'
+          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
+          || 'ryanmillard/img2num-dev:main'
+        }}
+
   lint:
     name: Lint & Validate Code
+    needs: wait-for-image
     runs-on: ubuntu-latest
     container:
-      image: ryanmillard/img2num-dev:latest
+      image: >-
+        ${{
+          github.event_name == 'pull_request'
+          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
+          || 'ryanmillard/img2num-dev:main'
+        }}
 
     steps:
       - name: Checkout code
         # No need for submodules since we are not running code
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
 
       - name: Install PNPM dependencies
         run: pnpm install
@@ -39,17 +56,39 @@ jobs:
   cmake-build:
     name: Build C/C++
     uses: ./.github/workflows/cmake-build.yml
+    needs: wait-for-image
+    with:
+      image: >-
+        ${{
+          github.event_name == 'pull_request'
+          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
+          || 'ryanmillard/img2num-dev:main'
+        }}
 
   build-react-app:
     name: Build React App
     uses: ./.github/workflows/build-react-app.yml
-    needs: cmake-build
+    needs: [cmake-build, wait-for-image]
     with:
+      image: >-
+        ${{
+          github.event_name == 'pull_request'
+          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
+          || 'ryanmillard/img2num-dev:main'
+        }}
       wasm-artifacts-path: packages/js/build-wasm/
 
   build-docs:
     name: Build Documentation Site
     uses: ./.github/workflows/build-docs.yml
+    needs: wait-for-image
+    with:
+      image: >-
+        ${{
+          github.event_name == 'pull_request'
+          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
+          || 'ryanmillard/img2num-dev:main'
+        }}
     secrets:
       ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
       ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
