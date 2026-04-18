@@ -9,20 +9,37 @@ permissions:
   contents: write
 
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.set.outputs.image }}
+    steps:
+      - id: set
+        run: echo "image=ryanmillard/img2num-dev:main" >> $GITHUB_OUTPUT
+
+  wait-for-image:
+    name: Wait for Docker image to be pushed to Docker Hub
+    uses: ./.github/workflows/wait-for-docker-image.yml
+
   cmake-build:
     name: Build WASM
+    needs: [wait-for-image, setup]
     uses: ./.github/workflows/cmake-build.yml
-
+    with:
+      image: ${{ needs.setup.outputs.image }}
   build-react-app:
     name: Build React App
     uses: ./.github/workflows/build-react-app.yml
-    needs: cmake-build
+    needs: [cmake-build, wait-for-image, setup]
     with:
       wasm-artifacts-path: packages/js/build-wasm/
-
+      image: ${{ needs.setup.outputs.image }}
   build-docs:
     name: Build Documentation Site
+    needs: [wait-for-image, setup]
     uses: ./.github/workflows/build-docs.yml
+    with:
+      image: ${{ needs.setup.outputs.image }}
     secrets:
       ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
       ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
@@ -30,7 +47,7 @@ jobs:
 
   deploy:
     name: Deploy site to GH Pages
-    needs: [build-react-app, build-docs]
+    needs: [build-react-app, build-docs, wait-for-image]
     runs-on: ubuntu-latest
     steps:
       - name: Download React build artifacts
