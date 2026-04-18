@@ -103,7 +103,6 @@ jobs:
       pull-requests: write
 
     env:
-      GHCR_IMAGE: ghcr.io/${{ github.repository_owner }}/img2num-dev
       CLEAN_CORE_TAG: ${{ needs.build.outputs.clean_core_tag }}
 
     steps:
@@ -120,6 +119,15 @@ jobs:
         run: |
           echo "Found comment ID: ${{ steps.fc.outputs.comment-id }}"
 
+      - name: Compute lowercase image ref
+        id: img
+        run: |
+          # GHCR for some reason requires lowercase when pulling
+          LOWER_OWNER_NAME="$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')"
+          GHCR_IMAGE="ghcr.io/${LOWER_OWNER_NAME}/img2num-dev"
+          echo "lower_owner_name=${LOWER_OWNER_NAME}" >> $GITHUB_OUTPUT
+          echo "ghcr_image=${GHCR_IMAGE}" >> $GITHUB_OUTPUT
+
       - name: Create Docker comment
         if: steps.fc.outputs.comment-id == ''
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9
@@ -130,11 +138,11 @@ jobs:
             ## 🐳 Docker image built successfully!
 
             ### Image
-            [`${{ env.GHCR_IMAGE }}:${{ env.CLEAN_CORE_TAG }}`](https://github.com/${{ github.repository_owner }}/packages/container/img2num-dev/${{ env.CLEAN_CORE_TAG }})
+            [`${{ steps.img.outputs.ghcr_image }}:${{ env.CLEAN_CORE_TAG }}`](https://github.com/${{ steps.img.outputs.lower_owner_name }}/${{ github.event.repository.name }}/pkgs/container/img2num-dev/${{ env.CLEAN_CORE_TAG }})
 
             ### Run it locally:
             ```bash
-            IMG2NUM_IMAGE=${{ env.GHCR_IMAGE }}:${{ env.CLEAN_CORE_TAG }} ./img2num sh
+            IMG2NUM_IMAGE=${{ steps.img.outputs.ghcr_image }}:${{ env.CLEAN_CORE_TAG }} ./img2num sh
             ```
 
 
