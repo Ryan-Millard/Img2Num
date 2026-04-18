@@ -10,12 +10,18 @@ name: Wait for Docker Image
 on:
   workflow_call:
     inputs:
-      image:
+      dh_image:
         required: false
         type: string
         default: ryanmillard/img2num-dev:main
         description: >
-          Docker image that this workflow waits for. It will check Docker Hub and GHCR for this image. Defaults to: ryanmillard/img2num-dev:main
+          Docker Hub image to wait for. Defaults to: ryanmillard/img2num-dev:main
+      ghcr_image:
+        required: false
+        type: string
+        default: ghcr.io/ryan-millard/img2num-dev:main
+        description: >
+          GHCR image to wait for. Defaults to: ghcr.io/ryan-millard/img2num-dev:main
       max_attempts:
         required: false
         type: number
@@ -56,17 +62,21 @@ jobs:
       - name: Set up variables
         id: setup
         run: |
-          IMAGE="${{ inputs.image }}"
+          DH_IMAGE="${{ inputs.dh_image }}"
+          GHCR_IMAGE="${{ inputs.ghcr_image }}"
           WORKFLOW_STARTED_AT="${{ github.event.workflow_run.created_at || github.event.repository.updated_at }}"
-          echo "image=$IMAGE"                                             >> "$GITHUB_OUTPUT"
-          echo "image_name=${IMAGE%%:*}"                                  >> "$GITHUB_OUTPUT"
-          echo "tag=${IMAGE##*:}"                                         >> "$GITHUB_OUTPUT"
-          echo "max_attempts=${{ inputs.max_attempts }}"                  >> "$GITHUB_OUTPUT"
-          echo "initial_delay=${{ inputs.initial_delay_seconds }}"        >> "$GITHUB_OUTPUT"
-          echo "initial_wait=${{ inputs.initial_wait_seconds }}"          >> "$GITHUB_OUTPUT"
-          echo "multiplier=${{ inputs.backoff_multiplier }}"              >> "$GITHUB_OUTPUT"
-          echo "workflow_started_at=$WORKFLOW_STARTED_AT"                 >> "$GITHUB_OUTPUT"
-          echo "workflow_start_ts=$(date -d "$WORKFLOW_STARTED_AT" +%s)"  >> "$GITHUB_OUTPUT"
+          echo "dh_image=$DH_IMAGE"                                        >> "$GITHUB_OUTPUT"
+          echo "dh_image_name=${DH_IMAGE%%:*}"                             >> "$GITHUB_OUTPUT"
+          echo "dh_tag=${DH_IMAGE##*:}"                                    >> "$GITHUB_OUTPUT"
+          echo "ghcr_image=$GHCR_IMAGE"                                    >> "$GITHUB_OUTPUT"
+          echo "ghcr_image_name=${GHCR_IMAGE%%:*}"                         >> "$GITHUB_OUTPUT"
+          echo "ghcr_tag=${GHCR_IMAGE##*:}"                                >> "$GITHUB_OUTPUT"
+          echo "max_attempts=${{ inputs.max_attempts }}"                   >> "$GITHUB_OUTPUT"
+          echo "initial_delay=${{ inputs.initial_delay_seconds }}"         >> "$GITHUB_OUTPUT"
+          echo "initial_wait=${{ inputs.initial_wait_seconds }}"           >> "$GITHUB_OUTPUT"
+          echo "multiplier=${{ inputs.backoff_multiplier }}"               >> "$GITHUB_OUTPUT"
+          echo "workflow_started_at=$WORKFLOW_STARTED_AT"                  >> "$GITHUB_OUTPUT"
+          echo "workflow_start_ts=$(date -d "$WORKFLOW_STARTED_AT" +%s)"   >> "$GITHUB_OUTPUT"
 
       - name: Initial wait
         run: |
@@ -78,9 +88,10 @@ jobs:
 
       - name: Wait for image with exponential backoff
         run: |
-          IMAGE="${{ steps.setup.outputs.image }}"
-          IMAGE_NAME="${{ steps.setup.outputs.image_name }}"
-          TAG="${{ steps.setup.outputs.tag }}"
+          DH_IMAGE_NAME="${{ steps.setup.outputs.dh_image_name }}"
+          DH_TAG="${{ steps.setup.outputs.dh_tag }}"
+          GHCR_IMAGE_NAME="${{ steps.setup.outputs.ghcr_image_name }}"
+          GHCR_TAG="${{ steps.setup.outputs.ghcr_tag }}"
           MAX_ATTEMPTS="${{ steps.setup.outputs.max_attempts }}"
           DELAY="${{ steps.setup.outputs.initial_delay }}"
           MULTIPLIER="${{ steps.setup.outputs.multiplier }}"
@@ -88,27 +99,26 @@ jobs:
           WORKFLOW_START_TS="${{ steps.setup.outputs.workflow_start_ts }}"
 
           for i in $(seq 1 $MAX_ATTEMPTS); do
-            echo "Attempt $i of $MAX_ATTEMPTS: checking $IMAGE..."
+            echo "Attempt $i of $MAX_ATTEMPTS..."
 
-            LAST_PUSHED=""
-            if [[ "$IMAGE_NAME" == ghcr.io/* ]]; then
-              REPO="${IMAGE_NAME#ghcr.io/}"
-              TOKEN=$(curl -sf -u "${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}" \
-                "https://ghcr.io/token?scope=repository:${REPO}:pull" | jq -r '.token // empty')
-              if [[ -n "$TOKEN" ]]; then
-                HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -I \
-                  -H "Authorization: Bearer ${TOKEN}" \
-                  -H "Accept: application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.v2+json" \
-                  "https://ghcr.io/v2/${REPO}/manifests/${TAG}")
-                if [[ "$HTTP_CODE" == "200" ]]; then
-                  echo "Image present in GHCR."
-                  exit 0
-                fi
+            # Check GHCR
+            REPO="${GHCR_IMAGE_NAME#ghcr.io/}"
+            TOKEN=$(curl -sf -u "${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}" \
+              "https://ghcr.io/token?scope=repository:${REPO}:pull" | jq -r '.token // empty')
+            if [[ -n "$TOKEN" ]]; then
+              HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -I \
+                -H "Authorization: Bearer ${TOKEN}" \
+                -H "Accept: application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.v2+json" \
+                "https://ghcr.io/v2/${REPO}/manifests/${GHCR_TAG}")
+              if [[ "$HTTP_CODE" == "200" ]]; then
+                echo "Image present in GHCR."
+                exit 0
               fi
-            else
-              LAST_PUSHED=$(curl -sf "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags/${TAG}/" \
-                | jq -r '.tag_last_pushed // empty')
             fi
+
+            # Check Docker Hub
+            LAST_PUSHED=$(curl -sf "https://hub.docker.com/v2/repositories/${DH_IMAGE_NAME}/tags/${DH_TAG}/" \
+              | jq -r '.tag_last_pushed // empty')
 
             if [[ -n "$LAST_PUSHED" ]]; then
               LAST_PUSHED_TS=$(date -d "$LAST_PUSHED" +%s)

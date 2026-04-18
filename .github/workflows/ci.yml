@@ -21,16 +21,16 @@ jobs:
         id: set
         run: |
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            echo "image=ghcr.io/ryanmillard/img2num-dev:pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+            echo "image=ghcr.io/ryan-millard/img2num-dev:pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
           else
-            echo "image=ghcr.io/ryanmillard/img2num-dev:main" >> $GITHUB_OUTPUT
+            echo "image=ghcr.io/ryan-millard/img2num-dev:main" >> $GITHUB_OUTPUT
           fi
   wait-for-image:
     needs: set-image
     name: Wait for Docker image to be pushed to GHCR
     uses: ./.github/workflows/wait-for-docker-image.yml
     with:
-      image: ${{ needs.set-image.outputs.image }}
+      ghcr_image: ${{ needs.set-image.outputs.image }}
 
   lint:
     name: Lint & Validate Code
