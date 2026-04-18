@@ -17,13 +17,18 @@
 /.github/workflows/cmake-build.yml @Ryan-Millard @Krasner
 /packages                          @Ryan-Millard @Krasner
 /third_party                       @Ryan-Millard @Krasner
+/example-apps/*-c                  @Ryan-Millard @Krasner
+/example-apps/*-cpp                @Ryan-Millard @Krasner
 
 # WebGPU
 *.wgsl                             @Ryan-Millard @Krasner
 
 # Python
 *.py                               @Ryan-Millard @Krasner
+/bindings/py                       @Ryan-Millard @Krasner
+/example-apps/*-py                 @Ryan-Millard @Krasner
 
 
-* @Ryan-Millard
+# ===============================================================
 # Do not put code after this catch-all
+* @Ryan-Millard
