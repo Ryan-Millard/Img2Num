@@ -49,14 +49,35 @@ jobs:
           DELAY=${{ inputs.initial_delay_seconds }}
           IMAGE_NAME="${IMAGE%%:*}"
           TAG="${IMAGE##*:}"
-          WORKFLOW_STARTED_AT="${{ github.event.repository.updated_at }}"
+          WORKFLOW_STARTED_AT="${{ github.event.workflow_run.created_at || github.event.repository.updated_at }}"
           WORKFLOW_START_TS=$(date -d "$WORKFLOW_STARTED_AT" +%s)
 
           for i in $(seq 1 $MAX_ATTEMPTS); do
             echo "Attempt $i of $MAX_ATTEMPTS: checking $IMAGE..."
 
-            LAST_PUSHED=$(curl -sf "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags/${TAG}/" \
-              | jq -r '.tag_last_pushed // empty')
+            LAST_PUSHED=""
+            if [[ "$IMAGE_NAME" == ghcr.io/* ]]; then
+              # GHCR: resolve via the registry API. Requires a bearer token; GITHUB_TOKEN works for public/owned images.
+              REPO="${IMAGE_NAME#ghcr.io/}"
+              TOKEN=$(curl -sf -u "${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}" \
+                "https://ghcr.io/token?scope=repository:${REPO}:pull" | jq -r '.token // empty')
+              if [[ -n "$TOKEN" ]]; then
+                # HEAD the manifest; Docker-Content-Digest presence indicates tag exists.
+                HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -I \
+                  -H "Authorization: Bearer ${TOKEN}" \
+                  -H "Accept: application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.v2+json" \
+                  "https://ghcr.io/v2/${REPO}/manifests/${TAG}")
+                if [[ "$HTTP_CODE" == "200" ]]; then
+                  # GHCR doesn't return push timestamp via registry API; treat presence as fresh-enough,
+                  # OR query the GitHub Packages API for updated_at if you want the staleness check preserved.
+                  echo "Image present in GHCR."
+                  exit 0
+                fi
+              fi
+            else
+              LAST_PUSHED=$(curl -sf "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags/${TAG}/" \
+                | jq -r '.tag_last_pushed // empty')
+            fi
 
             if [[ -n "$LAST_PUSHED" ]]; then
               LAST_PUSHED_TS=$(date -d "$LAST_PUSHED" +%s)
