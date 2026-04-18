@@ -8,35 +8,40 @@ on:
 permissions:
   contents: write
 
-env:
-  image: ryanmillard/img2num-dev:main
-
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.set.outputs.image }}
+    steps:
+      - id: set
+        run: echo "image=ryanmillard/img2num-dev:main" >> $GITHUB_OUTPUT
+
   wait-for-image:
     name: Wait for Docker image to be pushed to Docker Hub
     uses: ./.github/workflows/wait-for-docker-image.yml
 
   cmake-build:
     name: Build WASM
-    needs: wait-for-image
+    needs: [wait-for-image, setup]
     uses: ./.github/workflows/cmake-build.yml
     with:
-      image: ${{ env.image }}
+      image: ${{ steps.set.outputs.image }}
 
   build-react-app:
     name: Build React App
     uses: ./.github/workflows/build-react-app.yml
-    needs: [cmake-build, wait-for-image]
+    needs: [cmake-build, wait-for-image, setup]
     with:
       wasm-artifacts-path: packages/js/build-wasm/
-      image: ${{ env.image }}
+      image: ${{ steps.set.outputs.image }}
 
   build-docs:
     name: Build Documentation Site
-    needs: wait-for-image
+    needs: [wait-for-image, setup]
     uses: ./.github/workflows/build-docs.yml
     with:
-      image: ${{ env.image }}
+      image: ${{ steps.set.outputs.image }}
     secrets:
       ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
       ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
