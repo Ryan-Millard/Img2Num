@@ -12,8 +12,13 @@ env:
   image: ryanmillard/img2num-dev:main
 
 jobs:
+  wait-for-image:
+    name: Wait for Docker image to be pushed to Docker Hub
+    uses: ./.github/workflows/wait-for-docker-image.yml
+
   cmake-build:
     name: Build WASM
+    needs: wait-for-image
     uses: ./.github/workflows/cmake-build.yml
     with:
       image: ${{ env.image }}
@@ -21,13 +26,14 @@ jobs:
   build-react-app:
     name: Build React App
     uses: ./.github/workflows/build-react-app.yml
-    needs: cmake-build
+    needs: [cmake-build, wait-for-image]
     with:
       wasm-artifacts-path: packages/js/build-wasm/
       image: ${{ env.image }}
 
   build-docs:
     name: Build Documentation Site
+    needs: wait-for-image
     uses: ./.github/workflows/build-docs.yml
     with:
       image: ${{ env.image }}
@@ -38,7 +44,7 @@ jobs:
 
   deploy:
     name: Deploy site to GH Pages
-    needs: [build-react-app, build-docs]
+    needs: [build-react-app, build-docs, wait-for-image]
     runs-on: ubuntu-latest
     steps:
       - name: Download React build artifacts

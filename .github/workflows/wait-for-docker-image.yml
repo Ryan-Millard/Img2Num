@@ -1,0 +1,59 @@
+# What is the point in this file if it is just an exponential backoff?
+#
+# The file is used to prevent race conditions between docker-ci.yml and any workflow that
+# depends on the image it pushes. Without this, workflows like ci.yml may pull an outdated
+# or unavailable image — most likely on a fresh PR where the image does not exist yet —
+# causing failures that have nothing to do with the code being tested.
+
+name: Wait for Docker Image
+
+on:
+  workflow_call:
+    inputs:
+      image:
+        required: false
+        type: string
+        default: ryanmillard/img2num-dev:main
+        description: >
+          Docker image that this workflow waits for. It will check Docker Hub for this image. Defaults to: ryanmillard/img2num-dev:main
+      max_attempts:
+        required: false
+        type: number
+        default: 8
+        description: >
+          Maximum number of pull attempts before giving up.
+          With the default of 8 attempts and an initial delay of 15s,
+          the total worst-case wait is ~63 minutes (15+30+60+120+240+480+960+1920s).
+      initial_delay_seconds:
+        required: false
+        type: number
+        default: 15
+        description: >
+          Initial delay in seconds between attempts. Doubles after each failure.
+          With the default of 15s and 8 attempts, worst-case wait is ~63 minutes.
+
+jobs:
+  wait-for-image:
+    name: Wait for Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for image to be available
+        run: |
+          # Retries with exponential backoff.
+          # Defaults: 8 attempts, 15s initial delay -> delays of 15, 30, 60, 120, 240, 480, 960, 1920 (all in seconds)
+          # Total worst-case wait with defaults: ~63 minutes (enough for Dawn to typically be built into the image)
+          IMAGE="${{ inputs.image }}"
+          MAX_ATTEMPTS=${{ inputs.max_attempts }}
+          DELAY=${{ inputs.initial_delay_seconds }}
+
+          for i in $(seq 1 $MAX_ATTEMPTS); do
+            echo "Attempt $i of $MAX_ATTEMPTS: pulling $IMAGE..."
+            docker pull "$IMAGE" && exit 0
+
+            DELAY=$((DELAY * 2))
+            echo "Not available yet, waiting ${DELAY}s..."
+            sleep $DELAY
+          done
+
+          echo "Image never became available after $MAX_ATTEMPTS attempts"
+          exit 1
