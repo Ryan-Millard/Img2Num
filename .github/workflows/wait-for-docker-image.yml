@@ -19,18 +19,32 @@ on:
       max_attempts:
         required: false
         type: number
-        default: 8
+        default: 13
         description: >
           Maximum number of pull attempts before giving up.
-          With the default of 8 attempts and an initial delay of 15s,
-          the total worst-case wait is ~63 minutes (15+30+60+120+240+480+960+1920s).
+          With the default of 13 attempts, 15s initial delay, 2m initial wait, and 1.5x backoff multiplier,
+          the total worst-case wait is ~96 minutes (120s flat + 15+22+33+49+74+111+166+249+374+561+842+1263+1894s).
       initial_delay_seconds:
         required: false
         type: number
         default: 15
         description: >
-          Initial delay in seconds between attempts. Doubles after each failure.
-          With the default of 15s and 8 attempts, worst-case wait is ~63 minutes.
+          Initial delay in seconds between attempts. Multiplied by the backoff multiplier after each failure.
+          With the default of 15s, 13 attempts, 2m initial wait, and 1.5x multiplier, worst-case wait is ~96 minutes.
+      initial_wait_seconds:
+        required: false
+        type: number
+        default: 120
+        description: >
+          Flat wait in seconds before the first attempt. Useful to avoid hammering the registry
+          before the image has had any chance to appear. Defaults to 120s (2 minutes).
+      backoff_multiplier:
+        required: false
+        type: number
+        default: 1.5
+        description: >
+          Multiplier applied to the delay after each failed attempt. Defaults to 1.5.
+          Use 2 for classic exponential backoff.
 
 permissions: {}
 
@@ -39,37 +53,54 @@ jobs:
     name: Wait for Docker Image
     runs-on: ubuntu-latest
     steps:
-      - name: Wait for image to be available
+      - name: Set up variables
+        id: setup
         run: |
-          # Retries with exponential backoff.
-          # Defaults: 8 attempts, 15s initial delay -> delays of 15, 30, 60, 120, 240, 480, 960, 1920 (all in seconds)
-          # Total worst-case wait with defaults: ~63 minutes (enough for Dawn to typically be built into the image)
           IMAGE="${{ inputs.image }}"
-          MAX_ATTEMPTS=${{ inputs.max_attempts }}
-          DELAY=${{ inputs.initial_delay_seconds }}
-          IMAGE_NAME="${IMAGE%%:*}"
-          TAG="${IMAGE##*:}"
           WORKFLOW_STARTED_AT="${{ github.event.workflow_run.created_at || github.event.repository.updated_at }}"
-          WORKFLOW_START_TS=$(date -d "$WORKFLOW_STARTED_AT" +%s)
+          echo "image=$IMAGE"                                             >> "$GITHUB_OUTPUT"
+          echo "image_name=${IMAGE%%:*}"                                  >> "$GITHUB_OUTPUT"
+          echo "tag=${IMAGE##*:}"                                         >> "$GITHUB_OUTPUT"
+          echo "max_attempts=${{ inputs.max_attempts }}"                  >> "$GITHUB_OUTPUT"
+          echo "initial_delay=${{ inputs.initial_delay_seconds }}"        >> "$GITHUB_OUTPUT"
+          echo "initial_wait=${{ inputs.initial_wait_seconds }}"          >> "$GITHUB_OUTPUT"
+          echo "multiplier=${{ inputs.backoff_multiplier }}"              >> "$GITHUB_OUTPUT"
+          echo "workflow_started_at=$WORKFLOW_STARTED_AT"                 >> "$GITHUB_OUTPUT"
+          echo "workflow_start_ts=$(date -d "$WORKFLOW_STARTED_AT" +%s)"  >> "$GITHUB_OUTPUT"
+
+      - name: Initial wait
+        run: |
+          INITIAL_WAIT="${{ steps.setup.outputs.initial_wait }}"
+          if [[ "$INITIAL_WAIT" -gt 0 ]]; then
+            echo "Waiting ${INITIAL_WAIT}s before first attempt..."
+            sleep "$INITIAL_WAIT"
+          fi
+
+      - name: Wait for image with exponential backoff
+        run: |
+          IMAGE="${{ steps.setup.outputs.image }}"
+          IMAGE_NAME="${{ steps.setup.outputs.image_name }}"
+          TAG="${{ steps.setup.outputs.tag }}"
+          MAX_ATTEMPTS="${{ steps.setup.outputs.max_attempts }}"
+          DELAY="${{ steps.setup.outputs.initial_delay }}"
+          MULTIPLIER="${{ steps.setup.outputs.multiplier }}"
+          WORKFLOW_STARTED_AT="${{ steps.setup.outputs.workflow_started_at }}"
+          WORKFLOW_START_TS="${{ steps.setup.outputs.workflow_start_ts }}"
 
           for i in $(seq 1 $MAX_ATTEMPTS); do
             echo "Attempt $i of $MAX_ATTEMPTS: checking $IMAGE..."
 
             LAST_PUSHED=""
             if [[ "$IMAGE_NAME" == ghcr.io/* ]]; then
-              # GHCR: resolve via the registry API. Requires a bearer token; GITHUB_TOKEN works for public/owned images.
               REPO="${IMAGE_NAME#ghcr.io/}"
               TOKEN=$(curl -sf -u "${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}" \
                 "https://ghcr.io/token?scope=repository:${REPO}:pull" | jq -r '.token // empty')
               if [[ -n "$TOKEN" ]]; then
-                # HEAD the manifest; Docker-Content-Digest presence indicates tag exists.
                 HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -I \
                   -H "Authorization: Bearer ${TOKEN}" \
                   -H "Accept: application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.v2+json" \
                   "https://ghcr.io/v2/${REPO}/manifests/${TAG}")
                 if [[ "$HTTP_CODE" == "200" ]]; then
-                  # GHCR doesn't return push timestamp via registry API; treat presence as fresh-enough,
-                  # OR query the GitHub Packages API for updated_at if you want the staleness check preserved.
                   echo "Image present in GHCR."
                   exit 0
                 fi
@@ -95,7 +126,7 @@ jobs:
 
             echo "Waiting ${DELAY}s..."
             sleep $DELAY
-            DELAY=$((DELAY * 2))
+            DELAY=$(echo "$DELAY $MULTIPLIER" | awk '{printf "%d", $1 * $2}')
           done
 
           echo "Image never became fresh after $MAX_ATTEMPTS attempts"
