@@ -10,9 +10,12 @@ on:
 
 permissions:
   contents: read
+  packages: write        # needed for GHCR
+  pull-requests: write   # needed for PR comments
 
 env:
-  IMAGE_NAME: ryanmillard/img2num-dev
+  GHCR_IMAGE: ghcr.io/${{ github.repository_owner }}/img2num-dev
+  DH_IMAGE: ryanmillard/img2num-dev
 
 jobs:
   build:
@@ -33,7 +36,15 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd
 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Login to Docker Hub
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -42,27 +53,28 @@ jobs:
       - name: Compute tags
         id: meta
         run: |
-          IMAGE="${{ env.IMAGE_NAME }}"
+          GHCR="ghcr.io/$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')/img2num-dev"
+          DH="${{ env.DH_IMAGE }}"
           EVENT="${{ github.event_name }}"
 
           if [[ "$EVENT" == "pull_request" ]]; then
             PR="${{ github.event.pull_request.number }}"
 
             CLEAN_CORE_TAG="pr-${PR}"
-            TAGS="${IMAGE}:pr-${PR}"
-            CACHE_REF="${IMAGE}:cache-pr-${PR}"
+            TAGS="${GHCR}:pr-${PR}"
+            CACHE_REF="${GHCR}:cache-pr-${PR}"
 
           elif [[ "$EVENT" == "push" && "${{ github.ref_type }}" == "tag" ]]; then
             VERSION="${GITHUB_REF_NAME}"
 
             CLEAN_CORE_TAG="$VERSION"
-            TAGS="${IMAGE}:${VERSION},${IMAGE}:latest"
-            CACHE_REF="${IMAGE}:buildcache"
+            TAGS="${GHCR}:${VERSION},${GHCR}:latest,${DH}:${VERSION},${DH}:latest"
+            CACHE_REF="${GHCR}:buildcache"
 
           else
             CLEAN_CORE_TAG="main"
-            TAGS="${IMAGE}:main,${IMAGE}:latest"
-            CACHE_REF="${IMAGE}:buildcache"
+            TAGS="${GHCR}:main,${GHCR}:latest,${DH}:main,${DH}:latest"
+            CACHE_REF="${GHCR}:buildcache"
           fi
 
           echo "clean_core_tag=$CLEAN_CORE_TAG" >> $GITHUB_OUTPUT
@@ -70,7 +82,6 @@ jobs:
           echo "cache_ref=$CACHE_REF" >> $GITHUB_OUTPUT
 
       - name: Build & Push Docker image
-        if: (github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name != 'pull_request'
         uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f
         with:
           context: .
@@ -79,7 +90,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: |
             type=registry,ref=${{ steps.meta.outputs.cache_ref }}
-            type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
+            type=registry,ref=${{ env.GHCR_IMAGE }}:buildcache
           cache-to: type=registry,ref=${{ steps.meta.outputs.cache_ref }},mode=max
 
 
@@ -92,9 +103,8 @@ jobs:
       pull-requests: write
 
     env:
-      IMAGE_NAME: ryanmillard/img2num-dev
+      GHCR_IMAGE: ghcr.io/${{ github.repository_owner }}/img2num-dev
       CLEAN_CORE_TAG: ${{ needs.build.outputs.clean_core_tag }}
-      CORE_TAG: ${{ needs.build.outputs.clean_core_tag }}
 
     steps:
       # Avoid chat spamming by checking for an existing comment
@@ -109,7 +119,7 @@ jobs:
         if: steps.fc.outputs.comment-id != ''
         run: |
           echo "Found comment ID: ${{ steps.fc.outputs.comment-id }}"
-      
+
       - name: Create Docker comment
         if: steps.fc.outputs.comment-id == ''
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9
@@ -118,39 +128,29 @@ jobs:
           body: |
             <!-- docker-image-comment:pr -->
             ## 🐳 Docker image built successfully!
-          
+
             ### Image
-            [`${{ env.IMAGE_NAME }}:${{ env.CORE_TAG }}`](https://hub.docker.com/r/${{ env.IMAGE_NAME }}/tags?name=${{ env.CORE_TAG }})
-          
+            [`${{ env.GHCR_IMAGE }}:${{ env.CLEAN_CORE_TAG }}`](https://github.com/${{ github.repository_owner }}/packages/container/img2num-dev/${{ env.CLEAN_CORE_TAG }})
+
             ### Run it locally:
             ```bash
-            IMG2NUM_IMAGE=${{ env.IMAGE_NAME }}:${{ env.CORE_TAG }} ./img2num sh
+            IMG2NUM_IMAGE=${{ env.GHCR_IMAGE }}:${{ env.CLEAN_CORE_TAG }} ./img2num sh
+            ```
 
 
   cleanup:
     if: github.event.action == 'closed'
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
 
     steps:
-      - name: Delete PR images
-        run: |
-          PR_NUMBER=${{ github.event.pull_request.number }}
-
-          TOKEN=$(curl -s -X POST \
-            -H "Content-Type: application/json" \
-            -d '{"username":"${{ secrets.DOCKERHUB_USERNAME }}","password":"${{ secrets.DOCKERHUB_TOKEN }}"}' \
-            https://hub.docker.com/v2/users/login/ | jq -r .token)
-          
-          IMAGE="${{ env.IMAGE_NAME }}"
-          
-          TAGS=(
-            "pr-${PR_NUMBER}"
-            "cache-pr-${PR_NUMBER}"
-          )
-          
-          for TAG in "${TAGS[@]}"; do
-            curl -s -X DELETE \
-              -H "Authorization: JWT ${TOKEN}" \
-              "https://hub.docker.com/v2/repositories/${IMAGE}/tags/${TAG}/" \
-            || echo "Tag $TAG not found or already deleted"
-          done
+      - name: Delete PR images from GHCR
+        uses: actions/delete-package-versions@e5bc658cc4c965c472efe991f8beea3981499c55
+        with:
+          package-name: img2num-dev
+          package-type: container
+          delete-untagged-versions: false
+          # Deletes both pr-N and cache-pr-N tags
+          min-versions-to-keep: 0
+          ignore-versions: "^(?!pr-${{ github.event.pull_request.number }}|cache-pr-${{ github.event.pull_request.number }}).*"

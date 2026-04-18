@@ -15,7 +15,7 @@ on:
         type: string
         default: ryanmillard/img2num-dev:main
         description: >
-          Docker image that this workflow waits for. It will check Docker Hub for this image. Defaults to: ryanmillard/img2num-dev:main
+          Docker image that this workflow waits for. It will check Docker Hub and GHCR for this image. Defaults to: ryanmillard/img2num-dev:main
       max_attempts:
         required: false
         type: number
