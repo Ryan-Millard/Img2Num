@@ -106,13 +106,22 @@ jobs:
             TOKEN=$(curl -sf -u "${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}" \
               "https://ghcr.io/token?scope=repository:${REPO}:pull" | jq -r '.token // empty')
             if [[ -n "$TOKEN" ]]; then
-              HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -I \
+              RESPONSE=$(curl -s -D - -o /dev/null \
                 -H "Authorization: Bearer ${TOKEN}" \
                 -H "Accept: application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.v2+json" \
                 "https://ghcr.io/v2/${REPO}/manifests/${GHCR_TAG}")
-              if [[ "$HTTP_CODE" == "200" ]]; then
-                echo "Image present in GHCR."
-                exit 0
+
+              HTTP_CODE=$(echo "$RESPONSE" | grep -m1 "^HTTP" | awk '{print $2}')
+              LAST_MODIFIED=$(echo "$RESPONSE" | grep -i "^last-modified:" | sed 's/last-modified: //i' | tr -d '\r')
+
+              if [[ "$HTTP_CODE" == "200" && -n "$LAST_MODIFIED" ]]; then
+                LAST_MODIFIED_TS=$(date -d "$LAST_MODIFIED" +%s)
+                if [[ "$LAST_MODIFIED_TS" -ge "$WORKFLOW_START_TS" ]]; then
+                  echo "GHCR image is fresh, proceeding."
+                  exit 0
+                else
+                  echo "GHCR image exists but is stale."
+                fi
               fi
             fi
 
