@@ -1,0 +1,34 @@
+[project]
+name = "img2num"
+version = "0.0.0"
+description = "A fast and accurate raster image to SVG conversion library"
+requires-python = ">=3.10"
+dependencies = [
+  "scikit-build-core>=0.10",
+  "numpy"
+]
+
+[build-system]
+requires = [
+  "scikit-build-core>=0.10",
+  "pybind11>=2.10",
+  "numpy"
+]
+build-backend = "scikit_build_core.build"
+
+[tool.scikit-build]
+cmake.source-dir = "../.."
+cmake.build-type = "Release"
+cmake.args = ["-DBUILD_PYTHON=ON"]
+# Disable broken sdist isolation
+sdist.include = [
+  "../../CMakeLists.txt",
+  "../../core",
+  "../../bindings",
+  "../../cmake"
+]
+editable.rebuild = true
+build-dir = "build-py"
+
+[tool.uv]
+package = true

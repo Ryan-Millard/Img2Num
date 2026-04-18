@@ -1,0 +1,23 @@
+[project]
+name = "img2num_uv_workspace"
+version = "0.0.0"
+description = "Root level workspace for Img2Num's Python package and applications"
+requires-python = ">=3.10"
+dependencies = [
+  "img2num"
+]
+
+[tool.uv]
+package = false
+no-build-isolation-package = ["img2num"]
+
+[tool.uv.sources]
+img2num = { workspace = true }
+
+[tool.uv.workspace]
+members = [
+  # Python wrapper package
+  "packages/py",
+  # All example apps with "-py" suffix
+  "example-apps/*-py"
+]
