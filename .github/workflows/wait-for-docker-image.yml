@@ -1,0 +1,81 @@
+# What is the point in this file if it is just an exponential backoff?
+#
+# The file is used to prevent race conditions between docker-ci.yml and any workflow that
+# depends on the image it pushes. Without this, workflows like ci.yml may pull an outdated
+# or unavailable image — most likely on a fresh PR where the image does not exist yet —
+# causing failures that have nothing to do with the code being tested.
+
+name: Wait for Docker Image
+
+on:
+  workflow_call:
+    inputs:
+      image:
+        required: false
+        type: string
+        default: ryanmillard/img2num-dev:main
+        description: >
+          Docker image that this workflow waits for. It will check Docker Hub for this image. Defaults to: ryanmillard/img2num-dev:main
+      max_attempts:
+        required: false
+        type: number
+        default: 8
+        description: >
+          Maximum number of pull attempts before giving up.
+          With the default of 8 attempts and an initial delay of 15s,
+          the total worst-case wait is ~63 minutes (15+30+60+120+240+480+960+1920s).
+      initial_delay_seconds:
+        required: false
+        type: number
+        default: 15
+        description: >
+          Initial delay in seconds between attempts. Doubles after each failure.
+          With the default of 15s and 8 attempts, worst-case wait is ~63 minutes.
+
+permissions: {}
+
+jobs:
+  wait-for-image:
+    name: Wait for Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for image to be available
+        run: |
+          # Retries with exponential backoff.
+          # Defaults: 8 attempts, 15s initial delay -> delays of 15, 30, 60, 120, 240, 480, 960, 1920 (all in seconds)
+          # Total worst-case wait with defaults: ~63 minutes (enough for Dawn to typically be built into the image)
+          IMAGE="${{ inputs.image }}"
+          MAX_ATTEMPTS=${{ inputs.max_attempts }}
+          DELAY=${{ inputs.initial_delay_seconds }}
+          IMAGE_NAME="${IMAGE%%:*}"
+          TAG="${IMAGE##*:}"
+          WORKFLOW_STARTED_AT="${{ github.event.repository.updated_at }}"
+          WORKFLOW_START_TS=$(date -d "$WORKFLOW_STARTED_AT" +%s)
+
+          for i in $(seq 1 $MAX_ATTEMPTS); do
+            echo "Attempt $i of $MAX_ATTEMPTS: checking $IMAGE..."
+
+            LAST_PUSHED=$(curl -sf "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags/${TAG}/" \
+              | jq -r '.tag_last_pushed // empty')
+
+            if [[ -n "$LAST_PUSHED" ]]; then
+              LAST_PUSHED_TS=$(date -d "$LAST_PUSHED" +%s)
+              echo "Image last pushed at: $LAST_PUSHED (workflow started at: $WORKFLOW_STARTED_AT)"
+
+              if [[ "$LAST_PUSHED_TS" -ge "$WORKFLOW_START_TS" ]]; then
+                echo "Image is fresh, proceeding."
+                exit 0
+              else
+                echo "Image exists but is stale."
+              fi
+            else
+              echo "Image not found yet."
+            fi
+
+            echo "Waiting ${DELAY}s..."
+            sleep $DELAY
+            DELAY=$((DELAY * 2))
+          done
+
+          echo "Image never became fresh after $MAX_ATTEMPTS attempts"
+          exit 1

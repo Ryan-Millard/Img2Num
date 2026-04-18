@@ -18,6 +18,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
-        - uses: actions/labeler@634933edcd8ababfe52f92936142cc22ac488b1b
+      - uses: actions/labeler@634933edcd8ababfe52f92936142cc22ac488b1b
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
