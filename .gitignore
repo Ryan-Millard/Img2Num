@@ -40,3 +40,5 @@ logs
 .env
 
 console-py_outputs
+# img2num destroy state
+.img2num-state
