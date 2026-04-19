@@ -2,8 +2,33 @@
 MODE="$1"
 shift || true
 
+# Resolved image name for this invocation. Mirrors docker-compose.yml default
+# so `IMG2NUM_IMAGE=... ./img2num sh` and a bare `./img2num sh` both resolve.
+IMG2NUM_RESOLVED_IMAGE="${IMG2NUM_IMAGE:-ryanmillard/img2num-dev:latest}"
+IMG2NUM_STATE_FILE="$(dirname "$0")/.img2num-state"
+
+# Record the image we're about to start so that a later `./img2num destroy`
+# in a fresh shell -- where IMG2NUM_IMAGE may no longer be set -- still knows
+# which image to remove. Keep it simple: a single KEY=value line.
+save_state() {
+  printf 'IMAGE=%s\n' "$IMG2NUM_RESOLVED_IMAGE" > "$IMG2NUM_STATE_FILE"
+}
+
+# Read the image name persisted by a previous `up`. Falls back to the current
+# resolved value (env var or hardcoded default) if the state file is missing
+# -- preserves pre-state-file behaviour.
+load_state_image() {
+  if [ -f "$IMG2NUM_STATE_FILE" ]; then
+    # shellcheck disable=SC1091
+    . "$IMG2NUM_STATE_FILE"
+    [ -n "${IMAGE:-}" ] && printf '%s\n' "$IMAGE" && return
+  fi
+  printf '%s\n' "$IMG2NUM_RESOLVED_IMAGE"
+}
+
 # Run a command inside the dev container
 run_in_container() {
+  save_state
   docker compose up -d dev
   docker compose exec dev "$@"
 }
@@ -26,7 +51,11 @@ case "$MODE" in
   down) docker compose down ;;
   purge|destroy)
     docker compose down --volumes --remove-orphans
-    [ "$MODE" = "destroy" ] && docker rmi ryanmillard/img2num-dev:latest
+    if [ "$MODE" = "destroy" ]; then
+      IMAGE_TO_REMOVE="$(load_state_image)"
+      docker rmi "$IMAGE_TO_REMOVE" 2>/dev/null || true
+      rm -f "$IMG2NUM_STATE_FILE"
+    fi
     ;;
 
   # Tail logs
