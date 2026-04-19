@@ -1,39 +1,88 @@
 #!/usr/bin/env bash
+
+# ---------------------------------------------------------------------------
+# Argument parsing — strip --img <value> from args before mode dispatch
+# ---------------------------------------------------------------------------
+IMG2NUM_IMAGE_FLAG=""
+FILTERED_ARGS=()
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --img)
+      shift
+      IMG2NUM_IMAGE_FLAG="$1"
+      ;;
+    *) FILTERED_ARGS+=("$1") ;;
+  esac
+  shift
+done
+set -- "${FILTERED_ARGS[@]}"
+
 MODE="$1"
 shift || true
 
-# Resolved image name for this invocation. Mirrors docker-compose.yml default
-# so `IMG2NUM_IMAGE=... ./img2num sh` and a bare `./img2num sh` both resolve.
-IMG2NUM_RESOLVED_IMAGE="${IMG2NUM_IMAGE:-ryanmillard/img2num-dev:latest}"
+# ---------------------------------------------------------------------------
+# Config
+# ---------------------------------------------------------------------------
+IMG2NUM_DEFAULT_IMAGE="ryanmillard/img2num-dev:latest"
 IMG2NUM_STATE_FILE="$(dirname "$0")/.img2num-state"
 
-# Record the image we're about to start so that a later `./img2num destroy`
-# in a fresh shell -- where IMG2NUM_IMAGE may no longer be set -- still knows
-# which image to remove. Keep it simple: a single KEY=value line.
+# ---------------------------------------------------------------------------
+# State helpers
+# ---------------------------------------------------------------------------
+
 save_state() {
-  printf 'IMAGE=%s\n' "$IMG2NUM_RESOLVED_IMAGE" > "$IMG2NUM_STATE_FILE"
-}
-
-# Read the image name persisted by a previous `up`. Falls back to the current
-# resolved value (env var or hardcoded default) if the state file is missing
-# -- preserves pre-state-file behaviour.
-load_state_image() {
-  if [ -f "$IMG2NUM_STATE_FILE" ]; then
-    # shellcheck disable=SC1091
-    . "$IMG2NUM_STATE_FILE"
-    [ -n "${IMAGE:-}" ] && printf '%s\n' "$IMAGE" && return
+  local image="$1"
+  if grep -q '^IMAGE=' "$IMG2NUM_STATE_FILE" 2>/dev/null; then
+    sed -i "s|^IMAGE=.*|IMAGE=$image|" "$IMG2NUM_STATE_FILE"
+  else
+    printf 'IMAGE=%s\n' "$image" >> "$IMG2NUM_STATE_FILE"
   fi
-  printf '%s\n' "$IMG2NUM_RESOLVED_IMAGE"
 }
 
-# Run a command inside the dev container
+# Returns the image to use, in priority order:
+#   1. --img flag
+#   2. IMG2NUM_IMAGE env var (caller-supplied override)
+#   3. State file  (persisted from last `up`)
+#   4. Hardcoded default
+load_image() {
+  if [ -n "$IMG2NUM_IMAGE_FLAG" ]; then
+    printf '%s\n' "$IMG2NUM_IMAGE_FLAG"
+    return
+  fi
+  if [ -n "$IMG2NUM_IMAGE" ]; then
+    printf '%s\n' "$IMG2NUM_IMAGE"
+    return
+  fi
+  if [ -f "$IMG2NUM_STATE_FILE" ]; then
+    local line val
+    line="$(grep -m1 '^IMAGE=' "$IMG2NUM_STATE_FILE" | tr -d '\r')"
+    val="${line#IMAGE=}"
+    if [ -n "$val" ]; then
+      printf '%s\n' "$val"
+      return
+    fi
+  fi
+  printf '%s\n' "$IMG2NUM_DEFAULT_IMAGE"
+}
+
+# ---------------------------------------------------------------------------
+# Container helpers
+# ---------------------------------------------------------------------------
+
+# Run a command inside the dev container, using the resolved image.
+# The image is exported so docker-compose.yml can reference ${IMG2NUM_IMAGE}.
 run_in_container() {
-  save_state
+  local image
+  image="$(load_image)"
+  save_state "$image"
+  export IMG2NUM_IMAGE="$image"
   docker compose up -d dev
   docker compose exec dev "$@"
 }
 
+# ---------------------------------------------------------------------------
 # Main command dispatch
+# ---------------------------------------------------------------------------
 case "$MODE" in
   # Arbitrary pnpm commands
   pnpm)
@@ -46,15 +95,20 @@ case "$MODE" in
     ;;
 
   # Docker management shortcuts
-  stop) docker compose stop ;;
+  stop)    docker compose stop ;;
   restart) docker compose restart ;;
-  down) docker compose down ;;
+  down)    docker compose down ;;
+
   purge|destroy)
     docker compose down --volumes --remove-orphans
     if [ "$MODE" = "destroy" ]; then
-      IMAGE_TO_REMOVE="$(load_state_image)"
+      IMAGE_TO_REMOVE="$(load_image)"
+      echo "Removing $IMAGE_TO_REMOVE in 5s..."
+      sleep 5
       docker rmi "$IMAGE_TO_REMOVE" 2>/dev/null || true
-      rm -f "$IMG2NUM_STATE_FILE"
+      # Clear the persisted image so the next `up` falls back to the default
+      sed -i 's/^IMAGE=.*/IMAGE=/' "$IMG2NUM_STATE_FILE" 2>/dev/null \
+        || printf 'IMAGE=\n' >> "$IMG2NUM_STATE_FILE"
     fi
     ;;
 
@@ -70,26 +124,36 @@ case "$MODE" in
       echo "Unknown command used."
       echo
     fi
-
     cat <<EOF
 Usage:
-  ./img2num <command>
+  ./img2num [--img <image:tag>] <command>
+
+  --img applies to commands that start or remove a container (pnpm, sh, destroy).
+  It has no effect on lifecycle commands (stop, restart, down, purge, logs).
 
 Commands:
   Using PNPM Directly:
-    pnpm <args>       Run arbitrary pnpm command
-
+    pnpm <args>       Run arbitrary pnpm command.              [--img]
   Open Container Terminal:
-    sh|shell|bash    Opens bash terminal in Docker container
-
+    sh|shell|bash     Opens bash terminal in Docker container. [--img]
   Docker Maintenance:
-    stop             Stops running Docker container (keeps containers, volumes & networks).
-    restart          Restarts running Docker container.
-    down             Stops running Docker container (keeps volumes).
-    purge            Stops running Docker container (removes everything, including orphans).
-    destroy          Same as purge, but deletes Docker image.
-    logs             Displays any relevant Docker logs.
+    stop              Stops running Docker container (keeps containers, volumes & networks).
+    restart           Restarts running Docker container.
+    down              Stops running Docker container (keeps volumes).
+    purge             Stops running Docker container (removes everything, including orphans).
+    destroy           Same as purge, but deletes Docker image. [--img]
+    logs              Displays any relevant Docker logs.
+
+Image Resolution (highest priority first):
+  Applies to: pnpm, sh/shell/bash, destroy
+  1. --img flag
+                      ./img2num --img <image:tag> <command>
+  2. IMG2NUM_IMAGE env var
+                      IMG2NUM_IMAGE=<image:tag> ./img2num <command>
+  3. Last image used with this script (in .img2num-state file)
+  4. Default: $IMG2NUM_DEFAULT_IMAGE
 EOF
     exit $EXIT_CODE
     ;;
 esac
+
