@@ -26,3 +26,6 @@ logs
 *:Zone.Identifier
 
 .env
+
+# img2num destroy state
+.img2num-state
