@@ -1,6 +1,7 @@
 name: Docker CI
 
 on:
+  pull_request:
   pull_request_target:
     types: [opened, synchronize, reopened, closed]
 
@@ -62,7 +63,7 @@ jobs:
           IMAGE="${{ env.IMAGE_NAME }}"
           EVENT="${{ github.event_name }}"
 
-          if [[ "$EVENT" == "pull_request_target" ]]; then
+          if [[ "$EVENT" == "pull_request*" ]]; then
             PR="${{ github.event.pull_request.number }}"
 
             CLEAN_CORE_TAG="pr-${PR}"
@@ -87,7 +88,8 @@ jobs:
           echo "cache_ref=$CACHE_REF" >> $GITHUB_OUTPUT
 
       - name: Build & Push Docker image
-        if: (github.event_name == 'pull_request_target' && github.event.action != 'closed') || github.event_name != 'pull_request'
+        # if: (github.event_name == 'pull_request_target' && github.event.action != 'closed') || github.event_name != 'pull_request'
+        if: (startsWith(github.event_name, 'pull_request') && github.event.action != 'closed') || !startsWith(github.event_name, 'pull_request')
         uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f
         with:
           context: .
@@ -102,7 +104,8 @@ jobs:
 
   notify:
     needs: build
-    if: github.event_name == 'pull_request_target' && needs.build.result == 'success'
+    # if: github.event_name == 'pull_request_target' && needs.build.result == 'success'
+    if: startsWith(github.event_name, 'pull_request') && needs.build.result == 'success'
 
     runs-on: ubuntu-latest
     permissions:
