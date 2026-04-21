@@ -3,9 +3,10 @@ name: Build C & C++
 on:
   workflow_call:
     inputs:
-      image:
+      artifact-name:
         required: true
         type: string
+        description: "The name of the GitHub artifact containing the docker image tarball."
 
 permissions:
   contents: read
@@ -14,9 +15,19 @@ jobs:
   build-wasm:
     name: Build WASM (bindings/js)
     runs-on: ubuntu-latest
-    container:
-      image: ${{ inputs.image }}
     steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: /tmp
+
+      - name: Load Docker Image
+        run: |
+          docker load --input /tmp/image.tar
+          # Verify the image is loaded (it will be tagged as local-image:latest per the build-docker script)
+          docker image ls
+
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
@@ -37,9 +48,19 @@ jobs:
   build-c-cpp:
     name: Build C & C++
     runs-on: ubuntu-latest
-    container:
-      image: ${{ inputs.image }}
     steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: /tmp
+          
+      - name: Load Docker Image
+        run: |
+          docker load --input /tmp/image.tar
+          # Verify the image is loaded (it will be tagged as local-image:latest per the build-docker script)
+          docker image ls
+          
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:

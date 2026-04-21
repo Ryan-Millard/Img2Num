@@ -3,9 +3,10 @@ name: Build React App
 on:
   workflow_call:
     inputs:
-      image:
+      artifact-name:
         required: true
         type: string
+        description: "The name of the GitHub artifact containing the docker image tarball."
       wasm-artifacts-path:
         required: false
         type: string
@@ -17,9 +18,19 @@ jobs:
   build-react-app:
     name: Build React Example App
     runs-on: ubuntu-latest
-    container:
-      image: ${{ inputs.image }}
     steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: /tmp
+          
+      - name: Load Docker Image
+        run: |
+          docker load --input /tmp/image.tar
+          # Verify the image is loaded (it will be tagged as local-image:latest per the build-docker script)
+          docker image ls
+
       - name: Checkout code
         # No need for submodules since docs uses NPM
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
