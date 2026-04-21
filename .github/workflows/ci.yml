@@ -27,7 +27,7 @@ jobs:
     # needs: wait-for-image
     runs-on: ubuntu-latest
     with:
-      artifact-name: {{ inputs.artifact-name }}
+      artifact-name: ${{ inputs.artifact-name }}
 
     steps:
       - name: Download Build Artifact
@@ -66,14 +66,14 @@ jobs:
     uses: ./.github/workflows/cmake-build.yml
     # needs: wait-for-image
     with:
-      artifact-name: {{ inputs.artifact-name }}
+      artifact-name: ${{ inputs.artifact-name }}
 
   build-react-app:
     name: Build React App
     uses: ./.github/workflows/build-react-app.yml
     needs: [cmake-build] # , wait-for-image]
     with:
-      artifact-name: {{ inputs.artifact-name }}
+      artifact-name: ${{ inputs.artifact-name }}
       wasm-artifacts-path: packages/js/build-wasm/
 
   build-docs:
@@ -82,7 +82,7 @@ jobs:
     # needs: wait-for-image
     with:
       with:
-      artifact-name: {{ inputs.artifact-name }}
+      artifact-name: ${{ inputs.artifact-name }}
     secrets:
       ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
       ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
