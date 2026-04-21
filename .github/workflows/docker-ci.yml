@@ -6,16 +6,15 @@ on:
   push:
     branches: [main]
     tags: ["v*"]
-  pull_request:
+  pull_request_target:
     types: [closed]
 
 permissions:
   contents: read
-  packages: write
-  pull-requests: write
+  pull-requests: read
 
 env:
-  GHCR_IMAGE: ghcr.io/${{ github.repository_owner }}/img2num-dev
+  GHCR_IMAGE: ghcr.io/ryan-millard/img2num-dev
   DH_IMAGE: ryanmillard/img2num-dev
 
 jobs:
@@ -34,6 +33,8 @@ jobs:
         )
       )
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     outputs:
       pr_number:  ${{ steps.resolve.outputs.pr_number }}
       sha:        ${{ steps.resolve.outputs.sha }}
@@ -109,7 +110,9 @@ jobs:
       needs.guard.outputs.command == 'build' &&
       (github.event_name == 'push' || needs.guard.outputs.authorized == 'true')
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      packages: write
     outputs:
       clean_core_tag: ${{ steps.meta.outputs.clean_core_tag }}
       tags:           ${{ steps.meta.outputs.tags }}
@@ -142,7 +145,7 @@ jobs:
       - name: Compute tags
         id: meta
         run: |
-          GHCR="ghcr.io/$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')/img2num-dev"
+          GHCR="${{ env.GHCR_IMAGE }}"
           DH="${{ env.DH_IMAGE }}"
           EVENT="${{ github.event_name }}"
 
@@ -225,7 +228,7 @@ jobs:
             ```
 
   cleanup-on-close:
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request_target'
     runs-on: ubuntu-latest
     permissions:
       packages: write
