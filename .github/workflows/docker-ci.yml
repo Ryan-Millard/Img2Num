@@ -6,7 +6,7 @@ on:
   push:
     branches: [main]
     tags: ["v*"]
-  pull_request_target:
+  pull_request:
     types: [closed]
 
 permissions:
@@ -228,7 +228,7 @@ jobs:
             ```
 
   cleanup-on-close:
-    if: github.event_name == 'pull_request_target'
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       packages: write

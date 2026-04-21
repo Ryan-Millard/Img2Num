@@ -20,24 +20,28 @@ jobs:
       - name: Set image
         id: set
         run: |
-          MAIN_IMAGE="image=ghcr.io/ryan-millard/img2num-dev:main"
+          MAIN_IMAGE="ghcr.io/ryan-millard/img2num-dev:main"
           PR_TAG="pr-${{ github.event.pull_request.number }}"
-          PR_IMAGE="ryan-millard/img2num-dev:$PR_TAG"
-          GHCR_IMAGE="image=ghcr.io/$PR_IMAGE"
+          REPO="ryan-millard/img2num-dev"
+          DH_IMAGE="${REPO}:${PR_TAG}"
+          GHCR_IMAGE="ghcr.io/${DH_IMAGE}"
 
           GHCR_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            "https://ghcr.io/v2/ryan-millard/img2num-dev/manifests/$PR_TAG")
+            -H "Accept: application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.v2+json" \
+            "https://ghcr.io/v2/ryan-millard/img2num-dev/manifests/${PR_TAG}")
 
           DH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            "https://registry.hub.docker.com/v2/repositories/$PR_IMAGE/tags/$PR_TAG")
+            "https://registry.hub.docker.com/v2/repositories/${REPO}/tags/${PR_TAG}/")
 
-          if [ "$GHCR_STATUS" == "200" ]; then
-            echo "image=$GHCR_IMAGE" >> $GITHUB_OUTPUT
-          elif [ "$DH_STATUS" == 200 ]; then
-            echo "image=$PR_IMAGE" >> $GITHUB_OUTPUT
+          if [[ "$GHCR_STATUS" == "200" ]]; then
+            echo "image=${GHCR_IMAGE}"
+            echo "image=${GHCR_IMAGE}" >> $GITHUB_OUTPUT
+          elif [[ "$DH_STATUS" == "200" ]]; then
+            echo "image=${DH_IMAGE}"
+            echo "image=${DH_IMAGE}" >> $GITHUB_OUTPUT
           else
-            echo "image=$MAIN_IMAGE" >> $GITHUB_OUTPUT
+            echo "image=${MAIN_IMAGE}"
+            echo "image=${MAIN_IMAGE}" >> $GITHUB_OUTPUT
           fi
 
   lint:
