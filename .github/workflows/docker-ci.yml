@@ -44,12 +44,15 @@ jobs:
         id: resolve
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT_NAME: ${{ github.event_name }}
+          PR_NUMBER: ${{ github.event.issue.number }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          REPO: ${{ github.repository }}
+          PUSH_SHA: ${{ github.sha }}
         run: |
-          if [[ "${{ github.event_name }}" == "issue_comment" ]]; then
-            PR_NUMBER="${{ github.event.issue.number }}"
-            SHA=$(gh api repos/${{ github.repository }}/pulls/${PR_NUMBER} --jq '.head.sha')
-            BODY="${{ github.event.comment.body }}"
-            if [[ "$BODY" == /docker-cleanup* ]]; then
+          if [[ "$EVENT_NAME" == "issue_comment" ]]; then
+            SHA=$(gh api "repos/$REPO/pulls/$PR_NUMBER" --jq '.head.sha')
+            if [[ "$COMMENT_BODY" == /docker-cleanup* ]]; then
               COMMAND="cleanup"
             else
               COMMAND="build"
@@ -59,7 +62,7 @@ jobs:
             echo "command=${COMMAND}"    >> $GITHUB_OUTPUT
           else
             echo "pr_number="            >> $GITHUB_OUTPUT
-            echo "sha=${{ github.sha }}" >> $GITHUB_OUTPUT
+            echo "sha=${PUSH_SHA}"       >> $GITHUB_OUTPUT
             echo "command=build"         >> $GITHUB_OUTPUT
           fi
 
