@@ -20,21 +20,29 @@ jobs:
       - name: Set image
         id: set
         run: |
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            echo "image=ghcr.io/ryan-millard/img2num-dev:pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+          MAIN_IMAGE="image=ghcr.io/ryan-millard/img2num-dev:main"
+          PR_TAG="pr-${{ github.event.pull_request.number }}"
+          PR_IMAGE="ryan-millard/img2num-dev:$PR_TAG"
+          GHCR_IMAGE="image=ghcr.io/$PR_IMAGE"
+
+          GHCR_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://ghcr.io/v2/ryan-millard/img2num-dev/manifests/$PR_TAG")
+
+          DH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://registry.hub.docker.com/v2/repositories/$PR_IMAGE/tags/$PR_TAG")
+
+          if [ "$GHCR_STATUS" == "200" ]; then
+            echo "image=$GHCR_IMAGE" >> $GITHUB_OUTPUT
+          elif [ "$DH_STATUS" == 200 ]; then
+            echo "image=$PR_IMAGE" >> $GITHUB_OUTPUT
           else
-            echo "image=ghcr.io/ryan-millard/img2num-dev:main" >> $GITHUB_OUTPUT
+            echo "image=$MAIN_IMAGE" >> $GITHUB_OUTPUT
           fi
-  wait-for-image:
-    needs: set-image
-    name: Wait for Docker image to be pushed to GHCR
-    uses: ./.github/workflows/wait-for-docker-image.yml
-    with:
-      ghcr_image: ${{ needs.set-image.outputs.image }}
 
   lint:
     name: Lint & Validate Code
-    needs: [set-image, wait-for-image]
+    needs: [set-image]
     runs-on: ubuntu-latest
     container:
       image: ${{ needs.set-image.outputs.image }}
@@ -61,14 +69,14 @@ jobs:
   cmake-build:
     name: Build C/C++
     uses: ./.github/workflows/cmake-build.yml
-    needs: [set-image, wait-for-image]
+    needs: [set-image]
     with:
       image: ${{ needs.set-image.outputs.image }}
 
   build-react-app:
     name: Build React App
     uses: ./.github/workflows/build-react-app.yml
-    needs: [set-image, cmake-build, wait-for-image]
+    needs: [set-image, cmake-build]
     with:
       image: ${{ needs.set-image.outputs.image }}
       wasm-artifacts-path: packages/js/build-wasm/
@@ -76,7 +84,7 @@ jobs:
   build-docs:
     name: Build Documentation Site
     uses: ./.github/workflows/build-docs.yml
-    needs: [set-image, wait-for-image]
+    needs: [set-image]
     with:
       image: ${{ needs.set-image.outputs.image }}
     secrets:
