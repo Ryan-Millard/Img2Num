@@ -64,7 +64,7 @@ jobs:
   # --- CALL DOWNSTREAM TEST ---
   test:
     needs: build
-    uses: ./.github/workflows/ci.yaml
+    uses: ./.github/workflows/ci.yml
     with:
       artifact-name: docker-artifact
 

@@ -5,6 +5,12 @@ on:
     branches: [main]
   push:
     branches: [main]
+  workflow_call:
+    inputs:
+      artifact-name:
+        required: true
+        type: string
+        description: "The name of the GitHub artifact containing the docker image tarball."
 
 permissions:
   contents: read
@@ -14,12 +20,7 @@ jobs:
     name: Wait for Docker image to be pushed to Docker Hub
     uses: ./.github/workflows/wait-for-docker-image.yml
     with:
-      image: >-
-        ${{
-          github.event_name == 'pull_request'
-          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
-          || 'ryanmillard/img2num-dev:main'
-        }}
+      artifact-name: {{ inputs.artifact-name }}
 
   lint:
     name: Lint & Validate Code
