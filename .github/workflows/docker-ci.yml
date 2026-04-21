@@ -91,7 +91,14 @@ jobs:
             --jq '.permission')
           echo "Permission level: $PERMISSION"
           if [[ "$PERMISSION" == "write" || "$PERMISSION" == "admin" || "$PERMISSION" == "maintain" ]]; then
-            echo "authorized=true" >> $GITHUB_OUTPUT
+
+            # Extra safety - limit the build permissions to only experienced maintainers
+            if [[ "$COMMENTER" == "Ryan-Millard" || "$COMMENTER" == "Krasner" ]]; then
+              echo "authorized=true" >> $GITHUB_OUTPUT
+            else
+              echo "authorized=false" >> $GITHUB_OUTPUT
+            fi
+
           else
             echo "authorized=false" >> $GITHUB_OUTPUT
           fi
