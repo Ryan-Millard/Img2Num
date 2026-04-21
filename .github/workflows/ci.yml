@@ -26,9 +26,6 @@ jobs:
     name: Lint & Validate Code
     # needs: wait-for-image
     runs-on: ubuntu-latest
-    with:
-      artifact-name: ${{ inputs.artifact-name }}
-
     steps:
       - name: Download Build Artifact
         uses: actions/download-artifact@v4
@@ -81,7 +78,6 @@ jobs:
     uses: ./.github/workflows/build-docs.yml
     # needs: wait-for-image
     with:
-      with:
       artifact-name: ${{ inputs.artifact-name }}
     secrets:
       ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
