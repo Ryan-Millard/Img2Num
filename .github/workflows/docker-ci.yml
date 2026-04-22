@@ -85,6 +85,7 @@ jobs:
         if: github.event_name == 'issue_comment'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMENTER: ${{ github.event.comment.user.login }}
         run: |
           PERMISSION=$(gh api \
             repos/${{ github.repository }}/collaborators/${{ github.event.comment.user.login }}/permission \
