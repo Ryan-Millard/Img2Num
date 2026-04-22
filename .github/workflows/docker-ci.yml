@@ -197,7 +197,7 @@ jobs:
         with:
           context: .
           file: Dockerfile.dev
-          push: false
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: |
             type=registry,ref=${{ steps.meta.outputs.cache_ref }}
