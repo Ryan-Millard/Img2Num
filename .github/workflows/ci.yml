@@ -19,29 +19,39 @@ jobs:
     steps:
       - name: Set image
         id: set
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           MAIN_IMAGE="ghcr.io/ryan-millard/img2num-dev:main"
-          PR_TAG="pr-${{ github.event.pull_request.number }}"
-          REPO="ryan-millard/img2num-dev"
-          DH_IMAGE="${REPO}:${PR_TAG}"
-          GHCR_IMAGE="ghcr.io/${DH_IMAGE}"
+          PR_NUMBER="${{ github.event.pull_request.number }}"
 
-          GHCR_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            -H "Accept: application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.v2+json" \
-            "https://ghcr.io/v2/ryan-millard/img2num-dev/manifests/${PR_TAG}")
+          if [[ -n "$PR_NUMBER" ]]; then
+            PR_TAG="pr-${PR_NUMBER}"
+            GHCR_IMAGE="ghcr.io/ryan-millard/img2num-dev:${PR_TAG}"
+            DH_IMAGE="ryan-millard/img2num-dev:${PR_TAG}"
 
-          DH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            "https://registry.hub.docker.com/v2/repositories/${REPO}/tags/${PR_TAG}/")
+            GHCR_IMAGE_EXISTS=$(gh api \
+              -H "Accept: application/vnd.github+json" \
+              /users/ryan-millard/packages/container/img2num-dev/versions \
+              --jq "any(.metadata.container.tags[]? == \"${PR_TAG}\")")
 
-          if [[ "$GHCR_STATUS" == "200" ]]; then
-            echo "image=${GHCR_IMAGE}"
-            echo "image=${GHCR_IMAGE}" >> $GITHUB_OUTPUT
-          elif [[ "$DH_STATUS" == "200" ]]; then
-            echo "image=${DH_IMAGE}"
-            echo "image=${DH_IMAGE}" >> $GITHUB_OUTPUT
+            DH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+              --connect-timeout 2 --max-time 5 \
+              "https://registry.hub.docker.com/v2/repositories/ryan-millard/img2num-dev/tags/${PR_TAG}/")
           else
-            echo "image=${MAIN_IMAGE}"
+            GHCR_IMAGE_EXISTS="false"
+            DH_STATUS="404"
+          fi
+
+          if [[ "$GHCR_IMAGE_EXISTS" == "true" ]]; then
+            echo "image=${GHCR_IMAGE}" >> $GITHUB_OUTPUT
+            echo "image=${GHCR_IMAGE}"
+          elif [[ "$DH_STATUS" == "200" ]]; then
+            echo "image=${DH_IMAGE}" >> $GITHUB_OUTPUT
+            echo "image=${DH_IMAGE}"
+          else
             echo "image=${MAIN_IMAGE}" >> $GITHUB_OUTPUT
+            echo "image=${MAIN_IMAGE}"
           fi
 
   lint:
