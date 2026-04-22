@@ -20,6 +20,8 @@ jobs:
   wait-for-image:
     name: Wait for Docker image to be pushed to Docker Hub
     uses: ./.github/workflows/wait-for-docker-image.yml
+    with:
+      dh_image: ryanmillard/img2num-dev:main
 
   cmake-build:
     name: Build WASM
