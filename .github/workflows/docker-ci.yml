@@ -1,40 +1,163 @@
 name: Docker CI
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-
+  issue_comment:
+    types: [created]
   push:
     branches: [main]
     tags: ["v*"]
+  pull_request:
+    types: [closed]
 
 permissions:
   contents: read
+  pull-requests: read
 
 env:
-  IMAGE_NAME: ryanmillard/img2num-dev
+  GHCR_IMAGE: ghcr.io/ryan-millard/img2num-dev
+  DH_IMAGE: ryanmillard/img2num-dev
 
 jobs:
-  build:
-    if: github.event.action != 'closed'
+  guard:
+    # For push:            always run (build on merge/tag)
+    # For issue_comment:   only on PR comments starting with /docker-build or /docker-cleanup
+    # For pull_request:    skip — cleanup is handled by the cleanup job directly
+    if: |
+      github.event_name == 'push' ||
+      (
+        github.event_name == 'issue_comment' &&
+        github.event.issue.pull_request != null &&
+        (
+          startsWith(github.event.comment.body, '/docker-build') ||
+          startsWith(github.event.comment.body, '/docker-cleanup')
+        )
+      )
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    outputs:
+      pr_number:  ${{ steps.resolve.outputs.pr_number }}
+      sha:        ${{ steps.resolve.outputs.sha }}
+      authorized: ${{ steps.authz.outputs.authorized }}
+      command:    ${{ steps.resolve.outputs.command }}
+    steps:
+      - name: Resolve PR number, SHA, and command
+        id: resolve
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT_NAME: ${{ github.event_name }}
+          PR_NUMBER: ${{ github.event.issue.number }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          REPO: ${{ github.repository }}
+          PUSH_SHA: ${{ github.sha }}
+        run: |
+          if [[ "$EVENT_NAME" == "issue_comment" ]]; then
+            if [[ "$COMMENT_BODY" == /docker-cleanup* ]]; then
+              COMMAND="cleanup"
+              SHA=$(gh api "repos/$REPO/pulls/$PR_NUMBER" --jq '.head.sha')
+            else
+              COMMAND="build"
+              PROVIDED_SHA=$(echo "$COMMENT_BODY" | awk '{print $2}')
+              if [[ -z "$PROVIDED_SHA" ]]; then
+                echo "::error::Usage: /docker-build <sha>"
+                exit 1
+              fi
+              CURRENT_SHA=$(gh api "repos/$REPO/pulls/$PR_NUMBER" --jq '.head.sha')
+              if [[ "$CURRENT_SHA" != "$PROVIDED_SHA"* ]]; then
+                echo "::error::Provided SHA $PROVIDED_SHA does not match current PR head ($CURRENT_SHA). Check the PR and try again."
+                exit 1
+              fi
+              SHA="$CURRENT_SHA"
+            fi
+            echo "pr_number=${PR_NUMBER}" >> $GITHUB_OUTPUT
+            echo "sha=${SHA}"            >> $GITHUB_OUTPUT
+            echo "command=${COMMAND}"    >> $GITHUB_OUTPUT
 
+          # Non-comments - pushes to main
+          else
+            echo "pr_number="            >> $GITHUB_OUTPUT
+            echo "sha=${PUSH_SHA}"       >> $GITHUB_OUTPUT
+            echo "command=build"         >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check commenter has write access
+        id: authz
+        if: github.event_name == 'issue_comment'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PERMISSION=$(gh api \
+            repos/${{ github.repository }}/collaborators/${{ github.event.comment.user.login }}/permission \
+            --jq '.permission')
+          echo "Permission level: $PERMISSION"
+          if [[ "$PERMISSION" == "write" || "$PERMISSION" == "admin" || "$PERMISSION" == "maintain" ]]; then
+
+            # Extra safety - limit the build permissions to only experienced maintainers
+            if [[ "$COMMENTER" == "Ryan-Millard" || "$COMMENTER" == "Krasner" ]]; then
+              echo "authorized=true" >> $GITHUB_OUTPUT
+            else
+              echo "authorized=false" >> $GITHUB_OUTPUT
+            fi
+
+          else
+            echo "authorized=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: React to comment (authorized)
+        if: github.event_name == 'issue_comment' && steps.authz.outputs.authorized == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api \
+            repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions \
+            -X POST -f content='+1'
+
+      - name: React to comment (unauthorized)
+        if: github.event_name == 'issue_comment' && steps.authz.outputs.authorized == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api \
+            repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions \
+            -X POST -f content='-1'
+          echo "::error::User ${{ github.event.comment.user.login }} does not have write access."
+          exit 1
+
+  build:
+    needs: guard
+    if: |
+      needs.guard.result == 'success' &&
+      needs.guard.outputs.command == 'build' &&
+      (github.event_name == 'push' || needs.guard.outputs.authorized == 'true')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     outputs:
       clean_core_tag: ${{ steps.meta.outputs.clean_core_tag }}
-      tags: ${{ steps.meta.outputs.tags }}
-      cache_ref: ${{ steps.meta.outputs.cache_ref }}
+      tags:           ${{ steps.meta.outputs.tags }}
+      cache_ref:      ${{ steps.meta.outputs.cache_ref }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
+          ref: ${{ needs.guard.outputs.sha }}
           submodules: true
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd
 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@4a8376e001c7725687f0624d1c3698a3f6ab337e
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Login to Docker Hub
-        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121
+        if: github.event_name == 'push'
+        uses: docker/login-action@4a8376e001c7725687f0624d1c3698a3f6ab337e
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -42,115 +165,120 @@ jobs:
       - name: Compute tags
         id: meta
         run: |
-          IMAGE="${{ env.IMAGE_NAME }}"
+          GHCR="${{ env.GHCR_IMAGE }}"
+          DH="${{ env.DH_IMAGE }}"
           EVENT="${{ github.event_name }}"
 
-          if [[ "$EVENT" == "pull_request" ]]; then
-            PR="${{ github.event.pull_request.number }}"
-
+          if [[ "$EVENT" == "issue_comment" ]]; then
+            PR="${{ needs.guard.outputs.pr_number }}"
             CLEAN_CORE_TAG="pr-${PR}"
-            TAGS="${IMAGE}:pr-${PR}"
-            CACHE_REF="${IMAGE}:cache-pr-${PR}"
+            TAGS="${GHCR}:pr-${PR}"
+            CACHE_REF="${GHCR}:cache-pr-${PR}"
 
           elif [[ "$EVENT" == "push" && "${{ github.ref_type }}" == "tag" ]]; then
             VERSION="${GITHUB_REF_NAME}"
-
             CLEAN_CORE_TAG="$VERSION"
-            TAGS="${IMAGE}:${VERSION},${IMAGE}:latest"
-            CACHE_REF="${IMAGE}:buildcache"
+            TAGS="${GHCR}:${VERSION},${GHCR}:latest,${DH}:${VERSION},${DH}:latest"
+            CACHE_REF="${GHCR}:buildcache"
 
           else
             CLEAN_CORE_TAG="main"
-            TAGS="${IMAGE}:main,${IMAGE}:latest"
-            CACHE_REF="${IMAGE}:buildcache"
+            TAGS="${GHCR}:main,${GHCR}:latest,${DH}:main,${DH}:latest"
+            CACHE_REF="${GHCR}:buildcache"
           fi
 
           echo "clean_core_tag=$CLEAN_CORE_TAG" >> $GITHUB_OUTPUT
-          echo "tags=$TAGS" >> $GITHUB_OUTPUT
-          echo "cache_ref=$CACHE_REF" >> $GITHUB_OUTPUT
+          echo "tags=$TAGS"                      >> $GITHUB_OUTPUT
+          echo "cache_ref=$CACHE_REF"            >> $GITHUB_OUTPUT
 
       - name: Build & Push Docker image
-        if: (github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name != 'pull_request'
         uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f
         with:
           context: .
           file: Dockerfile.dev
-          push: true
+          push: false
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: |
             type=registry,ref=${{ steps.meta.outputs.cache_ref }}
-            type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
+            type=registry,ref=${{ env.GHCR_IMAGE }}:buildcache
           cache-to: type=registry,ref=${{ steps.meta.outputs.cache_ref }},mode=max
 
-
   notify:
-    needs: build
-    if: github.event_name == 'pull_request' && needs.build.result == 'success'
-
+    needs: [guard, build]
+    if: github.event_name == 'issue_comment' && needs.build.result == 'success'
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
 
     env:
-      IMAGE_NAME: ryanmillard/img2num-dev
       CLEAN_CORE_TAG: ${{ needs.build.outputs.clean_core_tag }}
-      CORE_TAG: ${{ needs.build.outputs.clean_core_tag }}
 
     steps:
-      # Avoid chat spamming by checking for an existing comment
-      - name: Find Docker comment
+      - name: Find existing Docker comment
         id: fc
         uses: peter-evans/find-comment@b30e6a3c0ed37e7c023ccd3f1db5c6c0b0c23aad
         with:
-          issue-number: ${{ github.event.pull_request.number }}
+          issue-number: ${{ needs.guard.outputs.pr_number }}
           body-includes: "<!-- docker-image-comment:pr -->"
 
-      - name: Debug comment detection
-        if: steps.fc.outputs.comment-id != ''
+      - name: Compute lowercase image ref
+        id: img
         run: |
-          echo "Found comment ID: ${{ steps.fc.outputs.comment-id }}"
-      
-      - name: Create Docker comment
-        if: steps.fc.outputs.comment-id == ''
+          LOWER_OWNER_NAME="$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')"
+          GHCR_IMAGE="ghcr.io/${LOWER_OWNER_NAME}/img2num-dev"
+          echo "lower_owner_name=${LOWER_OWNER_NAME}" >> $GITHUB_OUTPUT
+          echo "ghcr_image=${GHCR_IMAGE}"             >> $GITHUB_OUTPUT
+
+      - name: Create or update Docker comment
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9
         with:
-          issue-number: ${{ github.event.pull_request.number }}
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ needs.guard.outputs.pr_number }}
+          edit-mode: replace
           body: |
             <!-- docker-image-comment:pr -->
             ## 🐳 Docker image built successfully!
-          
+
             ### Image
-            [`${{ env.IMAGE_NAME }}:${{ env.CORE_TAG }}`](https://hub.docker.com/r/${{ env.IMAGE_NAME }}/tags?name=${{ env.CORE_TAG }})
-          
+            [`${{ steps.img.outputs.ghcr_image }}:${{ env.CLEAN_CORE_TAG }}`](https://github.com/${{ steps.img.outputs.lower_owner_name }}/${{ github.event.repository.name }}/pkgs/container/img2num-dev/${{ env.CLEAN_CORE_TAG }})
+
             ### Run it locally:
             ```bash
-            IMG2NUM_IMAGE=${{ env.IMAGE_NAME }}:${{ env.CORE_TAG }} ./img2num sh
+            IMG2NUM_IMAGE=${{ steps.img.outputs.ghcr_image }}:${{ env.CLEAN_CORE_TAG }} ./img2num sh
+            ```
 
-
-  cleanup:
-    if: github.event.action == 'closed'
+  cleanup-on-close:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-
+    permissions:
+      packages: write
     steps:
-      - name: Delete PR images
-        run: |
-          PR_NUMBER=${{ github.event.pull_request.number }}
+      - name: Delete PR images from GHCR
+        uses: actions/delete-package-versions@e5bc658cc4c965c472efe991f8beea3981499c55
+        with:
+          package-name: img2num-dev
+          package-type: container
+          delete-untagged-versions: false
+          dry-run: false
+          min-versions-to-keep: 0
+          ignore-versions: "^(?!pr-${{ github.event.pull_request.number }}$|cache-pr-${{ github.event.pull_request.number }}$).*"
 
-          TOKEN=$(curl -s -X POST \
-            -H "Content-Type: application/json" \
-            -d '{"username":"${{ secrets.DOCKERHUB_USERNAME }}","password":"${{ secrets.DOCKERHUB_TOKEN }}"}' \
-            https://hub.docker.com/v2/users/login/ | jq -r .token)
-          
-          IMAGE="${{ env.IMAGE_NAME }}"
-          
-          TAGS=(
-            "pr-${PR_NUMBER}"
-            "cache-pr-${PR_NUMBER}"
-          )
-          
-          for TAG in "${TAGS[@]}"; do
-            curl -s -X DELETE \
-              -H "Authorization: JWT ${TOKEN}" \
-              "https://hub.docker.com/v2/repositories/${IMAGE}/tags/${TAG}/" \
-            || echo "Tag $TAG not found or already deleted"
-          done
+  cleanup-on-command:
+    needs: guard
+    if: |
+      needs.guard.result == 'success' &&
+      needs.guard.outputs.command == 'cleanup' &&
+      needs.guard.outputs.authorized == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - name: Delete PR images from GHCR
+        uses: actions/delete-package-versions@e5bc658cc4c965c472efe991f8beea3981499c55
+        with:
+          package-name: img2num-dev
+          package-type: container
+          delete-untagged-versions: false
+          dry-run: false
+          min-versions-to-keep: 0
+          ignore-versions: "^(?!pr-${{ needs.guard.outputs.pr_number }}$|cache-pr-${{ needs.guard.outputs.pr_number }}$).*"
