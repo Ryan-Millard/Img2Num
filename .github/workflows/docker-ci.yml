@@ -259,8 +259,7 @@ jobs:
         with:
           package-name: img2num-dev
           package-type: container
-          delete-untagged-versions: false
-          dry-run: false
+          num-old-versions-to-delete: 2 # delete the image and the cache
           min-versions-to-keep: 0
           ignore-versions: "^(?!pr-${{ github.event.pull_request.number }}$|cache-pr-${{ github.event.pull_request.number }}$).*"
 
@@ -279,7 +278,6 @@ jobs:
         with:
           package-name: img2num-dev
           package-type: container
-          delete-untagged-versions: false
-          dry-run: false
+          num-old-versions-to-delete: 2 # delete the image and the cache
           min-versions-to-keep: 0
           ignore-versions: "^(?!pr-${{ needs.guard.outputs.pr_number }}$|cache-pr-${{ needs.guard.outputs.pr_number }}$).*"
