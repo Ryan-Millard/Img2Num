@@ -255,13 +255,23 @@ jobs:
       packages: write
     steps:
       - name: Delete PR images from GHCR
-        uses: actions/delete-package-versions@e5bc658cc4c965c472efe991f8beea3981499c55
-        with:
-          package-name: img2num-dev
-          package-type: container
-          num-old-versions-to-delete: 2 # delete the image and the cache
-          min-versions-to-keep: 0
-          ignore-versions: "^(?!pr-${{ github.event.pull_request.number }}$|cache-pr-${{ github.event.pull_request.number }}$).*"
+        env:
+          GH_TOKEN: ${{ secrets.GHCR_DELETE_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          for TAG in "pr-${PR}" "cache-pr-${PR}"; do
+            VERSION_ID=$(gh api \
+              "/user/packages/container/img2num-dev/versions" \
+              --paginate \
+              --jq ".[] | select(.metadata.container.tags[] == \"${TAG}\") | .id")
+            if [[ -n "$VERSION_ID" ]]; then
+              echo "Deleting version $VERSION_ID (tag: $TAG)"
+              gh api --method DELETE "/user/packages/container/img2num-dev/versions/${VERSION_ID}"
+            else
+              echo "No version found for tag: $TAG"
+            fi
+          done
 
   cleanup-on-command:
     needs: guard
@@ -274,10 +284,20 @@ jobs:
       packages: write
     steps:
       - name: Delete PR images from GHCR
-        uses: actions/delete-package-versions@e5bc658cc4c965c472efe991f8beea3981499c55
-        with:
-          package-name: img2num-dev
-          package-type: container
-          num-old-versions-to-delete: 2 # delete the image and the cache
-          min-versions-to-keep: 0
-          ignore-versions: "^(?!pr-${{ needs.guard.outputs.pr_number }}$|cache-pr-${{ needs.guard.outputs.pr_number }}$).*"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ needs.guard.outputs.pr_number }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          for TAG in "pr-${PR}" "cache-pr-${PR}"; do
+            VERSION_ID=$(gh api \
+              "/user/packages/container/img2num-dev/versions" \
+              --paginate \
+              --jq ".[] | select(.metadata.container.tags[] == \"${TAG}\") | .id")
+            if [[ -n "$VERSION_ID" ]]; then
+              echo "Deleting version $VERSION_ID (tag: $TAG)"
+              gh api --method DELETE "/user/packages/container/img2num-dev/versions/${VERSION_ID}"
+            else
+              echo "No version found for tag: $TAG"
+            fi
+          done
