@@ -26,8 +26,10 @@ jobs:
           DH_IMAGE="${REPO}:${PR_TAG}"
           GHCR_IMAGE="ghcr.io/${DH_IMAGE}"
 
+          GHCR_TOKEN=$(echo ${{ secrets.GITHUB_TOKEN }} | base64)
+
           GHCR_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Authorization: Bearer ${GHCR_TOKEN}" \
             -H "Accept: application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.v2+json" \
             "https://ghcr.io/v2/ryan-millard/img2num-dev/manifests/${PR_TAG}")
 
