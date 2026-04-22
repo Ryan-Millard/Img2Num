@@ -27,7 +27,10 @@ jobs:
           GHCR_IMAGE="ghcr.io/${DH_IMAGE}"
           GHCR_IMAGE_CACHE="ghcr.io/${REPO}:cache-${PR_TAG}"
 
-          GHCR_TOKEN=$(echo -n ${{ secrets.GITHUB_TOKEN }} | base64)
+          GHCR_TOKEN ="$(
+            curl "https://ghcr.io/token?scope=repository:ryan-millard/img2num-dev:pull" |
+            awk -F'"' '$0=$4'
+          )"
 
           GHCR_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
             -H "Authorization: Bearer ${GHCR_TOKEN}" \
@@ -40,6 +43,7 @@ jobs:
             "https://ghcr.io/v2/ryan-millard/img2num-dev/manifests/cache-${PR_TAG}")
 
           echo "ghcr_status=${GHCR_STATUS}"
+          echp "ghcr_cache_status=${GHCR_CACHE_STATUS}"
 
           DH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
             "https://registry.hub.docker.com/v2/repositories/${REPO}/tags/${PR_TAG}/")
