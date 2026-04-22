@@ -61,3 +61,22 @@ jobs:
         with:
           name: build-c-cpp
           path: build-c-cpp/
+
+  build-py:
+    name: Build Python
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ inputs.image }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          submodules: true
+
+      - name: Check toolchain
+        run: |
+          cmake --version
+          clang --version
+
+      - name: Run uv sync
+        run: uv sync
