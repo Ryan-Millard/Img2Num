@@ -8,31 +8,48 @@ on:
 
 permissions:
   contents: read
+  packages: read
 
 jobs:
-  wait-for-image:
-    name: Wait for Docker image to be pushed to Docker Hub
-    uses: ./.github/workflows/wait-for-docker-image.yml
-    with:
-      image: >-
-        ${{
-          github.event_name == 'pull_request'
-          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
-          || 'ryanmillard/img2num-dev:main'
-        }}
+  set-image:
+    name: Set Docker image
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.set.outputs.image }}
+    steps:
+      - name: Set image
+        id: set
+        run: |
+          MAIN_IMAGE="ghcr.io/ryan-millard/img2num-dev:main"
+          PR_TAG="pr-${{ github.event.pull_request.number }}"
+          REPO="ryan-millard/img2num-dev"
+          DH_IMAGE="${REPO}:${PR_TAG}"
+          GHCR_IMAGE="ghcr.io/${DH_IMAGE}"
+
+          GHCR_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Accept: application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.v2+json" \
+            "https://ghcr.io/v2/ryan-millard/img2num-dev/manifests/${PR_TAG}")
+
+          DH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://registry.hub.docker.com/v2/repositories/${REPO}/tags/${PR_TAG}/")
+
+          if [[ "$GHCR_STATUS" == "200" ]]; then
+            echo "image=${GHCR_IMAGE}"
+            echo "image=${GHCR_IMAGE}" >> $GITHUB_OUTPUT
+          elif [[ "$DH_STATUS" == "200" ]]; then
+            echo "image=${DH_IMAGE}"
+            echo "image=${DH_IMAGE}" >> $GITHUB_OUTPUT
+          else
+            echo "image=${MAIN_IMAGE}"
+            echo "image=${MAIN_IMAGE}" >> $GITHUB_OUTPUT
+          fi
 
   lint:
     name: Lint & Validate Code
-    needs: wait-for-image
+    needs: [set-image]
     runs-on: ubuntu-latest
     container:
-      image: >-
-        ${{
-          github.event_name == 'pull_request'
-          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
-          || 'ryanmillard/img2num-dev:main'
-        }}
-
+      image: ${{ needs.set-image.outputs.image }}
     steps:
       - name: Checkout code
         # No need for submodules since we are not running code
@@ -56,39 +73,24 @@ jobs:
   cmake-build:
     name: Build C/C++
     uses: ./.github/workflows/cmake-build.yml
-    needs: wait-for-image
+    needs: [set-image]
     with:
-      image: >-
-        ${{
-          github.event_name == 'pull_request'
-          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
-          || 'ryanmillard/img2num-dev:main'
-        }}
+      image: ${{ needs.set-image.outputs.image }}
 
   build-react-app:
     name: Build React App
     uses: ./.github/workflows/build-react-app.yml
-    needs: [cmake-build, wait-for-image]
+    needs: [set-image, cmake-build]
     with:
-      image: >-
-        ${{
-          github.event_name == 'pull_request'
-          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
-          || 'ryanmillard/img2num-dev:main'
-        }}
+      image: ${{ needs.set-image.outputs.image }}
       wasm-artifacts-path: packages/js/build-wasm/
 
   build-docs:
     name: Build Documentation Site
     uses: ./.github/workflows/build-docs.yml
-    needs: wait-for-image
+    needs: [set-image]
     with:
-      image: >-
-        ${{
-          github.event_name == 'pull_request'
-          && format('ryanmillard/img2num-dev:pr-{0}', github.event.pull_request.number)
-          || 'ryanmillard/img2num-dev:main'
-        }}
+      image: ${{ needs.set-image.outputs.image }}
     secrets:
       ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
       ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}

@@ -10,27 +10,47 @@ name: Wait for Docker Image
 on:
   workflow_call:
     inputs:
-      image:
+      dh_image:
         required: false
         type: string
         default: ryanmillard/img2num-dev:main
         description: >
-          Docker image that this workflow waits for. It will check Docker Hub for this image. Defaults to: ryanmillard/img2num-dev:main
+          Docker Hub image to wait for. Defaults to: ryanmillard/img2num-dev:main
+      ghcr_image:
+        required: false
+        type: string
+        default: ghcr.io/ryan-millard/img2num-dev:main
+        description: >
+          GHCR image to wait for. Defaults to: ghcr.io/ryan-millard/img2num-dev:main
       max_attempts:
         required: false
         type: number
-        default: 8
+        default: 13
         description: >
           Maximum number of pull attempts before giving up.
-          With the default of 8 attempts and an initial delay of 15s,
-          the total worst-case wait is ~63 minutes (15+30+60+120+240+480+960+1920s).
+          With the default of 13 attempts, 15s initial delay, 2m initial wait, and 1.5x backoff multiplier,
+          the total worst-case wait is ~96 minutes (120s flat + 15+22+33+49+74+111+166+249+374+561+842+1263+1894s).
       initial_delay_seconds:
         required: false
         type: number
         default: 15
         description: >
-          Initial delay in seconds between attempts. Doubles after each failure.
-          With the default of 15s and 8 attempts, worst-case wait is ~63 minutes.
+          Initial delay in seconds between attempts. Multiplied by the backoff multiplier after each failure.
+          With the default of 15s, 13 attempts, 2m initial wait, and 1.5x multiplier, worst-case wait is ~96 minutes.
+      initial_wait_seconds:
+        required: false
+        type: number
+        default: 120
+        description: >
+          Flat wait in seconds before the first attempt. Useful to avoid hammering the registry
+          before the image has had any chance to appear. Defaults to 120s (2 minutes).
+      backoff_multiplier:
+        required: false
+        type: number
+        default: 1.5
+        description: >
+          Multiplier applied to the delay after each failed attempt. Defaults to 1.5.
+          Use 2 for classic exponential backoff.
 
 permissions: {}
 
@@ -39,23 +59,74 @@ jobs:
     name: Wait for Docker Image
     runs-on: ubuntu-latest
     steps:
-      - name: Wait for image to be available
+      - name: Set up variables
+        id: setup
         run: |
-          # Retries with exponential backoff.
-          # Defaults: 8 attempts, 15s initial delay -> delays of 15, 30, 60, 120, 240, 480, 960, 1920 (all in seconds)
-          # Total worst-case wait with defaults: ~63 minutes (enough for Dawn to typically be built into the image)
-          IMAGE="${{ inputs.image }}"
-          MAX_ATTEMPTS=${{ inputs.max_attempts }}
-          DELAY=${{ inputs.initial_delay_seconds }}
-          IMAGE_NAME="${IMAGE%%:*}"
-          TAG="${IMAGE##*:}"
-          WORKFLOW_STARTED_AT="${{ github.event.repository.updated_at }}"
-          WORKFLOW_START_TS=$(date -d "$WORKFLOW_STARTED_AT" +%s)
+          DH_IMAGE="${{ inputs.dh_image }}"
+          GHCR_IMAGE="${{ inputs.ghcr_image }}"
+          WORKFLOW_STARTED_AT="${{ github.event.workflow_run.created_at || github.event.repository.updated_at }}"
+          echo "dh_image=$DH_IMAGE"                                        >> "$GITHUB_OUTPUT"
+          echo "dh_image_name=${DH_IMAGE%%:*}"                             >> "$GITHUB_OUTPUT"
+          echo "dh_tag=${DH_IMAGE##*:}"                                    >> "$GITHUB_OUTPUT"
+          echo "ghcr_image=$GHCR_IMAGE"                                    >> "$GITHUB_OUTPUT"
+          echo "ghcr_image_name=${GHCR_IMAGE%%:*}"                         >> "$GITHUB_OUTPUT"
+          echo "ghcr_tag=${GHCR_IMAGE##*:}"                                >> "$GITHUB_OUTPUT"
+          echo "max_attempts=${{ inputs.max_attempts }}"                   >> "$GITHUB_OUTPUT"
+          echo "initial_delay=${{ inputs.initial_delay_seconds }}"         >> "$GITHUB_OUTPUT"
+          echo "initial_wait=${{ inputs.initial_wait_seconds }}"           >> "$GITHUB_OUTPUT"
+          echo "multiplier=${{ inputs.backoff_multiplier }}"               >> "$GITHUB_OUTPUT"
+          echo "workflow_started_at=$WORKFLOW_STARTED_AT"                  >> "$GITHUB_OUTPUT"
+          echo "workflow_start_ts=$(date -d "$WORKFLOW_STARTED_AT" +%s)"   >> "$GITHUB_OUTPUT"
+
+      - name: Initial wait
+        run: |
+          INITIAL_WAIT="${{ steps.setup.outputs.initial_wait }}"
+          if [[ "$INITIAL_WAIT" -gt 0 ]]; then
+            echo "Waiting ${INITIAL_WAIT}s before first attempt..."
+            sleep "$INITIAL_WAIT"
+          fi
+
+      - name: Wait for image with exponential backoff
+        run: |
+          DH_IMAGE_NAME="${{ steps.setup.outputs.dh_image_name }}"
+          DH_TAG="${{ steps.setup.outputs.dh_tag }}"
+          GHCR_IMAGE_NAME="${{ steps.setup.outputs.ghcr_image_name }}"
+          GHCR_TAG="${{ steps.setup.outputs.ghcr_tag }}"
+          MAX_ATTEMPTS="${{ steps.setup.outputs.max_attempts }}"
+          DELAY="${{ steps.setup.outputs.initial_delay }}"
+          MULTIPLIER="${{ steps.setup.outputs.multiplier }}"
+          WORKFLOW_STARTED_AT="${{ steps.setup.outputs.workflow_started_at }}"
+          WORKFLOW_START_TS="${{ steps.setup.outputs.workflow_start_ts }}"
 
           for i in $(seq 1 $MAX_ATTEMPTS); do
-            echo "Attempt $i of $MAX_ATTEMPTS: checking $IMAGE..."
+            echo "Attempt $i of $MAX_ATTEMPTS..."
 
-            LAST_PUSHED=$(curl -sf "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags/${TAG}/" \
+            # Check GHCR
+            REPO="${GHCR_IMAGE_NAME#ghcr.io/}"
+            TOKEN=$(curl -sf -u "${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}" \
+              "https://ghcr.io/token?scope=repository:${REPO}:pull" | jq -r '.token // empty')
+            if [[ -n "$TOKEN" ]]; then
+              RESPONSE=$(curl -s -D - -o /dev/null \
+                -H "Authorization: Bearer ${TOKEN}" \
+                -H "Accept: application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.v2+json" \
+                "https://ghcr.io/v2/${REPO}/manifests/${GHCR_TAG}")
+
+              HTTP_CODE=$(echo "$RESPONSE" | grep -m1 "^HTTP" | awk '{print $2}')
+              LAST_MODIFIED=$(echo "$RESPONSE" | grep -i "^last-modified:" | sed 's/last-modified: //i' | tr -d '\r')
+
+              if [[ "$HTTP_CODE" == "200" && -n "$LAST_MODIFIED" ]]; then
+                LAST_MODIFIED_TS=$(date -d "$LAST_MODIFIED" +%s)
+                if [[ "$LAST_MODIFIED_TS" -ge "$WORKFLOW_START_TS" ]]; then
+                  echo "GHCR image is fresh, proceeding."
+                  exit 0
+                else
+                  echo "GHCR image exists but is stale."
+                fi
+              fi
+            fi
+
+            # Check Docker Hub
+            LAST_PUSHED=$(curl -sf "https://hub.docker.com/v2/repositories/${DH_IMAGE_NAME}/tags/${DH_TAG}/" \
               | jq -r '.tag_last_pushed // empty')
 
             if [[ -n "$LAST_PUSHED" ]]; then
@@ -74,7 +145,7 @@ jobs:
 
             echo "Waiting ${DELAY}s..."
             sleep $DELAY
-            DELAY=$((DELAY * 2))
+            DELAY=$(echo "$DELAY $MULTIPLIER" | awk '{printf "%d", $1 * $2}')
           done
 
           echo "Image never became fresh after $MAX_ATTEMPTS attempts"
