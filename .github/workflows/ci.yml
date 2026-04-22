@@ -36,6 +36,7 @@ jobs:
               --jq "any(.metadata.container.tags[]? == \"${PR_TAG}\")")
 
             DH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+              --connect-timeout 2 --max-time 5 \
               "https://registry.hub.docker.com/v2/repositories/ryan-millard/img2num-dev/tags/${PR_TAG}/")
           else
             GHCR_IMAGE_EXISTS="false"
