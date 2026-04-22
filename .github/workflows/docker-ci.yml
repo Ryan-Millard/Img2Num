@@ -204,6 +204,12 @@ jobs:
             type=registry,ref=${{ env.GHCR_IMAGE }}:buildcache
           cache-to: type=registry,ref=${{ steps.meta.outputs.cache_ref }},mode=max
 
+  test:
+    needs: build
+    uses: ./.github/workflows/ci.yml
+    with:
+      ready: True
+
   notify:
     needs: [guard, build]
     if: github.event_name == 'issue_comment' && needs.build.result == 'success'
