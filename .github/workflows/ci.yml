@@ -27,10 +27,7 @@ jobs:
           GHCR_IMAGE="ghcr.io/${DH_IMAGE}"
           GHCR_IMAGE_CACHE="ghcr.io/${REPO}:cache-${PR_TAG}"
 
-          GHCR_TOKEN ="$(
-            curl "https://ghcr.io/token?scope=repository:ryan-millard/img2num-dev:pull" |
-            awk -F'"' '$0=$4'
-          )"
+          GHCR_TOKEN="$(curl "https://ghcr.io/token?scope=repository:ryan-millard/img2num-dev:pull" | awk -F'"' '$0=$4')"
 
           GHCR_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
             -H "Authorization: Bearer ${GHCR_TOKEN}" \
