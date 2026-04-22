@@ -40,7 +40,7 @@ jobs:
             "https://ghcr.io/v2/ryan-millard/img2num-dev/manifests/cache-${PR_TAG}")
 
           echo "ghcr_status=${GHCR_STATUS}"
-          echp "ghcr_cache_status=${GHCR_CACHE_STATUS}"
+          echo "ghcr_cache_status=${GHCR_CACHE_STATUS}"
 
           DH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
             "https://registry.hub.docker.com/v2/repositories/${REPO}/tags/${PR_TAG}/")
