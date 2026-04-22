@@ -25,6 +25,7 @@ jobs:
           REPO="ryan-millard/img2num-dev"
           DH_IMAGE="${REPO}:${PR_TAG}"
           GHCR_IMAGE="ghcr.io/${DH_IMAGE}"
+          GHCR_IMAGE_CACHE="ghcr.io/${REPO}:cache-${PR_TAG}"
 
           GHCR_TOKEN=$(echo -n ${{ secrets.GITHUB_TOKEN }} | base64)
 
@@ -32,6 +33,11 @@ jobs:
             -H "Authorization: Bearer ${GHCR_TOKEN}" \
             -H "Accept: application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.v2+json" \
             "https://ghcr.io/v2/ryan-millard/img2num-dev/manifests/${PR_TAG}")
+
+          GHCR_CACHE_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: Bearer ${GHCR_TOKEN}" \
+            -H "Accept: application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.v2+json" \
+            "https://ghcr.io/v2/ryan-millard/img2num-dev/manifests/cache-${PR_TAG}")
 
           echo "ghcr_status=${GHCR_STATUS}"
 
@@ -41,6 +47,9 @@ jobs:
           if [[ "$GHCR_STATUS" == "200" ]]; then
             echo "image=${GHCR_IMAGE}"
             echo "image=${GHCR_IMAGE}" >> $GITHUB_OUTPUT
+          elif [[ "$GHCR_CACHE_STATUS" == "200" ]]; then
+            echo "image=${GHCR_IMAGE_CACHE}"
+            echo "image=${GHCR_IMAGE_CACHE}" >> $GITHUB_OUTPUT
           elif [[ "$DH_STATUS" == "200" ]]; then
             echo "image=${DH_IMAGE}"
             echo "image=${DH_IMAGE}" >> $GITHUB_OUTPUT
