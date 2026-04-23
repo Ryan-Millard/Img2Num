@@ -1,23 +1,46 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # ---------------------------------------------------------------------------
 # Argument parsing — strip --img <value> from args before mode dispatch
 # ---------------------------------------------------------------------------
 IMG2NUM_IMAGE_FLAG=""
+IMG2NUM_IMAGE_SOURCE_SET=0
 FILTERED_ARGS=()
 while [ $# -gt 0 ]; do
   case "$1" in
-    --img)
+    --img|--dh-img|--ghcr-img)
+      if [ "$IMG2NUM_IMAGE_SOURCE_SET" -eq 1 ]; then
+        echo "Error: Only one of --img, --dh-img, or --ghcr-img may be used." >&2
+        exit 1
+      fi
+      IMG2NUM_IMAGE_SOURCE_SET=1
+
+      flag="$1"
       shift
-      IMG2NUM_IMAGE_FLAG="$1"
+
+      if [ -z "$1" ]; then
+        echo "Error: $flag requires a tag argument." >&2
+        exit 1
+      fi
+      if [[ "$flag" == "--dh-img" || "$flag" == "--ghcr-img" ]] && [[ "$1" == *:* ]]; then
+        echo "Error: $flag expects a tag, not a full image (no ':'). Use --img instead." >&2
+        exit 1
+      fi
+
+      case "$flag" in
+        --img)      IMG2NUM_IMAGE_FLAG="$1" ;;
+        --dh-img)   IMG2NUM_IMAGE_FLAG="ryanmillard/img2num-dev:$1" ;;
+        --ghcr-img) IMG2NUM_IMAGE_FLAG="ghcr.io/ryan-millard/img2num-dev:$1" ;;
+      esac
       ;;
     *) FILTERED_ARGS+=("$1") ;;
   esac
   shift
 done
-set -- "${FILTERED_ARGS[@]}"
+set -- "${FILTERED_ARGS[@]+"${FILTERED_ARGS[@]}"}"
 
-MODE="$1"
+MODE="${1:-}"
 shift || true
 
 # ---------------------------------------------------------------------------
@@ -32,19 +55,20 @@ IMG2NUM_STATE_FILE="$(dirname "$0")/.img2num-state"
 
 save_state() {
   local image="$1"
-  local tmp
-  tmp="$(mktemp)"
   if [ -f "$IMG2NUM_STATE_FILE" ] && grep -q '^IMAGE=' "$IMG2NUM_STATE_FILE"; then
+    local tmp
+    tmp="$(mktemp)"
+    trap 'rm -f "$tmp"' EXIT
     awk -v img="$image" 'BEGIN{done=0} /^IMAGE=/ && !done {print "IMAGE=" img; done=1; next} {print}' \
       "$IMG2NUM_STATE_FILE" > "$tmp" && mv "$tmp" "$IMG2NUM_STATE_FILE"
+    trap - EXIT
   else
     printf 'IMAGE=%s\n' "$image" >> "$IMG2NUM_STATE_FILE"
-    rm -f "$tmp"
   fi
 }
 
 # Returns the image to use, in priority order:
-#   1. --img flag
+#   1. --img, --ghcr-img, --dh-img flag
 #   2. IMG2NUM_IMAGE env var (caller-supplied override)
 #   3. State file  (persisted from last `up`)
 #   4. Hardcoded default
@@ -53,7 +77,7 @@ load_image() {
     printf '%s\n' "$IMG2NUM_IMAGE_FLAG"
     return
   fi
-  if [ -n "$IMG2NUM_IMAGE" ]; then
+  if [ -n "${IMG2NUM_IMAGE:-}" ]; then
     printf '%s\n' "$IMG2NUM_IMAGE"
     return
   fi
@@ -81,12 +105,25 @@ run_in_container() {
   save_state "$image"
   export IMG2NUM_IMAGE="$image"
   docker compose up -d dev
+  docker compose ps dev >/dev/null 2>&1 || {
+    echo "Error: container 'dev' is not running." >&2
+    exit 1
+  }
   docker compose exec dev "$@"
 }
 
 # ---------------------------------------------------------------------------
 # Main command dispatch
 # ---------------------------------------------------------------------------
+# Ensure that Docker is available for the relevant commands.
+case "$MODE" in
+  stop|restart|down|purge|destroy|logs)
+    command -v docker >/dev/null 2>&1 || {
+      echo "Error: docker is unavailable (not installed, not running or not in PATH)." >&2
+      exit 1
+    }
+    ;;
+esac
 case "$MODE" in
   # Arbitrary pnpm commands
   pnpm)
@@ -109,6 +146,7 @@ case "$MODE" in
       IMAGE_TO_REMOVE="$(load_image)"
       echo "Removing $IMAGE_TO_REMOVE in 5s..."
       sleep 5
+      docker image inspect "$IMAGE_TO_REMOVE" >/dev/null 2>&1 && \
       docker rmi "$IMAGE_TO_REMOVE" 2>/dev/null || true
       # Clear the persisted image so the next `up` falls back to the default
       sed -i 's/^IMAGE=.*/IMAGE=/' "$IMG2NUM_STATE_FILE" 2>/dev/null \
@@ -119,10 +157,13 @@ case "$MODE" in
   # Tail logs
   logs) docker compose logs -f ;;
 
+  last-img|last-image)
+    load_image
+    ;;
+
   # Fallback usage
   -h|--help|*)
     EXIT_CODE=0
-    echo
     if [ "$MODE" != "-h" ] && [ "$MODE" != "--help" ]; then
       EXIT_CODE=1
       echo "Unknown command used."
@@ -132,26 +173,33 @@ case "$MODE" in
 Usage:
   ./img2num [--img <image:tag>] <command>
 
-  --img applies to commands that start or remove a container (pnpm, sh, destroy).
-  It has no effect on lifecycle commands (stop, restart, down, purge, logs).
-
 Commands:
   Using PNPM Directly:
-    pnpm <args>       Run arbitrary pnpm command.              [--img]
+    pnpm <args>         Run arbitrary pnpm command.              [--img, --dh-img, --ghcr-img]
   Open Container Terminal:
-    sh|shell|bash     Opens bash terminal in Docker container. [--img]
+    sh|shell|bash       Opens bash terminal in Docker container. [--img, --dh-img, --ghcr-img]
   Docker Maintenance:
-    stop              Stops running Docker container (keeps containers, volumes & networks).
-    restart           Restarts running Docker container.
-    down              Stops running Docker container (keeps volumes).
-    purge             Stops running Docker container (removes everything, including orphans).
-    destroy           Same as purge, but deletes Docker image. [--img]
-    logs              Displays any relevant Docker logs.
+    stop                Stops running Docker container (keeps containers, volumes & networks).
+    restart             Restarts running Docker container.
+    down                Stops running Docker container (keeps volumes).
+    purge               Stops running Docker container (removes everything, including orphans).
+    destroy             Same as purge, but deletes Docker image. [--img, --dh-img, --ghcr-img]
+    logs                Displays any relevant Docker logs.
+  Other:
+    last-img|last-image Displays the resolved Docker image (based on current config).
+    -h|--help           Displays this message.
+
+Flags:
+  --img, --dh-img, --ghcr-img
+    Applies to commands that start or remove a container (pnpm, sh, destroy).
+    Has no effect on lifecycle commands (stop, restart, down, purge, logs).
 
 Image Resolution (highest priority first):
   Applies to: pnpm, sh/shell/bash, destroy
-  1. --img flag
+  1. Image flags (--img, --dh-img, --ghcr-img)
                       ./img2num --img <image:tag> <command>
+                      ./img2num --dh-img <tag> <command>      --> Resolves to: ryanmillard/img2num-dev:<tag>
+                      ./img2num --ghcr-img <tag> <command>    --> Resolves to: ghcr.io/ryan-millard/img2num-dev:<tag>
   2. IMG2NUM_IMAGE env var
                       IMG2NUM_IMAGE=<image:tag> ./img2num <command>
   3. Last image used with this script (in .img2num-state file)
