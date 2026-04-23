@@ -19,7 +19,7 @@ while [ $# -gt 0 ]; do
       flag="$1"
       shift
 
-      if [ -z "$1" ]; then
+      if [ $# -eq 0 ] || [ -z "$1" ]; then
         echo "Error: $flag requires a tag argument." >&2
         exit 1
       fi
