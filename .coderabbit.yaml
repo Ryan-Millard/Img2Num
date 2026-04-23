@@ -129,11 +129,13 @@ reviews:
     title:
       mode: error
       requirements: >
-        The title must be specific and descriptive. Follow Conventional Commit prefixes
-        where applicable: feat:, fix:, docs:, chore:, refactor:, perf:, test:.
-        Vague titles such as "Update files", "Fix bug", "Chore", or "Basic maintenance"
-        are NOT acceptable — they must describe the actual change. We have a workflow
-        that handles this, but you should assist with edge-cases where it doesn't.
+        - The title must be specific and descriptive. Follow Conventional Commit prefixes
+          where applicable: feat:, fix:, docs:, chore:, refactor:, perf:, test:.
+        - Vague titles such as "Update files", "Fix bug", "Chore", or "Basic maintenance"
+          are NOT acceptable — they must describe the actual change. We have a workflow
+          that handles this, but you should assist with edge-cases where it doesn't.
+        - Reference the [Conventional Commits Gist](https://gist.github.com/Zekfad/f51cb06ac76e2457f11c80ed705c95a3)
+          if a PR does not conform to the requirements explained there.
 
     description:
       mode: error  # PRs with empty or boilerplate-only descriptions must not merge
@@ -311,3 +313,5 @@ code_generation:
           When generating C++ unit tests, use the testing framework already present
           in the project. Always suggest running tests via `./img2num` Docker wrapper
           commands rather than direct invocations.
+
+review_details: true
