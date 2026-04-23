@@ -4,8 +4,8 @@
 language: en-US
 
 reviews:
-  profile: assertive  # Img2Num has a C/C++ core — stricter feedback is warranted
-  request_changes_workflow: true  # Block merge until CodeRabbit comments are resolved
+  profile: assertive # Img2Num has a C/C++ core — stricter feedback is warranted
+  request_changes_workflow: true # Block merge until CodeRabbit comments are resolved
   high_level_summary: true
   high_level_summary_instructions: |
     Create concise release notes as a bullet-point list,
@@ -17,7 +17,7 @@ reviews:
 
   slop_detection:
     enabled: true
-    label: "slop"  # Applied when a PR looks like AI-generated spam
+    label: "slop" # Applied when a PR looks like AI-generated spam
 
   auto_apply_labels:
     enabled: true
@@ -38,7 +38,7 @@ reviews:
     - "!**/dist/**"
     - "!**/build/**"
     - "!pnpm-lock.yaml"
-    - "!**/versioned_docs/**"   # auto-generated Docusaurus versioned copies
+    - "!**/versioned_docs/**" # auto-generated Docusaurus versioned copies
 
   path_instructions:
     - path: "core/**/*.{cpp,c,h,hpp}"
@@ -138,7 +138,7 @@ reviews:
           if a PR does not conform to the requirements explained there.
 
     description:
-      mode: error  # PRs with empty or boilerplate-only descriptions must not merge
+      mode: error # PRs with empty or boilerplate-only descriptions must not merge
 
     issue_assessment:
       mode: warning
@@ -173,97 +173,97 @@ reviews:
     unit_tests:
       enabled: true
     simplify:
-      enabled: true  # Useful for the C++ core
+      enabled: true # Useful for the C++ core
 
   tools:
     # ── Relevant to Img2Num's stack ──────────────────────────────────────────
     clang:
-      enabled: true         # C/C++ static analysis (core, bindings, wasm)
+      enabled: true # C/C++ static analysis (core, bindings, wasm)
     cppcheck:
-      enabled: true         # C/C++ bug detection
+      enabled: true # C/C++ bug detection
     shellcheck:
-      enabled: true         # img2num shell script, .devcontainer/entrypoint.sh
+      enabled: true # img2num shell script, .devcontainer/entrypoint.sh
     psscriptanalyzer:
-      enabled: true         # img2num.ps1 PowerShell wrapper
+      enabled: true # img2num.ps1 PowerShell wrapper
     blinter:
-      enabled: true         # img2num.bat Windows batch wrapper
+      enabled: true # img2num.bat Windows batch wrapper
     hadolint:
-      enabled: true         # Dockerfile.dev
+      enabled: true # Dockerfile.dev
     eslint:
-      enabled: true         # bindings/js, packages/js, docs JS/TS
+      enabled: true # bindings/js, packages/js, docs JS/TS
     actionlint:
-      enabled: true         # .github/workflows/
+      enabled: true # .github/workflows/
     yamllint:
-      enabled: true         # .github/workflows/, dependabot.yml, labeler.yml
+      enabled: true # .github/workflows/, dependabot.yml, labeler.yml
     markdownlint:
-      enabled: true         # docs, CONTRIBUTING.md, README.md, etc.
+      enabled: true # docs, CONTRIBUTING.md, README.md, etc.
     gitleaks:
-      enabled: true         # Secret scanning
+      enabled: true # Secret scanning
     trufflehog:
-      enabled: true         # Secret scanning (with verification)
+      enabled: true # Secret scanning (with verification)
     osvScanner:
-      enabled: true         # Dependency vulnerability scanning (pnpm, CMake)
+      enabled: true # Dependency vulnerability scanning (pnpm, CMake)
     opengrep:
-      enabled: true         # Security pattern matching across all languages
+      enabled: true # Security pattern matching across all languages
     semgrep:
-      enabled: true         # Security/code-quality rules
+      enabled: true # Security/code-quality rules
     dotenvLint:
-      enabled: true         # docs/.env.example
+      enabled: true # docs/.env.example
     htmlhint:
-      enabled: true         # example-apps/react-js HTML
+      enabled: true # example-apps/react-js HTML
     github-checks:
       enabled: true
-      timeout_ms: 120000    # Give CI checks up to 2 min before review proceeds
+      timeout_ms: 120000 # Give CI checks up to 2 min before review proceeds
     ast-grep:
       essential_rules: true # General AST pattern rules
 
     # ── Disable tools not applicable to this repo ────────────────────────────
     biome:
-      enabled: false        # Project uses ESLint + Prettier, not Biome
+      enabled: false # Project uses ESLint + Prettier, not Biome
     ruff:
-      enabled: false        # No Python
+      enabled: false # No Python
     flake8:
       enabled: false
     pylint:
       enabled: false
     swiftlint:
-      enabled: false        # No Swift
+      enabled: false # No Swift
     phpstan:
-      enabled: false        # No PHP
+      enabled: false # No PHP
     phpmd:
       enabled: false
     phpcs:
       enabled: false
     golangci-lint:
-      enabled: false        # No Go
+      enabled: false # No Go
     rubocop:
-      enabled: false        # No Ruby
+      enabled: false # No Ruby
     brakeman:
       enabled: false
     detekt:
-      enabled: false        # No Kotlin
+      enabled: false # No Kotlin
     buf:
-      enabled: false        # No Protobuf
+      enabled: false # No Protobuf
     regal:
-      enabled: false        # No Rego/OPA
+      enabled: false # No Rego/OPA
     pmd:
-      enabled: false        # No Java
+      enabled: false # No Java
     clippy:
-      enabled: false        # No Rust
+      enabled: false # No Rust
     sqlfluff:
-      enabled: false        # No SQL
+      enabled: false # No SQL
     tflint:
-      enabled: false        # No Terraform
+      enabled: false # No Terraform
     checkov:
-      enabled: false        # No IaC (beyond Dockerfile, covered by Hadolint)
+      enabled: false # No IaC (beyond Dockerfile, covered by Hadolint)
     trivy:
-      enabled: false        # No IaC
+      enabled: false # No IaC
     prismaLint:
-      enabled: false        # No Prisma
+      enabled: false # No Prisma
     circleci:
-      enabled: false        # Using GitHub Actions, not CircleCI
+      enabled: false # Using GitHub Actions, not CircleCI
     luacheck:
-      enabled: false        # No Lua
+      enabled: false # No Lua
     shopifyThemeCheck:
       enabled: false
     smartyLint:
@@ -271,7 +271,7 @@ reviews:
     emberTemplateLint:
       enabled: false
     fortitudeLint:
-      enabled: false        # No Fortran
+      enabled: false # No Fortran
 
 knowledge_base:
   web_search:
@@ -285,7 +285,7 @@ knowledge_base:
       - ".editorconfig"
       - "docs/docs/contributing/**"
   learnings:
-    scope: local   # Keep learnings scoped to this repo (it's public)
+    scope: local # Keep learnings scoped to this repo (it's public)
   issues:
     scope: local
   pull_requests:
