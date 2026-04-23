@@ -4,6 +4,7 @@ import path from "path";
 import { imagetools } from "vite-imagetools";
 import generateContributorCreditsPlugin from "./scripts/generate-contributor-credits-json.js";
 import VitePluginSitemap from "vite-plugin-sitemap";
+import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
   base: "/Img2Num/", // important for GitHub Pages
@@ -31,5 +32,6 @@ export default defineConfig({
       dynamicRoutes: ["/", "/credits"],
     }),
     generateContributorCreditsPlugin(),
+    svgr()
   ],
 });

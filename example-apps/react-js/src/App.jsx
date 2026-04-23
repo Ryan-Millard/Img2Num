@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import useGoogleAnalytics from "@hooks/useGoogleAnalytics";
 import NavBar from "@components/NavBar";
 import Home from "@pages/Home";
