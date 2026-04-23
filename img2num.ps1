@@ -91,10 +91,10 @@ function Load-Image {
         return $env:IMG2NUM_IMAGE
     }
     if (Test-Path $IMG2NUM_STATE_FILE) {
-        $line = Get-Content -Path $IMG2NUM_STATE_FILE -TotalCount 1
-        if ($line -match '^IMAGE=(.+)$') {
-            $val = $Matches[1].Trim()
-            if ($val) { return $val }
+      $match = Select-String -Path $IMG2NUM_STATE_FILE -Pattern '^IMAGE=(.*)$' | Select-Object -First 1
+        if ($match) {
+          $val = $match.Matches[0].Groups[1].Value.Trim()
+          if ($val) { return $val }
         }
     }
     return $IMG2NUM_DEFAULT_IMAGE
