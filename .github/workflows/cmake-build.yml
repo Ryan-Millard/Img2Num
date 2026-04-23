@@ -82,9 +82,9 @@ jobs:
         run: |
           uv venv
           . .venv/bin/activate
-          
+
       - name: Install build dependencies (only for Github Actions)
-        run: uv pip install scikit_build_core
+        run: uv pip install scikit_build_core numpy
 
       - name: Run uv sync
         run: uv sync --no-build-isolation
