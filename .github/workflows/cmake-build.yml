@@ -78,6 +78,9 @@ jobs:
           cmake --version
           clang --version
 
+      - name: Install build dependencies (only for Github Actions)
+        run: python3 -m pip install scikit-build-core
+
       - name: Run uv sync
         run: uv sync --no-build-isolation
       
