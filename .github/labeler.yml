@@ -12,7 +12,6 @@ docs:
       - "docs/**"
       - "**/*.md"
       - "**/*.dox"
-      - "!CHANGELOG.md"
 
 ci:
   - changed-files:
