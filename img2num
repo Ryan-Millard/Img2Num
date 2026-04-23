@@ -32,10 +32,14 @@ IMG2NUM_STATE_FILE="$(dirname "$0")/.img2num-state"
 
 save_state() {
   local image="$1"
-  if grep -q '^IMAGE=' "$IMG2NUM_STATE_FILE" 2>/dev/null; then
-    sed -i "s|^IMAGE=.*|IMAGE=$image|" "$IMG2NUM_STATE_FILE"
+  local tmp
+  tmp="$(mktemp)"
+  if [ -f "$IMG2NUM_STATE_FILE" ] && grep -q '^IMAGE=' "$IMG2NUM_STATE_FILE"; then
+    awk -v img="$image" 'BEGIN{done=0} /^IMAGE=/ && !done {print "IMAGE=" img; done=1; next} {print}' \
+      "$IMG2NUM_STATE_FILE" > "$tmp" && mv "$tmp" "$IMG2NUM_STATE_FILE"
   else
     printf 'IMAGE=%s\n' "$image" >> "$IMG2NUM_STATE_FILE"
+    rm -f "$tmp"
   fi
 }
 
