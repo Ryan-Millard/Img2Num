@@ -78,6 +78,11 @@ jobs:
           cmake --version
           clang --version
 
+      - name: Set up Python virtual environment
+        run: |
+          uv venv
+          . .venv/bin/activate
+          
       - name: Install build dependencies (only for Github Actions)
         run: uv pip install scikit_build_core
 
