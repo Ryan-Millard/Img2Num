@@ -80,3 +80,6 @@ jobs:
 
       - name: Run uv sync
         run: uv sync
+      
+      - name: Run img2num build
+        run: uv run python3 -c "import img2num;"
