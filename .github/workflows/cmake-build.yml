@@ -91,3 +91,9 @@ jobs:
       
       - name: Run img2num build
         run: uv run python3 -c "import img2num;"
+
+      - name: Upload Python build artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: py-build
+          path: packages/js/build-py/
