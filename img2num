@@ -105,10 +105,10 @@ run_in_container() {
   save_state "$image"
   export IMG2NUM_IMAGE="$image"
   docker compose up -d dev
-  docker compose ps dev >/dev/null 2>&1 || {
+  if [ -z "$(docker compose ps -q --status running dev 2>/dev/null)" ]; then
     echo "Error: container 'dev' is not running." >&2
     exit 1
-  }
+  fi
   docker compose exec dev "$@"
 }
 
