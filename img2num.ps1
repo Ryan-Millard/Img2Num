@@ -112,9 +112,9 @@ function Run-InContainer {
     Save-State -Image $image
     $env:IMG2NUM_IMAGE = $image
     docker compose up -d dev
-    $ps = docker compose ps dev 2>&1
-    if ($LASTEXITCODE -ne 0) {
-        Write-Error "Error: container 'dev' is not running."
+    $ps = docker compose ps -q --status running dev 2>&1
+    if ([string]::IsNullOrWhiteSpace($ps)) {
+      Write-Error "Error: container 'dev' is not running."
         exit 1
     }
     docker compose exec dev @CmdArgs
