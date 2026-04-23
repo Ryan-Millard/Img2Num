@@ -149,8 +149,14 @@ case "$MODE" in
       docker image inspect "$IMAGE_TO_REMOVE" >/dev/null 2>&1 && \
       docker rmi "$IMAGE_TO_REMOVE" 2>/dev/null || true
       # Clear the persisted image so the next `up` falls back to the default
-      sed -i 's/^IMAGE=.*/IMAGE=/' "$IMG2NUM_STATE_FILE" 2>/dev/null \
-        || printf 'IMAGE=\n' >> "$IMG2NUM_STATE_FILE"
+      if [ -f "$IMG2NUM_STATE_FILE" ]; then
+        tmp="$(mktemp)"
+        trap 'rm -f "$tmp"' EXIT
+        sed 's/^IMAGE=.*/IMAGE=/' "$IMG2NUM_STATE_FILE" > "$tmp" && mv "$tmp" "$IMG2NUM_STATE_FILE"
+        trap - EXIT
+      else
+        printf 'IMAGE=\n' >> "$IMG2NUM_STATE_FILE"
+      fi
     fi
     ;;
 
