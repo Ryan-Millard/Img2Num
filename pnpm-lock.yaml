@@ -69,9 +69,6 @@ importers:
       react-dom:
         specifier: ^19.2.5
         version: 19.2.5(react@19.2.5)
-      react-helmet-async:
-        specifier: ^3.0.0
-        version: 3.0.0(react@19.2.5)
       rehype-katex:
         specifier: ^7.0.1
         version: 7.0.1
@@ -234,11 +231,7 @@ importers:
         specifier: ^4.1.5
         version: 4.1.5(@types/node@25.6.0)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@25.6.0)(jiti@1.21.7)(terser@5.46.2)(yaml@2.8.3))
 
-  packages/js:
-    dependencies:
-      react-helmet-async:
-        specifier: ^3.0.0
-        version: 3.0.0(react@19.2.5)
+  packages/js: {}
 
   scripts/img2num-dev-scripts:
     dependencies:
@@ -248,9 +241,6 @@ importers:
       fuzzy:
         specifier: ^0.1.3
         version: 0.1.3
-      react-helmet-async:
-        specifier: ^3.0.0
-        version: 3.0.0(react@19.2.5)
       readline:
         specifier: ^1.3.0
         version: 1.3.0
