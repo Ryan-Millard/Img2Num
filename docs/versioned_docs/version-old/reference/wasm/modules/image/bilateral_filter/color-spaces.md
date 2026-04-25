@@ -96,7 +96,7 @@ $$
 
 ### Why the Same Sigma Produces Different Results
 
-import RgbVsLabRangeKernel from "@site/src/components/docs/reference/wasm/modules/image/bilateral_filter/RgbVsLabRangeKernel";
+import RgbVsLabRangeKernel from '@site/src/components/docs/reference/wasm/modules/image/bilateral_filter/RgbVsLabRangeKernel';
 
 <RgbVsLabRangeKernel />
 

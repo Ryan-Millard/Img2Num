@@ -1,6 +1,6 @@
 # Docs
 
-import Hedgehog from "@site/src/components/Hedgehog";
+import Hedgehog from '@site/src/components/Hedgehog';
 
 :::danger Help Wanted!
 We need help with writing manual docs.

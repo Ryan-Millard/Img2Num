@@ -4,7 +4,7 @@ description: Credits for resources used in Img2Num, including images, GIFs, and 
 slug: /credits
 ---
 
-import Hedgehog from "@site/src/components/Hedgehog";
+import Hedgehog from '@site/src/components/Hedgehog';
 
 # Credits
 

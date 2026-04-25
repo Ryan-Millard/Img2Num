@@ -168,7 +168,7 @@ But more importantly:
 
 Bilateral filtering computes a **range weight** for each pixel in the kernel based on the color difference between the center pixel and its neighbor.
 
-import RgbVsLabRangeKernel from "@site/src/components/docs/reference/wasm/modules/image/bilateral_filter/RgbVsLabRangeKernel";
+import RgbVsLabRangeKernel from '@site/src/components/docs/reference/wasm/modules/image/bilateral_filter/RgbVsLabRangeKernel';
 
 <RgbVsLabRangeKernel />
 

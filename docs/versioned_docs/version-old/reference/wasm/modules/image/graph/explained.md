@@ -76,7 +76,10 @@ Now that small nodes have been pruned, each `Node` can compute its own contour u
 
 While Suzuki-Abe contour tracing correctly captures topological data, adjacent nodes end up with contours offset by ~1 pixel when mapped to SVG coordinates.
 
-<div align="center">See [this PR discussion](https://github.com/Ryan-Millard/Img2Num/pull/245#issuecomment-3807553622) for details on why this happens. ![ContoursZ](./img/contours_zoom.png)</div>
+<div align="center">
+See [this PR discussion](https://github.com/Ryan-Millard/Img2Num/pull/245#issuecomment-3807553622) for details on why this happens.
+![ContoursZ](./img/contours_zoom.png)
+</div>
 
 :::
 
@@ -87,8 +90,16 @@ To solve this problem `Graph` has to overlap neighboring contours. For this `Nod
 Before gap management
 
 <details>
-  <summary>Pull the code locally from PR #238</summary>
-  ```bash # 1. Clone the repo (if you haven't already) git clone https://github.com/Ryan-Millard/Img2Num.git cd Img2Num # 2. Fetch the specific commit from the PR git fetch origin 9eb23f9a56edaeec95e2dfcfc8389b11bfd777b6 # 3. Create a local branch pointing at it git checkout -b try-pr-238 9eb23f9a56edaeec95e2dfcfc8389b11bfd777b6 ```
+<summary>Pull the code locally from PR #238</summary>
+```bash
+# 1. Clone the repo (if you haven't already)
+git clone https://github.com/Ryan-Millard/Img2Num.git
+cd Img2Num
+# 2. Fetch the specific commit from the PR
+git fetch origin 9eb23f9a56edaeec95e2dfcfc8389b11bfd777b6
+# 3. Create a local branch pointing at it
+git checkout -b try-pr-238 9eb23f9a56edaeec95e2dfcfc8389b11bfd777b6
+```
 </details>
 
 ![gaps](./img/cow_contours_gap.png)
