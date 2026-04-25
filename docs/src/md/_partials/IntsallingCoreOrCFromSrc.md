@@ -1,5 +1,5 @@
-{/* DO NOT CHANGE THE PAGE TITLE CHECK WITHOUT VERIFYING THAT THE PAGES THAT DEPEND ON THIS AREN'T BROKEN */}
-{/* This partial is only compatible with a few pages. It is not recommended that you use it */}
+{/_ DO NOT CHANGE THE PAGE TITLE CHECK WITHOUT VERIFYING THAT THE PAGES THAT DEPEND ON THIS AREN'T BROKEN _/}
+{/_ This partial is only compatible with a few pages. It is not recommended that you use it _/}
 
 import CodeBlock from '@theme/CodeBlock';
 import { useDoc } from '@docusaurus/plugin-content-docs/client';

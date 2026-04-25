@@ -7,9 +7,7 @@ import ThemeSwitch from "@components/ThemeSwitch";
 import Tooltip from "@components/Tooltip";
 import GitHubSvg from "@assets/GitHub.svg?react";
 
-const GitHub = ({ size = 16, ...props }) => (
-  <GitHubSvg width={size} height={size} {...props} />
-);
+const GitHub = ({ size = 16, ...props }) => <GitHubSvg width={size} height={size} {...props} />;
 
 const INTERNAL_LINKS = [
   { path: "/", label: "Home", icon: Home, tooltip: "Go to the home page" },
