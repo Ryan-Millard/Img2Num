@@ -13,7 +13,7 @@ import rehypeKatex from "rehype-katex";
 import docusaurusPluginTypeDocConfig from "./plugins/docusaurusPluginTypeDocConfig.js";
 
 const require = createRequire(import.meta.url);
-require("dotenv").config();
+require("dotenv").config({ quiet: true });
 
 const hasAlgoliaEnvDefined = process.env.ALGOLIA_APP_ID && process.env.ALGOLIA_API_KEY && process.env.ALGOLIA_INDEX_NAME;
 const algolia = hasAlgoliaEnvDefined
