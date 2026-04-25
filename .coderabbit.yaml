@@ -1,0 +1,317 @@
+# .coderabbit.yaml — CodeRabbit configuration for Img2Num
+# Docs: https://docs.coderabbit.ai/
+
+language: en-US
+
+reviews:
+  profile: assertive # Img2Num has a C/C++ core — stricter feedback is warranted
+  request_changes_workflow: true # Block merge until CodeRabbit comments are resolved
+  high_level_summary: true
+  high_level_summary_instructions: |
+    Create concise release notes as a bullet-point list,
+    followed by a Markdown table showing lines added and removed by each contributing author.
+    Remember to frequently update the high-level summary when code changes.
+  high_level_summary_in_walkthrough: true
+  collapse_walkthrough: false
+  poem: true
+
+  slop_detection:
+    enabled: true
+    label: "slop" # Applied when a PR looks like AI-generated spam
+
+  auto_apply_labels:
+    enabled: true
+
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    drafts: false
+    ignore_title_keywords:
+      - "WIP"
+      - "wip"
+      - "[draft]"
+
+  # Exclude vendored / generated / lockfile paths from review
+  path_filters:
+    - "!third_party/**"
+    - "!**/node_modules/**"
+    - "!**/dist/**"
+    - "!**/build/**"
+    - "!pnpm-lock.yaml"
+    - "!**/versioned_docs/**" # auto-generated Docusaurus versioned copies
+
+  path_instructions:
+    - path: "core/**/*.{cpp,c,h,hpp}"
+      instructions: |
+        This is the Img2Num core C/C++ library. Review for:
+        - Memory safety: null pointer dereferences, use-after-free, buffer overflows.
+        - Correct RAII usage and smart pointer idioms.
+        - Adherence to the .clang-format style; formatting must be applied via
+          `./img2num format-cpp` (or `./img2num format-wasm` for WASM modules),
+          NOT by calling clang-format directly.
+        - When suggesting build/test steps, always use the Docker-first wrapper scripts
+          (`./img2num`, `img2num.ps1`, or `img2num.bat`) rather than direct tool invocations,
+          since contributors may not have dependencies installed locally.
+        - Must have Doxygen docstrings in the API (`img2num.h`) files. This is important!
+
+    - path: "**/*.{cpp,c,h,hpp}"
+      instructions: |
+        - For any C/C++ code outside core/ (e.g. bindings, example-apps), apply the same
+          memory-safety and style standards as the core. Formatting via `./img2num format-cpp`.
+        - Doxygen docstrings are required.
+
+    - path: "docs/docs/**"
+      instructions: |
+        All documentation must follow Docusaurus conventions (docs/docs/ folder structure).
+        Do NOT suggest creating strangely-named markdown files at the repository root
+        (e.g. COMPREHENSIVE_TEST_REPORT.md, DELIVERABLES.md, SUMMARY.md).
+        New docs belong either as a dedicated Docusaurus category or integrated into an
+        existing category such as project-scripts. Verify valid frontmatter
+        (title, sidebar_label, etc.) and correct sidebar wiring.
+
+    - path: "docs/**/*.{js,jsx,ts,tsx,mdx}"
+      instructions: |
+        This is the Docusaurus site source. Check for MDX compatibility, correct
+        plugin usage, and valid imports. Review docusaurus.config.js changes carefully
+        for broken routing or plugin config regressions.
+
+    - path: ".github/workflows/**"
+      instructions: |
+        GitHub Actions workflows. Review for:
+        - SHA-pinned action versions for third-party actions (security best practice).
+        - Secrets accessed only via ${{ secrets.* }} — never hardcoded.
+        - Least-privilege permissions on each job/workflow.
+        - Correct job dependency ordering (needs:) and if/condition logic.
+
+    - path: "scripts/**"
+      instructions: |
+        These are the Img2Num developer scripts. When referencing CLI commands in review
+        comments, always prefer the top-level `./img2num` (shell), `img2num.ps1` (PowerShell),
+        or `img2num.bat` (CMD) wrapper over direct tool invocations, to support contributors
+        using Docker.
+
+    - path: "**/*.sh"
+      instructions: |
+        Shell scripts in this repository. Flag ShellCheck issues and POSIX compatibility
+        problems. When suggesting how to execute scripts, prefer the `./img2num` wrapper.
+
+    - path: "img2num.ps1"
+      instructions: |
+        PowerShell wrapper script for the img2num CLI. Ensure PSScriptAnalyzer compliance
+        and that all Docker commands align with the shell/batch equivalents.
+
+    - path: "img2num.bat"
+      instructions: |
+        Windows batch wrapper for the img2num CLI. Check for common batch scripting pitfalls
+        (quoting, delayed expansion, exit code propagation).
+
+    - path: "Dockerfile*"
+      instructions: |
+        Review with Hadolint rules. Prefer multi-stage builds, minimal base images,
+        and pinned image tags. Ensure no secrets are baked into layers.
+
+    - path: "bindings/**"
+      instructions: |
+        Language bindings for the Img2Num library. Ensure the public API surface matches
+        the core C/C++ headers and that error propagation is handled correctly for each
+        binding language. Also ensure the relevant docstrings are present to enable
+        auto-generation of documentation.
+
+    - path: "example-apps/**"
+      instructions: |
+        - Example applications. These are for demonstration; keep them minimal and ensure
+          they correctly reflect the public API. Flag any use of internal/private APIs.
+        - **IMPORTANT:** These example apps must be a good reflection of how to use Img2Num's
+          library, which means that they need good comments and must have clean code. This
+          is meant to be external and is designed for others to use to get started.
+
+  pre_merge_checks:
+    title:
+      mode: error
+      requirements: >
+        - The title must be specific and descriptive. Follow Conventional Commit prefixes
+          where applicable: feat:, fix:, docs:, chore:, refactor:, perf:, test:.
+        - Vague titles such as "Update files", "Fix bug", "Chore", or "Basic maintenance"
+          are NOT acceptable — they must describe the actual change. We have a workflow
+          that handles this, but you should assist with edge-cases where it doesn't.
+        - Reference the [Conventional Commits Gist](https://gist.github.com/Zekfad/f51cb06ac76e2457f11c80ed705c95a3)
+          if a PR does not conform to the requirements explained there.
+
+    description:
+      mode: error # PRs with empty or boilerplate-only descriptions must not merge
+
+    issue_assessment:
+      mode: warning
+
+    custom_checks:
+      - name: No AI Slop PR Description
+        mode: error
+        instructions: |
+          Fail this check if the PR description contains generic AI-generated boilerplate
+          that does not describe the specific changes in this PR. Examples of failing text:
+          - "This contribution was made as part of an open-source documentation improvement initiative."
+          - "All changes are meant to be helpful additions to the project."
+          - Any templated language that could apply to any PR without modification.
+          The description must specifically explain WHAT was changed and WHY, for this PR.
+          Additionally, be wary of Markdown-only pull requests - they are often signs of slop - but
+          do not just blindly flag PRs that are Markdown-only.
+
+      - name: No Strangely-Named Root Markdown Files
+        mode: error
+        instructions: |
+          Fail if the PR adds any unconventional markdown files directly at the repository
+          root. Only these files are acceptable at root level: README.md, CONTRIBUTING.md,
+          CODE_OF_CONDUCT.md, CHANGELOG.md, SECURITY.md, LICENSE (no extension).
+          Files such as COMPREHENSIVE_TEST_REPORT.md, DELIVERABLES.md, SUMMARY.md,
+          CHANGES_OVERVIEW.md, or similar should NEVER be created at the root - they belong
+          in the Docusaurus documentation and a link to them may be placed in the README.md
+          if it is absolutely relevant.
+
+  finishing_touches:
+    docstrings:
+      enabled: true
+    unit_tests:
+      enabled: true
+    simplify:
+      enabled: true # Useful for the C++ core
+
+  tools:
+    # ── Relevant to Img2Num's stack ──────────────────────────────────────────
+    clang:
+      enabled: true # C/C++ static analysis (core, bindings, wasm)
+    cppcheck:
+      enabled: true # C/C++ bug detection
+    shellcheck:
+      enabled: true # img2num shell script, .devcontainer/entrypoint.sh
+    psscriptanalyzer:
+      enabled: true # img2num.ps1 PowerShell wrapper
+    blinter:
+      enabled: true # img2num.bat Windows batch wrapper
+    hadolint:
+      enabled: true # Dockerfile.dev
+    eslint:
+      enabled: true # bindings/js, packages/js, docs JS/TS
+    actionlint:
+      enabled: true # .github/workflows/
+    yamllint:
+      enabled: true # .github/workflows/, dependabot.yml, labeler.yml
+    markdownlint:
+      enabled: true # docs, CONTRIBUTING.md, README.md, etc.
+    gitleaks:
+      enabled: true # Secret scanning
+    trufflehog:
+      enabled: true # Secret scanning (with verification)
+    osvScanner:
+      enabled: true # Dependency vulnerability scanning (pnpm, CMake)
+    opengrep:
+      enabled: true # Security pattern matching across all languages
+    semgrep:
+      enabled: true # Security/code-quality rules
+    dotenvLint:
+      enabled: true # docs/.env.example
+    htmlhint:
+      enabled: true # example-apps/react-js HTML
+    github-checks:
+      enabled: true
+      timeout_ms: 120000 # Give CI checks up to 2 min before review proceeds
+    ast-grep:
+      essential_rules: true # General AST pattern rules
+
+    # ── Disable tools not applicable to this repo ────────────────────────────
+    biome:
+      enabled: false # Project uses ESLint + Prettier, not Biome
+    ruff:
+      enabled: false # No Python
+    flake8:
+      enabled: false
+    pylint:
+      enabled: false
+    swiftlint:
+      enabled: false # No Swift
+    phpstan:
+      enabled: false # No PHP
+    phpmd:
+      enabled: false
+    phpcs:
+      enabled: false
+    golangci-lint:
+      enabled: false # No Go
+    rubocop:
+      enabled: false # No Ruby
+    brakeman:
+      enabled: false
+    detekt:
+      enabled: false # No Kotlin
+    buf:
+      enabled: false # No Protobuf
+    regal:
+      enabled: false # No Rego/OPA
+    pmd:
+      enabled: false # No Java
+    clippy:
+      enabled: false # No Rust
+    sqlfluff:
+      enabled: false # No SQL
+    tflint:
+      enabled: false # No Terraform
+    checkov:
+      enabled: false # No IaC (beyond Dockerfile, covered by Hadolint)
+    trivy:
+      enabled: false # No IaC
+    prismaLint:
+      enabled: false # No Prisma
+    circleci:
+      enabled: false # Using GitHub Actions, not CircleCI
+    luacheck:
+      enabled: false # No Lua
+    shopifyThemeCheck:
+      enabled: false
+    smartyLint:
+      enabled: false
+    emberTemplateLint:
+      enabled: false
+    fortitudeLint:
+      enabled: false # No Fortran
+
+knowledge_base:
+  web_search:
+    enabled: true
+  code_guidelines:
+    enabled: true
+    # Point at CONTRIBUTING.md so CodeRabbit learns your contribution standards
+    filePatterns:
+      - "CONTRIBUTING.md"
+      - ".clang-format"
+      - ".editorconfig"
+      - "docs/docs/contributing/**"
+  learnings:
+    scope: local # Keep learnings scoped to this repo (it's public)
+  issues:
+    scope: local
+  pull_requests:
+    scope: local
+
+code_generation:
+  docstrings:
+    language: en-US
+    path_instructions:
+      - path: "core/**/*.{cpp,c,h,hpp}"
+        instructions: |
+          Generate Doxygen-compatible docstrings using the /** ... */ block style.
+          Follow the conventions set in Doxyfile.public for public API headers
+          and Doxyfile.internal for internal implementation. Use `@param`, `@return`,
+          `@brief`, `@note` tags consistently.
+      - path: "bindings/js/**/*.{js,ts}"
+        instructions: |
+          Generate JSDoc-compatible docstrings using /** ... */ style with
+          `@param`, `@returns`, and `@throws` tags.
+
+  unit_tests:
+    path_instructions:
+      - path: "core/**"
+        instructions: |
+          When generating C++ unit tests, use the testing framework already present
+          in the project. Always suggest running tests via `./img2num` Docker wrapper
+          commands rather than direct invocations.
+
+review_details: true
