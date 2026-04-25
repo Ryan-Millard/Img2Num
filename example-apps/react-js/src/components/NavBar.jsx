@@ -5,7 +5,11 @@ import styles from "./NavBar.module.css";
 import GlassCard from "@components/GlassCard";
 import ThemeSwitch from "@components/ThemeSwitch";
 import Tooltip from "@components/Tooltip";
-import GitHub from "@assets/GitHub.svg?react";
+import GitHubSvg from "@assets/GitHub.svg?react";
+
+const GitHub = ({ size = 16, ...props }) => (
+  <GitHubSvg width={size} height={size} {...props} />
+);
 
 const INTERNAL_LINKS = [
   { path: "/", label: "Home", icon: Home, tooltip: "Go to the home page" },
