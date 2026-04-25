@@ -6,16 +6,23 @@ description: >
   for easier navigation and code browsing.
 ---
 
-import FullscreenIframe from '@site/src/components/FullscreenIframe';
+import FullscreenIframe from "@site/src/components/FullscreenIframe";
 
 > Don't like iframes?
 > Visit the{' '}
-> <a href="/Img2Num/info/docs/c/api/" onClick={(e) => { e.preventDefault(); window.location.href = "/Img2Num/info/docs/c/api/"; }}> Doxygen documentation </a>{' '} directly.
+>
+> <a
+>   href="/Img2Num/info/docs/c/api/"
+>   onClick={(e) => {
+>     e.preventDefault();
+>     window.location.href = "/Img2Num/info/docs/c/api/";
+>   }}
+> >
+>   {" "}
+>   Doxygen documentation{" "}
+> </a> directly.
 
-<FullscreenIframe
-  src="/Img2Num/info/docs/c/api/"
-  title="C API Reference (Doxygen)"
-/>
+<FullscreenIframe src="/Img2Num/info/docs/c/api/" title="C API Reference (Doxygen)" />
 
 ## About this page
 

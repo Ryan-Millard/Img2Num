@@ -32,3 +32,14 @@ docs/static/js/api.json
 docs/docs/js/api/
 example-apps/react-js/src/data/contributor-credits.json
 third_party/
+.venv
+.img2num-state
+.npmrc
+LICENSE*
+example-apps/*-py/
+example-apps/*-cpp/
+example-apps/*-c/
+bindings/py/
+bindings/c/
+packages/py
+docs/static/

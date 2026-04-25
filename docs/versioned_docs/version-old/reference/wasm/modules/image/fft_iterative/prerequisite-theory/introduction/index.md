@@ -4,12 +4,12 @@ title: Introduction
 sidebar_position: 3
 ---
 
-import figOne from './img/continuous-sinusoid.png';
-import figTwo from './img/discrete-sinusoid.png';
+import figOne from "./img/continuous-sinusoid.png";
+import figTwo from "./img/discrete-sinusoid.png";
 
-import CodeBlock from '@theme/CodeBlock';
-import continuousSinusoid from '!!raw-loader!./python_scripts/continuous-sinusoid.py';
-import discreteSinusoid from '!!raw-loader!./python_scripts/discrete-sinusoid.py';
+import CodeBlock from "@theme/CodeBlock";
+import continuousSinusoid from "!!raw-loader!./python_scripts/continuous-sinusoid.py";
+import discreteSinusoid from "!!raw-loader!./python_scripts/discrete-sinusoid.py";
 
 Fourier techniques let us express any signal as a **sum of its constituent "pure" sinusoids** (frequencies), meaning:
 

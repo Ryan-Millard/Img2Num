@@ -4,9 +4,9 @@ title: How Fourier Transforms Work
 sidebar_position: 6
 ---
 
-import styles from './index.module.css';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import styles from "./index.module.css";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 To understand how Fourier transforms work “under the hood”, we must start by
 recognising the similarities between the Continuous Fourier Transform (CFT)

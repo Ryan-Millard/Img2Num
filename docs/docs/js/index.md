@@ -7,7 +7,7 @@ sidebar_position: 4
 > A high-performance raster-to-vector conversion library that transforms images into **SVGs**.
 > It is powered by WebAssembly (WASM) for speed, while providing easy-to-use JavaScript wrappers for integration into web or Node.js projects.
 
-import Features from '@site/src/md/\_partials/library-features.md';
+import Features from "@site/src/md/\_partials/library-features.md";
 
 <Features />
 
@@ -33,30 +33,14 @@ import Features from '@site/src/md/\_partials/library-features.md';
 
 ### Using a package manager
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 <Tabs defaultValue="npm">
-  <TabItem value="npm">
-    ```bash title="Run this in your terminal"
-    npm install img2num
-    ```
-  </TabItem>
-  <TabItem value="pnpm">
-    ```bash title="Run this in your terminal"
-    pnpm add img2num
-    ```
-  </TabItem>
-  <TabItem value="yarn">
-    ```bash title="Run this in your terminal"
-    yarn add img2num
-    ```
-  </TabItem>
-  <TabItem value="bun">
-    ```bash title="Run this in your terminal"
-    bun add img2num
-    ```
-  </TabItem>
+  <TabItem value="npm">```bash title="Run this in your terminal" npm install img2num ```</TabItem>
+  <TabItem value="pnpm">```bash title="Run this in your terminal" pnpm add img2num ```</TabItem>
+  <TabItem value="yarn">```bash title="Run this in your terminal" yarn add img2num ```</TabItem>
+  <TabItem value="bun">```bash title="Run this in your terminal" bun add img2num ```</TabItem>
 </Tabs>
 
 ### Using the jsDelivr CDN

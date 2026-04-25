@@ -5,8 +5,8 @@ sidebar_label: 🛠️ Setup & Dependencies
 sidebar_position: 1
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 ## Prerequisites
 
@@ -115,27 +115,16 @@ In future docs, assume that the commands are to be run in the Docker terminal.
 
 - `./img2num pnpm <args>` is a proxy to pnpm inside the Docker container's shell.
   <Tabs
-  defaultValue="root"
-  values={[
-  { label: 'Root', value: 'root' },
-  { label: 'Docs', value: 'docs' },
-  { label: 'React Example App', value: 'react-example' },
-  ]}>
-  <TabItem value="root">
-  `bash title="Fuzzy find scripts local to the root project"
-./img2num pnpm run help
-`
-  </TabItem>
-  <TabItem value="docs">
-  `bash title="Fuzzy find scripts local to the documentation"
-./img2num pnpm run -F docs help
-`
-  </TabItem>
-  <TabItem value="react-example">
-  `bash title="Fuzzy find scripts local to the React Example app"
-./img2num pnpm run -F react-example help
-`
-  </TabItem>
+    defaultValue="root"
+    values={[
+      { label: "Root", value: "root" },
+      { label: "Docs", value: "docs" },
+      { label: "React Example App", value: "react-example" },
+    ]}
+  >
+    <TabItem value="root">`bash title="Fuzzy find scripts local to the root project" ./img2num pnpm run help `</TabItem>
+    <TabItem value="docs">`bash title="Fuzzy find scripts local to the documentation" ./img2num pnpm run -F docs help `</TabItem>
+    <TabItem value="react-example">`bash title="Fuzzy find scripts local to the React Example app" ./img2num pnpm run -F react-example help `</TabItem>
   </Tabs>
 - `./img2num sh`, `./img2num shell`, and `./img2num bash` all open the Docker container's interactive terminal.
 
