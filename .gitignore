@@ -6,6 +6,18 @@ node_modules/
 build*/
 install/
 
+# uv (Python)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+build/
+.venv/
+
+# uv (Python) and JavaScript
+dist/
+
 # Logs
 logs
 *.log
@@ -27,5 +39,6 @@ logs
 
 .env
 
+console-py_outputs
 # img2num destroy state
 .img2num-state

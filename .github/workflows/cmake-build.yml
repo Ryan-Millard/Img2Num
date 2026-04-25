@@ -61,3 +61,39 @@ jobs:
         with:
           name: build-c-cpp
           path: build-c-cpp/
+
+  build-py:
+    name: Build Python
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ inputs.image }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          submodules: true
+
+      - name: Check toolchain
+        run: |
+          cmake --version
+          clang --version
+
+      - name: Set up Python virtual environment
+        run: |
+          uv venv
+          . .venv/bin/activate
+
+      - name: Install build dependencies (only for Github Actions)
+        run: uv pip install scikit_build_core numpy
+
+      - name: Run uv sync
+        run: uv sync --no-build-isolation
+      
+      - name: Run img2num build
+        run: uv run python3 -c "import img2num;"
+
+      - name: Upload Python build artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: py-build
+          path: packages/py/build-py/
