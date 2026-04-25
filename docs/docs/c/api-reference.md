@@ -7,20 +7,21 @@ description: >
 ---
 
 import FullscreenIframe from "@site/src/components/FullscreenIframe";
+export const DocsLink = ({children}) => {
+  const clickHandler = (e) => {
+     e.preventDefault();
+     window.location.href = "/Img2Num/info/docs/c/api/";
+    };
+
+return (
+<a href="/Img2Num/info/docs/c/api/" onClick={clickHandler}>
+{children}
+</a>
+);
+};
 
 > Don't like iframes?
-> Visit the{' '}
->
-> <a
->   href="/Img2Num/info/docs/c/api/"
->   onClick={(e) => {
->     e.preventDefault();
->     window.location.href = "/Img2Num/info/docs/c/api/";
->   }}
-> >
->   {" "}
->   Doxygen documentation{" "}
-> </a> directly.
+> Visit the{' '} <DocsLink>Doxygen documentation</DocsLink> directly.
 
 <FullscreenIframe src="/Img2Num/info/docs/c/api/" title="C API Reference (Doxygen)" />
 
