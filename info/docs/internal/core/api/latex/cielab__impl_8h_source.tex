@@ -209,14 +209,19 @@
 \DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00205}00205\ \ \ \ \ Tout\ b\{rgba.blue\};}
 \DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00206}00206\ }
 \DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00207}00207\ \ \ \ \ lab\_to\_rgb<Tin,\ Tout>(laba.l,\ laba.a,\ laba.b,\ r,\ g,\ b);}
-\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00208}00208\ \ \ \ \ rgba.alpha\ =\ \textcolor{keyword}{static\_cast<}Tout\textcolor{keyword}{>}(laba.alpha);}
-\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00209}00209\ \}}
-\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00210}00210\ }
-\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00211}00211\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Tin,\ \textcolor{keyword}{typename}\ Tout>}
-\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00212}00212\ \textcolor{keywordtype}{void}\ lab\_to\_rgb(\textcolor{keyword}{const}\ \mbox{\hyperlink{structImageLib_1_1LABPixel}{ImageLib::LABPixel<Tin>}}\ \&lab,\ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{ImageLib::RGBPixel<Tout>}}\ \&rgb)\ \{}
-\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00213}00213\ \ \ \ \ lab\_to\_rgb<Tin,\ Tout>(lab.l,\ lab.a,\ lab.b,\ rgb.red,\ rgb.green,\ rgb.blue);}
+\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00208}00208\ }
+\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00209}00209\ \ \ \ \ rgba.red\ =\ r;}
+\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00210}00210\ \ \ \ \ rgba.green\ =\ g;}
+\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00211}00211\ \ \ \ \ rgba.blue\ =\ b;}
+\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00212}00212\ }
+\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00213}00213\ \ \ \ \ rgba.alpha\ =\ \textcolor{keyword}{static\_cast<}Tout\textcolor{keyword}{>}(laba.alpha);}
 \DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00214}00214\ \}}
 \DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00215}00215\ }
-\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00216}00216\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00216}00216\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Tin,\ \textcolor{keyword}{typename}\ Tout>}
+\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00217}00217\ \textcolor{keywordtype}{void}\ lab\_to\_rgb(\textcolor{keyword}{const}\ \mbox{\hyperlink{structImageLib_1_1LABPixel}{ImageLib::LABPixel<Tin>}}\ \&lab,\ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{ImageLib::RGBPixel<Tout>}}\ \&rgb)\ \{}
+\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00218}00218\ \ \ \ \ lab\_to\_rgb<Tin,\ Tout>(lab.l,\ lab.a,\ lab.b,\ rgb.red,\ rgb.green,\ rgb.blue);}
+\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00219}00219\ \}}
+\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00220}00220\ }
+\DoxyCodeLine{\Hypertarget{cielab__impl_8h_source_l00221}00221\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}
