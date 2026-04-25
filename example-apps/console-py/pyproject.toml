@@ -1,0 +1,14 @@
+[project]
+name = "console-py"
+version = "0.0.0"
+description = "A simple console example app that demonstrates how to use Img2Num"
+dependencies = [
+  "numpy",
+  "opencv-python"
+]
+
+[tool.uv]
+package = true
+
+[project.scripts]
+dev = "main:main"
