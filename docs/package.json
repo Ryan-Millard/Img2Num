@@ -129,6 +129,7 @@
   "devDependencies": {
     "@docusaurus/babel": "^3.10.0",
     "@docusaurus/core": "^3.10.0",
+    "@docusaurus/faster": "^3.10.0",
     "@docusaurus/module-type-aliases": "3.10.0",
     "@docusaurus/plugin-content-docs": "^3.10.0",
     "@docusaurus/preset-classic": "^3.10.0",
