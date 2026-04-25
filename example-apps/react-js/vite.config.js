@@ -32,6 +32,6 @@ export default defineConfig({
       dynamicRoutes: ["/", "/credits"],
     }),
     generateContributorCreditsPlugin(),
-    svgr()
+    svgr(),
   ],
 });

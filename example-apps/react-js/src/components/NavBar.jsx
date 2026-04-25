@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Home, Users, Info,  SquareArrowOutUpRight, Menu, X } from "lucide-react";
+import { Home, Users, Info, SquareArrowOutUpRight, Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./NavBar.module.css";
 import GlassCard from "@components/GlassCard";
