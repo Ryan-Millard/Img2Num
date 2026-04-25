@@ -14,6 +14,7 @@ export const DocsLink = ({children}) => {
     };
 
 return (
+
 <a href="/Img2Num/info/docs/c/api/" onClick={clickHandler}>
 {children}
 </a>
