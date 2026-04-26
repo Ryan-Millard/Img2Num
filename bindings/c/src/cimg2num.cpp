@@ -3,6 +3,8 @@
 #include "img2num.h"
 #include "img2num/Error.h"
 
+#include <string.h>
+
 extern "C" {
 
 void img2num_gaussian_blur_fft(uint8_t *image, size_t width, size_t height, double sigma) {

@@ -245,8 +245,6 @@ std::string labels_to_svg(const uint8_t *data, const int32_t *labels, const int 
     }
 
     // 7. Return SVG
-    std::string svg{contoursResultToSVG(all_contours, width, height)};
-
-    return svg;
+    return contoursResultToSVG(all_contours, width, height);
 }
 }  // namespace img2num

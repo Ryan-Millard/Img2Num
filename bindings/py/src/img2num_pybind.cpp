@@ -114,7 +114,7 @@ PYBIND11_MODULE(_img2num, m) {
             const int32_t* labels_ptr{static_cast<const int32_t*>(labels.request().ptr)};
             
             std::string svg{img2num::labels_to_svg(data_ptr, labels_ptr, width, height, min_area)};
-            pybind11::str svg_py_str(svg);
+            pybind11::str svg_py_str(std::move(svg));
             
             return svg_py_str;
         },
