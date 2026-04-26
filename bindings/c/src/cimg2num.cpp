@@ -43,7 +43,12 @@ char *img2num_labels_to_svg(const uint8_t *data, const int32_t *labels, const in
     char *result{nullptr};
     img2num::clear_last_error_and_catch(
         [&](const uint8_t *d, const int32_t *l, const int w, const int h, const int min_a) {
-            result = img2num::labels_to_svg(d, l, w, h, min_a);
+            std::string svg{img2num::labels_to_svg(d, l, w, h, min_a)};
+            result = static_cast<char *>(malloc(svg.size() + 1));
+            if (!result) {
+                return;  // Allocation failed
+            }
+            memcpy(result, svg.c_str(), svg.size() + 1);
         },
         data, labels, width, height, min_area);
     return result;
