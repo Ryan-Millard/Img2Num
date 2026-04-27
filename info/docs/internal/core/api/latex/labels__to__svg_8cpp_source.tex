@@ -190,7 +190,7 @@
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00186}00186\ \textcolor{comment}{from\ K-\/Means,\ should\ be\ 1/4\ the\ size\ of\ data\ since\ data\ is\ RGBA\ labels\ :\ width\ *}}
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00187}00187\ \textcolor{comment}{height\ :\ number\ of\ pixels\ in\ image\ =\ 1\ :\ 1\ :\ 1}}
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00188}00188\ \textcolor{comment}{*/}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00189}\mbox{\hyperlink{namespaceimg2num_a4c28d91338348dc56fe44eb0b0b830e1}{00189}}\ \textcolor{keywordtype}{char}\ *\mbox{\hyperlink{namespaceimg2num_a4c28d91338348dc56fe44eb0b0b830e1}{labels\_to\_svg}}(\textcolor{keyword}{const}\ uint8\_t\ *data,\ \textcolor{keyword}{const}\ int32\_t\ *labels,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00189}\mbox{\hyperlink{namespaceimg2num_a36b11018f26b33933eeeb31a7833ea3d}{00189}}\ std::string\ \mbox{\hyperlink{namespaceimg2num_a36b11018f26b33933eeeb31a7833ea3d}{labels\_to\_svg}}(\textcolor{keyword}{const}\ uint8\_t\ *data,\ \textcolor{keyword}{const}\ int32\_t\ *labels,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,}
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00190}00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_area)\ \{}
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00191}00191\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ num\_pixels\{width\ *\ height\};}
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00192}00192\ \ \ \ \ std::vector<int32\_t>\ labels\_vector\{labels,\ labels\ +\ num\_pixels\};}
@@ -249,17 +249,8 @@
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00245}00245\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00246}00246\ }
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00247}00247\ \ \ \ \ \textcolor{comment}{//\ 7.\ Return\ SVG}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00248}00248\ \ \ \ \ std::string\ svg\{contoursResultToSVG(all\_contours,\ width,\ height)\};}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00249}00249\ }
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00250}00250\ \ \ \ \ \textcolor{comment}{//\ Dynamic\ C-\/style\ allocation\ (since\ returned\ over\ C\ ABI)}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00251}00251\ \ \ \ \ \textcolor{keywordtype}{char}\ *res\_svg\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{char}\ *\textcolor{keyword}{>}(std::malloc(svg.size()\ +\ 1))\};}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00252}00252\ \ \ \ \ \textcolor{keywordflow}{if}\ (!res\_svg)\ \{}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00253}00253\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};\ \ \textcolor{comment}{//\ Allocation\ failed}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00254}00254\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00255}00255\ \ \ \ \ std::memcpy(res\_svg,\ svg.c\_str(),\ svg.size()\ +\ 1);}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00256}00256\ }
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00257}00257\ \ \ \ \ \textcolor{keywordflow}{return}\ res\_svg;}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00258}00258\ \}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00259}00259\ \}\ \ \textcolor{comment}{//\ namespace\ img2num}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00248}00248\ \ \ \ \ \textcolor{keywordflow}{return}\ contoursResultToSVG(all\_contours,\ width,\ height);}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00249}00249\ \}}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00250}00250\ \}\ \ \textcolor{comment}{//\ namespace\ img2num}}
 
 \end{DoxyCode}

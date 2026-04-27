@@ -287,7 +287,7 @@ $(document).ready(function(){initNavTree('labels__to__svg_8cpp_source.html','');
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="comment">height : number of pixels in image = 1 : 1 : 1</span></div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="comment">*/</span></div>
 <div class="foldopen" id="foldopen00189" data-start="{" data-end="}">
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno"><a class="line" href="namespaceimg2num.html#a4c28d91338348dc56fe44eb0b0b830e1">  189</a></span><span class="keywordtype">char</span> *<a class="code hl_function" href="namespaceimg2num.html#a4c28d91338348dc56fe44eb0b0b830e1">labels_to_svg</a>(<span class="keyword">const</span> uint8_t *data, <span class="keyword">const</span> int32_t *labels, <span class="keyword">const</span> <span class="keywordtype">int</span> width, <span class="keyword">const</span> <span class="keywordtype">int</span> height,</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno"><a class="line" href="namespaceimg2num.html#a36b11018f26b33933eeeb31a7833ea3d">  189</a></span>std::string <a class="code hl_function" href="namespaceimg2num.html#a36b11018f26b33933eeeb31a7833ea3d">labels_to_svg</a>(<span class="keyword">const</span> uint8_t *data, <span class="keyword">const</span> int32_t *labels, <span class="keyword">const</span> <span class="keywordtype">int</span> width, <span class="keyword">const</span> <span class="keywordtype">int</span> height,</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>                    <span class="keyword">const</span> <span class="keywordtype">int</span> min_area) {</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keyword">const</span> int32_t num_pixels{width * height};</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    std::vector&lt;int32_t&gt; labels_vector{labels, labels + num_pixels};</div>
@@ -346,24 +346,15 @@ $(document).ready(function(){initNavTree('labels__to__svg_8cpp_source.html','');
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    }</div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="comment">// 7. Return SVG</span></div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    std::string svg{contoursResultToSVG(all_contours, width, height)};</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="comment">// Dynamic C-style allocation (since returned over C ABI)</span></div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <span class="keywordtype">char</span> *res_svg{<span class="keyword">static_cast&lt;</span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(std::malloc(svg.size() + 1))};</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    <span class="keywordflow">if</span> (!res_svg) {</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;  <span class="comment">// Allocation failed</span></div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    }</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    std::memcpy(res_svg, svg.c_str(), svg.size() + 1);</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    <span class="keywordflow">return</span> res_svg;</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>}</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <span class="keywordflow">return</span> contoursResultToSVG(all_contours, width, height);</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>}</div>
 </div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>}  <span class="comment">// namespace img2num</span></div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>}  <span class="comment">// namespace img2num</span></div>
 <div class="ttc" id="aclassGraph_html"><div class="ttname"><a href="classGraph.html">Graph</a></div><div class="ttdef"><b>Definition</b> <a href="graph_8h_source.html#l00033">graph.h:33</a></div></div>
 <div class="ttc" id="aclassImageLib_1_1Image_html"><div class="ttname"><a href="classImageLib_1_1Image.html">ImageLib::Image</a></div><div class="ttdef"><b>Definition</b> <a href="Image_8h_source.html#l00014">Image.h:14</a></div></div>
 <div class="ttc" id="aimg2num_8h_html"><div class="ttname"><a href="img2num_8h.html">img2num.h</a></div><div class="ttdoc">Core image processing functions for img2num project.</div></div>
-<div class="ttc" id="anamespaceimg2num_html"><div class="ttname"><a href="namespaceimg2num.html">img2num</a></div><div class="ttdef"><b>Definition</b> <a href="img2num_8h_source.html#l00015">img2num.h:15</a></div></div>
-<div class="ttc" id="anamespaceimg2num_html_a4c28d91338348dc56fe44eb0b0b830e1"><div class="ttname"><a href="namespaceimg2num.html#a4c28d91338348dc56fe44eb0b0b830e1">img2num::labels_to_svg</a></div><div class="ttdeci">char * labels_to_svg(const uint8_t *data, const int32_t *labels, const int width, const int height, const int min_area)</div><div class="ttdoc">Convert labeled regions of an image into an SVG string.</div><div class="ttdef"><b>Definition</b> <a href="labels__to__svg_8cpp_source.html#l00189">labels_to_svg.cpp:189</a></div></div>
+<div class="ttc" id="anamespaceimg2num_html"><div class="ttname"><a href="namespaceimg2num.html">img2num</a></div><div class="ttdef"><b>Definition</b> <a href="img2num_8h_source.html#l00016">img2num.h:16</a></div></div>
+<div class="ttc" id="anamespaceimg2num_html_a36b11018f26b33933eeeb31a7833ea3d"><div class="ttname"><a href="namespaceimg2num.html#a36b11018f26b33933eeeb31a7833ea3d">img2num::labels_to_svg</a></div><div class="ttdeci">std::string labels_to_svg(const uint8_t *data, const int32_t *labels, const int width, const int height, const int min_area)</div><div class="ttdoc">Convert labeled regions of an image into an SVG string.</div><div class="ttdef"><b>Definition</b> <a href="labels__to__svg_8cpp_source.html#l00189">labels_to_svg.cpp:189</a></div></div>
 <div class="ttc" id="astructColoredContours_html"><div class="ttname"><a href="structColoredContours.html">ColoredContours</a></div><div class="ttdef"><b>Definition</b> <a href="contours_8h_source.html#l00040">contours.h:40</a></div></div>
 <div class="ttc" id="astructImageLib_1_1RGBAPixel_html"><div class="ttname"><a href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel</a></div><div class="ttdef"><b>Definition</b> <a href="RGBAPixel_8h_source.html#l00008">RGBAPixel.h:8</a></div></div>
 <div class="ttc" id="astructRGBXY_html"><div class="ttname"><a href="structRGBXY.html">RGBXY</a></div><div class="ttdef"><b>Definition</b> <a href="node_8h_source.html#l00049">node.h:49</a></div></div>

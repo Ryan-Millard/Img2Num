@@ -131,9 +131,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a48d9a04a535198b5fc47905e359961ac" id="r_a48d9a04a535198b5fc47905e359961ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceimg2num.html#a48d9a04a535198b5fc47905e359961ac">bilateral_filter</a> (uint8_t *image, size_t width, size_t height, double sigma_spatial, double sigma_range, uint8_t color_space)</td></tr>
 <tr class="memdesc:a48d9a04a535198b5fc47905e359961ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply bilateral filtering to an image.    <br /></td></tr>
 <tr class="separator:a48d9a04a535198b5fc47905e359961ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c28d91338348dc56fe44eb0b0b830e1" id="r_a4c28d91338348dc56fe44eb0b0b830e1"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceimg2num.html#a4c28d91338348dc56fe44eb0b0b830e1">labels_to_svg</a> (const uint8_t *data, const int32_t *labels, const int width, const int height, const int min_area)</td></tr>
-<tr class="memdesc:a4c28d91338348dc56fe44eb0b0b830e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert labeled regions of an image into an SVG string.    <br /></td></tr>
-<tr class="separator:a4c28d91338348dc56fe44eb0b0b830e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36b11018f26b33933eeeb31a7833ea3d" id="r_a36b11018f26b33933eeeb31a7833ea3d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceimg2num.html#a36b11018f26b33933eeeb31a7833ea3d">labels_to_svg</a> (const uint8_t *data, const int32_t *labels, const int width, const int height, const int min_area)</td></tr>
+<tr class="memdesc:a36b11018f26b33933eeeb31a7833ea3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert labeled regions of an image into an SVG string.    <br /></td></tr>
+<tr class="separator:a36b11018f26b33933eeeb31a7833ea3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9448b2dfdb823340970d0b0bb51fc4e3" id="r_a9448b2dfdb823340970d0b0bb51fc4e3"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceimg2num.html#a9448b2dfdb823340970d0b0bb51fc4e3">get_last_error</a> ()</td></tr>
 <tr class="separator:a9448b2dfdb823340970d0b0bb51fc4e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9dd188fc7d492dc81d7343ae06c0a3aa" id="r_a9dd188fc7d492dc81d7343ae06c0a3aa"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceimg2num.html#a9dd188fc7d492dc81d7343ae06c0a3aa">get_last_error_message</a> ()</td></tr>
@@ -734,14 +734,14 @@ Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a4c28d91338348dc56fe44eb0b0b830e1" name="a4c28d91338348dc56fe44eb0b0b830e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c28d91338348dc56fe44eb0b0b830e1">&#9670;&#160;</a></span>labels_to_svg()</h2>
+<a id="a36b11018f26b33933eeeb31a7833ea3d" name="a36b11018f26b33933eeeb31a7833ea3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36b11018f26b33933eeeb31a7833ea3d">&#9670;&#160;</a></span>labels_to_svg()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">char * img2num::labels_to_svg </td>
+          <td class="memname">std::string img2num::labels_to_svg </td>
           <td>(</td>
           <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
@@ -789,10 +789,8 @@ Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Pointer to a dynamically allocated C-string containing the SVG data. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Caller is responsible for freeing the returned string. </dd>
-<dd>
-Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>std::string A valid SVG string containing the data. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="labels__to__svg_8cpp_source.html#l00189">189</a> of file <a class="el" href="labels__to__svg_8cpp_source.html">labels_to_svg.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  190</span>                                        {</div>
@@ -853,17 +851,8 @@ Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 <div class="line"><span class="lineno">  245</span>    }</div>
 <div class="line"><span class="lineno">  246</span> </div>
 <div class="line"><span class="lineno">  247</span>    <span class="comment">// 7. Return SVG</span></div>
-<div class="line"><span class="lineno">  248</span>    std::string svg{contoursResultToSVG(all_contours, width, height)};</div>
-<div class="line"><span class="lineno">  249</span> </div>
-<div class="line"><span class="lineno">  250</span>    <span class="comment">// Dynamic C-style allocation (since returned over C ABI)</span></div>
-<div class="line"><span class="lineno">  251</span>    <span class="keywordtype">char</span> *res_svg{<span class="keyword">static_cast&lt;</span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(std::malloc(svg.size() + 1))};</div>
-<div class="line"><span class="lineno">  252</span>    <span class="keywordflow">if</span> (!res_svg) {</div>
-<div class="line"><span class="lineno">  253</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;  <span class="comment">// Allocation failed</span></div>
-<div class="line"><span class="lineno">  254</span>    }</div>
-<div class="line"><span class="lineno">  255</span>    std::memcpy(res_svg, svg.c_str(), svg.size() + 1);</div>
-<div class="line"><span class="lineno">  256</span> </div>
-<div class="line"><span class="lineno">  257</span>    <span class="keywordflow">return</span> res_svg;</div>
-<div class="line"><span class="lineno">  258</span>}</div>
+<div class="line"><span class="lineno">  248</span>    <span class="keywordflow">return</span> contoursResultToSVG(all_contours, width, height);</div>
+<div class="line"><span class="lineno">  249</span>}</div>
 <div class="ttc" id="aclassGraph_html"><div class="ttname"><a href="classGraph.html">Graph</a></div><div class="ttdef"><b>Definition</b> <a href="graph_8h_source.html#l00033">graph.h:33</a></div></div>
 <div class="ttc" id="astructColoredContours_html"><div class="ttname"><a href="structColoredContours.html">ColoredContours</a></div><div class="ttdef"><b>Definition</b> <a href="contours_8h_source.html#l00040">contours.h:40</a></div></div>
 </div><!-- fragment -->

@@ -27,7 +27,7 @@ void \mbox{\hyperlink{namespaceimg2num_ae73563e9dd25a8dd2120fd519ef87abd}{kmeans
 \begin{DoxyCompactList}\small\item\em Perform k-\/means clustering on image data.   \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{namespaceimg2num_a48d9a04a535198b5fc47905e359961ac}{bilateral\+\_\+filter}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}image, size\+\_\+t width, size\+\_\+t height, double sigma\+\_\+spatial, double sigma\+\_\+range, uint8\+\_\+t color\+\_\+space)
 \begin{DoxyCompactList}\small\item\em Apply bilateral filtering to an image.   \end{DoxyCompactList}\item 
-char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{namespaceimg2num_a4c28d91338348dc56fe44eb0b0b830e1}{labels\+\_\+to\+\_\+svg}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, const int32\+\_\+t \texorpdfstring{$\ast$}{*}labels, const int width, const int height, const int min\+\_\+area)
+std\+::string \mbox{\hyperlink{namespaceimg2num_a36b11018f26b33933eeeb31a7833ea3d}{labels\+\_\+to\+\_\+svg}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, const int32\+\_\+t \texorpdfstring{$\ast$}{*}labels, const int width, const int height, const int min\+\_\+area)
 \begin{DoxyCompactList}\small\item\em Convert labeled regions of an image into an SVG string.   \end{DoxyCompactList}\item 
 Error \mbox{\hyperlink{namespaceimg2num_a9448b2dfdb823340970d0b0bb51fc4e3}{get\+\_\+last\+\_\+error}} ()
 \item 
@@ -440,11 +440,11 @@ Definition at line \mbox{\hyperlink{kmeans_8cpp_source_l00240}{240}} of file \mb
 \DoxyCodeLine{00252\ \}}
 
 \end{DoxyCode}
-\Hypertarget{namespaceimg2num_a4c28d91338348dc56fe44eb0b0b830e1}\label{namespaceimg2num_a4c28d91338348dc56fe44eb0b0b830e1} 
+\Hypertarget{namespaceimg2num_a36b11018f26b33933eeeb31a7833ea3d}\label{namespaceimg2num_a36b11018f26b33933eeeb31a7833ea3d} 
 \index{img2num@{img2num}!labels\_to\_svg@{labels\_to\_svg}}
 \index{labels\_to\_svg@{labels\_to\_svg}!img2num@{img2num}}
 \doxysubsubsection{\texorpdfstring{labels\_to\_svg()}{labels\_to\_svg()}}
-{\footnotesize\ttfamily char \texorpdfstring{$\ast$}{*} img2num\+::labels\+\_\+to\+\_\+svg (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{data,  }\item[{const int32\+\_\+t \texorpdfstring{$\ast$}{*}}]{labels,  }\item[{const int}]{width,  }\item[{const int}]{height,  }\item[{const int}]{min\+\_\+area }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily std\+::string img2num\+::labels\+\_\+to\+\_\+svg (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{data,  }\item[{const int32\+\_\+t \texorpdfstring{$\ast$}{*}}]{labels,  }\item[{const int}]{width,  }\item[{const int}]{height,  }\item[{const int}]{min\+\_\+area }\end{DoxyParamCaption})}
 
 
 
@@ -464,11 +464,9 @@ Convert labeled regions of an image into an SVG string.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-Pointer to a dynamically allocated C-\/string containing the SVG data. 
+std\+::string A valid SVG string containing the data. 
 \end{DoxyReturn}
 \begin{DoxyNote}{Note}
-Caller is responsible for freeing the returned string. 
-
 Dox File\+: {\ttfamily doxygen/img2num.\+h.\+dox}   
 \end{DoxyNote}
 
@@ -535,17 +533,8 @@ Definition at line \mbox{\hyperlink{labels__to__svg_8cpp_source_l00189}{189}} of
 \DoxyCodeLine{00245\ \ \ \ \ \}}
 \DoxyCodeLine{00246\ }
 \DoxyCodeLine{00247\ \ \ \ \ \textcolor{comment}{//\ 7.\ Return\ SVG}}
-\DoxyCodeLine{00248\ \ \ \ \ std::string\ svg\{contoursResultToSVG(all\_contours,\ width,\ height)\};}
-\DoxyCodeLine{00249\ }
-\DoxyCodeLine{00250\ \ \ \ \ \textcolor{comment}{//\ Dynamic\ C-\/style\ allocation\ (since\ returned\ over\ C\ ABI)}}
-\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keywordtype}{char}\ *res\_svg\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{char}\ *\textcolor{keyword}{>}(std::malloc(svg.size()\ +\ 1))\};}
-\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keywordflow}{if}\ (!res\_svg)\ \{}
-\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};\ \ \textcolor{comment}{//\ Allocation\ failed}}
-\DoxyCodeLine{00254\ \ \ \ \ \}}
-\DoxyCodeLine{00255\ \ \ \ \ std::memcpy(res\_svg,\ svg.c\_str(),\ svg.size()\ +\ 1);}
-\DoxyCodeLine{00256\ }
-\DoxyCodeLine{00257\ \ \ \ \ \textcolor{keywordflow}{return}\ res\_svg;}
-\DoxyCodeLine{00258\ \}}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keywordflow}{return}\ contoursResultToSVG(all\_contours,\ width,\ height);}
+\DoxyCodeLine{00249\ \}}
 
 \end{DoxyCode}
 \Hypertarget{namespaceimg2num_a9f4cebf6c051efd2bcb6e6cc83382aaf}\label{namespaceimg2num_a9f4cebf6c051efd2bcb6e6cc83382aaf} 

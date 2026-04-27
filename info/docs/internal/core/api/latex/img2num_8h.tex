@@ -7,12 +7,13 @@ Core image processing functions for \doxylink{namespaceimg2num}{img2num} project
 
 {\ttfamily \#include $<$cstddef$>$}\newline
 {\ttfamily \#include $<$cstdint$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
 Include dependency graph for img2num.\+h\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=202pt]{img2num_8h__incl}
+\includegraphics[width=264pt]{img2num_8h__incl}
 \end{center}
 \end{figure}
 This graph shows which files directly or indirectly include this file\+:
@@ -43,7 +44,7 @@ void \mbox{\hyperlink{namespaceimg2num_ae73563e9dd25a8dd2120fd519ef87abd}{img2nu
 \begin{DoxyCompactList}\small\item\em Perform k-\/means clustering on image data.   \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{namespaceimg2num_a48d9a04a535198b5fc47905e359961ac}{img2num\+::bilateral\+\_\+filter}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}image, size\+\_\+t width, size\+\_\+t height, double sigma\+\_\+spatial, double sigma\+\_\+range, uint8\+\_\+t color\+\_\+space)
 \begin{DoxyCompactList}\small\item\em Apply bilateral filtering to an image.   \end{DoxyCompactList}\item 
-char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{namespaceimg2num_a4c28d91338348dc56fe44eb0b0b830e1}{img2num\+::labels\+\_\+to\+\_\+svg}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, const int32\+\_\+t \texorpdfstring{$\ast$}{*}labels, const int width, const int height, const int min\+\_\+area)
+std\+::string \mbox{\hyperlink{namespaceimg2num_a36b11018f26b33933eeeb31a7833ea3d}{img2num\+::labels\+\_\+to\+\_\+svg}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, const int32\+\_\+t \texorpdfstring{$\ast$}{*}labels, const int width, const int height, const int min\+\_\+area)
 \begin{DoxyCompactList}\small\item\em Convert labeled regions of an image into an SVG string.   \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
