@@ -3,7 +3,7 @@
 #include "img2num.h"
 #include "img2num/Error.h"
 
-#include <string.h>
+#include <cstring>
 
 extern "C" {
 
@@ -46,11 +46,11 @@ char *img2num_labels_to_svg(const uint8_t *data, const int32_t *labels, const in
     img2num::clear_last_error_and_catch(
         [&](const uint8_t *d, const int32_t *l, const int w, const int h, const int min_a) {
             std::string svg{img2num::labels_to_svg(d, l, w, h, min_a)};
-            result = static_cast<char *>(malloc(svg.size() + 1));
+            result = static_cast<char *>(std::malloc(svg.size() + 1));
             if (!result) {
                 return;  // Allocation failed
             }
-            memcpy(result, svg.c_str(), svg.size() + 1);
+            std::memcpy(result, svg.c_str(), svg.size() + 1);
         },
         data, labels, width, height, min_area);
     return result;
