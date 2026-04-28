@@ -205,6 +205,11 @@ void lab_to_rgb(const ImageLib::LABAPixel<Tin> &laba, ImageLib::RGBAPixel<Tout> 
     Tout b{rgba.blue};
 
     lab_to_rgb<Tin, Tout>(laba.l, laba.a, laba.b, r, g, b);
+
+    rgba.red = r;
+    rgba.green = g;
+    rgba.blue = b;
+
     rgba.alpha = static_cast<Tout>(laba.alpha);
 }
 

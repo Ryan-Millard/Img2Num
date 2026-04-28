@@ -244,9 +244,18 @@ jobs:
             [`${{ steps.img.outputs.ghcr_image }}:${{ env.CLEAN_CORE_TAG }}`](https://github.com/${{ steps.img.outputs.lower_owner_name }}/${{ github.event.repository.name }}/pkgs/container/img2num-dev/${{ env.CLEAN_CORE_TAG }})
 
             ### Run it locally:
-            ```bash
-            IMG2NUM_IMAGE=${{ steps.img.outputs.ghcr_image }}:${{ env.CLEAN_CORE_TAG }} ./img2num sh
-            ```
+            - Bash:
+              ```bash
+              ./img2num --ghcr-img ${{ env.CLEAN_CORE_TAG }} sh
+              ```
+            - Powershell:
+              ```ps1
+              .\img2num.ps1 --ghcr-img ${{ env.CLEAN_CORE_TAG }} sh
+              ```
+            - CMD:
+              ```cmd
+              .\img2num.bat --ghcr-img ${{ env.CLEAN_CORE_TAG }} sh
+              ```
 
   cleanup-on-close:
     if: github.event_name == 'pull_request'
