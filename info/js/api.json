@@ -158,8 +158,14 @@
 								]
 							},
 							"type": {
-								"type": "intrinsic",
-								"name": "any"
+								"type": "reference",
+								"target": {
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
+									"qualifiedName": "Object"
+								},
+								"name": "Object",
+								"package": "typescript"
 							}
 						}
 					],
@@ -348,8 +354,14 @@
 								]
 							},
 							"type": {
-								"type": "intrinsic",
-								"name": "any"
+								"type": "reference",
+								"target": {
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
+									"qualifiedName": "Object"
+								},
+								"name": "Object",
+								"package": "typescript"
 							}
 						}
 					],
@@ -519,8 +531,14 @@
 								]
 							},
 							"type": {
-								"type": "intrinsic",
-								"name": "any"
+								"type": "reference",
+								"target": {
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
+									"qualifiedName": "Object"
+								},
+								"name": "Object",
+								"package": "typescript"
 							}
 						}
 					],
@@ -739,8 +757,14 @@
 								]
 							},
 							"type": {
-								"type": "intrinsic",
-								"name": "any"
+								"type": "reference",
+								"target": {
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
+									"qualifiedName": "Object"
+								},
+								"name": "Object",
+								"package": "typescript"
 							}
 						}
 					],
@@ -1215,8 +1239,14 @@
 								]
 							},
 							"type": {
-								"type": "intrinsic",
-								"name": "any"
+								"type": "reference",
+								"target": {
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
+									"qualifiedName": "Object"
+								},
+								"name": "Object",
+								"package": "typescript"
 							}
 						}
 					],
