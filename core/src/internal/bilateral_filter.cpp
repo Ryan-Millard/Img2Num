@@ -3,8 +3,8 @@
 #include <cmath>
 #include <cstring>
 #include <functional>
-#include <vector>
 #include <iostream>
+#include <vector>
 
 #include "img2num.h"
 #include "internal/bilateral_filter_gpu.h"

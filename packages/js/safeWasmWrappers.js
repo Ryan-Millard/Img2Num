@@ -234,9 +234,7 @@ export const imgToSVG = async ({ pixels, width, height, sigma_spatial = 3, sigma
   const result = await callWasm({
     funcName: "image_to_svg",
     args: { pixels, width, height, sigma_spatial, sigma_pixels, num_colors, max_iter, min_area, color_space },
-    bufferKeys: [
-      { key: "pixels", type: "Uint8ClampedArray" },
-    ],
+    bufferKeys: [{ key: "pixels", type: "Uint8ClampedArray" }],
     returnType: "string",
   });
   return { svg: result.returnValue, visualization: result.output.pixels };
