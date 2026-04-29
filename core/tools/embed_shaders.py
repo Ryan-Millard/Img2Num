@@ -1,7 +1,20 @@
 import sys, pathlib
 
-SHADER_DIR = pathlib.Path(sys.argv[1])
-OUTPUT_FILE = pathlib.Path(sys.argv[2])
+def require_within_root(path: pathlib.Path, root: pathlib.Path, label: str) -> pathlib.Path:
+    resolved = path.resolve()
+    root_resolved = root.resolve()
+    try:
+        resolved.relative_to(root_resolved)
+    except ValueError:
+        raise ValueError(f"{label} must be within {root_resolved}: {resolved}")
+    return resolved
+
+ROOT_DIR = pathlib.Path.cwd().resolve()
+SHADER_DIR = require_within_root(pathlib.Path(sys.argv[1]), ROOT_DIR, "SHADER_DIR")
+OUTPUT_FILE = require_within_root(pathlib.Path(sys.argv[2]), ROOT_DIR, "OUTPUT_FILE")
+
+if not SHADER_DIR.is_dir():
+    raise ValueError(f"SHADER_DIR is not a directory: {SHADER_DIR}")
 
 # Must always appear in the same order for predictability
 files = sorted(SHADER_DIR.glob("*.wgsl"))
