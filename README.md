@@ -57,8 +57,10 @@ We'd love some help! Check out our [CONTRIBUTING.md](https://github.com/Ryan-Mil
 
 ## License
 
-The library is licensed under the [MIT License](LICENSE).  
+The library is licensed under the [MIT License](LICENSE).
+
 Certain subdirectories retain their own licenses:
+
 | Subdirectory | License |
 | ------------: | ------- |
 | [`docs`](docs/) | GNU AGPLv3 (see [`docs/LICENSE`](docs/LICENSE)) |
