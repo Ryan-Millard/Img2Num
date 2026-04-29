@@ -62,15 +62,7 @@ int main(int argc, char** argv) {
     // Apply kmeans
     img2num::kmeans(img_data, out_data, out_labels, width, height, 32, 100, 1);
     // Generate SVG
-    char* res_svg{img2num::labels_to_svg(img_data, out_labels, width, height, 100)};
-    if (!res_svg) {
-        std::cerr << "Failed to generate SVG: allocation failed" << std::endl;
-        stbi_image_free(image_data_original);
-        delete[] img_data;
-        delete[] out_data;
-        delete[] out_labels;
-        return 1;
-    }
+    std::string res_svg{img2num::labels_to_svg(img_data, out_labels, width, height, 100)};
 
     // Save the blurred image
     std::string out_path{std::string(OUT_DIR) + "/console-cpp-output.png"};
@@ -102,7 +94,5 @@ int main(int argc, char** argv) {
     delete[] img_data;
     delete[] out_data;
     delete[] out_labels;
-    std::free(res_svg);
-    res_svg = nullptr;
     return exit_code;
 }

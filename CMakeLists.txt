@@ -7,6 +7,7 @@ project(Img2Num LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+option(BUILD_PYTHON "Build Python bindings" OFF)
 option(IMG2NUM_BUILD_EXAMPLES "Build example applications" ON)
 
 # Force a safe default to avoid the weirdness of CMake's `None`
@@ -27,6 +28,11 @@ if(EMSCRIPTEN)
   # JS bindings
   add_subdirectory(bindings/js)
 else()
+  # Python bindings
+  if(BUILD_PYTHON)
+    add_subdirectory(bindings/py)
+  endif()
+  
   if(IMG2NUM_BUILD_EXAMPLES)
     # Example console app (C++)
     add_subdirectory(example-apps/console-cpp)
@@ -61,4 +67,9 @@ configure_package_config_file(
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/Img2NumConfig.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Img2Num
+)
+
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/packages/py/img2num/
+    DESTINATION img2num
+    FILES_MATCHING PATTERN "*.py"
 )
