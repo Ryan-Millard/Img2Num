@@ -6,6 +6,7 @@ language: en-US
 reviews:
   profile: assertive # Img2Num has a C/C++ core — stricter feedback is warranted
   request_changes_workflow: true # Block merge until CodeRabbit comments are resolved
+  review_details: true
   high_level_summary: true
   high_level_summary_instructions: |
     Create concise release notes as a bullet-point list,
@@ -19,8 +20,7 @@ reviews:
     enabled: true
     label: "slop" # Applied when a PR looks like AI-generated spam
 
-  auto_apply_labels:
-    enabled: true
+  auto_apply_labels: true
 
   auto_review:
     enabled: true
@@ -313,5 +313,3 @@ code_generation:
           When generating C++ unit tests, use the testing framework already present
           in the project. Always suggest running tests via `./img2num` Docker wrapper
           commands rather than direct invocations.
-
-review_details: true
