@@ -5,7 +5,7 @@
 #include <cstdlib>
 
 PYBIND11_MODULE(_img2num, m) {
-    m.doc() = "Python bindings for the img2num C library";
+    m.doc() = "Python bindings for the img2num C++ library";
 
     // -----------------------------------------------------------------------
     // All Functions return new image data
@@ -120,4 +120,22 @@ PYBIND11_MODULE(_img2num, m) {
         },
         pybind11::arg("data"), pybind11::arg("labels"), pybind11::arg("width"), pybind11::arg("height"),
         pybind11::arg("min_area"), "Convert labels to SVG string");
+
+    m.def(
+        "image_to_svg",
+        [](pybind11::array_t<uint8_t, pybind11::array::c_style> data, int width, int height, 
+            double sigma_spatial, double sigma_range, int32_t k,
+            int32_t max_iter, int min_area, uint8_t color_space) {
+
+            const uint8_t* data_ptr{static_cast<const uint8_t*>(data.request().ptr)};
+            
+            std::string svg{img2num::image_to_svg(data_ptr, width, height, sigma_spatial, sigma_range, k, max_iter, min_area, color_space)};
+            pybind11::str svg_py_str(std::move(svg));
+            
+            return svg_py_str;
+        },
+        pybind11::arg("data"), pybind11::arg("width"), pybind11::arg("height"),
+        pybind11::arg("sigma_spatial"), pybind11::arg("sigma_range"),
+        pybind11::arg("k"), pybind11::arg("max_iter"), 
+        pybind11::arg("color_space"), pybind11::arg("min_area"), "Convert Image to SVG string");
 }

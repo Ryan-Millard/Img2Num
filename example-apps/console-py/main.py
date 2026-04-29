@@ -30,5 +30,10 @@ def main():
   with open(os.path.join(OUTDIR, "result.svg"),"w") as f:
       f.writelines(res_svg)
 
+  # res_svg2 should match res_svg
+  res_svg2 = img2num.image_to_svg(img, 3, 50, 16, 100, 100, 0)
+  with open(os.path.join(OUTDIR, "result2.svg"),"w") as f:
+      f.writelines(res_svg2)
+
 if __name__ == "__main__":
     main()
