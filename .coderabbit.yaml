@@ -125,6 +125,49 @@ reviews:
           library, which means that they need good comments and must have clean code. This
           is meant to be external and is designed for others to use to get started.
 
+    - path: "**/*.wgsl"
+      instructions: |
+        WebGPU Shading Language (WGSL) shader files. Review for:
+        # Correctness & safety
+        - Correct use of address spaces: function, private, workgroup, uniform,
+          storage (read / read_write). Flag mismatched access modes on var<storage>.
+        - All entry points must declare a stage attribute (`@vertex`, `@fragment`,
+          or `@compute`). Flag missing or incorrect stage attributes.
+        - Recursion is forbidden in WGSL — flag any call graph cycle.
+        - `@binding` and `@group` annotations must be present and non-overlapping
+          for all module-scope resource variables.
+        - Alignment/layout attributes (`@align`, `@size`, `@stride`) must match the
+          corresponding CPU-side buffer struct layout.
+        - Atomic operations (atomicLoad, atomicStore, atomicAdd, etc.) are only
+          valid on atomic<i32> / atomic<u32> in the workgroup or storage
+          address spaces — flag incorrect usage.
+        # Performance
+        - Prefer workgroup-local accumulation over repeated storage reads in
+          compute shaders.
+        - Flag unnecessary use of `var` (mutable) where `let` (immutable) or
+          `const` (compile-time constant) would suffice.
+        - Flag `@workgroup_size` values that are not a multiple of the GPU's
+          subgroup size (typically 32 or 64) unless there is a documented reason.
+        # Portability
+        - The `f16` type requires `enable f16;` — flag uses without the enable
+          directive and note that f16 availability is implementation-dependent.
+        - Flag use of unofficial/vendor-specific extensions that are not part of
+          the W3C WGSL spec.
+        # Style
+        - snake_case for variable and function names.
+        - Group `@binding` declarations together, sorted by `@group` then `@binding`.
+
+    - path: "**/*.py"
+      instructions: |
+        Python source files. Review for:
+        - PEP 8 compliance (enforced by ruff; focus on logic, not style).
+        - Type annotation coverage — prefer typed signatures for public functions.
+        - Exception handling: avoid bare `except:` clauses; always catch specific exceptions.
+        - Resource management: use `with` statements for file/socket/connection handling.
+        - No mutable default arguments (e.g. `def foo(x=[]):`).
+        - When suggesting how to run Python tooling, prefer the `./img2num` Docker wrapper
+          rather than direct `python` / `ruff` / `pylint` invocations.
+
   pre_merge_checks:
     title:
       mode: error
@@ -166,6 +209,39 @@ reviews:
           CHANGES_OVERVIEW.md, or similar should NEVER be created at the root - they belong
           in the Docusaurus documentation and a link to them may be placed in the README.md
           if it is absolutely relevant.
+
+      - name: CodeRabbit Config Needs Update
+          mode: warning
+          instructions: |
+            Warn if this PR introduces any of the following WITHOUT a corresponding
+            update to `.coderabbit.yaml`:
+
+            1. **New programming languages** — e.g., the first `.py`, `.rs`, `.go`,
+               `.java`, `.rb`, `.kt`, `.swift`, or similar source file appears in the
+               diff and there is no matching entry under `reviews.path_instructions`,
+               `tools:`, or `code_generation.docstrings.path_instructions` for that
+               language.
+
+            2. **New linter / formatter config files** — e.g., `.flake8`, `pylintrc`,
+               `.pylintrc`, `pyproject.toml` (with `[tool.ruff]` / `[tool.pylint]`),
+               `.eslintrc*`, `.stylelintrc*`, `biome.json`, `.rubocop.yml`, etc. appear
+               without the corresponding tool being enabled or disabled under `tools:`.
+
+            3. **New file extensions not covered by existing path_instructions** — e.g.,
+               `.wgsl`, `.proto`, `.rego`, `.tf`, `.prisma`, or any other extension
+               that currently has no matching glob in `reviews.path_instructions`.
+
+            4. **New CI / tooling configuration files** — e.g., a new `.github/workflows/`
+               file that uses a third-party Action not yet reviewed in the workflows
+               path_instructions, or a new `dependabot.yml` section for a package
+               ecosystem not previously present.
+
+            **Pass** this check if `.coderabbit.yaml` is itself modified in this PR in
+            a way that covers the newly introduced language/tool/extension, OR if none
+            of the above conditions are triggered by the diff.
+
+            **Warn** (do not hard-fail) so the maintainer can consciously decide whether
+            an update is needed.
 
   finishing_touches:
     docstrings:
@@ -221,11 +297,11 @@ reviews:
     biome:
       enabled: false # Project uses ESLint + Prettier, not Biome
     ruff:
-      enabled: false # No Python
+      enabled: true
     flake8:
       enabled: false
     pylint:
-      enabled: false
+      enabled: true
     swiftlint:
       enabled: false # No Swift
     phpstan:
