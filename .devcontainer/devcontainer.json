@@ -1,0 +1,36 @@
+{
+  "name": "Img2Num Dev",
+  "image": "ryanmillard/img2num-dev:latest",
+  "workspaceFolder": "/usr/src/app",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/usr/src/app,type=bind,consistency=cached",
+  "forwardPorts": [3000, 4173, 5173],
+  "portsAttributes": {
+    "3000": { "label": "Docusaurus dev", "onAutoForward": "notify" },
+    "4173": { "label": "Vite preview", "onAutoForward": "silent" },
+    "5173": { "label": "Vite dev", "onAutoForward": "openPreview" }
+  },
+  "containerEnv": {
+    "CHOKIDAR_USEPOLLING": "true",
+    "CHOKIDAR_INTERVAL": "100",
+    "npm_config_store_dir": "/pnpm/store"
+  },
+  "mounts": [
+    "source=img2num-pnpm-store,target=/pnpm,type=volume"
+  ],
+  "postCreateCommand": "pnpm install --no-frozen-lockfile",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "EditorConfig.EditorConfig",
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "twxs.cmake",
+        "ms-python.python",
+        "redhat.vscode-yaml",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  }
+}
