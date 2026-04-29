@@ -5,7 +5,7 @@ slug: /
 sidebar: false
 ---
 
-import Hedgehog from '@site/src/components/Hedgehog';
+import Hedgehog from "@site/src/components/Hedgehog";
 
 # Vectorize Images: Image → SVG
 

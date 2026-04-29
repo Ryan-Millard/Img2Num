@@ -24,8 +24,8 @@ All data is copied between JavaScript and WASM - this avoids unexpected use-afte
 
 ### Key responsibilities
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 <Tabs groupId="wasm-worker" defaultValue="flow">
 <TabItem value="flow" label="Flow diagram">

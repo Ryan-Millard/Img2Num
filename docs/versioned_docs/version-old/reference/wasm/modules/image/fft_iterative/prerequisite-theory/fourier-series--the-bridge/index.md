@@ -4,16 +4,16 @@ title: Fourier Series - the bridge (periodic signals)
 sidebar_position: 4
 ---
 
-import harmonics_individual from './img/harmonics_individual.png';
-import sum_jittered from './img/sum_jittered.png';
-import time_freq_domain from './img/time_freq_domain.png';
-import fourier_coefficient_triangle from './img/fourier_coefficient_triangle.png';
+import harmonics_individual from "./img/harmonics_individual.png";
+import sum_jittered from "./img/sum_jittered.png";
+import time_freq_domain from "./img/time_freq_domain.png";
+import fourier_coefficient_triangle from "./img/fourier_coefficient_triangle.png";
 
-import CodeBlock from '@theme/CodeBlock';
-import harmonics_individual_py from '!!raw-loader!./python_scripts/harmonics_individual.py';
-import sum_jittered_py from '!!raw-loader!./python_scripts/sum_jittered.py';
-import time_freq_domain_py from '!!raw-loader!./python_scripts/time_freq_domain.py';
-import fourier_coefficient_triangle_py from '!!raw-loader!./python_scripts/fourier_coefficient_triangle.py';
+import CodeBlock from "@theme/CodeBlock";
+import harmonics_individual_py from "!!raw-loader!./python_scripts/harmonics_individual.py";
+import sum_jittered_py from "!!raw-loader!./python_scripts/sum_jittered.py";
+import time_freq_domain_py from "!!raw-loader!./python_scripts/time_freq_domain.py";
+import fourier_coefficient_triangle_py from "!!raw-loader!./python_scripts/fourier_coefficient_triangle.py";
 
 The Fourier Series **decomposes a periodic signal in the time domain into a sum of harmonics** -
 sinusoidal components at integer multiples of the fundamental frequency.

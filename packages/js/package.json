@@ -34,5 +34,6 @@
     "wasmClient.js",
     "wasmWorker.js",
     "imageToUint8ClampedArray.js"
-  ]
+  ],
+  "dependencies": {}
 }

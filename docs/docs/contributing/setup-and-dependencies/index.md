@@ -5,8 +5,8 @@ sidebar_label: 🛠️ Setup & Dependencies
 sidebar_position: 1
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 ## Prerequisites
 
@@ -67,12 +67,14 @@ values={[
 </Tabs>
 
 :::info About the `img2num` script
+
 It is a thin wrapper around Docker and pnpm that allows you to conveniently run scripts inside the Docker environment.
 
 > See [img2num](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/react-js/src/components/WasmImageProcessor.jsx),
 > [img2num.ps1](https://github.com/Ryan-Millard/Img2Num/blob/main/img2num.ps1),
 > and [img2num.bat](https://github.com/Ryan-Millard/Img2Num/blob/main/img2num.bat).
-> :::
+
+:::
 
 ### Using the Docker wrapper script
 
@@ -115,27 +117,16 @@ In future docs, assume that the commands are to be run in the Docker terminal.
 
 - `./img2num pnpm <args>` is a proxy to pnpm inside the Docker container's shell.
   <Tabs
-  defaultValue="root"
-  values={[
-  { label: 'Root', value: 'root' },
-  { label: 'Docs', value: 'docs' },
-  { label: 'React Example App', value: 'react-example' },
-  ]}>
-  <TabItem value="root">
-  `bash title="Fuzzy find scripts local to the root project"
-./img2num pnpm run help
-`
-  </TabItem>
-  <TabItem value="docs">
-  `bash title="Fuzzy find scripts local to the documentation"
-./img2num pnpm run -F docs help
-`
-  </TabItem>
-  <TabItem value="react-example">
-  `bash title="Fuzzy find scripts local to the React Example app"
-./img2num pnpm run -F react-example help
-`
-  </TabItem>
+    defaultValue="root"
+    values={[
+      { label: "Root", value: "root" },
+      { label: "Docs", value: "docs" },
+      { label: "React Example App", value: "react-example" },
+    ]}
+  >
+    <TabItem value="root">`bash title="Fuzzy find scripts local to the root project" ./img2num pnpm run help `</TabItem>
+    <TabItem value="docs">`bash title="Fuzzy find scripts local to the documentation" ./img2num pnpm run -F docs help `</TabItem>
+    <TabItem value="react-example">`bash title="Fuzzy find scripts local to the React Example app" ./img2num pnpm run -F react-example help `</TabItem>
   </Tabs>
 - `./img2num sh`, `./img2num shell`, and `./img2num bash` all open the Docker container's interactive terminal.
 
@@ -191,8 +182,9 @@ cmake --install build
 :::info JavaScript Prerequisite
 Excluding the documentation and CLI scripts, compiling the library to WASM is required before using the JavaScript library.
 
-> The example apps depend on the library, so they will also fail if you have not compiled the WASM.
-> :::
+The example apps depend on the library, so they will also fail if you have not compiled the WASM.
+
+:::
 
 This compiles the core C++ image processing library to WebAssembly using Emscripten.
 
