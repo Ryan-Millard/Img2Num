@@ -13,9 +13,11 @@ if (!fs.existsSync(".clang-format")) {
 }
 
 // --- CONFIG ---
+const RECURSE_C_OR_CPP_FILES = "**/*.{hpp,cpp,h,c}";
 const GLOBS = [
-  "core/**/*.{hpp,cpp,h,c}",
-  "bindings/**/*.{hpp,cpp,h,c}",
+  `core/${RECURSE_C_OR_CPP_FILES}`,
+  `bindings/${RECURSE_C_OR_CPP_FILES}`,
+  `example-apps/${RECURSE_C_OR_CPP_FILES}`
 ];
 const MAX_PARALLEL = cpus().length;
 

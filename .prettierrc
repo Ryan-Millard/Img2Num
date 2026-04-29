@@ -1,1 +1,10 @@
-{}
+{
+  "overrides": [
+    {
+      "files": ["docs/**/*.md"],
+      "options": {
+        "parser": "mdx"
+      }
+    }
+  ]
+}

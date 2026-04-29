@@ -1,9 +1,9 @@
 #include "cimg2num.h"
 
+#include <cstring>
+
 #include "img2num.h"
 #include "img2num/Error.h"
-
-#include <cstring>
 
 extern "C" {
 

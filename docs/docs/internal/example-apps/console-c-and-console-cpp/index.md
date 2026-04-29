@@ -37,8 +37,8 @@ The application needs to be compiled beforehand, so make sure to follow the inst
 Once built, you can run the applications as shown below.
 :::
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 <Tabs defaultValue="cpp">
 <TabItem value="cpp" label="C++ console app">
