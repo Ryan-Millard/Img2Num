@@ -73,6 +73,8 @@ updates:
       docusaurus:
         patterns:
           - "@docusaurus/*"
+      prod-dependencies:
+        dependency-type: "production"
       dev-dependencies:
         dependency-type: "development"
     labels:
