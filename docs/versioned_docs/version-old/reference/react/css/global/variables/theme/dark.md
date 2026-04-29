@@ -6,7 +6,7 @@ sidebar_position: 2
 
 Defined inside `:root.dark { ... }` in `/src/global-styles/variables.css`.
 
-import ColorSwatch from '@site/src/components/ColorSwatch';
+import ColorSwatch from "@site/src/components/ColorSwatch";
 
 ## Colors — Dark mode (Deep Forest Night)
 

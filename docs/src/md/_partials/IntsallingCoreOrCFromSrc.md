@@ -1,8 +1,8 @@
 <!--DO NOT CHANGE THE PAGE TITLE CHECK WITHOUT VERIFYING THAT THE PAGES THAT DEPEND ON THIS AREN'T BROKEN-->
 <!--This partial is only compatible with a few pages. It is not recommended that you use it-->
 
-import CodeBlock from '@theme/CodeBlock';
-import { useDoc } from '@docusaurus/plugin-content-docs/client';
+import CodeBlock from "@theme/CodeBlock";
+import { useDoc } from "@docusaurus/plugin-content-docs/client";
 
 ## Installing from Source Code
 
@@ -18,14 +18,14 @@ git submodule update --init --recursive
 #### Update your CMakeLists.txt
 
 <CodeBlock language="cmake" title="Add Img2Num as a subdirectory and link the library">
-{`add_subdirectory(Img2Num)
+  {`add_subdirectory(Img2Num)
 target_link_libraries(<your-project-name> PRIVATE ${useDoc().metadata.title.includes("C++") ? "Img2Num" : "CImg2Num"})`}
 </CodeBlock>
 
 #### Include an Img2Num Header
 
 <CodeBlock language="cpp" title="Include any public header">
-{`#include "${useDoc().metadata.title.includes("C++") ? "img2num" : "cimg2num"}"`}
+  {`#include "${useDoc().metadata.title.includes("C++") ? "img2num" : "cimg2num"}"`}
 </CodeBlock>
 
 #### Build your project
@@ -75,31 +75,32 @@ cd ..
 #### Update your CMakeLists.txt
 
 <CodeBlock language="cmake" title="Add Img2Num as a subdirectory and link the library">
-{`find_package(Img2Num REQUIRED)
+  {`find_package(Img2Num REQUIRED)
 target_link_libraries(my_app PRIVATE Img2Num::Img2Num)`}
 </CodeBlock>
 
 #### Include an Img2Num Header
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 <Tabs
-defaultValue="namespaced-include"
-values={[
-{ label: 'Namespaced', value: 'namespaced-include' },
-{ label: 'Normal', value: 'normal-include' },
-]}>
-<TabItem value="namespaced-include">
-<CodeBlock language="cpp" title="Include any public header">
-{`#include <${useDoc().metadata.title.includes("C++") ? "img2num/img2num" : "cimg2num/cimg2num"}.h>`}
-</CodeBlock>
-</TabItem>
-<TabItem value="normal-include">
-<CodeBlock language="cpp" title="Include any public header">
-{`#include <${useDoc().metadata.title.includes("C++") ? "img2num" : "cimg2num"}.h>`}
-</CodeBlock>
-</TabItem>
+  defaultValue="namespaced-include"
+  values={[
+    { label: "Namespaced", value: "namespaced-include" },
+    { label: "Normal", value: "normal-include" },
+  ]}
+>
+  <TabItem value="namespaced-include">
+    <CodeBlock language="cpp" title="Include any public header">
+      {`#include <${useDoc().metadata.title.includes("C++") ? "img2num/img2num" : "cimg2num/cimg2num"}.h>`}
+    </CodeBlock>
+  </TabItem>
+  <TabItem value="normal-include">
+    <CodeBlock language="cpp" title="Include any public header">
+      {`#include <${useDoc().metadata.title.includes("C++") ? "img2num" : "cimg2num"}.h>`}
+    </CodeBlock>
+  </TabItem>
 </Tabs>
 
 You should be good to go now!

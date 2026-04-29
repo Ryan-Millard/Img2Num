@@ -4,14 +4,14 @@ title: Getting Started
 sidebar_position: 1
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
-import DockerHomepage from './img/docker-desktop-homepage.jpg';
-import DockerSettings from './img/docker-desktop-settings-button-location.jpg';
-import DockerWslSetup from './img/docker-desktop-wsl-integration-setup.jpg';
-import DockerResources from './img/docker-desktop-resources-button-location.jpg';
-import DockerWslButton from './img/docker-desktop-wsl-integration-button-location.jpg';
+import DockerHomepage from "./img/docker-desktop-homepage.jpg";
+import DockerSettings from "./img/docker-desktop-settings-button-location.jpg";
+import DockerWslSetup from "./img/docker-desktop-wsl-integration-setup.jpg";
+import DockerResources from "./img/docker-desktop-resources-button-location.jpg";
+import DockerWslButton from "./img/docker-desktop-wsl-integration-button-location.jpg";
 
 ## Getting Started
 

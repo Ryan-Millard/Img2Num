@@ -4,8 +4,8 @@ title: Setup & Dependencies
 sidebar_position: 2
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 ## Prerequisites
 
@@ -40,19 +40,13 @@ WASM development now works natively on **all platforms** including Windows. You 
 
 <Tabs groupId="operating-systems" queryString>
   <TabItem value="windows" label="Windows" default>
-    ```cmd
-    winget install Kitware.CMake
-    ```
+    ```cmd winget install Kitware.CMake ```
   </TabItem>
   <TabItem value="linux" label="Linux">
-    ```bash
-    sudo apt install cmake
-    ```
+    ```bash sudo apt install cmake ```
   </TabItem>
   <TabItem value="macos" label="macOS">
-    ```bash
-    brew install cmake
-    ```
+    ```bash brew install cmake ```
   </TabItem>
 </Tabs>
 
@@ -72,22 +66,13 @@ cd emsdk
 
 <Tabs groupId="operating-systems" queryString>
   <TabItem value="windows" label="Windows" default>
-    ```cmd title="CMD"
-    emsdk_env.bat
-    ```
-    ```PowerShell title="PowerShell"
-    ./emsdk_env.ps1
-    ```
+    ```cmd title="CMD" emsdk_env.bat ``` ```PowerShell title="PowerShell" ./emsdk_env.ps1 ```
   </TabItem>
   <TabItem value="linux" label="Linux">
-    ```bash title="Add to PATH (run this in each new terminal, or add to your shell profile)"
-    source ./emsdk_env.sh
-    ```
+    ```bash title="Add to PATH (run this in each new terminal, or add to your shell profile)" source ./emsdk_env.sh ```
   </TabItem>
   <TabItem value="macos" label="macOS">
-    ```bash title="Add to PATH (run this in each new terminal, or add to your shell profile)"
-    source ./emsdk_env.sh
-    ```
+    ```bash title="Add to PATH (run this in each new terminal, or add to your shell profile)" source ./emsdk_env.sh ```
   </TabItem>
 </Tabs>
 
