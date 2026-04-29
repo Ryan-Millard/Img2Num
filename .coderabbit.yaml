@@ -211,37 +211,37 @@ reviews:
           if it is absolutely relevant.
 
       - name: CodeRabbit Config Needs Update
-          mode: warning
-          instructions: |
-            Warn if this PR introduces any of the following WITHOUT a corresponding
-            update to `.coderabbit.yaml`:
+        mode: warning
+        instructions: |
+          Warn if this PR introduces any of the following WITHOUT a corresponding
+          update to `.coderabbit.yaml`:
 
-            1. **New programming languages** — e.g., the first `.py`, `.rs`, `.go`,
-               `.java`, `.rb`, `.kt`, `.swift`, or similar source file appears in the
-               diff and there is no matching entry under `reviews.path_instructions`,
-               `tools:`, or `code_generation.docstrings.path_instructions` for that
-               language.
+          1. **New programming languages** — e.g., the first `.py`, `.rs`, `.go`,
+            `.java`, `.rb`, `.kt`, `.swift`, or similar source file appears in the
+            diff and there is no matching entry under `reviews.path_instructions`,
+            `tools:`, or `code_generation.docstrings.path_instructions` for that
+            language.
 
-            2. **New linter / formatter config files** — e.g., `.flake8`, `pylintrc`,
-               `.pylintrc`, `pyproject.toml` (with `[tool.ruff]` / `[tool.pylint]`),
-               `.eslintrc*`, `.stylelintrc*`, `biome.json`, `.rubocop.yml`, etc. appear
-               without the corresponding tool being enabled or disabled under `tools:`.
+          2. **New linter / formatter config files** — e.g., `.flake8`, `pylintrc`,
+            `.pylintrc`, `pyproject.toml` (with `[tool.ruff]` / `[tool.pylint]`),
+            `.eslintrc*`, `.stylelintrc*`, `biome.json`, `.rubocop.yml`, etc. appear
+            without the corresponding tool being enabled or disabled under `tools:`.
 
-            3. **New file extensions not covered by existing path_instructions** — e.g.,
-               `.wgsl`, `.proto`, `.rego`, `.tf`, `.prisma`, or any other extension
-               that currently has no matching glob in `reviews.path_instructions`.
+          3. **New file extensions not covered by existing path_instructions** — e.g.,
+            `.wgsl`, `.proto`, `.rego`, `.tf`, `.prisma`, or any other extension
+            that currently has no matching glob in `reviews.path_instructions`.
 
-            4. **New CI / tooling configuration files** — e.g., a new `.github/workflows/`
-               file that uses a third-party Action not yet reviewed in the workflows
-               path_instructions, or a new `dependabot.yml` section for a package
-               ecosystem not previously present.
+          4. **New CI / tooling configuration files** — e.g., a new `.github/workflows/`
+            file that uses a third-party Action not yet reviewed in the workflows
+            path_instructions, or a new `dependabot.yml` section for a package
+            ecosystem not previously present.
 
-            **Pass** this check if `.coderabbit.yaml` is itself modified in this PR in
-            a way that covers the newly introduced language/tool/extension, OR if none
-            of the above conditions are triggered by the diff.
+          **Pass** this check if `.coderabbit.yaml` is itself modified in this PR in
+          a way that covers the newly introduced language/tool/extension, OR if none
+          of the above conditions are triggered by the diff.
 
-            **Warn** (do not hard-fail) so the maintainer can consciously decide whether
-            an update is needed.
+          **Warn** (do not hard-fail) so the maintainer can consciously decide whether
+          an update is needed.
 
   finishing_touches:
     docstrings:
