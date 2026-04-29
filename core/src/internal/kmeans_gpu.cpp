@@ -665,6 +665,6 @@ void kmeans_gpu(const uint8_t* data, uint8_t* out_data, int32_t* out_labels, con
     labels.clear();
     labels.shrink_to_fit();
 #if defined(__EMSCRIPTEN__)
-    emscripten_sleep(50);
+    emscripten_sleep(100);
 #endif
 }

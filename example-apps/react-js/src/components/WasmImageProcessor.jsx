@@ -1,6 +1,6 @@
 import { useEffect, useState, useId, useRef, useCallback, useMemo } from "react";
 import { Upload } from "lucide-react";
-import { imageToUint8ClampedArray, bilateralFilter, kmeans, findContours } from "img2num";
+import { imageToUint8ClampedArray, bilateralFilter, kmeans, findContours, imgToSVG } from "img2num";
 import GlassCard from "@components/GlassCard";
 import styles from "./WasmImageProcessor.module.css";
 import { useNavigate } from "react-router-dom";
@@ -74,7 +74,14 @@ const WasmImageProcessor = () => {
     try {
       const { width, height } = fileData;
 
-      step(20);
+      const { svg } = await imgToSVG({
+        pixels: fileData.pixels,
+        width,
+        height,
+        num_colors: 16,
+      });
+
+      /*step(20);
       // NOTE: Gaussian blur destroys the sharp outlines first, preventing the Bilateral filter from detecting and preserving them
       const imgBilateralFiltered = await bilateralFilter({
         pixels: fileData.pixels,
@@ -96,7 +103,7 @@ const WasmImageProcessor = () => {
         labels,
         width,
         height,
-      });
+      });*/
 
       navigate("/editor", {
         state: { svg },

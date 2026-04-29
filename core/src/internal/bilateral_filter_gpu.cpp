@@ -286,7 +286,7 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
     readBuffer.Destroy();
     delete waiting;
 #if defined(__EMSCRIPTEN__)
-    emscripten_sleep(50);
+    emscripten_sleep(100);
 #endif
     result.clear();
     result.shrink_to_fit();

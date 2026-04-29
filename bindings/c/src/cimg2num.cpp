@@ -55,4 +55,39 @@ char *img2num_labels_to_svg(const uint8_t *data, const int32_t *labels, const in
         data, labels, width, height, min_area);
     return result;
 }
+
+char *img2num_image_to_svg(
+    const uint8_t *data, 
+    const int width,
+    const int height,
+    double sigma_spatial,
+    double sigma_range,
+    const int32_t k, 
+    const int32_t max_iter,
+    const int min_area,
+    const uint8_t color_space
+){
+    char *result{nullptr};
+    img2num::clear_last_error_and_catch(
+        [&](
+            const uint8_t *d, 
+            const int w, 
+            const int h, 
+            double ss, 
+            double sr, 
+            const int32_t k_, 
+            const int32_t iter,
+            const int min_a,
+            const uint8_t cs
+        ) {
+            std::string svg{img2num::image_to_svg(d, w, h, ss, sr, k_, iter, min_a, cs)};
+            result = static_cast<char *>(std::malloc(svg.size() + 1));
+            if (!result) {
+                return;  // Allocation failed
+            }
+            std::memcpy(result, svg.c_str(), svg.size() + 1);
+        },
+        data, width, height, sigma_spatial, sigma_range, k, max_iter, min_area, color_space);
+    return result;
+};
 }

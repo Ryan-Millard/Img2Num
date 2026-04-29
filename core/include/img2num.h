@@ -40,6 +40,20 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
 /// @copydoc IMG2NUM_H_LABELS_TO_SVG_DOC
 std::string labels_to_svg(const uint8_t *data, const int32_t *labels, const int width, const int height,
                     const int min_area);
+
+/// @copydoc IMG2NUM_H_IMAGE_TO_SVG_DOC
+std::string image_to_svg(
+    const uint8_t *data, 
+    const int width,
+    const int height,
+    double sigma_spatial,
+    double sigma_range,
+    const int32_t k, 
+    const int32_t max_iter,
+    const int min_area,
+    const uint8_t color_space
+);
+
 }  // namespace img2num
 
 #endif  // IMG2NUM_H
