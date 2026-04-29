@@ -84,7 +84,6 @@
 /// @param width Width of the image in pixels.
 /// @param height Height of the image in pixels.
 /// @param min_area Minimum area (in pixels) for a region to be included in the SVG.
-/// @return Pointer to a dynamically allocated C-string containing the SVG data.
-/// @note Caller is responsible for freeing the returned string.
+/// @return std::string A valid SVG string containing the data.
 /// @note Dox File: `doxygen/img2num.h.dox`
 ///
