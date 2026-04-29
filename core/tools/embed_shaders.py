@@ -1,8 +1,16 @@
 import sys, pathlib
 
 def require_within_root(path: pathlib.Path, root: pathlib.Path, label: str) -> pathlib.Path:
-    resolved = path.resolve()
-    root_resolved = root.resolve()
+    try:
+        root_resolved = root.resolve(strict=True)
+    except FileNotFoundError:
+        raise ValueError(f"Root path does not exist: {root}")
+
+    try:
+        resolved = path.resolve(strict=True)
+    except FileNotFoundError:
+        raise ValueError(f"{label} does not exist: {path}")
+
     try:
         resolved.relative_to(root_resolved)
     except ValueError:
