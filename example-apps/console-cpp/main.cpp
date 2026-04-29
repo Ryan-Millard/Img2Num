@@ -1,17 +1,16 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <img2num.h>
 #include <stb/stb_image_write.h>
 
-#include <iostream>
-#include <fstream>
 #include <cstdint>
-#include <string>
-#include <cstring>
 #include <cstdlib>
+#include <cstring>
 #include <filesystem>
-
-#include <img2num.h>
+#include <fstream>
+#include <iostream>
+#include <string>
 
 #ifndef OUTPUT_DIR
 #define OUTPUT_DIR "./console-cpp-outputs"
@@ -32,7 +31,8 @@ int main(int argc, char** argv) {
     std::string image_path{argv[1]};
     int width{0}, height{0}, channels{0};
     // Force load as grayscale
-    uint8_t* image_data_original{stbi_load(image_path.c_str(), &width, &height, &channels, NUM_CHANNELS)};
+    uint8_t* image_data_original{
+        stbi_load(image_path.c_str(), &width, &height, &channels, NUM_CHANNELS)};
     if (!image_data_original) {
         std::cerr << "Failed to load image: " << stbi_failure_reason() << std::endl;
         return 1;
@@ -50,11 +50,13 @@ int main(int argc, char** argv) {
     uint8_t* out_data{new uint8_t[width * height * NUM_CHANNELS]};
     int32_t* out_labels{new int32_t[width * height]};
 
-    std::cout << "Image loaded: " << width << "x" << height << " with " << NUM_CHANNELS << " channel(s)." << std::endl;
+    std::cout << "Image loaded: " << width << "x" << height << " with " << NUM_CHANNELS
+              << " channel(s)." << std::endl;
 
     // Allocate a copy of the original image
     // uint8_t* img_data{new uint8_t[width * height * NUM_CHANNELS]};
-    std::memcpy(img_data, image_data_original, static_cast<size_t>(width) * static_cast<size_t>(height) * NUM_CHANNELS);
+    std::memcpy(img_data, image_data_original,
+                static_cast<size_t>(width) * static_cast<size_t>(height) * NUM_CHANNELS);
 
     // Apply bilateral
     const double sigma{width * SIGMA_WIDTH_RATIO};
@@ -70,8 +72,14 @@ int main(int argc, char** argv) {
     std::string svg_path{std::string(OUT_DIR) + "/console-cpp-svg.svg"};
 
     int exit_code{0};
-    const bool blur_save_success{stbi_write_png(out_path.c_str(), width, height, NUM_CHANNELS, img_data, width * NUM_CHANNELS) == 1 ? true : false};
-    const bool kmeans_save_success{stbi_write_png(kmeans_path.c_str(), width, height, NUM_CHANNELS, out_data, width * NUM_CHANNELS) == 1 ? true : false};
+    const bool blur_save_success{stbi_write_png(out_path.c_str(), width, height, NUM_CHANNELS,
+                                                img_data, width * NUM_CHANNELS) == 1
+                                     ? true
+                                     : false};
+    const bool kmeans_save_success{stbi_write_png(kmeans_path.c_str(), width, height, NUM_CHANNELS,
+                                                  out_data, width * NUM_CHANNELS) == 1
+                                       ? true
+                                       : false};
 
     std::ofstream svgFile(svg_path);
     if (!svgFile.is_open()) {
@@ -84,7 +92,8 @@ int main(int argc, char** argv) {
     }
 
     if (blur_save_success && kmeans_save_success && (exit_code == 0)) {
-        std::cout << "\n\nSUCCESS!\nThe below images have been saved:\n\t- " << out_path << "\n\t- " << kmeans_path << "\n\t- " << svg_path << std::endl;
+        std::cout << "\n\nSUCCESS!\nThe below images have been saved:\n\t- " << out_path << "\n\t- "
+                  << kmeans_path << "\n\t- " << svg_path << std::endl;
     } else {
         std::cerr << "Failed to save images!" << std::endl;
         exit_code = 1;

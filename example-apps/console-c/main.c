@@ -1,15 +1,14 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include <stb/stb_image_write.h>
-
 #include <cimg2num.h>
+#include <errno.h>
+#include <stb/stb_image_write.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <errno.h>
 
 #ifndef OUTPUT_DIR
 #define OUTPUT_DIR "./console-c-outputs"
@@ -58,7 +57,9 @@ int main(int argc, char** argv) {
     if (!img_data || !out_data || !out_labels) {
         fprintf(stderr, "Failed to allocate memory\n");
         stbi_image_free(image_data_original);
-        free(img_data); free(out_data); free(out_labels);
+        free(img_data);
+        free(out_data);
+        free(out_labels);
         return 1;
     }
 
@@ -75,7 +76,9 @@ int main(int argc, char** argv) {
     if (res_svg == NULL) {
         fprintf(stderr, "Failed to generate SVG\n");
         stbi_image_free(image_data_original);
-        free(img_data); free(out_data); free(out_labels);
+        free(img_data);
+        free(out_data);
+        free(out_labels);
         return 1;
     }
 
@@ -88,8 +91,10 @@ int main(int argc, char** argv) {
     snprintf(svg_path, sizeof(svg_path), "%s/console-c-svg.svg", OUTPUT_DIR);
 
     int exit_code = 0;
-    const bool blur_save_success = stbi_write_png(out_path, width, height, NUM_CHANNELS, img_data, width * NUM_CHANNELS);
-    const bool kmeans_save_success = stbi_write_png(kmeans_path, width, height, NUM_CHANNELS, out_data, width * NUM_CHANNELS);
+    const bool blur_save_success =
+        stbi_write_png(out_path, width, height, NUM_CHANNELS, img_data, width * NUM_CHANNELS);
+    const bool kmeans_save_success =
+        stbi_write_png(kmeans_path, width, height, NUM_CHANNELS, out_data, width * NUM_CHANNELS);
 
     FILE* file = fopen(svg_path, "w");
     if (file == NULL) {
@@ -103,7 +108,8 @@ int main(int argc, char** argv) {
     }
 
     if (blur_save_success && kmeans_save_success && (exit_code == 0)) {
-        printf("\n\nSUCCESS!\nThe below images have been saved:\n\t- %s\n\t- %s\n\t- %s\n", out_path, kmeans_path, svg_path);
+        printf("\n\nSUCCESS!\nThe below images have been saved:\n\t- %s\n\t- %s\n\t- %s\n",
+               out_path, kmeans_path, svg_path);
     } else {
         fprintf(stderr, "Failed to save images!\n");
         exit_code = 1;

@@ -186,8 +186,8 @@ format ([r,g,b,a, r,g,b,a, ...]) labels: int32_t* -> output of labelled regions
 from K-Means, should be 1/4 the size of data since data is RGBA labels : width *
 height : number of pixels in image = 1 : 1 : 1
 */
-std::string labels_to_svg(const uint8_t *data, const int32_t *labels, const int width, const int height,
-                    const int min_area) {
+std::string labels_to_svg(const uint8_t *data, const int32_t *labels, const int width,
+                          const int height, const int min_area) {
     const int32_t num_pixels{width * height};
     std::vector<int32_t> labels_vector{labels, labels + num_pixels};
     std::vector<int32_t> region_labels;

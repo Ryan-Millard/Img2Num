@@ -6,7 +6,7 @@ sidebar_position: 1
 
 Defined inside `:root.light { ... }` in `/src/global-styles/variables.css`.
 
-import ColorSwatch from '@site/src/components/ColorSwatch';
+import ColorSwatch from "@site/src/components/ColorSwatch";
 
 ## Colors — Light mode (Warm Hedgehog Palette)
 
