@@ -222,7 +222,8 @@ export const findContours = async ({ pixels, labels, width, height, min_area = 1
  * @property {number} [__named_parameters.num_colors=16] - Number of color clusters.
  * @property {number} [__named_parameters.max_iter=100] - Maximum number of iterations.
  * @property {number} [__named_parameters.min_area=100] - Minimum area of a region to be considered a contour.
- * @property {number} [__named_parameters.color_space=0] - Color space mode.* @returns {Promise<{svg: string, visualization: Uint8ClampedArray}>} Generated SVG and optionally pixels with visualized contours.
+ * @property {number} [__named_parameters.color_space=0] - Color space mode.
+ * @returns {Promise<{svg: string, visualization: Uint8ClampedArray}>} Generated SVG and optionally pixels with visualized contours.
  * @throws {Error} If the WASM function fails or input labels are invalid.
  * @example
  * const { svg, visualization } = await findContours({ pixels, labels, width, height });
