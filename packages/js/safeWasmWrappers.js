@@ -230,10 +230,10 @@ export const findContours = async ({ pixels, labels, width, height, min_area = 1
  * @variation Contour extraction with optional visualization
  * @since 0.0.0
  */
-export const imgToSVG = async ({ pixels, width, height, sigma_spatial = 3, sigma_pixels = 50, num_colors = 16, max_iter = 100, min_area = 100, color_space = 0 }) => {
+export const imgToSVG = async ({ pixels, width, height, sigma_spatial = 3, sigma_range = 50, num_colors = 16, max_iter = 100, min_area = 100, color_space = 0 }) => {
   const result = await callWasm({
     funcName: "image_to_svg",
-    args: { pixels, width, height, sigma_spatial, sigma_pixels, num_colors, max_iter, min_area, color_space },
+    args: { pixels, width, height, sigma_spatial, sigma_range, num_colors, max_iter, min_area, color_space },
     bufferKeys: [{ key: "pixels", type: "Uint8ClampedArray" }],
     returnType: "string",
   });
