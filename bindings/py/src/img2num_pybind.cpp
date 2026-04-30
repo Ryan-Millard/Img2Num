@@ -121,12 +121,48 @@ PYBIND11_MODULE(_img2num, m) {
         pybind11::arg("data"), pybind11::arg("labels"), pybind11::arg("width"),
         pybind11::arg("height"), pybind11::arg("min_area"), "Convert labels to SVG string");
 
+    pybind11::class_<img2num::ImageToSvgConfig> config(m, "ImageToSvgConfig");
+    pybind11::class_<img2num::ImageToSvgConfig::BilateralFilterConfig>(config, "BilateralFilterConfig")
+        .def(pybind11::init<>())
+        .def_readwrite("sigma_spatial", &img2num::ImageToSvgConfig::BilateralFilterConfig::sigma_spatial)
+        .def_readwrite("sigma_range", &img2num::ImageToSvgConfig::BilateralFilterConfig::sigma_range);
+    pybind11::class_<img2num::ImageToSvgConfig::KMeansConfig>(config, "KMeansConfig")
+        .def(pybind11::init<>())
+        .def_readwrite("k", &img2num::ImageToSvgConfig::KMeansConfig::k)
+        .def_readwrite("max_iter", &img2num::ImageToSvgConfig::KMeansConfig::max_iter);
+    /*config.def(pybind11::init<>())
+        .def_readwrite("bilateral_filter", &img2num::ImageToSvgConfig::bilateral_filter)
+        .def_readwrite("min_cluster_area", &img2num::ImageToSvgConfig::min_cluster_area)
+        .def_readwrite("color_space", &img2num::ImageToSvgConfig::color_space)
+        .def_readwrite("kmeans", &img2num::ImageToSvgConfig::kmeans);*/
+    config.def(pybind11::init([]() {
+        return new img2num::ImageToSvgConfig(img2num::IMAGE_TO_SVG_DEFAULT_CONFIG);
+    }));
+
     m.def(
+        "image_to_svg",
+        [](pybind11::array_t<uint8_t, pybind11::array::c_style> data, int width, int height, const img2num::ImageToSvgConfig &cfg) {
+            const uint8_t* data_ptr{static_cast<const uint8_t*>(data.request().ptr)};
+            std::string svg{img2num::image_to_svg(data_ptr, width, height, cfg)};
+            pybind11::str svg_py_str(std::move(svg));
+            return svg_py_str;
+        },
+        pybind11::arg("data"), pybind11::arg("width"), pybind11::arg("height"), pybind11::arg("config"),
+        "Convert Image to SVG string");
+
+    /*m.def(
         "image_to_svg",
         [](pybind11::array_t<uint8_t, pybind11::array::c_style> data, int width, int height,
            double sigma_spatial, double sigma_range, int32_t k, int32_t max_iter, int min_area,
            uint8_t color_space) {
             const uint8_t* data_ptr{static_cast<const uint8_t*>(data.request().ptr)};
+
+            img2num::ImageToSvgConfig config {
+                .bilateral_filter{.sigma_spatial = 3.0, .sigma_range=50.0},
+                .min_cluster_area = 100,
+                .color_space = 0,
+                .kmeans{.k=16, .max_iter=100}
+            };
 
             std::string svg{img2num::image_to_svg(data_ptr, width, height, sigma_spatial,
                                                   sigma_range, k, max_iter, min_area, color_space)};
@@ -138,4 +174,5 @@ PYBIND11_MODULE(_img2num, m) {
         pybind11::arg("sigma_spatial"), pybind11::arg("sigma_range"), pybind11::arg("k"),
         pybind11::arg("max_iter"), pybind11::arg("color_space"), pybind11::arg("min_area"),
         "Convert Image to SVG string");
+    */
 }

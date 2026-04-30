@@ -13,7 +13,13 @@
 #include <stdint.h>
 
 #ifdef __cplusplus
+#include "img2num.h"
 extern "C" {
+    typedef img2num::ImageToSvgConfig ImageToSvgConfig;
+#else
+    // 3. For the C compiler, we provide an "Opaque Struct" definition.
+    // C doesn't need to know what's inside, just that it's a type.
+    typedef struct ImageToSvgConfig ImageToSvgConfig;
 #endif
 
 /// @copydoc ::IMG2NUM_H_GAUSSIAN_BLUR_DOC
@@ -44,10 +50,10 @@ char *img2num_labels_to_svg(const uint8_t *data, const int32_t *labels, const in
                             const int height, const int min_area);
 
 /// @copydoc ::IMG2NUM_H_IMAGE_TO_SVG_DOC
-char *img2num_image_to_svg(const uint8_t *data, const int width, const int height,
+/*char *img2num_image_to_svg(const uint8_t *data, const int width, const int height,
                            double sigma_spatial, double sigma_range, const int32_t k,
-                           const int32_t max_iter, const int min_area, const uint8_t color_space);
-
+                           const int32_t max_iter, const int min_area, const uint8_t color_space);*/
+char *img2num_image_to_svg(const uint8_t *data, const int width, const int height, const ImageToSvgConfig* config);
 #ifdef __cplusplus
 }
 #endif
