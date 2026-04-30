@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.16)
 project(PyImg2Num LANGUAGES CXX)
 
+include(CMakePackageConfigHelpers)
+include(GNUInstallDirs)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -17,6 +20,11 @@ target_link_libraries(_img2num PRIVATE Img2Num)
 
 target_include_directories(_img2num PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
+)
+
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/packages/py/img2num/
+    DESTINATION img2num
+    FILES_MATCHING PATTERN "*.py"
 )
 
 install(TARGETS _img2num

@@ -4,6 +4,11 @@
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(IMG2NUM_VERSION 0.0.0)
+
+include(CMakePackageConfigHelpers)
+include(GNUInstallDirs)
+
 file(GLOB_RECURSE CORE_SRC
   "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
 )
@@ -31,6 +36,11 @@ add_custom_target(Img2Num_shaders ALL
 )
 
 add_library(Img2Num ${CORE_SRC})
+
+set_target_properties(Img2Num PROPERTIES
+  VERSION ${IMG2NUM_VERSION}
+  SOVERSION 1
+)
 
 set_property(TARGET Img2Num PROPERTY POSITION_INDEPENDENT_CODE ON)
 
@@ -78,11 +88,35 @@ else()
 endif()
 
 # --- Install targets for packaging ---
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/Img2NumConfigVersion.cmake"
+  VERSION ${IMG2NUM_VERSION}
+  COMPATIBILITY SameMajorVersion
+)
+
+configure_package_config_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Img2NumConfig.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/Img2NumConfig.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Img2Num
+)
+
+install(FILES
+  ${CMAKE_CURRENT_BINARY_DIR}/Img2NumConfig.cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/Img2NumConfigVersion.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Img2Num
+)
+
 install(TARGETS Img2Num
   EXPORT Img2NumTargets
     LIBRARY DESTINATION  ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION  ${CMAKE_INSTALL_LIBDIR}
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/img2num
+)
+
+install(EXPORT Img2NumTargets
+  FILE Img2NumTargets.cmake
+  NAMESPACE Img2Num::
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Img2Num
 )
 
 install(DIRECTORY include/
