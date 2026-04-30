@@ -3,7 +3,6 @@
 #include <cmath>
 #include <cstring>
 #include <functional>
-#include <iostream>
 #include <vector>
 
 #include "img2num.h"
@@ -225,10 +224,8 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
     GPU::getClassInstance().init_gpu();
 
     if (GPU::getClassInstance().is_initialized()) {
-        std::cout << "bilateral_filter gpu" << std::endl;
         bilateral_filter_gpu(image, width, height, sigma_spatial, sigma_range, color_space);
     } else {
-        std::cout << "bilateral_filter cpu" << std::endl;
         bilateral_filter_cpu(image, width, height, sigma_spatial, sigma_range, color_space);
     }
 }

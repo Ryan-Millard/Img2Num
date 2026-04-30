@@ -4,7 +4,6 @@
 #include <cstring>
 #include <ctime>
 #include <functional>
-#include <iostream>
 #include <limits>
 #include <numeric>
 #include <random>
@@ -243,10 +242,8 @@ void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels, const i
     GPU::getClassInstance().init_gpu();
 
     if (GPU::getClassInstance().is_initialized()) {
-        std::cout << "kmeans gpu" << std::endl;
         kmeans_gpu(data, out_data, out_labels, width, height, k, max_iter, color_space);
     } else {
-        std::cout << "kmeans cpu" << std::endl;
         kmeans_cpu(data, out_data, out_labels, width, height, k, max_iter, color_space);
     }
 }
