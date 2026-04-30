@@ -125,14 +125,37 @@ PYBIND11_MODULE(_img2num, m) {
     pybind11::class_<img2num::ImageToSvgConfig::BilateralFilterConfig>(config, "BilateralFilterConfig")
         .def(pybind11::init<>())
         .def_readwrite("sigma_spatial", &img2num::ImageToSvgConfig::BilateralFilterConfig::sigma_spatial)
-        .def_readwrite("sigma_range", &img2num::ImageToSvgConfig::BilateralFilterConfig::sigma_range);
+        .def_readwrite("sigma_range", &img2num::ImageToSvgConfig::BilateralFilterConfig::sigma_range)
+        .def("__repr__", [](const img2num::ImageToSvgConfig::BilateralFilterConfig &c) {
+            return "{'sigma_spatial': " + std::to_string(c.sigma_spatial) + 
+                ", 'sigma_range': " + std::to_string(c.sigma_range) + "}";
+        });
     pybind11::class_<img2num::ImageToSvgConfig::KMeansConfig>(config, "KMeansConfig")
         .def(pybind11::init<>())
         .def_readwrite("k", &img2num::ImageToSvgConfig::KMeansConfig::k)
-        .def_readwrite("max_iter", &img2num::ImageToSvgConfig::KMeansConfig::max_iter);
+        .def_readwrite("max_iter", &img2num::ImageToSvgConfig::KMeansConfig::max_iter)
+        .def("__repr__", [](const img2num::ImageToSvgConfig::KMeansConfig &c) {
+            return "{'k': " + std::to_string(c.k) + 
+                ", 'max_iter': " + std::to_string(c.max_iter) + "}";
+        });
     config.def(pybind11::init([]() {
         return new img2num::ImageToSvgConfig(img2num::IMAGE_TO_SVG_DEFAULT_CONFIG);
-    }));
+    }))
+        .def_readwrite("bilateral_filter", &img2num::ImageToSvgConfig::bilateral_filter)
+        .def_readwrite("min_cluster_area", &img2num::ImageToSvgConfig::min_cluster_area)
+        .def_readwrite("color_space", &img2num::ImageToSvgConfig::color_space)
+        .def_readwrite("kmeans", &img2num::ImageToSvgConfig::kmeans)
+        .def("__repr__", [](const img2num::ImageToSvgConfig &c) {
+            // We use pybind11::repr() to trigger the __repr__ of the nested objects
+            std::stringstream ss;
+            ss << "<ImageToSvgConfig {"
+            << "bilateral_filter: " << pybind11::repr(pybind11::cast(c.bilateral_filter)).cast<std::string>() << ", "
+            << "min_cluster_area: " << c.min_cluster_area << ", "
+            << "color_space: " << (int)c.color_space << ", "
+            << "kmeans: " << pybind11::repr(pybind11::cast(c.kmeans)).cast<std::string>()
+            << "}>";
+            return ss.str();
+        });
 
     m.def(
         "image_to_svg",
