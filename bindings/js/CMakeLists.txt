@@ -12,7 +12,7 @@ file(GLOB_RECURSE BINDING_SRC CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src
 
 add_executable(img2num_wasm ${BINDING_SRC})
 
-target_link_libraries(img2num_wasm PRIVATE CImg2Num)
+target_link_libraries(img2num_wasm PRIVATE CImg2Num Img2Num)
 
 target_include_directories(img2num_wasm PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/include"

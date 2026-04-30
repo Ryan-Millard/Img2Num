@@ -130,11 +130,6 @@ PYBIND11_MODULE(_img2num, m) {
         .def(pybind11::init<>())
         .def_readwrite("k", &img2num::ImageToSvgConfig::KMeansConfig::k)
         .def_readwrite("max_iter", &img2num::ImageToSvgConfig::KMeansConfig::max_iter);
-    /*config.def(pybind11::init<>())
-        .def_readwrite("bilateral_filter", &img2num::ImageToSvgConfig::bilateral_filter)
-        .def_readwrite("min_cluster_area", &img2num::ImageToSvgConfig::min_cluster_area)
-        .def_readwrite("color_space", &img2num::ImageToSvgConfig::color_space)
-        .def_readwrite("kmeans", &img2num::ImageToSvgConfig::kmeans);*/
     config.def(pybind11::init([]() {
         return new img2num::ImageToSvgConfig(img2num::IMAGE_TO_SVG_DEFAULT_CONFIG);
     }));

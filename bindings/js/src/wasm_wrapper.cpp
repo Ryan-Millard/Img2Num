@@ -42,7 +42,15 @@ EMSCRIPTEN_KEEPALIVE char *image_to_svg(const uint8_t *data, const int width, co
                                         double sigma_spatial, double sigma_range, const int32_t k,
                                         const int32_t max_iter, const int min_area,
                                         const uint8_t color_space) {
-    return img2num_image_to_svg(data, width, height, sigma_spatial, sigma_range, k, max_iter,
-                                min_area, color_space);
+    /*return img2num_image_to_svg(data, width, height, sigma_spatial, sigma_range, k, max_iter,
+                                min_area, color_space);*/
+    ImageToSvgConfig config;
+    config.bilateral_filter.sigma_spatial = sigma_spatial;
+    config.bilateral_filter.sigma_range = sigma_range;
+    config.kmeans.k = k;
+    config.kmeans.max_iter = max_iter;
+    config.min_cluster_area = min_area;
+    config.color_space = color_space;
+    return img2num_image_to_svg(data, width, height, &config);
 }
 }
