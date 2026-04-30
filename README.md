@@ -55,13 +55,17 @@ Try the [live demo](https://ryan-millard.github.io/Img2Num/)!
 
 We'd love some help! Check out our [CONTRIBUTING.md](https://github.com/Ryan-Millard/Img2Num/blob/main/CONTRIBUTING.md).
 
-## License Summary
+## License
 
-This project is multi-licensed depending on component
-- **MIT** — core packages, scripts, libraries, build tools, etc.
-- **AGPLv3** — docs, example apps, CI/config.
+The library is licensed under the [MIT License](LICENSE).
 
-See the [LICENSE](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE) for the explanation.
+Certain subdirectories retain their own licenses:
+
+| Subdirectory | License |
+| ------------: | ------- |
+| [`docs`](docs/) | GNU AGPLv3 (see [`docs/LICENSE`](docs/LICENSE)) |
+| [`example-apps/react-js/`](example-apps/react-js/) | GNU AGPLv3 (see [`example-apps/react-js/LICENSE`](example-apps/react-js/LICENSE)) |
+| [`.github/`](.github/) | GNU AGPLv3 (see [`.github/LICENSE`](.github/LICENSE)) |
 
 ## Can't find something?
 

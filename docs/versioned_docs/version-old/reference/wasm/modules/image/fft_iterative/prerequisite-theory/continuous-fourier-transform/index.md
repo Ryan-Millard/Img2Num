@@ -4,10 +4,10 @@ title: Continuous Fourier Transform
 sidebar_position: 5
 ---
 
-import cft_gaussian from './img/cft_gaussian.png';
+import cft_gaussian from "./img/cft_gaussian.png";
 
-import CodeBlock from '@theme/CodeBlock';
-import cft_gaussian_py from '!!raw-loader!./python_scripts/cft_gaussian.py';
+import CodeBlock from "@theme/CodeBlock";
+import cft_gaussian_py from "!!raw-loader!./python_scripts/cft_gaussian.py";
 
 # Continuous Fourier Transform (non-periodic, continuous-time)
 

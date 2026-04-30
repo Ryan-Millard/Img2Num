@@ -1,6 +1,7 @@
 version: 2
 updates:
-  # React (npm)
+  # ======================================================================
+  # Root workspace (tooling, linting, etc.)
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
@@ -8,16 +9,82 @@ updates:
       day: "monday"
       time: "09:00"
     groups:
-      all-npm:
-        patterns:
-          - "*"
+      dev-dependencies:
+        dependency-type: "development"
     labels:
       - "dependencies"
       - "npm"
+      - "js-workspace"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: "chore(deps):"
+      prefix: "chore(deps)"
 
+  # Core JS package
+  - package-ecosystem: "npm"
+    directory: "/packages/js"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    groups:
+      prod-dependencies:
+        dependency-type: "production"
+      dev-dependencies:
+        dependency-type: "development"
+    labels:
+      - "dependencies"
+      - "npm"
+      - "package:js"
+    commit-message:
+      prefix: "chore(deps)"
+
+  # React example app
+  - package-ecosystem: "npm"
+    directory: "/example-apps/react-js"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    groups:
+      react-ecosystem:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "react-*"
+      prod-dependencies:
+        dependency-type: "production"
+      dev-dependencies:
+        dependency-type: "development"
+    labels:
+      - "dependencies"
+      - "npm"
+      - "example-app"
+    commit-message:
+      prefix: "chore(deps)"
+
+  # Docs (Docusaurus)
+  - package-ecosystem: "npm"
+    directory: "/docs"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    groups:
+      docusaurus:
+        patterns:
+          - "@docusaurus/*"
+      prod-dependencies:
+        dependency-type: "production"
+      dev-dependencies:
+        dependency-type: "development"
+    labels:
+      - "dependencies"
+      - "npm"
+      - "docs"
+    commit-message:
+      prefix: "chore(deps)"
+
+  # ======================================================================
   # GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -26,12 +93,11 @@ updates:
       day: "monday"
       time: "09:00"
     groups:
-      all-github-actions:
+      github-actions:
         patterns:
           - "*"
     labels:
       - "dependencies"
       - "github-actions"
-    open-pull-requests-limit: 5
     commit-message:
-      prefix: "chore(deps):"
+      prefix: "ci(deps)"

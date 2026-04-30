@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { Home, Users, Info, Github, SquareArrowOutUpRight, Menu, X } from "lucide-react";
+import { Home, Users, Info, SquareArrowOutUpRight, Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./NavBar.module.css";
 import GlassCard from "@components/GlassCard";
 import ThemeSwitch from "@components/ThemeSwitch";
 import Tooltip from "@components/Tooltip";
+import GitHubSvg from "@assets/GitHub.svg?react";
+
+const GitHub = ({ size = 16, ...props }) => <GitHubSvg width={size} height={size} {...props} />;
 
 const INTERNAL_LINKS = [
   { path: "/", label: "Home", icon: Home, tooltip: "Go to the home page" },
@@ -17,7 +20,7 @@ const EXTERNAL_LINKS = [
   {
     href: "https://github.com/Ryan-Millard/Img2Num",
     label: "GitHub",
-    icon: Github,
+    icon: GitHub,
     tooltip: "Open the project on GitHub",
   },
 ];
