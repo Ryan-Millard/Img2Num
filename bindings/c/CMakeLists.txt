@@ -4,7 +4,10 @@
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CIMG2NUM_VERSION 0.0.0)
+project(CImg2Num
+  LANGUAGES CXX
+  VERSION 0.0.0
+)
 
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
@@ -18,7 +21,7 @@ set(C_BINDINGS_SRC
 add_library(CImg2Num ${C_BINDINGS_SRC})
 
 set_target_properties(CImg2Num PROPERTIES
-  VERSION ${CIMG2NUM_VERSION}
+  VERSION ${PROJECT_VERSION}
   SOVERSION 1
 )
 
@@ -34,7 +37,7 @@ target_include_directories(CImg2Num
 # Install headers and library
 write_basic_package_version_file(
   "${CMAKE_CURRENT_BINARY_DIR}/CImg2NumConfigVersion.cmake"
-  VERSION ${CIMG2NUM_VERSION}
+  VERSION ${PROJECT_VERSION}
   COMPATIBILITY SameMajorVersion
 )
 

@@ -1,5 +1,13 @@
-cmake_minimum_required(VERSION 3.16)
-project(PyImg2Num LANGUAGES CXX)
+# =================================================================
+# Img2Num Python Bindings
+# =================================================================
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+project(PyImg2Num
+  LANGUAGES CXX
+  VERSION 0.0.0
+)
 
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)

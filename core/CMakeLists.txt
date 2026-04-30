@@ -4,7 +4,10 @@
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(IMG2NUM_VERSION 0.0.0)
+project(Img2Num
+  LANGUAGES CXX
+  VERSION 0.0.0
+)
 
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
@@ -38,7 +41,7 @@ add_custom_target(Img2Num_shaders ALL
 add_library(Img2Num ${CORE_SRC})
 
 set_target_properties(Img2Num PROPERTIES
-  VERSION ${IMG2NUM_VERSION}
+  VERSION ${PROJECT_VERSION}
   SOVERSION 1
 )
 
@@ -90,7 +93,7 @@ endif()
 # --- Install targets for packaging ---
 write_basic_package_version_file(
   "${CMAKE_CURRENT_BINARY_DIR}/Img2NumConfigVersion.cmake"
-  VERSION ${IMG2NUM_VERSION}
+  VERSION ${PROJECT_VERSION}
   COMPATIBILITY SameMajorVersion
 )
 
