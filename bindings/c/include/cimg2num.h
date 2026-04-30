@@ -17,10 +17,24 @@
 extern "C" {
 typedef img2num::ImageToSvgConfig ImageToSvgConfig;
 #else
-// 3. For the C compiler, we provide an "Opaque Struct" definition.
-// C doesn't need to know what's inside, just that it's a type.
-typedef struct ImageToSvgConfig ImageToSvgConfig;
+
+typedef struct ImageToSvgConfig {
+    struct {
+        double sigma_spatial;
+        double sigma_range;
+    } bilateral_filter;
+    int min_cluster_area;
+    uint8_t color_space;
+    struct {
+        int32_t k;
+        int32_t max_iter;
+    } kmeans;
+} ImageToSvgConfig;
+
 #endif
+
+ImageToSvgConfig* img2num_config_create();
+void img2num_config_free(ImageToSvgConfig* config);
 
 /// @copydoc ::IMG2NUM_H_GAUSSIAN_BLUR_DOC
 void img2num_gaussian_blur_fft(uint8_t *image, size_t width, size_t height, double sigma);

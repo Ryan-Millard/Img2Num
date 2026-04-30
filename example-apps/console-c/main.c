@@ -73,6 +73,10 @@ int main(int argc, char** argv) {
     // Generate SVG
     char* res_svg = img2num_labels_to_svg(img_data, out_labels, width, height, 100);
 
+    ImageToSvgConfig* config = img2num_config_create();
+    char* res_svg2 = img2num_image_to_svg(image_data_original, width, height, config);
+    img2num_config_free(config);
+
     if (res_svg == NULL) {
         fprintf(stderr, "Failed to generate SVG\n");
         stbi_image_free(image_data_original);

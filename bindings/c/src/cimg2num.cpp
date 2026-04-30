@@ -7,6 +7,15 @@
 
 extern "C" {
 
+ImageToSvgConfig* img2num_config_create() {
+    // Returns a copy of your C++ default constant
+    return new img2num::ImageToSvgConfig(img2num::IMAGE_TO_SVG_DEFAULT_CONFIG);
+}
+
+void img2num_config_free(ImageToSvgConfig* config) {
+    delete reinterpret_cast<img2num::ImageToSvgConfig*>(config);
+}
+
 void img2num_gaussian_blur_fft(uint8_t *image, size_t width, size_t height, double sigma) {
     img2num::clear_last_error_and_catch(img2num::gaussian_blur_fft, image, width, height, sigma);
 }
