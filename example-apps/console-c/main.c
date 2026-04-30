@@ -78,7 +78,16 @@ int main(int argc, char** argv) {
     img2num_config_free(config);
 
     if (res_svg == NULL) {
-        fprintf(stderr, "Failed to generate SVG\n");
+        fprintf(stderr, "Failed to generate SVG step-by-step\n");
+        stbi_image_free(image_data_original);
+        free(img_data);
+        free(out_data);
+        free(out_labels);
+        return 1;
+    }
+
+    if (res_svg2 == NULL) {
+        fprintf(stderr, "Failed to generate SVG in unified call\n");
         stbi_image_free(image_data_original);
         free(img_data);
         free(out_data);
@@ -124,5 +133,6 @@ int main(int argc, char** argv) {
     free(out_data);
     free(out_labels);
     free(res_svg);
+    free(res_svg2);
     return exit_code;
 }
