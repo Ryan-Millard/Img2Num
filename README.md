@@ -10,7 +10,7 @@
 [![Open in Codespaces](https://img.shields.io/badge/-Open%20in%20Codespaces-black?logo=github)](https://codespaces.new/Ryan-Millard/Img2Num)
 
 <a href="https://skillicons.dev">
-  <img height="25px" src="https://skillicons.dev/icons?i=cpp,c,js" />
+  <img height="25px" src="https://skillicons.dev/icons?i=cpp,c,js,py" />
 </a>
  
 _Img2Num_ converts raster images into clean SVGs with _high accuracy and performance_.
