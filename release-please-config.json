@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
-  "separate-pull-requests": false,
+  "separate-pull-requests": true,
   "include-component-in-tag": true,
   "tag-separator": "-",
   "changelog-sections": [
@@ -16,25 +16,33 @@
     { "type": "ci", "section": "👷 CI", "hidden": true }
   ],
   "packages": {
-    "core": {
+    "cpp": {
       "release-type": "simple",
-      "component": "core",
+      "component": "cpp",
       "package-name": "img2num-c++",
+      "path": "core",
       "extra-files": [{ "type": "generic", "path": "CMakeLists.txt" }]
     },
-    "bindings/c": {
+    "c": {
       "release-type": "simple",
       "component": "bindings-c",
-      "package-name": "img2num-c"
+      "dependencies": ["cpp"],
+      "package-name": "img2num-c",
+      "path": "bindings/c",
+      "extra-files": [{ "type": "generic", "path": "CMakeLists.txt" }]
     },
-    "packages/js": {
+    "javascript": {
       "release-type": "node",
       "component": "packages-js",
+      "dependencies": ["c"],
+      "path": "packages/js",
       "package-name": "img2num-js"
     },
-    "packages/py": {
+    "python": {
       "release-type": "python",
       "component": "packages-py",
+      "dependencies": ["cpp"],
+      "path": "packages/py",
       "package-name": "img2num-py"
     }
   }

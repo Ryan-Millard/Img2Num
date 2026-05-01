@@ -1,6 +1,6 @@
 {
-  "core": "0.0.0",
-  "bindings/c": "0.0.0",
-  "packages/js": "0.0.0",
-  "packages/py": "0.0.0"
+  "cpp": "0.0.0",
+  "c": "0.0.0",
+  "javascript": "0.0.0",
+  "python": "0.0.0"
 }
