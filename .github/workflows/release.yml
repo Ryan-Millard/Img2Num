@@ -1,0 +1,252 @@
+name: Release (release-please, multi-language assets)
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      cpp_created:      ${{ steps.rp.outputs['cpp--release_created'] }}
+      cpp_tag:          ${{ steps.rp.outputs['cpp--tag_name'] }}
+      cpp_version:      ${{ steps.rp.outputs['cpp--version'] }}
+      c_created:         ${{ steps.rp.outputs['c--release_created'] }}
+      c_tag:             ${{ steps.rp.outputs['c--tag_name'] }}
+      c_version:         ${{ steps.rp.outputs['c--version'] }}
+      js_created:        ${{ steps.rp.outputs['javascript--release_created'] }}
+      js_tag:            ${{ steps.rp.outputs['javascript--tag_name'] }}
+      js_version:        ${{ steps.rp.outputs['javascript--version'] }}
+      py_created:        ${{ steps.rp.outputs['python--release_created'] }}
+      py_tag:            ${{ steps.rp.outputs['python--tag_name'] }}
+      py_version:        ${{ steps.rp.outputs['python--version'] }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: rp
+        with:
+          token:         ${{ secrets.GITHUB_TOKEN }}
+          config-file:   release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+      - name: Debug release-please outputs
+        run: |
+          echo '${{ toJSON(steps.rp.outputs) }}'
+
+  # C/C++ native artifacts
+  #   C relies on C++ and C lib allows C++ devs to make C-compatible code
+  build-c-cpp-native:
+    if: ${{ needs.release-please.outputs.cpp_created == 'true' || needs.release-please.outputs.c_created == 'true' }}
+    needs: release-please
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            plat: linux-x64
+          - os: macos-latest
+            plat: macos-arm64
+          - os: windows-latest
+            plat: windows-x64
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: ${{ needs.release-please.outputs.c_tag || needs.release-please.outputs.cpp_tag }}, submodules: true }
+      - name: Configure
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install
+      - name: Build
+        run: cmake --build build --config Release
+      - name: Install
+        run: cmake --install build --config Release
+      - name: Package (Linux/macOS)
+        if: runner.os != 'Windows'
+        run: |
+          release_version=${{ needs.release-please.outputs.c_version || needs.release-please.outputs.cpp_version }}
+          ARCHIVE="img2num-c-cpp-v$release_version-${{ matrix.plat }}.tar.gz"
+          tar -czf "$ARCHIVE" -C install .
+          echo "ARCHIVE=$ARCHIVE" >> $GITHUB_ENV
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          release_version=${{ needs.release-please.outputs.c_version || needs.release-please.outputs.cpp_version }}
+          $archive = "img2num-c-cpp-v$release_version-${{ matrix.plat }}.zip"
+          Compress-Archive -Path install\* -DestinationPath $archive
+          "ARCHIVE=$archive" | Out-File -FilePath $env:GITHUB_ENV -Append
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.release-please.outputs.c_tag || needs.release-please.outputs.cpp_tag }}
+          files: ${{ env.ARCHIVE }}
+
+  # WASM + npm (JS)
+  js-and-npm:
+    if: ${{ needs.release-please.outputs.js_created == 'true' }}
+    needs: release-please
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: ${{ needs.release-please.outputs.js_tag }}, submodules: true }
+      - uses: mymindstorm/setup-emsdk@v14
+      - name: Build WASM
+        run: |
+          emcmake cmake -B build-wasm -DCMAKE_BUILD_TYPE=Release .
+          cmake --build build-wasm
+          release_version=${{ needs.release-please.outputs.js_version }}
+          tar -czf img2num-v${release_version}.tar.gz \
+            -C packages/js \
+            build-wasm \
+            index.js \
+            safeWasmWrappers.js \
+            wasmClient.js \
+            wasmWorker.js
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.release-please.outputs.js_tag }}
+          files: img2num-v${{ needs.release-please.outputs.js_version }}.tar.gz
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', registry-url: 'https://registry.npmjs.org' }
+      - name: Publish to npm
+        run: npm publish --access public
+        working-directory: packages/js
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # Wheels + PyPI (Python)
+  py-wheels-and-pypi:
+    if: ${{ needs.release-please.outputs.py_created == 'true' }}
+    needs: release-please
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix: { os: [ubuntu-latest, macos-latest, windows-latest] }
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: ${{ needs.release-please.outputs.py_tag }}, submodules: true }
+      - uses: pypa/cibuildwheel@v2.23.3
+        with: { package-dir: packages/py, output-dir: wheelhouse }
+        env:
+          CIBW_BUILD: "cp310-* cp311-* cp312-*"
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
+          CIBW_ENVIRONMENT: CMAKE_ARGS="-DBUILD_PYTHON=ON"
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.release-please.outputs.py_tag }}
+          files: wheelhouse/*.whl
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: wheelhouse/
+        env:
+          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+
+  # ── Propagate a C++ release to all wrappers ──────────────────────────────
+  # Runs when the C++ library in core/ has a new release and propagates
+  # the release to the C and Python libraries.
+  #
+  # Note: does not affect JavaScript library since it depends on
+  #       core/ (C++ library) through its dependency on
+  #       bindings/c/ (C library). When the C library is released,
+  #       that propagates to the JavaScript library in the
+  #       propagate-c job.
+  propagate-cpp:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.cpp_created == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - path: bindings/c
+            scope: bindings/c
+          - path: packages/py
+            scope: py
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.RELEASE_PROPAGATION_TOKEN }}
+
+      - name: Configure git identity
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create propagation PR → ${{ matrix.target.path }}
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PROPAGATION_TOKEN }}
+          VERSION:  ${{ needs.release-please.outputs.cpp_version }}
+          PATH:     ${{ matrix.target.path }}
+          SCOPE:    ${{ matrix.target.scope }}
+        run: |
+          SLUG="$(echo "$PATH" | tr '/' '-')"
+          BRANCH="release-propagation/core-v${VERSION}-to-${SLUG}"
+
+          git checkout -b "$BRANCH"
+
+          # Empty commit — no sentinel files needed; release-please honours
+          # conventional-commit messages on empty commits.
+          git commit --allow-empty \
+            -m "chore(${SCOPE}): propagate core v${VERSION} release"
+
+          git push origin "$BRANCH"
+
+          gh pr create \
+            --title "chore(${SCOPE}): propagate core v${VERSION} release" \
+            --body  "$(cat <<'EOF'
+            Automated patch bump for \`${PATH}\` following the **`core/` (C++) v${VERSION}** release.
+
+            > Merging this PR will allow release-please to open a patch release PR for \`${PATH}\`.
+
+            **Dependency:** \`core\` → \`${PATH}\`
+            EOF
+            )" \
+            --base main \
+            --head "$BRANCH"
+
+  # ── Propagate an independent bindings/c release to packages/js ────────────
+  propagate-c:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.c_created == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.RELEASE_PROPAGATION_TOKEN }}
+
+      - name: Configure git identity
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create propagation PR → packages/js
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PROPAGATION_TOKEN }}
+          VERSION:  ${{ needs.release-please.outputs.c_version }}
+        run: |
+          BRANCH="release-propagation/c-v${VERSION}-to-packages-js"
+
+          git checkout -b "$BRANCH"
+          git commit --allow-empty \
+            -m "chore(packages/js): propagate bindings/c v${VERSION} release"
+          git push origin "$BRANCH"
+
+          gh pr create \
+            --title "chore(packages/js): propagate bindings/c v${VERSION} release" \
+            --body  "$(cat <<'EOF'
+            Automated patch bump for \`packages/js\` following the **bindings/c v${VERSION}** release.
+
+            > Merging this PR will allow release-please to open a patch release PR for \`packages/js\`.
+
+            **Dependency:** \`bindings/c\` → \`packages/js\`
+            EOF
+            )" \
+            --base main \
+            --head "$BRANCH"

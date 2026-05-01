@@ -1,0 +1,49 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "separate-pull-requests": true,
+  "include-component-in-tag": true,
+  "tag-separator": "-",
+  "changelog-sections": [
+    { "type": "feat", "section": "✨ Features" },
+    { "type": "fix", "section": "🐛 Bug Fixes" },
+    { "type": "perf", "section": "⚡ Performance Improvements" },
+    { "type": "revert", "section": "⏪ Reverts" },
+    { "type": "docs", "section": "📚 Documentation" },
+    { "type": "chore", "section": "🔧 Miscellaneous", "hidden": true },
+    { "type": "refactor", "section": "♻️ Refactoring", "hidden": true },
+    { "type": "test", "section": "✅ Tests", "hidden": true },
+    { "type": "build", "section": "🏗️ Build System", "hidden": true },
+    { "type": "ci", "section": "👷 CI", "hidden": true }
+  ],
+  "packages": {
+    "cpp": {
+      "release-type": "simple",
+      "component": "cpp",
+      "package-name": "img2num-c++",
+      "path": "core",
+      "extra-files": [{ "type": "generic", "path": "CMakeLists.txt" }]
+    },
+    "c": {
+      "release-type": "simple",
+      "component": "bindings-c",
+      "dependencies": ["cpp"],
+      "package-name": "img2num-c",
+      "path": "bindings/c",
+      "extra-files": [{ "type": "generic", "path": "CMakeLists.txt" }]
+    },
+    "javascript": {
+      "release-type": "node",
+      "component": "packages-js",
+      "dependencies": ["c"],
+      "path": "packages/js",
+      "package-name": "img2num-js"
+    },
+    "python": {
+      "release-type": "python",
+      "component": "packages-py",
+      "dependencies": ["cpp"],
+      "path": "packages/py",
+      "package-name": "img2num-py"
+    }
+  }
+}
