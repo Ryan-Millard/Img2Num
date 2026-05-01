@@ -206,10 +206,10 @@ export const findContours = async ({ pixels, labels, width, height, min_area = 1
 };
 
 /**
- * @summary Convert images to SVG contours.
+ * @summary Convert raster images (e.g., JPEG, PNG) to SVGs.
  *
  * @description
- * Convert an input image into an SVG. A unification of bilateralFilter, kmeans, and findContours
+ * Convert an input raster image into an SVG. A unification of `bilateralFilter`, `kmeans`, and `findContours`.
  *
  * @async
  * @function imgToSVG

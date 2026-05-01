@@ -7,9 +7,9 @@ namespace img2num {
 std::string image_to_svg(const uint8_t* data, const int width, const int height,
                          const ImageToSvgConfig& config) {
     // self deallocate
-    std::vector<uint8_t> img_data(width * height * 4);
-    std::vector<uint8_t> out_data(width * height * 4);
-    std::vector<int32_t> out_labels(width * height);
+    std::vector<uint8_t> img_data(static_cast<size_t>(width) * static_cast<size_t>(height) * 4);
+    std::vector<uint8_t> out_data(static_cast<size_t>(width) * static_cast<size_t>(height) * 4);
+    std::vector<int32_t> out_labels(static_cast<size_t>(width) * static_cast<size_t>(height));
 
     std::memcpy(img_data.data(), data,
                 static_cast<size_t>(width) * static_cast<size_t>(height) * 4);
