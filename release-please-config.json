@@ -4,25 +4,23 @@
   "include-component-in-tag": true,
   "tag-separator": "-",
   "changelog-sections": [
-    { "type": "feat",     "section": "✨ Features" },
-    { "type": "fix",      "section": "🐛 Bug Fixes" },
-    { "type": "perf",     "section": "⚡ Performance Improvements" },
-    { "type": "revert",   "section": "⏪ Reverts" },
-    { "type": "docs",     "section": "📚 Documentation" },
-    { "type": "chore",    "section": "🔧 Miscellaneous",   "hidden": true },
-    { "type": "refactor", "section": "♻️ Refactoring",      "hidden": true },
-    { "type": "test",     "section": "✅ Tests",           "hidden": true },
-    { "type": "build",    "section": "🏗️ Build System",    "hidden": true },
-    { "type": "ci",       "section": "👷 CI",              "hidden": true }
+    { "type": "feat", "section": "✨ Features" },
+    { "type": "fix", "section": "🐛 Bug Fixes" },
+    { "type": "perf", "section": "⚡ Performance Improvements" },
+    { "type": "revert", "section": "⏪ Reverts" },
+    { "type": "docs", "section": "📚 Documentation" },
+    { "type": "chore", "section": "🔧 Miscellaneous", "hidden": true },
+    { "type": "refactor", "section": "♻️ Refactoring", "hidden": true },
+    { "type": "test", "section": "✅ Tests", "hidden": true },
+    { "type": "build", "section": "🏗️ Build System", "hidden": true },
+    { "type": "ci", "section": "👷 CI", "hidden": true }
   ],
   "packages": {
     "core": {
       "release-type": "simple",
       "component": "core",
       "package-name": "img2num-c++",
-      "extra-files": [
-        { "type": "generic", "path": "CMakeLists.txt" }
-      ]
+      "extra-files": [{ "type": "generic", "path": "CMakeLists.txt" }]
     },
     "bindings/c": {
       "release-type": "simple",
