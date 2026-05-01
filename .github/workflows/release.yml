@@ -1,0 +1,139 @@
+name: Release (release-please, multi-language assets)
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      core_created:      ${{ steps.rp.outputs['core--release_created'] }}
+      core_tag:          ${{ steps.rp.outputs['core--tag_name'] }}
+      core_version:      ${{ steps.rp.outputs['core--version'] }}
+      c_created:         ${{ steps.rp.outputs['bindings/c--release_created'] }}
+      c_tag:             ${{ steps.rp.outputs['bindings/c--tag_name'] }}
+      c_version:         ${{ steps.rp.outputs['bindings/c--version'] }}
+      js_created:        ${{ steps.rp.outputs['packages/js--release_created'] }}
+      js_tag:            ${{ steps.rp.outputs['packages/js--tag_name'] }}
+      js_version:        ${{ steps.rp.outputs['packages/js--version'] }}
+      py_created:        ${{ steps.rp.outputs['packages/py--release_created'] }}
+      py_tag:            ${{ steps.rp.outputs['packages/py--tag_name'] }}
+      py_version:        ${{ steps.rp.outputs['packages/py--version'] }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: rp
+        with:
+          token:         ${{ secrets.GITHUB_TOKEN }}
+          config-file:   release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  # C/C++ native artifacts
+  #   C relies on C++ and C lib allows C++ devs to make C-compatible code
+  build-core-native:
+    if: ${{ needs.release-please.outputs.core_created == 'true' || needs.release-please.outputs.c_created == 'true' }}
+    needs: release-please
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            plat: linux-x64
+          - os: macos-latest
+            plat: macos-arm64
+          - os: windows-latest
+            plat: windows-x64
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: ${{ needs.release-please.outputs.core_tag }}, submodules: true }
+      - name: Configure
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install
+      - name: Build
+        run: cmake --build build --config Release
+      - name: Install
+        run: cmake --install build --config Release
+      - name: Package (Linux/macOS)
+        if: runner.os != 'Windows'
+        run: |
+          release_version=${{ needs.release-please.outputs.core_version }}
+          ARCHIVE="img2num-c-cpp-v$release_version-${{ matrix.plat }}.tar.gz"
+          tar -czf "$ARCHIVE" -C install .
+          echo "ARCHIVE=$ARCHIVE" >> $GITHUB_ENV
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          release_version=${{ needs.release-please.outputs.core_version }}
+          $archive = "img2num-c-cpp-v$release_version-${{ matrix.plat }}.zip"
+          Compress-Archive -Path install\* -DestinationPath $archive
+          "ARCHIVE=$archive" | Out-File -FilePath $env:GITHUB_ENV -Append
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.release-please.outputs.core_tag }}
+          files: ${{ env.ARCHIVE }}
+
+  # WASM + npm (JS)
+  js-and-npm:
+    if: ${{ needs.release-please.outputs.js_created == 'true' }}
+    needs: release-please
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: ${{ needs.release-please.outputs.js_tag }}, submodules: true }
+      - uses: mymindstorm/setup-emsdk@v14
+      - name: Build WASM
+        run: |
+          emcmake cmake -B build-wasm -DCMAKE_BUILD_TYPE=Release .
+          cmake --build build-wasm
+          release_version=${{ needs.release-please.outputs.js_version }}
+          tar -czf img2num-v${release_version}.tar.gz \
+            -C packages/js \
+            build-wasm \
+            index.js \
+            safeWasmWrappers.js \
+            wasmClient.js \
+            wasmWorker.js
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.release-please.outputs.js_tag }}
+          files: img2num-v${{ needs.release-please.outputs.js_version }}.tar.gz
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', registry-url: 'https://registry.npmjs.org' }
+      - name: Publish to npm
+        run: npm publish --access public
+        working-directory: packages/js
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # Wheels + PyPI (Python)
+  py-wheels-and-pypi:
+    if: ${{ needs.release-please.outputs.py_created == 'true' }}
+    needs: release-please
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix: { os: [ubuntu-latest, macos-latest, windows-latest] }
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: ${{ needs.release-please.outputs.py_tag }}, submodules: true }
+      - uses: pypa/cibuildwheel@v2.23.3
+        with: { package-dir: packages/py, output-dir: wheelhouse }
+        env:
+          CIBW_BUILD: "cp310-* cp311-* cp312-*"
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
+          CIBW_ENVIRONMENT: CMAKE_ARGS="-DBUILD_PYTHON=ON"
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.release-please.outputs.py_tag }}
+          files: wheelhouse/*.whl
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: wheelhouse/
+        env:
+          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
