@@ -154,23 +154,23 @@ PYBIND11_MODULE(_img2num, m) {
 
                 cfg = img2num.ImageToSvgConfig() will use default values
                 */
-                auto c = new img2num::ImageToSvgConfig(img2num::IMAGE_TO_SVG_DEFAULT_CONFIG);
+                img2num::ImageToSvgConfig c{img2num::IMAGE_TO_SVG_DEFAULT_CONFIG};
                 if (bf_dict.contains("sigma_spatial")) 
-                    c->bilateral_filter.sigma_spatial = bf_dict["sigma_spatial"].cast<double>();
+                    c.bilateral_filter.sigma_spatial = bf_dict["sigma_spatial"].cast<double>();
                 if (bf_dict.contains("sigma_range"))   
-                    c->bilateral_filter.sigma_range = bf_dict["sigma_range"].cast<double>();
+                    c.bilateral_filter.sigma_range = bf_dict["sigma_range"].cast<double>();
 
                 // 3. Process KMeans overrides from the 'km' dictionary
                 if (km_dict.contains("k")) 
-                    c->kmeans.k = km_dict["k"].cast<int>();
+                    c.kmeans.k = km_dict["k"].cast<int>();
                 if (km_dict.contains("max_iter"))      
-                    c->kmeans.max_iter = km_dict["max_iter"].cast<int>();
+                    c.kmeans.max_iter = km_dict["max_iter"].cast<int>();
 
                 // 4. Process remaining top-level kwargs (like color_space or min_cluster_area)
                 if (kwargs.contains("min_cluster_area"))
-                    c->min_cluster_area = kwargs["min_cluster_area"].cast<int>();
+                    c.min_cluster_area = kwargs["min_cluster_area"].cast<int>();
                 if (kwargs.contains("color_space"))
-                    c->color_space = kwargs["color_space"].cast<uint8_t>();
+                    c.color_space = kwargs["color_space"].cast<uint8_t>();
 
                 return c;
             }), pybind11::arg("bf") = pybind11::dict(), // Defaults to empty dict
