@@ -3,9 +3,28 @@ name = "img2num"
 version = "0.0.0"
 description = "A fast and accurate raster image to SVG conversion library"
 requires-python = ">=3.10"
+readme = "README.md"
+license = { text = "MIT" }
+classifiers = [
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Multimedia :: Graphics :: Graphics Conversion",
+  "Topic :: Scientific/Engineering :: Image Processing"
+]
 dependencies = [
   "numpy"
 ]
+
+[project.urls]
+Homepage      = "https://ryan-millard.github.io/Img2Num/info/docs/"
+Repository    = "https://github.com/Ryan-Millard/Img2Num"
+Documentation = "https://ryan-millard.github.io/Img2Num/info/docs/"
+Changelog     = "https://github.com/Ryan-Millard/Img2Num/blob/main/CHANGELOG.md"
+"Bug Tracker" = "https://github.com/Ryan-Millard/Img2Num/issues"
 
 [build-system]
 requires = [
