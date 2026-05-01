@@ -143,7 +143,39 @@ PYBIND11_MODULE(_img2num, m) {
         });
     config
         .def(pybind11::init(
-            []() { return new img2num::ImageToSvgConfig(img2num::IMAGE_TO_SVG_DEFAULT_CONFIG); }))
+            [](pybind11::dict bf_dict, pybind11::dict km_dict, pybind11::kwargs kwargs) {
+                /*
+                cfg = img2num.ImageToSvgConfig(
+                    bf = {"sigma_spatial": 5.0, "sigma_range": 30.0},
+                    km = {"k": 32},
+                    min_cluster_area = 250,
+                    color_space = 1
+                )
+
+                cfg = img2num.ImageToSvgConfig() will use default values
+                */
+                auto c = new img2num::ImageToSvgConfig(img2num::IMAGE_TO_SVG_DEFAULT_CONFIG);
+                if (bf_dict.contains("sigma_spatial")) 
+                    c->bilateral_filter.sigma_spatial = bf_dict["sigma_spatial"].cast<double>();
+                if (bf_dict.contains("sigma_range"))   
+                    c->bilateral_filter.sigma_range = bf_dict["sigma_range"].cast<double>();
+
+                // 3. Process KMeans overrides from the 'km' dictionary
+                if (km_dict.contains("k")) 
+                    c->kmeans.k = km_dict["k"].cast<int>();
+                if (km_dict.contains("max_iter"))      
+                    c->kmeans.max_iter = km_dict["max_iter"].cast<int>();
+
+                // 4. Process remaining top-level kwargs (like color_space or min_cluster_area)
+                if (kwargs.contains("min_cluster_area"))
+                    c->min_cluster_area = kwargs["min_cluster_area"].cast<int>();
+                if (kwargs.contains("color_space"))
+                    c->color_space = kwargs["color_space"].cast<uint8_t>();
+
+                return c;
+            }), pybind11::arg("bf") = pybind11::dict(), // Defaults to empty dict
+                pybind11::arg("km") = pybind11::dict()  // Defaults to empty dict
+            )
         .def_readwrite("bilateral_filter", &img2num::ImageToSvgConfig::bilateral_filter)
         .def_readwrite("min_cluster_area", &img2num::ImageToSvgConfig::min_cluster_area)
         .def_readwrite("color_space", &img2num::ImageToSvgConfig::color_space)
@@ -172,30 +204,4 @@ PYBIND11_MODULE(_img2num, m) {
         },
         pybind11::arg("data"), pybind11::arg("width"), pybind11::arg("height"),
         pybind11::arg("config"), "Convert Image to SVG string");
-
-    /*m.def(
-        "image_to_svg",
-        [](pybind11::array_t<uint8_t, pybind11::array::c_style> data, int width, int height,
-           double sigma_spatial, double sigma_range, int32_t k, int32_t max_iter, int min_area,
-           uint8_t color_space) {
-            const uint8_t* data_ptr{static_cast<const uint8_t*>(data.request().ptr)};
-
-            img2num::ImageToSvgConfig config {
-                .bilateral_filter{.sigma_spatial = 3.0, .sigma_range=50.0},
-                .min_cluster_area = 100,
-                .color_space = 0,
-                .kmeans{.k=16, .max_iter=100}
-            };
-
-            std::string svg{img2num::image_to_svg(data_ptr, width, height, sigma_spatial,
-                                                  sigma_range, k, max_iter, min_area, color_space)};
-            pybind11::str svg_py_str(std::move(svg));
-
-            return svg_py_str;
-        },
-        pybind11::arg("data"), pybind11::arg("width"), pybind11::arg("height"),
-        pybind11::arg("sigma_spatial"), pybind11::arg("sigma_range"), pybind11::arg("k"),
-        pybind11::arg("max_iter"), pybind11::arg("color_space"), pybind11::arg("min_area"),
-        "Convert Image to SVG string");
-    */
 }

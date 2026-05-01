@@ -63,10 +63,6 @@ std::string labels_to_svg(const uint8_t *data, const int32_t *labels, const int 
                           const int height, const int min_area);
 
 /// @copydoc IMG2NUM_H_IMAGE_TO_SVG_DOC
-/*std::string image_to_svg(const uint8_t *data, const int width, const int height,
-                         double sigma_spatial, double sigma_range, const int32_t k,
-                         const int32_t max_iter, const int min_area, const uint8_t color_space);*/
-
 std::string image_to_svg(const uint8_t *data, const int width, const int height,
                          const ImageToSvgConfig &config = IMAGE_TO_SVG_DEFAULT_CONFIG);
 

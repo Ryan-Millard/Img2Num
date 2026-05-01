@@ -31,8 +31,9 @@ def main():
       f.writelines(res_svg)
 
   # res_svg2 should match res_svg
-  cfg = img2num.ImageToSvgConfig() # instanitates defaults
-  
+  cfg = img2num.ImageToSvgConfig(km = {"k": 32})
+  print(cfg)
+
   # cfg.bilateral_filter.sigma_spatial = 3
   # cfg.bilateral_filter.sigma_range = 50
   # cfg.kmeans.k = 16

@@ -4,9 +4,6 @@
 #include "img2num.h"
 
 namespace img2num {
-// std::string image_to_svg(const uint8_t *data, const int width, const int height,
-//                          double sigma_spatial, double sigma_range, const int32_t k,
-//                          const int32_t max_iter, const int min_area, const uint8_t color_space) {
 std::string image_to_svg(const uint8_t* data, const int width, const int height,
                          const ImageToSvgConfig& config) {
     // self deallocate
