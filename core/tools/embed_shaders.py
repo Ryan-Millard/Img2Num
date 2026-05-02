@@ -8,22 +8,19 @@ EXPECTED_OUTPUT_FILE = pathlib.Path("../core/generated/embedded_shaders.h").reso
 # Inputs
 if len(sys.argv) != 3:
     raise ValueError("Usage: embed_shaders.py <shader_dir> <output_file>")
-SHADER_DIR = pathlib.Path(sys.argv[1]).resolve()
-OUTPUT_FILE = pathlib.Path(sys.argv[2]).resolve()
 
-# Strict validation (your original safety model)
-if SHADER_DIR != EXPECTED_SHADER_DIR:
+# Strict validation
+if pathlib.Path(sys.argv[1]).resolve() != EXPECTED_SHADER_DIR:
     raise ValueError(
         "CMake embed_shaders.py SHADER_DIR argument is incorrect:\n"
         f"  Expected: {EXPECTED_SHADER_DIR}\n"
-        f"  Got:      {SHADER_DIR}"
+        f"  Got:      {sys.argv[1]}"
     )
-
-if OUTPUT_FILE != EXPECTED_OUTPUT_FILE:
+if pathlib.Path(sys.argv[2]).resolve() != EXPECTED_OUTPUT_FILE:
     raise ValueError(
         "CMake embed_shaders.py OUTPUT_FILE argument is incorrect:\n"
         f"  Expected: {EXPECTED_OUTPUT_FILE}\n"
-        f"  Got:      {OUTPUT_FILE}"
+        f"  Got:      {sys.argv[2]}"
     )
 
 # Only use trusted, hard-coded paths for filesystem operations
