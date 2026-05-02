@@ -9,6 +9,8 @@ from ._img2num import (
     bilateral_filter        as _bilateral_filter,
     kmeans                  as _kmeans,
     labels_to_svg           as _labels_to_svg,
+    image_to_svg            as _image_to_svg,
+    ImageToSvgConfig
 )
 
 def _inject_dims(image_arg="image"):
@@ -59,3 +61,7 @@ def kmeans(data, k, max_iter, color_space, *, width, height):
 @_inject_dims("data")
 def labels_to_svg(data, labels, min_area, *, width, height):
     return _labels_to_svg(data, labels, width, height, min_area)
+
+@_inject_dims("image")
+def image_to_svg(image, config, *, width, height):
+    return _image_to_svg(image, width, height, config)

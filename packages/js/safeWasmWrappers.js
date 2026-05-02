@@ -204,3 +204,39 @@ export const findContours = async ({ pixels, labels, width, height, min_area = 1
   });
   return { svg: result.returnValue, visualization: result.output.pixels };
 };
+
+/**
+ * @summary Convert raster images (e.g., JPEG, PNG) to SVGs.
+ *
+ * @description
+ * Convert an input raster image into an SVG. A unification of `bilateralFilter`, `kmeans`, and `findContours`.
+ *
+ * @async
+ * @function imgToSVG
+ * @param {Object} __named_parameters - The input options.
+ * @property {Uint8ClampedArray} __named_parameters.pixels - Original image pixels.
+ * @property {number} __named_parameters.width - Image width.
+ * @property {number} __named_parameters.height - Image height.
+ * @property {number} [__named_parameters.sigma_spatial=3] - Spatial standard deviation.
+ * @property {number} [__named_parameters.sigma_range=50] - Range (color) standard deviation.
+ * @property {number} [__named_parameters.num_colors=16] - Number of color clusters.
+ * @property {number} [__named_parameters.max_iter=100] - Maximum number of iterations.
+ * @property {number} [__named_parameters.min_area=100] - Minimum area of a region to be considered a contour.
+ * @property {number} [__named_parameters.color_space=0] - Color space mode.
+ * @returns {Promise<{svg: string, visualization: Uint8ClampedArray}>} Generated SVG and optionally pixels with visualized contours.
+ * @throws {Error} If the WASM function fails or input labels are invalid.
+ * @example
+ * const { svg, visualization } = await findContours({ pixels, labels, width, height });
+ * @todo Support additional visualization options like color-coded regions.
+ * @variation Contour extraction with optional visualization
+ * @since 0.0.0
+ */
+export const imgToSVG = async ({ pixels, width, height, sigma_spatial = 3, sigma_range = 50, num_colors = 16, max_iter = 100, min_area = 100, color_space = 0 }) => {
+  const result = await callWasm({
+    funcName: "image_to_svg",
+    args: { pixels, width, height, sigma_spatial, sigma_range, num_colors, max_iter, min_area, color_space },
+    bufferKeys: [{ key: "pixels", type: "Uint8ClampedArray" }],
+    returnType: "string",
+  });
+  return { svg: result.returnValue, visualization: result.output.pixels };
+};

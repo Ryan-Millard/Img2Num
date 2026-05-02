@@ -37,4 +37,24 @@ EMSCRIPTEN_KEEPALIVE char *labels_to_svg(uint8_t *data, int32_t *labels, const i
                                          const int height, const int min_area) {
     return img2num_labels_to_svg(data, labels, width, height, min_area);
 }
+
+EMSCRIPTEN_KEEPALIVE char *image_to_svg(const uint8_t *data, const int width, const int height,
+                                        double sigma_spatial, double sigma_range, const int32_t k,
+                                        const int32_t max_iter, const int min_area,
+                                        const uint8_t color_space) {
+    /*return img2num_image_to_svg(data, width, height, sigma_spatial, sigma_range, k, max_iter,
+                                min_area, color_space);*/
+    ImageToSvgConfig* config = img2num_config_create();
+
+    config->bilateral_filter.sigma_spatial = sigma_spatial;
+    config->bilateral_filter.sigma_range = sigma_range;
+    config->kmeans.k = k;
+    config->kmeans.max_iter = max_iter;
+    config->min_cluster_area = min_area;
+    config->color_space = color_space;
+
+    char* svg = img2num_image_to_svg(data, width, height, config);
+    img2num_config_free(config);
+    return svg;
+}
 }

@@ -15,6 +15,27 @@
 /// @note All image buffers are assumed to be stored in row-major order, unless otherwise noted.
 namespace img2num {
 
+struct ImageToSvgConfig {
+    struct BilateralFilterConfig {
+        double sigma_spatial = 3.0;
+        double sigma_range = 50.0;
+    } bilateral_filter;
+
+    int min_cluster_area = 100;
+    uint8_t color_space = 0;
+
+    struct KMeansConfig {
+        int32_t k = 16;
+        int32_t max_iter = 100;
+    } kmeans;
+};
+
+const ImageToSvgConfig IMAGE_TO_SVG_DEFAULT_CONFIG = {
+    .bilateral_filter{.sigma_spatial = 3.0, .sigma_range = 50.0},
+    .min_cluster_area = 100,
+    .color_space = 0,
+    .kmeans{.k = 16, .max_iter = 100}};
+
 /// @copydoc IMG2NUM_H_GAUSSIAN_BLUR_DOC
 void gaussian_blur_fft(uint8_t *image, size_t width, size_t height, double sigma);
 
@@ -40,6 +61,11 @@ void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_
 /// @copydoc IMG2NUM_H_LABELS_TO_SVG_DOC
 std::string labels_to_svg(const uint8_t *data, const int32_t *labels, const int width,
                           const int height, const int min_area);
+
+/// @copydoc IMG2NUM_H_IMAGE_TO_SVG_DOC
+std::string image_to_svg(const uint8_t *data, const int width, const int height,
+                         const ImageToSvgConfig &config = IMAGE_TO_SVG_DEFAULT_CONFIG);
+
 }  // namespace img2num
 
 #endif  // IMG2NUM_H
