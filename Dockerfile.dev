@@ -59,6 +59,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 # After installing deps since Dawn is likely to change, not its deps
 COPY third_party/dawn third_party/dawn
+COPY third_party/stb third_party/stb
 
 RUN cmake -S third_party/dawn -B build/dawn \
     -DDAWN_SUPPORTS_GLFW_FOR_WINDOWING=OFF \
