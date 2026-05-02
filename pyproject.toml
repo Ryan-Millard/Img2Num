@@ -21,3 +21,26 @@ members = [
   # All example apps with "-py" suffix
   "example-apps/*-py"
 ]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+  "E",   # pycodestyle errors
+  "W",   # pycodestyle warnings
+  "F",   # pyflakes
+  "B",   # flake8-bugbear (mutable defaults, bare excepts, etc.)
+  "UP",  # pyupgrade — modernise syntax
+  "SIM", # flake8-simplify
+]
+ignore = []
+
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = ["F401"] # Allow re-exports in __init__.py
+
+[project.optional-dependencies]
+dev = [
+  "ruff>=0.4.0",
+]

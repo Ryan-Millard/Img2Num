@@ -117,7 +117,7 @@ run_in_container() {
 # ---------------------------------------------------------------------------
 # Ensure that Docker is available for the relevant commands.
 case "$MODE" in
-  stop|restart|down|purge|destroy|logs)
+  stop|restart|down|purge|destroy|logs|lint-py)
     command -v docker >/dev/null 2>&1 || {
       echo "Error: docker is unavailable (not installed, not running or not in PATH)." >&2
       exit 1
@@ -128,6 +128,11 @@ case "$MODE" in
   # Arbitrary pnpm commands
   pnpm)
     run_in_container pnpm "$@"
+    ;;
+  
+  # Lint Python bindings and example apps with Ruff
+  lint-py)
+    run_in_container uv run --extra dev ruff check packages/py example-apps
     ;;
 
   # Open a shell in the container
@@ -184,6 +189,8 @@ Commands:
     pnpm <args>         Run arbitrary pnpm command.              [--img, --dh-img, --ghcr-img]
   Open Container Terminal:
     sh|shell|bash       Opens bash terminal in Docker container. [--img, --dh-img, --ghcr-img]
+  Python:
+    lint-py             Lint Python bindings and examples with Ruff. [--img, --dh-img, --ghcr-img]
   Docker Maintenance:
     stop                Stops running Docker container (keeps containers, volumes & networks).
     restart             Restarts running Docker container.
