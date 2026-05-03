@@ -15,19 +15,15 @@
 /// @note All image buffers are assumed to be stored in row-major order, unless otherwise noted.
 namespace img2num {
 
-struct BilateralFilterConfig {
-    double sigma_spatial = 3.0;
-    double sigma_range = 50.0;
-};
-
-struct KMeansConfig {
-    int32_t k = 16;
-    int32_t max_iter = 100;
-};
-
 struct ImageToSvgConfig {
-    BilateralFilterConfig bilateral_filter;
-    KMeansConfig kmeans;
+    struct BilateralFilterConfig {
+        double sigma_spatial = 3.0;
+        double sigma_range = 50.0;
+    } bilateral_filter;
+    struct KMeansConfig {
+        int32_t k = 16;
+        int32_t max_iter = 100;
+    } kmeans;
     int min_cluster_area = 100;
     uint8_t color_space = 0;
 };
