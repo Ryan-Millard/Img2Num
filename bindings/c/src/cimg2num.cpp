@@ -8,8 +8,7 @@
 extern "C" {
 
 ImageToSvgConfig* img2num_config_create() {
-    // Returns a copy of your C++ default constant
-    return new img2num::ImageToSvgConfig(img2num::IMAGE_TO_SVG_DEFAULT_CONFIG);
+    return reinterpret_cast<ImageToSvgConfig*>(new img2num::ImageToSvgConfig);
 }
 
 void img2num_config_free(ImageToSvgConfig* config) {
@@ -70,7 +69,7 @@ char *img2num_image_to_svg(const uint8_t *data, const int width, const int heigh
     char *result{nullptr};
     img2num::clear_last_error_and_catch(
         [&](const uint8_t *d, const int w, const int h, const ImageToSvgConfig *cfg) {
-            std::string svg{img2num::image_to_svg(d, w, h, *cfg)};
+            std::string svg{img2num::image_to_svg(d, w, h, *reinterpret_cast<const img2num::ImageToSvgConfig*>(cfg))};
             result = static_cast<char *>(std::malloc(svg.size() + 1));
             if (!result) {
                 return;  // Allocation failed

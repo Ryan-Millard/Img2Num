@@ -13,25 +13,26 @@
 #include <stdint.h>
 
 #ifdef __cplusplus
-#include "img2num.h"
 extern "C" {
-typedef img2num::ImageToSvgConfig ImageToSvgConfig;
-#else
+#endif
 
-typedef struct ImageToSvgConfig {
-    struct {
-        double sigma_spatial;
-        double sigma_range;
-    } bilateral_filter;
+// mirrors struct definitions in img2num.h
+typedef struct img2num_BilateralFilterConfig {
+    double sigma_spatial;
+    double sigma_range;
+} BilateralFilterConfig;
+
+typedef struct img2num_KMeansConfig {
+    int32_t k;
+    int32_t max_iter;
+} KMeansConfig;
+
+typedef struct img2num_ImageToSvgConfig {
+    BilateralFilterConfig bilateral_filter;
+    KMeansConfig kmeans;
     int min_cluster_area;
     uint8_t color_space;
-    struct {
-        int32_t k;
-        int32_t max_iter;
-    } kmeans;
 } ImageToSvgConfig;
-
-#endif
 
 ImageToSvgConfig* img2num_config_create();
 void img2num_config_free(ImageToSvgConfig* config);

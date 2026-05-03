@@ -3,6 +3,7 @@
 #include <pybind11/pybind11.h>
 
 #include <cstdlib>
+#include <memory>
 
 PYBIND11_MODULE(_img2num, m) {
     m.doc() = "Python bindings for the img2num C++ library";
@@ -121,27 +122,33 @@ PYBIND11_MODULE(_img2num, m) {
         pybind11::arg("data"), pybind11::arg("labels"), pybind11::arg("width"),
         pybind11::arg("height"), pybind11::arg("min_area"), "Convert labels to SVG string");
 
-    pybind11::class_<img2num::ImageToSvgConfig> config(m, "ImageToSvgConfig");
-    pybind11::class_<img2num::ImageToSvgConfig::BilateralFilterConfig>(config,
-                                                                       "BilateralFilterConfig")
+    // ---------------------- Config Structs ----------------------
+
+
+    pybind11::class_<img2num::BilateralFilterConfig> bf_config(m, "BilateralFilterConfig");
+    bf_config
         .def(pybind11::init<>())
         .def_readwrite("sigma_spatial",
-                       &img2num::ImageToSvgConfig::BilateralFilterConfig::sigma_spatial)
+                       &img2num::BilateralFilterConfig::sigma_spatial)
         .def_readwrite("sigma_range",
-                       &img2num::ImageToSvgConfig::BilateralFilterConfig::sigma_range)
-        .def("__repr__", [](const img2num::ImageToSvgConfig::BilateralFilterConfig &c) {
+                       &img2num::BilateralFilterConfig::sigma_range)
+        .def("__repr__", [](const img2num::BilateralFilterConfig &c) {
             return "{'sigma_spatial': " + std::to_string(c.sigma_spatial) +
                    ", 'sigma_range': " + std::to_string(c.sigma_range) + "}";
         });
-    pybind11::class_<img2num::ImageToSvgConfig::KMeansConfig>(config, "KMeansConfig")
+
+    pybind11::class_<img2num::KMeansConfig> km_config(m, "KMeansConfig");
+    km_config
         .def(pybind11::init<>())
-        .def_readwrite("k", &img2num::ImageToSvgConfig::KMeansConfig::k)
-        .def_readwrite("max_iter", &img2num::ImageToSvgConfig::KMeansConfig::max_iter)
-        .def("__repr__", [](const img2num::ImageToSvgConfig::KMeansConfig &c) {
+        .def_readwrite("k", &img2num::KMeansConfig::k)
+        .def_readwrite("max_iter", &img2num::KMeansConfig::max_iter)
+        .def("__repr__", [](const img2num::KMeansConfig &c) {
             return "{'k': " + std::to_string(c.k) + ", 'max_iter': " + std::to_string(c.max_iter) +
                    "}";
         });
-    config
+
+    pybind11::class_<img2num::ImageToSvgConfig> img2num_config(m, "ImageToSvgConfig");
+    img2num_config
         .def(pybind11::init(
             [](pybind11::dict bf_dict, pybind11::dict km_dict, pybind11::kwargs kwargs) {
                 /*
@@ -154,28 +161,46 @@ PYBIND11_MODULE(_img2num, m) {
 
                 cfg = img2num.ImageToSvgConfig() will use default values
                 */
-                img2num::ImageToSvgConfig c{img2num::IMAGE_TO_SVG_DEFAULT_CONFIG};
+
+                // hand over ownership to python
+                std::unique_ptr<img2num::ImageToSvgConfig> c = std::make_unique<img2num::ImageToSvgConfig>();
                 if (bf_dict.contains("sigma_spatial")) 
-                    c.bilateral_filter.sigma_spatial = bf_dict["sigma_spatial"].cast<double>();
+                    c->bilateral_filter.sigma_spatial = bf_dict["sigma_spatial"].cast<double>();
                 if (bf_dict.contains("sigma_range"))   
-                    c.bilateral_filter.sigma_range = bf_dict["sigma_range"].cast<double>();
+                    c->bilateral_filter.sigma_range = bf_dict["sigma_range"].cast<double>();
 
                 // 3. Process KMeans overrides from the 'km' dictionary
                 if (km_dict.contains("k")) 
-                    c.kmeans.k = km_dict["k"].cast<int>();
+                    c->kmeans.k = km_dict["k"].cast<int>();
                 if (km_dict.contains("max_iter"))      
-                    c.kmeans.max_iter = km_dict["max_iter"].cast<int>();
+                    c->kmeans.max_iter = km_dict["max_iter"].cast<int>();
 
                 // 4. Process remaining top-level kwargs (like color_space or min_cluster_area)
                 if (kwargs.contains("min_cluster_area"))
-                    c.min_cluster_area = kwargs["min_cluster_area"].cast<int>();
+                    c->min_cluster_area = kwargs["min_cluster_area"].cast<int>();
                 if (kwargs.contains("color_space"))
-                    c.color_space = kwargs["color_space"].cast<uint8_t>();
+                    c->color_space = kwargs["color_space"].cast<uint8_t>();
 
                 return c;
             }), pybind11::arg("bf") = pybind11::dict(), // Defaults to empty dict
                 pybind11::arg("km") = pybind11::dict()  // Defaults to empty dict
             )
+        .def(pybind11::init(
+            [](const img2num::BilateralFilterConfig& bf_cfg, const img2num::KMeansConfig& km_cfg, pybind11::kwargs kwargs) {
+                
+                std::unique_ptr<img2num::ImageToSvgConfig> c = std::make_unique<img2num::ImageToSvgConfig>();
+                c->bilateral_filter.sigma_spatial = bf_cfg.sigma_spatial;
+                c->bilateral_filter.sigma_range = bf_cfg.sigma_range;
+                c->kmeans.k = km_cfg.k;
+                c->kmeans.max_iter = km_cfg.max_iter;
+
+                if (kwargs.contains("min_cluster_area"))
+                    c->min_cluster_area = kwargs["min_cluster_area"].cast<int>();
+                if (kwargs.contains("color_space"))
+                    c->color_space = kwargs["color_space"].cast<uint8_t>();
+
+                return c;
+            }))
         .def_readwrite("bilateral_filter", &img2num::ImageToSvgConfig::bilateral_filter)
         .def_readwrite("min_cluster_area", &img2num::ImageToSvgConfig::min_cluster_area)
         .def_readwrite("color_space", &img2num::ImageToSvgConfig::color_space)

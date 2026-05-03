@@ -10,6 +10,8 @@ from ._img2num import (
     kmeans                  as _kmeans,
     labels_to_svg           as _labels_to_svg,
     image_to_svg            as _image_to_svg,
+    BilateralFilterConfig,
+    KMeansConfig,
     ImageToSvgConfig
 )
 
