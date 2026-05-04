@@ -29,10 +29,9 @@ typedef struct img2num_ImageToSvgConfig {
     } kmeans;
     int min_cluster_area;
     uint8_t color_space;
-} ImageToSvgConfig;
+} img2num_ImageToSvgConfig;
 
-ImageToSvgConfig* img2num_config_create();
-void img2num_config_free(ImageToSvgConfig* config);
+img2num_ImageToSvgConfig img2num_ImageToSvgConfig_default(void);
 
 /// @copydoc ::IMG2NUM_H_GAUSSIAN_BLUR_DOC
 void img2num_gaussian_blur_fft(uint8_t *image, size_t width, size_t height, double sigma);
@@ -63,7 +62,7 @@ char *img2num_labels_to_svg(const uint8_t *data, const int32_t *labels, const in
 
 /// @copydoc ::IMG2NUM_H_IMAGE_TO_SVG_DOC
 char *img2num_image_to_svg(const uint8_t *data, const int width, const int height,
-                           const ImageToSvgConfig *config);
+                           const img2num_ImageToSvgConfig *config);
 #ifdef __cplusplus
 }
 #endif

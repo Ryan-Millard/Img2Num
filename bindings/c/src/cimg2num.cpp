@@ -7,12 +7,39 @@
 
 extern "C" {
 
-ImageToSvgConfig* img2num_config_create() {
-    return reinterpret_cast<ImageToSvgConfig*>(new img2num::ImageToSvgConfig);
+static img2num::ImageToSvgConfig to_cpp(const img2num_ImageToSvgConfig& c) {
+    return {
+        .bilateral_filter{
+            .sigma_spatial = c.bilateral_filter.sigma_spatial,
+            .sigma_range   = c.bilateral_filter.sigma_range
+        },
+        .kmeans{
+            .k        = c.kmeans.k,
+            .max_iter = c.kmeans.max_iter
+        },
+        .min_cluster_area = c.min_cluster_area,
+        .color_space      = c.color_space
+    };
 }
 
-void img2num_config_free(ImageToSvgConfig* config) {
-    delete reinterpret_cast<img2num::ImageToSvgConfig*>(config);
+static img2num_ImageToSvgConfig to_c(const img2num::ImageToSvgConfig& cpp) {
+    return {
+        .bilateral_filter{
+            .sigma_spatial = cpp.bilateral_filter.sigma_spatial,
+            .sigma_range   = cpp.bilateral_filter.sigma_range
+        },
+        .kmeans{
+            .k        = cpp.kmeans.k,
+            .max_iter = cpp.kmeans.max_iter
+        },
+        .min_cluster_area = cpp.min_cluster_area,
+        .color_space      = cpp.color_space
+    };
+}
+
+img2num_ImageToSvgConfig img2num_ImageToSvgConfig_default(void) {
+    // Use the defaults from the C++ struct
+    return to_c(img2num::ImageToSvgConfig{});
 }
 
 void img2num_gaussian_blur_fft(uint8_t *image, size_t width, size_t height, double sigma) {
@@ -65,11 +92,11 @@ char *img2num_labels_to_svg(const uint8_t *data, const int32_t *labels, const in
 }
 
 char *img2num_image_to_svg(const uint8_t *data, const int width, const int height,
-                           const ImageToSvgConfig *config) {
+                           const img2num_ImageToSvgConfig *config) {
     char *result{nullptr};
     img2num::clear_last_error_and_catch(
-        [&](const uint8_t *d, const int w, const int h, const ImageToSvgConfig *cfg) {
-            std::string svg{img2num::image_to_svg(d, w, h, *reinterpret_cast<const img2num::ImageToSvgConfig*>(cfg))};
+        [&](const uint8_t *d, const int w, const int h, const img2num_ImageToSvgConfig *cfg) {
+            std::string svg{img2num::image_to_svg(d, w, h, to_cpp(*config))};
             result = static_cast<char *>(std::malloc(svg.size() + 1));
             if (!result) {
                 return;  // Allocation failed
@@ -78,5 +105,5 @@ char *img2num_image_to_svg(const uint8_t *data, const int width, const int heigh
         },
         data, width, height, config);
     return result;
-};
+}
 }
