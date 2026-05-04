@@ -32,7 +32,7 @@ We're looking for experienced contributors ready to take on scoped, ongoing resp
 
 Img2Num is a layered system. Here's how the pieces fit together:
 
-````mermaid
+```mermaid
 flowchart TD
     A["core/<br/>(C++ Library)"] --> B["bindings/c/<br/>(C ABI Library)"]
     A --> C["bindings/py/<br/>(Python - pybind11)"]
@@ -53,56 +53,64 @@ flowchart TD
     class A core;
     class B,D,F layer;
     class C,E intermediary;
-````
+```
 
-| Layer | Path | Notes |
-|---|---|---|
-| C++ Core | `core/` | Source of truth for all algorithms |
-| C ABI | `bindings/c/` | Stable ABI boundary; feeds the Wasm pipeline |
-| WebAssembly | `bindings/js/` | Built via Emscripten from the C ABI |
-| JavaScript package | `packages/js/` | Safe runtime wrapper over the Wasm module |
-| Python bindings | `bindings/py/` | pybind11 directly on the C++ core |
-| Python package | `packages/py/` | Exposes the native Python module |
+| Layer              | Path           | Notes                                        |
+| ------------------ | -------------- | -------------------------------------------- |
+| C++ Core           | `core/`        | Source of truth for all algorithms           |
+| C ABI              | `bindings/c/`  | Stable ABI boundary; feeds the Wasm pipeline |
+| WebAssembly        | `bindings/js/` | Built via Emscripten from the C ABI          |
+| JavaScript package | `packages/js/` | Safe runtime wrapper over the Wasm module    |
+| Python bindings    | `bindings/py/` | pybind11 directly on the C++ core            |
+| Python package     | `packages/py/` | Exposes the native Python module             |
 
 ## Open Maintainer Areas
 
 ### CI/CD
+
 - GitHub Actions workflows, Docker builds, release pipelines, automated publishing.
 
 ### C ABI (`bindings/c`)
+
 - Maintain the C ABI over the C++ core. Must stay compatible with external C consumers and the Wasm pipeline.
 
 ### JavaScript / WebAssembly (`bindings/js`, `packages/js`)
+
 - Emscripten integration, browser and Node.js compatibility, pnpm workspace tooling, React example app.
 
 ### Python (`bindings/py`, `packages/py`)
+
 - pybind11 bindings, uv workspace tooling, console example app.
 
 ### Docs & DX (`docs/`, `doxygen/`)
+
 - Docusaurus site, Doxygen integration, tutorials, onboarding experience.
 
 ### Releases & Packaging
+
 - Versioning, tagging, GitHub Releases, npm and Docker Hub publishing.
 
 ### Testing & Validation
+
 - CI test coverage, linting/formatting enforcement, regression testing.
 
 ### Internal Tooling (`scripts/`)
+
 - Cross-platform CLI utilities, developer automation, local workflow improvements.
 
 ## Maintainer Tiers
 
-````mermaid
+```mermaid
 flowchart LR
     A[Junior Maintainer<br/>PR review & learning] --> B[Scoped Maintainer<br/>Domain ownership]
     B --> C[Core Maintainer<br/>Architecture & final decisions]
-````
+```
 
-| Tier | Merge Access | Responsibilities |
-|---|---|---|
-| **Junior** | None | Review small PRs, contribute within a defined scope |
-| **Scoped** | Within their domain | Own a specific area — review, approve, maintain quality |
-| **Core** | Broad | Cross-domain architecture, final merge authority, long-term direction |
+| Tier       | Merge Access        | Responsibilities                                                      |
+| ---------- | ------------------- | --------------------------------------------------------------------- |
+| **Junior** | None                | Review small PRs, contribute within a defined scope                   |
+| **Scoped** | Within their domain | Own a specific area — review, approve, maintain quality               |
+| **Core**   | Broad               | Cross-domain architecture, final merge authority, long-term direction |
 
 Trust is earned through consistent contributions. Everyone starts scoped.
 
