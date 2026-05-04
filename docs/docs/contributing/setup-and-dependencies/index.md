@@ -49,12 +49,13 @@ If you cloned without `--recursive`, required dependencies will be missing.
   <TabItem value="all" label="All (optional)" default>
 
 This clones all submodules:
+
 - `stb` (required)
 - `dawn` (optional, required for local native builds)
 
 ```bash
 git submodule update --init third_party
-````
+```
 
   </TabItem>
 
@@ -64,7 +65,7 @@ git submodule update --init third_party
 
 ```bash
 git submodule update --init third_party/stb
-````
+```
 
   </TabItem>
 
