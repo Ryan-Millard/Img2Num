@@ -36,6 +36,19 @@ git clone --recursive https://github.com/Ryan-Millard/Img2Num.git
 cd Img2Num/
 ```
 
+:::warning Cloning without `--recursive`
+If you cloned the repository without the `--recursive` flag, the `third_party/stb`
+submodule will be missing and you will see a build error like:
+
+fatal error: stb/stb_image.h: No such file or directory
+
+To fix this, run the following from the project root:
+
+```bash
+git submodule update --init third_party/stb
+```
+:::
+
 ## Docker
 
 ### Start Docker
