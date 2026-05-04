@@ -107,7 +107,7 @@
     "lint:style": "editorconfig-checker"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.100.6",
+    "@tanstack/react-query": "^5.100.9",
     "@testing-library/dom": "^10.4.1",
     "html-react-parser": "^6.0.1",
     "img2num": "workspace:*",
