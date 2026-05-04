@@ -63,5 +63,6 @@ def labels_to_svg(data, labels, min_area, *, width, height):
     return _labels_to_svg(data, labels, width, height, min_area)
 
 @_inject_dims("image")
-def image_to_svg(image, config, *, width, height):
+def image_to_svg(image, *, width, height, config=None):
+    # if config=None use default configs
     return _image_to_svg(image, width, height, config)

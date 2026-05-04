@@ -1,10 +1,12 @@
 #include <img2num.h>
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
 #include <cstdlib>
 #include <memory>
 #include <sstream>
+#include <optional>
 
 PYBIND11_MODULE(_img2num, m) {
     m.doc() = "Python bindings for the img2num C++ library";
@@ -192,12 +194,15 @@ PYBIND11_MODULE(_img2num, m) {
     m.def(
         "image_to_svg",
         [](pybind11::array_t<uint8_t, pybind11::array::c_style> data, int width, int height,
-           const img2num::ImageToSvgConfig &cfg) {
+           std::optional<const img2num::ImageToSvgConfig> cfg) {
             const uint8_t *data_ptr{static_cast<const uint8_t *>(data.request().ptr)};
-            std::string svg{img2num::image_to_svg(data_ptr, width, height, cfg)};
+            const auto& _cfg = cfg.has_value() ? *cfg : img2num::ImageToSvgConfig{};
+
+            std::string svg{img2num::image_to_svg(data_ptr, width, height, _cfg)};
             pybind11::str svg_py_str(std::move(svg));
             return svg_py_str;
         },
         pybind11::arg("data"), pybind11::arg("width"), pybind11::arg("height"),
-        pybind11::arg("config"), "Convert Image to SVG string");
+        pybind11::arg("cfg") = pybind11::none(), 
+        "Convert Image to SVG string");
 }
