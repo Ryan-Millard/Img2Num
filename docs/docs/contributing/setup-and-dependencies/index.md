@@ -36,6 +36,54 @@ git clone --recursive https://github.com/Ryan-Millard/Img2Num.git
 cd Img2Num/
 ```
 
+:::warning[Missing submodules after cloning]
+
+<details className="alert--warning">
+<summary>
+
+If you cloned without `--recursive`, required dependencies will be missing.
+
+</summary>
+
+<Tabs>
+  <TabItem value="all" label="All (optional)" default>
+
+This clones all submodules:
+
+- `stb` (required)
+- `dawn` (optional, required for local native builds)
+
+```bash
+git submodule update --init third_party
+```
+
+  </TabItem>
+
+  <TabItem value="stb" label="STB (required)" default>
+
+`stb` is always required.
+
+```bash
+git submodule update --init third_party/stb
+```
+
+  </TabItem>
+
+  <TabItem value="dawn" label="Dawn (optional)">
+
+Only needed for local native builds. The `img2num-dev` Docker image already has it built.
+
+```bash
+git submodule update --init third_party/dawn
+```
+
+  </TabItem>
+</Tabs>
+
+</details>
+
+:::
+
 ## Docker
 
 ### Start Docker
