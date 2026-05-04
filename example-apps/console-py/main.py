@@ -34,7 +34,7 @@ def main():
   cfg = img2num.ImageToSvgConfig(km = {"k": 16})
   print(cfg)
 
-  res_svg2 = img2num.image_to_svg(img, cfg)
+  res_svg2 = img2num.image_to_svg(img, config=cfg)
   with open(os.path.join(OUTDIR, "result2.svg"),"w") as f:
       f.writelines(res_svg2)
 
