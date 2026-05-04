@@ -16,8 +16,7 @@
 extern "C" {
 #endif
 
-// mirrors struct definition in img2num.h
-
+/// @copydoc ::IMG2NUM_H_IMAGE_TO_SVG_CONFIG_DOC
 typedef struct img2num_ImageToSvgConfig {
     struct {
         double sigma_spatial;

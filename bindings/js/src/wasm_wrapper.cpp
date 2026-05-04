@@ -42,8 +42,6 @@ EMSCRIPTEN_KEEPALIVE char *image_to_svg(const uint8_t *data, const int width, co
                                         double sigma_spatial, double sigma_range, const int32_t k,
                                         const int32_t max_iter, const int min_area,
                                         const uint8_t color_space) {
-    /*return img2num_image_to_svg(data, width, height, sigma_spatial, sigma_range, k, max_iter,
-                                min_area, color_space);*/
     img2num_ImageToSvgConfig config = img2num_ImageToSvgConfig_default();
 
     config.bilateral_filter.sigma_spatial = sigma_spatial;

@@ -34,13 +34,6 @@ def main():
   cfg = img2num.ImageToSvgConfig(km = {"k": 16})
   print(cfg)
 
-  # cfg.bilateral_filter.sigma_spatial = 3
-  # cfg.bilateral_filter.sigma_range = 50
-  # cfg.kmeans.k = 16
-  # cfg.kmeans.max_iter = 100
-  # cfg.min_cluster_size = 100
-  # cfg.color_space = 0
-
   res_svg2 = img2num.image_to_svg(img, cfg)
   with open(os.path.join(OUTDIR, "result2.svg"),"w") as f:
       f.writelines(res_svg2)

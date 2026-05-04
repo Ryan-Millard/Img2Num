@@ -4,6 +4,7 @@
 
 #include <cstdlib>
 #include <memory>
+#include <sstream>
 
 PYBIND11_MODULE(_img2num, m) {
     m.doc() = "Python bindings for the img2num C++ library";
@@ -147,17 +148,6 @@ PYBIND11_MODULE(_img2num, m) {
     config
         .def(pybind11::init([](pybind11::dict bf_dict, pybind11::dict km_dict,
                                pybind11::kwargs kwargs) {
-                 /*
-                 cfg = img2num.ImageToSvgConfig(
-                     bf = {"sigma_spatial": 5.0, "sigma_range": 30.0},
-                     km = {"k": 32},
-                     min_cluster_area = 250,
-                     color_space = 1
-                 )
-
-                 cfg = img2num.ImageToSvgConfig() will use default values
-                 */
-
                  // hand over ownership to python
                  std::unique_ptr<img2num::ImageToSvgConfig> c =
                      std::make_unique<img2num::ImageToSvgConfig>();
