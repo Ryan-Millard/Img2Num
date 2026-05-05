@@ -1,17 +1,3 @@
-#define IMG2NUM_H_IMAGE_TO_SVG_CONFIG_DOC
-/// @def IMG2NUM_H_IMAGE_TO_SVG_CONFIG_DOC
-/// @brief Configuration settings to run img2num_image_to_svg.
-/// @ingroup IMG2NUM_H
-/// @param nilateral_filter.sigma_spatial Standard deviation for spatial Gaussian (proximity weight).
-/// @param nilateral_filter.sigma_range Standard deviation for range Gaussian (intensity similarity weight).
-/// @param kmeans.k Number of clusters to compute.
-/// @param kmeans.max_iter Maximum number of iterations for the algorithm.
-/// @param min_cluster_area Minimum area (in pixels) for a region to be included in the SVG.
-/// @param color_space Color space flag (0 = CIE LAB, 1 = RGB).
-/// @note This applies only to setting bilateral filter and kmeans properties.
-/// @note Dox File: `doxygen/img2num.h.dox`
-///
-
 #define IMG2NUM_H_GAUSSIAN_BLUR_DOC
 /// @def IMG2NUM_H_GAUSSIAN_BLUR_DOC
 /// @brief Apply a Gaussian blur to an image using FFT.
@@ -109,7 +95,8 @@
 /// @param data Pointer to image data buffer.
 /// @param width Width of the image in pixels.
 /// @param height Height of the image in pixels.
-/// @param config img2num_ImageToSvgConfig Configuration Struct
-/// @return std::string A valid SVG string containing the data.
+/// @param config img2num_ImageToSvgConfig Configuration Struct.
+/// > See @ref img2num::ImageToSvgConfig.
+/// @return std::string An SVG string containing data roughly approximate to the input image.
 /// @note Dox File: `doxygen/img2num.h.dox`
 ///
