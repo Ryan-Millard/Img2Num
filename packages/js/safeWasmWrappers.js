@@ -31,16 +31,16 @@ initWasmWorker();
  *
  * @async
  * @function gaussianBlur
- * @param {Object} __named_parameters - The input options.
- * @property {Uint8ClampedArray} __named_parameters.pixels - The image pixel data (flat RGBA array).
- * @property {number} __named_parameters.width - The width of the image.
- * @property {number} __named_parameters.height - The height of the image.
- * @property {number} [__named_parameters.sigma_pixels=width*0.005] - Standard deviation of the Gaussian blur (default=width*0.005; 5% of width).
+ * @param {Object} options - The input options.
+ * @param {Uint8ClampedArray} options.pixels - The image pixel data (flat RGBA array).
+ * @param {number} options.width - The width of the image.
+ * @param {number} options.height - The height of the image.
+ * @param {number} [options.sigma_pixels=width*0.005] - Standard deviation of the Gaussian blur (default=width*0.005; 5% of width).
  * @returns {Promise<Uint8ClampedArray>} The blurred image pixels.
  * @throws {Error} If the WASM function fails or memory allocation fails.
  * @example
  * const blurred = await gaussianBlur({ pixels, width, height });
- * @todo Consider adding support for multiple channels or alpha-only blurs.
+ * @todo Fix FFT zero-padding bug around edges of the image.
  * @variation Standard Gaussian blur using FFT
  * @since 0.0.0
  */
@@ -65,13 +65,13 @@ export const gaussianBlur = async ({ pixels, width, height, sigma_pixels = width
  *
  * @async
  * @function bilateralFilter
- * @param {Object} __named_parameters - The input options.
- * @property {Uint8ClampedArray} __named_parameters.pixels - The image pixel data (flat RGBA array).
- * @property {number} __named_parameters.width - The width of the image.
- * @property {number} __named_parameters.height - The height of the image.
- * @property {number} [__named_parameters.sigma_spatial=3] - Spatial standard deviation.
- * @property {number} [__named_parameters.sigma_range=50] - Range (color) standard deviation.
- * @property {number} [__named_parameters.color_space=0] - Color space mode (0: CIE LAB; 1: sRGB).
+ * @param {Object} options - The input options.
+ * @param {Uint8ClampedArray} options.pixels - The image pixel data (flat RGBA array).
+ * @param {number} options.width - The width of the image.
+ * @param {number} options.height - The height of the image.
+ * @param {number} [options.sigma_spatial=3] - Spatial standard deviation.
+ * @param {number} [options.sigma_range=50] - Range (color) standard deviation.
+ * @param {number} [options.color_space=0] - Color space mode (0: CIE LAB; 1: sRGB).
  * @returns {Promise<Uint8ClampedArray>} The filtered image pixels.
  * @throws {Error} If the WASM function fails.
  * @example
@@ -97,11 +97,11 @@ export const bilateralFilter = async ({ pixels, width, height, sigma_spatial = 3
  *
  * @async
  * @function blackThreshold
- * @param {Object} __named_parameters - The input options.
- * @property {Uint8ClampedArray} __named_parameters.pixels - The image pixel data (flat RGBA array).
- * @property {number} __named_parameters.width - The width of the image.
- * @property {number} __named_parameters.height - The height of the image.
- * @property {number} __named_parameters.num_colors - Number of colors to reduce the image to.
+ * @param {Object} options - The input options.
+ * @param {Uint8ClampedArray} options.pixels - The image pixel data (flat RGBA array).
+ * @param {number} options.width - The width of the image.
+ * @param {number} options.height - The height of the image.
+ * @param {number} options.num_colors - Number of colors to reduce the image to.
  * @returns {Promise<Uint8ClampedArray>} The thresholded image pixels.
  * @throws {Error} If the WASM function fails.
  * @example
@@ -132,15 +132,15 @@ export const blackThreshold = async ({ pixels, width, height, num_colors }) => {
  *
  * @async
  * @function kmeans
- * @param {Object} __named_parameters - The input options.
- * @property {Uint8ClampedArray} __named_parameters.pixels - Original image pixels.
- * @property {Uint8ClampedArray} [__named_parameters.out_pixels=new Uint8ClampedArray(pixels.length)] - Output pixels array.
- * @property {Int32Array} [__named_parameters.out_labels=new Int32Array(pixels.length/4)] - Output labels array.
- * @property {number} __named_parameters.width - Image width.
- * @property {number} __named_parameters.height - Image height.
- * @property {number} __named_parameters.num_colors - Number of color clusters.
- * @property {number} [__named_parameters.max_iter=100] - Maximum number of iterations.
- * @property {number} [__named_parameters.color_space=0] - Color space mode.
+ * @param {Object} options - The input options.
+ * @param {Uint8ClampedArray} options.pixels - Original image pixels.
+ * @param {Uint8ClampedArray} [options.out_pixels=new Uint8ClampedArray(pixels.length)] - Output pixels array.
+ * @param {Int32Array} [options.out_labels=new Int32Array(pixels.length/4)] - Output labels array.
+ * @param {number} options.width - Image width.
+ * @param {number} options.height - Image height.
+ * @param {number} options.num_colors - Number of color clusters.
+ * @param {number} [options.max_iter=100] - Maximum number of iterations.
+ * @param {number} [options.color_space=0] - Color space mode.
  * @returns {Promise<{pixels: Uint8ClampedArray, labels: Int32Array}>} Clustered pixels and labels.
  * @throws {Error} If the WASM function fails or iterations do not converge.
  * @example
@@ -178,18 +178,17 @@ export const kmeans = async ({
  *
  * @async
  * @function findContours
- * @param {Object} __named_parameters - The input options.
- * @property {Uint8ClampedArray} __named_parameters.pixels - Original image pixels.
- * @property {Int32Array} __named_parameters.labels - Label array from clustering (e.g., K-Means) or segmentation.
- * @property {number} __named_parameters.width - Image width.
- * @property {number} __named_parameters.height - Image height.
- * @property {number} [__named_parameters.min_area=100] - Minimum area of a region to be considered a contour.
- * @returns {Promise<{svg: string, visualization: Uint8ClampedArray}>} Generated SVG and optionally pixels with visualized contours.
+ * @param {Object} options - The input options.
+ * @param {Uint8ClampedArray} options.pixels - Original image pixels.
+ * @param {Int32Array} options.labels - Label array from clustering (e.g., K-Means) or segmentation.
+ * @param {number} options.width - Image width.
+ * @param {number} options.height - Image height.
+ * @param {number} [options.min_area=100] - Minimum area of a region to be considered a contour.
+ * @returns {Promise<{svg: string>} Generated SVG.
  * @throws {Error} If the WASM function fails or input labels are invalid.
  * @example
- * const { svg, visualization } = await findContours({ pixels, labels, width, height });
- * @todo Support additional visualization options like color-coded regions.
- * @variation Contour extraction with optional visualization
+ * const { svg } = await findContours({ pixels, labels, width, height });
+ * @variation Converts labeled (from a clustering algorithm, e.g. K-Means) image into an SVG.
  * @since 0.0.0
  */
 export const findContours = async ({ pixels, labels, width, height, min_area = 100 }) => {
@@ -202,7 +201,7 @@ export const findContours = async ({ pixels, labels, width, height, min_area = 1
     ],
     returnType: "string",
   });
-  return { svg: result.returnValue, visualization: result.output.pixels };
+  return { svg: result.returnValue };
 };
 
 /**
@@ -212,31 +211,30 @@ export const findContours = async ({ pixels, labels, width, height, min_area = 1
  * Convert an input raster image into an SVG. A unification of `bilateralFilter`, `kmeans`, and `findContours`.
  *
  * @async
- * @function imgToSVG
- * @param {Object} __named_parameters - The input options.
- * @property {Uint8ClampedArray} __named_parameters.pixels - Original image pixels.
- * @property {number} __named_parameters.width - Image width.
- * @property {number} __named_parameters.height - Image height.
- * @property {number} [__named_parameters.sigma_spatial=3] - Spatial standard deviation.
- * @property {number} [__named_parameters.sigma_range=50] - Range (color) standard deviation.
- * @property {number} [__named_parameters.num_colors=16] - Number of color clusters.
- * @property {number} [__named_parameters.max_iter=100] - Maximum number of iterations.
- * @property {number} [__named_parameters.min_area=100] - Minimum area of a region to be considered a contour.
- * @property {number} [__named_parameters.color_space=0] - Color space mode.
- * @returns {Promise<{svg: string, visualization: Uint8ClampedArray}>} Generated SVG and optionally pixels with visualized contours.
+ * @function imageToSvg
+ * @param {Object} options - The input options.
+ * @param {Uint8ClampedArray} options.pixels - Original image pixels.
+ * @param {number} options.width - Image width.
+ * @param {number} options.height - Image height.
+ * @param {number} [options.sigma_spatial=3] - Spatial standard deviation.
+ * @param {number} [options.sigma_range=50] - Range (color) standard deviation.
+ * @param {number} [options.num_colors=16] - Number of color clusters.
+ * @param {number} [options.max_iter=100] - Maximum number of iterations.
+ * @param {number} [options.min_area=100] - Minimum area of a region to be considered a contour.
+ * @param {number} [options.color_space=0] - Color space mode.
+ * @returns {Promise<{svg: string}>} Generated SVG.
  * @throws {Error} If the WASM function fails or input labels are invalid.
  * @example
- * const { svg, visualization } = await findContours({ pixels, labels, width, height });
- * @todo Support additional visualization options like color-coded regions.
- * @variation Contour extraction with optional visualization
+ * const { svg } = await findContours({ pixels, labels, width, height });
+ * @variation Convert a raster image (e.g., PNG, JPG) into an SVG.
  * @since 0.0.0
  */
-export const imgToSVG = async ({ pixels, width, height, sigma_spatial = 3, sigma_range = 50, num_colors = 16, max_iter = 100, min_area = 100, color_space = 0 }) => {
+export const imageToSvg = async ({ pixels, width, height, sigma_spatial = 3, sigma_range = 50, num_colors = 16, max_iter = 100, min_area = 100, color_space = 0 }) => {
   const result = await callWasm({
     funcName: "image_to_svg",
     args: { pixels, width, height, sigma_spatial, sigma_range, num_colors, max_iter, min_area, color_space },
     bufferKeys: [{ key: "pixels", type: "Uint8ClampedArray" }],
     returnType: "string",
   });
-  return { svg: result.returnValue, visualization: result.output.pixels };
+  return { svg: result.returnValue };
 };
