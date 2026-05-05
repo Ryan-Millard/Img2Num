@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(JSBindings LANGUAGES C)
 
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD 18)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 if(NOT EMSCRIPTEN)
