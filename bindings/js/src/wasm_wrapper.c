@@ -1,7 +1,6 @@
 #include <cimg2num.h>
 #include <emscripten/emscripten.h>
 
-extern "C" {
 EMSCRIPTEN_KEEPALIVE void gaussian_blur_fft(uint8_t *image, size_t width, size_t height,
                                             double sigma) {
     img2num_gaussian_blur_fft(image, width, height, sigma);
@@ -52,5 +51,4 @@ EMSCRIPTEN_KEEPALIVE char *image_to_svg(const uint8_t *data, const int width, co
     config.color_space = color_space;
 
     return img2num_image_to_svg(data, width, height, &config);
-}
 }
