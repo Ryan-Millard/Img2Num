@@ -171,8 +171,8 @@ PYBIND11_MODULE(_img2num, m) {
 
                  return c;
              }),
-             pybind11::arg("bf") = pybind11::dict(),  // Defaults to empty dict
-             pybind11::arg("km") = pybind11::dict()   // Defaults to empty dict
+             pybind11::arg("bilateral_filter") = pybind11::dict(),  // Defaults to empty dict
+             pybind11::arg("kmeans") = pybind11::dict()   // Defaults to empty dict
              )
         .def_readwrite("bilateral_filter", &img2num::ImageToSvgConfig::bilateral_filter)
         .def_readwrite("min_cluster_area", &img2num::ImageToSvgConfig::min_cluster_area)

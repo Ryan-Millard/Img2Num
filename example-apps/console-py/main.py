@@ -31,7 +31,7 @@ def main():
       f.writelines(res_svg)
 
   # res_svg2 should match res_svg
-  cfg = img2num.ImageToSvgConfig(km = {"k": 16})
+  cfg = img2num.ImageToSvgConfig(kmeans = {"k": 16})
   print(cfg)
 
   res_svg2 = img2num.image_to_svg(img, config=cfg)
