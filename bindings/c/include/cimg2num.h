@@ -16,17 +16,36 @@
 extern "C" {
 #endif
 
-/// @copydoc ::IMG2NUM_H_IMAGE_TO_SVG_CONFIG_DOC
+/// @brief Configuration options for image_to_svg.
+/// @ingroup CIMG2NUM_H
 typedef struct img2num_ImageToSvgConfig {
-    struct {
+
+    /// Configuration settings for the bilateral filter in image_to_svg.
+    struct BilateralFilterConfig {
+        /// Standard deviation for spatial Gaussian (proximity weight).
+        /// Higher values smooth over larger spatial neighborhoods.
         double sigma_spatial;
+        /// Standard deviation for range Gaussian (intensity similarity weight).
+        /// Higher values allow blending of more dissimilar pixel intensities.
         double sigma_range;
     } bilateral_filter;
-    struct {
+
+    /// Configuration settings for K-Means in image_to_svg.
+    struct KMeansConfig {
+        /// Number of clusters to compute in K-Means.
+        /// Roughly represents number of unique colors discovered.
         int32_t k;
+        /// Maximum number of iterations for the K-Means algorithm.
+        /// The algorithm may terminate earlier if it converges.
         int32_t max_iter;
     } kmeans;
+
+    /// Minimum area (in pixels) for a region to be included in the SVG.
     int min_cluster_area;
+
+    /// Color space flag.
+    /// - 0 = CIE LAB (more perceptually accurate)
+    /// - 1 = sRGB (faster).
     uint8_t color_space;
 } img2num_ImageToSvgConfig;
 
