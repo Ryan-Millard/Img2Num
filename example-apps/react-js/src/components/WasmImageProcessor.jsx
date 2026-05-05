@@ -1,6 +1,6 @@
 import { useEffect, useState, useId, useRef, useCallback, useMemo } from "react";
 import { Upload } from "lucide-react";
-import { imageToUint8ClampedArray, bilateralFilter, kmeans, findContours} from "img2num";
+import { imageToUint8ClampedArray, bilateralFilter, kmeans, findContours } from "img2num";
 import GlassCard from "@components/GlassCard";
 import styles from "./WasmImageProcessor.module.css";
 import { useNavigate } from "react-router-dom";
