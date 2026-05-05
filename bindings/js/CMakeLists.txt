@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(JSBindings LANGUAGES C)
 
-# set(CMAKE_CXX_STANDARD 17)
-# set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
@@ -12,7 +9,6 @@ if(NOT EMSCRIPTEN)
 endif()
 
 file(GLOB_RECURSE BINDING_SRC CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.c")
-message(STATUS ${BINDING_SRC})
 
 add_executable(img2num_wasm ${BINDING_SRC})
 
