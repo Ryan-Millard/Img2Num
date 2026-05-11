@@ -7,7 +7,7 @@
 	"flags": {},
 	"children": [
 		{
-			"id": 11,
+			"id": 16,
 			"name": "bilateralFilter",
 			"variant": "declaration",
 			"kind": 64,
@@ -21,7 +21,7 @@
 			],
 			"signatures": [
 				{
-					"id": 12,
+					"id": 17,
 					"name": "bilateralFilter",
 					"variant": "signature",
 					"kind": 4096,
@@ -144,8 +144,8 @@
 					],
 					"parameters": [
 						{
-							"id": 13,
-							"name": "__named_parameters",
+							"id": 18,
+							"name": "options",
 							"variant": "param",
 							"kind": 32768,
 							"flags": {},
@@ -158,14 +158,212 @@
 								]
 							},
 							"type": {
-								"type": "reference",
-								"target": {
-									"packageName": "typescript",
-									"packagePath": "lib/lib.es5.d.ts",
-									"qualifiedName": "Object"
-								},
-								"name": "Object",
-								"package": "typescript"
+								"type": "reflection",
+								"declaration": {
+									"id": 19,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 25,
+											"name": "color_space",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Color space mode (0: CIE LAB; 1: sRGB)."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 74,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											},
+											"defaultValue": "0"
+										},
+										{
+											"id": 22,
+											"name": "height",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The height of the image."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 71,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											}
+										},
+										{
+											"id": 20,
+											"name": "pixels",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The image pixel data (flat RGBA array)."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 69,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "typescript",
+													"packagePath": "lib/lib.es5.d.ts",
+													"qualifiedName": "Uint8ClampedArray"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
+															"qualifiedName": "ArrayBufferLike"
+														},
+														"name": "ArrayBufferLike",
+														"package": "typescript"
+													}
+												],
+												"name": "Uint8ClampedArray",
+												"package": "typescript"
+											}
+										},
+										{
+											"id": 24,
+											"name": "sigma_range",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Range (color) standard deviation."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 73,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											},
+											"defaultValue": "50"
+										},
+										{
+											"id": 23,
+											"name": "sigma_spatial",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Spatial standard deviation."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 72,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											},
+											"defaultValue": "3"
+										},
+										{
+											"id": 21,
+											"name": "width",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The width of the image."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 70,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												25,
+												22,
+												20,
+												24,
+												23,
+												21
+											]
+										}
+									]
+								}
 							}
 						}
 					],
@@ -207,7 +405,7 @@
 			]
 		},
 		{
-			"id": 14,
+			"id": 26,
 			"name": "blackThreshold",
 			"variant": "declaration",
 			"kind": 64,
@@ -221,7 +419,7 @@
 			],
 			"signatures": [
 				{
-					"id": 15,
+					"id": 27,
 					"name": "blackThreshold",
 					"variant": "signature",
 					"kind": 4096,
@@ -340,8 +538,8 @@
 					],
 					"parameters": [
 						{
-							"id": 16,
-							"name": "__named_parameters",
+							"id": 28,
+							"name": "options",
 							"variant": "param",
 							"kind": 32768,
 							"flags": {},
@@ -354,14 +552,149 @@
 								]
 							},
 							"type": {
-								"type": "reference",
-								"target": {
-									"packageName": "typescript",
-									"packagePath": "lib/lib.es5.d.ts",
-									"qualifiedName": "Object"
-								},
-								"name": "Object",
-								"package": "typescript"
+								"type": "reflection",
+								"declaration": {
+									"id": 29,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 32,
+											"name": "height",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The height of the image."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 103,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											}
+										},
+										{
+											"id": 33,
+											"name": "num_colors",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Number of colors to reduce the image to."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 104,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											}
+										},
+										{
+											"id": 30,
+											"name": "pixels",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The image pixel data (flat RGBA array)."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 101,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "typescript",
+													"packagePath": "lib/lib.es5.d.ts",
+													"qualifiedName": "Uint8ClampedArray"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
+															"qualifiedName": "ArrayBufferLike"
+														},
+														"name": "ArrayBufferLike",
+														"package": "typescript"
+													}
+												],
+												"name": "Uint8ClampedArray",
+												"package": "typescript"
+											}
+										},
+										{
+											"id": 31,
+											"name": "width",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The width of the image."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 102,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												32,
+												33,
+												30,
+												31
+											]
+										}
+									]
+								}
 							}
 						}
 					],
@@ -403,7 +736,7 @@
 			]
 		},
 		{
-			"id": 23,
+			"id": 49,
 			"name": "findContours",
 			"variant": "declaration",
 			"kind": 64,
@@ -411,13 +744,13 @@
 			"sources": [
 				{
 					"fileName": "safeWasmWrappers.js",
-					"line": 195,
+					"line": 194,
 					"character": 13
 				}
 			],
 			"signatures": [
 				{
-					"id": 24,
+					"id": 50,
 					"name": "findContours",
 					"variant": "signature",
 					"kind": 4096,
@@ -454,71 +787,21 @@
 							},
 							{
 								"tag": "@returns",
-								"content": [
-									{
-										"kind": "text",
-										"text": "Generated SVG and optionally pixels with visualized contours."
-									}
-								]
-							},
-							{
-								"tag": "@throws",
-								"content": [
-									{
-										"kind": "text",
-										"text": "If the WASM function fails or input labels are invalid."
-									}
-								]
-							},
-							{
-								"tag": "@example",
-								"content": [
-									{
-										"kind": "code",
-										"text": "```ts\nconst { svg, visualization } = await findContours({ pixels, labels, width, height });\n```"
-									}
-								]
-							},
-							{
-								"tag": "@todo",
-								"content": [
-									{
-										"kind": "text",
-										"text": "Support additional visualization options like color-coded regions."
-									}
-								]
-							},
-							{
-								"tag": "@variation",
-								"content": [
-									{
-										"kind": "text",
-										"text": "Contour extraction with optional visualization"
-									}
-								]
-							},
-							{
-								"tag": "@since",
-								"content": [
-									{
-										"kind": "text",
-										"text": "0.0.0"
-									}
-								]
+								"content": []
 							}
 						]
 					},
 					"sources": [
 						{
 							"fileName": "safeWasmWrappers.js",
-							"line": 195,
+							"line": 194,
 							"character": 28
 						}
 					],
 					"parameters": [
 						{
-							"id": 25,
-							"name": "__named_parameters",
+							"id": 51,
+							"name": "options",
 							"variant": "param",
 							"kind": 32768,
 							"flags": {},
@@ -531,14 +814,197 @@
 								]
 							},
 							"type": {
-								"type": "reference",
-								"target": {
-									"packageName": "typescript",
-									"packagePath": "lib/lib.es5.d.ts",
-									"qualifiedName": "Object"
-								},
-								"name": "Object",
-								"package": "typescript"
+								"type": "reflection",
+								"declaration": {
+									"id": 52,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 56,
+											"name": "height",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Image height."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 185,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											}
+										},
+										{
+											"id": 54,
+											"name": "labels",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Label array from clustering (e.g., K-Means) or segmentation."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 183,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "typescript",
+													"packagePath": "lib/lib.es5.d.ts",
+													"qualifiedName": "Int32Array"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
+															"qualifiedName": "ArrayBufferLike"
+														},
+														"name": "ArrayBufferLike",
+														"package": "typescript"
+													}
+												],
+												"name": "Int32Array",
+												"package": "typescript"
+											}
+										},
+										{
+											"id": 57,
+											"name": "min_area",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Minimum area of a region to be considered a contour."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 186,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											},
+											"defaultValue": "100"
+										},
+										{
+											"id": 53,
+											"name": "pixels",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Original image pixels."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 182,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "typescript",
+													"packagePath": "lib/lib.es5.d.ts",
+													"qualifiedName": "Uint8ClampedArray"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
+															"qualifiedName": "ArrayBufferLike"
+														},
+														"name": "ArrayBufferLike",
+														"package": "typescript"
+													}
+												],
+												"name": "Uint8ClampedArray",
+												"package": "typescript"
+											}
+										},
+										{
+											"id": 55,
+											"name": "width",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Image width."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 184,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												56,
+												54,
+												57,
+												53,
+												55
+											]
+										}
+									]
+								}
 							}
 						}
 					],
@@ -553,14 +1019,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 26,
+									"id": 58,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 27,
+											"id": 59,
 											"name": "svg",
 											"variant": "declaration",
 											"kind": 1024,
@@ -576,38 +1042,13 @@
 												"type": "intrinsic",
 												"name": "string"
 											}
-										},
-										{
-											"id": 28,
-											"name": "visualization",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {},
-											"sources": [
-												{
-													"fileName": "safeWasmWrappers.js",
-													"line": 187,
-													"character": 35
-												}
-											],
-											"type": {
-												"type": "reference",
-												"target": {
-													"packageName": "typescript",
-													"packagePath": "lib/lib.es5.d.ts",
-													"qualifiedName": "Uint8ClampedArray"
-												},
-												"name": "Uint8ClampedArray",
-												"package": "typescript"
-											}
 										}
 									],
 									"groups": [
 										{
 											"title": "Properties",
 											"children": [
-												27,
-												28
+												59
 											]
 										}
 									]
@@ -710,7 +1151,7 @@
 								"content": [
 									{
 										"kind": "text",
-										"text": "Consider adding support for multiple channels or alpha-only blurs."
+										"text": "Fix FFT zero-padding bug around edges of the image."
 									}
 								]
 							},
@@ -744,7 +1185,7 @@
 					"parameters": [
 						{
 							"id": 10,
-							"name": "__named_parameters",
+							"name": "options",
 							"variant": "param",
 							"kind": 32768,
 							"flags": {},
@@ -757,14 +1198,152 @@
 								]
 							},
 							"type": {
-								"type": "reference",
-								"target": {
-									"packageName": "typescript",
-									"packagePath": "lib/lib.es5.d.ts",
-									"qualifiedName": "Object"
-								},
-								"name": "Object",
-								"package": "typescript"
+								"type": "reflection",
+								"declaration": {
+									"id": 11,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 14,
+											"name": "height",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The height of the image."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 37,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											}
+										},
+										{
+											"id": 12,
+											"name": "pixels",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The image pixel data (flat RGBA array)."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 35,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "typescript",
+													"packagePath": "lib/lib.es5.d.ts",
+													"qualifiedName": "Uint8ClampedArray"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
+															"qualifiedName": "ArrayBufferLike"
+														},
+														"name": "ArrayBufferLike",
+														"package": "typescript"
+													}
+												],
+												"name": "Uint8ClampedArray",
+												"package": "typescript"
+											}
+										},
+										{
+											"id": 15,
+											"name": "sigma_pixels",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Standard deviation of the Gaussian blur (default=width*0.005; 5% of width)."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 38,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 13,
+											"name": "width",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The width of the image."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 36,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												14,
+												12,
+												15,
+												13
+											]
+										}
+									]
+								}
 							}
 						}
 					],
@@ -797,6 +1376,502 @@
 								],
 								"name": "Uint8ClampedArray",
 								"package": "typescript"
+							}
+						],
+						"name": "Promise",
+						"package": "typescript"
+					}
+				}
+			]
+		},
+		{
+			"id": 60,
+			"name": "imageToSvg",
+			"variant": "declaration",
+			"kind": 64,
+			"flags": {},
+			"sources": [
+				{
+					"fileName": "safeWasmWrappers.js",
+					"line": 232,
+					"character": 13
+				}
+			],
+			"signatures": [
+				{
+					"id": 61,
+					"name": "imageToSvg",
+					"variant": "signature",
+					"kind": 4096,
+					"flags": {},
+					"comment": {
+						"summary": [],
+						"blockTags": [
+							{
+								"tag": "@summary",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Convert raster images (e.g., JPEG, PNG) to SVGs."
+									}
+								]
+							},
+							{
+								"tag": "@description",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Convert an input raster image into an SVG. A unification of "
+									},
+									{
+										"kind": "code",
+										"text": "`bilateralFilter`"
+									},
+									{
+										"kind": "text",
+										"text": ", "
+									},
+									{
+										"kind": "code",
+										"text": "`kmeans`"
+									},
+									{
+										"kind": "text",
+										"text": ", and "
+									},
+									{
+										"kind": "code",
+										"text": "`findContours`"
+									},
+									{
+										"kind": "text",
+										"text": "."
+									}
+								]
+							},
+							{
+								"tag": "@async",
+								"content": [
+									{
+										"kind": "text",
+										"text": "imageToSvg"
+									}
+								]
+							},
+							{
+								"tag": "@returns",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Generated SVG."
+									}
+								]
+							},
+							{
+								"tag": "@throws",
+								"content": [
+									{
+										"kind": "text",
+										"text": "If the WASM function fails or input labels are invalid."
+									}
+								]
+							},
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\nconst { svg } = await findContours({ pixels, labels, width, height });\n```"
+									}
+								]
+							},
+							{
+								"tag": "@variation",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Convert a raster image (e.g., PNG, JPG) into an SVG."
+									}
+								]
+							},
+							{
+								"tag": "@since",
+								"content": [
+									{
+										"kind": "text",
+										"text": "0.0.0"
+									}
+								]
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "safeWasmWrappers.js",
+							"line": 232,
+							"character": 26
+						}
+					],
+					"parameters": [
+						{
+							"id": 62,
+							"name": "options",
+							"variant": "param",
+							"kind": 32768,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The input options."
+									}
+								]
+							},
+							"type": {
+								"type": "reflection",
+								"declaration": {
+									"id": 63,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 72,
+											"name": "color_space",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Color space mode."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 224,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											},
+											"defaultValue": "0"
+										},
+										{
+											"id": 66,
+											"name": "height",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Image height."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 218,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											}
+										},
+										{
+											"id": 70,
+											"name": "max_iter",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Maximum number of iterations."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 222,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											},
+											"defaultValue": "100"
+										},
+										{
+											"id": 71,
+											"name": "min_area",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Minimum area of a region to be considered a contour."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 223,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											},
+											"defaultValue": "100"
+										},
+										{
+											"id": 69,
+											"name": "num_colors",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Number of color clusters."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 221,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											},
+											"defaultValue": "16"
+										},
+										{
+											"id": 64,
+											"name": "pixels",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Original image pixels."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 216,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "typescript",
+													"packagePath": "lib/lib.es5.d.ts",
+													"qualifiedName": "Uint8ClampedArray"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
+															"qualifiedName": "ArrayBufferLike"
+														},
+														"name": "ArrayBufferLike",
+														"package": "typescript"
+													}
+												],
+												"name": "Uint8ClampedArray",
+												"package": "typescript"
+											}
+										},
+										{
+											"id": 68,
+											"name": "sigma_range",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Range (color) standard deviation."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 220,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											},
+											"defaultValue": "50"
+										},
+										{
+											"id": 67,
+											"name": "sigma_spatial",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Spatial standard deviation."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 219,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											},
+											"defaultValue": "3"
+										},
+										{
+											"id": 65,
+											"name": "width",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Image width."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 217,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												72,
+												66,
+												70,
+												71,
+												69,
+												64,
+												68,
+												67,
+												65
+											]
+										}
+									]
+								}
+							}
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": {
+							"packageName": "typescript",
+							"packagePath": "lib/lib.es5.d.ts",
+							"qualifiedName": "Promise"
+						},
+						"typeArguments": [
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 73,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 74,
+											"name": "svg",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 225,
+													"character": 22
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												74
+											]
+										}
+									]
+								}
 							}
 						],
 						"name": "Promise",
@@ -1096,7 +2171,7 @@
 			]
 		},
 		{
-			"id": 17,
+			"id": 34,
 			"name": "kmeans",
 			"variant": "declaration",
 			"kind": 64,
@@ -1110,7 +2185,7 @@
 			],
 			"signatures": [
 				{
-					"id": 18,
+					"id": 35,
 					"name": "kmeans",
 					"variant": "signature",
 					"kind": 4096,
@@ -1225,8 +2300,8 @@
 					],
 					"parameters": [
 						{
-							"id": 19,
-							"name": "__named_parameters",
+							"id": 36,
+							"name": "options",
 							"variant": "param",
 							"kind": 32768,
 							"flags": {},
@@ -1239,14 +2314,305 @@
 								]
 							},
 							"type": {
-								"type": "reference",
-								"target": {
-									"packageName": "typescript",
-									"packagePath": "lib/lib.es5.d.ts",
-									"qualifiedName": "Object"
-								},
-								"name": "Object",
-								"package": "typescript"
+								"type": "reflection",
+								"declaration": {
+									"id": 37,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 45,
+											"name": "color_space",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Color space mode."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 143,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											},
+											"defaultValue": "0"
+										},
+										{
+											"id": 42,
+											"name": "height",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Image height."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 140,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											}
+										},
+										{
+											"id": 44,
+											"name": "max_iter",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Maximum number of iterations."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 142,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											},
+											"defaultValue": "100"
+										},
+										{
+											"id": 43,
+											"name": "num_colors",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Number of color clusters."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 141,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											}
+										},
+										{
+											"id": 40,
+											"name": "out_labels",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Output labels array."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 138,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "typescript",
+													"packagePath": "lib/lib.es5.d.ts",
+													"qualifiedName": "Int32Array"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
+															"qualifiedName": "ArrayBufferLike"
+														},
+														"name": "ArrayBufferLike",
+														"package": "typescript"
+													}
+												],
+												"name": "Int32Array",
+												"package": "typescript"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 39,
+											"name": "out_pixels",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Output pixels array."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 137,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "typescript",
+													"packagePath": "lib/lib.es5.d.ts",
+													"qualifiedName": "Uint8ClampedArray"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
+															"qualifiedName": "ArrayBufferLike"
+														},
+														"name": "ArrayBufferLike",
+														"package": "typescript"
+													}
+												],
+												"name": "Uint8ClampedArray",
+												"package": "typescript"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 38,
+											"name": "pixels",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Original image pixels."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 136,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "typescript",
+													"packagePath": "lib/lib.es5.d.ts",
+													"qualifiedName": "Uint8ClampedArray"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
+															"qualifiedName": "ArrayBufferLike"
+														},
+														"name": "ArrayBufferLike",
+														"package": "typescript"
+													}
+												],
+												"name": "Uint8ClampedArray",
+												"package": "typescript"
+											}
+										},
+										{
+											"id": 41,
+											"name": "width",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Image width."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 139,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												45,
+												42,
+												44,
+												43,
+												40,
+												39,
+												38,
+												41
+											]
+										}
+									]
+								}
 							}
 						}
 					],
@@ -1261,14 +2627,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 20,
+									"id": 46,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 22,
+											"id": 48,
 											"name": "labels",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1292,7 +2658,7 @@
 											}
 										},
 										{
-											"id": 21,
+											"id": 47,
 											"name": "pixels",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1320,8 +2686,8 @@
 										{
 											"title": "Properties",
 											"children": [
-												22,
-												21
+												48,
+												47
 											]
 										}
 									]
@@ -1339,12 +2705,13 @@
 		{
 			"title": "Functions",
 			"children": [
-				11,
-				14,
-				23,
+				16,
+				26,
+				49,
 				8,
+				60,
 				1,
-				17
+				34
 			]
 		}
 	],
@@ -1408,92 +2775,322 @@
 		"11": {
 			"packageName": "img2num",
 			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "bilateralFilter"
+			"qualifiedName": "__type"
 		},
 		"12": {
 			"packageName": "img2num",
 			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "bilateralFilter"
+			"qualifiedName": "__type.pixels"
 		},
 		"13": {
 			"packageName": "img2num",
 			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__0"
+			"qualifiedName": "__type.width"
 		},
 		"14": {
 			"packageName": "img2num",
 			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "blackThreshold"
+			"qualifiedName": "__type.height"
 		},
 		"15": {
 			"packageName": "img2num",
 			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "blackThreshold"
+			"qualifiedName": "__type.sigma_pixels"
 		},
 		"16": {
 			"packageName": "img2num",
 			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__0"
+			"qualifiedName": "bilateralFilter"
 		},
 		"17": {
 			"packageName": "img2num",
 			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "kmeans"
+			"qualifiedName": "bilateralFilter"
 		},
 		"18": {
 			"packageName": "img2num",
 			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "kmeans"
+			"qualifiedName": "__0"
 		},
 		"19": {
 			"packageName": "img2num",
 			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__0"
+			"qualifiedName": "__type"
 		},
 		"20": {
 			"packageName": "img2num",
 			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.pixels"
 		},
 		"21": {
 			"packageName": "img2num",
 			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type.pixels"
+			"qualifiedName": "__type.width"
 		},
 		"22": {
 			"packageName": "img2num",
 			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type.labels"
+			"qualifiedName": "__type.height"
 		},
 		"23": {
 			"packageName": "img2num",
 			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "findContours"
+			"qualifiedName": "__type.sigma_spatial"
 		},
 		"24": {
 			"packageName": "img2num",
 			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "findContours"
+			"qualifiedName": "__type.sigma_range"
 		},
 		"25": {
 			"packageName": "img2num",
 			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__0"
+			"qualifiedName": "__type.color_space"
 		},
 		"26": {
 			"packageName": "img2num",
 			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type"
+			"qualifiedName": "blackThreshold"
 		},
 		"27": {
 			"packageName": "img2num",
 			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type.svg"
+			"qualifiedName": "blackThreshold"
 		},
 		"28": {
 			"packageName": "img2num",
 			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type.visualization"
+			"qualifiedName": "__0"
+		},
+		"29": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type"
+		},
+		"30": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.pixels"
+		},
+		"31": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.width"
+		},
+		"32": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.height"
+		},
+		"33": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.num_colors"
+		},
+		"34": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "kmeans"
+		},
+		"35": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "kmeans"
+		},
+		"36": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__0"
+		},
+		"37": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type"
+		},
+		"38": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.pixels"
+		},
+		"39": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.out_pixels"
+		},
+		"40": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.out_labels"
+		},
+		"41": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.width"
+		},
+		"42": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.height"
+		},
+		"43": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.num_colors"
+		},
+		"44": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.max_iter"
+		},
+		"45": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.color_space"
+		},
+		"46": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type"
+		},
+		"47": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.pixels"
+		},
+		"48": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.labels"
+		},
+		"49": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "findContours"
+		},
+		"50": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "findContours"
+		},
+		"51": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__0"
+		},
+		"52": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type"
+		},
+		"53": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.pixels"
+		},
+		"54": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.labels"
+		},
+		"55": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.width"
+		},
+		"56": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.height"
+		},
+		"57": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.min_area"
+		},
+		"58": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type"
+		},
+		"59": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.svg"
+		},
+		"60": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "imageToSvg"
+		},
+		"61": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "imageToSvg"
+		},
+		"62": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__0"
+		},
+		"63": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type"
+		},
+		"64": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.pixels"
+		},
+		"65": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.width"
+		},
+		"66": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.height"
+		},
+		"67": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.sigma_spatial"
+		},
+		"68": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.sigma_range"
+		},
+		"69": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.num_colors"
+		},
+		"70": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.max_iter"
+		},
+		"71": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.min_area"
+		},
+		"72": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.color_space"
+		},
+		"73": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type"
+		},
+		"74": {
+			"packageName": "img2num",
+			"packagePath": "safeWasmWrappers.js",
+			"qualifiedName": "__type.svg"
 		}
 	},
 	"files": {

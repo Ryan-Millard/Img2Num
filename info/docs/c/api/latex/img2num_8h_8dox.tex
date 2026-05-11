@@ -16,6 +16,8 @@
 \#define \mbox{\hyperlink{img2num_8h_8dox_a8f2c5c753f174fe926f7d81b190a08c0}{IMG2\+NUM\+\_\+\+H\+\_\+\+BILATERAL\+\_\+\+FILTER\+\_\+\+DOC}}
 \begin{DoxyCompactList}\small\item\em Apply bilateral filtering to an image. \end{DoxyCompactList}\item 
 \#define \mbox{\hyperlink{img2num_8h_8dox_aa90dcd3763d5d0728f00fb0013b94c52}{IMG2\+NUM\+\_\+\+H\+\_\+\+LABELS\+\_\+\+TO\+\_\+\+SVG\+\_\+\+DOC}}
+\begin{DoxyCompactList}\small\item\em Convert labeled regions of an image into an SVG string. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{img2num_8h_8dox_afd80a40e8978eecea2401472918e39c4}{IMG2\+NUM\+\_\+\+H\+\_\+\+IMAGE\+\_\+\+TO\+\_\+\+SVG\+\_\+\+DOC}}
 \begin{DoxyCompactList}\small\item\em Convert labeled regions of an image into an SVG string. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -113,6 +115,39 @@ Dox File\+: {\ttfamily \doxylink{img2num_8h_8dox}{doxygen/img2num.\+h.\+dox}}
 
 
 Definition at line \mbox{\hyperlink{img2num_8h_8dox_source_l00001}{1}} of file \mbox{\hyperlink{img2num_8h_8dox_source}{img2num.\+h.\+dox}}.
+
+\Hypertarget{img2num_8h_8dox_afd80a40e8978eecea2401472918e39c4}\label{img2num_8h_8dox_afd80a40e8978eecea2401472918e39c4} 
+\index{img2num.h.dox@{img2num.h.dox}!IMG2NUM\_H\_IMAGE\_TO\_SVG\_DOC@{IMG2NUM\_H\_IMAGE\_TO\_SVG\_DOC}}
+\index{IMG2NUM\_H\_IMAGE\_TO\_SVG\_DOC@{IMG2NUM\_H\_IMAGE\_TO\_SVG\_DOC}!img2num.h.dox@{img2num.h.dox}}
+\doxysubsubsection{\texorpdfstring{IMG2NUM\_H\_IMAGE\_TO\_SVG\_DOC}{IMG2NUM\_H\_IMAGE\_TO\_SVG\_DOC}}
+{\footnotesize\ttfamily \#define IMG2\+NUM\+\_\+\+H\+\_\+\+IMAGE\+\_\+\+TO\+\_\+\+SVG\+\_\+\+DOC}
+
+
+
+Convert labeled regions of an image into an SVG string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Pointer to image data buffer. \\
+\hline
+{\em width} & Width of the image in pixels. \\
+\hline
+{\em height} & Height of the image in pixels. \\
+\hline
+{\em config} & \doxylink{structimg2num__ImageToSvgConfig}{img2num\+\_\+\+Image\+To\+Svg\+Config} Configuration Struct. \begin{quote}
+See img2num\+::\+Image\+To\+Svg\+Config. \end{quote}
+\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::string An SVG string containing data roughly approximate to the input image. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Dox File\+: {\ttfamily \doxylink{img2num_8h_8dox}{doxygen/img2num.\+h.\+dox}} 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{img2num_8h_8dox_source_l00091}{91}} of file \mbox{\hyperlink{img2num_8h_8dox_source}{img2num.\+h.\+dox}}.
 
 \Hypertarget{img2num_8h_8dox_a8b68c4b0ad0d055489501e11214e6b13}\label{img2num_8h_8dox_a8b68c4b0ad0d055489501e11214e6b13} 
 \index{img2num.h.dox@{img2num.h.dox}!IMG2NUM\_H\_INVERT\_IMAGE\_DOC@{IMG2NUM\_H\_INVERT\_IMAGE\_DOC}}

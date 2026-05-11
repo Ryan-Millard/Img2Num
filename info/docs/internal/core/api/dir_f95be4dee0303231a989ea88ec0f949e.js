@@ -6,6 +6,7 @@ var dir_f95be4dee0303231a989ea88ec0f949e =
     [ "contours.cpp", "contours_8cpp_source.html", null ],
     [ "fft_iterative.cpp", "fft__iterative_8cpp_source.html", null ],
     [ "graph.cpp", "graph_8cpp_source.html", null ],
+    [ "image_to_svg.cpp", "image__to__svg_8cpp_source.html", null ],
     [ "image_utils.cpp", "image__utils_8cpp_source.html", null ],
     [ "kmeans.cpp", "kmeans_8cpp_source.html", null ],
     [ "kmeans_gpu.cpp", "kmeans__gpu_8cpp_source.html", null ],

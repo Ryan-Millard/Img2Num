@@ -1,5 +1,10 @@
 \doxysection{img2num Namespace Reference}
 \hypertarget{namespaceimg2num}{}\label{namespaceimg2num}\index{img2num@{img2num}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig}{Image\+To\+Svg\+Config}}
+\begin{DoxyCompactList}\small\item\em Configuration options for image\+\_\+to\+\_\+svg. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Enumerations}
 \begin{DoxyCompactItemize}
 \item 
@@ -40,6 +45,8 @@ void \mbox{\hyperlink{namespaceimg2num_ae73563e9dd25a8dd2120fd519ef87abd}{kmeans
 void \mbox{\hyperlink{namespaceimg2num_a48d9a04a535198b5fc47905e359961ac}{bilateral\+\_\+filter}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}image, size\+\_\+t width, size\+\_\+t height, double sigma\+\_\+spatial, double sigma\+\_\+range, uint8\+\_\+t color\+\_\+space)
 \item 
 std\+::string \mbox{\hyperlink{namespaceimg2num_a36b11018f26b33933eeeb31a7833ea3d}{labels\+\_\+to\+\_\+svg}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, const int32\+\_\+t \texorpdfstring{$\ast$}{*}labels, const int width, const int height, const int min\+\_\+area)
+\item 
+std\+::string \mbox{\hyperlink{namespaceimg2num_a8183e7b7e8a7efb8ce7ab254f81facb1}{image\+\_\+to\+\_\+svg}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, const int width, const int height, const \mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig}{Image\+To\+Svg\+Config}} \&config)
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Variables}
 \begin{DoxyCompactItemize}
@@ -172,6 +179,16 @@ Definition at line \mbox{\hyperlink{Error_8h_source_l00016}{16}} of file \mbox{\
 \DoxyCodeLine{00018\ \}}
 
 \end{DoxyCode}
+\Hypertarget{namespaceimg2num_a8183e7b7e8a7efb8ce7ab254f81facb1}\label{namespaceimg2num_a8183e7b7e8a7efb8ce7ab254f81facb1} 
+\index{img2num@{img2num}!image\_to\_svg@{image\_to\_svg}}
+\index{image\_to\_svg@{image\_to\_svg}!img2num@{img2num}}
+\doxysubsubsection{\texorpdfstring{image\_to\_svg()}{image\_to\_svg()}}
+{\footnotesize\ttfamily std\+::string img2num\+::image\+\_\+to\+\_\+svg (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{data,  }\item[{const int}]{width,  }\item[{const int}]{height,  }\item[{const \mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig}{Image\+To\+Svg\+Config}} \&}]{config }\end{DoxyParamCaption})}
+
+
+
+
+
 \Hypertarget{namespaceimg2num_adcf00084d90ead66510dadc459d0990e}\label{namespaceimg2num_adcf00084d90ead66510dadc459d0990e} 
 \index{img2num@{img2num}!invert\_image@{invert\_image}}
 \index{invert\_image@{invert\_image}!img2num@{img2num}}

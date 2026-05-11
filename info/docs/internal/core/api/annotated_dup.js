@@ -13,6 +13,9 @@ var annotated_dup =
       [ "RGBAPixel", "structImageLib_1_1RGBAPixel.html", null ],
       [ "RGBPixel", "structImageLib_1_1RGBPixel.html", null ]
     ] ],
+    [ "img2num", "namespaceimg2num.html", [
+      [ "ImageToSvgConfig", "structimg2num_1_1ImageToSvgConfig.html", "structimg2num_1_1ImageToSvgConfig" ]
+    ] ],
     [ "CentroidParams", "structCentroidParams.html", null ],
     [ "ClusterAccumulator", "structClusterAccumulator.html", null ],
     [ "ColoredContours", "structColoredContours.html", null ],

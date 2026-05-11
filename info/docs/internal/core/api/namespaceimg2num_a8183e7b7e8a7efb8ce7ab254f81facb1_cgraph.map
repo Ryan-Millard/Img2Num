@@ -1,0 +1,9 @@
+<map id="img2num::image_to_svg" name="img2num::image_to_svg">
+<area shape="rect" id="Node000001" title="Convert labeled regions of an image into an SVG string." alt="" coords="5,70,188,95"/>
+<area shape="rect" id="Node000002" href="$namespaceimg2num.html#a48d9a04a535198b5fc47905e359961ac" title="Apply bilateral filtering to an image." alt="" coords="253,5,400,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,67,239,44,241,49,149,73"/>
+<area shape="rect" id="Node000003" href="$namespaceimg2num.html#ae73563e9dd25a8dd2120fd519ef87abd" title="Perform k&#45;means clustering on image data." alt="" coords="255,70,399,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="189,80,241,80,241,85,189,85"/>
+<area shape="rect" id="Node000004" href="$namespaceimg2num.html#a36b11018f26b33933eeeb31a7833ea3d" title="Convert labeled regions of an image into an SVG string." alt="" coords="236,119,417,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="157,93,254,114,253,119,156,98"/>
+</map>

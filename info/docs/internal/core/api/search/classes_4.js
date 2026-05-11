@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['labapixel_0',['LABAPixel',['../structImageLib_1_1LABAPixel.html',1,'ImageLib']]],
-  ['labpixel_1',['LABPixel',['../structImageLib_1_1LABPixel.html',1,'ImageLib']]]
+  ['image_0',['Image',['../classImageLib_1_1Image.html',1,'ImageLib']]],
+  ['imagetosvgconfig_1',['ImageToSvgConfig',['../structimg2num_1_1ImageToSvgConfig.html',1,'img2num']]]
 ];

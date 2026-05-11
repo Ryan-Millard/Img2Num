@@ -1,0 +1,94 @@
+\doxysection{img2num\+\_\+\+Image\+To\+Svg\+Config Struct Reference}
+\hypertarget{structimg2num__ImageToSvgConfig}{}\label{structimg2num__ImageToSvgConfig}\index{img2num\_ImageToSvgConfig@{img2num\_ImageToSvgConfig}}
+
+
+Configuration options for image\+\_\+to\+\_\+svg.  
+
+
+
+
+{\ttfamily \#include $<$cimg2num.\+h$>$}
+
+
+
+Collaboration diagram for img2num\+\_\+\+Image\+To\+Svg\+Config\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structimg2num__ImageToSvgConfig__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structimg2num__ImageToSvgConfig_1_1BilateralFilterConfig}{Bilateral\+Filter\+Config}}
+\begin{DoxyCompactList}\small\item\em Configuration settings for the bilateral filter in image\+\_\+to\+\_\+svg. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structimg2num__ImageToSvgConfig_1_1KMeansConfig}{KMeans\+Config}}
+\begin{DoxyCompactList}\small\item\em Configuration settings for K-\/\+Means in image\+\_\+to\+\_\+svg. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structimg2num__ImageToSvgConfig_1_1BilateralFilterConfig}{img2num\+\_\+\+Image\+To\+Svg\+Config\+::\+Bilateral\+Filter\+Config}} \mbox{\hyperlink{structimg2num__ImageToSvgConfig_afd447463c624f9acb75515ef45b01761}{bilateral\+\_\+filter}}
+\item 
+struct \mbox{\hyperlink{structimg2num__ImageToSvgConfig_1_1KMeansConfig}{img2num\+\_\+\+Image\+To\+Svg\+Config\+::\+KMeans\+Config}} \mbox{\hyperlink{structimg2num__ImageToSvgConfig_ae81dd553299c1e7c6b7c16675bc674e1}{kmeans}}
+\item 
+int \mbox{\hyperlink{structimg2num__ImageToSvgConfig_ab92279f0e29e770c422096141bb5fb12}{min\+\_\+cluster\+\_\+area}}
+\begin{DoxyCompactList}\small\item\em Minimum area (in pixels) for a region to be included in the SVG. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{structimg2num__ImageToSvgConfig_a440a38e0e148c5e8fbe42532f1a1a939}{color\+\_\+space}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Configuration options for image\+\_\+to\+\_\+svg. 
+
+Definition at line \mbox{\hyperlink{cimg2num_8h_source_l00021}{21}} of file \mbox{\hyperlink{cimg2num_8h_source}{cimg2num.\+h}}.
+
+
+
+\doxysubsection{Field Documentation}
+\Hypertarget{structimg2num__ImageToSvgConfig_afd447463c624f9acb75515ef45b01761}\label{structimg2num__ImageToSvgConfig_afd447463c624f9acb75515ef45b01761} 
+\index{img2num\_ImageToSvgConfig@{img2num\_ImageToSvgConfig}!bilateral\_filter@{bilateral\_filter}}
+\index{bilateral\_filter@{bilateral\_filter}!img2num\_ImageToSvgConfig@{img2num\_ImageToSvgConfig}}
+\doxysubsubsection{\texorpdfstring{bilateral\_filter}{bilateral\_filter}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structimg2num__ImageToSvgConfig_1_1BilateralFilterConfig}{img2num\+\_\+\+Image\+To\+Svg\+Config\+::\+Bilateral\+Filter\+Config}} img2num\+\_\+\+Image\+To\+Svg\+Config\+::bilateral\+\_\+filter}
+
+\Hypertarget{structimg2num__ImageToSvgConfig_a440a38e0e148c5e8fbe42532f1a1a939}\label{structimg2num__ImageToSvgConfig_a440a38e0e148c5e8fbe42532f1a1a939} 
+\index{img2num\_ImageToSvgConfig@{img2num\_ImageToSvgConfig}!color\_space@{color\_space}}
+\index{color\_space@{color\_space}!img2num\_ImageToSvgConfig@{img2num\_ImageToSvgConfig}}
+\doxysubsubsection{\texorpdfstring{color\_space}{color\_space}}
+{\footnotesize\ttfamily uint8\+\_\+t img2num\+\_\+\+Image\+To\+Svg\+Config\+::color\+\_\+space}
+
+Color space flag.
+\begin{DoxyItemize}
+\item 0 = CIE LAB (more perceptually accurate)
+\item 1 = s\+RGB (faster). 
+\end{DoxyItemize}
+
+Definition at line \mbox{\hyperlink{cimg2num_8h_source_l00049}{49}} of file \mbox{\hyperlink{cimg2num_8h_source}{cimg2num.\+h}}.
+
+\Hypertarget{structimg2num__ImageToSvgConfig_ae81dd553299c1e7c6b7c16675bc674e1}\label{structimg2num__ImageToSvgConfig_ae81dd553299c1e7c6b7c16675bc674e1} 
+\index{img2num\_ImageToSvgConfig@{img2num\_ImageToSvgConfig}!kmeans@{kmeans}}
+\index{kmeans@{kmeans}!img2num\_ImageToSvgConfig@{img2num\_ImageToSvgConfig}}
+\doxysubsubsection{\texorpdfstring{kmeans}{kmeans}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structimg2num__ImageToSvgConfig_1_1KMeansConfig}{img2num\+\_\+\+Image\+To\+Svg\+Config\+::\+KMeans\+Config}} img2num\+\_\+\+Image\+To\+Svg\+Config\+::kmeans}
+
+\Hypertarget{structimg2num__ImageToSvgConfig_ab92279f0e29e770c422096141bb5fb12}\label{structimg2num__ImageToSvgConfig_ab92279f0e29e770c422096141bb5fb12} 
+\index{img2num\_ImageToSvgConfig@{img2num\_ImageToSvgConfig}!min\_cluster\_area@{min\_cluster\_area}}
+\index{min\_cluster\_area@{min\_cluster\_area}!img2num\_ImageToSvgConfig@{img2num\_ImageToSvgConfig}}
+\doxysubsubsection{\texorpdfstring{min\_cluster\_area}{min\_cluster\_area}}
+{\footnotesize\ttfamily int img2num\+\_\+\+Image\+To\+Svg\+Config\+::min\+\_\+cluster\+\_\+area}
+
+
+
+Minimum area (in pixels) for a region to be included in the SVG. 
+
+
+
+Definition at line \mbox{\hyperlink{cimg2num_8h_source_l00044}{44}} of file \mbox{\hyperlink{cimg2num_8h_source}{cimg2num.\+h}}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{cimg2num_8h}{cimg2num.\+h}}\end{DoxyCompactItemize}

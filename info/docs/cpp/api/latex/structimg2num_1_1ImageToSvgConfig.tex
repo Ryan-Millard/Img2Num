@@ -1,0 +1,84 @@
+\doxysection{img2num\+::Image\+To\+Svg\+Config Struct Reference}
+\hypertarget{structimg2num_1_1ImageToSvgConfig}{}\label{structimg2num_1_1ImageToSvgConfig}\index{img2num::ImageToSvgConfig@{img2num::ImageToSvgConfig}}
+
+
+Configuration options for image\+\_\+to\+\_\+svg.  
+
+
+
+
+{\ttfamily \#include $<$img2num.\+h$>$}
+
+
+
+Collaboration diagram for img2num\+::Image\+To\+Svg\+Config\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structimg2num_1_1ImageToSvgConfig__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig}{Bilateral\+Filter\+Config}}
+\begin{DoxyCompactList}\small\item\em Configuration settings for the bilateral filter in image\+\_\+to\+\_\+svg. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig}{KMeans\+Config}}
+\begin{DoxyCompactList}\small\item\em Configuration settings for K-\/\+Means in image\+\_\+to\+\_\+svg. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structimg2num_1_1ImageToSvgConfig_afb207b7e75bede59116a59c212fbb32a}\label{structimg2num_1_1ImageToSvgConfig_afb207b7e75bede59116a59c212fbb32a} 
+struct \mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig}{img2num\+::\+Image\+To\+Svg\+Config\+::\+Bilateral\+Filter\+Config}} {\bfseries bilateral\+\_\+filter}
+\item 
+\Hypertarget{structimg2num_1_1ImageToSvgConfig_a882b8d05e8c1cdbe3d3a8ac03915d32b}\label{structimg2num_1_1ImageToSvgConfig_a882b8d05e8c1cdbe3d3a8ac03915d32b} 
+struct \mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig}{img2num\+::\+Image\+To\+Svg\+Config\+::\+KMeans\+Config}} {\bfseries kmeans}
+\item 
+int \mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_ab834fb06830058d5d629be5f79ca98c3}{min\+\_\+cluster\+\_\+area}} = 100
+\begin{DoxyCompactList}\small\item\em Minimum area (in pixels) for a region to be included in the SVG. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_aea1a469576eb80f915a1ac73f93f55c1}{color\+\_\+space}} = 0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Configuration options for image\+\_\+to\+\_\+svg. 
+
+Definition at line \mbox{\hyperlink{img2num_8h_source_l00020}{20}} of file \mbox{\hyperlink{img2num_8h_source}{img2num.\+h}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structimg2num_1_1ImageToSvgConfig_aea1a469576eb80f915a1ac73f93f55c1}\label{structimg2num_1_1ImageToSvgConfig_aea1a469576eb80f915a1ac73f93f55c1} 
+\index{img2num::ImageToSvgConfig@{img2num::ImageToSvgConfig}!color\_space@{color\_space}}
+\index{color\_space@{color\_space}!img2num::ImageToSvgConfig@{img2num::ImageToSvgConfig}}
+\doxysubsubsection{\texorpdfstring{color\_space}{color\_space}}
+{\footnotesize\ttfamily uint8\+\_\+t img2num\+::\+Image\+To\+Svg\+Config\+::color\+\_\+space = 0}
+
+Color space flag.
+\begin{DoxyItemize}
+\item 0 = CIE LAB (more perceptually accurate)
+\item 1 = s\+RGB (faster). 
+\end{DoxyItemize}
+
+Definition at line \mbox{\hyperlink{img2num_8h_source_l00048}{48}} of file \mbox{\hyperlink{img2num_8h_source}{img2num.\+h}}.
+
+\Hypertarget{structimg2num_1_1ImageToSvgConfig_ab834fb06830058d5d629be5f79ca98c3}\label{structimg2num_1_1ImageToSvgConfig_ab834fb06830058d5d629be5f79ca98c3} 
+\index{img2num::ImageToSvgConfig@{img2num::ImageToSvgConfig}!min\_cluster\_area@{min\_cluster\_area}}
+\index{min\_cluster\_area@{min\_cluster\_area}!img2num::ImageToSvgConfig@{img2num::ImageToSvgConfig}}
+\doxysubsubsection{\texorpdfstring{min\_cluster\_area}{min\_cluster\_area}}
+{\footnotesize\ttfamily int img2num\+::\+Image\+To\+Svg\+Config\+::min\+\_\+cluster\+\_\+area = 100}
+
+
+
+Minimum area (in pixels) for a region to be included in the SVG. 
+
+
+
+Definition at line \mbox{\hyperlink{img2num_8h_source_l00043}{43}} of file \mbox{\hyperlink{img2num_8h_source}{img2num.\+h}}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{img2num_8h}{img2num.\+h}}\end{DoxyCompactItemize}

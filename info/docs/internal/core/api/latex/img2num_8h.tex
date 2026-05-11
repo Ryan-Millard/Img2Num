@@ -24,6 +24,15 @@ This graph shows which files directly or indirectly include this file\+:
 \includegraphics[width=350pt]{img2num_8h__dep__incl}
 \end{center}
 \end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig}{img2num\+::\+Image\+To\+Svg\+Config}}
+\begin{DoxyCompactList}\small\item\em Configuration options for image\+\_\+to\+\_\+svg. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig}{img2num\+::\+Image\+To\+Svg\+Config\+::\+Bilateral\+Filter\+Config}}
+\begin{DoxyCompactList}\small\item\em Configuration settings for the bilateral filter in image\+\_\+to\+\_\+svg. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig}{img2num\+::\+Image\+To\+Svg\+Config\+::\+KMeans\+Config}}
+\begin{DoxyCompactList}\small\item\em Configuration settings for K-\/\+Means in image\+\_\+to\+\_\+svg. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -45,6 +54,8 @@ void \mbox{\hyperlink{namespaceimg2num_ae73563e9dd25a8dd2120fd519ef87abd}{img2nu
 void \mbox{\hyperlink{namespaceimg2num_a48d9a04a535198b5fc47905e359961ac}{img2num\+::bilateral\+\_\+filter}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}image, size\+\_\+t width, size\+\_\+t height, double sigma\+\_\+spatial, double sigma\+\_\+range, uint8\+\_\+t color\+\_\+space)
 \begin{DoxyCompactList}\small\item\em Apply bilateral filtering to an image.   \end{DoxyCompactList}\item 
 std\+::string \mbox{\hyperlink{namespaceimg2num_a36b11018f26b33933eeeb31a7833ea3d}{img2num\+::labels\+\_\+to\+\_\+svg}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, const int32\+\_\+t \texorpdfstring{$\ast$}{*}labels, const int width, const int height, const int min\+\_\+area)
+\begin{DoxyCompactList}\small\item\em Convert labeled regions of an image into an SVG string.   \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{namespaceimg2num_a8183e7b7e8a7efb8ce7ab254f81facb1}{img2num\+::image\+\_\+to\+\_\+svg}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, const int width, const int height, const \mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig}{Image\+To\+Svg\+Config}} \&config)
 \begin{DoxyCompactList}\small\item\em Convert labeled regions of an image into an SVG string.   \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 

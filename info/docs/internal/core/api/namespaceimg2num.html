@@ -91,6 +91,7 @@ $(document).ready(function(){initNavTree('namespaceimg2num.html',''); initResiza
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
@@ -98,6 +99,12 @@ $(document).ready(function(){initNavTree('namespaceimg2num.html',''); initResiza
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structimg2num_1_1ImageToSvgConfig.html">ImageToSvgConfig</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration options for image_to_svg.  <a href="structimg2num_1_1ImageToSvgConfig.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:acb23d3a1a65158fb81244be9f4b4fbb3" id="r_acb23d3a1a65158fb81244be9f4b4fbb3"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><b>Error</b> { <br />
@@ -134,6 +141,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a36b11018f26b33933eeeb31a7833ea3d" id="r_a36b11018f26b33933eeeb31a7833ea3d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceimg2num.html#a36b11018f26b33933eeeb31a7833ea3d">labels_to_svg</a> (const uint8_t *data, const int32_t *labels, const int width, const int height, const int min_area)</td></tr>
 <tr class="memdesc:a36b11018f26b33933eeeb31a7833ea3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert labeled regions of an image into an SVG string.    <br /></td></tr>
 <tr class="separator:a36b11018f26b33933eeeb31a7833ea3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8183e7b7e8a7efb8ce7ab254f81facb1" id="r_a8183e7b7e8a7efb8ce7ab254f81facb1"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceimg2num.html#a8183e7b7e8a7efb8ce7ab254f81facb1">image_to_svg</a> (const uint8_t *data, const int width, const int height, const <a class="el" href="structimg2num_1_1ImageToSvgConfig.html">ImageToSvgConfig</a> &amp;config)</td></tr>
+<tr class="memdesc:a8183e7b7e8a7efb8ce7ab254f81facb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert labeled regions of an image into an SVG string.    <br /></td></tr>
+<tr class="separator:a8183e7b7e8a7efb8ce7ab254f81facb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9448b2dfdb823340970d0b0bb51fc4e3" id="r_a9448b2dfdb823340970d0b0bb51fc4e3"><td class="memItemLeft" align="right" valign="top">Error&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceimg2num.html#a9448b2dfdb823340970d0b0bb51fc4e3">get_last_error</a> ()</td></tr>
 <tr class="separator:a9448b2dfdb823340970d0b0bb51fc4e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9dd188fc7d492dc81d7343ae06c0a3aa" id="r_a9dd188fc7d492dc81d7343ae06c0a3aa"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceimg2num.html#a9dd188fc7d492dc81d7343ae06c0a3aa">get_last_error_message</a> ()</td></tr>
@@ -259,6 +269,15 @@ Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 <div class="line"><span class="lineno">  230</span>    }</div>
 <div class="line"><span class="lineno">  231</span>}</div>
 </div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="image__to__svg_8cpp_source.html#l00007">image_to_svg()</a>.</p>
+<div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceimg2num_a48d9a04a535198b5fc47905e359961ac_icgraph.svg" width="388" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
 </div>
 </div>
 <a id="a0b00cb7b162b17498d9c816ac5e38563" name="a0b00cb7b162b17498d9c816ac5e38563"></a>
@@ -577,6 +596,98 @@ Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="a8183e7b7e8a7efb8ce7ab254f81facb1" name="a8183e7b7e8a7efb8ce7ab254f81facb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8183e7b7e8a7efb8ce7ab254f81facb1">&#9670;&#160;</a></span>image_to_svg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string img2num::image_to_svg </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structimg2num_1_1ImageToSvgConfig.html">ImageToSvgConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convert labeled regions of an image into an SVG string.   </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>Pointer to image data buffer. </td></tr>
+    <tr><td class="paramname">width</td><td>Width of the image in pixels. </td></tr>
+    <tr><td class="paramname">height</td><td>Height of the image in pixels. </td></tr>
+    <tr><td class="paramname">config</td><td>img2num_ImageToSvgConfig Configuration Struct. <blockquote class="doxtable">
+<p>&zwj;See <a class="el" href="structimg2num_1_1ImageToSvgConfig.html">img2num::ImageToSvgConfig</a>. </p>
+</blockquote>
+</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::string An SVG string containing data roughly approximate to the input image. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="image__to__svg_8cpp_source.html#l00007">7</a> of file <a class="el" href="image__to__svg_8cpp_source.html">image_to_svg.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">    8</span>                                                         {</div>
+<div class="line"><span class="lineno">    9</span>    <span class="comment">// self deallocate</span></div>
+<div class="line"><span class="lineno">   10</span>    std::vector&lt;uint8_t&gt; img_data(<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(width) * <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(height) * 4);</div>
+<div class="line"><span class="lineno">   11</span>    std::vector&lt;uint8_t&gt; out_data(<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(width) * <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(height) * 4);</div>
+<div class="line"><span class="lineno">   12</span>    std::vector&lt;int32_t&gt; out_labels(<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(width) * <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(height));</div>
+<div class="line"><span class="lineno">   13</span> </div>
+<div class="line"><span class="lineno">   14</span>    std::memcpy(img_data.data(), data,</div>
+<div class="line"><span class="lineno">   15</span>                <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(width) * <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(height) * 4);</div>
+<div class="line"><span class="lineno">   16</span>    <a class="code hl_function" href="namespaceimg2num.html#a48d9a04a535198b5fc47905e359961ac">bilateral_filter</a>(img_data.data(), width, height, config.bilateral_filter.<a class="code hl_variable" href="structimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig.html#a55ea5d975d8f0da9ff8d8412ef2b0bab">sigma_spatial</a>,</div>
+<div class="line"><span class="lineno">   17</span>                     config.bilateral_filter.<a class="code hl_variable" href="structimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig.html#ac3ce10da1c666a3af5a7500d361384b1">sigma_range</a>, config.<a class="code hl_variable" href="structimg2num_1_1ImageToSvgConfig.html#aea1a469576eb80f915a1ac73f93f55c1">color_space</a>);</div>
+<div class="line"><span class="lineno">   18</span>    <a class="code hl_function" href="namespaceimg2num.html#ae73563e9dd25a8dd2120fd519ef87abd">kmeans</a>(img_data.data(), out_data.data(), out_labels.data(), width, height, config.kmeans.<a class="code hl_variable" href="structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig.html#a75ddf7439fdcf08f636b4475ad9d81a4">k</a>,</div>
+<div class="line"><span class="lineno">   19</span>           config.kmeans.<a class="code hl_variable" href="structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig.html#a803475180df7951e783432e40e192e81">max_iter</a>, config.<a class="code hl_variable" href="structimg2num_1_1ImageToSvgConfig.html#aea1a469576eb80f915a1ac73f93f55c1">color_space</a>);</div>
+<div class="line"><span class="lineno">   20</span>    std::string svg{<a class="code hl_function" href="namespaceimg2num.html#a36b11018f26b33933eeeb31a7833ea3d">labels_to_svg</a>(data, out_labels.data(), width, height, config.<a class="code hl_variable" href="structimg2num_1_1ImageToSvgConfig.html#ab834fb06830058d5d629be5f79ca98c3">min_cluster_area</a>)};</div>
+<div class="line"><span class="lineno">   21</span> </div>
+<div class="line"><span class="lineno">   22</span>    <span class="keywordflow">return</span> svg;</div>
+<div class="line"><span class="lineno">   23</span>}</div>
+<div class="ttc" id="anamespaceimg2num_html_a36b11018f26b33933eeeb31a7833ea3d"><div class="ttname"><a href="namespaceimg2num.html#a36b11018f26b33933eeeb31a7833ea3d">img2num::labels_to_svg</a></div><div class="ttdeci">std::string labels_to_svg(const uint8_t *data, const int32_t *labels, const int width, const int height, const int min_area)</div><div class="ttdoc">Convert labeled regions of an image into an SVG string.</div><div class="ttdef"><b>Definition</b> <a href="labels__to__svg_8cpp_source.html#l00189">labels_to_svg.cpp:189</a></div></div>
+<div class="ttc" id="anamespaceimg2num_html_a48d9a04a535198b5fc47905e359961ac"><div class="ttname"><a href="namespaceimg2num.html#a48d9a04a535198b5fc47905e359961ac">img2num::bilateral_filter</a></div><div class="ttdeci">void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_spatial, double sigma_range, uint8_t color_space)</div><div class="ttdoc">Apply bilateral filtering to an image.</div><div class="ttdef"><b>Definition</b> <a href="bilateral__filter_8cpp_source.html#l00222">bilateral_filter.cpp:222</a></div></div>
+<div class="ttc" id="anamespaceimg2num_html_ae73563e9dd25a8dd2120fd519ef87abd"><div class="ttname"><a href="namespaceimg2num.html#ae73563e9dd25a8dd2120fd519ef87abd">img2num::kmeans</a></div><div class="ttdeci">void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels, const int32_t width, const int32_t height, const int32_t k, const int32_t max_iter, const uint8_t color_space)</div><div class="ttdoc">Perform k-means clustering on image data.</div><div class="ttdef"><b>Definition</b> <a href="kmeans_8cpp_source.html#l00239">kmeans.cpp:239</a></div></div>
+<div class="ttc" id="astructimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig_html_a55ea5d975d8f0da9ff8d8412ef2b0bab"><div class="ttname"><a href="structimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig.html#a55ea5d975d8f0da9ff8d8412ef2b0bab">img2num::ImageToSvgConfig::BilateralFilterConfig::sigma_spatial</a></div><div class="ttdeci">double sigma_spatial</div><div class="ttdef"><b>Definition</b> <a href="img2num_8h_source.html#l00026">img2num.h:26</a></div></div>
+<div class="ttc" id="astructimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig_html_ac3ce10da1c666a3af5a7500d361384b1"><div class="ttname"><a href="structimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig.html#ac3ce10da1c666a3af5a7500d361384b1">img2num::ImageToSvgConfig::BilateralFilterConfig::sigma_range</a></div><div class="ttdeci">double sigma_range</div><div class="ttdef"><b>Definition</b> <a href="img2num_8h_source.html#l00029">img2num.h:29</a></div></div>
+<div class="ttc" id="astructimg2num_1_1ImageToSvgConfig_1_1KMeansConfig_html_a75ddf7439fdcf08f636b4475ad9d81a4"><div class="ttname"><a href="structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig.html#a75ddf7439fdcf08f636b4475ad9d81a4">img2num::ImageToSvgConfig::KMeansConfig::k</a></div><div class="ttdeci">int32_t k</div><div class="ttdef"><b>Definition</b> <a href="img2num_8h_source.html#l00036">img2num.h:36</a></div></div>
+<div class="ttc" id="astructimg2num_1_1ImageToSvgConfig_1_1KMeansConfig_html_a803475180df7951e783432e40e192e81"><div class="ttname"><a href="structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig.html#a803475180df7951e783432e40e192e81">img2num::ImageToSvgConfig::KMeansConfig::max_iter</a></div><div class="ttdeci">int32_t max_iter</div><div class="ttdef"><b>Definition</b> <a href="img2num_8h_source.html#l00039">img2num.h:39</a></div></div>
+<div class="ttc" id="astructimg2num_1_1ImageToSvgConfig_html_ab834fb06830058d5d629be5f79ca98c3"><div class="ttname"><a href="structimg2num_1_1ImageToSvgConfig.html#ab834fb06830058d5d629be5f79ca98c3">img2num::ImageToSvgConfig::min_cluster_area</a></div><div class="ttdeci">int min_cluster_area</div><div class="ttdoc">Minimum area (in pixels) for a region to be included in the SVG.</div><div class="ttdef"><b>Definition</b> <a href="img2num_8h_source.html#l00043">img2num.h:43</a></div></div>
+<div class="ttc" id="astructimg2num_1_1ImageToSvgConfig_html_aea1a469576eb80f915a1ac73f93f55c1"><div class="ttname"><a href="structimg2num_1_1ImageToSvgConfig.html#aea1a469576eb80f915a1ac73f93f55c1">img2num::ImageToSvgConfig::color_space</a></div><div class="ttdeci">uint8_t color_space</div><div class="ttdef"><b>Definition</b> <a href="img2num_8h_source.html#l00048">img2num.h:48</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="bilateral__filter_8cpp_source.html#l00222">bilateral_filter()</a>, <a class="el" href="img2num_8h_source.html#l00048">img2num::ImageToSvgConfig::color_space</a>, <a class="el" href="img2num_8h_source.html#l00036">img2num::ImageToSvgConfig::KMeansConfig::k</a>, <a class="el" href="kmeans_8cpp_source.html#l00239">kmeans()</a>, <a class="el" href="labels__to__svg_8cpp_source.html#l00189">labels_to_svg()</a>, <a class="el" href="img2num_8h_source.html#l00039">img2num::ImageToSvgConfig::KMeansConfig::max_iter</a>, <a class="el" href="img2num_8h_source.html#l00043">img2num::ImageToSvgConfig::min_cluster_area</a>, <a class="el" href="img2num_8h_source.html#l00029">img2num::ImageToSvgConfig::BilateralFilterConfig::sigma_range</a>, and <a class="el" href="img2num_8h_source.html#l00026">img2num::ImageToSvgConfig::BilateralFilterConfig::sigma_spatial</a>.</p>
+<div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceimg2num_a8183e7b7e8a7efb8ce7ab254f81facb1_cgraph.svg" width="423" height="151"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="adcf00084d90ead66510dadc459d0990e" name="adcf00084d90ead66510dadc459d0990e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adcf00084d90ead66510dadc459d0990e">&#9670;&#160;</a></span>invert_image()</h2>
 
@@ -719,19 +830,26 @@ Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 <dd>
 Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="kmeans_8cpp_source.html#l00240">240</a> of file <a class="el" href="kmeans_8cpp_source.html">kmeans.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  242</span>                                       {</div>
-<div class="line"><span class="lineno">  243</span>    GPU::getClassInstance().init_gpu();</div>
-<div class="line"><span class="lineno">  244</span> </div>
-<div class="line"><span class="lineno">  245</span>    <span class="keywordflow">if</span> (GPU::getClassInstance().is_initialized()) {</div>
-<div class="line"><span class="lineno">  246</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;kmeans gpu&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  247</span>        kmeans_gpu(data, out_data, out_labels, width, height, k, max_iter, color_space);</div>
-<div class="line"><span class="lineno">  248</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  249</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;kmeans cpu&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  250</span>        kmeans_cpu(data, out_data, out_labels, width, height, k, max_iter, color_space);</div>
-<div class="line"><span class="lineno">  251</span>    }</div>
-<div class="line"><span class="lineno">  252</span>}</div>
+<p class="definition">Definition at line <a class="el" href="kmeans_8cpp_source.html#l00239">239</a> of file <a class="el" href="kmeans_8cpp_source.html">kmeans.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  241</span>                                       {</div>
+<div class="line"><span class="lineno">  242</span>    GPU::getClassInstance().init_gpu();</div>
+<div class="line"><span class="lineno">  243</span> </div>
+<div class="line"><span class="lineno">  244</span>    <span class="keywordflow">if</span> (GPU::getClassInstance().is_initialized()) {</div>
+<div class="line"><span class="lineno">  245</span>        kmeans_gpu(data, out_data, out_labels, width, height, k, max_iter, color_space);</div>
+<div class="line"><span class="lineno">  246</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  247</span>        kmeans_cpu(data, out_data, out_labels, width, height, k, max_iter, color_space);</div>
+<div class="line"><span class="lineno">  248</span>    }</div>
+<div class="line"><span class="lineno">  249</span>}</div>
 </div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="image__to__svg_8cpp_source.html#l00007">image_to_svg()</a>.</p>
+<div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-2-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-2-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceimg2num_ae73563e9dd25a8dd2120fd519ef87abd_icgraph.svg" width="386" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
 </div>
 </div>
 <a id="a36b11018f26b33933eeeb31a7833ea3d" name="a36b11018f26b33933eeeb31a7833ea3d"></a>
@@ -856,6 +974,15 @@ Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 <div class="ttc" id="aclassGraph_html"><div class="ttname"><a href="classGraph.html">Graph</a></div><div class="ttdef"><b>Definition</b> <a href="graph_8h_source.html#l00033">graph.h:33</a></div></div>
 <div class="ttc" id="astructColoredContours_html"><div class="ttname"><a href="structColoredContours.html">ColoredContours</a></div><div class="ttdef"><b>Definition</b> <a href="contours_8h_source.html#l00040">contours.h:40</a></div></div>
 </div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="image__to__svg_8cpp_source.html#l00007">image_to_svg()</a>.</p>
+<div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
+<div id="dynsection-3-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-3-content" class="dyncontent" style="display:none;">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceimg2num_a36b11018f26b33933eeeb31a7833ea3d_icgraph.svg" width="423" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
 </div>
 </div>
 <a id="a9f4cebf6c051efd2bcb6e6cc83382aaf" name="a9f4cebf6c051efd2bcb6e6cc83382aaf"></a>

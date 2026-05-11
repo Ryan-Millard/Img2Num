@@ -15,6 +15,8 @@ Include dependency graph for cimg2num.\+cpp\+:
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
+\mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\+\_\+\+Image\+To\+Svg\+Config}} \mbox{\hyperlink{cimg2num_8cpp_a5a016ab3fb1a11977549ad30180bdbdc}{img2num\+\_\+\+Image\+To\+Svg\+Config\+\_\+default}} (void)
+\item 
 void \mbox{\hyperlink{cimg2num_8cpp_a9ec403b5d2ba9b510eb999dfc8ba9305}{img2num\+\_\+gaussian\+\_\+blur\+\_\+fft}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}image, size\+\_\+t width, size\+\_\+t height, double sigma)
 \begin{DoxyCompactList}\small\item\em Apply a Gaussian blur to an image using FFT.   \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{cimg2num_8cpp_a938eb2be340be827192bfbcbf6c90af8}{img2num\+\_\+invert\+\_\+image}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}image, int width, int height)
@@ -28,6 +30,8 @@ void \mbox{\hyperlink{cimg2num_8cpp_acfb692edf4159d210555b0a42da84993}{img2num\+
 void \mbox{\hyperlink{cimg2num_8cpp_adb95035702beba616395f6fe92036f10}{img2num\+\_\+bilateral\+\_\+filter}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}image, size\+\_\+t width, size\+\_\+t height, double sigma\+\_\+spatial, double sigma\+\_\+range, uint8\+\_\+t color\+\_\+space)
 \begin{DoxyCompactList}\small\item\em Apply bilateral filtering to an image.   \end{DoxyCompactList}\item 
 char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{cimg2num_8cpp_a169bee7a27e362ee70f55fd34cb2ac44}{img2num\+\_\+labels\+\_\+to\+\_\+svg}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, const int32\+\_\+t \texorpdfstring{$\ast$}{*}labels, const int width, const int height, const int min\+\_\+area)
+\begin{DoxyCompactList}\small\item\em Convert labeled regions of an image into an SVG string.   \end{DoxyCompactList}\item 
+char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{cimg2num_8cpp_a255af66a03d8d7aadbc1d0980a1ad04e}{img2num\+\_\+image\+\_\+to\+\_\+svg}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, const int width, const int height, const \mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\+\_\+\+Image\+To\+Svg\+Config}} \texorpdfstring{$\ast$}{*}config)
 \begin{DoxyCompactList}\small\item\em Convert labeled regions of an image into an SVG string.   \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -64,14 +68,14 @@ Dox File\+: {\ttfamily \doxylink{img2num_8h_8dox}{doxygen/img2num.\+h.\+dox}}
 \end{DoxyNote}
 
 
-Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00037}{37}} of file \mbox{\hyperlink{cimg2num_8cpp_source}{cimg2num.\+cpp}}.
+Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00072}{72}} of file \mbox{\hyperlink{cimg2num_8cpp_source}{cimg2num.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00039\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(img2num::bilateral\_filter,\ image,\ width,\ height,}
-\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sigma\_spatial,\ sigma\_range,\ color\_space);}
-\DoxyCodeLine{00041\ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00074\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(img2num::bilateral\_filter,\ image,\ width,\ height,}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sigma\_spatial,\ sigma\_range,\ color\_space);}
+\DoxyCodeLine{00076\ \}}
 
 \end{DoxyCode}
 \Hypertarget{cimg2num_8cpp_ab121126337eeb4f32e02ad068f784deb}\label{cimg2num_8cpp_ab121126337eeb4f32e02ad068f784deb} 
@@ -102,14 +106,14 @@ Dox File\+: {\ttfamily \doxylink{img2num_8h_8dox}{doxygen/img2num.\+h.\+dox}}
 \end{DoxyNote}
 
 
-Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00024}{24}} of file \mbox{\hyperlink{cimg2num_8cpp_source}{cimg2num.\+cpp}}.
+Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00059}{59}} of file \mbox{\hyperlink{cimg2num_8cpp_source}{cimg2num.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00026\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(img2num::black\_threshold\_image,\ ptr,\ width,\ height,}
-\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ num\_thresholds);}
-\DoxyCodeLine{00028\ \}}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00061\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(img2num::black\_threshold\_image,\ ptr,\ width,\ height,}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ num\_thresholds);}
+\DoxyCodeLine{00063\ \}}
 
 \end{DoxyCode}
 \Hypertarget{cimg2num_8cpp_a9ec403b5d2ba9b510eb999dfc8ba9305}\label{cimg2num_8cpp_a9ec403b5d2ba9b510eb999dfc8ba9305} 
@@ -140,13 +144,90 @@ Dox File\+: {\ttfamily \doxylink{img2num_8h_8dox}{doxygen/img2num.\+h.\+dox}}
 \end{DoxyNote}
 
 
-Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00010}{10}} of file \mbox{\hyperlink{cimg2num_8cpp_source}{cimg2num.\+cpp}}.
+Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00045}{45}} of file \mbox{\hyperlink{cimg2num_8cpp_source}{cimg2num.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00010\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00011\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(img2num::gaussian\_blur\_fft,\ image,\ width,\ height,\ sigma);}
-\DoxyCodeLine{00012\ \}}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00046\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(img2num::gaussian\_blur\_fft,\ image,\ width,\ height,\ sigma);}
+\DoxyCodeLine{00047\ \}}
+
+\end{DoxyCode}
+\Hypertarget{cimg2num_8cpp_a255af66a03d8d7aadbc1d0980a1ad04e}\label{cimg2num_8cpp_a255af66a03d8d7aadbc1d0980a1ad04e} 
+\index{cimg2num.cpp@{cimg2num.cpp}!img2num\_image\_to\_svg@{img2num\_image\_to\_svg}}
+\index{img2num\_image\_to\_svg@{img2num\_image\_to\_svg}!cimg2num.cpp@{cimg2num.cpp}}
+\doxysubsubsection{\texorpdfstring{img2num\_image\_to\_svg()}{img2num\_image\_to\_svg()}}
+{\footnotesize\ttfamily char \texorpdfstring{$\ast$}{*} img2num\+\_\+image\+\_\+to\+\_\+svg (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{data,  }\item[{const int}]{width,  }\item[{const int}]{height,  }\item[{const \mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\+\_\+\+Image\+To\+Svg\+Config}} \texorpdfstring{$\ast$}{*}}]{config }\end{DoxyParamCaption})}
+
+
+
+Convert labeled regions of an image into an SVG string.   
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Pointer to image data buffer. \\
+\hline
+{\em width} & Width of the image in pixels. \\
+\hline
+{\em height} & Height of the image in pixels. \\
+\hline
+{\em config} & \doxylink{structimg2num__ImageToSvgConfig}{img2num\+\_\+\+Image\+To\+Svg\+Config} Configuration Struct. \begin{quote}
+See img2num\+::\+Image\+To\+Svg\+Config. \end{quote}
+\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::string An SVG string containing data roughly approximate to the input image. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Dox File\+: {\ttfamily \doxylink{img2num_8h_8dox}{doxygen/img2num.\+h.\+dox}}   
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00094}{94}} of file \mbox{\hyperlink{cimg2num_8cpp_source}{cimg2num.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\_ImageToSvgConfig}}\ default\_cfg;}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\_ImageToSvgConfig}}\ \&cfg\{config\ ?\ *config\ :\ default\_cfg\};}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordtype}{char}\ *result\{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ [\&](\textcolor{keyword}{const}\ uint8\_t\ *d,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ w,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ h)\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ svg\{\ img2num::image\_to\_svg(d,\ w,\ h,\ to\_cpp(cfg))\ \};}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ result\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{char}\ *\textcolor{keyword}{>}(std::malloc(svg.size()\ +\ 1));}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!result)\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};\ \ \textcolor{comment}{//\ Allocation\ failed}}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ std::memcpy(result,\ svg.c\_str(),\ svg.size()\ +\ 1);}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \},}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ data,\ width,\ height}
+\DoxyCodeLine{00113\ \ \ \ \ );}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00116\ \}}
+
+\end{DoxyCode}
+\Hypertarget{cimg2num_8cpp_a5a016ab3fb1a11977549ad30180bdbdc}\label{cimg2num_8cpp_a5a016ab3fb1a11977549ad30180bdbdc} 
+\index{cimg2num.cpp@{cimg2num.cpp}!img2num\_ImageToSvgConfig\_default@{img2num\_ImageToSvgConfig\_default}}
+\index{img2num\_ImageToSvgConfig\_default@{img2num\_ImageToSvgConfig\_default}!cimg2num.cpp@{cimg2num.cpp}}
+\doxysubsubsection{\texorpdfstring{img2num\_ImageToSvgConfig\_default()}{img2num\_ImageToSvgConfig\_default()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\+\_\+\+Image\+To\+Svg\+Config}} img2num\+\_\+\+Image\+To\+Svg\+Config\+\_\+default (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00040}{40}} of file \mbox{\hyperlink{cimg2num_8cpp_source}{cimg2num.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{comment}{//\ Use\ the\ defaults\ from\ the\ C++\ struct}}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{return}\ to\_c(img2num::ImageToSvgConfig\{\});}
+\DoxyCodeLine{00043\ \}}
 
 \end{DoxyCode}
 \Hypertarget{cimg2num_8cpp_a938eb2be340be827192bfbcbf6c90af8}\label{cimg2num_8cpp_a938eb2be340be827192bfbcbf6c90af8} 
@@ -175,13 +256,13 @@ Dox File\+: {\ttfamily \doxylink{img2num_8h_8dox}{doxygen/img2num.\+h.\+dox}}
 \end{DoxyNote}
 
 
-Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00014}{14}} of file \mbox{\hyperlink{cimg2num_8cpp_source}{cimg2num.\+cpp}}.
+Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00049}{49}} of file \mbox{\hyperlink{cimg2num_8cpp_source}{cimg2num.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00015\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(img2num::invert\_image,\ image,\ width,\ height);}
-\DoxyCodeLine{00016\ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00050\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(img2num::invert\_image,\ image,\ width,\ height);}
+\DoxyCodeLine{00051\ \}}
 
 \end{DoxyCode}
 \Hypertarget{cimg2num_8cpp_acfb692edf4159d210555b0a42da84993}\label{cimg2num_8cpp_acfb692edf4159d210555b0a42da84993} 
@@ -220,14 +301,14 @@ Dox File\+: {\ttfamily \doxylink{img2num_8h_8dox}{doxygen/img2num.\+h.\+dox}}
 \end{DoxyNote}
 
 
-Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00030}{30}} of file \mbox{\hyperlink{cimg2num_8cpp_source}{cimg2num.\+cpp}}.
+Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00065}{65}} of file \mbox{\hyperlink{cimg2num_8cpp_source}{cimg2num.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00033\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(img2num::kmeans,\ data,\ out\_data,\ out\_labels,\ width,\ height,}
-\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ k,\ max\_iter,\ color\_space);}
-\DoxyCodeLine{00035\ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00068\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(img2num::kmeans,\ data,\ out\_data,\ out\_labels,\ width,\ height,}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ k,\ max\_iter,\ color\_space);}
+\DoxyCodeLine{00070\ \}}
 
 \end{DoxyCode}
 \Hypertarget{cimg2num_8cpp_a169bee7a27e362ee70f55fd34cb2ac44}\label{cimg2num_8cpp_a169bee7a27e362ee70f55fd34cb2ac44} 
@@ -261,24 +342,24 @@ Dox File\+: {\ttfamily \doxylink{img2num_8h_8dox}{doxygen/img2num.\+h.\+dox}}
 \end{DoxyNote}
 
 
-Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00043}{43}} of file \mbox{\hyperlink{cimg2num_8cpp_source}{cimg2num.\+cpp}}.
+Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00078}{78}} of file \mbox{\hyperlink{cimg2num_8cpp_source}{cimg2num.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{char}\ *result\{\textcolor{keyword}{nullptr}\};}
-\DoxyCodeLine{00046\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(}
-\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ [\&](\textcolor{keyword}{const}\ uint8\_t\ *d,\ \textcolor{keyword}{const}\ int32\_t\ *l,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ w,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ h,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_a)\ \{}
-\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ svg\{img2num::labels\_to\_svg(d,\ l,\ w,\ h,\ min\_a)\};}
-\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ result\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{char}\ *\textcolor{keyword}{>}(std::malloc(svg.size()\ +\ 1));}
-\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!result)\ \{}
-\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};\ \ \textcolor{comment}{//\ Allocation\ failed}}
-\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ std::memcpy(result,\ svg.c\_str(),\ svg.size()\ +\ 1);}
-\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \},}
-\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ data,\ labels,\ width,\ height,\ min\_area);}
-\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
-\DoxyCodeLine{00057\ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{char}\ *result\{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{00081\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ [\&](\textcolor{keyword}{const}\ uint8\_t\ *d,\ \textcolor{keyword}{const}\ int32\_t\ *l,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ w,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ h,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_a)\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ svg\{img2num::labels\_to\_svg(d,\ l,\ w,\ h,\ min\_a)\};}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ result\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{char}\ *\textcolor{keyword}{>}(std::malloc(svg.size()\ +\ 1));}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!result)\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};\ \ \textcolor{comment}{//\ Allocation\ failed}}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ std::memcpy(result,\ svg.c\_str(),\ svg.size()\ +\ 1);}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \},}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ data,\ labels,\ width,\ height,\ min\_area);}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00092\ \}}
 
 \end{DoxyCode}
 \Hypertarget{cimg2num_8cpp_a553a2adf9345b19adc20473ab70692b0}\label{cimg2num_8cpp_a553a2adf9345b19adc20473ab70692b0} 
@@ -309,13 +390,13 @@ Dox File\+: {\ttfamily \doxylink{img2num_8h_8dox}{doxygen/img2num.\+h.\+dox}}
 \end{DoxyNote}
 
 
-Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00018}{18}} of file \mbox{\hyperlink{cimg2num_8cpp_source}{cimg2num.\+cpp}}.
+Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00053}{53}} of file \mbox{\hyperlink{cimg2num_8cpp_source}{cimg2num.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00020\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(img2num::threshold\_image,\ ptr,\ width,\ height,}
-\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ num\_thresholds);}
-\DoxyCodeLine{00022\ \}}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00055\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(img2num::threshold\_image,\ ptr,\ width,\ height,}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ num\_thresholds);}
+\DoxyCodeLine{00057\ \}}
 
 \end{DoxyCode}

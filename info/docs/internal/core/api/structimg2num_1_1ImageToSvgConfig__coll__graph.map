@@ -1,0 +1,7 @@
+<map id="img2num::ImageToSvgConfig" name="img2num::ImageToSvgConfig">
+<area shape="rect" id="Node000001" title="Configuration options for image_to_svg." alt="" coords="119,168,323,253"/>
+<area shape="rect" id="Node000002" href="$structimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig.html" title="Configuration settings for the bilateral filter in image_to_svg." alt="" coords="5,5,209,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,104,182,153,178,156,141,107"/>
+<area shape="rect" id="Node000003" href="$structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig.html" title="Configuration settings for K&#45;Means in image_to_svg." alt="" coords="233,5,437,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="311,107,285,146,276,157,272,154,281,142,307,104"/>
+</map>

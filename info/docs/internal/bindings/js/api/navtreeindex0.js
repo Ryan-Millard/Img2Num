@@ -10,5 +10,5 @@ var NAVTREEINDEX0 =
 "index.html#intro_sec":[0,0],
 "index.html#usage_sec":[0,4],
 "pages.html":[],
-"wasm__wrapper_8cpp_source.html":[1,0,0,0]
+"wasm__wrapper_8c_source.html":[1,0,0,0]
 };

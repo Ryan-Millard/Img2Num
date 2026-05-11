@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "img2num::ImageToSvgConfig::BilateralFilterConfig", "structimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig.html", null ],
     [ "CentroidParams", "structCentroidParams.html", null ],
     [ "ClusterAccumulator", "structClusterAccumulator.html", null ],
     [ "ContoursResult", "structContoursResult.html", [
@@ -10,6 +11,8 @@ var hierarchy =
     [ "GPU", "classGPU.html", null ],
     [ "Graph", "classGraph.html", null ],
     [ "ImageLib::Image< PixelT >", "classImageLib_1_1Image.html", null ],
+    [ "img2num::ImageToSvgConfig", "structimg2num_1_1ImageToSvgConfig.html", null ],
+    [ "img2num::ImageToSvgConfig::KMeansConfig", "structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig.html", null ],
     [ "Node", "classNode.html", null ],
     [ "Params", "structParams.html", null ],
     [ "ImageLib::Pixel< NumberT >", "structImageLib_1_1Pixel.html", [

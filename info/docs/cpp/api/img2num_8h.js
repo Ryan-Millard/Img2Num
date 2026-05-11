@@ -1,8 +1,11 @@
 var img2num_8h =
 [
+    [ "img2num::ImageToSvgConfig::BilateralFilterConfig", "structimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig.html", "structimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig" ],
+    [ "img2num::ImageToSvgConfig::KMeansConfig", "structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig.html", "structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig" ],
     [ "bilateral_filter", "img2num_8h.html#a48d9a04a535198b5fc47905e359961ac", null ],
     [ "black_threshold_image", "img2num_8h.html#a0b00cb7b162b17498d9c816ac5e38563", null ],
     [ "gaussian_blur_fft", "img2num_8h.html#a365bbbd4976477bdf515be023a73d63f", null ],
+    [ "image_to_svg", "img2num_8h.html#a8183e7b7e8a7efb8ce7ab254f81facb1", null ],
     [ "invert_image", "img2num_8h.html#adcf00084d90ead66510dadc459d0990e", null ],
     [ "kmeans", "img2num_8h.html#ae73563e9dd25a8dd2120fd519ef87abd", null ],
     [ "labels_to_svg", "img2num_8h.html#a36b11018f26b33933eeeb31a7833ea3d", null ],
