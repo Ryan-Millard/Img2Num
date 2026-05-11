@@ -194,15 +194,17 @@ PYBIND11_MODULE(_img2num, m) {
     m.def(
         "image_to_svg",
         [](pybind11::array_t<uint8_t, pybind11::array::c_style> data, int width, int height,
-           std::optional<const img2num::ImageToSvgConfig> cfg) {
-            const uint8_t *data_ptr{static_cast<const uint8_t *>(data.request().ptr)};
-            const auto& _cfg = cfg.has_value() ? *cfg : img2num::ImageToSvgConfig{};
+            const img2num::ImageToSvgConfig& cfg) {
 
-            std::string svg{img2num::image_to_svg(data_ptr, width, height, _cfg)};
-            pybind11::str svg_py_str(std::move(svg));
-            return svg_py_str;
+            const uint8_t* data_ptr{static_cast<const uint8_t*>(data.request().ptr)};
+
+            std::string svg{img2num::image_to_svg(data_ptr, width, height, cfg)};
+
+            return pybind11::str(std::move(svg));
         },
-        pybind11::arg("data"), pybind11::arg("width"), pybind11::arg("height"),
-        pybind11::arg("cfg") = pybind11::none(), 
+        pybind11::arg("data"),
+        pybind11::arg("width"),
+        pybind11::arg("height"),
+        pybind11::arg("cfg"),
         "Convert Image to SVG string");
 }

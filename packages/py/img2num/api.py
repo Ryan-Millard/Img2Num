@@ -66,5 +66,12 @@ def labels_to_svg(data: npt.NDArray[np.uint8], labels: npt.NDArray[int], min_are
 
 @_inject_dims("image")
 def image_to_svg(image: npt.NDArray[np.uint8], *, width: int, height: int, config=None) -> str:
-    # if config=None use default configs
-    return _image_to_svg(image, width, height, config)
+    _config = ImageToSvgConfig() if config is None else config
+
+    return _image_to_svg(
+        image,
+        width,
+        height,
+        # Use default
+        _config,
+    )
