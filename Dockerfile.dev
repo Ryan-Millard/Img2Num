@@ -94,7 +94,7 @@ RUN curl -LsSf https://astral.sh/uv/0.5.1/install.sh | sh
 ENV PATH="/root/.local/bin:${PATH}"
 
 RUN uv venv \
- && uv pip install scikit_build_core numpy
+  && uv pip install scikit_build_core numpy
 
 # --------------------------------------------------------------------------------------------------------------
 # 6. Set up pnpm & JS app requirements.
