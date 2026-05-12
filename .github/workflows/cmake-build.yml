@@ -78,22 +78,24 @@ jobs:
           cmake --version
           clang --version
 
-      - name: Set up Python virtual environment
-        run: |
-          uv venv
-          . .venv/bin/activate
-
-      - name: Install build dependencies (only for Github Actions)
-        run: uv pip install scikit_build_core numpy
-
       - name: Run uv sync
-        run: uv sync --no-build-isolation
-      
-      - name: Run img2num build
+        run: uv sync
+
+      - name: Build Img2Num Python Package
         run: uv run python3 -c "import img2num;"
+
+      - name: Build and run example-apps/console-py
+        # Uses an image that is guaranteed to exist
+        run: uv run --package console-py dev docs/static/img/favicon.png
 
       - name: Upload Python build artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: py-build
           path: packages/py/build-py/
+
+      - name: Upload example-apps/console-py output artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: console-py-output
+          path: console-py_outputs/
