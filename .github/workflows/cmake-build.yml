@@ -73,13 +73,16 @@ jobs:
         with:
           submodules: true
 
+      - name: Echo
+        run: echo "$IMG2NUM_IMAGE"
+
       - name: Check toolchain
         run: |
           cmake --version
           clang --version
 
       - name: Run uv sync
-        run: uv sync
+        run: uv sync --no-build-isolation
 
       - name: Build Img2Num Python Package
         run: uv run python3 -c "import img2num;"
