@@ -26,6 +26,7 @@ members = [
 target-version = "py310"
 line-length = 88
 
+exclude = ["third_party/", "docs/", ".venv/"]
 [tool.ruff.lint]
 select = [
   "E",   # pycodestyle errors
@@ -35,6 +36,7 @@ select = [
   "UP",  # pyupgrade — modernise syntax
   "SIM", # flake8-simplify
 ]
+# ruff obeys .gitignore by default
 ignore = []
 
 [tool.ruff.lint.per-file-ignores]
