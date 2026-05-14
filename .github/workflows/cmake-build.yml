@@ -68,15 +68,15 @@ jobs:
     # container:
     #   image: ghcr.io/ryan-millard/img2num-dev:pr-375
     steps:
-      - name: Checkout docker with docker-compose
-        run: |
-          IMG2NUM_IMAGE=ghcr.io/ryan-millard/img2num-dev:pr-375 docker compose up -d dev
-          docker compose exec dev bash
-
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           submodules: true
+      
+      - name: Checkout docker with docker-compose
+        run: |
+          IMG2NUM_IMAGE=ghcr.io/ryan-millard/img2num-dev:pr-375 docker compose up -d dev
+          docker compose exec dev bash
 
       - name: Echo
         run: echo "$IMG2NUM_IMAGE"
