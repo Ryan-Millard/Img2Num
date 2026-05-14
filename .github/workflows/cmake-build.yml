@@ -73,18 +73,15 @@ jobs:
         with:
           submodules: true
       
-      - name: Checkout docker with docker-compose
-        run: IMG2NUM_IMAGE=ghcr.io/ryan-millard/img2num-dev:pr-375 docker compose up -d dev
-      
-      - name: Check running containers
-        run: docker ps -a
-
-      # - name: Enter container
-      #   run: docker compose exec dev bash
-
       - name: Echo
         run: echo "$IMG2NUM_IMAGE"
 
+      - name: Checkout docker with docker-compose
+        run: IMG2NUM_IMAGE=${{ inputs.image }} docker compose up -d dev
+      
+      - name: Check running containers
+        run: docker ps -a
+        
       - name: Check toolchain
         run: |
           docker compose exec -T dev cmake --version
