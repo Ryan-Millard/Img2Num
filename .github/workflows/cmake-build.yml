@@ -79,26 +79,26 @@ jobs:
       - name: Check running containers
         run: docker ps -a
 
-      - name: Enter container
-        run: docker compose exec dev bash
+      # - name: Enter container
+      #   run: docker compose exec dev bash
 
       - name: Echo
         run: echo "$IMG2NUM_IMAGE"
 
       - name: Check toolchain
         run: |
-          cmake --version
-          clang --version
+          docker compose exec -T dev cmake --version
+          docker compose exec -T dev clang --version
 
       - name: Run uv sync
-        run: uv sync
+        run: docker compose exec -T dev uv sync
 
       - name: Build Img2Num Python Package
-        run: uv run python3 -c "import img2num;"
+        run: docker compose exec -T dev uv run python3 -c "import img2num;"
 
       - name: Build and run example-apps/console-py
         # Uses an image that is guaranteed to exist
-        run: uv run --package console-py dev docs/static/img/favicon.png
+        run: docker compose exec -T dev uv run --package console-py dev docs/static/img/favicon.png
 
       - name: Upload Python build artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
