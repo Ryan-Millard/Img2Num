@@ -82,7 +82,7 @@ jobs:
           clang --version
 
       - name: Run uv sync
-        run: uv sync --no-build-isolation
+        run: uv sync
 
       - name: Build Img2Num Python Package
         run: uv run python3 -c "import img2num;"
