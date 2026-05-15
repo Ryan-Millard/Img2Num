@@ -188,7 +188,7 @@ self.onmessage = async ({ data }) => {
 
     // -------- Read outputs --------
     /** @type {Record<string, any>} */
-    const output = {};
+    const output = Object.create(null);
     for (const { key, type } of bufferKeys) {
       const { ptr, length } = pointers.get(key);
       output[key] = WASM_TYPES[type].read(ptr, length);

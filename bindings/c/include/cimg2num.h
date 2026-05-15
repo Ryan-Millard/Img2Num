@@ -16,6 +16,41 @@
 extern "C" {
 #endif
 
+/// @brief Configuration options for image_to_svg.
+/// @ingroup CIMG2NUM_H
+typedef struct img2num_ImageToSvgConfig {
+
+    /// Configuration settings for the bilateral filter in image_to_svg.
+    struct BilateralFilterConfig {
+        /// Standard deviation for spatial Gaussian (proximity weight).
+        /// Higher values smooth over larger spatial neighborhoods.
+        double sigma_spatial;
+        /// Standard deviation for range Gaussian (intensity similarity weight).
+        /// Higher values allow blending of more dissimilar pixel intensities.
+        double sigma_range;
+    } bilateral_filter;
+
+    /// Configuration settings for K-Means in image_to_svg.
+    struct KMeansConfig {
+        /// Number of clusters to compute in K-Means.
+        /// Roughly represents number of unique colors discovered.
+        int32_t k;
+        /// Maximum number of iterations for the K-Means algorithm.
+        /// The algorithm may terminate earlier if it converges.
+        int32_t max_iter;
+    } kmeans;
+
+    /// Minimum area (in pixels) for a region to be included in the SVG.
+    int min_cluster_area;
+
+    /// Color space flag.
+    /// - 0 = CIE LAB (more perceptually accurate)
+    /// - 1 = sRGB (faster).
+    uint8_t color_space;
+} img2num_ImageToSvgConfig;
+
+img2num_ImageToSvgConfig img2num_ImageToSvgConfig_default(void);
+
 /// @copydoc ::IMG2NUM_H_GAUSSIAN_BLUR_DOC
 void img2num_gaussian_blur_fft(uint8_t *image, size_t width, size_t height, double sigma);
 
@@ -43,6 +78,9 @@ void img2num_bilateral_filter(uint8_t *image, size_t width, size_t height, doubl
 char *img2num_labels_to_svg(const uint8_t *data, const int32_t *labels, const int width,
                             const int height, const int min_area);
 
+/// @copydoc ::IMG2NUM_H_IMAGE_TO_SVG_DOC
+char *img2num_image_to_svg(const uint8_t *data, const int width, const int height,
+                           const img2num_ImageToSvgConfig *config);
 #ifdef __cplusplus
 }
 #endif
