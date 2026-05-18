@@ -65,37 +65,33 @@ jobs:
   build-py:
     name: Build Python
     runs-on: ubuntu-latest
-    # container:
-    #   image: ghcr.io/ryan-millard/img2num-dev:pr-375
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           submodules: true
-      
-      - name: Echo
+
+      - name: Set current image
+        run: |
+          echo "IMG2NUM_IMAGE=${{ inputs.image }}" >> $GITHUB_ENV
+
+      - name: Debug Image
         run: echo "$IMG2NUM_IMAGE"
 
-      - name: Checkout docker with docker-compose
-        run: IMG2NUM_IMAGE=${{ inputs.image }} docker compose up -d dev
-      
-      - name: Check running containers
-        run: docker ps -a
-        
       - name: Check toolchain
         run: |
-          docker compose exec -T dev cmake --version
-          docker compose exec -T dev clang --version
+          ./img2num run cmake --version
+          ./img2num run clang --version
 
       - name: Run uv sync
-        run: docker compose exec -T dev uv sync
+        run: ./img2num run uv sync
 
       - name: Build Img2Num Python Package
-        run: docker compose exec -T dev uv run python3 -c "import img2num;"
+        run: ./img2num run uv run python3 -c "import img2num;"
 
       - name: Build and run example-apps/console-py
         # Uses an image that is guaranteed to exist
-        run: docker compose exec -T dev uv run --package console-py dev docs/static/img/favicon.png
+        run: ./img2num run uv run --package console-py dev docs/static/img/favicon.png
 
       - name: Upload Python build artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
