@@ -9,15 +9,16 @@ updates:
       day: "monday"
       time: "09:00"
     groups:
-      dev-dependencies:
-        dependency-type: "development"
+      all-deps:
+        patterns:
+          - "*"
     labels:
       - "dependencies"
       - "npm"
-      - "js-workspace"
-    open-pull-requests-limit: 5
+      - "root"
+    open-pull-requests-limit: 3
     commit-message:
-      prefix: "chore(deps)"
+      prefix: "chore"
 
   # Core JS package
   - package-ecosystem: "npm"
@@ -27,16 +28,16 @@ updates:
       day: "monday"
       time: "09:00"
     groups:
-      prod-dependencies:
-        dependency-type: "production"
-      dev-dependencies:
-        dependency-type: "development"
+      all-deps:
+        patterns:
+          - "*"
     labels:
       - "dependencies"
       - "npm"
       - "package:js"
+    open-pull-requests-limit: 3
     commit-message:
-      prefix: "chore(deps)"
+      prefix: "chore(packages/js)"
 
   # React example app
   - package-ecosystem: "npm"
@@ -46,21 +47,16 @@ updates:
       day: "monday"
       time: "09:00"
     groups:
-      react-ecosystem:
+      all-deps:
         patterns:
-          - "react"
-          - "react-dom"
-          - "react-*"
-      prod-dependencies:
-        dependency-type: "production"
-      dev-dependencies:
-        dependency-type: "development"
+          - "*"
     labels:
       - "dependencies"
       - "npm"
       - "example-app"
+    open-pull-requests-limit: 3
     commit-message:
-      prefix: "chore(deps)"
+      prefix: "chore(example-apps/react-js)"
 
   # Docs (Docusaurus)
   - package-ecosystem: "npm"
@@ -70,19 +66,16 @@ updates:
       day: "monday"
       time: "09:00"
     groups:
-      docusaurus:
+      all-deps:
         patterns:
-          - "@docusaurus/*"
-      prod-dependencies:
-        dependency-type: "production"
-      dev-dependencies:
-        dependency-type: "development"
+          - "*"
     labels:
       - "dependencies"
       - "npm"
       - "docs"
+    open-pull-requests-limit: 3
     commit-message:
-      prefix: "chore(deps)"
+      prefix: "chore(docs)"
 
   # ======================================================================
   # GitHub Actions
@@ -93,11 +86,12 @@ updates:
       day: "monday"
       time: "09:00"
     groups:
-      github-actions:
+      all-actions:
         patterns:
           - "*"
     labels:
       - "dependencies"
       - "github-actions"
+    open-pull-requests-limit: 3
     commit-message:
       prefix: "ci(deps)"
