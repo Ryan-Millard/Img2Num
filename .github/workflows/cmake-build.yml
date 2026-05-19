@@ -33,6 +33,7 @@ jobs:
         with:
           name: wasm-build
           path: packages/js/build-wasm/
+          if-no-files-found: error
 
   build-c-cpp:
     name: Build C & C++
@@ -61,6 +62,7 @@ jobs:
         with:
           name: build-c-cpp
           path: build-c-cpp/
+          if-no-files-found: error
 
   build-py:
     name: Build Python
@@ -98,9 +100,11 @@ jobs:
         with:
           name: py-build
           path: packages/py/build-py/
+          if-no-files-found: error
 
       - name: Upload example-apps/console-py output artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: console-py-output
           path: console-py_outputs/
+          if-no-files-found: error
