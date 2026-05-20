@@ -6,15 +6,32 @@ sidebar_position: 1
 
 # Welcome to Img2Num! 🦔
 
-Img2Num is a lightweight, high-performance library for converting raster images to to SVGs with ease and speed.
+Img2Num is a lightweight, high-performance library for converting raster images to SVGs with ease and speed.
 
-Whether you're a beginner or an advanced user, you'll find everything you need here to get started and master Img2Num.
+## Quick Overview
+
+- **Convert raster images to SVG** — PNG, JPG, BMP → scalable vector paths
+- **Multi-platform** — C++, C, Python, and JavaScript (WASM)
+- **High performance** — WASM-powered, runs in browsers and Node.js
+- **Highly configurable** — bilateral filtering, k-means clustering, contour tracing
 
 ## Getting Started
 
-Follow the relevant installation guide from the following:
+1. **[Installation](./installation)** — Install Img2Num for your platform.
+2. **[Getting Started](./getting-started)** — Your first conversion in under 5 minutes.
+3. **[Concepts](./concepts)** — Learn about color spaces, filtering, and contours.
+4. **[API Reference](./api-reference)** — Full documentation for all bindings.
+5. **[Performance](./performance)** — Tips for speeding up your pipeline.
+6. **[Troubleshooting](./troubleshooting)** — Common issues and fixes.
 
-- [JavaScript](./js)
+## API Bindings
+
+| Binding | Status | Docs |
+| :--- | :--- | :--- |
+| **JavaScript (WASM)** | ✅ Production | [JS API Reference](./js/api-reference) |
+| **C++** | ✅ Production | [C++ API Reference](./cpp/api-reference) |
+| **C** | ✅ Production | [C API Reference](./c/api-reference) |
+| **Python** | 🟡 Early | [Python API Reference](./python/api-reference) |
 
 ## Changelog
 
