@@ -23,14 +23,14 @@ std::string result = img2num::image_to_svg(
 
 ### ImageToSvgConfig
 
-| Member | Default | Description |
-| :--- | :--- | :--- |
-| `bilateral_filter.sigma_spatial` | 3.0 | Spatial smoothing distance |
-| `bilateral_filter.sigma_range` | 50.0 | Color intensity smoothing |
-| `kmeans.k` | 16 | Number of colors |
-| `kmeans.max_iter` | 100 | K-means iterations |
-| `min_cluster_area` | 100 | Minimum contour area (px) |
-| `color_space` | 0 | 0 = CIE LAB, 1 = sRGB |
+| Member                           | Default | Description                |
+| :------------------------------- | :------ | :------------------------- |
+| `bilateral_filter.sigma_spatial` | 3.0     | Spatial smoothing distance |
+| `bilateral_filter.sigma_range`   | 50.0    | Color intensity smoothing  |
+| `kmeans.k`                       | 16      | Number of colors           |
+| `kmeans.max_iter`                | 100     | K-means iterations         |
+| `min_cluster_area`               | 100     | Minimum contour area (px)  |
+| `color_space`                    | 0       | 0 = CIE LAB, 1 = sRGB      |
 
 ## `gaussian_blur_fft`
 

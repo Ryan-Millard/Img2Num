@@ -31,10 +31,10 @@ You can also load Img2Num directly from jsDelivr:
 
 ```html
 <script type="module">
-  import { imageToUint8ClampedArray, bilateralFilter, kmeans, findContours }
-    from "https://cdn.jsdelivr.net/npm/img2num/build-wasm/index.js";
+  import { imageToUint8ClampedArray, bilateralFilter, kmeans, findContours } from "https://cdn.jsdelivr.net/npm/img2num/build-wasm/index.js";
 </script>
 ```
+
 :::
 
 ## C++

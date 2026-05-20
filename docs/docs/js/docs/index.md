@@ -30,12 +30,12 @@ Browser / Node.js
 
 Key files:
 
-| File | Purpose |
-| :--- | :--- |
-| `safeWasmWrappers.js` | Public API — imageToSvg, bilateralFilter, kmeans, etc. |
-| `wasmClient.js` | Worker communication layer |
-| `wasmWorker.js` | WASM module loader, typed array handling, memory management |
-| `index.js` | Package exports |
+| File                  | Purpose                                                     |
+| :-------------------- | :---------------------------------------------------------- |
+| `safeWasmWrappers.js` | Public API — imageToSvg, bilateralFilter, kmeans, etc.      |
+| `wasmClient.js`       | Worker communication layer                                  |
+| `wasmWorker.js`       | WASM module loader, typed array handling, memory management |
+| `index.js`            | Package exports                                             |
 
 ## WASM Memory Handling
 

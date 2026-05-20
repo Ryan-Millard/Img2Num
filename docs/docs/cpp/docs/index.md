@@ -47,16 +47,16 @@ int main() {
 
 ## Pipeline Functions
 
-| Function | Description |
-| :--- | :--- |
-| `bilateral_filter` | Edge-preserving smoothing |
-| `kmeans` | Color palette reduction |
-| `labels_to_svg` | Contour detection & vectorization |
-| `image_to_svg` | Full pipeline (filter → cluster → trace) |
+| Function           | Description                              |
+| :----------------- | :--------------------------------------- |
+| `bilateral_filter` | Edge-preserving smoothing                |
+| `kmeans`           | Color palette reduction                  |
+| `labels_to_svg`    | Contour detection & vectorization        |
+| `image_to_svg`     | Full pipeline (filter → cluster → trace) |
 
 ## Color Spaces
 
-| Space | Constant | Use |
-| :--- | :--- | :--- |
-| **CIE LAB** | `0` | Perceptually accurate |
-| **sRGB** | `1` | Faster computation |
+| Space       | Constant | Use                   |
+| :---------- | :------- | :-------------------- |
+| **CIE LAB** | `0`      | Perceptually accurate |
+| **sRGB**    | `1`      | Faster computation    |

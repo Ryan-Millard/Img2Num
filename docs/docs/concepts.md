@@ -12,10 +12,10 @@ Understanding these concepts will help you get the best results from Img2Num.
 
 Img2Num supports two color spaces for k-means clustering:
 
-| Space | ID | Description | Use when… |
-| :--- | :--- | :--- | :--- |
+| Space       | ID  | Description                                                    | Use when…                                        |
+| :---------- | :-- | :------------------------------------------------------------- | :----------------------------------------------- |
 | **CIE LAB** | `0` | Perceptually uniform — distances match human color perception. | Accurate color matching matters more than speed. |
-| **sRGB** | `1` | Faster computation in the native display space. | You need speed and color accuracy is secondary. |
+| **sRGB**    | `1` | Faster computation in the native display space.                | You need speed and color accuracy is secondary.  |
 
 ## Bilateral Filtering
 
@@ -36,7 +36,7 @@ Typical values:
 
 ## K-Means Clustering
 
-K-means groups pixels into *k* clusters based on color distance in the chosen color space.
+K-means groups pixels into _k_ clusters based on color distance in the chosen color space.
 
 - **`k` (num_colors)**: How many colors the output should contain.
 - **`max_iter`**: Stop the algorithm early if `100` iterations aren't enough.

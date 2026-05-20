@@ -12,14 +12,14 @@ All functions are exported from the `img2num` package. They are async because th
 
 One-shot raster → SVG conversion.
 
-| Option | Default | Description |
-| :--- | :--- | :--- |
-| `sigma_spatial` | `3` | Bilateral spatial sigma |
-| `sigma_range` | `50` | Bilateral range sigma |
-| `num_colors` | `16` | K-means cluster count |
-| `max_iter` | `100` | K-means max iterations |
-| `min_area` | `100` | Minimum contour area |
-| `color_space` | `0` | `0` = CIE LAB, `1` = sRGB |
+| Option          | Default | Description               |
+| :-------------- | :------ | :------------------------ |
+| `sigma_spatial` | `3`     | Bilateral spatial sigma   |
+| `sigma_range`   | `50`    | Bilateral range sigma     |
+| `num_colors`    | `16`    | K-means cluster count     |
+| `max_iter`      | `100`   | K-means max iterations    |
+| `min_area`      | `100`   | Minimum contour area      |
+| `color_space`   | `0`     | `0` = CIE LAB, `1` = sRGB |
 
 **Returns:** `{ svg: string }`
 
@@ -62,10 +62,10 @@ Loads an image from a Data URL.
 
 Advanced low-level API for calling raw WASM functions.
 
-| Parameter | Description |
-| :--- | :--- |
-| `funcName` | WASM export name |
-| `args` | Named arguments passed as object |
+| Parameter    | Description                                   |
+| :----------- | :-------------------------------------------- |
+| `funcName`   | WASM export name                              |
+| `args`       | Named arguments passed as object              |
 | `bufferKeys` | Array of `{ key, type }` for buffer transfers |
 | `returnType` | Expected return type (`void`, `string`, etc.) |
 

@@ -33,12 +33,12 @@ print(svg)
 
 ## Available Functions
 
-| Function | Description |
-| :--- | :--- |
-| `image_to_svg` | Full raster → SVG pipeline |
-| `bilateral_filter` | Edge-preserving smoothing |
-| `kmeans` | Color clustering |
-| `findContours` | Contour detection |
+| Function           | Description                |
+| :----------------- | :------------------------- |
+| `image_to_svg`     | Full raster → SVG pipeline |
+| `bilateral_filter` | Edge-preserving smoothing  |
+| `kmeans`           | Color clustering           |
+| `findContours`     | Contour detection          |
 
 ## Configuration
 

@@ -14,12 +14,12 @@ Convert a raster image buffer into an SVG string.
 
 **Parameters:**
 
-| Name | Type | Description |
-| :--- | :--- | :--- |
-| `image` | `NDArray[np.uint8]` | Input image (H, W, C). |
-| `width` | `int` | Image width (injected automatically from array shape). |
-| `height` | `int` | Image height (injected automatically from array shape). |
-| `config` | `ImageToSvgConfig` | Optional override of defaults. |
+| Name     | Type                | Description                                             |
+| :------- | :------------------ | :------------------------------------------------------ |
+| `image`  | `NDArray[np.uint8]` | Input image (H, W, C).                                  |
+| `width`  | `int`               | Image width (injected automatically from array shape).  |
+| `height` | `int`               | Image height (injected automatically from array shape). |
+| `config` | `ImageToSvgConfig`  | Optional override of defaults.                          |
 
 **Returns:** `str` — SVG markup.
 
@@ -35,12 +35,12 @@ Edge-preserving smoothing.
 
 **Parameters:**
 
-| Name | Type | Default |
-| :--- | :--- | :--- |
-| `image` | `NDArray[np.uint8]` | — |
-| `sigma_spatial` | `float` | — |
-| `sigma_range` | `float` | — |
-| `color_space` | `int` | — |
+| Name            | Type                | Default |
+| :-------------- | :------------------ | :------ |
+| `image`         | `NDArray[np.uint8]` | —       |
+| `sigma_spatial` | `float`             | —       |
+| `sigma_range`   | `float`             | —       |
+| `color_space`   | `int`               | —       |
 
 **Returns:** `NDArray[np.uint8]` — Filtered image.
 
@@ -50,12 +50,12 @@ K-means color clustering.
 
 **Parameters:**
 
-| Name | Type | Default |
-| :--- | :--- | :--- |
-| `data` | `NDArray[np.uint8]` | — |
-| `k` | `int` | — |
-| `max_iter` | `int` | — |
-| `color_space` | `int` | — |
+| Name          | Type                | Default |
+| :------------ | :------------------ | :------ |
+| `data`        | `NDArray[np.uint8]` | —       |
+| `k`           | `int`               | —       |
+| `max_iter`    | `int`               | —       |
+| `color_space` | `int`               | —       |
 
 **Returns:** `(NDArray[np.uint8], NDArray[np.int])` — `(clustered_data, labels)`
 
@@ -65,9 +65,9 @@ Convert label map to vector paths.
 
 **Parameters:**
 
-| Name | Type | Default |
-| :--- | :--- | :--- |
-| `labels` | `NDArray[np.int]` | — |
-| `min_area` | `int` | 100 |
+| Name       | Type              | Default |
+| :--------- | :---------------- | :------ |
+| `labels`   | `NDArray[np.int]` | —       |
+| `min_area` | `int`             | 100     |
 
 **Returns:** `str` — SVG markup.

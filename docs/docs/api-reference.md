@@ -8,12 +8,12 @@ sidebar_position: 6
 
 Img2Num provides bindings for multiple languages. Choose the one that fits your workflow:
 
-| Language | Docs |
-| :--- | :--- |
-| **JavaScript** | [JS API Reference](./js/api-reference) |
-| **C++** | [C++ API Reference](./cpp/api-reference) |
-| **C** | [C API Reference](./c/api-reference) |
-| **Python** | [Python API Reference](./python/api-reference) |
+| Language       | Docs                                           |
+| :------------- | :--------------------------------------------- |
+| **JavaScript** | [JS API Reference](./js/api-reference)         |
+| **C++**        | [C++ API Reference](./cpp/api-reference)       |
+| **C**          | [C API Reference](./c/api-reference)           |
+| **Python**     | [Python API Reference](./python/api-reference) |
 
 ## Common Concepts Across All Bindings
 
@@ -26,14 +26,14 @@ All APIs share these core concepts:
 
 ## Shared Parameters
 
-| Parameter | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `sigma_spatial` | `float` | `3` | Bilateral spatial sigma |
-| `sigma_range` | `float` | `50` | Bilateral range sigma |
-| `num_colors` / `k` | `int` | `16` | Number of clusters |
-| `max_iter` | `int` | `100` | K-means iterations |
-| `min_area` | `int` | `100` | Minimum contour area |
-| `color_space` | `int` | `0` | `0` = CIE LAB, `1` = sRGB |
+| Parameter          | Type    | Default | Description               |
+| :----------------- | :------ | :------ | :------------------------ |
+| `sigma_spatial`    | `float` | `3`     | Bilateral spatial sigma   |
+| `sigma_range`      | `float` | `50`    | Bilateral range sigma     |
+| `num_colors` / `k` | `int`   | `16`    | Number of clusters        |
+| `max_iter`         | `int`   | `100`   | K-means iterations        |
+| `min_area`         | `int`   | `100`   | Minimum contour area      |
+| `color_space`      | `int`   | `0`     | `0` = CIE LAB, `1` = sRGB |
 
 ## Pipeline Flow
 

@@ -13,17 +13,17 @@ Img2Num runs inside WASM on a Web Worker. Here are tips to maximize throughput.
 Each function call spawns a message to the worker. For batch processing, process images in parallel:
 
 ```js
-const results = await Promise.all(images.map(img => imageToSvg(img)));
+const results = await Promise.all(images.map((img) => imageToSvg(img)));
 ```
 
 ## Tune Parameters
 
-| Parameter | Tuning Direction | Effect |
-| :--- | :--- | :--- |
-| `sigma_spatial` | Lower → faster | Less spatial smoothing |
-| `num_colors` | Lower → faster | Fewer clusters |
-| `max_iter` | Lower → faster | Fewer k-means iterations |
-| `min_area` | Higher → faster | Fewer contours to trace |
+| Parameter       | Tuning Direction | Effect                   |
+| :-------------- | :--------------- | :----------------------- |
+| `sigma_spatial` | Lower → faster   | Less spatial smoothing   |
+| `num_colors`    | Lower → faster   | Fewer clusters           |
+| `max_iter`      | Lower → faster   | Fewer k-means iterations |
+| `min_area`      | Higher → faster  | Fewer contours to trace  |
 
 ## Downscale Large Images
 
