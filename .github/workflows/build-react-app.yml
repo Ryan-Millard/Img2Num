@@ -42,3 +42,4 @@ jobs:
         with:
           name: react-build
           path: example-apps/react-js/dist/
+          if-no-files-found: error
