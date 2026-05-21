@@ -9,7 +9,20 @@
 #include <optional>
 
 PYBIND11_MODULE(_img2num, m) {
-    m.doc() = "Python bindings for the img2num C++ library";
+    m.doc() = R"docstring(
+    Python bindings for the img2num C++ library.
+
+    This module provides access to Img2Num's image processing capabilities from Python.
+    All image functions operate on ``numpy.ndarray`` buffers and return new image data,
+    making them easy to integrate into Python-based image processing pipelines.
+
+    Submodules
+    ----------
+    proc :
+        Core image processing functions. All functions return new image data.
+    svg :
+        Functions for converting images to SVG strings.
+    )docstring";
 
     // -----------------------------------------------------------------------
     // All Functions return new image data
@@ -27,7 +40,25 @@ PYBIND11_MODULE(_img2num, m) {
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"),
-        pybind11::arg("sigma"), "Apply Gaussian blur using FFT");
+        pybind11::arg("sigma"), R"docstring(
+        Apply a Gaussian blur to the image using Fast Fourier Transform (FFT) for performance.
+
+        Parameters
+        ----------
+        image : numpy.ndarray
+            Input image as a uint8 numpy array.
+        width : int
+            Width of the image.
+        height : int
+            Height of the image.
+        sigma : float
+            Standard deviation for the Gaussian kernel.
+
+        Returns
+        -------
+        numpy.ndarray
+            Blurred image as a uint8 numpy array.
+        )docstring");
 
     m.def(
         "invert_image",
@@ -39,8 +70,23 @@ PYBIND11_MODULE(_img2num, m) {
             img2num::invert_image(out_image.mutable_data(), width, height);
             return out_image;
         },
-        pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"),
-        "Invert image colors");
+        pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"), R"docstring(
+        Invert the pixel values of an image.
+
+        Parameters
+        ----------
+        image : numpy.ndarray
+            Input image as a uint8 numpy array.
+        width : int
+            Width of the image.
+        height : int
+            Height of the image.
+
+        Returns
+        -------
+        numpy.ndarray
+            Inverted image as a uint8 numpy array.
+        )docstring");
 
     m.def(
         "threshold_image",
@@ -53,7 +99,25 @@ PYBIND11_MODULE(_img2num, m) {
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"),
-        pybind11::arg("num_thresholds"), "Apply thresholding to the image");
+        pybind11::arg("num_thresholds"), R"docstring(
+        Apply thresholding to the image.
+
+        Parameters
+        ----------
+        image : numpy.ndarray
+            Input image as a uint8 numpy array.
+        width : int
+            Width of the image.
+        height : int
+            Height of the image.
+        num_thresholds : int
+            Number of threshold levels to apply.
+
+        Returns
+        -------
+        numpy.ndarray
+            Thresholded image as a uint8 numpy array.
+        )docstring");
 
     m.def(
         "black_threshold_image",
@@ -67,7 +131,25 @@ PYBIND11_MODULE(_img2num, m) {
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"),
-        pybind11::arg("num_thresholds"), "Apply black thresholding to the image");
+        pybind11::arg("num_thresholds"), R"docstring(
+        Apply black thresholding to the image.
+
+        Parameters
+        ----------
+        image : numpy.ndarray
+            Input image as a uint8 numpy array.
+        width : int
+            Width of the image.
+        height : int
+            Height of the image.
+        num_thresholds : int
+            Number of threshold levels to apply.
+
+        Returns
+        -------
+        numpy.ndarray
+            Thresholded image as a uint8 numpy array.
+        )docstring");
 
     m.def(
         "bilateral_filter",
@@ -82,8 +164,29 @@ PYBIND11_MODULE(_img2num, m) {
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"),
-        pybind11::arg("sigma_spatial"), pybind11::arg("sigma_range"), pybind11::arg("color_space"),
-        "Apply bilateral filter");
+        pybind11::arg("sigma_spatial"), pybind11::arg("sigma_range"), pybind11::arg("color_space"), R"docstring(
+        Apply a bilateral filter to the image.
+
+        Parameters
+        ----------
+        image : numpy.ndarray
+            Input image as a uint8 numpy array.
+        width : int
+            Width of the image.
+        height : int
+            Height of the image.
+        sigma_spatial : float
+            Standard deviation for the spatial Gaussian (proximity weight).
+        sigma_range : float
+            Standard deviation for the range Gaussian (intensity similarity weight).
+        color_space : int
+            Color space identifier (e.g., 0 for LAB, 1 for sRGB).
+
+        Returns
+        -------
+        numpy.ndarray
+            Filtered image as a uint8 numpy array.
+        )docstring");
 
     m.def(
         "kmeans",
@@ -92,56 +195,113 @@ PYBIND11_MODULE(_img2num, m) {
             pybind11::buffer_info data_buf = data.request();
 
             // Allocate NumPy arrays for the outputs
-            auto out_data = pybind11::array_t<uint8_t>(data_buf.shape);
-            auto out_labels = pybind11::array_t<int32_t>({(ssize_t)height, (ssize_t)width});
+            pybind11::array_t<uint8_t, pybind11::array::c_style> out_data(data_buf.shape);
+            pybind11::array_t<int32_t, pybind11::array::c_style> out_labels({(ssize_t)height, (ssize_t)width});
 
-            auto out_data_ptr = static_cast<uint8_t *>(out_data.mutable_data());
-            auto out_labels_ptr = static_cast<int32_t *>(out_labels.mutable_data());
-
-            // Call C function
-            img2num::kmeans(static_cast<const uint8_t *>(data_buf.ptr), out_data_ptr,
-                            out_labels_ptr, width, height, k, max_iter, color_space);
-
-            // Return a tuple of (out_data, out_labels)
+            img2num::kmeans(static_cast<const uint8_t *>(data_buf.ptr),
+                            static_cast<uint8_t *>(out_data.mutable_data()),
+                            static_cast<int32_t *>(out_labels.mutable_data()), width, height, k, max_iter,
+                            color_space);
             return pybind11::make_tuple(out_data, out_labels);
         },
         pybind11::arg("data"), pybind11::arg("width"), pybind11::arg("height"), pybind11::arg("k"),
-        pybind11::arg("max_iter"), pybind11::arg("color_space"),
-        "Run K-Means clustering. Returns a tuple: (quantized_image, labels_array)");
+        pybind11::arg("max_iter"), pybind11::arg("color_space"), R"docstring(
+        Perform K-means clustering on the image data.
+
+        Parameters
+        ----------
+        data : numpy.ndarray
+            Input image data as a uint8 numpy array.
+        width : int
+            Width of the image.
+        height : int
+            Height of the image.
+        k : int
+            Number of clusters to compute.
+        max_iter : int
+            Maximum number of iterations for the K-means algorithm.
+        color_space : int
+            Color space identifier for clustering.
+
+        Returns
+        -------
+        tuple
+            A tuple containing two NumPy arrays: (clustered_data, labels).
+        )docstring");
 
     m.def(
         "labels_to_svg",
-        [](pybind11::array_t<uint8_t, pybind11::array::c_style> data,
-           pybind11::array_t<int32_t, pybind11::array::c_style> labels, int width, int height,
-           int min_area) {
-            const uint8_t *data_ptr{static_cast<const uint8_t *>(data.request().ptr)};
-            const int32_t *labels_ptr{static_cast<const int32_t *>(labels.request().ptr)};
+        [](pybind11::array_t<uint8_t, pybind11::array::c_style> data, pybind11::array_t<int32_t, pybind11::array::c_style> labels,
+           int width, int height, int min_area) {
+
+            const uint8_t* data_ptr{static_cast<const uint8_t*>(data.request().ptr)};
+            const int32_t* labels_ptr{static_cast<const int32_t*>(labels.request().ptr)};
 
             std::string svg{img2num::labels_to_svg(data_ptr, labels_ptr, width, height, min_area)};
-            pybind11::str svg_py_str(std::move(svg));
 
-            return svg_py_str;
+            return pybind11::str(std::move(svg));
         },
-        pybind11::arg("data"), pybind11::arg("labels"), pybind11::arg("width"),
-        pybind11::arg("height"), pybind11::arg("min_area"), "Convert labels to SVG string");
+        pybind11::arg("data"),
+        pybind11::arg("labels"),
+        pybind11::arg("width"),
+        pybind11::arg("height"),
+        pybind11::arg("min_area"),
+        R"docstring(
+        Convert a labeled image to an SVG string.
 
-    // ---------------------- Config Structs ----------------------
-    pybind11::class_<img2num::ImageToSvgConfig> config(m, "ImageToSvgConfig");
+        Parameters
+        ----------
+        data : numpy.ndarray
+            Input image data as a uint8 numpy array.
+        labels : numpy.ndarray
+            Label map as an int32 numpy array.
+        width : int
+            Width of the image.
+        height : int
+            Height of the image.
+        min_area : int
+            Minimum cluster area to include in the SVG.
+
+        Returns
+        -------
+        str
+            An SVG string containing data roughly approximate to the input image.
+        )docstring");
+
+    // ------------------------------------------ Config Structs ----------------------
+    pybind11::class_<img2num::ImageToSvgConfig> config(m, "ImageToSvgConfig", R"docstring(
+    Configuration options for image_to_svg.
+
+    This class holds parameters for bilateral filtering, K-means clustering,
+    and SVG generation. All parameters have sensible defaults.
+    )docstring");
     pybind11::class_<img2num::ImageToSvgConfig::BilateralFilterConfig>(config,
-                                                                       "BilateralFilterConfig")
+                                                                        "BilateralFilterConfig", R"docstring(
+    Configuration for the bilateral filter used in image_to_svg.
+    )docstring")
         .def(pybind11::init<>())
         .def_readwrite("sigma_spatial",
-                       &img2num::ImageToSvgConfig::BilateralFilterConfig::sigma_spatial)
+                       &img2num::ImageToSvgConfig::BilateralFilterConfig::sigma_spatial, R"docstring(
+    Standard deviation for spatial Gaussian (proximity weight). Default: 3.0
+    )docstring")
         .def_readwrite("sigma_range",
-                       &img2num::ImageToSvgConfig::BilateralFilterConfig::sigma_range)
+                       &img2num::ImageToSvgConfig::BilateralFilterConfig::sigma_range, R"docstring(
+    Standard deviation for range Gaussian (intensity similarity weight). Default: 50.0
+    )docstring")
         .def("__repr__", [](const img2num::ImageToSvgConfig::BilateralFilterConfig &c) {
             return "{'sigma_spatial': " + std::to_string(c.sigma_spatial) +
                    ", 'sigma_range': " + std::to_string(c.sigma_range) + "}";
         });
-    pybind11::class_<img2num::ImageToSvgConfig::KMeansConfig>(config, "KMeansConfig")
+    pybind11::class_<img2num::ImageToSvgConfig::KMeansConfig>(config, "KMeansConfig", R"docstring(
+    Configuration for the K-means clustering used in image_to_svg.
+    )docstring")
         .def(pybind11::init<>())
-        .def_readwrite("k", &img2num::ImageToSvgConfig::KMeansConfig::k)
-        .def_readwrite("max_iter", &img2num::ImageToSvgConfig::KMeansConfig::max_iter)
+        .def_readwrite("k", &img2num::ImageToSvgConfig::KMeansConfig::k, R"docstring(
+    Number of clusters to compute. Roughly represents number of unique colors discovered. Default: 16
+    )docstring")
+        .def_readwrite("max_iter", &img2num::ImageToSvgConfig::KMeansConfig::max_iter, R"docstring(
+    Maximum number of iterations for the K-means algorithm. Default: 100
+    )docstring")
         .def("__repr__", [](const img2num::ImageToSvgConfig::KMeansConfig &c) {
             return "{'k': " + std::to_string(c.k) + ", 'max_iter': " + std::to_string(c.max_iter) +
                    "}";
@@ -206,5 +366,23 @@ PYBIND11_MODULE(_img2num, m) {
         pybind11::arg("width"),
         pybind11::arg("height"),
         pybind11::arg("cfg"),
-        "Convert Image to SVG string");
+        R"docstring(
+        Convert Image to SVG string.
+
+        Parameters
+        ----------
+        data : numpy.ndarray
+            Input image buffer.
+        width : int
+            Width of the image.
+        height : int
+            Height of the image.
+        cfg : ImageToSvgConfig
+            Configuration object containing filter and clustering parameters.
+
+        Returns
+        -------
+        str
+            SVG string representation of the image.
+        )docstring");
 }

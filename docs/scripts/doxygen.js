@@ -11,6 +11,7 @@ const OUTPUT_PARENT_DIR = join(ROOT_DIR, "static/docs");
 const CORE_DIR = join("core");
 const JS_BINDINGS_DIR = join("bindings", "js");
 const C_BINDINGS_DIR = join("bindings", "c");
+const PY_BINDINGS_DIR = join("bindings", "py");
 
 const DOXYFILES = [
   {
@@ -27,6 +28,11 @@ const DOXYFILES = [
     fileName: "Doxyfile.internal",
     srcDir: JS_BINDINGS_DIR,
     outDir: join(OUTPUT_PARENT_DIR, "internal", "bindings", "js", "api")
+  },
+  {
+    fileName: "Doxyfile.internal",
+    srcDir: PY_BINDINGS_DIR,
+    outDir: join(OUTPUT_PARENT_DIR, "internal", "bindings", "py", "api")
   },
   {
     fileName: "Doxyfile.public",
