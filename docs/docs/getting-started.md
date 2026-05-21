@@ -82,6 +82,6 @@ flowchart LR
 
 ## Next steps
 
-- [Concepts](./concepts) — learn about color spaces, filtering, and contours.
-- [API Reference](./api-reference) — full parameter documentation.
-- [Performance](./performance) — tips for speeding up your pipeline.
+- [Concepts](/docs/concepts) — learn about color spaces, filtering, and contours.
+- [API Reference](/docs/api-reference) — full parameter documentation.
+- [Performance](/docs/performance) — tips for speeding up your pipeline.

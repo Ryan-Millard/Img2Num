@@ -29,13 +29,13 @@ This documentation serves three main goals:
 
 ## What You Will Find Here
 
-- [Core docs](./core)
-- [Bindings](./bindings)
-- [Example app documentation](./example-apps)
-- [Internal package docs](./packages)
+- [Core docs](/docs/core)
+- [Bindings](/docs/bindings)
+- [Example app documentation](/docs/example-apps)
+- [Internal package docs](/docs/packages)
 - Development tools
-  - [CLI scripts](./scripts)
-  - [GitHub Actions workflows](./dot-github/workflows)
+  - [CLI scripts](/docs/scripts)
+  - [GitHub Actions workflows](/docs/dot-github/workflows)
 - Brief explanations of the theory behind each part of the project
 
 ## How the Section is Organized
