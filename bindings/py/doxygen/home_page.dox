@@ -1,0 +1,95 @@
+/*! \mainpage Img2Num Python Bindings
+ *
+ * \section intro_sec Introduction
+ *
+ * The **Img2Num Python Bindings** provide a Python interface to the core Img2Num
+ * image processing library via pybind11. These bindings wrap the underlying C++
+ * functionality, exposing image processing operations such as filtering, clustering,
+ * thresholding, and SVG conversion to Python code.
+ *
+ * All functions operate on `numpy.ndarray` buffers and return new image data, making
+ * them easy to integrate into Python-based image processing pipelines.
+ *
+ * \section features_sec Key Features
+ *
+ * The Python bindings expose the following core capabilities:
+ * - **FFT-based Gaussian blur** — Fast frequency-domain blurring
+ * - **Image inversion** — Invert pixel values
+ * - **Thresholding** — Standard and black-thresholding operations
+ * - **K-means clustering** — Pixel clustering for color quantization
+ * - **Bilateral filtering** — Edge-preserving smoothing
+ * - **Label-to-SVG conversion** — Convert labeled images to SVG strings
+ * - **Image-to-SVG conversion** — Full image vectorization with configurable parameters
+ * - **ImageToSvgConfig** — Python-accessible configuration for SVG generation
+ *
+ * \section building_sec Building the Python Bindings
+ *
+ * The Python bindings are built using CMake from the project root:
+ *
+ * \code{.sh}
+ * cmake -B build .
+ * cmake --build build
+ * \endcode
+ *
+ * \section install_sec Installation
+ *
+ * Install the bindings to your system:
+ *
+ * \code{.sh}
+ * cmake --install build
+ * \endcode
+ *
+ * The compiled `_img2num` module will be available for import in Python:
+ *
+ * \code{.py}
+ * import _img2num
+ * \endcode
+ *
+ * \section usage_sec Usage Example
+ *
+ * \code{.py}
+ * import numpy as np
+ * import _img2num
+ *
+ * # Load image as uint8 numpy array
+ * image = np.array([...], dtype=np.uint8).reshape((height, width, 3))
+ *
+ * # Apply Gaussian blur
+ * blurred = _img2num.gaussian_blur_fft(image, width, height, sigma=2.0)
+ *
+ * # Invert colors
+ * inverted = _img2num.invert_image(image, width, height)
+ *
+ * # Threshold
+ * thresholded = _img2num.threshold_image(image, width, height, num_thresholds=4)
+ *
+ * # K-means clustering
+ * clustered_data, labels = _img2num.kmeans(image, width, height, k=8, max_iter=50)
+ *
+ * # Bilateral filtering
+ * filtered = _img2num.bilateral_filter(image, width, height, sigma_spatial=3.0, sigma_range=50.0)
+ *
+ * # SVG conversion
+ * config = _img2num.ImageToSvgConfig()
+ * svg_str = _img2num.image_to_svg(image, width, height, config)
+ * \endcode
+ *
+ * \section api_sec API Reference
+ *
+ * Browse the detailed function and class documentation:
+ * - \ref img2num_functions "Core Image Processing Functions"
+ * - \ref img2num_classes "Configuration Classes"
+ */
+
+/** \defgroup img2num_functions Image Processing Functions
+ *  @ingroup mainpage
+ *  @brief Image processing functions exposed via Python bindings.
+ *  @{
+ */
+
+/** \defgroup img2num_classes Configuration Classes
+ *  @ingroup mainpage
+ *  @brief Configuration classes for image processing and SVG generation.
+ *  @{
+ */
+
