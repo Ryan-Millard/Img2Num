@@ -17,21 +17,21 @@ Img2Num is a lightweight, high-performance library for converting raster images 
 
 ## Getting Started
 
-1. **[Installation](/docs/installation)** — Install Img2Num for your platform.
-2. **[Getting Started](/docs/getting-started)** — Your first conversion in under 5 minutes.
-3. **[Concepts](/docs/concepts)** — Learn about color spaces, filtering, and contours.
-4. **[API Reference](/docs/api-reference)** — Full documentation for all bindings.
-5. **[Performance](/docs/performance)** — Tips for speeding up your pipeline.
-6. **[Troubleshooting](/docs/troubleshooting)** — Common issues and fixes.
+1. **[Installation](/docs/next/installation)** — Install Img2Num for your platform.
+2. **[Getting Started](/docs/next/getting-started)** — Your first conversion in under 5 minutes.
+3. **[Concepts](/docs/next/concepts)** — Learn about color spaces, filtering, and contours.
+4. **[API Reference](/docs/next/api-reference)** — Full documentation for all bindings.
+5. **[Performance](/docs/next/performance)** — Tips for speeding up your pipeline.
+6. **[Troubleshooting](/docs/next/troubleshooting)** — Common issues and fixes.
 
 ## API Bindings
 
 | Binding               | Status        | Docs                                           |
 | :-------------------- | :------------ | :--------------------------------------------- |
-| **JavaScript (WASM)** | ✅ Production | [JS API Reference](/docs/js/api-reference)         |
-| **C++**               | ✅ Production | [C++ API Reference](/docs/cpp/api-reference)       |
-| **C**                 | ✅ Production | [C API Reference](/docs/c/api-reference)           |
-| **Python**            | 🟡 Early      | [Python API Reference](/docs/python/api-reference) |
+| **JavaScript (WASM)** | ✅ Production | [JS API Reference](/docs/next/js/js-api-reference)         |
+| **C++**               | ✅ Production | [C++ API Reference](/docs/next/cpp/cpp-api-reference)       |
+| **C**                 | ✅ Production | [C API Reference](/docs/next/c/c-api-reference)           |
+| **Python**            | 🟡 Early      | [Python API Reference](/docs/next/python/python-api-reference) |
 
 ## Changelog
 
@@ -40,7 +40,7 @@ Our [changelog](/changelog) is quite empty right now since we haven't had our fi
 ---
 
 We hope you enjoy using **Img2Num**!
-For issues or contributions, see our [contributors guide](/docs/contributing) or visit our
+For issues or contributions, see our [contributors guide](/docs/next/contributing) or visit our
 [GitHub repository](https://github.com/Ryan-Millard/Img2Num/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22).
 
 :::note

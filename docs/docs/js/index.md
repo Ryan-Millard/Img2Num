@@ -123,8 +123,8 @@ const { svg } = await findContours({
 
 ## Resources
 
-- [Documentation](/docs/js/docs/)
-- [API usage](/docs/js/api-reference/)
+- [Documentation](/docs/next/js/docs/)
+- [API usage](/docs/next/js/js-api-reference/)
 - [GitHub repository](https://github.com/Ryan-Millard/Img2Num)
 - [React demo app](https://ryan-millard.github.io/Img2Num/)
 

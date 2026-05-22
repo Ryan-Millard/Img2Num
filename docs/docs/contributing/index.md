@@ -10,7 +10,7 @@ First off, thank you for considering contributing to Img2Num! We welcome any kin
 
 ## Code of Conduct
 
-Please review and adhere to our [Code of Conduct](/docs/code-of-conduct.md) to help foster an open and welcoming environment.
+Please review and adhere to our [Code of Conduct](/docs/contributing/code-of-conduct.md) to help foster an open and welcoming environment.
 
 ## Reporting Issues
 
@@ -50,6 +50,6 @@ When a claim expires:
 
 ## Development Setup
 
-The [Setup & Dependencies](/docs/setup-and-dependencies) section shows how to clone and run the application for the first time.
+The [Setup & Dependencies](/docs/next/contributing/setup-and-dependencies) section shows how to clone and run the application for the first time.
 
 The [scripts](../internal/scripts) section shows all of the available scripts you may find useful whilst working on Img2Num's source code as well as a helpful way to find specific scripts if you have forgotten one.

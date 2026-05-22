@@ -29,13 +29,13 @@ This documentation serves three main goals:
 
 ## What You Will Find Here
 
-- [Core docs](/docs/core)
-- [Bindings](/docs/bindings)
-- [Example app documentation](/docs/example-apps)
-- [Internal package docs](/docs/packages)
+- [Core docs](/docs/next/internal/core)
+- [Bindings](/docs/next/internal/bindings)
+- [Example app documentation](/docs/next/internal/example-apps)
+- [Internal package docs](/docs/next/internal/packages)
 - Development tools
-  - [CLI scripts](/docs/scripts)
-  - [GitHub Actions workflows](/docs/dot-github/workflows)
+  - [CLI scripts](/docs/next/internal/scripts)
+  - [GitHub Actions workflows](./dot-github/workflows)
 - Brief explanations of the theory behind each part of the project
 
 ## How the Section is Organized
