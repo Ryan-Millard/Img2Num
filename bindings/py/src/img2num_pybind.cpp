@@ -5,8 +5,8 @@
 
 #include <cstdlib>
 #include <memory>
-#include <sstream>
 #include <optional>
+#include <sstream>
 
 PYBIND11_MODULE(_img2num, m) {
     m.doc() = R"docstring(
@@ -164,7 +164,8 @@ PYBIND11_MODULE(_img2num, m) {
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"),
-        pybind11::arg("sigma_spatial"), pybind11::arg("sigma_range"), pybind11::arg("color_space"), R"docstring(
+        pybind11::arg("sigma_spatial"), pybind11::arg("sigma_range"), pybind11::arg("color_space"),
+        R"docstring(
         Apply a bilateral filter to the image.
 
         Parameters
@@ -196,12 +197,13 @@ PYBIND11_MODULE(_img2num, m) {
 
             // Allocate NumPy arrays for the outputs
             pybind11::array_t<uint8_t, pybind11::array::c_style> out_data(data_buf.shape);
-            pybind11::array_t<int32_t, pybind11::array::c_style> out_labels({(ssize_t)height, (ssize_t)width});
+            pybind11::array_t<int32_t, pybind11::array::c_style> out_labels(
+                {(ssize_t)height, (ssize_t)width});
 
             img2num::kmeans(static_cast<const uint8_t *>(data_buf.ptr),
                             static_cast<uint8_t *>(out_data.mutable_data()),
-                            static_cast<int32_t *>(out_labels.mutable_data()), width, height, k, max_iter,
-                            color_space);
+                            static_cast<int32_t *>(out_labels.mutable_data()), width, height, k,
+                            max_iter, color_space);
             return pybind11::make_tuple(out_data, out_labels);
         },
         pybind11::arg("data"), pybind11::arg("width"), pybind11::arg("height"), pybind11::arg("k"),
@@ -231,21 +233,18 @@ PYBIND11_MODULE(_img2num, m) {
 
     m.def(
         "labels_to_svg",
-        [](pybind11::array_t<uint8_t, pybind11::array::c_style> data, pybind11::array_t<int32_t, pybind11::array::c_style> labels,
-           int width, int height, int min_area) {
-
-            const uint8_t* data_ptr{static_cast<const uint8_t*>(data.request().ptr)};
-            const int32_t* labels_ptr{static_cast<const int32_t*>(labels.request().ptr)};
+        [](pybind11::array_t<uint8_t, pybind11::array::c_style> data,
+           pybind11::array_t<int32_t, pybind11::array::c_style> labels, int width, int height,
+           int min_area) {
+            const uint8_t *data_ptr{static_cast<const uint8_t *>(data.request().ptr)};
+            const int32_t *labels_ptr{static_cast<const int32_t *>(labels.request().ptr)};
 
             std::string svg{img2num::labels_to_svg(data_ptr, labels_ptr, width, height, min_area)};
 
             return pybind11::str(std::move(svg));
         },
-        pybind11::arg("data"),
-        pybind11::arg("labels"),
-        pybind11::arg("width"),
-        pybind11::arg("height"),
-        pybind11::arg("min_area"),
+        pybind11::arg("data"), pybind11::arg("labels"), pybind11::arg("width"),
+        pybind11::arg("height"), pybind11::arg("min_area"),
         R"docstring(
         Convert a labeled image to an SVG string.
 
@@ -275,13 +274,14 @@ PYBIND11_MODULE(_img2num, m) {
     This class holds parameters for bilateral filtering, K-means clustering,
     and SVG generation. All parameters have sensible defaults.
     )docstring");
-    pybind11::class_<img2num::ImageToSvgConfig::BilateralFilterConfig>(config,
-                                                                        "BilateralFilterConfig", R"docstring(
+    pybind11::class_<img2num::ImageToSvgConfig::BilateralFilterConfig>(
+        config, "BilateralFilterConfig", R"docstring(
     Configuration for the bilateral filter used in image_to_svg.
     )docstring")
         .def(pybind11::init<>())
         .def_readwrite("sigma_spatial",
-                       &img2num::ImageToSvgConfig::BilateralFilterConfig::sigma_spatial, R"docstring(
+                       &img2num::ImageToSvgConfig::BilateralFilterConfig::sigma_spatial,
+                       R"docstring(
     Standard deviation for spatial Gaussian (proximity weight). Default: 3.0
     )docstring")
         .def_readwrite("sigma_range",
@@ -332,7 +332,7 @@ PYBIND11_MODULE(_img2num, m) {
                  return c;
              }),
              pybind11::arg("bilateral_filter") = pybind11::dict(),  // Defaults to empty dict
-             pybind11::arg("kmeans") = pybind11::dict()   // Defaults to empty dict
+             pybind11::arg("kmeans") = pybind11::dict()             // Defaults to empty dict
              )
         .def_readwrite("bilateral_filter", &img2num::ImageToSvgConfig::bilateral_filter)
         .def_readwrite("min_cluster_area", &img2num::ImageToSvgConfig::min_cluster_area)
@@ -354,17 +354,14 @@ PYBIND11_MODULE(_img2num, m) {
     m.def(
         "image_to_svg",
         [](pybind11::array_t<uint8_t, pybind11::array::c_style> data, int width, int height,
-            const img2num::ImageToSvgConfig& cfg) {
-
-            const uint8_t* data_ptr{static_cast<const uint8_t*>(data.request().ptr)};
+           const img2num::ImageToSvgConfig &cfg) {
+            const uint8_t *data_ptr{static_cast<const uint8_t *>(data.request().ptr)};
 
             std::string svg{img2num::image_to_svg(data_ptr, width, height, cfg)};
 
             return pybind11::str(std::move(svg));
         },
-        pybind11::arg("data"),
-        pybind11::arg("width"),
-        pybind11::arg("height"),
+        pybind11::arg("data"), pybind11::arg("width"), pybind11::arg("height"),
         pybind11::arg("cfg"),
         R"docstring(
         Convert Image to SVG string.
