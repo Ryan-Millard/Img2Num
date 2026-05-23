@@ -129,7 +129,7 @@ jobs:
           cmake --build build-wasm
           release_version=${{ needs.release-please.outputs.js_version }}
           tar -czf img2num-v${release_version}.tar.gz \
-            -C packages/js \
+            packages/js \
             build-wasm \
             index.js \
             safeWasmWrappers.js \
