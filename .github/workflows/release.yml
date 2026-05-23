@@ -38,8 +38,8 @@ jobs:
   # C/C++ native artifacts
   #   C relies on C++ and C lib allows C++ devs to make C-compatible code
   build-c-cpp-native:
-    if: ${{ needs.release-please.outputs.cpp_created == 'true' || needs.release-please.outputs.c_created == 'true' }}
     needs: release-please
+    if: ${{ needs.release-please.outputs.cpp_created == 'true' || needs.release-please.outputs.c_created == 'true' }}
     runs-on: ${{ matrix.os }}
     permissions:
       contents: write
@@ -47,6 +47,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+        component:
+          - c
+          - cpp
         include:
           - os: ubuntu-latest
             plat: linux-x64
@@ -54,33 +57,59 @@ jobs:
             plat: macos-arm64
           - os: windows-latest
             plat: windows-x64
+
     steps:
-      - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
-        with: { ref: ${{ needs.release-please.outputs.c_tag || needs.release-please.outputs.cpp_tag }}, submodules: true }
-      - name: Configure
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install
-      - name: Build
-        run: cmake --build build --config Release
-      - name: Install
-        run: cmake --install build --config Release
-      - name: Package (Linux/macOS)
-        if: runner.os != 'Windows'
+      - name: Set component metadata
+        id: component
+        shell: bash
         run: |
-          release_version=${{ needs.release-please.outputs.c_version || needs.release-please.outputs.cpp_version }}
-          ARCHIVE="img2num-c-cpp-v$release_version-${{ matrix.plat }}.tar.gz"
+          if [[ "${{ matrix.component }}" == "c" ]]; then
+            echo "created=${{ needs.release-please.outputs.c_created }}" >> $GITHUB_OUTPUT
+            echo "tag=${{ needs.release-please.outputs.c_tag }}" >> $GITHUB_OUTPUT
+            echo "version=${{ needs.release-please.outputs.c_version }}" >> $GITHUB_OUTPUT
+          else
+            echo "created=${{ needs.release-please.outputs.cpp_created }}" >> $GITHUB_OUTPUT
+            echo "tag=${{ needs.release-please.outputs.cpp_tag }}" >> $GITHUB_OUTPUT
+            echo "version=${{ needs.release-please.outputs.cpp_version }}" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
+        if: ${{ steps.component.outputs.created == 'true' }}
+        with:
+          ref: ${{ steps.component.outputs.tag }}
+          submodules: true
+
+      - name: Configure
+        if: ${{ steps.component.outputs.created == 'true' }}
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install
+
+      - name: Build
+        if: ${{ steps.component.outputs.created == 'true' }}
+        run: cmake --build build --config Release
+
+      - name: Install
+        if: ${{ steps.component.outputs.created == 'true' }}
+        run: cmake --install build --config Release
+
+      - name: Package (Linux/macOS)
+        if: ${{ steps.component.outputs.created == 'true' && runner.os != 'Windows' }}
+        run: |
+          ARCHIVE="img2num-${{ matrix.component }}-v${{ steps.component.outputs.version }}-${{ matrix.plat }}.tar.gz"
           tar -czf "$ARCHIVE" -C install .
           echo "ARCHIVE=$ARCHIVE" >> $GITHUB_ENV
+
       - name: Package (Windows)
-        if: runner.os == 'Windows'
+        if: ${{ steps.component.outputs.created == 'true' && runner.os == 'Windows' }}
         shell: pwsh
         run: |
-          release_version=${{ needs.release-please.outputs.c_version || needs.release-please.outputs.cpp_version }}
-          $archive = "img2num-c-cpp-v$release_version-${{ matrix.plat }}.zip"
+          $archive = "img2num-${{ matrix.component }}-v${{ steps.component.outputs.version }}-${{ matrix.plat }}.zip"
           Compress-Archive -Path install\* -DestinationPath $archive
           "ARCHIVE=$archive" | Out-File -FilePath $env:GITHUB_ENV -Append
+
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
+        if: ${{ steps.component.outputs.created == 'true' }}
         with:
-          tag_name: ${{ needs.release-please.outputs.c_tag || needs.release-please.outputs.cpp_tag }}
+          tag_name: ${{ steps.component.outputs.tag }}
           files: ${{ env.ARCHIVE }}
 
   # WASM + JS
