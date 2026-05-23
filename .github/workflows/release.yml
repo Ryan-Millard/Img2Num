@@ -25,7 +25,7 @@ jobs:
       py_tag:            ${{ steps.rp.outputs['python--tag_name'] }}
       py_version:        ${{ steps.rp.outputs['python--version'] }}
     steps:
-      - uses: googleapis/release-please-action@v4
+      - uses: googleapis/release-please-action@v45996ed1f6d02564a971a2fa1b5860e934307cf7
         id: rp
         with:
           token:         ${{ secrets.GITHUB_TOKEN }}
