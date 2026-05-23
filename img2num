@@ -46,7 +46,7 @@ shift || true
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
-IMG2NUM_DEFAULT_IMAGE="ryanmillard/img2num-dev:latest"
+IMG2NUM_DEFAULT_IMAGE="ryanmillard/img2num-dev:main"
 IMG2NUM_STATE_FILE="$(dirname "$0")/.img2num-state"
 
 # ---------------------------------------------------------------------------
@@ -109,7 +109,8 @@ run_in_container() {
     echo "Error: container 'dev' is not running." >&2
     exit 1
   fi
-  docker compose exec dev "$@"
+  # No TTY in GitHub Actions
+  docker compose exec ${CI:+-T} dev "$@"
 }
 
 # ---------------------------------------------------------------------------
@@ -125,9 +126,15 @@ case "$MODE" in
     ;;
 esac
 case "$MODE" in
-  # Arbitrary pnpm commands
-  pnpm)
-    run_in_container pnpm "$@"
+  # Arbitrary one-off commands
+  # Run command in shell, then leave
+  run|exec)
+    if [ $# -gt 0 ]; then
+      run_in_container "$@"
+    else
+      echo "Error: run/exec requires a command." >&2
+      exit 1
+    fi
     ;;
 
   # Open a shell in the container
@@ -180,34 +187,33 @@ Usage:
   ./img2num [--img <image:tag>] <command>
 
 Commands:
-  Using PNPM Directly:
-    pnpm <args>         Run arbitrary pnpm command.              [--img, --dh-img, --ghcr-img]
-  Open Container Terminal:
-    sh|shell|bash       Opens bash terminal in Docker container. [--img, --dh-img, --ghcr-img]
-  Docker Maintenance:
+    run|exec <args>     Run arbitrary one-off command inside the container.     [--img, --dh-img, --ghcr-img]
+    sh|shell|bash       Opens bash terminal in Docker container.                [--img, --dh-img, --ghcr-img]
+
     stop                Stops running Docker container (keeps containers, volumes & networks).
     restart             Restarts running Docker container.
     down                Stops running Docker container (keeps volumes).
     purge               Stops running Docker container (removes everything, including orphans).
-    destroy             Same as purge, but deletes Docker image. [--img, --dh-img, --ghcr-img]
+    destroy             Same as purge, but deletes Docker image.                [--img, --dh-img, --ghcr-img]
     logs                Displays any relevant Docker logs.
-  Other:
+
     last-img|last-image Displays the resolved Docker image (based on current config).
     -h|--help           Displays this message.
 
 Flags:
-  --img, --dh-img, --ghcr-img
-    Applies to commands that start or remove a container (pnpm, sh, destroy).
-    Has no effect on lifecycle commands (stop, restart, down, purge, logs).
+  --img                 Use a specific Docker image.
+                          E.g.: ./img2num sh --img ryanmillard/img2num-dev:main
+  --dh-img              Docker Hub shorthand for --img. Prefixes value with ryan-millard/img2num-dev:
+                          E.g.: ./img2num sh --dh-img main
+                            Resolves Docker image to ryan-millard/img2num-dev:main
+  --ghcr-img            GitHub shorthand for --img. Prefixes value with ryan-millard/img2num-dev:
+                          E.g.: ./img2num sh --ghcr-img main
+                           Resolves Docker image to ghcr.io/ryan-millard/img2num-dev:
 
 Image Resolution (highest priority first):
-  Applies to: pnpm, sh/shell/bash, destroy
+  Applies to: run, exec, sh/shell/bash, destroy
   1. Image flags (--img, --dh-img, --ghcr-img)
-                      ./img2num --img <image:tag> <command>
-                      ./img2num --dh-img <tag> <command>      --> Resolves to: ryanmillard/img2num-dev:<tag>
-                      ./img2num --ghcr-img <tag> <command>    --> Resolves to: ghcr.io/ryan-millard/img2num-dev:<tag>
   2. IMG2NUM_IMAGE env var
-                      IMG2NUM_IMAGE=<image:tag> ./img2num <command>
   3. Last image used with this script (in .img2num-state file)
   4. Default: $IMG2NUM_DEFAULT_IMAGE
 EOF

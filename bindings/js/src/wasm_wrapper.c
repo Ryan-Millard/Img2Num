@@ -1,7 +1,6 @@
 #include <cimg2num.h>
 #include <emscripten/emscripten.h>
 
-extern "C" {
 EMSCRIPTEN_KEEPALIVE void gaussian_blur_fft(uint8_t *image, size_t width, size_t height,
                                             double sigma) {
     img2num_gaussian_blur_fft(image, width, height, sigma);
@@ -37,4 +36,19 @@ EMSCRIPTEN_KEEPALIVE char *labels_to_svg(uint8_t *data, int32_t *labels, const i
                                          const int height, const int min_area) {
     return img2num_labels_to_svg(data, labels, width, height, min_area);
 }
+
+EMSCRIPTEN_KEEPALIVE char *image_to_svg(const uint8_t *data, const int width, const int height,
+                                        double sigma_spatial, double sigma_range, const int32_t k,
+                                        const int32_t max_iter, const int min_area,
+                                        const uint8_t color_space) {
+    img2num_ImageToSvgConfig config = img2num_ImageToSvgConfig_default();
+
+    config.bilateral_filter.sigma_spatial = sigma_spatial;
+    config.bilateral_filter.sigma_range = sigma_range;
+    config.kmeans.k = k;
+    config.kmeans.max_iter = max_iter;
+    config.min_cluster_area = min_area;
+    config.color_space = color_space;
+
+    return img2num_image_to_svg(data, width, height, &config);
 }

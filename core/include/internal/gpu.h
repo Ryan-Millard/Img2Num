@@ -257,6 +257,7 @@ class GPU {
         adapter = nullptr;
         queue = nullptr;
         instance = nullptr;
+        gpu_initialized = false;
     };
 };
 

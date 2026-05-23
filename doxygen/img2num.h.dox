@@ -87,3 +87,16 @@
 /// @return std::string A valid SVG string containing the data.
 /// @note Dox File: `doxygen/img2num.h.dox`
 ///
+
+#define IMG2NUM_H_IMAGE_TO_SVG_DOC
+/// @def IMG2NUM_H_IMAGE_TO_SVG_DOC
+/// @brief Convert labeled regions of an image into an SVG string.
+/// @ingroup IMG2NUM_H
+/// @param data Pointer to image data buffer.
+/// @param width Width of the image in pixels.
+/// @param height Height of the image in pixels.
+/// @param config img2num_ImageToSvgConfig Configuration Struct.
+/// > See @ref img2num::ImageToSvgConfig.
+/// @return std::string An SVG string containing data roughly approximate to the input image.
+/// @note Dox File: `doxygen/img2num.h.dox`
+///

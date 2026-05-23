@@ -52,7 +52,7 @@ $RemainingArgs = $FilteredArgs.ToArray()
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
-$IMG2NUM_DEFAULT_IMAGE = "ryanmillard/img2num-dev:latest"
+$IMG2NUM_DEFAULT_IMAGE = "ryanmillard/img2num-dev:main"
 $IMG2NUM_STATE_FILE = Join-Path $PSScriptRoot ".img2num-state"
 
 # ---------------------------------------------------------------------------
@@ -91,10 +91,10 @@ function Load-Image {
         return $env:IMG2NUM_IMAGE
     }
     if (Test-Path $IMG2NUM_STATE_FILE) {
-      $match = Select-String -Path $IMG2NUM_STATE_FILE -Pattern '^IMAGE=(.*)$' | Select-Object -First 1
+        $match = Select-String -Path $IMG2NUM_STATE_FILE -Pattern '^IMAGE=(.*)$' | Select-Object -First 1
         if ($match) {
-          $val = $match.Matches[0].Groups[1].Value.Trim()
-          if ($val) { return $val }
+            $val = $match.Matches[0].Groups[1].Value.Trim()
+            if ($val) { return $val }
         }
     }
     return $IMG2NUM_DEFAULT_IMAGE
@@ -114,10 +114,12 @@ function Run-InContainer {
     docker compose up -d dev
     $ps = docker compose ps -q --status running dev 2>&1
     if ([string]::IsNullOrWhiteSpace($ps)) {
-      Write-Error "Error: container 'dev' is not running."
+        Write-Error "Error: container 'dev' is not running."
         exit 1
     }
-    docker compose exec dev @CmdArgs
+
+    $tty = if ($env:CI) { @("-T") } else { @() }
+    docker compose exec @tty dev @CmdArgs
 }
 
 # ---------------------------------------------------------------------------
@@ -133,15 +135,27 @@ if ($Mode -in @("stop","restart","down","purge","destroy","logs")) {
 }
 
 switch ($Mode) {
-    "pnpm" {
-        Run-InContainer -CmdArgs (@("pnpm") + $RemainingArgs)
+    # Arbitrary one-off commands
+    # Run command in shell, then leave
+    { $_ -in @("run","exec") } {
+        if ($RemainingArgs.Count -gt 0) {
+            Run-InContainer -CmdArgs $RemainingArgs
+        } else {
+            Write-Error "Error: run/exec requires a command."
+            exit 1
+        }
     }
+
+    # Open a shell in the container
     { $_ -in @("sh","shell","bash","term","terminal") } {
         Run-InContainer -CmdArgs @("bash")
     }
+
+    # Docker management shortcuts
     "stop"    { docker compose stop }
     "restart" { docker compose restart }
     "down"    { docker compose down }
+
     { $_ -in @("purge","destroy") } {
         docker compose down --volumes --remove-orphans
         if ($Mode -eq "destroy") {
@@ -162,12 +176,15 @@ switch ($Mode) {
             }
         }
     }
-    "logs" {
-        docker compose logs -f
-    }
+
+    # Tail logs
+    "logs" { docker compose logs -f }
+
     { $_ -in @("last-img","last-image") } {
         Load-Image
     }
+
+    # Fallback usage
     default {
         $EXIT_CODE = 0
         if ($Mode -ne "" -and $Mode -notin @("-h","--help")) {
@@ -180,34 +197,33 @@ Usage:
   ./img2num.ps1 [--img <image:tag>] <command>
 
 Commands:
-  Using PNPM Directly:
-    pnpm <args>         Run arbitrary pnpm command.              [--img, --dh-img, --ghcr-img]
-  Open Container Terminal:
-    sh|shell|bash       Opens bash terminal in Docker container. [--img, --dh-img, --ghcr-img]
-  Docker Maintenance:
+    run|exec <args>     Run arbitrary one-off command inside the container.     [--img, --dh-img, --ghcr-img]
+    sh|shell|bash       Opens bash terminal in Docker container.                [--img, --dh-img, --ghcr-img]
+
     stop                Stops running Docker container (keeps containers, volumes & networks).
     restart             Restarts running Docker container.
     down                Stops running Docker container (keeps volumes).
     purge               Stops running Docker container (removes everything, including orphans).
-    destroy             Same as purge, but deletes Docker image. [--img, --dh-img, --ghcr-img]
+    destroy             Same as purge, but deletes Docker image.                [--img, --dh-img, --ghcr-img]
     logs                Displays any relevant Docker logs.
-  Other:
+
     last-img|last-image Displays the resolved Docker image (based on current config).
     -h|--help           Displays this message.
 
 Flags:
-  --img, --dh-img, --ghcr-img
-    Applies to commands that start or remove a container (pnpm, sh, destroy).
-    Has no effect on lifecycle commands (stop, restart, down, purge, logs).
+  --img                 Use a specific Docker image.
+                          E.g.: ./img2num.ps1 sh --img ryanmillard/img2num-dev:main
+  --dh-img              Docker Hub shorthand for --img. Prefixes value with ryan-millard/img2num-dev:
+                          E.g.: ./img2num.ps1 sh --dh-img main
+                            Resolves Docker image to ryan-millard/img2num-dev:main
+  --ghcr-img            GitHub shorthand for --img. Prefixes value with ryan-millard/img2num-dev:
+                          E.g.: ./img2num.ps1 sh --ghcr-img main
+                           Resolves Docker image to ghcr.io/ryan-millard/img2num-dev:
 
 Image Resolution (highest priority first):
-  Applies to: pnpm, sh/shell/bash, destroy
+  Applies to: run, exec, sh/shell/bash, destroy
   1. Image flags (--img, --dh-img, --ghcr-img)
-                      ./img2num.ps1 --img <image:tag> <command>
-                      ./img2num.ps1 --dh-img <tag> <command>      --> Resolves to: ryanmillard/img2num-dev:<tag>
-                      ./img2num.ps1 --ghcr-img <tag> <command>    --> Resolves to: ghcr.io/ryan-millard/img2num-dev:<tag>
   2. IMG2NUM_IMAGE env var
-                      `$env:IMG2NUM_IMAGE=<image:tag>; ./img2num.ps1 <command>
   3. Last image used with this script (in .img2num-state file)
   4. Default: $IMG2NUM_DEFAULT_IMAGE
 "@
