@@ -4,13 +4,12 @@ on:
   push:
     branches: [ main ]
 
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     outputs:
       cpp_created:      ${{ steps.rp.outputs['cpp--release_created'] }}
       cpp_tag:          ${{ steps.rp.outputs['cpp--tag_name'] }}
@@ -42,6 +41,8 @@ jobs:
     if: ${{ needs.release-please.outputs.cpp_created == 'true' || needs.release-please.outputs.c_created == 'true' }}
     needs: release-please
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: write
     strategy:
       fail-fast: false
       matrix:
@@ -82,11 +83,13 @@ jobs:
           tag_name: ${{ needs.release-please.outputs.c_tag || needs.release-please.outputs.cpp_tag }}
           files: ${{ env.ARCHIVE }}
 
-  # WASM + npm (JS)
-  js-and-npm:
+  # WASM + JS
+  build-js:
     if: ${{ needs.release-please.outputs.js_created == 'true' }}
     needs: release-please
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with: { ref: ${{ needs.release-please.outputs.js_tag }}, submodules: true }
@@ -116,10 +119,12 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   # Wheels + PyPI (Python)
-  py-wheels-and-pypi:
+  build-py:
     if: ${{ needs.release-please.outputs.py_created == 'true' }}
     needs: release-please
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: write
     strategy:
       fail-fast: false
       matrix: { os: [ubuntu-latest, macos-latest, windows-latest] }
