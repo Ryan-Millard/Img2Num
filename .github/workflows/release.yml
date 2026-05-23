@@ -214,10 +214,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.RELEASE_PROPAGATION_TOKEN }}
           VERSION:  ${{ needs.release-please.outputs.cpp_version }}
-          PATH:     ${{ matrix.target.path }}
+          TARGET_PATH: ${{ matrix.target.path }}
           SCOPE:    ${{ matrix.target.scope }}
         run: |
-          SLUG="$(echo "$PATH" | tr '/' '-')"
+          SLUG="$(echo "$TARGET_PATH" | tr '/' '-')"
           BRANCH="release-propagation/core-v${VERSION}-to-${SLUG}"
 
           git checkout -b "$BRANCH"
@@ -232,11 +232,11 @@ jobs:
           gh pr create \
             --title "chore(${SCOPE}): propagate core v${VERSION} release" \
             --body  "$(cat <<'EOF'
-            Automated patch bump for \`${PATH}\` following the **`core/` (C++) v${VERSION}** release.
+            Automated patch bump for \`${TARGET_PATH}\` following the **`core/` (C++) v${VERSION}** release.
 
-            > Merging this PR will allow release-please to open a patch release PR for \`${PATH}\`.
+            > Merging this PR will allow release-please to open a patch release PR for \`${TARGET_PATH}\`.
 
-            **Dependency:** \`core\` → \`${PATH}\`
+            **Dependency:** \`core\` → \`${TARGET_PATH}\`
             EOF
             )" \
             --base main \
