@@ -24,7 +24,7 @@ jobs:
       py_tag:            ${{ steps.rp.outputs['python--tag_name'] }}
       py_version:        ${{ steps.rp.outputs['python--version'] }}
     steps:
-      - uses: googleapis/release-please-action@v45996ed1f6d02564a971a2fa1b5860e934307cf7
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7
         id: rp
         with:
           token:         ${{ secrets.GITHUB_TOKEN }}
@@ -55,7 +55,7 @@ jobs:
           - os: windows-latest
             plat: windows-x64
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
         with: { ref: ${{ needs.release-please.outputs.c_tag || needs.release-please.outputs.cpp_tag }}, submodules: true }
       - name: Configure
         run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install
@@ -78,7 +78,7 @@ jobs:
           $archive = "img2num-c-cpp-v$release_version-${{ matrix.plat }}.zip"
           Compress-Archive -Path install\* -DestinationPath $archive
           "ARCHIVE=$archive" | Out-File -FilePath $env:GITHUB_ENV -Append
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         with:
           tag_name: ${{ needs.release-please.outputs.c_tag || needs.release-please.outputs.cpp_tag }}
           files: ${{ env.ARCHIVE }}
@@ -91,9 +91,9 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
         with: { ref: ${{ needs.release-please.outputs.js_tag }}, submodules: true }
-      - uses: mymindstorm/setup-emsdk@v14
+      - uses: mymindstorm/setup-emsdk@1f4f5866c1f8745a10fcb64c4d7a0eb7a8daed9d
       - name: Build WASM
         run: |
           emcmake cmake -B build-wasm -DCMAKE_BUILD_TYPE=Release .
@@ -106,11 +106,11 @@ jobs:
             safeWasmWrappers.js \
             wasmClient.js \
             wasmWorker.js
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         with:
           tag_name: ${{ needs.release-please.outputs.js_tag }}
           files: img2num-v${{ needs.release-please.outputs.js_version }}.tar.gz
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@670825a89dc0abd596e7a3abd0f5e3f6e5faf37c
         with: { node-version: '20', registry-url: 'https://registry.npmjs.org' }
       - name: Publish to npm
         run: npm publish --access public
@@ -129,19 +129,19 @@ jobs:
       fail-fast: false
       matrix: { os: [ubuntu-latest, macos-latest, windows-latest] }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
         with: { ref: ${{ needs.release-please.outputs.py_tag }}, submodules: true }
-      - uses: pypa/cibuildwheel@v2.23.3
+      - uses: pypa/cibuildwheel@a78478edc4b83cce46f23e49e649d3e4b6437df3
         with: { package-dir: packages/py, output-dir: wheelhouse }
         env:
           CIBW_BUILD: "cp310-* cp311-* cp312-*"
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
           CIBW_ENVIRONMENT: CMAKE_ARGS="-DBUILD_PYTHON=ON"
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         with:
           tag_name: ${{ needs.release-please.outputs.py_tag }}
           files: wheelhouse/*.whl
-      - uses: pypa/gh-action-pypi-publish@release/v1
+      - uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247
         with:
           packages-dir: wheelhouse/
         env:
@@ -172,7 +172,7 @@ jobs:
           - path: packages/py
             scope: py
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
         with:
           token: ${{ secrets.RELEASE_PROPAGATION_TOKEN }}
 
@@ -222,7 +222,7 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
         with:
           token: ${{ secrets.RELEASE_PROPAGATION_TOKEN }}
 
