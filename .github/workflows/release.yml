@@ -156,20 +156,51 @@ jobs:
       contents: write
     strategy:
       fail-fast: false
-      matrix: { os: [ubuntu-latest, macos-latest, windows-latest] }
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
     steps:
       - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
-        with: { ref: ${{ needs.release-please.outputs.py_tag }}, submodules: true }
+        with:
+          ref: ${{ needs.release-please.outputs.py_tag }}
+          submodules: true
+
       - uses: pypa/cibuildwheel@a78478edc4b83cce46f23e49e649d3e4b6437df3
-        with: { package-dir: packages/py, output-dir: wheelhouse }
+        with:
+          package-dir: packages/py
+          output-dir: wheelhouse
         env:
           CIBW_BUILD: "cp310-* cp311-* cp312-*"
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
           CIBW_ENVIRONMENT: CMAKE_ARGS="-DBUILD_PYTHON=ON"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheels-${{ matrix.os }}
+          path: wheelhouse/*.whl
+
+  publish-py:
+    if: ${{ needs.release-please.outputs.py_created == 'true' }}
+    needs: [release-please, build-py]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      # ⬇️ collect wheels from all OS builds
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: wheels-*
+          path: wheelhouse
+          merge-multiple: true
+
+      # (optional but now correct place for GH release upload)
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         with:
           tag_name: ${{ needs.release-please.outputs.py_tag }}
           files: wheelhouse/*.whl
+
+      # ⬇️ PyPI publish (ONLY here)
       - uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247
         with:
           packages-dir: wheelhouse/
