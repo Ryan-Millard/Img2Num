@@ -11,18 +11,18 @@ jobs:
       contents: write
       pull-requests: write
     outputs:
-      cpp_created:      ${{ steps.rp.outputs['cpp--release_created'] }}
-      cpp_tag:          ${{ steps.rp.outputs['cpp--tag_name'] }}
-      cpp_version:      ${{ steps.rp.outputs['cpp--version'] }}
-      c_created:         ${{ steps.rp.outputs['c--release_created'] }}
-      c_tag:             ${{ steps.rp.outputs['c--tag_name'] }}
-      c_version:         ${{ steps.rp.outputs['c--version'] }}
-      js_created:        ${{ steps.rp.outputs['javascript--release_created'] }}
-      js_tag:            ${{ steps.rp.outputs['javascript--tag_name'] }}
-      js_version:        ${{ steps.rp.outputs['javascript--version'] }}
-      py_created:        ${{ steps.rp.outputs['python--release_created'] }}
-      py_tag:            ${{ steps.rp.outputs['python--tag_name'] }}
-      py_version:        ${{ steps.rp.outputs['python--version'] }}
+      cpp_created:  ${{ steps.rp.outputs['cpp--release_created'] }}
+      cpp_tag:      ${{ steps.rp.outputs['cpp--tag_name'] }}
+      cpp_version:  ${{ steps.rp.outputs['cpp--version'] }}
+      c_created:    ${{ steps.rp.outputs['bindings-c--release_created'] }}
+      c_tag:        ${{ steps.rp.outputs['bindings-c--tag_name'] }}
+      c_version:    ${{ steps.rp.outputs['bindings-c--version'] }}
+      js_created:   ${{ steps.rp.outputs['packages-js--release_created'] }}
+      js_tag:       ${{ steps.rp.outputs['packages-js--tag_name'] }}
+      js_version:   ${{ steps.rp.outputs['packages-js--version'] }}
+      py_created:   ${{ steps.rp.outputs['packages-py--release_created'] }}
+      py_tag:       ${{ steps.rp.outputs['packages-py--tag_name'] }}
+      py_version:   ${{ steps.rp.outputs['packages-py--version'] }}
     steps:
       - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7
         id: rp
@@ -36,7 +36,6 @@ jobs:
           echo '${{ toJSON(steps.rp.outputs) }}'
 
   # C/C++ native artifacts
-  #   C relies on C++ and C lib allows C++ devs to make C-compatible code
   build-c-cpp-native:
     needs: release-please
     if: ${{ needs.release-please.outputs.cpp_created == 'true' || needs.release-please.outputs.c_created == 'true' }}
@@ -65,11 +64,11 @@ jobs:
         run: |
           if [[ "${{ matrix.component }}" == "c" ]]; then
             echo "created=${{ needs.release-please.outputs.c_created }}" >> $GITHUB_OUTPUT
-            echo "tag=${{ needs.release-please.outputs.c_tag }}" >> $GITHUB_OUTPUT
+            echo "tag=${{ needs.release-please.outputs.c_tag }}"         >> $GITHUB_OUTPUT
             echo "version=${{ needs.release-please.outputs.c_version }}" >> $GITHUB_OUTPUT
           else
             echo "created=${{ needs.release-please.outputs.cpp_created }}" >> $GITHUB_OUTPUT
-            echo "tag=${{ needs.release-please.outputs.cpp_tag }}" >> $GITHUB_OUTPUT
+            echo "tag=${{ needs.release-please.outputs.cpp_tag }}"         >> $GITHUB_OUTPUT
             echo "version=${{ needs.release-please.outputs.cpp_version }}" >> $GITHUB_OUTPUT
           fi
 
@@ -187,35 +186,23 @@ jobs:
       contents: write
 
     steps:
-      # ⬇️ collect wheels from all OS builds
       - uses: actions/download-artifact@v4
         with:
           pattern: wheels-*
           path: wheelhouse
           merge-multiple: true
 
-      # (optional but now correct place for GH release upload)
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         with:
           tag_name: ${{ needs.release-please.outputs.py_tag }}
           files: wheelhouse/*.whl
 
-      # ⬇️ PyPI publish (ONLY here)
       - uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247
         with:
           packages-dir: wheelhouse/
         env:
           PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
 
-  # ── Propagate a C++ release to all wrappers ──────────────────────────────
-  # Runs when the C++ library in core/ has a new release and propagates
-  # the release to the C and Python libraries.
-  #
-  # Note: does not affect JavaScript library since it depends on
-  #       core/ (C++ library) through its dependency on
-  #       bindings/c/ (C library). When the C library is released,
-  #       that propagates to the JavaScript library in the
-  #       propagate-c job.
   propagate-cpp:
     needs: release-please
     if: ${{ needs.release-please.outputs.cpp_created == 'true' }}
@@ -253,8 +240,6 @@ jobs:
 
           git checkout -b "$BRANCH"
 
-          # Empty commit — no sentinel files needed; release-please honours
-          # conventional-commit messages on empty commits.
           git commit --allow-empty \
             -m "chore(${SCOPE}): propagate core v${VERSION} release"
 
@@ -262,18 +247,14 @@ jobs:
 
           gh pr create \
             --title "chore(${SCOPE}): propagate core v${VERSION} release" \
-            --body  "$(cat <<'EOF'
-            Automated patch bump for \`${TARGET_PATH}\` following the **`core/` (C++) v${VERSION}** release.
+            --body "Automated patch bump for \`${TARGET_PATH}\` following the **\`core/\` (C++) v${VERSION}** release.
 
-            > Merging this PR will allow release-please to open a patch release PR for \`${TARGET_PATH}\`.
+> Merging this PR will allow release-please to open a patch release PR for \`${TARGET_PATH}\`.
 
-            **Dependency:** \`core\` → \`${TARGET_PATH}\`
-            EOF
-            )" \
+**Dependency:** \`core\` → \`${TARGET_PATH}\`" \
             --base main \
             --head "$BRANCH"
 
-  # ── Propagate an independent bindings/c release to packages/js ────────────
   propagate-c:
     needs: release-please
     if: ${{ needs.release-please.outputs.c_created == 'true' }}
@@ -305,13 +286,10 @@ jobs:
 
           gh pr create \
             --title "chore(packages/js): propagate bindings/c v${VERSION} release" \
-            --body  "$(cat <<'EOF'
-            Automated patch bump for \`packages/js\` following the **bindings/c v${VERSION}** release.
+            --body "Automated patch bump for \`packages/js\` following the **bindings/c v${VERSION}** release.
 
-            > Merging this PR will allow release-please to open a patch release PR for \`packages/js\`.
+> Merging this PR will allow release-please to open a patch release PR for \`packages/js\`.
 
-            **Dependency:** \`bindings/c\` → \`packages/js\`
-            EOF
-            )" \
+**Dependency:** \`bindings/c\` → \`packages/js\`" \
             --base main \
             --head "$BRANCH"
