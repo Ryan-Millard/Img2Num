@@ -1,3 +1,30 @@
+# ==================================================================
+# Required repository secrets / environment variables (not built-in)
+# ==================================================================
+# Custom secrets (must be configured in repo settings):
+#
+# - RELEASE_PROPAGATION_TOKEN
+#   Used in propagation jobs (propagate-cpp, propagate-c) to:
+#   - push branches
+#   - create pull requests via GitHub CLI (gh pr create)
+#   Requires repo write + PR permissions.
+#
+# - NPM_TOKEN
+#   Used in build-js job to publish @npm package:
+#   - npm publish --access public
+#   Must have publish rights to the package registry.
+#
+# - PYPI_API_TOKEN
+#   Used in publish-py job to upload wheels to PyPI via:
+#   - pypa/gh-action-pypi-publish
+#   Must have upload permissions for the project on PyPI.
+#
+# Notes:
+# - All release-please outputs (tags/versions) are derived from:
+#   .release-please-manifest.json + release-please-config.json
+# - No GHCR token is required; registry uses GITHUB_TOKEN implicitly.
+# ============================================================
+#
 name: Release (release-please, multi-language assets)
 
 on:
