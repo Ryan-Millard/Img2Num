@@ -37,18 +37,16 @@ All APIs share these core concepts:
 
 ## Pipeline Flow
 
-```
-[Raster Image]
-      │
-      ▼
-[ Bilateral Filter ]  (sigma_spatial, sigma_range)
-      │
-      ▼
-[ K-Means Clustering ]  (k, max_iter, color_space)
-      │
-      ▼
-[ Contour Detection ]  (min_area)
-      │
-      ▼
-[ SVG Output ]
+```mermaid
+graph TD
+    A[Raster Image] --> B[Bilateral Filter]
+    B --> C[K-Means Clustering]
+    C --> D[Contour Detection]
+    D --> E[SVG Output]
+
+    subgraph Parameters
+        B --- P1(sigma_spatial, sigma_range)
+        C --- P2(k, max_iter, color_space)
+        D --- P3(min_area)
+    end
 ```

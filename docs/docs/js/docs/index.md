@@ -4,28 +4,21 @@ The JavaScript binding wraps Img2Num's WASM core in a clean, async API. It runs 
 
 ## Architecture
 
-```
-Browser / Node.js
-        │
-        ▼
-┌─────────────────────────┐
-│  safeWasmWrappers.js    │  ← Public API (imageToSvg, kmeans, etc.)
-└─────────────────────────┘
-        │
-        ▼
-┌─────────────────────────┐
-│     wasmClient.js       │  ← Worker communication (postMessage)
-└─────────────────────────┘
-        │
-        ▼
-┌─────────────────────────┐
-│     wasmWorker.js       │  ← WASM module loader & message handler
-└─────────────────────────┘
-        │
-        ▼
-┌─────────────────────────┐
-│  img2num_core.wasm      │  ← Emscripten-compiled core (C++ → WASM)
-└─────────────────────────┘
+```mermaid
+graph TD
+    A([Browser / Node.js]) --> B
+    
+    B["safeWasmWrappers.js <br> <font size=2 color=gray>Public API (imageToSvg, kmeans, etc.)</font>"]
+    C["wasmClient.js <br> <font size=2 color=gray>Worker communication (postMessage)</font>"]
+    D["wasmWorker.js <br> <font size=2 color=gray>WASM module loader & message handler</font>"]
+    E[["img2num_core.wasm <br> <font size=2 color=gray>Emscripten-compiled core (C++ → WASM)</font>"]]
+
+    B --> C
+    C --> D
+    D --> E
+
+    %% Accent the WASM core binary box
+    style E fill:#e1f5fe,stroke:#03a9f4,stroke-width:2px
 ```
 
 Key files:
