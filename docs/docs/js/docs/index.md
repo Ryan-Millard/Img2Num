@@ -7,7 +7,7 @@ The JavaScript binding wraps Img2Num's WASM core in a clean, async API. It runs 
 ```mermaid
 graph TD
     A([Browser / Node.js]) --> B
-    
+
     B["safeWasmWrappers.js <br> <font size=2 color=gray>Public API (imageToSvg, kmeans, etc.)</font>"]
     C["wasmClient.js <br> <font size=2 color=gray>Worker communication (postMessage)</font>"]
     D["wasmWorker.js <br> <font size=2 color=gray>WASM module loader & message handler</font>"]
