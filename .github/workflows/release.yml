@@ -11,18 +11,18 @@ jobs:
       contents: write
       pull-requests: write
     outputs:
-      cpp_created:  ${{ steps.rp.outputs['cpp--release_created'] }}
-      cpp_tag:      ${{ steps.rp.outputs['cpp--tag_name'] }}
-      cpp_version:  ${{ steps.rp.outputs['cpp--version'] }}
-      c_created:    ${{ steps.rp.outputs['bindings-c--release_created'] }}
-      c_tag:        ${{ steps.rp.outputs['bindings-c--tag_name'] }}
-      c_version:    ${{ steps.rp.outputs['bindings-c--version'] }}
-      js_created:   ${{ steps.rp.outputs['packages-js--release_created'] }}
-      js_tag:       ${{ steps.rp.outputs['packages-js--tag_name'] }}
-      js_version:   ${{ steps.rp.outputs['packages-js--version'] }}
-      py_created:   ${{ steps.rp.outputs['packages-py--release_created'] }}
-      py_tag:       ${{ steps.rp.outputs['packages-py--tag_name'] }}
-      py_version:   ${{ steps.rp.outputs['packages-py--version'] }}
+      cpp_created:  ${{ steps.rp.outputs['core--release_created'] }}
+      cpp_tag:      ${{ steps.rp.outputs['core--tag_name'] }}
+      cpp_version:  ${{ steps.rp.outputs['core--version'] }}
+      c_created:    ${{ steps.rp.outputs['bindings/c--release_created'] }}
+      c_tag:        ${{ steps.rp.outputs['bindings/c--tag_name'] }}
+      c_version:    ${{ steps.rp.outputs['bindings/c--version'] }}
+      js_created:   ${{ steps.rp.outputs['packages/js--release_created'] }}
+      js_tag:       ${{ steps.rp.outputs['packages/js--tag_name'] }}
+      js_version:   ${{ steps.rp.outputs['packages/js--version'] }}
+      py_created:   ${{ steps.rp.outputs['packages/py--release_created'] }}
+      py_tag:       ${{ steps.rp.outputs['packages/py--tag_name'] }}
+      py_version:   ${{ steps.rp.outputs['packages/py--version'] }}
     steps:
       - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7
         id: rp
@@ -128,12 +128,11 @@ jobs:
           cmake --build build-wasm
           release_version=${{ needs.release-please.outputs.js_version }}
           tar -czf img2num-v${release_version}.tar.gz \
-            packages/js \
-            build-wasm \
-            index.js \
-            safeWasmWrappers.js \
-            wasmClient.js \
-            wasmWorker.js
+             build-wasm \
+             packages/js/index.js \
+             packages/js/safeWasmWrappers.js \
+             packages/js/wasmClient.js \
+             packages/js/wasmWorker.js
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         with:
           tag_name: ${{ needs.release-please.outputs.js_tag }}
@@ -152,7 +151,7 @@ jobs:
     needs: release-please
     runs-on: ${{ matrix.os }}
     permissions:
-      contents: write
+      contents: read
     strategy:
       fail-fast: false
       matrix:
