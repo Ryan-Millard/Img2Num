@@ -28,7 +28,8 @@
     "node": ">=14"
   },
   "files": [
-    "build-wasm/",
+    "build-wasm/index.js",
+    "build-wasm/index.wasm",
     "index.js",
     "safeWasmWrappers.js",
     "wasmClient.js",
