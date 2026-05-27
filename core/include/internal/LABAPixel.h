@@ -4,21 +4,21 @@
 #include "internal/LABPixel.h"
 
 namespace ImageLib {
-template <typename NumberT>
-struct LABAPixel : public ImageLib::LABPixel<NumberT> {
+template <typename NumberT> struct LABAPixel : public ImageLib::LABPixel<NumberT> {
     // ----- Members -----
     NumberT alpha;
 
     // ----- Constructors -----
     constexpr LABAPixel(NumberT l = 0, NumberT a = 0, NumberT b = 0, NumberT alpha = 255)
-        : LABPixel<NumberT>(l, a, b), alpha(alpha) {
+        : LABPixel<NumberT>(l, a, b)
+        , alpha(alpha) {
     }
 
     // ----- Modifiers -----
-    [[nodiscard]] inline bool operator==(const LABAPixel &other) const {
+    [[nodiscard]] inline bool operator==(const LABAPixel& other) const {
         return LABPixel<NumberT>::operator==(other) && alpha == other.alpha;
     }
-    [[nodiscard]] inline bool operator!=(const LABAPixel &other) const {
+    [[nodiscard]] inline bool operator!=(const LABAPixel& other) const {
         return !(*this == other);
     }
 
@@ -31,11 +31,11 @@ struct LABAPixel : public ImageLib::LABPixel<NumberT> {
 } __attribute__((packed));
 
 template <typename NumberT>
-std::ostream &operator<<(std::ostream &out, const ImageLib::LABAPixel<NumberT> &pixel) {
+std::ostream& operator<<(std::ostream& out, const ImageLib::LABAPixel<NumberT>& pixel) {
     out << "( " << pixel.l << "," << pixel.a << "," << pixel.b << "," << pixel.alpha << " )";
     return out;
 }
 
-}  // namespace ImageLib
+} // namespace ImageLib
 
-#endif  // LABAPixel_H
+#endif // LABAPixel_H

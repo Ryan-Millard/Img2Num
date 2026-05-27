@@ -1,5 +1,9 @@
 #include "internal/bilateral_filter_gpu.h"
 
+#include "img2num.h"
+#include "internal/cielab.h"
+#include "internal/gpu.h"
+
 #include <algorithm>
 #include <climits>
 #include <cmath>
@@ -9,12 +13,8 @@
 #include <iostream>
 #include <vector>
 
-#include "img2num.h"
-#include "internal/cielab.h"
-#include "internal/gpu.h"
-
-static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB{0};
-static constexpr uint8_t COLOR_SPACE_OPTION_RGB{1};
+static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB {0};
+static constexpr uint8_t COLOR_SPACE_OPTION_RGB {1};
 
 // Structure matching the WGSL Uniform (std140 layout)
 struct FilterParams {
@@ -28,10 +28,14 @@ struct FilterParams {
     float _pad2;
 } __attribute__((packed));
 
-void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double sigma_spatial,
-                          double sigma_range, uint8_t color_space) {
-    if (sigma_spatial <= 0.0 || sigma_range <= 0.0 || width <= 0 || height <= 0) return;
-    if (color_space != COLOR_SPACE_OPTION_CIELAB && color_space != COLOR_SPACE_OPTION_RGB) return;
+void bilateral_filter_gpu(
+    uint8_t* image, size_t width, size_t height, double sigma_spatial, double sigma_range,
+    uint8_t color_space
+) {
+    if (sigma_spatial <= 0.0 || sigma_range <= 0.0 || width <= 0 || height <= 0)
+        return;
+    if (color_space != COLOR_SPACE_OPTION_CIELAB && color_space != COLOR_SPACE_OPTION_RGB)
+        return;
 
     std::vector<uint8_t> result(width * height * 4);
     // copy image data to result incase filter fails
@@ -42,7 +46,7 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
     // 1. Create Input Texture
     wgpu::TextureDescriptor texDesc = {};
     texDesc.size = {static_cast<uint32_t>(width), static_cast<uint32_t>(height), 1};
-    int bytesPerPixel{4};
+    int bytesPerPixel {4};
     texDesc.format = wgpu::TextureFormat::RGBA8Unorm;
     texDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst;
     wgpu::Texture inputTexture = GPU::getClassInstance().get_device().CreateTexture(&texDesc);
@@ -54,10 +58,11 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
     wgpu::TexelCopyBufferLayout layout = {};
     layout.offset = 0;
 
-    layout.bytesPerRow = width * bytesPerPixel;  // Tightly packed for upload
+    layout.bytesPerRow = width * bytesPerPixel; // Tightly packed for upload
     layout.rowsPerImage = height;
-    GPU::getClassInstance().get_queue().WriteTexture(&dst, image, bytesPerPixel * width * height,
-                                                     &layout, &texDesc.size);
+    GPU::getClassInstance().get_queue().WriteTexture(
+        &dst, image, bytesPerPixel * width * height, &layout, &texDesc.size
+    );
 
     std::cout << "create output texture" << std::endl;
     // 2. Create Output Texture (Storage)
@@ -67,7 +72,7 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
 
     // 2a. Intermediate textures for LAB if needed
     wgpu::TextureDescriptor descLab = texDesc;
-    descLab.format = wgpu::TextureFormat::RGBA32Float;  // <--- CRITICAL
+    descLab.format = wgpu::TextureFormat::RGBA32Float; // <--- CRITICAL
     descLab.usage = wgpu::TextureUsage::StorageBinding | wgpu::TextureUsage::TextureBinding;
     // input lab
     wgpu::Texture texLabRaw = GPU::getClassInstance().get_device().CreateTexture(&descLab);
@@ -89,19 +94,19 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
     wgpu::ComputePipeline pipelineLAB2RGB;
 
     switch (color_space) {
-        case COLOR_SPACE_OPTION_RGB: {
-            pipeline = GPU::getClassInstance().createPipeline("bilateral_filter_rgb",
-                                                              "BilateralFilterShader");
-            break;
-        }
-        case COLOR_SPACE_OPTION_CIELAB: {
-            // also requires RGB-CIELAB conversion shaders
-            pipeline = GPU::getClassInstance().createPipeline("bilateral_filter_lab",
-                                                              "BilateralFilterShader");
-            pipelineRGB2LAB = GPU::getClassInstance().createPipeline("rgb2cielab", "rgb2lab");
-            pipelineLAB2RGB = GPU::getClassInstance().createPipeline("cielab2rgb", "lab2rgb");
-            break;
-        }
+    case COLOR_SPACE_OPTION_RGB: {
+        pipeline =
+            GPU::getClassInstance().createPipeline("bilateral_filter_rgb", "BilateralFilterShader");
+        break;
+    }
+    case COLOR_SPACE_OPTION_CIELAB: {
+        // also requires RGB-CIELAB conversion shaders
+        pipeline =
+            GPU::getClassInstance().createPipeline("bilateral_filter_lab", "BilateralFilterShader");
+        pipelineRGB2LAB = GPU::getClassInstance().createPipeline("rgb2cielab", "rgb2lab");
+        pipelineLAB2RGB = GPU::getClassInstance().createPipeline("cielab2rgb", "lab2rgb");
+        break;
+    }
     }
 
     // 6. Create Bind Group
@@ -115,18 +120,18 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
     entries[1].binding = 1;
 
     switch (color_space) {
-        case COLOR_SPACE_OPTION_RGB: {
-            entries[0].textureView = inputTexture.CreateView();
-            // Entry 1: Output Texture View
-            entries[1].textureView = outputTexture.CreateView();
-            break;
-        }
-        case COLOR_SPACE_OPTION_CIELAB: {
-            entries[0].textureView = texLabRaw.CreateView();
-            // Entry 1: Output Texture View
-            entries[1].textureView = texLabFiltered.CreateView();
-            break;
-        }
+    case COLOR_SPACE_OPTION_RGB: {
+        entries[0].textureView = inputTexture.CreateView();
+        // Entry 1: Output Texture View
+        entries[1].textureView = outputTexture.CreateView();
+        break;
+    }
+    case COLOR_SPACE_OPTION_CIELAB: {
+        entries[0].textureView = texLabRaw.CreateView();
+        // Entry 1: Output Texture View
+        entries[1].textureView = texLabFiltered.CreateView();
+        break;
+    }
     }
     // Entry 2: Uniform Buffer
     entries[2].binding = 2;
@@ -248,7 +253,8 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
             }
             *flag = false;
         },
-        (void*)waiting);
+        (void*)waiting
+    );
 
     std::cout << "waiting " << *waiting << std::endl;
 
@@ -265,7 +271,7 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
         const uint8_t* rowPtr = mappedData + (y * alignedBytesPerRow);
         for (size_t x = 0; x < width; ++x) {
             const uint8_t* pixelPtr = rowPtr + (x * bytesPerPixel);
-            size_t dstIndex = 4 * (y * width + x);  // RGBA
+            size_t dstIndex = 4 * (y * width + x); // RGBA
 
             std::memcpy(&result_ptr[dstIndex], pixelPtr, sizeof(uint8_t));
             std::memcpy(&result_ptr[dstIndex + 1], pixelPtr + 1, sizeof(uint8_t));
@@ -279,10 +285,14 @@ void bilateral_filter_gpu(uint8_t* image, size_t width, size_t height, double si
 
     // explicit clean up
 
-    if (inputTexture) inputTexture.Destroy();
-    if (outputTexture) outputTexture.Destroy();
-    if (texLabRaw) texLabRaw.Destroy();
-    if (texLabFiltered) texLabFiltered.Destroy();
+    if (inputTexture)
+        inputTexture.Destroy();
+    if (outputTexture)
+        outputTexture.Destroy();
+    if (texLabRaw)
+        texLabRaw.Destroy();
+    if (texLabFiltered)
+        texLabFiltered.Destroy();
     readBuffer.Destroy();
     delete waiting;
 #if defined(__EMSCRIPTEN__)

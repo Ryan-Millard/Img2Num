@@ -1,5 +1,11 @@
 #include "internal/image_utils.h"
 
+#include "img2num.h"
+#include "internal/fft_iterative.h"
+#include "internal/Image.h"
+#include "internal/PixelConverters.h"
+#include "internal/RGBAPixel.h"
+
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
@@ -7,30 +13,24 @@
 #include <limits>
 #include <vector>
 
-#include "img2num.h"
-#include "internal/Image.h"
-#include "internal/PixelConverters.h"
-#include "internal/RGBAPixel.h"
-#include "internal/fft_iterative.h"
-
 uint8_t quantize(uint8_t value, uint8_t region_size) {
     if (region_size == 0) {
         return value;
     }
 
-    uint8_t bucket = value / region_size;  // Narrowing to colour boundary with
-                                           // Range [0 : num_thresholds - 1].
+    uint8_t bucket = value / region_size; // Narrowing to colour boundary with
+                                          // Range [0 : num_thresholds - 1].
 
     uint8_t bucket_boundary = (bucket * region_size);
     uint8_t bucket_midpoint =
-        bucket_boundary + (region_size / 2);  // Map to threshold region's midpoint.
+        bucket_boundary + (region_size / 2); // Map to threshold region's midpoint.
 
     // In case of bucket_midpoint overflow: revert to a smaller bucket than the
     // largest possible value.
     bool overflow = bucket_midpoint < bucket_boundary;
     if (overflow) {
         bucket_midpoint = ((bucket - 1) * region_size) +
-                          (region_size / 2);  // Correction by reducing the bucket value belongs to.
+                          (region_size / 2); // Correction by reducing the bucket value belongs to.
     }
 
     return bucket_midpoint;
@@ -40,8 +40,9 @@ namespace img2num {
 // image: pointer to RGBA data
 // width, height: dimensions
 // sigma: standard deviation of Gaussian blur
-void gaussian_blur_fft(uint8_t *image, size_t width, size_t height, double sigma_pixels) {
-    if (!image || width == 0 || height == 0 || sigma_pixels <= 0) return;
+void gaussian_blur_fft(uint8_t* image, size_t width, size_t height, double sigma_pixels) {
+    if (!image || width == 0 || height == 0 || sigma_pixels <= 0)
+        return;
 
     const size_t Npix = width * height;
 
@@ -96,53 +97,54 @@ void gaussian_blur_fft(uint8_t *image, size_t width, size_t height, double sigma
 }
 
 // Called from JS. `ptr` points to RGBA bytes.
-void invert_image(uint8_t *ptr, int width, int height) {
+void invert_image(uint8_t* ptr, int width, int height) {
     ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> img;
     img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
-    for (ImageLib::RGBAPixel<uint8_t> &p : img) {
+    for (ImageLib::RGBAPixel<uint8_t>& p : img) {
         p.red = 255 - p.red;
         p.blue = 255 - p.blue;
         p.green = 255 - p.green;
     }
 
-    const auto &modified = img.getData();
+    const auto& modified = img.getData();
     std::memcpy(ptr, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
 }
 
-void threshold_image(uint8_t *ptr, const int width, const int height, const int num_thresholds) {
-    const uint8_t REGION_SIZE(255 / num_thresholds);  // Size of buckets per colour
+void threshold_image(uint8_t* ptr, const int width, const int height, const int num_thresholds) {
+    const uint8_t REGION_SIZE(255 / num_thresholds); // Size of buckets per colour
 
     ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> img;
     img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
-    const auto imgWidth{img.getWidth()}, imgHeight{img.getHeight()};
-    for (ImageLib::RGBAPixel<uint8_t> &p : img) {
+    const auto imgWidth {img.getWidth()}, imgHeight {img.getHeight()};
+    for (ImageLib::RGBAPixel<uint8_t>& p : img) {
         p.red = quantize(p.red, REGION_SIZE);
         p.green = quantize(p.green, REGION_SIZE);
         p.blue = quantize(p.blue, REGION_SIZE);
     }
 
-    const auto &modified = img.getData();
+    const auto& modified = img.getData();
     std::memcpy(ptr, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
 }
 
-void black_threshold_image(uint8_t *ptr, const int width, const int height,
-                           const int num_thresholds) {
+void black_threshold_image(
+    uint8_t* ptr, const int width, const int height, const int num_thresholds
+) {
     ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> img;
     img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
-    const auto imgWidth{img.getWidth()}, imgHeight{img.getHeight()};
-    for (ImageLib::RGBAPixel<uint8_t> &p : img) {
-        const bool R{p.red < num_thresholds};
-        const bool G{p.green < num_thresholds};
-        const bool B{p.blue < num_thresholds};
+    const auto imgWidth {img.getWidth()}, imgHeight {img.getHeight()};
+    for (ImageLib::RGBAPixel<uint8_t>& p : img) {
+        const bool R {p.red < num_thresholds};
+        const bool G {p.green < num_thresholds};
+        const bool B {p.blue < num_thresholds};
         if (R && B && G) {
             p.setGray(0);
         }
     }
 
-    const auto &modified = img.getData();
+    const auto& modified = img.getData();
     std::memcpy(ptr, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
 }
-}  // namespace img2num
+} // namespace img2num

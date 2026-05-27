@@ -1,26 +1,27 @@
 #ifndef RGBPIXEL_H
 #define RGBPIXEL_H
 
+#include "internal/Pixel.h"
+
 #include <cmath>
 #include <iostream>
 
-#include "internal/Pixel.h"
-
 namespace ImageLib {
-template <typename NumberT>
-struct RGBPixel : public Pixel<NumberT> {
+template <typename NumberT> struct RGBPixel : public Pixel<NumberT> {
     // ----- Members -----
     NumberT red, green, blue;
 
     constexpr RGBPixel(NumberT red = 0, NumberT green = 0, NumberT blue = 0)
-        : red(red), green(green), blue(blue) {
+        : red(red)
+        , green(green)
+        , blue(blue) {
     }
 
     // ----- Modifiers -----
-    [[nodiscard]] inline bool operator==(const RGBPixel &other) const {
+    [[nodiscard]] inline bool operator==(const RGBPixel& other) const {
         return red == other.red && green == other.green && blue == other.blue;
     }
-    [[nodiscard]] inline bool operator!=(const RGBPixel &other) const {
+    [[nodiscard]] inline bool operator!=(const RGBPixel& other) const {
         return !(*this == other);
     }
 
@@ -29,24 +30,25 @@ struct RGBPixel : public Pixel<NumberT> {
         red = green = blue = gray;
     }
 
-    static inline float colorDistance(const RGBPixel<NumberT> &a, const RGBPixel<NumberT> &b) {
-        RGBPixel<float> af{static_cast<float>(a.red), static_cast<float>(a.green),
-                           static_cast<float>(a.blue)};
-        RGBPixel<float> bf{static_cast<float>(b.red), static_cast<float>(b.green),
-                           static_cast<float>(b.blue)};
-        return std::sqrt((af.red - bf.red) * (af.red - bf.red) +
-                         (af.green - bf.green) * (af.green - bf.green) +
-                         (af.blue - bf.blue) * (af.blue - bf.blue));
+    static inline float colorDistance(const RGBPixel<NumberT>& a, const RGBPixel<NumberT>& b) {
+        RGBPixel<float> af {
+            static_cast<float>(a.red), static_cast<float>(a.green), static_cast<float>(a.blue)};
+        RGBPixel<float> bf {
+            static_cast<float>(b.red), static_cast<float>(b.green), static_cast<float>(b.blue)};
+        return std::sqrt(
+            (af.red - bf.red) * (af.red - bf.red) + (af.green - bf.green) * (af.green - bf.green) +
+            (af.blue - bf.blue) * (af.blue - bf.blue)
+        );
     }
 
 } __attribute__((packed));
 
 template <typename NumberT>
-std::ostream &operator<<(std::ostream &out, const ImageLib::RGBPixel<NumberT> &pixel) {
+std::ostream& operator<<(std::ostream& out, const ImageLib::RGBPixel<NumberT>& pixel) {
     out << "( " << pixel.red << "," << pixel.green << "," << pixel.blue << " )";
     return out;
 }
 
-}  // namespace ImageLib
+} // namespace ImageLib
 
-#endif  // RGBPIXEL_H
+#endif // RGBPIXEL_H
