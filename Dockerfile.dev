@@ -105,7 +105,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # --------------------------------------------------------------------------------------------------------------
 # 6. Set up pnpm & JS app requirements.
 RUN corepack enable \
-  && corepack prepare pnpm@10.29.1 --activate
+  && corepack prepare pnpm@11.4.0 --activate
 
 ENV CHOKIDAR_USEPOLLING=true
 ENV CHOKIDAR_INTERVAL=100
