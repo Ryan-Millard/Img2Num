@@ -277,17 +277,40 @@ jobs:
           GH_TOKEN: ${{ secrets.GHCR_DELETE_TOKEN }}
           PR: ${{ github.event.pull_request.number }}
         run: |
-          for TAG in "pr-${PR}" "cache-pr-${PR}"; do
-            VERSION_ID=$(gh api \
-              "/user/packages/container/img2num-dev/versions" \
-              --paginate \
-              --jq ".[] | select(.metadata.container.tags[] == \"${TAG}\") | .id")
+          set +e
 
-            if [[ -n "$VERSION_ID" ]]; then
-              echo "Deleting version $VERSION_ID (tag: $TAG)"
-              gh api --method DELETE "/user/packages/container/img2num-dev/versions/${VERSION_ID}"
-            else
+          PR="${{ github.event.pull_request.number }}"
+          API="/user/packages/container/img2num-dev/versions"
+
+          for TAG in "pr-${PR}" "cache-pr-${PR}"; do
+            echo "Checking tag: $TAG"
+
+            VERSION_ID=$(
+              gh api "$API" \
+                --paginate \
+                --jq "
+                  .[]
+                  | select(
+                      (.metadata.container.tags // [])
+                      | index(\"${TAG}\")
+                    )
+                  | .id
+                " 2>/dev/null | head -n 1
+            )
+
+            if [[ -z "$VERSION_ID" ]]; then
               echo "No version found for tag: $TAG"
+              continue
+            fi
+
+            echo "Deleting version $VERSION_ID (tag: $TAG)"
+
+            if gh api --method DELETE \
+              "$API/${VERSION_ID}" 2>/dev/null
+            then
+              echo "Deleted $TAG"
+            else
+              echo "Failed to delete $TAG (ignored)"
             fi
           done
 
@@ -307,16 +330,39 @@ jobs:
           GH_TOKEN: ${{ secrets.GHCR_DELETE_TOKEN }}
           PR: ${{ needs.guard.outputs.pr_number }}
         run: |
-          for TAG in "pr-${PR}" "cache-pr-${PR}"; do
-            VERSION_ID=$(gh api \
-              "/user/packages/container/img2num-dev/versions" \
-              --paginate \
-              --jq ".[] | select(.metadata.container.tags[] == \"${TAG}\") | .id")
+  set +e
 
-            if [[ -n "$VERSION_ID" ]]; then
-              echo "Deleting version $VERSION_ID (tag: $TAG)"
-              gh api --method DELETE "/user/packages/container/img2num-dev/versions/${VERSION_ID}"
-            else
-              echo "No version found for tag: $TAG"
-            fi
-          done
+  PR="${{ needs.guard.outputs.pr_number }}"
+  API="/user/packages/container/img2num-dev/versions"
+
+  for TAG in "pr-${PR}" "cache-pr-${PR}"; do
+    echo "Checking tag: $TAG"
+
+    VERSION_ID=$(
+      gh api "$API" \
+        --paginate \
+        --jq "
+          .[]
+          | select(
+              (.metadata.container.tags // [])
+              | index(\"${TAG}\")
+            )
+          | .id
+        " 2>/dev/null | head -n 1
+    )
+
+    if [[ -z "$VERSION_ID" ]]; then
+      echo "No version found for tag: $TAG"
+      continue
+    fi
+
+    echo "Deleting version $VERSION_ID (tag: $TAG)"
+
+    if gh api --method DELETE \
+      "$API/${VERSION_ID}" 2>/dev/null
+    then
+      echo "Deleted $TAG"
+    else
+      echo "Failed to delete $TAG (ignored)"
+    fi
+  done
