@@ -88,7 +88,13 @@ jobs:
       - name: Run uv sync
         run: ./img2num run uv sync
 
-      - name: Build Img2Num Python Package
+      - name: Build wheel
+        run: |
+          ./img2num run uv build
+          # Debug
+          ls -R dist || true
+
+      - name: Verify import
         run: ./img2num run uv run python3 -c "import img2num;"
 
       - name: Build and run example-apps/console-py
@@ -99,7 +105,7 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: py-build
-          path: packages/py/build-py/
+          path: dist/
           if-no-files-found: error
 
       - name: Upload example-apps/console-py output artifacts
