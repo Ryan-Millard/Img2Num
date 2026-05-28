@@ -25,7 +25,7 @@ requires-dist = [
 [[package]]
 name = "img2num"
 version = "0.0.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "numpy" },
 ]

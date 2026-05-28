@@ -18,7 +18,10 @@ build-backend = "scikit_build_core.build"
 [tool.scikit-build]
 cmake.source-dir = "."
 cmake.build-type = "Release"
-cmake.args = ["-DBUILD_PYTHON=ON"]
+cmake.args = [
+  "-DBUILD_PYTHON=ON",
+  "-DPython3_FIND_VIRTUALENV=NEVER",
+]
 
 # Python package lives HERE (unchanged code location)
 wheel.packages = ["img2num"]
@@ -30,11 +33,8 @@ sdist.include = [
   "packages/py/**"
 ]
 
-editable.rebuild = true
-build-dir = "build-py"
-
 [tool.uv]
-package = false
+package = true
 
 [tool.uv.workspace]
 members = [
