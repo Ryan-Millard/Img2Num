@@ -9,6 +9,12 @@ authors = [{ name = "Ryan Millard" }]
 dependencies = [
   "numpy"
 ]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+]
 
 [project.urls]
 Homepage   = "https://ryan-millard.github.io/Img2Num/"
