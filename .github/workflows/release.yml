@@ -210,6 +210,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
 
     steps:
       - uses: actions/download-artifact@v4
@@ -226,8 +227,7 @@ jobs:
       - uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247
         with:
           packages-dir: wheelhouse/
-        env:
-          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+          password: ${{ secrets.PYPI_API_TOKEN }}
 
   propagate-cpp:
     needs: release-please
