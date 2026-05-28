@@ -7,7 +7,7 @@ license = { text = "MIT" }
 readme = "README.md"
 authors = [{ name = "Ryan Millard" }]
 dependencies = [
-  "numpy"
+  "numpy>=1.23.5"
 ]
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -24,7 +24,7 @@ Repository = "https://github.com/Ryan-Millard/Img2Num"
 requires = [
   "scikit-build-core>=0.10",
   "pybind11>=2.10",
-  "numpy"
+  "numpy>=2.0"
 ]
 build-backend = "scikit_build_core.build"
 
