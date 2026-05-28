@@ -1,0 +1,5 @@
+# This file exists solely for release-please version tracking.
+# The authoritative build config is the root pyproject.toml.
+[project]
+name = "img2num"
+version = "0.0.0"
