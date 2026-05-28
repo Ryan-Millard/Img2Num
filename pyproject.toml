@@ -1,23 +1,43 @@
 [project]
-name = "img2num_uv_workspace"
+name = "img2num"
 version = "0.0.0"
-description = "Root level workspace for Img2Num's Python package and applications"
+description = "A fast and accurate raster image to SVG conversion library"
 requires-python = ">=3.10"
 dependencies = [
-  "img2num"
+  "numpy"
 ]
+
+[build-system]
+requires = [
+  "scikit-build-core>=0.10",
+  "pybind11>=2.10",
+  "numpy"
+]
+build-backend = "scikit_build_core.build"
+
+[tool.scikit-build]
+cmake.source-dir = "."
+cmake.build-type = "Release"
+cmake.args = ["-DBUILD_PYTHON=ON"]
+
+# Python package lives HERE (unchanged code location)
+wheel.packages = ["img2num"]
+
+sdist.include = [
+  "CMakeLists.txt",
+  "core/**",
+  "bindings/py/**",
+  "packages/py/**"
+]
+
+editable.rebuild = true
+build-dir = "build-py"
 
 [tool.uv]
 package = false
-no-build-isolation-package = ["img2num"]
-
-[tool.uv.sources]
-img2num = { workspace = true }
 
 [tool.uv.workspace]
 members = [
-  # Python wrapper package
-  "packages/py",
   # All example apps with "-py" suffix
   "example-apps/*-py"
 ]
@@ -25,8 +45,8 @@ members = [
 [tool.ruff]
 target-version = "py310"
 line-length = 88
-
 exclude = ["third_party/", "docs/", ".venv/"]
+
 [tool.ruff.lint]
 select = [
   "E",   # pycodestyle errors
