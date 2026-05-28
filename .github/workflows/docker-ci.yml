@@ -238,6 +238,7 @@ jobs:
         run: |
           OWNER="$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')"
           echo "ghcr_image=ghcr.io/${OWNER}/img2num-dev" >> $GITHUB_OUTPUT
+          echo "lower_owner_name=${OWNER}" >> $GITHUB_OUTPUT
 
       - name: Create or update Docker comment
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9
