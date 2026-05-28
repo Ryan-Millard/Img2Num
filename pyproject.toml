@@ -9,7 +9,6 @@ authors = [{ name = "Ryan Millard" }]
 dependencies = [
   "numpy>=1.23.5"
 ]
-license = { text = "MIT" }
 classifiers = [
   "Intended Audience :: Developers",
   "License :: OSI Approved :: MIT License",
