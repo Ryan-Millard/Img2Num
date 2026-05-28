@@ -9,11 +9,6 @@
 #   - create pull requests via GitHub CLI (gh pr create)
 #   Requires repo write + PR permissions.
 #
-# - NPM_TOKEN
-#   Used in build-js job to publish @npm package:
-#   - npm publish --access public
-#   Must have publish rights to the package registry.
-#
 # Notes:
 # - All release-please outputs (tags/versions) are derived from:
 #   .release-please-manifest.json + release-please-config.json
@@ -140,6 +135,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write # required for OIDC provenance
     steps:
       - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
         with: { ref: ${{ needs.release-please.outputs.js_tag }}, submodules: true }
@@ -163,10 +159,8 @@ jobs:
       - uses: actions/setup-node@670825a89dc0abd596e7a3abd0f5e3f6e5faf37c
         with: { node-version: '20', registry-url: 'https://registry.npmjs.org' }
       - name: Publish to npm
-        run: npm publish --access public
+        run: npm publish --access public --provenance
         working-directory: packages/js
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   # Wheels + PyPI (Python)
   build-py:
