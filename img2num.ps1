@@ -1,4 +1,4 @@
-#!/usr/bin/env pwsh
+﻿#!/usr/bin/env pwsh
 # ======================================================================
 # ⚠️ Recommended: use Bash / WSL2 for full compatibility
 #
@@ -213,12 +213,12 @@ Commands:
 Flags:
   --img                 Use a specific Docker image.
                           E.g.: ./img2num.ps1 sh --img ryanmillard/img2num-dev:dev
-  --dh-img              Docker Hub shorthand for --img. Prefixes value with ryan-millard/img2num-dev:
+  --dh-img              Docker Hub shorthand for --img. Prefixes value with ryanmillard/img2num-dev:
                           E.g.: ./img2num.ps1 sh --dh-img dev
-                            Resolves Docker image to ryan-millard/img2num-dev:dev
-  --ghcr-img            GitHub shorthand for --img. Prefixes value with ryan-millard/img2num-dev:
+                            Resolves Docker image to ryanmillard/img2num-dev:dev
+  --ghcr-img            GitHub shorthand for --img. Prefixes value with ghcr.io/ryan-millard/img2num-dev:
                           E.g.: ./img2num.ps1 sh --ghcr-img dev
-                           Resolves Docker image to ghcr.io/ryan-millard/img2num-dev:
+                           Resolves Docker image to ghcr.io/ryan-millard/img2num-dev:dev
 
 Image Resolution (highest priority first):
   Applies to: run, exec, sh/shell/bash, destroy
