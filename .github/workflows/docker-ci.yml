@@ -280,7 +280,6 @@ jobs:
         run: |
           set +e
 
-          PR="${{ github.event.pull_request.number }}"
           API="/user/packages/container/img2num-dev/versions"
 
           for TAG in "pr-${PR}" "cache-pr-${PR}"; do
@@ -333,7 +332,6 @@ jobs:
         run: |
           set +e
 
-          PR="${{ needs.guard.outputs.pr_number }}"
           API="/user/packages/container/img2num-dev/versions"
 
           for TAG in "pr-${PR}" "cache-pr-${PR}"; do
