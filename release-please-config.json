@@ -37,7 +37,10 @@
     "packages/py": {
       "release-type": "python",
       "component": "packages-py",
-      "package-name": "img2num-py"
+      "package-name": "img2num-py",
+      "extra-files": [
+        { "type": "generic", "path": "pyproject.toml" }
+      ]
     }
   }
 }

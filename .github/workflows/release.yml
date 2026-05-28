@@ -191,7 +191,7 @@ jobs:
           package-dir: .
           output-dir: wheelhouse
         env:
-          CIBW_BUILD: "cp310-* cp311-* cp312-*"
+          CIBW_BUILD: "cp310-* cp311-* cp312-* cp313-*"
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
 
       - uses: actions/upload-artifact@v4
@@ -293,12 +293,12 @@ jobs:
           git checkout -b "$BRANCH"
 
           git commit --allow-empty \
-            -m "chore(${SCOPE}): propagate core v${VERSION} release"
+            -m "fix(${SCOPE}): propagate core v${VERSION} release"
 
           git push origin "$BRANCH"
 
           gh pr create \
-            --title "chore(${SCOPE}): propagate core v${VERSION} release" \
+            --title "fix(${SCOPE}): propagate core v${VERSION} release" \
             --body "Automated patch bump for \`${TARGET_PATH}\` following the **\`core/\` (C++) v${VERSION}** release.
 
 > Merging this PR will allow release-please to open a patch release PR for \`${TARGET_PATH}\`.
@@ -333,11 +333,11 @@ jobs:
 
           git checkout -b "$BRANCH"
           git commit --allow-empty \
-            -m "chore(packages/js): propagate bindings/c v${VERSION} release"
+            -m "fix(packages/js): propagate bindings/c v${VERSION} release"
           git push origin "$BRANCH"
 
           gh pr create \
-            --title "chore(packages/js): propagate bindings/c v${VERSION} release" \
+            --title "fix(packages/js): propagate bindings/c v${VERSION} release" \
             --body "Automated patch bump for \`packages/js\` following the **bindings/c v${VERSION}** release.
 
 > Merging this PR will allow release-please to open a patch release PR for \`packages/js\`.
