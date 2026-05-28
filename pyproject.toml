@@ -30,7 +30,6 @@ cmake.args = [
   "-DPython3_FIND_VIRTUALENV=NEVER",
 ]
 
-# Python package lives HERE (unchanged code location)
 wheel.packages = ["img2num"]
 
 sdist.include = [
