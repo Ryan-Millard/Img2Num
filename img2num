@@ -203,12 +203,12 @@ Commands:
 Flags:
   --img                 Use a specific Docker image.
                           E.g.: ./img2num sh --img ryanmillard/img2num-dev:main
-  --dh-img              Docker Hub shorthand for --img. Prefixes value with ryan-millard/img2num-dev:
+  --dh-img              Docker Hub shorthand for --img. Prefixes value with ryan-millard/img2num-dev:main
                           E.g.: ./img2num sh --dh-img main
                             Resolves Docker image to ryan-millard/img2num-dev:main
-  --ghcr-img            GitHub shorthand for --img. Prefixes value with ryan-millard/img2num-dev:
+  --ghcr-img            GitHub shorthand for --img. Prefixes value with ryan-millard/img2num-dev:main
                           E.g.: ./img2num sh --ghcr-img main
-                           Resolves Docker image to ghcr.io/ryan-millard/img2num-dev:
+                           Resolves Docker image to ghcr.io/ryan-millard/img2num-dev:main
 
 Image Resolution (highest priority first):
   Applies to: run, exec, sh/shell/bash, destroy
