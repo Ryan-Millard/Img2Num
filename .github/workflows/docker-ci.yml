@@ -4,7 +4,7 @@ on:
   issue_comment:
     types: [created]
   push:
-    branches: [main]
+    branches: [main, dev]
     tags: ["*-v*"]
   pull_request:
     types: [closed]
@@ -73,7 +73,7 @@ jobs:
             echo "sha=${SHA}"            >> $GITHUB_OUTPUT
             echo "command=${COMMAND}"    >> $GITHUB_OUTPUT
 
-          # Non-comments - pushes to main
+          # Non-comments - pushes to main/dev
           else
             echo "pr_number="            >> $GITHUB_OUTPUT
             echo "sha=${PUSH_SHA}"       >> $GITHUB_OUTPUT
@@ -183,8 +183,13 @@ jobs:
             CACHE_REF="${GHCR}:buildcache"
 
           else
-            CLEAN_CORE_TAG="main"
-            TAGS="${GHCR}:main,${GHCR}:latest,${DH}:main,${DH}:latest"
+            CLEAN_CORE_TAG="${{ github.ref_name }}"
+            BRANCH="${{ github.ref_name }}"
+            TAGS="${GHCR}:${BRANCH},${DH}:${BRANCH}"
+            # Only tag :latest on main
+            if [[ "$BRANCH" == "main" ]]; then
+              TAGS="${TAGS},${GHCR}:latest,${DH}:latest"
+            fi
             CACHE_REF="${GHCR}:buildcache"
           fi
 
