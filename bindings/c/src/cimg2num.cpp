@@ -112,7 +112,7 @@ char* img2num_labels_to_svg(
 char* img2num_image_to_svg(
     const uint8_t* data, const int width, const int height, const img2num_ImageToSvgConfig* config
 ) {
-    img2num_ImageToSvgConfig default_cfg;
+    img2num_ImageToSvgConfig default_cfg {img2num_ImageToSvgConfig_default()};
 
     const img2num_ImageToSvgConfig& cfg {config ? *config : default_cfg};
 
