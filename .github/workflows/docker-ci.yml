@@ -331,39 +331,39 @@ jobs:
           GH_TOKEN: ${{ secrets.GHCR_DELETE_TOKEN }}
           PR: ${{ needs.guard.outputs.pr_number }}
         run: |
-  set +e
+          set +e
 
-  PR="${{ needs.guard.outputs.pr_number }}"
-  API="/user/packages/container/img2num-dev/versions"
+          PR="${{ needs.guard.outputs.pr_number }}"
+          API="/user/packages/container/img2num-dev/versions"
 
-  for TAG in "pr-${PR}" "cache-pr-${PR}"; do
-    echo "Checking tag: $TAG"
+          for TAG in "pr-${PR}" "cache-pr-${PR}"; do
+            echo "Checking tag: $TAG"
 
-    VERSION_ID=$(
-      gh api "$API" \
-        --paginate \
-        --jq "
-          .[]
-          | select(
-              (.metadata.container.tags // [])
-              | index(\"${TAG}\")
+            VERSION_ID=$(
+              gh api "$API" \
+                --paginate \
+                --jq "
+                  .[]
+                  | select(
+                      (.metadata.container.tags // [])
+                      | index(\"${TAG}\")
+                    )
+                  | .id
+                " 2>/dev/null | head -n 1
             )
-          | .id
-        " 2>/dev/null | head -n 1
-    )
 
-    if [[ -z "$VERSION_ID" ]]; then
-      echo "No version found for tag: $TAG"
-      continue
-    fi
+            if [[ -z "$VERSION_ID" ]]; then
+              echo "No version found for tag: $TAG"
+              continue
+            fi
 
-    echo "Deleting version $VERSION_ID (tag: $TAG)"
+            echo "Deleting version $VERSION_ID (tag: $TAG)"
 
-    if gh api --method DELETE \
-      "$API/${VERSION_ID}" 2>/dev/null
-    then
-      echo "Deleted $TAG"
-    else
-      echo "Failed to delete $TAG (ignored)"
-    fi
-  done
+            if gh api --method DELETE \
+              "$API/${VERSION_ID}" 2>/dev/null
+            then
+              echo "Deleted $TAG"
+            else
+              echo "Failed to delete $TAG (ignored)"
+            fi
+          done
