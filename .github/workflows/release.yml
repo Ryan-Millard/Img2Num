@@ -14,11 +14,6 @@
 #   - npm publish --access public
 #   Must have publish rights to the package registry.
 #
-# - PYPI_API_TOKEN
-#   Used in publish-py job to upload wheels to PyPI via:
-#   - pypa/gh-action-pypi-publish
-#   Must have upload permissions for the project on PyPI.
-#
 # Notes:
 # - All release-please outputs (tags/versions) are derived from:
 #   .release-please-manifest.json + release-please-config.json
@@ -159,7 +154,8 @@ jobs:
              packages/js/index.js \
              packages/js/safeWasmWrappers.js \
              packages/js/wasmClient.js \
-             packages/js/wasmWorker.js
+             packages/js/wasmWorker.js \
+             packages/js/imageToUint8ClampedArray.js
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         with:
           tag_name: ${{ needs.release-please.outputs.js_tag }}
