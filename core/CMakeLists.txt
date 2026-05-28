@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(Img2Num
   LANGUAGES CXX
   # Don't change the inline comment below - release-please needs it
-  VERSION 0.0.0 # x-release-please-version
+  VERSION 1.0.0 # x-release-please-version
 )
 
 include(CMakePackageConfigHelpers)
