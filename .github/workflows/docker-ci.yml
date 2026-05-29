@@ -4,7 +4,7 @@ on:
   issue_comment:
     types: [created]
   push:
-    branches: [main]
+    branches: [main, dev]
     tags: ["*-v*"]
   pull_request:
     types: [closed]
@@ -75,7 +75,7 @@ jobs:
             echo "sha=${SHA}"            >> $GITHUB_OUTPUT
             echo "command=${COMMAND}"    >> $GITHUB_OUTPUT
 
-          # Non-comments - pushes to main
+          # Non-comments - pushes to main/dev
           else
             echo "pr_number="            >> $GITHUB_OUTPUT
             echo "sha=${PUSH_SHA}"       >> $GITHUB_OUTPUT
