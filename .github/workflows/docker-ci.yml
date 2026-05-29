@@ -4,8 +4,8 @@ on:
   issue_comment:
     types: [created]
   push:
-    branches: [main, dev]
-    tags: ["v*"]
+    branches: [main]
+    tags: ["*-v*"]
   pull_request:
     types: [closed]
 

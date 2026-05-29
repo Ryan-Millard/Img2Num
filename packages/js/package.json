@@ -2,6 +2,9 @@
   "name": "img2num",
   "version": "0.0.0",
   "description": "Img2Num is a raster vectorization library - it converts images to SVGs",
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "img2num",
     "computer-vision",
