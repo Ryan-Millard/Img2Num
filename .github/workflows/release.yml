@@ -1,20 +1,3 @@
-# ==================================================================
-# Required repository secrets / environment variables (not built-in)
-# ==================================================================
-# Custom secrets (must be configured in repo settings):
-#
-# - RELEASE_PROPAGATION_TOKEN
-#   Used in propagation jobs (propagate-cpp, propagate-c) to:
-#   - push branches
-#   - create pull requests via GitHub CLI (gh pr create)
-#   Requires repo write + PR permissions.
-#
-# Notes:
-# - All release-please outputs (tags/versions) are derived from:
-#   .release-please-manifest.json + release-please-config.json
-# - No GHCR token is required; registry uses GITHUB_TOKEN implicitly.
-# ============================================================
-#
 name: Release (release-please, multi-language assets)
 
 on:
@@ -165,6 +148,8 @@ jobs:
       - name: Publish to npm
         run: npm publish --access public --provenance
         working-directory: packages/js
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   # Wheels + PyPI (Python)
   build-py:
