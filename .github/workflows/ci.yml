@@ -2,9 +2,9 @@ name: CI
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, dev]
   push:
-    branches: [main]
+    branches: [main, dev]
 
 permissions:
   contents: read
@@ -22,9 +22,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          MAIN_IMAGE="ghcr.io/ryan-millard/img2num-dev:main"
+          BASE_IMAGE="ghcr.io/ryan-millard/img2num-dev"
+
+          MAIN_IMAGE="${BASE_IMAGE}:main"
+          DEV_IMAGE="${BASE_IMAGE}:dev"
+
           PR_NUMBER="${{ github.event.pull_request.number }}"
 
+          # Try PR image first (highest priority)
           if [[ -n "$PR_NUMBER" ]]; then
             PR_TAG="pr-${PR_NUMBER}"
             GHCR_IMAGE="ghcr.io/ryan-millard/img2num-dev:${PR_TAG}"
@@ -50,8 +55,20 @@ jobs:
             echo "image=${DH_IMAGE}" >> $GITHUB_OUTPUT
             echo "image=${DH_IMAGE}"
           else
-            echo "image=${MAIN_IMAGE}" >> $GITHUB_OUTPUT
-            echo "image=${MAIN_IMAGE}"
+            # Fallback: main/dev (never PR ref names)
+            BRANCH="${{ github.ref_name }}"
+
+            case "$BRANCH" in
+              main)
+                IMAGE="$MAIN_IMAGE"
+                ;;
+              dev|*)
+                IMAGE="$DEV_IMAGE"
+                ;;
+            esac
+
+            echo "image=${IMAGE}" >> $GITHUB_OUTPUT
+            echo "Using fallback image: ${IMAGE}"
           fi
 
   lint:
