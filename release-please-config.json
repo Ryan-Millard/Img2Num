@@ -18,12 +18,16 @@
   "packages": {
     "core": {
       "release-type": "simple",
+      "initial-version": "0.1.0",
+      "bump-minor-pre-major": true,
       "component": "cpp",
       "package-name": "img2num-c++",
       "extra-files": [{ "type": "generic", "path": "CMakeLists.txt" }]
     },
     "bindings/c": {
       "release-type": "simple",
+      "initial-version": "0.1.0",
+      "bump-minor-pre-major": true,
       "component": "bindings-c",
       "dependencies": ["core"],
       "package-name": "img2num-c",
@@ -31,11 +35,15 @@
     },
     "packages/js": {
       "release-type": "node",
+      "initial-version": "0.1.0",
+      "bump-minor-pre-major": true,
       "component": "packages-js",
       "package-name": "img2num-js"
     },
     "packages/py": {
       "release-type": "python",
+      "initial-version": "0.1.0",
+      "bump-minor-pre-major": true,
       "component": "packages-py",
       "package-name": "img2num-py",
       "extra-files": [{ "type": "generic", "path": "pyproject.toml" }]
