@@ -9,7 +9,6 @@ authors = [{ name = "Ryan Millard" }]
 dependencies = [
   "numpy>=1.23.5"
 ]
-license = { text = "MIT" }
 classifiers = [
   "Intended Audience :: Developers",
   "License :: OSI Approved :: MIT License",
@@ -42,6 +41,7 @@ cmake.build-type = "Release"
 cmake.args = [
   "-DBUILD_PYTHON=ON",
   "-DPython3_FIND_VIRTUALENV=NEVER",
+  "-DIMG2NUM_BUILD_EXAMPLES=OFF",
 ]
 
 wheel.packages = ["img2num"]
@@ -50,7 +50,8 @@ sdist.include = [
   "CMakeLists.txt",
   "core/**",
   "bindings/py/**",
-  "packages/py/**"
+  "packages/py/**",
+  "third_party/**"
 ]
 
 [tool.uv]

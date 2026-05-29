@@ -1,20 +1,3 @@
-# ==================================================================
-# Required repository secrets / environment variables (not built-in)
-# ==================================================================
-# Custom secrets (must be configured in repo settings):
-#
-# - RELEASE_PROPAGATION_TOKEN
-#   Used in propagation jobs (propagate-cpp, propagate-c) to:
-#   - push branches
-#   - create pull requests via GitHub CLI (gh pr create)
-#   Requires repo write + PR permissions.
-#
-# Notes:
-# - All release-please outputs (tags/versions) are derived from:
-#   .release-please-manifest.json + release-please-config.json
-# - No GHCR token is required; registry uses GITHUB_TOKEN implicitly.
-# ============================================================
-#
 name: Release (release-please, multi-language assets)
 
 on:
@@ -138,7 +121,9 @@ jobs:
       id-token: write # required for OIDC provenance
     steps:
       - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
-        with: { ref: ${{ needs.release-please.outputs.js_tag }}, submodules: true }
+        with:
+          ref: ${{ needs.release-please.outputs.js_tag }}
+          submodules: true
       - uses: mymindstorm/setup-emsdk@1f4f5866c1f8745a10fcb64c4d7a0eb7a8daed9d
       - name: Build WASM
         run: |
@@ -157,10 +142,14 @@ jobs:
           tag_name: ${{ needs.release-please.outputs.js_tag }}
           files: img2num-v${{ needs.release-please.outputs.js_version }}.tar.gz
       - uses: actions/setup-node@670825a89dc0abd596e7a3abd0f5e3f6e5faf37c
-        with: { node-version: '20', registry-url: 'https://registry.npmjs.org' }
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
       - name: Publish to npm
         run: npm publish --access public --provenance
         working-directory: packages/js
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   # Wheels + PyPI (Python)
   build-py:
@@ -293,11 +282,7 @@ jobs:
 
           gh pr create \
             --title "fix(${SCOPE}): propagate core v${VERSION} release" \
-            --body "Automated patch bump for \`${TARGET_PATH}\` following the **\`core/\` (C++) v${VERSION}** release.
-
-> Merging this PR will allow release-please to open a patch release PR for \`${TARGET_PATH}\`.
-
-**Dependency:** \`core\` → \`${TARGET_PATH}\`" \
+            --body "Automated patch bump for \`${TARGET_PATH}\` following the **\`core/\` (C++) v${VERSION}** release.\n\n> Merging this PR will allow release-please to open a patch release PR for \`${TARGET_PATH}\`.\n\n**Dependency:** \`core\` -> \`${TARGET_PATH}\`" \
             --base main \
             --head "$BRANCH"
 
@@ -332,10 +317,6 @@ jobs:
 
           gh pr create \
             --title "fix(packages/js): propagate bindings/c v${VERSION} release" \
-            --body "Automated patch bump for \`packages/js\` following the **bindings/c v${VERSION}** release.
-
-> Merging this PR will allow release-please to open a patch release PR for \`packages/js\`.
-
-**Dependency:** \`bindings/c\` → \`packages/js\`" \
+            --body "Automated patch bump for \`packages/js\` following the **bindings/c v${VERSION}** release.\n\n > Merging this PR will allow release-please to open a patch release PR for \`packages/js\`.\n\n**Dependency:** \`bindings/c\` → \`packages/js\`" \
             --base main \
             --head "$BRANCH"
