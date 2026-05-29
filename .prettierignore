@@ -43,3 +43,4 @@ bindings/py/
 bindings/c/
 packages/py
 docs/static/
+**/CHANGELOG.md
