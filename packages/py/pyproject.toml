@@ -2,4 +2,4 @@
 # The authoritative build config is the root pyproject.toml.
 [project]
 name = "img2num"
-version = "0.0.0"
+version = "0.1.0"
