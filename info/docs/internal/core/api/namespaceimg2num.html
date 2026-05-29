@@ -332,26 +332,26 @@ Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 <dd>
 Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="image__utils_8cpp_source.html#l00130">130</a> of file <a class="el" href="image__utils_8cpp_source.html">image_utils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  131</span>                                                     {</div>
-<div class="line"><span class="lineno">  132</span>    <a class="code hl_class" href="classImageLib_1_1Image.html">ImageLib::Image&lt;ImageLib::RGBAPixel&lt;uint8_t&gt;</a>&gt; img;</div>
-<div class="line"><span class="lineno">  133</span>    img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER&lt;uint8_t&gt;);</div>
-<div class="line"><span class="lineno">  134</span> </div>
-<div class="line"><span class="lineno">  135</span>    <span class="keyword">const</span> <span class="keyword">auto</span> imgWidth{img.getWidth()}, imgHeight{img.getHeight()};</div>
-<div class="line"><span class="lineno">  136</span>    <span class="keywordflow">for</span> (<a class="code hl_struct" href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel&lt;uint8_t&gt;</a> &amp;p : img) {</div>
-<div class="line"><span class="lineno">  137</span>        <span class="keyword">const</span> <span class="keywordtype">bool</span> R{p.red &lt; num_thresholds};</div>
-<div class="line"><span class="lineno">  138</span>        <span class="keyword">const</span> <span class="keywordtype">bool</span> G{p.green &lt; num_thresholds};</div>
-<div class="line"><span class="lineno">  139</span>        <span class="keyword">const</span> <span class="keywordtype">bool</span> B{p.blue &lt; num_thresholds};</div>
-<div class="line"><span class="lineno">  140</span>        <span class="keywordflow">if</span> (R &amp;&amp; B &amp;&amp; G) {</div>
-<div class="line"><span class="lineno">  141</span>            p.setGray(0);</div>
-<div class="line"><span class="lineno">  142</span>        }</div>
-<div class="line"><span class="lineno">  143</span>    }</div>
-<div class="line"><span class="lineno">  144</span> </div>
-<div class="line"><span class="lineno">  145</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;modified = img.getData();</div>
-<div class="line"><span class="lineno">  146</span>    std::memcpy(ptr, modified.data(), modified.size() * <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel&lt;uint8_t&gt;</a>));</div>
-<div class="line"><span class="lineno">  147</span>}</div>
+<p class="definition">Definition at line <a class="el" href="image__utils_8cpp_source.html#l00135">135</a> of file <a class="el" href="image__utils_8cpp_source.html">image_utils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  136</span>                                                     {</div>
+<div class="line"><span class="lineno">  137</span>    <a class="code hl_class" href="classImageLib_1_1Image.html">ImageLib::Image&lt;ImageLib::RGBAPixel&lt;uint8_t&gt;</a>&gt; img;</div>
+<div class="line"><span class="lineno">  138</span>    img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER&lt;uint8_t&gt;);</div>
+<div class="line"><span class="lineno">  139</span> </div>
+<div class="line"><span class="lineno">  140</span>    <span class="keyword">const</span> <span class="keyword">auto</span> imgWidth{img.getWidth()}, imgHeight{img.getHeight()};</div>
+<div class="line"><span class="lineno">  141</span>    <span class="keywordflow">for</span> (<a class="code hl_struct" href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel&lt;uint8_t&gt;</a> &amp;p : img) {</div>
+<div class="line"><span class="lineno">  142</span>        <span class="keyword">const</span> <span class="keywordtype">bool</span> R{p.red &lt; num_thresholds};</div>
+<div class="line"><span class="lineno">  143</span>        <span class="keyword">const</span> <span class="keywordtype">bool</span> G{p.green &lt; num_thresholds};</div>
+<div class="line"><span class="lineno">  144</span>        <span class="keyword">const</span> <span class="keywordtype">bool</span> B{p.blue &lt; num_thresholds};</div>
+<div class="line"><span class="lineno">  145</span>        <span class="keywordflow">if</span> (R &amp;&amp; B &amp;&amp; G) {</div>
+<div class="line"><span class="lineno">  146</span>            p.setGray(0);</div>
+<div class="line"><span class="lineno">  147</span>        }</div>
+<div class="line"><span class="lineno">  148</span>    }</div>
+<div class="line"><span class="lineno">  149</span> </div>
+<div class="line"><span class="lineno">  150</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;modified = img.getData();</div>
+<div class="line"><span class="lineno">  151</span>    std::memcpy(ptr, modified.data(), modified.size() * <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel&lt;uint8_t&gt;</a>));</div>
+<div class="line"><span class="lineno">  152</span>}</div>
 <div class="ttc" id="aclassImageLib_1_1Image_html"><div class="ttname"><a href="classImageLib_1_1Image.html">ImageLib::Image</a></div><div class="ttdef"><b>Definition</b> <a href="Image_8h_source.html#l00014">Image.h:14</a></div></div>
-<div class="ttc" id="astructImageLib_1_1RGBAPixel_html"><div class="ttname"><a href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel</a></div><div class="ttdef"><b>Definition</b> <a href="RGBAPixel_8h_source.html#l00008">RGBAPixel.h:8</a></div></div>
+<div class="ttc" id="astructImageLib_1_1RGBAPixel_html"><div class="ttname"><a href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel</a></div><div class="ttdef"><b>Definition</b> <a href="RGBAPixel_8h_source.html#l00012">RGBAPixel.h:12</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -478,61 +478,61 @@ template&lt;typename Func , typename... Args&gt; </div>
 <dd>
 Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="image__utils_8cpp_source.html#l00043">43</a> of file <a class="el" href="image__utils_8cpp_source.html">image_utils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>                                                                                         {</div>
-<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">if</span> (!image || width == 0 || height == 0 || sigma_pixels &lt;= 0) <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> Npix = width * height;</div>
-<div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>    <span class="comment">// Compute padded dimensions (next power of two)</span></div>
-<div class="line"><span class="lineno">   49</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> W = fft::next_power_of_two(width);</div>
-<div class="line"><span class="lineno">   50</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> H = fft::next_power_of_two(height);</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> Npix_padded = W * H;</div>
+<p class="definition">Definition at line <a class="el" href="image__utils_8cpp_source.html#l00048">48</a> of file <a class="el" href="image__utils_8cpp_source.html">image_utils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>                                                                                         {</div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">if</span> (!image || width == 0 || height == 0 || sigma_pixels &lt;= 0) <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> Npix = width * height;</div>
 <div class="line"><span class="lineno">   52</span> </div>
-<div class="line"><span class="lineno">   53</span>    <span class="comment">// Frequency coordinates helper (DC at corner)</span></div>
-<div class="line"><span class="lineno">   54</span>    <span class="keyword">auto</span> freq_coord = [](<span class="keywordtype">int</span> k, <span class="keywordtype">int</span> dim) -&gt; <span class="keywordtype">double</span> {</div>
-<div class="line"><span class="lineno">   55</span>        <span class="keywordflow">return</span> (k &lt;= dim / 2) ? double(k) / dim : double(k - dim) / dim;</div>
-<div class="line"><span class="lineno">   56</span>    };</div>
+<div class="line"><span class="lineno">   53</span>    <span class="comment">// Compute padded dimensions (next power of two)</span></div>
+<div class="line"><span class="lineno">   54</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> W = fft::next_power_of_two(width);</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> H = fft::next_power_of_two(height);</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> Npix_padded = W * H;</div>
 <div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>    <span class="comment">// Precompute Gaussian factor in frequency domain</span></div>
-<div class="line"><span class="lineno">   59</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> two_pi2_sigma2 = 2.0 * M_PI * M_PI * sigma_pixels * sigma_pixels;</div>
-<div class="line"><span class="lineno">   60</span> </div>
-<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> channel = 0; channel &lt; 3; channel++) {</div>
-<div class="line"><span class="lineno">   62</span>        <span class="comment">// Allocate padded buffer</span></div>
-<div class="line"><span class="lineno">   63</span>        std::vector&lt;fft::cd&gt; data(Npix_padded, {0.0, 0.0});</div>
-<div class="line"><span class="lineno">   64</span> </div>
-<div class="line"><span class="lineno">   65</span>        <span class="comment">// Copy original image channel into padded buffer</span></div>
-<div class="line"><span class="lineno">   66</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> y = 0; y &lt; height; y++)</div>
-<div class="line"><span class="lineno">   67</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> x = 0; x &lt; width; x++)</div>
-<div class="line"><span class="lineno">   68</span>                data[y * W + x] = fft::cd(image[(y * width + x) * 4 + channel], 0.0);</div>
+<div class="line"><span class="lineno">   58</span>    <span class="comment">// Frequency coordinates helper (DC at corner)</span></div>
+<div class="line"><span class="lineno">   59</span>    <span class="keyword">auto</span> freq_coord = [](<span class="keywordtype">int</span> k, <span class="keywordtype">int</span> dim) -&gt; <span class="keywordtype">double</span> {</div>
+<div class="line"><span class="lineno">   60</span>        <span class="keywordflow">return</span> (k &lt;= dim / 2) ? double(k) / dim : double(k - dim) / dim;</div>
+<div class="line"><span class="lineno">   61</span>    };</div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span>    <span class="comment">// Precompute Gaussian factor in frequency domain</span></div>
+<div class="line"><span class="lineno">   64</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> two_pi2_sigma2 = 2.0 * M_PI * M_PI * sigma_pixels * sigma_pixels;</div>
+<div class="line"><span class="lineno">   65</span> </div>
+<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> channel = 0; channel &lt; 3; channel++) {</div>
+<div class="line"><span class="lineno">   67</span>        <span class="comment">// Allocate padded buffer</span></div>
+<div class="line"><span class="lineno">   68</span>        std::vector&lt;fft::cd&gt; data(Npix_padded, {0.0, 0.0});</div>
 <div class="line"><span class="lineno">   69</span> </div>
-<div class="line"><span class="lineno">   70</span>        <span class="comment">// Forward 2D FFT</span></div>
-<div class="line"><span class="lineno">   71</span>        fft::iterative_fft_2d(data, W, H, <span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span>        <span class="comment">// Apply Gaussian filter in frequency domain</span></div>
-<div class="line"><span class="lineno">   74</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> y = 0; y &lt; H; y++) {</div>
-<div class="line"><span class="lineno">   75</span>            <span class="keywordtype">double</span> fy2 = freq_coord(y, H) * freq_coord(y, H);</div>
-<div class="line"><span class="lineno">   76</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> x = 0; x &lt; W; x++) {</div>
-<div class="line"><span class="lineno">   77</span>                <span class="keywordtype">double</span> fx2 = freq_coord(x, W) * freq_coord(x, W);</div>
-<div class="line"><span class="lineno">   78</span>                <span class="keywordtype">double</span> gain = std::exp(-two_pi2_sigma2 * (fx2 + fy2));</div>
-<div class="line"><span class="lineno">   79</span>                data[y * W + x] *= gain;</div>
-<div class="line"><span class="lineno">   80</span>            }</div>
-<div class="line"><span class="lineno">   81</span>        }</div>
-<div class="line"><span class="lineno">   82</span> </div>
-<div class="line"><span class="lineno">   83</span>        <span class="comment">// Inverse 2D FFT</span></div>
-<div class="line"><span class="lineno">   84</span>        fft::iterative_fft_2d(data, W, H, <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span>        <span class="comment">// Copy back only the original width/height and clamp</span></div>
-<div class="line"><span class="lineno">   87</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> y = 0; y &lt; height; y++)</div>
-<div class="line"><span class="lineno">   88</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> x = 0; x &lt; width; x++) {</div>
-<div class="line"><span class="lineno">   89</span>                <span class="keywordtype">double</span> v = data[y * W + x].real();</div>
-<div class="line"><span class="lineno">   90</span>                v = std::clamp(v, 0.0, 255.0);</div>
-<div class="line"><span class="lineno">   91</span>                image[(y * width + x) * 4 + channel] = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(std::lrint(v));</div>
-<div class="line"><span class="lineno">   92</span>            }</div>
-<div class="line"><span class="lineno">   93</span>    }</div>
-<div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span>    <span class="comment">// Alpha channel remains unchanged</span></div>
-<div class="line"><span class="lineno">   96</span>}</div>
+<div class="line"><span class="lineno">   70</span>        <span class="comment">// Copy original image channel into padded buffer</span></div>
+<div class="line"><span class="lineno">   71</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> y = 0; y &lt; height; y++)</div>
+<div class="line"><span class="lineno">   72</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> x = 0; x &lt; width; x++)</div>
+<div class="line"><span class="lineno">   73</span>                data[y * W + x] = fft::cd(image[(y * width + x) * 4 + channel], 0.0);</div>
+<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   75</span>        <span class="comment">// Forward 2D FFT</span></div>
+<div class="line"><span class="lineno">   76</span>        fft::iterative_fft_2d(data, W, H, <span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">   77</span> </div>
+<div class="line"><span class="lineno">   78</span>        <span class="comment">// Apply Gaussian filter in frequency domain</span></div>
+<div class="line"><span class="lineno">   79</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> y = 0; y &lt; H; y++) {</div>
+<div class="line"><span class="lineno">   80</span>            <span class="keywordtype">double</span> fy2 = freq_coord(y, H) * freq_coord(y, H);</div>
+<div class="line"><span class="lineno">   81</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> x = 0; x &lt; W; x++) {</div>
+<div class="line"><span class="lineno">   82</span>                <span class="keywordtype">double</span> fx2 = freq_coord(x, W) * freq_coord(x, W);</div>
+<div class="line"><span class="lineno">   83</span>                <span class="keywordtype">double</span> gain = std::exp(-two_pi2_sigma2 * (fx2 + fy2));</div>
+<div class="line"><span class="lineno">   84</span>                data[y * W + x] *= gain;</div>
+<div class="line"><span class="lineno">   85</span>            }</div>
+<div class="line"><span class="lineno">   86</span>        }</div>
+<div class="line"><span class="lineno">   87</span> </div>
+<div class="line"><span class="lineno">   88</span>        <span class="comment">// Inverse 2D FFT</span></div>
+<div class="line"><span class="lineno">   89</span>        fft::iterative_fft_2d(data, W, H, <span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">   90</span> </div>
+<div class="line"><span class="lineno">   91</span>        <span class="comment">// Copy back only the original width/height and clamp</span></div>
+<div class="line"><span class="lineno">   92</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> y = 0; y &lt; height; y++)</div>
+<div class="line"><span class="lineno">   93</span>            <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> x = 0; x &lt; width; x++) {</div>
+<div class="line"><span class="lineno">   94</span>                <span class="keywordtype">double</span> v = data[y * W + x].real();</div>
+<div class="line"><span class="lineno">   95</span>                v = std::clamp(v, 0.0, 255.0);</div>
+<div class="line"><span class="lineno">   96</span>                image[(y * width + x) * 4 + channel] = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(std::lrint(v));</div>
+<div class="line"><span class="lineno">   97</span>            }</div>
+<div class="line"><span class="lineno">   98</span>    }</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span>    <span class="comment">// Alpha channel remains unchanged</span></div>
+<div class="line"><span class="lineno">  101</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -733,20 +733,20 @@ Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 <dd>
 Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="image__utils_8cpp_source.html#l00099">99</a> of file <a class="el" href="image__utils_8cpp_source.html">image_utils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   99</span>                                                       {</div>
-<div class="line"><span class="lineno">  100</span>    <a class="code hl_class" href="classImageLib_1_1Image.html">ImageLib::Image&lt;ImageLib::RGBAPixel&lt;uint8_t&gt;</a>&gt; img;</div>
-<div class="line"><span class="lineno">  101</span>    img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER&lt;uint8_t&gt;);</div>
-<div class="line"><span class="lineno">  102</span> </div>
-<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">for</span> (<a class="code hl_struct" href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel&lt;uint8_t&gt;</a> &amp;p : img) {</div>
-<div class="line"><span class="lineno">  104</span>        p.red = 255 - p.red;</div>
-<div class="line"><span class="lineno">  105</span>        p.blue = 255 - p.blue;</div>
-<div class="line"><span class="lineno">  106</span>        p.green = 255 - p.green;</div>
-<div class="line"><span class="lineno">  107</span>    }</div>
-<div class="line"><span class="lineno">  108</span> </div>
-<div class="line"><span class="lineno">  109</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;modified = img.getData();</div>
-<div class="line"><span class="lineno">  110</span>    std::memcpy(ptr, modified.data(), modified.size() * <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel&lt;uint8_t&gt;</a>));</div>
-<div class="line"><span class="lineno">  111</span>}</div>
+<p class="definition">Definition at line <a class="el" href="image__utils_8cpp_source.html#l00104">104</a> of file <a class="el" href="image__utils_8cpp_source.html">image_utils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  104</span>                                                       {</div>
+<div class="line"><span class="lineno">  105</span>    <a class="code hl_class" href="classImageLib_1_1Image.html">ImageLib::Image&lt;ImageLib::RGBAPixel&lt;uint8_t&gt;</a>&gt; img;</div>
+<div class="line"><span class="lineno">  106</span>    img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER&lt;uint8_t&gt;);</div>
+<div class="line"><span class="lineno">  107</span> </div>
+<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">for</span> (<a class="code hl_struct" href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel&lt;uint8_t&gt;</a> &amp;p : img) {</div>
+<div class="line"><span class="lineno">  109</span>        p.red = 255 - p.red;</div>
+<div class="line"><span class="lineno">  110</span>        p.blue = 255 - p.blue;</div>
+<div class="line"><span class="lineno">  111</span>        p.green = 255 - p.green;</div>
+<div class="line"><span class="lineno">  112</span>    }</div>
+<div class="line"><span class="lineno">  113</span> </div>
+<div class="line"><span class="lineno">  114</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;modified = img.getData();</div>
+<div class="line"><span class="lineno">  115</span>    std::memcpy(ptr, modified.data(), modified.size() * <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel&lt;uint8_t&gt;</a>));</div>
+<div class="line"><span class="lineno">  116</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1071,23 +1071,23 @@ Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 <dd>
 Dox File: <code>doxygen/img2num.h.dox</code>   </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="image__utils_8cpp_source.html#l00113">113</a> of file <a class="el" href="image__utils_8cpp_source.html">image_utils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  113</span>                                                                                                {</div>
-<div class="line"><span class="lineno">  114</span>    <span class="keyword">const</span> uint8_t REGION_SIZE(255 / num_thresholds);  <span class="comment">// Size of buckets per colour</span></div>
-<div class="line"><span class="lineno">  115</span> </div>
-<div class="line"><span class="lineno">  116</span>    <a class="code hl_class" href="classImageLib_1_1Image.html">ImageLib::Image&lt;ImageLib::RGBAPixel&lt;uint8_t&gt;</a>&gt; img;</div>
-<div class="line"><span class="lineno">  117</span>    img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER&lt;uint8_t&gt;);</div>
-<div class="line"><span class="lineno">  118</span> </div>
-<div class="line"><span class="lineno">  119</span>    <span class="keyword">const</span> <span class="keyword">auto</span> imgWidth{img.getWidth()}, imgHeight{img.getHeight()};</div>
-<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">for</span> (<a class="code hl_struct" href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel&lt;uint8_t&gt;</a> &amp;p : img) {</div>
-<div class="line"><span class="lineno">  121</span>        p.red = quantize(p.red, REGION_SIZE);</div>
-<div class="line"><span class="lineno">  122</span>        p.green = quantize(p.green, REGION_SIZE);</div>
-<div class="line"><span class="lineno">  123</span>        p.blue = quantize(p.blue, REGION_SIZE);</div>
-<div class="line"><span class="lineno">  124</span>    }</div>
-<div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;modified = img.getData();</div>
-<div class="line"><span class="lineno">  127</span>    std::memcpy(ptr, modified.data(), modified.size() * <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel&lt;uint8_t&gt;</a>));</div>
-<div class="line"><span class="lineno">  128</span>}</div>
+<p class="definition">Definition at line <a class="el" href="image__utils_8cpp_source.html#l00118">118</a> of file <a class="el" href="image__utils_8cpp_source.html">image_utils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  118</span>                                                                                                {</div>
+<div class="line"><span class="lineno">  119</span>    <span class="keyword">const</span> uint8_t REGION_SIZE(255 / num_thresholds);  <span class="comment">// Size of buckets per colour</span></div>
+<div class="line"><span class="lineno">  120</span> </div>
+<div class="line"><span class="lineno">  121</span>    <a class="code hl_class" href="classImageLib_1_1Image.html">ImageLib::Image&lt;ImageLib::RGBAPixel&lt;uint8_t&gt;</a>&gt; img;</div>
+<div class="line"><span class="lineno">  122</span>    img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER&lt;uint8_t&gt;);</div>
+<div class="line"><span class="lineno">  123</span> </div>
+<div class="line"><span class="lineno">  124</span>    <span class="keyword">const</span> <span class="keyword">auto</span> imgWidth{img.getWidth()}, imgHeight{img.getHeight()};</div>
+<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">for</span> (<a class="code hl_struct" href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel&lt;uint8_t&gt;</a> &amp;p : img) {</div>
+<div class="line"><span class="lineno">  126</span>        p.red = quantize(p.red, REGION_SIZE);</div>
+<div class="line"><span class="lineno">  127</span>        p.green = quantize(p.green, REGION_SIZE);</div>
+<div class="line"><span class="lineno">  128</span>        p.blue = quantize(p.blue, REGION_SIZE);</div>
+<div class="line"><span class="lineno">  129</span>    }</div>
+<div class="line"><span class="lineno">  130</span> </div>
+<div class="line"><span class="lineno">  131</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;modified = img.getData();</div>
+<div class="line"><span class="lineno">  132</span>    std::memcpy(ptr, modified.data(), modified.size() * <span class="keyword">sizeof</span>(<a class="code hl_struct" href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel&lt;uint8_t&gt;</a>));</div>
+<div class="line"><span class="lineno">  133</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
