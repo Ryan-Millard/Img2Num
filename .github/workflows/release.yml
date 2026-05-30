@@ -1,0 +1,322 @@
+name: Release (release-please, multi-language assets)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      cpp_created:  ${{ steps.rp.outputs['core--release_created'] }}
+      cpp_tag:      ${{ steps.rp.outputs['core--tag_name'] }}
+      cpp_version:  ${{ steps.rp.outputs['core--version'] }}
+      c_created:    ${{ steps.rp.outputs['bindings/c--release_created'] }}
+      c_tag:        ${{ steps.rp.outputs['bindings/c--tag_name'] }}
+      c_version:    ${{ steps.rp.outputs['bindings/c--version'] }}
+      js_created:   ${{ steps.rp.outputs['packages/js--release_created'] }}
+      js_tag:       ${{ steps.rp.outputs['packages/js--tag_name'] }}
+      js_version:   ${{ steps.rp.outputs['packages/js--version'] }}
+      py_created:   ${{ steps.rp.outputs['packages/py--release_created'] }}
+      py_tag:       ${{ steps.rp.outputs['packages/py--tag_name'] }}
+      py_version:   ${{ steps.rp.outputs['packages/py--version'] }}
+    steps:
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7
+        id: rp
+        with:
+          token:         ${{ secrets.GITHUB_TOKEN }}
+          config-file:   release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+      - name: Debug release-please outputs
+        run: |
+          echo '${{ toJSON(steps.rp.outputs) }}'
+
+  # C/C++ native artifacts
+  build-c-cpp-native:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.cpp_created == 'true' || needs.release-please.outputs.c_created == 'true' }}
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        component:
+          - c
+          - cpp
+        include:
+          - os: ubuntu-latest
+            plat: linux-x64
+          - os: macos-latest
+            plat: macos-arm64
+          - os: windows-latest
+            plat: windows-x64
+
+    steps:
+      - name: Set component metadata
+        id: component
+        shell: bash
+        run: |
+          if [[ "${{ matrix.component }}" == "c" ]]; then
+            echo "created=${{ needs.release-please.outputs.c_created }}" >> $GITHUB_OUTPUT
+            echo "tag=${{ needs.release-please.outputs.c_tag }}"         >> $GITHUB_OUTPUT
+            echo "version=${{ needs.release-please.outputs.c_version }}" >> $GITHUB_OUTPUT
+          else
+            echo "created=${{ needs.release-please.outputs.cpp_created }}" >> $GITHUB_OUTPUT
+            echo "tag=${{ needs.release-please.outputs.cpp_tag }}"         >> $GITHUB_OUTPUT
+            echo "version=${{ needs.release-please.outputs.cpp_version }}" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
+        if: ${{ steps.component.outputs.created == 'true' }}
+        with:
+          ref: ${{ steps.component.outputs.tag }}
+          submodules: true
+
+      - name: Configure
+        if: ${{ steps.component.outputs.created == 'true' }}
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install
+
+      - name: Build
+        if: ${{ steps.component.outputs.created == 'true' }}
+        run: cmake --build build --config Release
+
+      - name: Install
+        if: ${{ steps.component.outputs.created == 'true' }}
+        run: cmake --install build --config Release
+
+      - name: Package (Linux/macOS)
+        if: ${{ steps.component.outputs.created == 'true' && runner.os != 'Windows' }}
+        run: |
+          ARCHIVE="img2num-${{ matrix.component }}-v${{ steps.component.outputs.version }}-${{ matrix.plat }}.tar.gz"
+          tar -czf "$ARCHIVE" -C install .
+          echo "ARCHIVE=$ARCHIVE" >> $GITHUB_ENV
+
+      - name: Package (Windows)
+        if: ${{ steps.component.outputs.created == 'true' && runner.os == 'Windows' }}
+        shell: pwsh
+        run: |
+          $archive = "img2num-${{ matrix.component }}-v${{ steps.component.outputs.version }}-${{ matrix.plat }}.zip"
+          Compress-Archive -Path install\* -DestinationPath $archive
+          "ARCHIVE=$archive" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
+        if: ${{ steps.component.outputs.created == 'true' }}
+        with:
+          tag_name: ${{ steps.component.outputs.tag }}
+          files: ${{ env.ARCHIVE }}
+
+  # WASM + JS
+  build-js:
+    if: ${{ needs.release-please.outputs.js_created == 'true' }}
+    needs: release-please
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write # required for OIDC provenance
+    steps:
+      - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
+        with:
+          ref: ${{ needs.release-please.outputs.js_tag }}
+          submodules: true
+      - uses: mymindstorm/setup-emsdk@1f4f5866c1f8745a10fcb64c4d7a0eb7a8daed9d
+      - name: Build WASM
+        run: |
+          emcmake cmake -B build-wasm -DCMAKE_BUILD_TYPE=Release .
+          cmake --build build-wasm
+          release_version=${{ needs.release-please.outputs.js_version }}
+          tar -czf img2num-v${release_version}.tar.gz \
+             build-wasm \
+             packages/js/index.js \
+             packages/js/safeWasmWrappers.js \
+             packages/js/wasmClient.js \
+             packages/js/wasmWorker.js \
+             packages/js/imageToUint8ClampedArray.js
+      - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
+        with:
+          tag_name: ${{ needs.release-please.outputs.js_tag }}
+          files: img2num-v${{ needs.release-please.outputs.js_version }}.tar.gz
+      - uses: actions/setup-node@670825a89dc0abd596e7a3abd0f5e3f6e5faf37c
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Publish to npm
+        run: npm publish --access public --provenance
+        working-directory: packages/js
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # Wheels + PyPI (Python)
+  build-py:
+    if: ${{ needs.release-please.outputs.py_created == 'true' }}
+    needs: release-please
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
+        with:
+          ref: ${{ needs.release-please.outputs.py_tag }}
+          submodules: true
+
+      - uses: pypa/cibuildwheel@a78478edc4b83cce46f23e49e649d3e4b6437df3
+        with:
+          package-dir: .
+          output-dir: wheelhouse
+        env:
+          CIBW_BUILD: "cp310-* cp311-* cp312-* cp313-*"
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheels-${{ matrix.os }}
+          path: wheelhouse/*.whl
+
+  build-py-sdist:
+    if: ${{ needs.release-please.outputs.py_created == 'true' }}
+    needs: release-please
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
+        with:
+          ref: ${{ needs.release-please.outputs.py_tag }}
+          submodules: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build sdist
+        run: |
+          pip install build
+          python -m build --sdist --outdir wheelhouse
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sdist
+          path: wheelhouse/*.tar.gz
+
+  publish-py:
+    if: ${{ needs.release-please.outputs.py_created == 'true' }}
+    needs: [release-please, build-py, build-py-sdist]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write             # required for OIDC trusted publishing
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: wheels-*
+          path: wheelhouse
+          merge-multiple: true
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: sdist
+          path: wheelhouse
+
+      - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
+        with:
+          tag_name: ${{ needs.release-please.outputs.py_tag }}
+          files: wheelhouse/*
+
+      - uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247
+        with:
+          packages-dir: wheelhouse/
+
+  propagate-cpp:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.cpp_created == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - path: bindings/c
+            scope: bindings/c
+          - path: packages/py
+            scope: py
+    steps:
+      - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
+        with:
+          token: ${{ secrets.RELEASE_PROPAGATION_TOKEN }}
+
+      - name: Configure git identity
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create propagation PR → ${{ matrix.target.path }}
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PROPAGATION_TOKEN }}
+          VERSION:  ${{ needs.release-please.outputs.cpp_version }}
+          TARGET_PATH: ${{ matrix.target.path }}
+          SCOPE:    ${{ matrix.target.scope }}
+        run: |
+          SLUG="$(echo "$TARGET_PATH" | tr '/' '-')"
+          BRANCH="release-propagation/core-v${VERSION}-to-${SLUG}"
+
+          git checkout -b "$BRANCH"
+
+          git commit --allow-empty \
+            -m "fix(${SCOPE}): propagate core v${VERSION} release"
+
+          git push origin "$BRANCH"
+
+          gh pr create \
+            --title "fix(${SCOPE}): propagate core v${VERSION} release" \
+            --body "Automated patch bump for \`${TARGET_PATH}\` following the **\`core/\` (C++) v${VERSION}** release.\n\n> Merging this PR will allow release-please to open a patch release PR for \`${TARGET_PATH}\`.\n\n**Dependency:** \`core\` -> \`${TARGET_PATH}\`" \
+            --base main \
+            --head "$BRANCH"
+
+  propagate-c:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.c_created == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
+        with:
+          token: ${{ secrets.RELEASE_PROPAGATION_TOKEN }}
+
+      - name: Configure git identity
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create propagation PR → packages/js
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PROPAGATION_TOKEN }}
+          VERSION:  ${{ needs.release-please.outputs.c_version }}
+        run: |
+          BRANCH="release-propagation/c-v${VERSION}-to-packages-js"
+
+          git checkout -b "$BRANCH"
+          git commit --allow-empty \
+            -m "fix(packages/js): propagate bindings/c v${VERSION} release"
+          git push origin "$BRANCH"
+
+          gh pr create \
+            --title "fix(packages/js): propagate bindings/c v${VERSION} release" \
+            --body "Automated patch bump for \`packages/js\` following the **bindings/c v${VERSION}** release.\n\n > Merging this PR will allow release-please to open a patch release PR for \`packages/js\`.\n\n**Dependency:** \`bindings/c\` → \`packages/js\`" \
+            --base main \
+            --head "$BRANCH"
