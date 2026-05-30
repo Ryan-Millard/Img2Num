@@ -6,23 +6,25 @@
 #include <stdexcept>
 
 SavitzkyGolay::SavitzkyGolay(int radius, int poly_order)
-    : window_radius_(radius), window_size_(2 * radius + 1), poly_order_(poly_order) {
+    : window_radius_(radius)
+    , window_size_(2 * radius + 1)
+    , poly_order_(poly_order) {
     assert(radius >= 0);
     assert(window_size_ > poly_order_);
 
     compute_coefficients();
 }
 
-std::vector<Point> SavitzkyGolay::filter(const std::vector<Point> &data) {
+std::vector<Point> SavitzkyGolay::filter(const std::vector<Point>& data) {
     if (data.size() < window_size_) {
-        return data;  // Data too short to filter
+        return data; // Data too short to filter
     }
 
     std::vector<Point> result(data.size());
 
     // 1. Convolution for the valid range
     for (size_t i = window_radius_; i < data.size() - window_radius_; ++i) {
-        Point val{0.0, 0.0};
+        Point val {0.0, 0.0};
         for (int j = -window_radius_; j <= window_radius_; ++j) {
             val += data[i + j] * coeffs_[j + window_radius_];
         }
@@ -31,23 +33,25 @@ std::vector<Point> SavitzkyGolay::filter(const std::vector<Point> &data) {
 
     // 2. Handle Edges (Simple Repeat/Nearest padding strategy)
     // For a robust production app, you might calculate asymmetric kernels here.
-    for (int i = 0; i < window_radius_; ++i) result[i] = data[i];
-    for (size_t i = data.size() - window_radius_; i < data.size(); ++i) result[i] = data[i];
+    for (int i = 0; i < window_radius_; ++i)
+        result[i] = data[i];
+    for (size_t i = data.size() - window_radius_; i < data.size(); ++i)
+        result[i] = data[i];
 
     return result;
 }
 
-std::vector<Point> SavitzkyGolay::filter_wrap(const std::vector<Point> &data) {
+std::vector<Point> SavitzkyGolay::filter_wrap(const std::vector<Point>& data) {
     // wrap around
     if (data.size() < window_size_) {
-        return data;  // Data too short to filter
+        return data; // Data too short to filter
     }
 
     std::vector<Point> result(data.size());
     std::copy(data.begin(), data.end(), result.begin());
 
     for (size_t i = 0; i < data.size(); ++i) {
-        Point val{0.0, 0.0};
+        Point val {0.0, 0.0};
         for (int j = -window_radius_; j <= window_radius_; ++j) {
             int k = i + j;
             if (k < 0) {
@@ -70,13 +74,15 @@ std::vector<std::vector<float>> SavitzkyGolay::invert_matrix(std::vector<std::ve
     std::vector<std::vector<float>> inv(n, std::vector<float>(n, 0.0));
 
     // Initialize inverse as identity
-    for (int i = 0; i < n; ++i) inv[i][i] = 1.0;
+    for (int i = 0; i < n; ++i)
+        inv[i][i] = 1.0;
 
     for (int i = 0; i < n; ++i) {
         // Find pivot
         float pivot = A[i][i];
         // (Simple pivot check, typically you'd swap rows for stability)
-        if (std::abs(pivot) < 1e-10) throw std::runtime_error("Matrix singular, cannot invert.");
+        if (std::abs(pivot) < 1e-10)
+            throw std::runtime_error("Matrix singular, cannot invert.");
 
         // Normalize row
         for (int j = 0; j < n; ++j) {

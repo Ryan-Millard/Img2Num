@@ -23,9 +23,9 @@ void set_error(Error code, const std::string message);
 // Template function for catching and handling exceptions
 template <typename Func, typename... Args>
 void clear_last_error_and_catch(Func&& exception_prone_func, Args&&... args) {
-    clear_last_error();  // Clear any previous error state
+    clear_last_error(); // Clear any previous error state
     try {
-        exception_prone_func(std::forward<Args>(args)...);  // Call the passed function
+        exception_prone_func(std::forward<Args>(args)...); // Call the passed function
     } catch (const std::bad_alloc& e) {
         set_error(Error::BAD_ALLOC, e.what());
     } catch (const std::invalid_argument& e) {
@@ -38,6 +38,6 @@ void clear_last_error_and_catch(Func&& exception_prone_func, Args&&... args) {
         set_error(Error::UNKNOWN, "Unknown exception occurred");
     }
 }
-}  // namespace img2num
+} // namespace img2num
 
-#endif  // IMG2NUM_ERROR_H
+#endif // IMG2NUM_ERROR_H

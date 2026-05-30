@@ -15,14 +15,15 @@ struct RGBAPixel : public ImageLib::RGBPixel<NumberT> {
 
     // ----- Constructors -----
     constexpr RGBAPixel(NumberT red = 0, NumberT green = 0, NumberT blue = 0, NumberT alpha = 255)
-        : RGBPixel<NumberT>(red, green, blue), alpha(alpha) {
+        : RGBPixel<NumberT>(red, green, blue)
+        , alpha(alpha) {
     }
 
     // ----- Modifiers -----
-    [[nodiscard]] inline bool operator==(const RGBAPixel &other) const {
+    [[nodiscard]] inline bool operator==(const RGBAPixel& other) const {
         return RGBPixel<NumberT>::operator==(other) && alpha == other.alpha;
     }
-    [[nodiscard]] inline bool operator!=(const RGBAPixel &other) const {
+    [[nodiscard]] inline bool operator!=(const RGBAPixel& other) const {
         return !(*this == other);
     }
 
@@ -42,12 +43,12 @@ __attribute__((packed))
 #endif
 
 template <typename NumberT>
-std::ostream &operator<<(std::ostream &out, const ImageLib::RGBAPixel<NumberT> &pixel) {
+std::ostream& operator<<(std::ostream& out, const ImageLib::RGBAPixel<NumberT>& pixel) {
     out << "( " << pixel.red << "," << pixel.green << "," << pixel.blue << "," << pixel.alpha
         << " )";
     return out;
 }
 
-}  // namespace ImageLib
+} // namespace ImageLib
 
-#endif  // RGBAPIXEL_H
+#endif // RGBAPIXEL_H
