@@ -17,6 +17,9 @@ static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB {0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB {1};
 
 // Structure matching the WGSL Uniform (std140 layout)
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
 struct FilterParams {
     float sigmaSpatial;
     float sigmaRange;
@@ -26,7 +29,14 @@ struct FilterParams {
     // However, it is safer to pad to 16 bytes to be sure.
     float _pad1;
     float _pad2;
-} __attribute__((packed));
+}
+#ifndef _MSC_VER
+__attribute__((packed))
+#endif
+;
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
 
 void bilateral_filter_gpu(
     uint8_t* image, size_t width, size_t height, double sigma_spatial, double sigma_range,

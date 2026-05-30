@@ -12,7 +12,12 @@ preferrably float or double
 */
 
 namespace ImageLib {
-template <typename NumberT> struct LABPixel : public Pixel<NumberT> {
+
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
+template <typename NumberT>
+struct LABPixel : public Pixel<NumberT> {
     // ----- Members -----
     NumberT l, a, b;
 
@@ -46,7 +51,14 @@ template <typename NumberT> struct LABPixel : public Pixel<NumberT> {
         );
     }
 
-} __attribute__((packed));
+}
+#ifndef _MSC_VER
+__attribute__((packed))
+#endif
+;
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
 
 template <typename NumberT>
 std::ostream& operator<<(std::ostream& out, const ImageLib::LABPixel<NumberT>& pixel) {

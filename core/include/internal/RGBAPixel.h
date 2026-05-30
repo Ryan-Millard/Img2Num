@@ -4,7 +4,12 @@
 #include "internal/RGBPixel.h"
 
 namespace ImageLib {
-template <typename NumberT> struct RGBAPixel : public ImageLib::RGBPixel<NumberT> {
+
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
+template <typename NumberT>
+struct RGBAPixel : public ImageLib::RGBPixel<NumberT> {
     // ----- Members -----
     NumberT alpha;
 
@@ -28,7 +33,14 @@ template <typename NumberT> struct RGBAPixel : public ImageLib::RGBPixel<NumberT
         this->alpha = alpha;
     }
 
-} __attribute__((packed));
+}
+#ifndef _MSC_VER
+__attribute__((packed))
+#endif
+;
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
 
 template <typename NumberT>
 std::ostream& operator<<(std::ostream& out, const ImageLib::RGBAPixel<NumberT>& pixel) {

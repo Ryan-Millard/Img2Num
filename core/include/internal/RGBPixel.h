@@ -7,7 +7,12 @@
 #include <iostream>
 
 namespace ImageLib {
-template <typename NumberT> struct RGBPixel : public Pixel<NumberT> {
+
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
+template <typename NumberT>
+struct RGBPixel : public Pixel<NumberT> {
     // ----- Members -----
     NumberT red, green, blue;
 
@@ -41,7 +46,14 @@ template <typename NumberT> struct RGBPixel : public Pixel<NumberT> {
         );
     }
 
-} __attribute__((packed));
+}
+#ifndef _MSC_VER
+__attribute__((packed))
+#endif
+;
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
 
 template <typename NumberT>
 std::ostream& operator<<(std::ostream& out, const ImageLib::RGBPixel<NumberT>& pixel) {

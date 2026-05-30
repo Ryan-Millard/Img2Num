@@ -1,17 +1,22 @@
 #include "internal/image_utils.h"
 
-#include "img2num.h"
-#include "internal/fft_iterative.h"
-#include "internal/Image.h"
-#include "internal/PixelConverters.h"
-#include "internal/RGBAPixel.h"
-
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
 #include <cstring>
 #include <limits>
 #include <vector>
+
+#include "img2num.h"
+#include "internal/Image.h"
+#include "internal/PixelConverters.h"
+#include "internal/RGBAPixel.h"
+#include "internal/fft_iterative.h"
+
+// M_PI is not defined by default on MSVC
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 uint8_t quantize(uint8_t value, uint8_t region_size) {
     if (region_size == 0) {

@@ -26,24 +26,54 @@
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB {0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB {1};
 
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
 struct Params {
     uint32_t numPoints;
     uint32_t numCentroids;
     uint32_t pad[2];
-} __attribute__((packed));
+}
+#ifndef _MSC_VER
+__attribute__((packed))
+#endif
+;
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
 
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
 struct ClusterAccumulator {
     int32_t sumR;
     int32_t sumG;
     int32_t sumB;
     uint32_t count;
-} __attribute__((packed));
+}
+#ifndef _MSC_VER
+__attribute__((packed))
+#endif
+;
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
 
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
 struct CentroidParams {
     float r, g, b, a;
     uint32_t width;
-    uint32_t pad[3]; // Padding to align to 16 bytes
-} __attribute__((packed));
+    uint32_t pad[3];  // Padding to align to 16 bytes
+}
+#ifndef _MSC_VER
+__attribute__((packed))
+#endif
+;
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
 
 // The K-Means++ Initialization Function
 template <typename PixelT>

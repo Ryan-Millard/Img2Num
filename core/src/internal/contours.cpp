@@ -7,6 +7,11 @@
 #include <set>
 #include <utility>
 
+// M_PI is not defined by default on MSVC
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 namespace contours {
 
 // 8-neighborhood, clockwise order starting from "right" (dx=+1,dy=0).
