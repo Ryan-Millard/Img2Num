@@ -1,18 +1,18 @@
 # Dependencies
-/node_modules
-static/docs/internal/**/api/*
-!static/docs/internal/**/api/.gitkeep
-static/docs/cpp/api/*
-!static/docs/cpp/api/.gitkeep
-static/docs/c/api/*
-!static/docs/c/api/.gitkeep
+node_modules
+/static/docs/internal/**/api/*
+/!static/docs/internal/**/api/.gitkeep
+/static/docs/cpp/api/*
+/!static/docs/cpp/api/.gitkeep
+/static/docs/c/api/*
+/!static/docs/c/api/.gitkeep
 
 # Production
 /build
 
 # Generated files
-.docusaurus
-.cache-loader
+/.docusaurus
+/.cache-loader
 
 # Misc
 .DS_Store
@@ -27,5 +27,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # Auto-generated API docs
-docs/js/api/
-static/js/api.json
+/docs/js/api/
+/static/js/api.json
+
+# Auto-generated Changelogs
+/changelog/
