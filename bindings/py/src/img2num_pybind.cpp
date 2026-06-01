@@ -1,4 +1,7 @@
+#include <cstdlib>
 #include <img2num.h>
+#include <memory>
+#include <optional>
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
@@ -159,8 +162,9 @@ PYBIND11_MODULE(_img2num, m) {
             pybind11::array_t<uint8_t, pybind11::array::c_style> out_image(buf.shape);
             std::memcpy(out_image.mutable_data(), buf.ptr, buf.size * sizeof(uint8_t));
 
-            img2num::bilateral_filter(out_image.mutable_data(), width, height, sigma_spatial,
-                                      sigma_range, color_space);
+            img2num::bilateral_filter(
+                out_image.mutable_data(), width, height, sigma_spatial, sigma_range, color_space
+            );
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"),
@@ -236,8 +240,8 @@ PYBIND11_MODULE(_img2num, m) {
         [](pybind11::array_t<uint8_t, pybind11::array::c_style> data,
            pybind11::array_t<int32_t, pybind11::array::c_style> labels, int width, int height,
            int min_area) {
-            const uint8_t *data_ptr{static_cast<const uint8_t *>(data.request().ptr)};
-            const int32_t *labels_ptr{static_cast<const int32_t *>(labels.request().ptr)};
+            const uint8_t* data_ptr {static_cast<const uint8_t*>(data.request().ptr)};
+            const int32_t* labels_ptr {static_cast<const int32_t*>(labels.request().ptr)};
 
             std::string svg{img2num::labels_to_svg(data_ptr, labels_ptr, width, height, min_area)};
 
@@ -338,7 +342,7 @@ PYBIND11_MODULE(_img2num, m) {
         .def_readwrite("min_cluster_area", &img2num::ImageToSvgConfig::min_cluster_area)
         .def_readwrite("color_space", &img2num::ImageToSvgConfig::color_space)
         .def_readwrite("kmeans", &img2num::ImageToSvgConfig::kmeans)
-        .def("__repr__", [](const img2num::ImageToSvgConfig &c) {
+        .def("__repr__", [](const img2num::ImageToSvgConfig& c) {
             // We use pybind11::repr() to trigger the __repr__ of the nested objects
             std::stringstream ss;
             ss << "<ImageToSvgConfig {"
@@ -357,7 +361,7 @@ PYBIND11_MODULE(_img2num, m) {
            const img2num::ImageToSvgConfig &cfg) {
             const uint8_t *data_ptr{static_cast<const uint8_t *>(data.request().ptr)};
 
-            std::string svg{img2num::image_to_svg(data_ptr, width, height, cfg)};
+            std::string svg {img2num::image_to_svg(data_ptr, width, height, cfg)};
 
             return pybind11::str(std::move(svg));
         },

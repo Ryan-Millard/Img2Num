@@ -1,9 +1,9 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include <unordered_map>
-
 #include "internal/node.h"
+
+#include <unordered_map>
 
 /*
    Graph and Node classes support conversion of a region divided image into a
@@ -31,7 +31,7 @@ discover_edges(G, region_labels, width, height);
 */
 
 class Graph {
-   protected:
+  protected:
     int m_width, m_height;
     std::unique_ptr<std::vector<Node_ptr>> m_nodes;
     std::unordered_map<int32_t, int32_t> m_node_ids;
@@ -39,25 +39,27 @@ class Graph {
     void hash_node_ids(void);
     void process_overlapping_edges();
 
-   public:
-    inline Graph(std::unique_ptr<std::vector<Node_ptr>> &nodes, int width, int height)
-        : m_nodes(std::move(nodes)), m_width(width), m_height(height) {
+  public:
+    inline Graph(std::unique_ptr<std::vector<Node_ptr>>& nodes, int width, int height)
+        : m_nodes(std::move(nodes))
+        , m_width(width)
+        , m_height(height) {
         hash_node_ids();
     }
 
     inline ~Graph() {
         // Break the circular references so the shared_ptrs can reach 0
-        for (auto &node : *m_nodes) {
+        for (auto& node : *m_nodes) {
             node->clear_all();
         }
     }
 
     bool add_edge(int32_t node_id1, int32_t node_id2);
-    bool merge_nodes(const Node_ptr &node_to_keep, const Node_ptr &node_to_remove);
+    bool merge_nodes(const Node_ptr& node_to_keep, const Node_ptr& node_to_remove);
 
     void clear_unconnected_nodes();
 
-    inline const std::vector<Node_ptr> &get_nodes() const {
+    inline const std::vector<Node_ptr>& get_nodes() const {
         return *m_nodes;
     }
 
@@ -66,8 +68,9 @@ class Graph {
         return m_nodes->size();
     }
 
-    void discover_edges(const std::vector<int32_t> &region_labels, const int32_t width,
-                        const int32_t height);
+    void discover_edges(
+        const std::vector<int32_t>& region_labels, const int32_t width, const int32_t height
+    );
     void merge_small_area_nodes(const int32_t min_area);
     void compute_contours();
 };

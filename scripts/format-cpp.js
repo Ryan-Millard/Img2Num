@@ -31,9 +31,9 @@ if (!files.length) {
 
 // --- PARSE ARGS ---
 const checkOnly = process.argv.includes("--check");
-const cmdBase = checkOnly
+const cmdBase = (checkOnly
   ? "clang-format --dry-run --Werror"
-  : "clang-format -i";
+  : "clang-format -i") + " -style=file";
 
 logColor(
   `${checkOnly ? "Checking" : "Formatting"} ${files.length} C++ file(s)...`,
