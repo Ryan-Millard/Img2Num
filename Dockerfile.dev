@@ -81,6 +81,7 @@ ENV EMSDK=$EMSDK_DIR
 # Auto-load emsdk in all shells
 RUN echo "source /opt/emsdk/emsdk_env.sh" >> /etc/bash.bashrc
 
+RUN chown -R dev:dev /opt/emsdk/
 # --------------------------------------------------------------------------------------------------------------
 # Dawn dependencies
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
