@@ -134,10 +134,12 @@ RUN uv venv /usr/src/app/.venv
 ENV VIRTUAL_ENV=/usr/src/app/.venv
 ENV PATH="/usr/src/app/.venv/bin:$PATH"
 
-RUN --mount=type=cache,target=/home/dev/.cache/uv \
-    uv pip install scikit_build_core numpy
-
 RUN chown -R dev:dev /usr/src/app/.venv
+
+COPY pyproject.toml uv.lock .
+
+RUN --mount=type=cache,target=/home/dev/.cache/uv \
+    uv sync --no-install-project
 
 # --------------------------------------------------------------------------------------------------------------
 # Node / pnpm setup
