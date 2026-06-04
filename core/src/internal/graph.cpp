@@ -205,6 +205,54 @@ void Graph::process_overlapping_edges() {
     }
 }
 
+std::vector<uint8_t> Graph::analyzeJunctions(const std::vector<uint8_t>& skel, int w, int h) {
+    std::vector<uint8_t> junction_map(w * h, 0);
+    
+    // 8-Neighbor Order (Clockwise)
+    // P9 P2 P3
+    // P8 P1 P4
+    // P7 P6 P5
+    int dx[] = {0, 1, 1, 1, 0, -1, -1, -1}; 
+    int dy[] = {-1, -1, 0, 1, 1, 1, 0, -1};
+
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w; ++x) {
+            if (getPixel(skel, w, h, x, y) == 0) continue;
+
+            // 1. Get Neighbors in Circular Order
+            int p[8];
+            for(int k=0; k<8; ++k) {
+                p[k] = getPixel(skel, w, h, x + dx[k], y + dy[k]) ? 1 : 0;
+            }
+
+            // 2. Count Transitions (0 -> 1)
+            // This is the Crossing Number / 2
+            int transitions = 0;
+            for(int k=0; k<8; ++k) {
+                if (p[k] == 0 && p[(k+1)%8] == 1) transitions++;
+            }
+
+            // 3. Count Total Neighbors (for Endpoint check)
+            int neighbors = 0;
+            for(int k=0; k<8; ++k) neighbors += p[k];
+
+            // 4. Classify
+            if (transitions >= 3) {
+                junction_map[y * w + x] = 1;
+            }
+
+            /*if (neighbors <= 1) {
+                map[y * w + x] = 2; // Endpoint (or isolated)
+            } else if (transitions >= 3) {
+                map[y * w + x] = 3; // Junction (3+ branches)
+            } else {
+                map[y * w + x] = 1; // Line (Body or Corner)
+            }*/
+        }
+    }
+    return junction_map;
+}
+
 void Graph::compute_contours() {
     // overlap edge pixels
     // then compute contours
@@ -214,6 +262,24 @@ void Graph::compute_contours() {
         if (n->area() == 0) continue;
         n->compute_contour();
     }
+
+    // find junctions - we want to preserve these
+    std::vector<uint8_t> binary(m_width * m_height, 0);
+    for (const Node_ptr &n : get_nodes()) {
+        if (n->area() == 0) continue;
+
+        ColoredContours* c0 = &n->m_contours;
+        for (size_t i = 0; i < c0->contours.size(); ++i) {
+            for (auto &p : c0->contours[i]){
+                int px = static_cast<int>(p.x);
+                int py = static_cast<int>(p.y);
+
+                binary[py * m_width + px] = 1;
+            }
+        }
+    }
+
+    auto junctions = analyzeJunctions(binary, m_width, m_height);
 
     // smoothing
     std::vector<std::vector<Point>> all_contours;
@@ -226,11 +292,17 @@ void Graph::compute_contours() {
         }
     }
 
-    contours::coupled_smooth(
-        all_contours, Rect{0.0f, 0.0f, static_cast<float>(m_width), static_cast<float>(m_height)});
+    std::cout << "Apply smoothing" << std::endl;
+
+    contours::coupled_smooth_junctions(
+        all_contours, 
+        Rect{0.0f, 0.0f, static_cast<float>(m_width), static_cast<float>(m_height)},
+        junctions,
+        m_width
+    );
 
     std::vector<std::vector<QuadBezier>> all_curves;
-    fit_curve_reduction(all_contours, all_curves, 0.5f);
+    fit_curve_reduction(all_contours, all_curves, 0.25f);
 
     int j = 0;
     for (const Node_ptr &n : get_nodes()) {
