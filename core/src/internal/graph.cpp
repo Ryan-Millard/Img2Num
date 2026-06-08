@@ -258,12 +258,16 @@ std::vector<uint8_t> Graph::analyzeJunctions(const std::vector<uint8_t>& skel, i
 }
 
 void Graph::compute_contours() {
-    // Shared-edge mode (default): build region boundaries on the crack grid so
-    // neighbouring contours are exactly coincident along shared edges -- no
-    // overlap band, no gaps. Set IMG2NUM_LEGACY=1 for the old overlap pipeline.
-    if (!std::getenv("IMG2NUM_LEGACY")) {
+    
+    if (true) {
+
+        /* This is the new method
+        Shared-edge mode (default): build region boundaries on the crack grid so
+        neighbouring contours are exactly coincident along shared edges -- no
+        overlap band, no gaps
+        */
+
         float eps = 0.75f;
-        if (const char *e = std::getenv("IMG2NUM_DP_EPS")) eps = static_cast<float>(std::atof(e));
 
         std::vector<int32_t> labels(static_cast<size_t>(m_width) * m_height, -1);
         for (const Node_ptr &n : get_nodes()) {
@@ -293,98 +297,89 @@ void Graph::compute_contours() {
                 n->m_contours.is_hole.push_back(false);
             }
         }
-        return;
     }
 
-    // overlap edge pixels
-    // then compute contours
-    process_overlapping_edges();
-    // ask each Node to compute contours
-    for (const Node_ptr &n : get_nodes()) {
-        if (n->area() == 0) continue;
-        n->compute_contour();
-    }
+    else {
+        /* This is the old method - keep for now */
 
-    // find junctions - we want to preserve these
-    std::vector<uint8_t> binary(m_width * m_height, 0);
-    for (const Node_ptr &n : get_nodes()) {
-        if (n->area() == 0) continue;
+        // overlap edge pixels
+        // then compute contours
+        process_overlapping_edges();
+        // ask each Node to compute contours
+        for (const Node_ptr &n : get_nodes()) {
+            if (n->area() == 0) continue;
+            n->compute_contour();
+        }
 
-        ColoredContours* c0 = &n->m_contours;
-        for (size_t i = 0; i < c0->contours.size(); ++i) {
-            for (auto &p : c0->contours[i]){
-                int px = static_cast<int>(p.x);
-                int py = static_cast<int>(p.y);
+        // find junctions - we want to preserve these
+        std::vector<uint8_t> binary(m_width * m_height, 0);
+        for (const Node_ptr &n : get_nodes()) {
+            if (n->area() == 0) continue;
 
-                binary[py * m_width + px] = 1;
+            ColoredContours* c0 = &n->m_contours;
+            for (size_t i = 0; i < c0->contours.size(); ++i) {
+                for (auto &p : c0->contours[i]){
+                    int px = static_cast<int>(p.x);
+                    int py = static_cast<int>(p.y);
+
+                    binary[py * m_width + px] = 1;
+                }
             }
         }
-    }
 
-    auto junctions = analyzeJunctions(binary, m_width, m_height);
+        auto junctions = analyzeJunctions(binary, m_width, m_height);
 
-    // smoothing
-    std::vector<std::vector<Point>> all_contours;
-    for (const Node_ptr &n : get_nodes()) {
-        if (n->area() == 0) continue;
+        // smoothing
+        std::vector<std::vector<Point>> all_contours;
+        for (const Node_ptr &n : get_nodes()) {
+            if (n->area() == 0) continue;
 
-        ColoredContours *c0 = &n->m_contours;
-        for (size_t i = 0; i < c0->contours.size(); ++i) {
-            all_contours.push_back(c0->contours[i]);
-        }
-    }
-
-    std::cout << "Apply smoothing" << std::endl;
-
-    contours::coupled_smooth_junctions(
-        all_contours, 
-        Rect{0.0f, 0.0f, static_cast<float>(m_width), static_cast<float>(m_height)},
-        junctions,
-        m_width
-    );
-
-    // Build the set of points the fit must pin (and therefore split at), so that
-    // neighbouring contours split at the SAME places and their fitted curves
-    // track each other (stay overlapping) instead of one cutting a corner the
-    // other follows. Two shared features both sides have in common:
-    //   - junctions (locked during smoothing -> still at integer pixels here), and
-    //   - corners (sharp direction changes); A and B are smoothed copies of the
-    //     same boundary, so their corners coincide -> matching split points.
-    float corner_deg = 35.0f;  // turn angle above which a point is a corner
-    if (const char *cd = std::getenv("IMG2NUM_CORNER")) corner_deg = static_cast<float>(std::atof(cd));
-    const float corner_cos = std::cos(corner_deg * 3.14159265358979323846f / 180.0f);
-    const int win = 2;  // look this many points each side for a robust direction
-
-    std::vector<std::vector<uint8_t>> fixed(all_contours.size());
-    for (size_t c = 0; c < all_contours.size(); ++c) {
-        const std::vector<Point> &C = all_contours[c];
-        const int n = static_cast<int>(C.size());
-        fixed[c].assign(n, 0);
-        for (int k = 0; k < n; ++k) {
-            const int px = static_cast<int>(C[k].x);
-            const int py = static_cast<int>(C[k].y);
-            if (px >= 0 && px < m_width && py >= 0 && py < m_height &&
-                junctions[py * m_width + px]) {
-                fixed[c][k] = 1;
-                continue;
+            ColoredContours *c0 = &n->m_contours;
+            for (size_t i = 0; i < c0->contours.size(); ++i) {
+                all_contours.push_back(c0->contours[i]);
             }
         }
-    }
 
-    std::vector<std::vector<QuadBezier>> all_curves;
-    dp_curve_reduction(all_contours, fixed, all_curves, 0.5f);
+        std::cout << "Apply smoothing" << std::endl;
 
-    int j = 0;
-    for (const Node_ptr &n : get_nodes()) {
-        if (n->area() == 0) continue;
+        contours::coupled_smooth_junctions(
+            all_contours, 
+            Rect{0.0f, 0.0f, static_cast<float>(m_width), static_cast<float>(m_height)},
+            junctions,
+            m_width
+        );
 
-        ColoredContours *c0 = &n->m_contours;
-        for (size_t i = 0; i < c0->contours.size(); ++i) {
-            std::copy(all_contours[j].begin(), all_contours[j].end(), c0->contours[i].begin());
+        std::vector<std::vector<uint8_t>> fixed(all_contours.size());
+        for (size_t c = 0; c < all_contours.size(); ++c) {
+            const std::vector<Point> &C = all_contours[c];
+            const int n = static_cast<int>(C.size());
+            fixed[c].assign(n, 0);
+            for (int k = 0; k < n; ++k) {
+                const int px = static_cast<int>(C[k].x);
+                const int py = static_cast<int>(C[k].y);
+                if (px >= 0 && px < m_width && py >= 0 && py < m_height &&
+                    junctions[py * m_width + px]) {
+                    fixed[c][k] = 1;
+                    continue;
+                }
+            }
+        }
 
-            c0->curves[i].resize(all_curves[j].size());
-            std::copy(all_curves[j].begin(), all_curves[j].end(), c0->curves[i].begin());
-            j++;
+        std::vector<std::vector<QuadBezier>> all_curves;
+        fit_curve_reduction(all_contours, fixed, all_curves, 0.5f);
+
+        int j = 0;
+        for (const Node_ptr &n : get_nodes()) {
+            if (n->area() == 0) continue;
+
+            ColoredContours *c0 = &n->m_contours;
+            for (size_t i = 0; i < c0->contours.size(); ++i) {
+                std::copy(all_contours[j].begin(), all_contours[j].end(), c0->contours[i].begin());
+
+                c0->curves[i].resize(all_curves[j].size());
+                std::copy(all_curves[j].begin(), all_curves[j].end(), c0->curves[i].begin());
+                j++;
+            }
         }
     }
 }
