@@ -26,12 +26,12 @@ def main():
   img_kmeans, labels = img2num.kmeans(img_bf, 64, 100, 0)
   cv2.imwrite(os.path.join(OUTDIR, "kmeans_image.png"), cv2.cvtColor(img_kmeans, cv2.COLOR_RGBA2BGR))
 # svg file
-  res_svg = img2num.labels_to_svg(img, labels, 100)
+  res_svg = img2num.labels_to_svg(img, labels, 100, 10)
   with open(os.path.join(OUTDIR, "result.svg"),"w") as f:
       f.writelines(res_svg)
 
   # res_svg2 should match res_svg
-  cfg = img2num.ImageToSvgConfig(kmeans = {"k": 64})
+  cfg = img2num.ImageToSvgConfig(kmeans = {"k": 64}, min_thickness=10)
   print(cfg)
 
   res_svg2 = img2num.image_to_svg(img, config=cfg)
