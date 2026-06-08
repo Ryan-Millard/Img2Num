@@ -150,3 +150,37 @@ void fit_curve_reduction(const std::vector<std::vector<Point>> &chains,
         results.push_back(result);
     }
 }
+
+// --- Junction-aware wrapper ---
+// Splits each chain at its fixed (junction) points and fits the pieces
+// separately. Because fitRecursive always keeps a segment's first and last point
+// exactly, every junction becomes a pinned on-curve point the fit cannot move.
+void fit_curve_reduction(const std::vector<std::vector<Point>> &chains,
+                         const std::vector<std::vector<uint8_t>> &fixed,
+                         std::vector<std::vector<QuadBezier>> &results, float tolerance) {
+    for (size_t i = 0; i < chains.size(); ++i) {
+        const std::vector<Point> &chain = chains[i];
+        const int n = static_cast<int>(chain.size());
+        std::vector<QuadBezier> result;
+        if (n < 2) {
+            results.push_back(result);
+            continue;
+        }
+
+        // Segment boundaries: chain ends plus every interior junction point.
+        std::vector<int> bounds;
+        bounds.push_back(0);
+        for (int k = 1; k < n - 1; ++k)
+            if (k < static_cast<int>(fixed[i].size()) && fixed[i][k]) bounds.push_back(k);
+        bounds.push_back(n - 1);
+
+        // Fit each [bounds[s], bounds[s+1]] piece; consecutive pieces share the
+        // junction point, so the curve stays continuous and pinned there.
+        for (size_t s = 0; s + 1 < bounds.size(); ++s) {
+            const int a = bounds[s], b = bounds[s + 1];
+            std::vector<Point> seg(chain.begin() + a, chain.begin() + b + 1);
+            fitRecursive(seg, tolerance, result);
+        }
+        results.push_back(result);
+    }
+}

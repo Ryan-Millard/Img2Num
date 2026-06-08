@@ -691,7 +691,7 @@ void selectiveSmooth(std::vector<Point> &pts, const std::vector<bool> &isLocked)
 
 void coupledSmooth(std::vector<std::vector<Point>> &contours,
                    const std::vector<std::vector<bool>> &lockedMasks, float pairRadiusSq = 2.25f) {
-    SavitzkyGolay sg(2, 2);  // radius, polynomial order
+    SavitzkyGolay sg(3, 2);  // radius, polynomial order
 
     // first fit
     std::vector<std::vector<Point>> smoothedContours;
@@ -797,7 +797,7 @@ void coupled_smooth_junctions(std::vector<std::vector<Point>> &contours, Rect bo
     std::cout << "update junctions" << std::endl;
     updateLockedMasks(contours, lockedMasks, junctions, width);
 
-    coupledSmooth(contours, lockedMasks, 0.25f);
+    coupledSmooth(contours, lockedMasks, 1.0f);
 }
 
 // --- Main Solver ---

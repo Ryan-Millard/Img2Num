@@ -62,12 +62,12 @@ int main(int argc, char** argv) {
     const double sigma{width * SIGMA_WIDTH_RATIO};
     img2num::bilateral_filter(img_data, width, height, sigma, 50.0, 0);
     // Apply kmeans
-    img2num::kmeans(img_data, out_data, out_labels, width, height, 32, 100, 1);
+    img2num::kmeans(img_data, out_data, out_labels, width, height, 16, 100, 1);
     // Generate SVG
     std::string res_svg{img2num::labels_to_svg(img_data, out_labels, width, height, 100)};
 
     img2num::ImageToSvgConfig config;
-    config.kmeans.k = 32;
+    config.kmeans.k = 16;
     std::string res_svg2{img2num::image_to_svg(img_data, width, height, config)};
 
     // Save the blurred image

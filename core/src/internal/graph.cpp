@@ -1,12 +1,16 @@
 #include "internal/graph.h"
 
 #include <algorithm>
+#include <cmath>
+#include <cstdlib>
 #include <iterator>
 #include <queue>
 #include <string>
 
 #include "internal/Pixel.h"
 #include "internal/bezier.h"
+#include "internal/douglas_peucker.h"
+#include "internal/shared_contours.h"
 /*
  Graph class - manages Node class
 */
@@ -254,6 +258,44 @@ std::vector<uint8_t> Graph::analyzeJunctions(const std::vector<uint8_t>& skel, i
 }
 
 void Graph::compute_contours() {
+    // Shared-edge mode (default): build region boundaries on the crack grid so
+    // neighbouring contours are exactly coincident along shared edges -- no
+    // overlap band, no gaps. Set IMG2NUM_LEGACY=1 for the old overlap pipeline.
+    if (!std::getenv("IMG2NUM_LEGACY")) {
+        float eps = 0.75f;
+        if (const char *e = std::getenv("IMG2NUM_DP_EPS")) eps = static_cast<float>(std::atof(e));
+
+        std::vector<int32_t> labels(static_cast<size_t>(m_width) * m_height, -1);
+        for (const Node_ptr &n : get_nodes()) {
+            if (n->area() == 0) continue;
+            for (auto &p : n->get_pixels())
+                labels[static_cast<size_t>(p.position.y) * m_width + p.position.x] = n->id();
+        }
+
+        auto loops = build_shared_loops(labels, m_width, m_height, eps);
+
+        for (const Node_ptr &n : get_nodes()) {
+            if (n->area() == 0) continue;
+            n->clear_contour();
+            auto it = loops.find(n->id());
+            if (it == loops.end()) continue;
+            ImageLib::RGBPixel<uint8_t> c = n->color();
+            ImageLib::RGBAPixel<uint8_t> col{c.red, c.green, c.blue, 255};
+            for (std::vector<QuadBezier> &curve : it->second) {
+                std::vector<Point> anchors;  // keep contours[] parallel to curves[]
+                anchors.reserve(curve.size() + 1);
+                for (const QuadBezier &q : curve) anchors.push_back(q.p0);
+                if (!curve.empty()) anchors.push_back(curve.back().p2);
+                n->m_contours.contours.push_back(std::move(anchors));
+                n->m_contours.curves.push_back(std::move(curve));
+                n->m_contours.colors.push_back(col);
+                n->m_contours.hierarchy.push_back({-1, -1, -1, -1});
+                n->m_contours.is_hole.push_back(false);
+            }
+        }
+        return;
+    }
+
     // overlap edge pixels
     // then compute contours
     process_overlapping_edges();
@@ -301,8 +343,36 @@ void Graph::compute_contours() {
         m_width
     );
 
+    // Build the set of points the fit must pin (and therefore split at), so that
+    // neighbouring contours split at the SAME places and their fitted curves
+    // track each other (stay overlapping) instead of one cutting a corner the
+    // other follows. Two shared features both sides have in common:
+    //   - junctions (locked during smoothing -> still at integer pixels here), and
+    //   - corners (sharp direction changes); A and B are smoothed copies of the
+    //     same boundary, so their corners coincide -> matching split points.
+    float corner_deg = 35.0f;  // turn angle above which a point is a corner
+    if (const char *cd = std::getenv("IMG2NUM_CORNER")) corner_deg = static_cast<float>(std::atof(cd));
+    const float corner_cos = std::cos(corner_deg * 3.14159265358979323846f / 180.0f);
+    const int win = 2;  // look this many points each side for a robust direction
+
+    std::vector<std::vector<uint8_t>> fixed(all_contours.size());
+    for (size_t c = 0; c < all_contours.size(); ++c) {
+        const std::vector<Point> &C = all_contours[c];
+        const int n = static_cast<int>(C.size());
+        fixed[c].assign(n, 0);
+        for (int k = 0; k < n; ++k) {
+            const int px = static_cast<int>(C[k].x);
+            const int py = static_cast<int>(C[k].y);
+            if (px >= 0 && px < m_width && py >= 0 && py < m_height &&
+                junctions[py * m_width + px]) {
+                fixed[c][k] = 1;
+                continue;
+            }
+        }
+    }
+
     std::vector<std::vector<QuadBezier>> all_curves;
-    fit_curve_reduction(all_contours, all_curves, 0.25f);
+    dp_curve_reduction(all_contours, fixed, all_curves, 0.5f);
 
     int j = 0;
     for (const Node_ptr &n : get_nodes()) {
