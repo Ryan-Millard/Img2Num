@@ -23,10 +23,11 @@
         ]
       },
       "serve": {
-        "desc": "Serve the production build locally",
+        "desc": "Serve the production build locally (mirrors GitHub Pages: serves .html literally, no clean-URL rewrites, so embedded Doxygen iframes work)",
         "args": [
           "-- port PORT    Set the server port",
-          "-- host HOST    Set the server host"
+          "-- host HOST    Set the server host",
+          "-- dir DIR      Build directory to serve (default: build)"
         ]
       }
     },
@@ -105,7 +106,7 @@
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
-    "serve": "docusaurus serve --host 0.0.0.0",
+    "serve": "node scripts/serve.js --host 0.0.0.0",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "doxygen": "node scripts/doxygen.js"

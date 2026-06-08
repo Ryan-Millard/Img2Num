@@ -39,11 +39,16 @@ class Graph {
     void hash_node_ids(void);
     void process_overlapping_edges();
 
-  public:
-    inline Graph(std::unique_ptr<std::vector<Node_ptr>>& nodes, int width, int height)
-        : m_nodes(std::move(nodes))
-        , m_width(width)
-        , m_height(height) {
+    inline uint8_t getPixel(const std::vector<uint8_t>& img, int w, int h, int x, int y) {
+        if (x < 0 || x >= w || y < 0 || y >= h) return 0; // Boundary check
+        return img[y * w + x];
+    }
+
+    std::vector<uint8_t> analyzeJunctions(const std::vector<uint8_t>& skel, int w, int h);
+
+   public:
+    inline Graph(std::unique_ptr<std::vector<Node_ptr>> &nodes, int width, int height)
+        : m_nodes(std::move(nodes)), m_width(width), m_height(height) {
         hash_node_ids();
     }
 

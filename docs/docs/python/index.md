@@ -6,13 +6,15 @@ sidebar_position: 5
 
 # Python Binding
 
-The Python binding provides NumPy-backed wrappers around the Img2Num core library.
+The Python binding provides NumPy-backed wrappers around the Img2Num core
+library. Under the hood it is a native [pybind11](https://pybind11.readthedocs.io/)
+extension that calls directly into the C++ `img2num` library — there is no WASM
+involved.
 
 ## Requirements
 
 - Python ≥ 3.7
 - NumPy
-- WASM runtime (automatically installed with the package)
 
 ## Installation
 
@@ -22,23 +24,36 @@ pip install img2num
 
 ## Usage
 
+Input images must be **RGBA** (4 channels). `width`/`height` are inferred from
+the array shape automatically — you don't pass them.
+
 ```python
-import numpy as np
+import cv2
 from img2num import image_to_svg
 
-# Assuming `image` is a NumPy array of shape (H, W, C)
-svg = image_to_svg(image, width=800, height=600)
+# Load and convert to RGBA (img2num requires 4 channels)
+img = cv2.imread("input.png")
+img = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)  # VERY IMPORTANT
+
+svg = image_to_svg(img)
 print(svg)
 ```
 
 ## Available Functions
 
-| Function           | Description                |
-| :----------------- | :------------------------- |
-| `image_to_svg`     | Full raster → SVG pipeline |
-| `bilateral_filter` | Edge-preserving smoothing  |
-| `kmeans`           | Color clustering           |
-| `findContours`     | Contour detection          |
+| Function                | Description                          |
+| :---------------------- | :----------------------------------- |
+| `image_to_svg`          | Full raster → SVG pipeline           |
+| `bilateral_filter`      | Edge-preserving smoothing            |
+| `kmeans`                | Color clustering                     |
+| `labels_to_svg`         | Convert a label map to SVG paths     |
+| `gaussian_blur_fft`     | FFT-based Gaussian blur              |
+| `invert_image`          | Invert pixel values                  |
+| `threshold_image`       | Posterize to N intensity levels      |
+| `black_threshold_image` | Posterize, biased toward dark output |
+
+See the [Python API Reference](/docs/next/python/python-api-reference) for full
+signatures.
 
 ## Configuration
 
@@ -48,8 +63,8 @@ Override defaults by passing an `ImageToSvgConfig` object:
 from img2num import ImageToSvgConfig
 
 config = ImageToSvgConfig()
-config.kmeans.k = 32  # More colors
+config.kmeans.k = 32          # More colors
 config.min_cluster_area = 50  # Less filtering
 
-svg = image_to_svg(image, width=800, height=600, config=config)
+svg = image_to_svg(img, config=config)
 ```
