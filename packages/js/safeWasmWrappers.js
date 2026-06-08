@@ -184,7 +184,7 @@ export const kmeans = async ({
  * @param {number} options.width - Image width.
  * @param {number} options.height - Image height.
  * @param {number} [options.min_area=100] - Minimum area of a region to be considered a contour.
-* @param {number} [options.min_thickness=10] - Minimum thickness of a region to be considered a contour.
+ * @param {number} [options.min_thickness=10] - Minimum thickness of a region to be considered a contour.
  * @returns {Promise<{svg: string>} Generated SVG.
  * @throws {Error} If the WASM function fails or input labels are invalid.
  * @example
