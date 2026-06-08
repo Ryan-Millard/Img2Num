@@ -80,6 +80,13 @@ RUN git clone --depth 1 https://github.com/emscripten-core/emsdk.git $EMSDK_DIR 
 ENV PATH=$EMSDK_DIR:$EMSDK_DIR/upstream/emscripten:$PATH
 ENV EMSDK=$EMSDK_DIR
 
+# Redirect Emscripten's cache to a dev-owned location
+ENV EM_CACHE=/home/dev/.cache/emscripten
+
+# Create the cache dir now so it's owned by dev from the start
+RUN mkdir -p /home/dev/.cache/emscripten \
+  && chown -R dev:dev /home/dev/.cache/emscripten
+
 # Auto-load emsdk in all shells
 RUN echo "source /opt/emsdk/emsdk_env.sh" >> /etc/bash.bashrc
 
