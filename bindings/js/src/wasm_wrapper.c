@@ -33,13 +33,13 @@ EMSCRIPTEN_KEEPALIVE void bilateral_filter(uint8_t *image, size_t width, size_t 
 }
 
 EMSCRIPTEN_KEEPALIVE char *labels_to_svg(uint8_t *data, int32_t *labels, const int width,
-                                         const int height, const int min_area) {
-    return img2num_labels_to_svg(data, labels, width, height, min_area);
+                                         const int height, const int min_area, const int min_thickness) {
+    return img2num_labels_to_svg(data, labels, width, height, min_area, min_thickness);
 }
 
 EMSCRIPTEN_KEEPALIVE char *image_to_svg(const uint8_t *data, const int width, const int height,
                                         double sigma_spatial, double sigma_range, const int32_t k,
-                                        const int32_t max_iter, const int min_area,
+                                        const int32_t max_iter, const int min_area, const int min_thickness,
                                         const uint8_t color_space) {
     img2num_ImageToSvgConfig config = img2num_ImageToSvgConfig_default();
 
@@ -48,6 +48,7 @@ EMSCRIPTEN_KEEPALIVE char *image_to_svg(const uint8_t *data, const int width, co
     config.kmeans.k = k;
     config.kmeans.max_iter = max_iter;
     config.min_cluster_area = min_area;
+    config.min_thickness = min_thickness;
     config.color_space = color_space;
 
     return img2num_image_to_svg(data, width, height, &config);

@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
     // Apply kmeans (C API)
     img2num_kmeans(img_data, out_data, out_labels, width, height, 16, 100, 1);
     // Generate SVG
-    char* res_svg = img2num_labels_to_svg(img_data, out_labels, width, height, 100);
+    char* res_svg = img2num_labels_to_svg(img_data, out_labels, width, height, 100, 0);
 
     img2num_ImageToSvgConfig cfg = img2num_ImageToSvgConfig_default();
     char* res_svg2 = img2num_image_to_svg(image_data_original, width, height, &cfg);

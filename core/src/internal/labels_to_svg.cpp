@@ -187,7 +187,7 @@ from K-Means, should be 1/4 the size of data since data is RGBA labels : width *
 height : number of pixels in image = 1 : 1 : 1
 */
 std::string labels_to_svg(const uint8_t *data, const int32_t *labels, const int width,
-                          const int height, const int min_area) {
+                          const int height, const int min_area, const int min_thickness = 0) {
     const int32_t num_pixels{width * height};
     std::vector<int32_t> labels_vector{labels, labels + num_pixels};
     std::vector<int32_t> region_labels;
@@ -205,7 +205,7 @@ std::string labels_to_svg(const uint8_t *data, const int32_t *labels, const int 
     G.discover_edges(region_labels, width, height);
 
     // 4. Merge small area nodes until all nodes are minArea or larger
-    G.merge_small_area_nodes(min_area);
+    G.merge_small_area_nodes(min_area, min_thickness);
 
     // 5. recolor image on new regions
     ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> results{width, height};

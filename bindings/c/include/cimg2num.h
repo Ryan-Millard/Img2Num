@@ -42,6 +42,7 @@ typedef struct img2num_ImageToSvgConfig {
 
     /// Minimum area (in pixels) for a region to be included in the SVG.
     int min_cluster_area;
+    int min_thickness;
 
     /// Color space flag.
     /// - 0 = CIE LAB (more perceptually accurate)
@@ -76,7 +77,7 @@ void img2num_bilateral_filter(uint8_t *image, size_t width, size_t height, doubl
 
 /// @copydoc ::IMG2NUM_H_LABELS_TO_SVG_DOC
 char *img2num_labels_to_svg(const uint8_t *data, const int32_t *labels, const int width,
-                            const int height, const int min_area);
+                            const int height, const int min_area, const int min_thickness);
 
 /// @copydoc ::IMG2NUM_H_IMAGE_TO_SVG_DOC
 char *img2num_image_to_svg(const uint8_t *data, const int width, const int height,

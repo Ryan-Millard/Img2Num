@@ -184,6 +184,7 @@ export const kmeans = async ({
  * @param {number} options.width - Image width.
  * @param {number} options.height - Image height.
  * @param {number} [options.min_area=100] - Minimum area of a region to be considered a contour.
+* @param {number} [options.min_thickness=10] - Minimum thickness of a region to be considered a contour.
  * @returns {Promise<{svg: string>} Generated SVG.
  * @throws {Error} If the WASM function fails or input labels are invalid.
  * @example
@@ -191,10 +192,10 @@ export const kmeans = async ({
  * @variation Converts labeled (from a clustering algorithm, e.g. K-Means) image into an SVG.
  * @since 0.0.0
  */
-export const findContours = async ({ pixels, labels, width, height, min_area = 100 }) => {
+export const findContours = async ({ pixels, labels, width, height, min_area = 100, min_thickness = 10 }) => {
   const result = await callWasm({
     funcName: "labels_to_svg",
-    args: { pixels, labels, width, height, min_area },
+    args: { pixels, labels, width, height, min_area, min_thickness },
     bufferKeys: [
       { key: "pixels", type: "Uint8ClampedArray" },
       { key: "labels", type: "Int32Array" },
@@ -221,6 +222,7 @@ export const findContours = async ({ pixels, labels, width, height, min_area = 1
  * @param {number} [options.num_colors=16] - Number of color clusters.
  * @param {number} [options.max_iter=100] - Maximum number of iterations.
  * @param {number} [options.min_area=100] - Minimum area of a region to be considered a contour.
+ * @param {number} [options.min_thickness=10] - Minimum thickness of a region to be considered a contour.
  * @param {number} [options.color_space=0] - Color space mode.
  * @returns {Promise<{svg: string}>} Generated SVG.
  * @throws {Error} If the WASM function fails or input labels are invalid.
@@ -229,10 +231,10 @@ export const findContours = async ({ pixels, labels, width, height, min_area = 1
  * @variation Convert a raster image (e.g., PNG, JPG) into an SVG.
  * @since 0.0.0
  */
-export const imageToSvg = async ({ pixels, width, height, sigma_spatial = 3, sigma_range = 50, num_colors = 16, max_iter = 100, min_area = 100, color_space = 0 }) => {
+export const imageToSvg = async ({ pixels, width, height, sigma_spatial = 3, sigma_range = 50, num_colors = 16, max_iter = 100, min_area = 100, min_thickness = 10, color_space = 0 }) => {
   const result = await callWasm({
     funcName: "image_to_svg",
-    args: { pixels, width, height, sigma_spatial, sigma_range, num_colors, max_iter, min_area, color_space },
+    args: { pixels, width, height, sigma_spatial, sigma_range, num_colors, max_iter, min_area, min_thickness, color_space },
     bufferKeys: [{ key: "pixels", type: "Uint8ClampedArray" }],
     returnType: "string",
   });

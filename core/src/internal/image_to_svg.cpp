@@ -17,7 +17,7 @@ std::string image_to_svg(const uint8_t* data, const int width, const int height,
                      config.bilateral_filter.sigma_range, config.color_space);
     kmeans(img_data.data(), out_data.data(), out_labels.data(), width, height, config.kmeans.k,
            config.kmeans.max_iter, config.color_space);
-    std::string svg{labels_to_svg(data, out_labels.data(), width, height, config.min_cluster_area)};
+    std::string svg{labels_to_svg(data, out_labels.data(), width, height, config.min_cluster_area, config.min_thickness)};
 
     return svg;
 }

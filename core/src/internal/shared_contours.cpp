@@ -41,7 +41,7 @@ void smooth_edge(std::vector<Point> &p, int w, int h, int iters) {
 // curve is shared and the two regions stay exactly coincident.
 std::vector<QuadBezier> fit_edge(const std::vector<Point> &corners, int w, int h, float eps) {
     std::vector<Point> pts = corners;
-    smooth_edge(pts, w, h, 2);
+    smooth_edge(pts, w, h, 5);
     if (pts.size() < 2) return {};
     std::vector<std::vector<Point>> chain{pts};
     std::vector<std::vector<QuadBezier>> res;
