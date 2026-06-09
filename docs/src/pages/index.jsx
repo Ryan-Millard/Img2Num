@@ -50,7 +50,7 @@ function HeroSection() {
           <div className={styles.heroActionsWrapper}>
             <div className={styles.heroActions} style={{ marginBottom: 0 }}>
               <Link className={styles.btnPrimary} to="/docs/introduction/getting-started">
-                <Package size={16} style={{ marginRight: "6px" }} /> Install via Conan / pip
+                <Package size={16} style={{ marginRight: "6px" }} /> Installation guide
               </Link>
               <Link className={styles.btnGhost} to="/docs">
                 Read the docs
