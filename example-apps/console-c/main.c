@@ -22,7 +22,8 @@ int mkdir_recursive(const char* path) {
 #ifdef _WIN32
     return _mkdir(path);
 #else
-    if (mkdir(path, 0755) == 0 || errno == EEXIST) return 0;
+    if (mkdir(path, 0755) == 0 || errno == EEXIST)
+        return 0;
     return -1;
 #endif
 }
@@ -120,8 +121,10 @@ int main(int argc, char** argv) {
     }
 
     if (blur_save_success && kmeans_save_success && (exit_code == 0)) {
-        printf("\n\nSUCCESS!\nThe below images have been saved:\n\t- %s\n\t- %s\n\t- %s\n",
-               out_path, kmeans_path, svg_path);
+        printf(
+            "\n\nSUCCESS!\nThe below images have been saved:\n\t- %s\n\t- %s\n\t- %s\n", out_path,
+            kmeans_path, svg_path
+        );
     } else {
         fprintf(stderr, "Failed to save images!\n");
         exit_code = 1;

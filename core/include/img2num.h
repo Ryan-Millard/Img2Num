@@ -50,35 +50,40 @@ struct ImageToSvgConfig {
 };
 
 /// @copydoc IMG2NUM_H_GAUSSIAN_BLUR_DOC
-void gaussian_blur_fft(uint8_t *image, size_t width, size_t height, double sigma);
+void gaussian_blur_fft(uint8_t* image, size_t width, size_t height, double sigma);
 
 /// @copydoc IMG2NUM_H_INVERT_IMAGE_DOC
-void invert_image(uint8_t *ptr, int width, int height);
+void invert_image(uint8_t* ptr, int width, int height);
 
 /// @copydoc IMG2NUM_H_THRESHOLD_IMAGE_DOC
-void threshold_image(uint8_t *ptr, const int width, const int height, const int num_thresholds);
+void threshold_image(uint8_t* ptr, const int width, const int height, const int num_thresholds);
 
 /// @copydoc IMG2NUM_H_BLACK_THRESHOLD_IMAGE_DOC
-void black_threshold_image(uint8_t *ptr, const int width, const int height,
-                           const int num_thresholds);
+void black_threshold_image(
+    uint8_t* ptr, const int width, const int height, const int num_thresholds
+);
 
 /// @copydoc IMG2NUM_H_KMEANS_DOC
-void kmeans(const uint8_t *data, uint8_t *out_data, int32_t *out_labels, const int32_t width,
-            const int32_t height, const int32_t k, const int32_t max_iter,
-            const uint8_t color_space);
+void kmeans(
+    const uint8_t* data, uint8_t* out_data, int32_t* out_labels, const int32_t width,
+    const int32_t height, const int32_t k, const int32_t max_iter, const uint8_t color_space
+);
 
 /// @copydoc IMG2NUM_H_BILATERAL_FILTER_DOC
-void bilateral_filter(uint8_t *image, size_t width, size_t height, double sigma_spatial,
-                      double sigma_range, uint8_t color_space);
+void bilateral_filter(
+    uint8_t* image, size_t width, size_t height, double sigma_spatial, double sigma_range,
+    uint8_t color_space
+);
 
 /// @copydoc IMG2NUM_H_LABELS_TO_SVG_DOC
 std::string labels_to_svg(const uint8_t *data, const int32_t *labels, const int width,
                           const int height, const int min_area, const int min_thickness);
 
 /// @copydoc IMG2NUM_H_IMAGE_TO_SVG_DOC
-std::string image_to_svg(const uint8_t *data, const int width, const int height,
-                         const ImageToSvgConfig &config);
+std::string image_to_svg(
+    const uint8_t* data, const int width, const int height, const ImageToSvgConfig& config
+);
 
-}  // namespace img2num
+} // namespace img2num
 
-#endif  // IMG2NUM_H
+#endif // IMG2NUM_H

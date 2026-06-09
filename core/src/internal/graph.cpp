@@ -1,5 +1,8 @@
 #include "internal/graph.h"
 
+#include "internal/bezier.h"
+#include "internal/Pixel.h"
+
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
@@ -15,15 +18,16 @@
  Graph class - manages Node class
 */
 
-static inline float colorDistance(const ImageLib::RGBPixel<uint8_t> &a,
-                                  const ImageLib::RGBPixel<uint8_t> &b) {
-    ImageLib::RGBPixel<float> af{static_cast<float>(a.red), static_cast<float>(a.green),
-                                 static_cast<float>(a.blue)};
-    ImageLib::RGBPixel<float> bf{static_cast<float>(b.red), static_cast<float>(b.green),
-                                 static_cast<float>(b.blue)};
-    return std::sqrt((af.red - bf.red) * (af.red - bf.red) +
-                     (af.green - bf.green) * (af.green - bf.green) +
-                     (af.blue - bf.blue) * (af.blue - bf.blue));
+static inline float
+colorDistance(const ImageLib::RGBPixel<uint8_t>& a, const ImageLib::RGBPixel<uint8_t>& b) {
+    ImageLib::RGBPixel<float> af {
+        static_cast<float>(a.red), static_cast<float>(a.green), static_cast<float>(a.blue)};
+    ImageLib::RGBPixel<float> bf {
+        static_cast<float>(b.red), static_cast<float>(b.green), static_cast<float>(b.blue)};
+    return std::sqrt(
+        (af.red - bf.red) * (af.red - bf.red) + (af.green - bf.green) * (af.green - bf.green) +
+        (af.blue - bf.blue) * (af.blue - bf.blue)
+    );
 }
 
 /*
@@ -33,14 +37,14 @@ indexing time of std::vector by value is O(N)
 lookup time of std::unordered_map by key is O(log(N))
 */
 void Graph::hash_node_ids() {
-    for (int32_t i{0}; i < m_nodes->size(); i++) {
-        const int32_t key{m_nodes->at(i)->id()};
+    for (int32_t i {0}; i < m_nodes->size(); i++) {
+        const int32_t key {m_nodes->at(i)->id()};
         m_node_ids[key] = i;
     }
 }
 
 bool Graph::all_areas_bigger_than(int32_t min_area) {
-    for (auto &n : *m_nodes) {
+    for (auto& n : *m_nodes) {
         if (n->area() < min_area) {
             return false;
         }
@@ -50,33 +54,33 @@ bool Graph::all_areas_bigger_than(int32_t min_area) {
 }
 
 bool Graph::add_edge(int32_t node_id1, int32_t node_id2) {
-    auto end_node_ids{m_node_ids.end()};
-    auto node1_it{m_node_ids.find(node_id1)};
-    auto node2_it{m_node_ids.find(node_id2)};
+    auto end_node_ids {m_node_ids.end()};
+    auto node1_it {m_node_ids.find(node_id1)};
+    auto node2_it {m_node_ids.find(node_id2)};
 
     if (node1_it == end_node_ids || node2_it == end_node_ids) {
         return false;
     }
 
-    const int32_t idx1{node1_it->second};
-    const int32_t idx2{node2_it->second};
+    const int32_t idx1 {node1_it->second};
+    const int32_t idx2 {node2_it->second};
 
     m_nodes->at(idx1)->add_edge(m_nodes->at(idx2));
     m_nodes->at(idx2)->add_edge(m_nodes->at(idx1));
     return true;
 }
 
-bool Graph::merge_nodes(const Node_ptr &node_to_keep, const Node_ptr &node_to_remove) {
-    auto end_node_ids{m_node_ids.end()};
-    auto node1_it{m_node_ids.find(node_to_keep->id())};
-    auto node2_it{m_node_ids.find(node_to_remove->id())};
+bool Graph::merge_nodes(const Node_ptr& node_to_keep, const Node_ptr& node_to_remove) {
+    auto end_node_ids {m_node_ids.end()};
+    auto node1_it {m_node_ids.find(node_to_keep->id())};
+    auto node2_it {m_node_ids.find(node_to_remove->id())};
 
     if (node1_it == end_node_ids || node2_it == end_node_ids) {
         return false;
     }
 
-    const int32_t idx_k{node1_it->second};
-    const int32_t idx_r{node2_it->second};
+    const int32_t idx_k {node1_it->second};
+    const int32_t idx_r {node2_it->second};
 
     // transfer edges from node_to_remove to node_to_keep
     for (Node_ptr n : m_nodes->at(idx_r)->edges()) {
@@ -96,36 +100,40 @@ bool Graph::merge_nodes(const Node_ptr &node_to_keep, const Node_ptr &node_to_re
 }
 
 void Graph::clear_unconnected_nodes() {
-    std::vector<Node_ptr> &nodes{*m_nodes};
+    std::vector<Node_ptr>& nodes {*m_nodes};
 
-    nodes.erase(std::remove_if(nodes.begin(), nodes.end(),
-                               [](const Node_ptr &n) { return n->area() == 0; }),
-                nodes.end());
+    nodes.erase(
+        std::remove_if(
+            nodes.begin(), nodes.end(), [](const Node_ptr& n) { return n->area() == 0; }
+        ),
+        nodes.end()
+    );
 
     hash_node_ids();
 }
 
-void Graph::discover_edges(const std::vector<int32_t> &region_labels, const int32_t width,
-                           const int32_t height) {
+void Graph::discover_edges(
+    const std::vector<int32_t>& region_labels, const int32_t width, const int32_t height
+) {
     // Moore 8-connected neighbourhood
-    constexpr int8_t dirs[8][2]{{1, 0}, {-1, 0},  {0, 1},  {0, -1},
-                                {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};
+    constexpr int8_t dirs[8][2] {{1, 0}, {-1, 0},  {0, 1},  {0, -1},
+                                 {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};
 
     int32_t rneigh[8];
 
-    for (int32_t y{0}; y < height; ++y) {
-        for (int32_t x{0}; x < width; ++x) {
-            const int32_t idx{y * width + x};
-            const int32_t rid{region_labels[idx]};
+    for (int32_t y {0}; y < height; ++y) {
+        for (int32_t x {0}; x < width; ++x) {
+            const int32_t idx {y * width + x};
+            const int32_t rid {region_labels[idx]};
 
-            for (int32_t k{0}; k < 8; ++k) {
-                const int32_t nx{x + dirs[k][0]};
-                const int32_t ny{y + dirs[k][1]};
+            for (int32_t k {0}; k < 8; ++k) {
+                const int32_t nx {x + dirs[k][0]};
+                const int32_t ny {y + dirs[k][1]};
 
                 if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
                     rneigh[k] = region_labels[ny * width + nx];
                 } else {
-                    rneigh[k] = rid;  // ignore out-of-bounds
+                    rneigh[k] = rid; // ignore out-of-bounds
                 }
             }
 
@@ -142,23 +150,25 @@ void Graph::process_overlapping_edges() {
     // 1. Build the Global Label Map ONCE (0 = background, else = node->id())
     std::vector<int32_t> label_map(m_width * m_height, 0);
 
-    for (const Node_ptr &n : get_nodes()) {
-        if (n->area() == 0) continue;
+    for (const Node_ptr& n : get_nodes()) {
+        if (n->area() == 0)
+            continue;
 
-        for (auto &[_, p] : n->get_pixels()) {
+        for (auto& [_, p] : n->get_pixels()) {
             label_map[p.y * m_width + p.x] = n->id();
         }
     }
 
-    constexpr int8_t dirs[8][2]{{1, 0}, {-1, 0},  {0, 1},  {0, -1},
-                                {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};
+    constexpr int8_t dirs[8][2] {{1, 0}, {-1, 0},  {0, 1},  {0, -1},
+                                 {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};
 
     // 2. Iterate directly over the pixels of each node
-    for (const Node_ptr &n : get_nodes()) {
-        if (n->area() == 0) continue;
+    for (const Node_ptr& n : get_nodes()) {
+        if (n->area() == 0)
+            continue;
         int32_t val = n->id();
 
-        for (auto &[_, p] : n->get_pixels()) {
+        for (auto& [_, p] : n->get_pixels()) {
             int x = p.x;
             int y = p.y;
 
@@ -168,7 +178,8 @@ void Graph::process_overlapping_edges() {
                 int ny = y + dirs[k][1];
 
                 // Fast boundary check (replaces std::clamp)
-                if (nx < 0 || nx >= m_width || ny < 0 || ny >= m_height) continue;
+                if (nx < 0 || nx >= m_width || ny < 0 || ny >= m_height)
+                    continue;
 
                 int32_t n_val = label_map[ny * m_width + nx];
 
@@ -181,27 +192,28 @@ void Graph::process_overlapping_edges() {
                         int mx = nx + dirs[mk][0];
                         int my = ny + dirs[mk][1];
 
-                        if (mx < 0 || mx >= m_width || my < 0 || my >= m_height) continue;
+                        if (mx < 0 || mx >= m_width || my < 0 || my >= m_height)
+                            continue;
 
                         int32_t m_val = label_map[my * m_width + mx];
 
                         if (m_val != 0 && m_val != val && m_val != n_val) {
                             is_too_thin = true;
-                            break;  // CRITICAL: Stop checking immediately once proven thin!
+                            break; // CRITICAL: Stop checking immediately once proven thin!
                         }
                     }
 
                     if (is_too_thin) {
                         // Give our pixel to the neighbor
                         Node_ptr neighbor_node =
-                            m_nodes->at(m_node_ids[n_val]);  // get_node_by_id(n_val); // Assuming
-                                                             // you have this lookup
+                            m_nodes->at(m_node_ids[n_val]); // get_node_by_id(n_val); // Assuming
+                                                            // you have this lookup
                         if (neighbor_node) {
-                            neighbor_node->add_edge_pixel(XY{x, y});
+                            neighbor_node->add_edge_pixel(XY {x, y});
                         }
                     } else {
                         // Take the neighbor's pixel
-                        n->add_edge_pixel(XY{nx, ny});
+                        n->add_edge_pixel(XY {nx, ny});
                     }
                 }
             }

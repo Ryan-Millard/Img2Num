@@ -1,3 +1,8 @@
+#include "img2num.h"
+#include "internal/bezier.h"
+#include "internal/contours.h"
+#include "internal/graph.h"
+
 #include <array>
 #include <cmath>
 #include <cstdint>
@@ -14,24 +19,23 @@
 #include <sstream>
 #include <vector>
 
-#include "img2num.h"
-#include "internal/bezier.h"
-#include "internal/contours.h"
-#include "internal/graph.h"
-
 /* Flood fill */
-int flood_fill(std::vector<int32_t> &label_array, std::vector<int32_t> &region_array,
-               const uint8_t *color_array, int x, int y, int target_value, int label_value,
-               size_t width, size_t height, std::unique_ptr<std::vector<RGBXY>> &out_pixels) {
+int flood_fill(
+    std::vector<int32_t>& label_array, std::vector<int32_t>& region_array,
+    const uint8_t* color_array, int x, int y, int target_value, int label_value, size_t width,
+    size_t height, std::unique_ptr<std::vector<RGBXY>>& out_pixels
+) {
     std::queue<XY> queue;
-    auto index = [width](int x, int y) { return y * width + x; };
+    auto index = [width](int x, int y) {
+        return y * width + x;
+    };
 
     int count = 0;
     int dirs[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
-    RGBXY pix =
-        RGBXY{color_array[4 * size_t(index(x, y))], color_array[4 * size_t(index(x, y)) + 1],
-              color_array[4 * size_t(index(x, y)) + 2], x, y};
+    RGBXY pix = RGBXY {
+        color_array[4 * size_t(index(x, y))], color_array[4 * size_t(index(x, y)) + 1],
+        color_array[4 * size_t(index(x, y)) + 2], x, y};
 
     queue.push({x, y});
 
@@ -43,7 +47,7 @@ int flood_fill(std::vector<int32_t> &label_array, std::vector<int32_t> &region_a
     while (!queue.empty()) {
         XY c = queue.front();
         queue.pop();
-        for (auto &d : dirs) {
+        for (auto& d : dirs) {
             int x1 = c.x + d[0];
             int y1 = c.y + d[1];
 
@@ -51,9 +55,10 @@ int flood_fill(std::vector<int32_t> &label_array, std::vector<int32_t> &region_a
             if ((x1 >= 0) && (x1 < int(width)) && (y1 >= 0) && (y1 < int(height)) &&
                 (label_array[size_t(index(x1, y1))] == target_value) &&
                 (region_array[size_t(index(x1, y1))] == -1)) {
-                RGBXY pix1 = RGBXY{color_array[4 * size_t(index(x1, y1))],
-                                   color_array[4 * size_t(index(x1, y1)) + 1],
-                                   color_array[4 * size_t(index(x1, y1)) + 2], x1, y1};
+                RGBXY pix1 = RGBXY {
+                    color_array[4 * size_t(index(x1, y1))],
+                    color_array[4 * size_t(index(x1, y1)) + 1],
+                    color_array[4 * size_t(index(x1, y1)) + 2], x1, y1};
                 region_array[size_t(index(x1, y1))] = label_value;
                 out_pixels->push_back(pix1);
                 count++;
@@ -66,18 +71,21 @@ int flood_fill(std::vector<int32_t> &label_array, std::vector<int32_t> &region_a
     return count;
 }
 
-void region_labeling(const uint8_t *data, std::vector<int32_t> &labels,
-                     std::vector<int32_t> &regions, int width, int height,
-                     std::vector<Node_ptr> &nodes) {
-    auto index = [width](int x, int y) { return y * width + x; };
+void region_labeling(
+    const uint8_t* data, std::vector<int32_t>& labels, std::vector<int32_t>& regions, int width,
+    int height, std::vector<Node_ptr>& nodes
+) {
+    auto index = [width](int x, int y) {
+        return y * width + x;
+    };
 
     regions.resize(static_cast<size_t>(height) * static_cast<size_t>(width), -1);
     int r_lbl = -1;
 
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
-            int label{labels[size_t(index(i, j))]};
-            int rlab{regions[size_t(index(i, j))]};
+            int label {labels[size_t(index(i, j))]};
+            int rlab {regions[size_t(index(i, j))]};
 
             if (rlab == -1) {
                 r_lbl++;
@@ -96,31 +104,35 @@ void region_labeling(const uint8_t *data, std::vector<int32_t> &labels,
     }
 }
 
-void visualize_contours(const std::vector<std::vector<Point>> &contours,
-                        ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> &results, int width,
-                        int height, int xmin = 0, int ymin = 0) {
+void visualize_contours(
+    const std::vector<std::vector<Point>>& contours,
+    ImageLib::Image<ImageLib::RGBAPixel<uint8_t>>& results, int width, int height, int xmin = 0,
+    int ymin = 0
+) {
     // Random generator for colors
-    static std::mt19937 rng(std::random_device{}());
+    static std::mt19937 rng(std::random_device {}());
     static std::uniform_int_distribution<int32_t> dist(0, 255);
-    for (const auto &c : contours) {
-        ImageLib::RGBAPixel<uint8_t> rand_color{static_cast<uint8_t>(dist(rng)),
-                                                static_cast<uint8_t>(dist(rng)),
-                                                static_cast<uint8_t>(dist(rng)), 255};
+    for (const auto& c : contours) {
+        ImageLib::RGBAPixel<uint8_t> rand_color {
+            static_cast<uint8_t>(dist(rng)), static_cast<uint8_t>(dist(rng)),
+            static_cast<uint8_t>(dist(rng)), 255};
 
-        for (const auto &p : c) {
-            int32_t _x{static_cast<int32_t>(p.x) + xmin};
-            int32_t _y{static_cast<int32_t>(p.y) + ymin};
+        for (const auto& p : c) {
+            int32_t _x {static_cast<int32_t>(p.x) + xmin};
+            int32_t _y {static_cast<int32_t>(p.y) + ymin};
 
             // Ensure within bounds
-            if (_x < 0 || _x >= width || _y < 0 || _y >= height) continue;
+            if (_x < 0 || _x >= width || _y < 0 || _y >= height)
+                continue;
 
             results(_x, _y) = rand_color;
         }
     }
 }
 
-std::string contourToSVGPath(const std::vector<Point> &contour) {
-    if (contour.empty()) return "";
+std::string contourToSVGPath(const std::vector<Point>& contour) {
+    if (contour.empty())
+        return "";
 
     std::ostringstream path;
     path << std::fixed << std::setprecision(2);
@@ -138,15 +150,17 @@ std::string contourToSVGPath(const std::vector<Point> &contour) {
     return path.str();
 }
 
-std::string contourToSVGCurve(const std::vector<QuadBezier> &curves) {
-    if (curves.empty()) return "";
+std::string contourToSVGCurve(const std::vector<QuadBezier>& curves) {
+    if (curves.empty())
+        return "";
 
     std::ostringstream path;
     path << std::fixed << std::setprecision(2);
 
     for (size_t i = 0; i < curves.size(); ++i) {
-        const auto &c = curves[i];
-        if (i == 0) path << "M " << c.p0.x << " " << c.p0.y << " ";
+        const auto& c = curves[i];
+        if (i == 0)
+            path << "M " << c.p0.x << " " << c.p0.y << " ";
         path << "Q " << c.p1.x << " " << c.p1.y << " " << c.p2.x << " " << c.p2.y << " ";
     }
 
@@ -155,7 +169,7 @@ std::string contourToSVGCurve(const std::vector<QuadBezier> &curves) {
     return path.str();
 }
 
-std::string contoursResultToSVG(const ColoredContours &result, const int width, const int height) {
+std::string contoursResultToSVG(const ColoredContours& result, const int width, const int height) {
     std::ostringstream svg;
     svg << "<svg xmlns=\"http://www.w3.org/2000/svg\" fill-rule=\"evenodd\" "
            "width=\""
@@ -164,7 +178,7 @@ std::string contoursResultToSVG(const ColoredContours &result, const int width, 
     for (size_t i = 0; i < result.curves.size(); ++i) {
         std::string pathData = contourToSVGCurve(result.curves[i]);
 
-        const auto &px = result.colors[i];
+        const auto& px = result.colors[i];
         std::ostringstream oss;
         oss << "#" << std::hex << std::uppercase << std::setw(2) << std::setfill('0')
             << static_cast<int>(px.red) << std::setw(2) << std::setfill('0')
@@ -208,12 +222,13 @@ std::string labels_to_svg(const uint8_t *data, const int32_t *labels, const int 
     G.merge_small_area_nodes(min_area, min_thickness);
 
     // 5. recolor image on new regions
-    ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> results{width, height};
-    for (auto &n : G.get_nodes()) {
-        if (n->area() == 0) continue;
+    ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> results {width, height};
+    for (auto& n : G.get_nodes()) {
+        if (n->area() == 0)
+            continue;
 
         auto [r, g, b] = n->color();
-        for (auto &[_, p] : n->get_pixels()) {
+        for (auto& [_, p] : n->get_pixels()) {
             results(p.x, p.y) = {r, g, b};
         }
     }
@@ -224,22 +239,23 @@ std::string labels_to_svg(const uint8_t *data, const int32_t *labels, const int 
 
     // accumulate all contours for svg export
     ColoredContours all_contours;
-    for (auto &n : G.get_nodes()) {
-        if (n->area() == 0) continue;
+    for (auto& n : G.get_nodes()) {
+        if (n->area() == 0)
+            continue;
         ColoredContours node_contours = n->get_contours();
-        for (auto &c : node_contours.contours) {
+        for (auto& c : node_contours.contours) {
             all_contours.contours.push_back(c);
         }
-        for (auto &c : node_contours.hierarchy) {
+        for (auto& c : node_contours.hierarchy) {
             all_contours.hierarchy.push_back(c);
         }
         for (bool b : node_contours.is_hole) {
             all_contours.is_hole.push_back(b);
         }
-        for (auto &c : node_contours.colors) {
+        for (auto& c : node_contours.colors) {
             all_contours.colors.push_back(c);
         }
-        for (auto &c : node_contours.curves) {
+        for (auto& c : node_contours.curves) {
             all_contours.curves.push_back(c);
         }
     }
@@ -247,4 +263,4 @@ std::string labels_to_svg(const uint8_t *data, const int32_t *labels, const int 
     // 7. Return SVG
     return contoursResultToSVG(all_contours, width, height);
 }
-}  // namespace img2num
+} // namespace img2num

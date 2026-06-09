@@ -1,11 +1,12 @@
+#include "img2num.h"
+
 #include <cstring>
 #include <vector>
 
-#include "img2num.h"
-
 namespace img2num {
-std::string image_to_svg(const uint8_t* data, const int width, const int height,
-                         const ImageToSvgConfig& config) {
+std::string image_to_svg(
+    const uint8_t* data, const int width, const int height, const ImageToSvgConfig& config
+) {
     // self deallocate
     std::vector<uint8_t> img_data(static_cast<size_t>(width) * static_cast<size_t>(height) * 4);
     std::vector<uint8_t> out_data(static_cast<size_t>(width) * static_cast<size_t>(height) * 4);
@@ -21,4 +22,4 @@ std::string image_to_svg(const uint8_t* data, const int width, const int height,
 
     return svg;
 }
-}  // namespace img2num
+} // namespace img2num
