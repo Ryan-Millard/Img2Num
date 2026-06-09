@@ -126,8 +126,12 @@ function BindingsSection() {
       icon: <Zap size={22} color="var(--accent)" />,
       accentVar: "--accent-light",
       title: "Native speed",
-      desc: "Header-only or compiled. Quantisation, contour tracing, SVG writer.",
-      code: `#include <img2num.hpp>\nauto svg = img2num::convert("photo.png");`,
+      desc: "Quantisation, contour tracing, SVG writer. Add it as a submodule.",
+      code: `#include "img2num"\nimg2num::ImageToSvgConfig config;\nconfig.kmeans.k = 32;\nstd::string svg {img2num::image_to_svg(img_data, width, height, config)};`,
+      docLinks: [
+        { href: useBaseUrl("/docs/next/cpp"), text: "C++ Docs" },
+        { href: useBaseUrl("/docs/next/c"), text: "C Docs" },
+      ],
     },
     {
       lang: "Python",
@@ -135,7 +139,8 @@ function BindingsSection() {
       accentVar: "--amber-light",
       title: "pip install img2num",
       desc: "Numpy array in → SVG string out. Seamless integration.",
-      code: `import img2num\nsvg = img2num.vectorize("image.jpg")`,
+      code: `import img2num\n\ncfg = img2num.ImageToSvgConfig(kmeans = {"k": 16})\nsvg = img2num.image_to_svg(img, config=cfg)`,
+      docLinks: [],
     },
     {
       lang: "JS",
@@ -143,7 +148,8 @@ function BindingsSection() {
       accentVar: "--blue-light",
       title: "npm i img2num",
       desc: "Browser / Node. Same C++ core compiled to WebAssembly.",
-      code: `import * as img2num from 'img2num';\nconst svg = img2num.convert(imageData);`,
+      code: `import { imageToUint8ClampedArray, imageToSvg } from "img2num";\n\nconst { pixels, width, height } = await imageToUint8ClampedArray(file);\nconst svg = await imageToSvg({ pixels, width, height }});`,
+      docLinks: [{ href: useBaseUrl("/docs/next/js/api"), text: "JsDoc" }],
     },
   ];
 
@@ -167,6 +173,14 @@ function BindingsSection() {
             <pre className={styles.codeSnippet}>
               <code>{b.code}</code>
             </pre>
+            <p>
+              {b.docLinks.map(({ href, text }, index) => (
+                <React.Fragment key={href}>
+                  {index > 0 && <span aria-hidden="true"> · </span>}
+                  <Link to={href}>{text}</Link>
+                </React.Fragment>
+              ))}
+            </p>
           </div>
         ))}
       </div>
@@ -280,7 +294,7 @@ function LinksSection() {
       icon: <FileText size={16} color="var(--ink-3)" />,
       title: "MIT",
       desc: "Permissive, commercial friendly.",
-      to: "/docs/introduction/license",
+      to: "https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE",
     },
   ];
 

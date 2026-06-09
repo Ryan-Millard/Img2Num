@@ -184,6 +184,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 32px;
 }
 
 .demoImage {
@@ -389,7 +390,6 @@
   color: rgba(255, 255, 255, 0.65);
   line-height: 1.6;
   margin: 0;
-  padding-left: 42px;
 }
 
 .ctaBand {
@@ -421,7 +421,6 @@
   font-size: 28px;
   font-weight: 400;
   color: var(--white);
-  max-width: 500px;
   margin: 0;
 }
 
@@ -479,6 +478,7 @@
   font-size: 12px;
   color: var(--ink-3);
   margin-bottom: 6px;
+  gap: 4px;
 }
 
 .linkEyebrowText {
@@ -542,6 +542,9 @@
   align-items: center;
   gap: 10px;
 }
+[data-theme='light'] .chrome {
+  background: var(--white);
+}
 .dots {
   display: flex;
   gap: 6px;
@@ -566,8 +569,11 @@
   gap: 2px;
   background: #1e1d1b;
 }
+[data-theme='light'] .grid {
+  background: var(--white);
+}
 .figure {
-  background: #222120;
+  background: var(--surface-2);
   margin: 0;
   padding: 12px;
   display: flex;
@@ -587,7 +593,6 @@
   font-size: 9px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
 }
 .figure:hover {
   background: #262522;

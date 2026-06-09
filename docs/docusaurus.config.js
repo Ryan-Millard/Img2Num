@@ -96,6 +96,8 @@ const config = {
         anonymizeIP: true,
       },
     ],
+    // Fallback plugin to prevent crashes when gtag is blocked by ad blockers.
+    // Provides a stub that queues calls to dataLayer instead of failing.
     () => ({
       name: "gtag-fallback",
       injectHtmlTags() {
