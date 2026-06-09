@@ -96,6 +96,19 @@ const config = {
         anonymizeIP: true,
       },
     ],
+    () => ({
+      name: "gtag-fallback",
+      injectHtmlTags() {
+        return {
+          headTags: [
+            {
+              tagName: "script",
+              innerHTML: "window.gtag = window.gtag || function() { (window.dataLayer = window.dataLayer || []).push(arguments); };",
+            },
+          ],
+        };
+      },
+    }),
     docusaurusPluginTypeDocConfig,
   ],
 
