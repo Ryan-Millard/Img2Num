@@ -7,6 +7,36 @@ import React, { useEffect, useState } from "react";
 import Hedgehog from "../components/Hedgehog";
 import styles from "./index.module.css";
 
+function RasterToSvgDemo() {
+  return (
+    <section className={styles.panel}>
+      <div className={styles.chrome}>
+        <div className={styles.dots}>
+          <span className={`${styles.dot} ${styles.red}`} />
+          <span className={`${styles.dot} ${styles.yellow}`} />
+          <span className={`${styles.dot} ${styles.green}`} />
+        </div>
+        <span className={styles.chromeText}>NASA/JPL PIA01481 demo</span>
+      </div>
+      <div className={styles.grid}>
+        <figure className={styles.figure}>
+          <img src="https://images-assets.nasa.gov/image/PIA01481/PIA01481~small.jpg" alt="Jupiter system montage raster image" className={styles.image} />
+          <figcaption className={styles.caption}>
+            raster input —{" "}
+            <a href="https://images.nasa.gov/details/PIA01481" target="_blank" rel="noopener noreferrer">
+              NASA/JPL (PIA01481)
+            </a>
+          </figcaption>
+        </figure>
+        <figure className={styles.figure}>
+          <img src={useBaseUrl("/img/homepage-demo.svg")} alt="Vectorized SVG output" className={styles.image} />
+          <figcaption className={styles.caption}>svg output</figcaption>
+        </figure>
+      </div>
+    </section>
+  );
+}
+
 //core hero section
 function HeroSection() {
   const [stats, setStats] = useState({
@@ -75,15 +105,11 @@ function HeroSection() {
               <span className={styles.statNum}>C++/C/Py/JS</span>
               <span className={styles.statLabel}>bindings</span>
             </div>
-            <div className={styles.stat}>
-              <span className={styles.statNum}>~80KB</span>
-              <span className={styles.statLabel}>WASM size</span>
-            </div>
           </div>
         </div>
 
         <div className={styles.heroRight}>
-          <img src={useBaseUrl("/img/homepage-demo.png")} alt="Img2Num Live Demo Mockup" className={styles.demoImage} />
+          <RasterToSvgDemo />
           <Link className={styles.btnPrimary} to="https://ryan-millard.github.io/Img2Num/">
             Try Live Demo →
           </Link>
@@ -112,10 +138,10 @@ function BindingsSection() {
       code: `import img2num\nsvg = img2num.vectorize("image.jpg")`,
     },
     {
-      lang: "JS / WASM",
+      lang: "JS",
       icon: <Globe size={22} color="var(--blue)" />,
       accentVar: "--blue-light",
-      title: "npm i img2num-wasm",
+      title: "npm i img2num",
       desc: "Browser / Node. Same C++ core compiled to WebAssembly.",
       code: `import * as img2num from 'img2num';\nconst svg = img2num.convert(imageData);`,
     },
@@ -231,7 +257,7 @@ function LinksSection() {
     {
       eyebrow: "npm",
       icon: <Layers size={16} color="var(--blue)" />,
-      title: "img2num-wasm",
+      title: "img2num",
       desc: "Node.js and browser ready.",
       to: "https://www.npmjs.com/package/img2num",
     },
@@ -252,7 +278,7 @@ function LinksSection() {
     {
       eyebrow: "License",
       icon: <FileText size={16} color="var(--ink-3)" />,
-      title: "MIT / Apache 2.0",
+      title: "MIT",
       desc: "Permissive, commercial friendly.",
       to: "/docs/introduction/license",
     },

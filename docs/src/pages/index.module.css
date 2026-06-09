@@ -529,3 +529,67 @@
     gap: 16px;
   }
 }
+
+.panel {
+  background: #1a1916;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.chrome {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.dots {
+  display: flex;
+  gap: 6px;
+  margin-left: 4px;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.red { background: #fc5f57; }
+.yellow { background: #fdbc2c; }
+.green { background: #34c84a; }
+.chromeText {
+  font-size: 10px;
+  color: #aaa;
+  font-family: monospace;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: #1e1d1b;
+}
+.figure {
+  background: #222120;
+  margin: 0;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+}
+.image {
+  object-fit: contain;
+  display: block;
+}
+.caption {
+  margin-top: 8px;
+  padding-bottom: 8px;
+  font-family: monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+.figure:hover {
+  background: #262522;
+  transition: background 0.15s ease;
+}
