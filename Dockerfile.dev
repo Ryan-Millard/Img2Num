@@ -153,20 +153,22 @@ RUN uv sync --frozen --no-install-project
 USER root
 RUN corepack enable \
   && corepack prepare pnpm@11.4.0 --activate
+
+COPY --chown=dev:dev package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY --chown=dev:dev packages/js/package.json packages/js/package.json
+COPY --chown=dev:dev docs/package.json docs/package.json
+COPY --chown=dev:dev example-apps/react-js/package.json example-apps/react-js/package.json
+COPY --chown=dev:dev scripts/img2num-dev-scripts/package.json scripts/img2num-dev-scripts/package.json
+
 USER dev
 
+RUN mkdir -p /pnpm/store \
+    && chown -R dev:dev /usr/src/app /pnpm
+
+ENV PNPM_HOME=/pnpm
+ENV PATH=$PNPM_HOME:$PATH
 ENV PNPM_STORE_DIR=/pnpm/store
-
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY packages/js/package.json packages/js/package.json
-COPY docs/package.json docs/package.json
-COPY example-apps/react-js/package.json example-apps/react-js/package.json
-COPY scripts/img2num-dev-scripts/package.json scripts/img2num-dev-scripts/package.json
-
-RUN --mount=type=cache,target=/pnpm/store,uid=1000,gid=1000 \
-    pnpm install --no-frozen-lockfile
-
-RUN chown -R dev:dev /usr/src/app /pnpm
+RUN pnpm install --no-frozen-lockfile
 
 # --------------------------------------------------------------------------------------------------------------
 # Dev UX settings
