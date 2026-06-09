@@ -3,7 +3,7 @@
   --radius-lg: 20px;
 }
 
-[data-theme='light'] {
+[data-theme="light"] {
   --accent: #2d6a4f;
   --accent-2: #52b788;
   --accent-light: #d8f3dc;
@@ -23,7 +23,7 @@
   --white: #fdfcf9;
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   --accent: #52b788;
   --accent-2: #74c69d;
   --accent-light: rgba(82, 183, 136, 0.15);
@@ -144,7 +144,9 @@
   font-size: 14px;
   font-weight: 500;
   text-decoration: none !important;
-  transition: border-color 0.15s, background 0.15s;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
 }
 
 .btnGhost:hover {
@@ -258,7 +260,10 @@
   flex-direction: column;
   gap: 8px;
   min-width: 0;
-  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s;
 }
 
 .bindingCard:hover {
@@ -356,7 +361,10 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-lg);
   padding: 24px 28px;
-  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    transform 0.2s;
 }
 
 .featureCardDark:hover {
@@ -431,7 +439,9 @@
   border-radius: 99px;
   font-weight: 600;
   text-decoration: none !important;
-  transition: transform 0.15s, background 0.15s;
+  transition:
+    transform 0.15s,
+    background 0.15s;
 }
 
 .ctaBtn:hover {
@@ -464,7 +474,9 @@
   padding: 20px 20px 18px;
   text-decoration: none !important;
   display: block;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
 }
 
 .linkCard:hover {
@@ -542,7 +554,7 @@
   align-items: center;
   gap: 10px;
 }
-[data-theme='light'] .chrome {
+[data-theme="light"] .chrome {
   background: var(--white);
 }
 .dots {
@@ -555,9 +567,15 @@
   height: 10px;
   border-radius: 50%;
 }
-.red { background: #fc5f57; }
-.yellow { background: #fdbc2c; }
-.green { background: #34c84a; }
+.red {
+  background: #fc5f57;
+}
+.yellow {
+  background: #fdbc2c;
+}
+.green {
+  background: #34c84a;
+}
 .chromeText {
   font-size: 10px;
   color: #aaa;
@@ -569,7 +587,7 @@
   gap: 2px;
   background: #1e1d1b;
 }
-[data-theme='light'] .grid {
+[data-theme="light"] .grid {
   background: var(--white);
 }
 .figure {
