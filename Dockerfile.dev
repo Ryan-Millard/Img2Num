@@ -156,7 +156,7 @@ RUN --mount=type=cache,target=/pnpm/store \
 # --------------------------------------------------------------------------------------------------------------
 # Share permissions with dev
 
-RUN chown -R dev:dev /usr/src/app 
+RUN chown -R dev:dev /usr/src/app
 RUN chown -R dev:dev /pnpm
 RUN chown -R dev:dev /tmp/.uv-cache
 
