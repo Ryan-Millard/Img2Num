@@ -14,7 +14,7 @@ inline float len(Point a, Point b) {
 }
 
 // --- Evaluate Quadratic Bezier at t ---
-Point evalBezier(const QuadBezier &b, float t) {
+Point evalBezier(const QuadBezier& b, float t) {
     // B(t) = (1-t)^2 * P0 + 2*t*(1-t) * P1 + t^2 * P2
     float invT = 1.0 - t;
     float c0 = invT * invT;
@@ -26,7 +26,7 @@ Point evalBezier(const QuadBezier &b, float t) {
 
 // --- Chord Length Parameterization ---
 // Assigns a 't' value (0.0 to 1.0) to each point based on distance
-std::vector<float> chordLengthParameterize(const std::vector<Point> &points) {
+std::vector<float> chordLengthParameterize(const std::vector<Point>& points) {
     std::vector<float> u;
     u.reserve(points.size());
     u.push_back(0.0f);
@@ -37,9 +37,10 @@ std::vector<float> chordLengthParameterize(const std::vector<Point> &points) {
     }
 
     float totalLen = u.back();
-    if (totalLen == 0) return u;  // Should not happen for valid ranges
+    if (totalLen == 0)
+        return u; // Should not happen for valid ranges
 
-    for (float &val : u) {
+    for (float& val : u) {
         val /= totalLen;
     }
     return u;
@@ -49,7 +50,7 @@ std::vector<float> chordLengthParameterize(const std::vector<Point> &points) {
 // We know Q0 (Start) and Q2 (End). We need to find Q1 that minimizes error.
 // Based on equation: P(t) = (1-t)^2 Q0 + 2t(1-t) Q1 + t^2 Q2
 // Rearranged: Q1 * [2t(1-t)] = P(t) - (1-t)^2 Q0 - t^2 Q2
-Point generateQuadBezier(const std::vector<Point> &points, const std::vector<float> &u) {
+Point generateQuadBezier(const std::vector<Point>& points, const std::vector<float>& u) {
     Point Q0 = points.front();
     Point Q2 = points.back();
 
@@ -84,8 +85,9 @@ Point generateQuadBezier(const std::vector<Point> &points, const std::vector<flo
 }
 
 // --- Recursive Fit Function ---
-void fitRecursive(const std::vector<Point> &points, float errorLimit,
-                  std::vector<QuadBezier> &outCurves) {
+void fitRecursive(
+    const std::vector<Point>& points, float errorLimit, std::vector<QuadBezier>& outCurves
+) {
     // Base Case: Not enough points, just connect them
     if (points.size() <= 2) {
         // Just a line segment
@@ -121,7 +123,7 @@ void fitRecursive(const std::vector<Point> &points, float errorLimit,
 
     // 4. Check Error Threshold
     if (maxDistSq < (errorLimit * errorLimit)) {
-        outCurves.push_back(curve);  // Fit is good!
+        outCurves.push_back(curve); // Fit is good!
     } else {
         // Fit is bad, split at the point of maximum error
         // Important: Prevent infinite recursion if split doesn't advance
@@ -139,8 +141,10 @@ void fitRecursive(const std::vector<Point> &points, float errorLimit,
 }
 
 // --- Main Wrapper ---
-void fit_curve_reduction(const std::vector<std::vector<Point>> &chains,
-                         std::vector<std::vector<QuadBezier>> &results, float tolerance) {
+void fit_curve_reduction(
+    const std::vector<std::vector<Point>>& chains, std::vector<std::vector<QuadBezier>>& results,
+    float tolerance
+) {
     // if (chain.empty()) return result;
     // results.resize(chains.size());
     for (int i = 0; i < chains.size(); ++i) {
