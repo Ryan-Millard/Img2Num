@@ -51,9 +51,20 @@ SHELL ["/bin/bash", "-c"]
 
 # --------------------------------------------------------------------------------------------------------------
 # Create non-root dev user (IMPORTANT)
-RUN useradd -ms /bin/bash dev \
-    && mkdir -p /usr/src/app /pnpm/store \
-    && chown -R dev:dev /usr/src/app /pnpm
+
+RUN if getent passwd 1000 > /dev/null; then \
+    # If ID 1000 exists, find its name and rename it/its group to dev
+    EXISTING_USER=$(getent passwd 1000 | cut -d: -f1) && \
+    EXISTING_GROUP=$(getent group 1000 | cut -d: -f1) && \
+    usermod -l dev -m -d /home/dev $EXISTING_USER && \
+    groupmod -n dev $EXISTING_GROUP; \
+  else \
+      # If ID 1000 doesn't exist, create it safely from scratch
+      groupadd -g 1000 dev && \
+      useradd -m -s /bin/bash -u 1000 -g dev dev; \
+  fi \
+  && mkdir -p /usr/src/app /pnpm/store \
+  && chown -R dev:dev /usr/src/app /pnpm
 
 USER dev
 WORKDIR /usr/src/app
