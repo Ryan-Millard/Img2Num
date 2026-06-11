@@ -49,9 +49,6 @@ ENV CXX=g++-14
 ENV SHELL=/bin/bash
 SHELL ["/bin/bash", "-c"]
 
-# --------------------------------------------------------------------------------------------------------------
-
-RUN mkdir -p /usr/src/app /pnpm/store
 WORKDIR /usr/src/app
 
 # --------------------------------------------------------------------------------------------------------------
@@ -114,11 +111,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 # --------------------------------------------------------------------------------------------------------------
 # UV + Python environment
-ENV UV_INSTALL_DIR="/usr/local/bin"
 RUN curl -LsSf https://astral.sh/uv/0.5.1/install.sh | sh
 
-ENV UV_CACHE_DIR="/tmp/.uv-cache"
+ENV PATH="/root/.local/bin:${PATH}"
 ENV UV_LINK_MODE=copy
+ENV UV_PIP_CACHE_DIR=/root/.cache/uv/pip
 
 RUN uv venv /usr/src/app/.venv
 
