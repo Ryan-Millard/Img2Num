@@ -59,16 +59,29 @@ let initialized = false;
  *
  * @since 0.0.0
  */
-export function initWasmWorker() {
+
+//identifying environment and working accordingly
+const isNode = typeof process !== 'undefined' &&
+               process.versions != null &&
+               process.versions.node != null;
+
+export async function initWasmWorker() {
   if (initialized) return;
 
-  worker = new Worker(new URL("./wasmWorker.js", import.meta.url), { type: "module" });
+  if (isNode) {
+    const { Worker } = await import('worker_threads');
+    const { fileURLToPath } = await import('url');
+    const { dirname, join } = await import('path');
+    const __dirname = dirname(fileURLToPath(import.meta.url));
+    worker = new Worker(join(__dirname, './wasmWorker.js'));
+  } else {
+    worker = new Worker(new URL("./wasmWorker.js", import.meta.url), { type: "module" });
+  }
 
   worker.onmessage = ({ data }) => {
     const { id, error, output, returnValue } = data;
     const cb = callbacks.get(id);
     if (!cb) return;
-
     error ? cb.reject(new Error(error)) : cb.resolve({ output, returnValue });
     callbacks.delete(id);
   };

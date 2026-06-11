@@ -154,7 +154,11 @@ async function callWasm(funcName, argsMap, returnType) {
  *   - returnType: expected return type of the WASM export
  * @param {MessageEvent} event
  */
-self.onmessage = async ({ data }) => {
+const isNode = typeof process !== 'undefined' &&
+               process.versions != null &&
+               process.versions.node != null;
+
+async function handleMessage(data) {
   await readyPromise;
 
   const { id, funcName, args, bufferKeys, returnType } = data;
@@ -205,13 +209,26 @@ self.onmessage = async ({ data }) => {
       wasmModule._free(result);
     }
 
-    self.postMessage({ id, output, returnValue });
+    postMsg({ id, output, returnValue });
   } catch (error) {
-    self.postMessage({ id, error: error.message });
+    postMsg({ id, error: error.message });
   } finally {
     // -------- Cleanup --------
     for (const { ptr } of pointers.values()) {
       wasmModule._free(ptr);
     }
   }
-};
+}
+
+// -------- Environment-aware message binding --------
+// Use worker_threads in Node.js, Web Worker API in browser
+let postMsg;
+
+if (isNode) {
+  const { parentPort } = await import('worker_threads');
+  postMsg = (data) => parentPort.postMessage(data);
+  parentPort.on('message', (data) => handleMessage(data));
+} else {
+  postMsg = (data) => self.postMessage(data);
+  self.onmessage = ({ data }) => handleMessage(data);
+}

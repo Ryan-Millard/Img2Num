@@ -122,6 +122,12 @@ importers:
         specifier: ^6.0.3
         version: 6.0.3
 
+  example-apps/console-js:
+    dependencies:
+      img2num:
+        specifier: workspace:*
+        version: link:../../packages/js
+
   example-apps/react-js:
     dependencies:
       '@tanstack/react-query':
