@@ -127,10 +127,7 @@ function BindingsSection() {
       accentVar: "--accent-light",
       title: "Native speed",
       desc: "Quantisation, contour tracing, SVG writer. Add it as a submodule.",
-      code: `#include "img2num"\n` +
-        `img2num::ImageToSvgConfig config;\n` +
-        `config.kmeans.k = 32;\n` +
-        `std::string svg {img2num::image_to_svg(img_data, width, height, config)};`,
+      code: `#include "img2num"\n` + `img2num::ImageToSvgConfig config;\n` + `config.kmeans.k = 32;\n` + `std::string svg {img2num::image_to_svg(img_data, width, height, config)};`,
       docLinks: [
         { href: useBaseUrl("/docs/next/cpp"), text: "C++ Docs" },
         { href: useBaseUrl("/docs/next/c"), text: "C Docs" },
@@ -142,10 +139,7 @@ function BindingsSection() {
       accentVar: "--amber-light",
       title: "pip install img2num",
       desc: "Numpy array in → SVG string out. Seamless integration.",
-      code: `import img2num\n\n` +
-        
-        `cfg = img2num.ImageToSvgConfig(kmeans = {"k": 16})\n` +
-        `svg = img2num.image_to_svg(img, config=cfg)`,
+      code: `import img2num\n\n` + `cfg = img2num.ImageToSvgConfig(kmeans = {"k": 16})\n` + `svg = img2num.image_to_svg(img, config=cfg)`,
       docLinks: [],
     },
     {
@@ -154,8 +148,8 @@ function BindingsSection() {
       accentVar: "--blue-light",
       title: "npm i img2num",
       desc: "Browser / Node. Same C++ core compiled to WebAssembly.",
-      code: `import { imageToUint8ClampedArray, imageToSvg } from "img2num"\n\n` + 
-        
+      code:
+        `import { imageToUint8ClampedArray, imageToSvg } from "img2num"\n\n` +
         `const { pixels, width, height } = await imageToUint8ClampedArray(file);\n` +
         `const svg = await imageToSvg({ pixels, width, height }});`,
       docLinks: [{ href: useBaseUrl("/docs/next/js/api"), text: "JsDoc" }],
