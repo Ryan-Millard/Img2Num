@@ -1,4 +1,4 @@
-import isNode from './isNode.js';
+import isNode from "./isNode.js";
 /**
  * @packageDocumentation
  * Advanced low-level interface for communicating with the WASM worker.
@@ -61,18 +61,17 @@ let initialized = false;
  * @since 0.0.0
  */
 
-
 export async function initWasmWorker() {
   if (initialized) return;
 
   if (isNode) {
-    const { Worker } = await import('worker_threads');
-    const { fileURLToPath } = await import('url');
-    const { dirname, join } = await import('path');
+    const { Worker } = await import("worker_threads");
+    const { fileURLToPath } = await import("url");
+    const { dirname, join } = await import("path");
     const __dirname = dirname(fileURLToPath(import.meta.url));
-    worker = new Worker(join(__dirname, './wasmWorker.js'));
+    worker = new Worker(join(__dirname, "./wasmWorker.js"));
 
-    worker.on('message', (data) => {
+    worker.on("message", (data) => {
       const { id, error, output, returnValue } = data;
       const cb = callbacks.get(id);
       if (!cb) return;
@@ -80,7 +79,7 @@ export async function initWasmWorker() {
       callbacks.delete(id);
     });
 
-    worker.on('error', (err) => {
+    worker.on("error", (err) => {
       for (const [_id, cb] of callbacks) {
         cb.reject(err);
       }

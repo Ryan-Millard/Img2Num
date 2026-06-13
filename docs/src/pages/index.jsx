@@ -143,7 +143,6 @@ function BindingsSection() {
 
       code: `import img2num\n\n` + `cfg = img2num.ImageToSvgConfig(kmeans = {"k": 16})\n` + `svg = img2num.image_to_svg(img, config=cfg)`,
       docLinks: [],
-
     },
     {
       lang: "JS",

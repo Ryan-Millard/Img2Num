@@ -223,9 +223,9 @@ async function handleMessage(data) {
 let postMsg;
 
 if (isNode) {
-  const { parentPort } = await import('worker_threads');
+  const { parentPort } = await import("worker_threads");
   postMsg = (data) => parentPort.postMessage(data);
-  parentPort.on('message', (data) => handleMessage(data));
+  parentPort.on("message", (data) => handleMessage(data));
 } else {
   postMsg = (data) => self.postMessage(data);
   self.onmessage = ({ data }) => handleMessage(data);
