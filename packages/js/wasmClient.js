@@ -71,25 +71,40 @@ export async function initWasmWorker() {
     const { dirname, join } = await import('path');
     const __dirname = dirname(fileURLToPath(import.meta.url));
     worker = new Worker(join(__dirname, './wasmWorker.js'));
+
+    worker.on('message', (data) => {
+      const { id, error, output, returnValue } = data;
+      const cb = callbacks.get(id);
+      if (!cb) return;
+      error ? cb.reject(new Error(error)) : cb.resolve({ output, returnValue });
+      callbacks.delete(id);
+    });
+
+    worker.on('error', (err) => {
+      for (const [_id, cb] of callbacks) {
+        cb.reject(err);
+      }
+      callbacks.clear();
+    });
   } else {
     worker = new Worker(new URL("./wasmWorker.js", import.meta.url), { type: "module" });
+
+    worker.onmessage = ({ data }) => {
+      const { id, error, output, returnValue } = data;
+      const cb = callbacks.get(id);
+      if (!cb) return;
+      error ? cb.reject(new Error(error)) : cb.resolve({ output, returnValue });
+      callbacks.delete(id);
+    };
+
+    worker.onerror = (event) => {
+      const err = new Error(event.message || "WASM worker error");
+      for (const [_id, cb] of callbacks) {
+        cb.reject(err);
+      }
+      callbacks.clear();
+    };
   }
-
-  worker.onmessage = ({ data }) => {
-    const { id, error, output, returnValue } = data;
-    const cb = callbacks.get(id);
-    if (!cb) return;
-    error ? cb.reject(new Error(error)) : cb.resolve({ output, returnValue });
-    callbacks.delete(id);
-  };
-
-  worker.onerror = (event) => {
-    const err = new Error(event.message || "WASM worker error");
-    for (const [_id, cb] of callbacks) {
-      cb.reject(err);
-    }
-    callbacks.clear();
-  };
 
   initialized = true;
 }
