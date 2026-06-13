@@ -13,15 +13,15 @@ on:
       dh_image:
         required: false
         type: string
-        default: ryanmillard/img2num-dev:main
+        default: ryanmillard/img2num-dev:dev
         description: >
-          Docker Hub image to wait for. Defaults to: ryanmillard/img2num-dev:main
+          Docker Hub image to wait for. Defaults to: ryanmillard/img2num-dev:dev
       ghcr_image:
         required: false
         type: string
-        default: ghcr.io/ryan-millard/img2num-dev:main
+        default: ghcr.io/ryan-millard/img2num-dev:dev
         description: >
-          GHCR image to wait for. Defaults to: ghcr.io/ryan-millard/img2num-dev:main
+          GHCR image to wait for. Defaults to: ghcr.io/ryan-millard/img2num-dev:dev
       max_attempts:
         required: false
         type: number

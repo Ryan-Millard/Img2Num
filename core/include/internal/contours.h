@@ -1,22 +1,22 @@
 #ifndef CONTOURS_H
 #define CONTOURS_H
 
-#include <array>
-#include <cstdint>
-#include <cstdlib>
-#include <stdexcept>
-#include <vector>
-
 #include "internal/Image.h"
 #include "internal/PixelConverters.h"
 #include "internal/Point.h"
 #include "internal/RGBAPixel.h"
 #include "internal/SavitskyGolay.h"
 
+#include <array>
+#include <cstdint>
+#include <cstdlib>
+#include <stdexcept>
+#include <vector>
+
 struct QuadBezier {
-    Point p0{0, 0};  // Start
-    Point p1{0, 0};  // Control
-    Point p2{0, 0};  // End
+    Point p0 {0, 0}; // Start
+    Point p1 {0, 0}; // Control
+    Point p2 {0, 0}; // End
 };
 
 struct Rect {
@@ -44,14 +44,15 @@ struct ColoredContours : ContoursResult {
 };
 
 namespace contours {
-ContoursResult find_contours(const std::vector<uint8_t> &binary, int width, int height);
+ContoursResult find_contours(const std::vector<uint8_t>& binary, int width, int height);
 
-void stitch_smooth(std::vector<Point> &vecA, std::vector<Point> &vecB);
-void coupled_smooth(std::vector<std::vector<Point>> &contours, Rect bounds);
+void stitch_smooth(std::vector<Point>& vecA, std::vector<Point>& vecB);
+void coupled_smooth(std::vector<std::vector<Point>>& contours, Rect bounds);
 
-void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours, Rect bounds,
-                                    int iterations = 15);
+void pack_with_boundary_constraints(
+    std::vector<std::vector<Point>>& contours, Rect bounds, int iterations = 15
+);
 
-}  // namespace contours
+} // namespace contours
 
 #endif

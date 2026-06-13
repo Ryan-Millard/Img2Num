@@ -21,15 +21,23 @@ static constexpr int DY[8] = {0, +1, +1, +1, 0, -1, -1, -1};
 
 // Map (dy,dx) to direction index in [0..7]
 static inline int dirIndex(int dy, int dx) {
-    if (dy == 0 && dx == 1) return 0;
-    if (dy == 1 && dx == 1) return 1;
-    if (dy == 1 && dx == 0) return 2;
-    if (dy == 1 && dx == -1) return 3;
-    if (dy == 0 && dx == -1) return 4;
-    if (dy == -1 && dx == -1) return 5;
-    if (dy == -1 && dx == 0) return 6;
-    if (dy == -1 && dx == 1) return 7;
-    return -1;  // not a neighbor
+    if (dy == 0 && dx == 1)
+        return 0;
+    if (dy == 1 && dx == 1)
+        return 1;
+    if (dy == 1 && dx == 0)
+        return 2;
+    if (dy == 1 && dx == -1)
+        return 3;
+    if (dy == 0 && dx == -1)
+        return 4;
+    if (dy == -1 && dx == -1)
+        return 5;
+    if (dy == -1 && dx == 0)
+        return 6;
+    if (dy == -1 && dx == 1)
+        return 7;
+    return -1; // not a neighbor
 }
 
 static inline int dirIndexFromTo(int y, int x, int ny, int nx) {
@@ -43,10 +51,14 @@ static inline int dirIndexFromTo(int y, int x, int ny, int nx) {
 // a 0-pixel)
 // - nbd is the new border label
 // Returns the contour as points in *unpadded* coordinates (x-1,y-1).
-static std::vector<Point> traceBorder(std::vector<int> &f, int paddedW, int sy, int sx, int py,
-                                      int px, int nbd) {
-    auto set = [&](int y, int x) -> int & { return f[y * paddedW + x]; };
-    auto get = [&](int y, int x) -> int { return f[y * paddedW + x]; };
+static std::vector<Point>
+traceBorder(std::vector<int>& f, int paddedW, int sy, int sx, int py, int px, int nbd) {
+    auto set = [&](int y, int x) -> int& {
+        return f[y * paddedW + x];
+    };
+    auto get = [&](int y, int x) -> int {
+        return f[y * paddedW + x];
+    };
 
     std::vector<Point> pts;
 
@@ -60,7 +72,7 @@ static std::vector<Point> traceBorder(std::vector<int> &f, int paddedW, int sy, 
     int y1 = 0, x1 = 0;
     bool found = false;
     for (int t = 0; t < 8; ++t) {
-        int d = (dStart + t) & 7;  // clockwise
+        int d = (dStart + t) & 7; // clockwise
         int ny = sy + DY[d], nx = sx + DX[d];
         if (get(ny, nx) != 0) {
             y1 = ny;
@@ -73,13 +85,13 @@ static std::vector<Point> traceBorder(std::vector<int> &f, int paddedW, int sy, 
     // If isolated pixel: set f(sy,sx) = -NBD and return single-point contour
     if (!found) {
         set(sy, sx) = -nbd;
-        pts.push_back(Point{static_cast<float>(sx - 1), static_cast<float>(sy - 1)});
+        pts.push_back(Point {static_cast<float>(sx - 1), static_cast<float>(sy - 1)});
         return pts;
     }
 
     // (3.2)
-    int y2 = y1, x2 = x1;  // previous border pixel
-    int y3 = sy, x3 = sx;  // current border pixel
+    int y2 = y1, x2 = x1; // previous border pixel
+    int y3 = sy, x3 = sx; // current border pixel
     const int firstY = y1, firstX = x1;
 
     while (true) {
@@ -90,12 +102,12 @@ static std::vector<Point> traceBorder(std::vector<int> &f, int paddedW, int sy, 
             throw std::runtime_error("traceBorder: broken neighbor chain.");
         }
 
-        const int d0 = (dPrev + 7) & 7;  // one step CCW from dPrev
+        const int d0 = (dPrev + 7) & 7; // one step CCW from dPrev
         bool rightZeroExamined = false;
-        int y4 = y3, x4 = x3;  // next border pixel (to be found)
+        int y4 = y3, x4 = x3; // next border pixel (to be found)
 
         for (int t = 0; t < 8; ++t) {
-            int d = (d0 - t) & 7;  // scan CCW (decrement index)
+            int d = (d0 - t) & 7; // scan CCW (decrement index)
             int ny = y3 + DY[d], nx = x3 + DX[d];
 
             // (3.4a) depends on whether pixel to the right (dx=+1,dy=0 => dir 0)
@@ -121,7 +133,7 @@ static std::vector<Point> traceBorder(std::vector<int> &f, int paddedW, int sy, 
         }
 
         // Record current point in unpadded coordinates
-        pts.push_back(Point{static_cast<float>(x3 - 1), static_cast<float>(y3 - 1)});
+        pts.push_back(Point {static_cast<float>(x3 - 1), static_cast<float>(y3 - 1)});
 
         // (3.5) Termination check
         if (y4 == sy && x4 == sx && y3 == firstY && x3 == firstX) {
@@ -138,7 +150,7 @@ static std::vector<Point> traceBorder(std::vector<int> &f, int paddedW, int sy, 
     return pts;
 }
 
-ContoursResult find_contours(const std::vector<uint8_t> &binary, int width, int height) {
+ContoursResult find_contours(const std::vector<uint8_t>& binary, int width, int height) {
     if (width <= 0 || height <= 0) {
         return {};
     }
@@ -151,8 +163,12 @@ ContoursResult find_contours(const std::vector<uint8_t> &binary, int width, int 
     const int paddedH = height + 2;
     std::vector<int> f(static_cast<std::size_t>(paddedW) * static_cast<std::size_t>(paddedH), 0);
 
-    auto set = [&](int y, int x) -> int & { return f[y * paddedW + x]; };
-    auto get = [&](int y, int x) -> int { return f[y * paddedW + x]; };
+    auto set = [&](int y, int x) -> int& {
+        return f[y * paddedW + x];
+    };
+    auto get = [&](int y, int x) -> int {
+        return f[y * paddedW + x];
+    };
 
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
@@ -164,24 +180,25 @@ ContoursResult find_contours(const std::vector<uint8_t> &binary, int width, int 
     // border).
     struct NodeInfo {
         bool is_hole = false;
-        int parent_id = 0;          // parent border id
-        std::vector<Point> points;  // contour points (unpadded coords)
+        int parent_id = 0;         // parent border id
+        std::vector<Point> points; // contour points (unpadded coords)
         bool used = false;
     };
 
     int nbd = 1;
     std::vector<NodeInfo> nodes(2);
-    nodes[1].is_hole = true;  // frame is treated as a hole border
-    nodes[1].parent_id = 1;   // self-parent for convenience
+    nodes[1].is_hole = true; // frame is treated as a hole border
+    nodes[1].parent_id = 1;  // self-parent for convenience
     nodes[1].used = true;
 
     // Raster scan (Algorithm 1, step 1..4)
     for (int y = 1; y <= height; ++y) {
-        int lnbd = 1;  // reset each row
+        int lnbd = 1; // reset each row
 
         for (int x = 1; x <= width; ++x) {
             int fij = get(y, x);
-            if (fij == 0) continue;  // Algorithm processes only fij != 0
+            if (fij == 0)
+                continue; // Algorithm processes only fij != 0
 
             bool startBorder = false;
             bool isHole = false;
@@ -210,7 +227,8 @@ ContoursResult find_contours(const std::vector<uint8_t> &binary, int width, int 
             }
 
             if (startBorder) {
-                if ((int)nodes.size() <= nbd) nodes.resize(nbd + 1);
+                if ((int)nodes.size() <= nbd)
+                    nodes.resize(nbd + 1);
 
                 nodes[nbd].is_hole = isHole;
                 nodes[nbd].used = true;
@@ -243,7 +261,8 @@ ContoursResult find_contours(const std::vector<uint8_t> &binary, int width, int 
     out.is_hole.reserve(std::max(0, nbd - 1));
 
     for (int id = 2; id <= nbd; ++id) {
-        if (!nodes[id].used) continue;
+        if (!nodes[id].used)
+            continue;
         idToIdx[id] = (int)out.contours.size();
         out.contours.push_back(nodes[id].points);
         out.is_hole.push_back(nodes[id].is_hole);
@@ -252,10 +271,11 @@ ContoursResult find_contours(const std::vector<uint8_t> &binary, int width, int 
 
     // Fill parent index
     for (int id = 2; id <= nbd; ++id) {
-        if (!nodes[id].used) continue;
+        if (!nodes[id].used)
+            continue;
         const int idx = idToIdx[id];
         const int pid = nodes[id].parent_id;
-        out.hierarchy[idx][3] = (pid <= 1) ? -1 : idToIdx[pid];  // parent
+        out.hierarchy[idx][3] = (pid <= 1) ? -1 : idToIdx[pid]; // parent
     }
 
     // Build child/sibling links (first_child, next, prev)
@@ -263,15 +283,16 @@ ContoursResult find_contours(const std::vector<uint8_t> &binary, int width, int 
 
     for (int i = 0; i < (int)out.contours.size(); ++i) {
         int p = out.hierarchy[i][3];
-        if (p < 0) continue;
+        if (p < 0)
+            continue;
 
         if (out.hierarchy[p][2] == -1) {
-            out.hierarchy[p][2] = i;  // first_child
+            out.hierarchy[p][2] = i; // first_child
             lastChild[p] = i;
         } else {
             int last = lastChild[p];
-            out.hierarchy[last][0] = i;  // next sibling
-            out.hierarchy[i][1] = last;  // prev sibling
+            out.hierarchy[last][0] = i; // next sibling
+            out.hierarchy[i][1] = last; // prev sibling
             lastChild[p] = i;
         }
     }
@@ -282,7 +303,7 @@ ContoursResult find_contours(const std::vector<uint8_t> &binary, int width, int 
 // Helper: 2D integer coordinate for map keys
 struct Coord {
     int x, y;
-    bool operator<(const Coord &other) const {
+    bool operator<(const Coord& other) const {
         return std::tie(x, y) < std::tie(other.x, other.y);
     }
 };
@@ -290,14 +311,16 @@ struct Coord {
 // Helper: Normalize a vector
 Point normalize(Point p) {
     float len = std::sqrt(p.x * p.x + p.y * p.y);
-    if (len == 0) return {0, 0};
+    if (len == 0)
+        return {0, 0};
     return {p.x / len, p.y / len};
 }
 
 // Helper: Calculate Tangent of A at index i using neighbors
-Point getTangent(const std::vector<Point> &vec, int i) {
+Point getTangent(const std::vector<Point>& vec, int i) {
     int n = vec.size();
-    if (n < 2) return {0, 0};
+    if (n < 2)
+        return {0, 0};
 
     // Use previous and next points to determine the "flow" of the line
     int prev = (i == 0) ? 0 : i - 1;
@@ -310,7 +333,8 @@ Point getTangent(const std::vector<Point> &vec, int i) {
 // Returns {ClosestPoint, DistanceSquared}
 std::pair<Point, float> getClosestPointOnSegment(Point p, Point v, Point w) {
     float l2 = Point::distSq(v, w);
-    if (l2 == 0.0) return {v, Point::distSq(p, v)};
+    if (l2 == 0.0)
+        return {v, Point::distSq(p, v)};
 
     // Project p onto line v-w
     // t is the parameterized distance along the line (0.0 to 1.0)
@@ -354,8 +378,8 @@ struct PointID {
  *       at least 5 points for quadratic smoothing.
  */
 
-Point getQuadraticTarget(const std::vector<Point> &pts, int i) {
-    int n{static_cast<int>(pts.size())};
+Point getQuadraticTarget(const std::vector<Point>& pts, int i) {
+    int n {static_cast<int>(pts.size())};
     // Endpoints cannot be smoothed - return as-is
     if (i <= 0 || i >= n - 1) {
         return pts[i];
@@ -365,32 +389,33 @@ Point getQuadraticTarget(const std::vector<Point> &pts, int i) {
     // If we are too close to the end (indices 1 or n-2), we don't have 5 points.
     // Fall back to standard Linear Laplacian (0.25, 0.5, 0.25).
     if (i < 2 || i >= n - 2) {
-        Point prev{pts[i - 1]};
-        Point curr{pts[i]};
-        Point next{pts[i + 1]};
+        Point prev {pts[i - 1]};
+        Point curr {pts[i]};
+        Point next {pts[i + 1]};
         return 0.25f * prev + 0.5f * curr + 0.25f * next;
     }
 
     // 2. QUADRATIC FILTER (Savitzky-Golay Window 5, Degree 2):
     // Coefficients: [-3, 12, 17, 12, -3] / 35
     // This fits a local parabola and evaluates it at the center.
-    const Point &p2L{pts[i - 2]};  // 2 Left
-    const Point &p1L{pts[i - 1]};  // 1 Left
-    const Point &p{pts[i]};        // Center
-    const Point &p1R{pts[i + 1]};  // 1 Right
-    const Point &p2R{pts[i + 2]};  // 2 Right
+    const Point& p2L {pts[i - 2]}; // 2 Left
+    const Point& p1L {pts[i - 1]}; // 1 Left
+    const Point& p {pts[i]};       // Center
+    const Point& p1R {pts[i + 1]}; // 1 Right
+    const Point& p2R {pts[i + 2]}; // 2 Right
 
     return (-3.0f * p2L + 12.0f * p1L + 17.0f * p + 12.0f * p1R - 3.0f * p2R) / 35.0f;
 }
 
-void coupledSmooth(std::vector<Point> &contourA, std::vector<Point> &contourB) {
+void coupledSmooth(std::vector<Point>& contourA, std::vector<Point>& contourB) {
     std::vector<std::vector<Point>> contours = {contourA, contourB};
     // 1. Build Spatial Grid for O(1) partner lookup
     std::map<Coord, std::vector<PointID>> grid;
     for (int c = 0; c < 2; ++c) {
         for (int p = 0; p < (int)contours[c].size(); ++p) {
             grid[{(int)std::round(contours[c][p].x), (int)std::round(contours[c][p].y)}].push_back(
-                {c, p});
+                {c, p}
+            );
         }
     }
 
@@ -418,10 +443,12 @@ void coupledSmooth(std::vector<Point> &contourA, std::vector<Point> &contourB) {
             for (int dy = -2; dy <= 2; ++dy) {
                 for (int dx = -2; dx <= 2; ++dx) {
                     auto it = grid.find({gx + dx, gy + dy});
-                    if (it == grid.end()) continue;
+                    if (it == grid.end())
+                        continue;
 
-                    for (const auto &neighbor : it->second) {
-                        if (neighbor.cIdx == c) continue;  // Ignore self
+                    for (const auto& neighbor : it->second) {
+                        if (neighbor.cIdx == c)
+                            continue; // Ignore self
 
                         Point otherPos = contours[neighbor.cIdx][neighbor.pIdx];
 
@@ -429,7 +456,7 @@ void coupledSmooth(std::vector<Point> &contourA, std::vector<Point> &contourB) {
                         if (Point::distSq(myPos, otherPos) < pairRadiusSq) {
                             // Check if partner is constrained
                             int op = neighbor.pIdx;
-                            const auto &otherContour = contours[neighbor.cIdx];
+                            const auto& otherContour = contours[neighbor.cIdx];
 
                             Point oTarget;
                             if (op > 0 && op < (int)otherContour.size() - 1) {
@@ -462,7 +489,7 @@ void coupledSmooth(std::vector<Point> &contourA, std::vector<Point> &contourB) {
     std::copy(targetPos[1].begin(), targetPos[1].end(), contourB.begin());
 }
 
-void stitch_smooth(std::vector<Point> &vecA, std::vector<Point> &vecB) {
+void stitch_smooth(std::vector<Point>& vecA, std::vector<Point>& vecB) {
     // 1. Map Vector B indices to Grid (Optimization)
     // We map a coordinate to the INDEX in vector B
     std::map<Coord, int> mapB;
@@ -580,17 +607,19 @@ void stitch_smooth(std::vector<Point> &vecA, std::vector<Point> &vecB) {
     }
 
     // --- Apply Updates ---
-    for (const auto &u : updatesA) vecA[u.index] = u.newPos;
-    for (const auto &u : updatesB) vecB[u.index] = u.newPos;
+    for (const auto& u : updatesA)
+        vecA[u.index] = u.newPos;
+    for (const auto& u : updatesB)
+        vecB[u.index] = u.newPos;
 
     // --- OPTIONAL FINAL POLISH: Laplacian Smooth ---
     // This removes any remaining high-frequency noise from the seam
     // Only run this on the points that were actually touched/updated
     // Formula: P_i = 0.25*P_prev + 0.5*P_curr + 0.25*P_next
 
-    auto smoothVector = [](std::vector<Point> &pts, const std::vector<Update> &updates) {
+    auto smoothVector = [](std::vector<Point>& pts, const std::vector<Update>& updates) {
         std::vector<Point> original = pts;
-        for (const auto &u : updates) {
+        for (const auto& u : updates) {
             int i = u.index;
             if (i > 0 && i < (int)pts.size() - 1) {
                 pts[i] = 0.25f * original[i - 1] + 0.5f * original[i] + 0.25f * original[i + 1];
@@ -598,9 +627,9 @@ void stitch_smooth(std::vector<Point> &vecA, std::vector<Point> &vecB) {
         }
     };
 
-    auto laplacianSmooth = [](std::vector<Point> &pts, const std::vector<Update> &updates) {
+    auto laplacianSmooth = [](std::vector<Point>& pts, const std::vector<Update>& updates) {
         std::vector<Point> original = pts;
-        for (const auto &u : updates) {
+        for (const auto& u : updates) {
             int i = u.index;
             if (i > 0 && i < (int)pts.size() - 1) {
                 // Heavier weight on self (0.6) to preserve shape, but smooth noise (0.2
@@ -617,7 +646,8 @@ void stitch_smooth(std::vector<Point> &vecA, std::vector<Point> &vecB) {
 // Project p onto segment v-w. Returns closest point.
 Point getClosestPoint(Point p, Point v, Point w) {
     float l2 = Point::distSq(v, w);
-    if (l2 == 0.0f) return v;
+    if (l2 == 0.0f)
+        return v;
 
     float t = ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2;
     // Allow slight extension (0.01) to help corners "kiss"
@@ -628,10 +658,10 @@ Point getClosestPoint(Point p, Point v, Point w) {
 
 // --- Step 1: Boundary Locking ---
 // Returns a mask: true = Locked (On Boundary), false = Free to move
-std::vector<std::vector<bool>> createBoundaryMask(const std::vector<std::vector<Point>> &contours,
-                                                  Rect bounds) {
+std::vector<std::vector<bool>>
+createBoundaryMask(const std::vector<std::vector<Point>>& contours, Rect bounds) {
     std::vector<std::vector<bool>> locked(contours.size());
-    float eps = 0.1;  // Tolerance for "on the boundary"
+    float eps = 0.1; // Tolerance for "on the boundary"
 
     for (size_t c = 0; c < contours.size(); ++c) {
         locked[c].resize(contours[c].size(), false);
@@ -650,15 +680,17 @@ std::vector<std::vector<bool>> createBoundaryMask(const std::vector<std::vector<
 }
 
 // --- Corner Detection (Feature Preservation) ---
-std::vector<bool> detectCorners(const std::vector<Point> &pts, float angleThresholdDeg = 150.0) {
+std::vector<bool> detectCorners(const std::vector<Point>& pts, float angleThresholdDeg = 150.0) {
     std::vector<bool> isCorner(pts.size(), false);
-    if (pts.size() < 3) return isCorner;
+    if (pts.size() < 3)
+        return isCorner;
     float threshold = std::cos(angleThresholdDeg * M_PI / 180.0f);
 
     for (size_t i = 1; i < pts.size() - 1; ++i) {
         Point v1 = normalize(pts[i] - pts[i - 1]);
         Point v2 = normalize(pts[i + 1] - pts[i]);
-        if (v1.x * v2.x + v1.y * v2.y < threshold) isCorner[i] = true;
+        if (v1.x * v2.x + v1.y * v2.y < threshold)
+            isCorner[i] = true;
     }
     // Endpoints are corners
     isCorner[0] = true;
@@ -667,19 +699,22 @@ std::vector<bool> detectCorners(const std::vector<Point> &pts, float angleThresh
 }
 
 // --- Selective Smoothing ---
-void selectiveSmooth(std::vector<Point> &pts, const std::vector<bool> &isLocked) {
+void selectiveSmooth(std::vector<Point>& pts, const std::vector<bool>& isLocked) {
     std::vector<Point> original = pts;
     for (size_t i = 1; i < pts.size() - 1; ++i) {
         // DO NOT move if it's a Corner OR if it's Locked on the boundary
-        if (isLocked[i]) continue;
+        if (isLocked[i])
+            continue;
 
         pts[i] = 0.25f * original[i - 1] + 0.5f * original[i] + 0.25f * original[i + 1];
     }
 }
 
-void coupledSmooth(std::vector<std::vector<Point>> &contours,
-                   const std::vector<std::vector<bool>> &lockedMasks, float pairRadiusSq = 2.25f) {
-    SavitzkyGolay sg(2, 2);  // radius, polynomial order
+void coupledSmooth(
+    std::vector<std::vector<Point>>& contours, const std::vector<std::vector<bool>>& lockedMasks,
+    float pairRadiusSq = 2.25f
+) {
+    SavitzkyGolay sg(2, 2); // radius, polynomial order
 
     // first fit
     std::vector<std::vector<Point>> smoothedContours;
@@ -704,7 +739,8 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
     for (int c = 0; c < (int)contours.size(); ++c) {
         for (int p = 1; p < (int)contours[c].size() - 1; ++p) {
             // SKIP Constraints
-            if (lockedMasks[c][p]) continue;
+            if (lockedMasks[c][p])
+                continue;
 
             Point myPos = contours[c][p];
             Point prev = contours[c][p - 1];
@@ -717,24 +753,26 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
             Point sumPartnerTargets = {0, 0};
             int partnerCount = 0;
 
-            int gx{static_cast<int>(myPos.x)};
-            int gy{static_cast<int>(myPos.y)};
+            int gx {static_cast<int>(myPos.x)};
+            int gy {static_cast<int>(myPos.y)};
 
             // Check 3x3 grid
             for (int dy = -1; dy <= 1; ++dy) {
                 for (int dx = -1; dx <= 1; ++dx) {
                     auto it = grid.find({gx + dx, gy + dy});
-                    if (it == grid.end()) continue;
+                    if (it == grid.end())
+                        continue;
 
-                    for (const auto &neighbor : it->second) {
-                        if (neighbor.cIdx == c) continue;  // Ignore self
+                    for (const auto& neighbor : it->second) {
+                        if (neighbor.cIdx == c)
+                            continue; // Ignore self
 
                         Point otherPos = contours[neighbor.cIdx][neighbor.pIdx];
                         if (Point::distSq(myPos, otherPos) < pairRadiusSq) {
                             // Found a partner!
                             // Calculate where the PARTNER wants to go
                             // (We need safe access to partner's neighbors)
-                            const auto &otherContour = contours[neighbor.cIdx];
+                            const auto& otherContour = contours[neighbor.cIdx];
                             int op = neighbor.pIdx;
 
                             // Only calculate partner target if they are not constrained
@@ -773,14 +811,15 @@ void coupledSmooth(std::vector<std::vector<Point>> &contours,
     contours = targetPos;
 }
 
-void coupled_smooth(std::vector<std::vector<Point>> &contours, Rect bounds) {
+void coupled_smooth(std::vector<std::vector<Point>>& contours, Rect bounds) {
     auto lockedMasks = createBoundaryMask(contours, bounds);
     coupledSmooth(contours, lockedMasks, 1.0f);
 }
 
 // --- Main Solver ---
-void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours, Rect bounds,
-                                    int iterations) {
+void pack_with_boundary_constraints(
+    std::vector<std::vector<Point>>& contours, Rect bounds, int iterations
+) {
     // 1. Identify Locked Points (Boundary Constraint)
     auto lockedMasks = createBoundaryMask(contours, bounds);
 
@@ -788,7 +827,7 @@ void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours, R
     // std::vector<std::vector<bool>> cornerMasks;
     // for (const auto& c : contours) cornerMasks.push_back(detectCorners(c));
 
-    constexpr float radiusSq = 3.0f * 3.0f;  // Search radius
+    constexpr float radiusSq = 3.0f * 3.0f; // Search radius
 
     for (int iter = 0; iter < iterations; ++iter) {
         // Build Grid
@@ -806,7 +845,8 @@ void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours, R
         for (int c = 0; c < (int)contours.size(); ++c) {
             for (int p = 0; p < (int)contours[c].size(); ++p) {
                 // CRITICAL CHECK: If on boundary, skip all movement logic
-                if (lockedMasks[c][p]) continue;
+                if (lockedMasks[c][p])
+                    continue;
 
                 Point currentPos = contours[c][p];
                 Point sumTargets = {0, 0};
@@ -819,11 +859,13 @@ void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours, R
                 for (int dy = -1; dy <= 1; ++dy) {
                     for (int dx = -1; dx <= 1; ++dx) {
                         auto it = grid.find({gx + dx, gy + dy});
-                        if (it == grid.end()) continue;
+                        if (it == grid.end())
+                            continue;
 
-                        for (const auto &neighbor : it->second) {
-                            if (neighbor.cIdx == c) continue;
-                            const auto &other = contours[neighbor.cIdx];
+                        for (const auto& neighbor : it->second) {
+                            if (neighbor.cIdx == c)
+                                continue;
+                            const auto& other = contours[neighbor.cIdx];
                             int idxB = neighbor.pIdx;
 
                             auto checkSeg = [&](int s, int e) {
@@ -833,14 +875,16 @@ void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours, R
                                     matchCount++;
                                 }
                             };
-                            if (idxB < (int)other.size() - 1) checkSeg(idxB, idxB + 1);
-                            if (idxB > 0) checkSeg(idxB - 1, idxB);
+                            if (idxB < (int)other.size() - 1)
+                                checkSeg(idxB, idxB + 1);
+                            if (idxB > 0)
+                                checkSeg(idxB - 1, idxB);
                         }
                     }
                 }
 
                 if (matchCount > 0) {
-                    float stiffness{1.5f};
+                    float stiffness {1.5f};
                     nextContours[c][p] =
                         (sumTargets + currentPos * stiffness) / (matchCount + stiffness);
                 }
@@ -851,4 +895,4 @@ void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours, R
     }
 }
 
-}  // namespace contours
+} // namespace contours

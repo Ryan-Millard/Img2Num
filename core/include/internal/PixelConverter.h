@@ -2,7 +2,7 @@
 #define PIXELCONVERTER_H
 
 #include <cstdint>
-#include <utility>  // for std::move
+#include <utility> // for std::move
 
 namespace ImageLib {
 template <typename ConverterT>
@@ -11,10 +11,12 @@ struct PixelConverter {
     ConverterT convert;
     uint8_t bytesPerPixel;
 
-    PixelConverter(ConverterT conv, uint8_t bpp) : convert(std::move(conv)), bytesPerPixel(bpp) {
+    PixelConverter(ConverterT conv, uint8_t bpp)
+        : convert(std::move(conv))
+        , bytesPerPixel(bpp) {
     }
 };
 
-}  // namespace ImageLib
+} // namespace ImageLib
 
 #endif
