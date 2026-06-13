@@ -1,3 +1,4 @@
+import isNode from "./isNode.js";
 /**
  * @file wasmWorker.js
  * @description
@@ -154,9 +155,6 @@ async function callWasm(funcName, argsMap, returnType) {
  *   - returnType: expected return type of the WASM export
  * @param {MessageEvent} event
  */
-const isNode = typeof process !== 'undefined' &&
-               process.versions != null &&
-               process.versions.node != null;
 
 async function handleMessage(data) {
   await readyPromise;

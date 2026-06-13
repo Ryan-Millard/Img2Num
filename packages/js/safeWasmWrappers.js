@@ -19,7 +19,7 @@
 import { callWasm, initWasmWorker } from "./wasmClient.js";
 
 // Ensure worker is ready as soon as this module is imported
-await initWasmWorker();   //it's an async function now
+await initWasmWorker();   //it's an async function as of #433
 
 /**
  * @summary Apply a Gaussian blur to an image using FFT in WASM.

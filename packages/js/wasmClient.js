@@ -1,3 +1,4 @@
+import isNode from './isNode.js';
 /**
  * @packageDocumentation
  * Advanced low-level interface for communicating with the WASM worker.
@@ -60,10 +61,6 @@ let initialized = false;
  * @since 0.0.0
  */
 
-//identifying environment and working accordingly
-const isNode = typeof process !== 'undefined' &&
-               process.versions != null &&
-               process.versions.node != null;
 
 export async function initWasmWorker() {
   if (initialized) return;

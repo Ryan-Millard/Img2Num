@@ -1,13 +1,28 @@
 import { writeFileSync } from 'fs';
 import { imageToSvg } from 'img2num';
+import sharp from 'sharp';
 
-// 1x1 white pixel PNG for testing
-const pixels = new Uint8ClampedArray([255, 255, 255, 255]);
-const width = 1;
-const height = 1;
+const imagePath = process.argv[2];
 
+if (!imagePath) {
+  console.error('Usage: node index.js <image-path>');
+  process.exit(1);
+}
+
+console.log(`Processing image: ${imagePath}`);
+
+const { data, info } = await sharp(imagePath)
+  .ensureAlpha()
+  .raw()
+  .toBuffer({ resolveWithObject: true });
+
+const pixels = new Uint8ClampedArray(data.buffer);
+const { width, height } = info;
+
+console.log(`Image size: ${width}x${height}`);
 console.log('Running img2num in Node.js...');
+
 const { svg } = await imageToSvg({ pixels, width, height });
-console.log('SVG output:', svg);
+
 writeFileSync('output.svg', svg);
-console.log('Saved to output.svg');
+console.log('Done! SVG saved to output.svg');
