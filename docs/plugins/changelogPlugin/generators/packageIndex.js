@@ -2,6 +2,7 @@ import { writeFile } from "../fs";
 import path from "path";
 import frontMatter from "./frontMatter";
 import trimTrailing from "./trimTrailing";
+import renderTemplate from "./renderTemplate.js";
 
 /**
  * Generate the per-package index (landing) page.
@@ -20,54 +21,47 @@ export default function packageIndex(releases, pkg, outDir) {
     sidebar_position: 1,
   });
 
-  // The latest release body is inlined into the open <details> block.
-  // Docusaurus handles markdown inside MDX HTML elements with a blank line.
   const latestBody = latestRelease ? trimTrailing(latestRelease.body) : "";
 
-  // Bullet list of ALL releases (used in the "All Releases" section)
-  const allReleaseLinks = releases
-    .map(({ version, date }) => {
-      const versionSlug = version.replace(/\./g, "-");
-      return `- [v${version} - ${date}](./${date}_${versionSlug})`;
-    })
-    .join("\n");
+  const allReleaseLinks = releases.length
+    ? releases
+        .map(({ version, date }) => {
+          const versionSlug = version.replace(/\./g, "-");
+          return `- [v${version} - ${date}](./${date}_${versionSlug})`;
+        })
+        .join("\n")
+    : "_No releases yet._";
 
   const iconContainerStyle = JSON.stringify({
     display: "flex",
     justifyContent: "center",
   });
+
   const iconStyle = JSON.stringify({
     display: "inline",
     height: "2.5rem",
   });
 
-  const content = `${fm}
-
-  <div style={${iconContainerStyle}}>
-    <img src="${pkg.icon.src}" alt="${pkg.icon.alt}" style={${iconStyle}} />
-  </div>
-
-## Latest Release
-
-${
-  latestRelease
+  const latestReleaseSection = latestRelease
     ? `<details open>
   <summary><strong>v${latestRelease.version}</strong> - ${latestRelease.date} <em>(latest)</em></summary>
 
 ${latestBody}
 
-  [View full release page](./${latestRelease.date}_${latestSlug})
+[View full release page](./${latestRelease.date}_${latestSlug})
 
 </details>`
-    : "_No releases yet._"
-}
+    : "_No releases yet._";
 
-## All Releases
-
-${allReleaseLinks || "_No releases yet._"}
-
-[View full consolidated changelog](./changelog)
-`;
+  const content = renderTemplate(new URL("./pageTemplates/packageIndex.mdx", import.meta.url), {
+    FRONT_MATTER: fm,
+    ICON_CONTAINER_STYLE: iconContainerStyle,
+    ICON_STYLE: iconStyle,
+    PKG_ICON_SRC: pkg.icon.src,
+    PKG_ICON_ALT: pkg.icon.alt,
+    LATEST_RELEASE_SECTION: latestReleaseSection,
+    ALL_RELEASE_LINKS: allReleaseLinks,
+  });
 
   writeFile(filePath, content);
 }

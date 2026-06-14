@@ -2,12 +2,16 @@ import path from "path";
 import { writeFile } from "../fs";
 import frontMatter from "./frontMatter";
 import trimTrailing from "./trimTrailing";
+import renderTemplate from "./renderTemplate.js";
 
 export default function releaseFile(release, pkg, outDir) {
   const { version, date, body } = release;
+
   const versionSlug = version.replace(/\./g, "-");
-  const fileName = `${date}_${versionSlug}.md`;
+  const fileName = `${date}_${versionSlug}.mdx`;
   const filePath = path.join(outDir, fileName);
+
+  const githubReleaseLink = `https://github.com/Ryan-Millard/Img2Num/releases/tag/` + `${pkg.releasePleaseVersionPrefix}-v${version}`;
 
   const fm = frontMatter({
     id: `${date}_${versionSlug}`,
@@ -16,17 +20,14 @@ export default function releaseFile(release, pkg, outDir) {
     custom_edit_url: "null",
   });
 
-  const githubReleaseLink = `https://github.com/Ryan-Millard/Img2Num/releases/tag/${pkg.releasePleaseVersionPrefix}-v${version}`;
-
-  const content = `${fm}
-
-import { ExternalLink } from "lucide-react";
-
-# ${pkg.label} - v${version}
-
-> Released: [**${date}**<ExternalLink size={16} />](${githubReleaseLink})
-
-${trimTrailing(body)}`;
+  const content = renderTemplate(new URL("./pageTemplates/releaseFile.mdx", import.meta.url), {
+    FRONT_MATTER: fm,
+    PACKAGE_LABEL: pkg.label,
+    VERSION: version,
+    DATE: date,
+    GITHUB_RELEASE_URL: githubReleaseLink,
+    BODY: trimTrailing(body),
+  });
 
   writeFile(filePath, content);
   return fileName;

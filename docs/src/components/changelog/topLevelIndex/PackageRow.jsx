@@ -3,7 +3,9 @@ import styles from "@site/src/css/changelog/topLevelIndex/PackageRow.module.css"
 export default function PackageRow({ name, label, iconSrc, iconAlt, pkgHref, latestHref, badgeText }) {
   return (
     <div className={styles.container}>
-      <h2 id={label.toLowerCase()}>{label}</h2>
+      <h2 id={label.toLowerCase()}>
+        <a href={pkgHref}>{label}</a>
+      </h2>
 
       <div className={styles.body}>
         <p className={styles.pkgName}>
@@ -21,7 +23,9 @@ export default function PackageRow({ name, label, iconSrc, iconAlt, pkgHref, lat
       </div>
 
       <div className={styles.iconWrap}>
-        <img src={iconSrc} alt={iconAlt} className={styles.icon} />
+        <a href={pkgHref}>
+          <img src={iconSrc} alt={iconAlt} className={styles.icon} />
+        </a>
       </div>
     </div>
   );

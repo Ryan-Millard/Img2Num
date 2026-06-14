@@ -2,6 +2,7 @@ import { writeFile } from "../fs";
 import path from "path";
 import frontMatter from "./frontMatter";
 import trimTrailing from "./trimTrailing";
+import renderTemplate from "./renderTemplate.js";
 
 export default function consolidatedFile(releases, pkg, outDir) {
   const filePath = path.join(outDir, "changelog.md");
@@ -22,15 +23,13 @@ export default function consolidatedFile(releases, pkg, outDir) {
 ${trimTrailing(body)}`;
   });
 
-  const content = `${fm}
-
-import { ExternalLink } from "lucide-react";
-
-# ${pkg.label} - Full Changelog,
-
-[\`${pkg.packageName}\`](${githubReleasesPageLink}?q=${pkg.releasePleaseVersionPrefix}&expanded=true)
-
-${sections}`;
+  const content = renderTemplate(new URL("./pageTemplates/consolidatedFile.mdx", import.meta.url), {
+    FRONT_MATTER: fm,
+    PACKAGE_LABEL: pkg.label,
+    PACKAGE_NAME: pkg.packageName,
+    RELEASES_URL: githubReleasesPageLink,
+    RELEASES: sections,
+  });
 
   writeFile(filePath, content);
 }
