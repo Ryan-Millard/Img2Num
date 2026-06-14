@@ -39,7 +39,7 @@ const STATE_MACHINE = {
   },
 };
 
-export default function Hedgehog() {
+export default function Hedgehog({ size = 128 }) {
   const [key, setKey] = useState(0);
   const [state, setState] = useState(STATES.IDLE);
 
@@ -61,8 +61,8 @@ export default function Hedgehog() {
         src={GIFS[state]}
         alt="hedgehog"
         style={{
-          width: 128,
-          height: 128,
+          width: size,
+          height: size,
           imageRendering: "pixelated",
         }}
       />
