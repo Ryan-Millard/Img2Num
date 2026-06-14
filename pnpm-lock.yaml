@@ -130,6 +130,9 @@ importers:
       sharp:
         specifier: ^0.33.0
         version: 0.33.5
+      webgpu:
+        specifier: ^0.4.0
+        version: 0.4.0
 
   example-apps/react-js:
     dependencies:
@@ -240,7 +243,11 @@ importers:
         specifier: ^4.1.6
         version: 4.1.7(@types/node@25.6.0)(@vitest/coverage-v8@4.1.7)(jsdom@29.1.1)(vite@8.0.14(@types/node@25.6.0)(jiti@1.21.7)(terser@5.46.2)(yaml@2.8.3))
 
-  packages/js: {}
+  packages/js:
+    dependencies:
+      webgpu:
+        specifier: ^0.4.0
+        version: 0.4.0
 
   scripts/img2num-dev-scripts:
     dependencies:
@@ -3047,6 +3054,9 @@ packages:
 
   '@webassemblyjs/wast-printer@1.14.1':
     resolution: {integrity: sha512-kPSSXE6De1XOR820C90RIo2ogvZG+c3KiHzqUoO/F34Y2shGzesfqv7o57xrxovZJH/MetF5UjroJ/R/3isoiw==}
+
+  '@webgpu/types@0.1.70':
+    resolution: {integrity: sha512-LFiNHHKMvmAEvwVew3JLJmTdShhbdwRFSImUshGhE2mGE8ybQzIo63l5uRp+YKnNx+8Qno8Kf6gN+DKMreIJCA==}
 
   '@xtuc/ieee754@1.2.0':
     resolution: {integrity: sha512-DX8nKgqcGwsc0eJSqYt5lwP4DH5FlHnmuWWBRy7X0NcaGR0ZtuyeESgMwTYVEtxmsNGY+qit4QYT/MIYTOTPeA==}
@@ -7787,6 +7797,9 @@ packages:
   web-namespaces@2.0.1:
     resolution: {integrity: sha512-bKr1DkiNa2krS7qxNtdrtHAmzuYGFQLiQ13TsorsdT6ULTkPLKuu5+GsFpDlg6JFjUTwX2DyhMPG2be8uPrqsQ==}
 
+  webgpu@0.4.0:
+    resolution: {integrity: sha512-F5pimn3Aoi0zWjuRdiVs5TnrUwSzD2lESBohsIUsqyitWkGRQlXU2fhV6ycXlQTa1bvAf3sjqiUpBEpmSQ5ptA==}
+
   webidl-conversions@8.0.1:
     resolution: {integrity: sha512-BMhLD/Sw+GbJC21C/UgyaZX41nPt8bUTg+jWyDeg7e7YN4xOM05YPSIXceACnXVtqyEw/LMClUQMtMZ+PGGpqQ==}
     engines: {node: '>=20'}
@@ -11620,6 +11633,8 @@ snapshots:
     dependencies:
       '@webassemblyjs/ast': 1.14.1
       '@xtuc/long': 4.2.2
+
+  '@webgpu/types@0.1.70': {}
 
   '@xtuc/ieee754@1.2.0': {}
 
@@ -17127,6 +17142,13 @@ snapshots:
       minimalistic-assert: 1.0.1
 
   web-namespaces@2.0.1: {}
+
+  webgpu@0.4.0:
+    dependencies:
+      '@webgpu/types': 0.1.70
+      debug: 4.4.3
+    transitivePeerDependencies:
+      - supports-color
 
   webidl-conversions@8.0.1: {}
 

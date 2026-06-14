@@ -40,5 +40,7 @@
     "wasmWorker.js",
     "imageToUint8ClampedArray.js"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "webgpu": "^0.4.0"
+  }
 }

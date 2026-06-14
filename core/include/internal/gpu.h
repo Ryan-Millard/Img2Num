@@ -128,8 +128,7 @@ class GPU {
         );
     };
 
-    void init_gpu() { // wgpu::Instance& instance, wgpu::Adapter& adapter, wgpu::Device& device,
-                      // wgpu::Queue& queue) {
+    void init_gpu() {
         if (gpu_initialized)
             return;
 
