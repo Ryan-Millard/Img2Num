@@ -8,7 +8,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 import PACKAGES from "./packages.config";
-import { parseChangelog, compareSemver } from "./core"
+import { parseChangelog } from "./core"
 import { packageIndex, consolidatedFile, releaseFile, topLevelIndex } from "./generators";
 import { mkdirp, writeFile } from "./fs";
 

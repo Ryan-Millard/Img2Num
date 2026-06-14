@@ -11,6 +11,7 @@ export default defineConfig([
     "docs/node_modules",
     "docs/build",
     "docs/.docusaurus",
+    "docs/static/docs",
 
     "scripts/img2num-dev-scripts/node_modules",
 
