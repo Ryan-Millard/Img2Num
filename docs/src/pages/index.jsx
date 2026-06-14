@@ -126,7 +126,6 @@ function BindingsSection() {
       icon: <Zap size={22} color="var(--accent)" />,
       accentVar: "--accent-light",
       title: "Native speed",
-
       desc: "Quantisation, contour tracing, SVG writer. Add it as a submodule.",
       code: `#include "img2num"\n` + `img2num::ImageToSvgConfig config;\n` + `config.kmeans.k = 32;\n` + `std::string svg {img2num::image_to_svg(img_data, width, height, config)};`,
       docLinks: [
@@ -140,7 +139,6 @@ function BindingsSection() {
       accentVar: "--amber-light",
       title: "pip install img2num",
       desc: "Numpy array in → SVG string out. Seamless integration.",
-
       code: `import img2num\n\n` + `cfg = img2num.ImageToSvgConfig(kmeans = {"k": 16})\n` + `svg = img2num.image_to_svg(img, config=cfg)`,
       docLinks: [],
     },
