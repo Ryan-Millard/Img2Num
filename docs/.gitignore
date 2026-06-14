@@ -1,11 +1,11 @@
 # Dependencies
 node_modules
 /static/docs/internal/**/api/*
-/!static/docs/internal/**/api/.gitkeep
+!/static/docs/internal/**/api/.gitkeep
 /static/docs/cpp/api/*
-/!static/docs/cpp/api/.gitkeep
+!/static/docs/cpp/api/.gitkeep
 /static/docs/c/api/*
-/!static/docs/c/api/.gitkeep
+!/static/docs/c/api/.gitkeep
 
 # Production
 /build
@@ -31,4 +31,5 @@ yarn-error.log*
 /static/js/api.json
 
 # Auto-generated Changelogs
-/changelog/
+/changelog/*
+!/changelog/.gitkeep
