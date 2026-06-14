@@ -20,9 +20,7 @@ function parseMeta(id) {
   const versionDashes = file.slice(underscoreIdx + 1); // "0-1-0"
   const versionStr = versionDashes.replace(/-/g, "."); // "0.1.0"
   const date = new Date(dateStr).getTime() || 0;
-  const [major = 0, minor = 0, patch = 0] = versionStr
-    .split(".")
-    .map((n) => Number(n) || 0);
+  const [major = 0, minor = 0, patch = 0] = versionStr.split(".").map((n) => Number(n) || 0);
   return { date, major, minor, patch };
 }
 
@@ -40,16 +38,11 @@ function newestFirst(a, b) {
  * @param {import('@docusaurus/plugin-content-docs').SidebarItemsGeneratorArgs} args
  * @returns {Promise<import('@docusaurus/plugin-content-docs').NormalizedSidebarItem[]>}
  */
-export async function changelogSidebarGenerator({
-  defaultSidebarItemsGenerator,
-  ...args
-}) {
+export async function changelogSidebarGenerator({ defaultSidebarItemsGenerator, ...args }) {
   const items = await defaultSidebarItemsGenerator(args);
 
   // Separate the top-level index doc from package categories
-  const topIndex = items.find(
-    (it) => it.type === "doc" && it.id === "index"
-  );
+  const topIndex = items.find((it) => it.type === "doc" && it.id === "index");
   const categories = items.filter((it) => it.type === "category");
 
   // Sort releases within each category (newest first)
@@ -60,8 +53,5 @@ export async function changelogSidebarGenerator({
     category.items = [...nonReleases, ...releases];
   }
 
-  return [
-    ...(topIndex ? [topIndex] : []),
-    ...categories,
-  ];
+  return [...(topIndex ? [topIndex] : []), ...categories];
 }

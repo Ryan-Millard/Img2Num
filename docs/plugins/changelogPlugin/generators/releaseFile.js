@@ -16,8 +16,7 @@ export default function releaseFile(release, pkg, outDir) {
     custom_edit_url: "null",
   });
 
-  const githubReleaseLink =
-    `https://github.com/Ryan-Millard/Img2Num/releases/tag/${pkg.releasePleaseVersionPrefix}-v${version}`;
+  const githubReleaseLink = `https://github.com/Ryan-Millard/Img2Num/releases/tag/${pkg.releasePleaseVersionPrefix}-v${version}`;
 
   const content = `${fm}
 

@@ -34,7 +34,7 @@ export default function packageIndex(releases, pkg, outDir) {
 
   const iconContainerStyle = JSON.stringify({
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
   });
   const iconStyle = JSON.stringify({
     display: "inline",
@@ -49,8 +49,9 @@ export default function packageIndex(releases, pkg, outDir) {
 
 ## Latest Release
 
-${latestRelease
-  ? `<details open>
+${
+  latestRelease
+    ? `<details open>
   <summary><strong>v${latestRelease.version}</strong> - ${latestRelease.date} <em>(latest)</em></summary>
 
 ${latestBody}
@@ -58,7 +59,8 @@ ${latestBody}
   [View full release page](./${latestRelease.date}_${latestSlug})
 
 </details>`
-  : "_No releases yet._"}
+    : "_No releases yet._"
+}
 
 ## All Releases
 

@@ -8,7 +8,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 import PACKAGES from "./packages.config";
-import { parseChangelog } from "./core"
+import { parseChangelog } from "./core";
 import { packageIndex, consolidatedFile, releaseFile, topLevelIndex } from "./generators";
 import { mkdirp, writeFile } from "./fs";
 
@@ -35,9 +35,7 @@ function changelogPlugin(context) {
         const srcPath = path.join(repoRoot, pkg.src);
 
         if (!fs.existsSync(srcPath)) {
-          console.warn(
-            `[changelog-plugin] CHANGELOG not found for "${pkg.slug}": ${srcPath} - skipping.`
-          );
+          console.warn(`[changelog-plugin] CHANGELOG not found for "${pkg.slug}": ${srcPath} - skipping.`);
           continue;
         }
 
@@ -45,9 +43,7 @@ function changelogPlugin(context) {
         const releases = parseChangelog(raw);
 
         if (releases.length === 0) {
-          console.warn(
-            `[changelog-plugin] No releases parsed for "${pkg.slug}" - skipping.`
-          );
+          console.warn(`[changelog-plugin] No releases parsed for "${pkg.slug}" - skipping.`);
           continue;
         }
 
@@ -65,9 +61,7 @@ function changelogPlugin(context) {
 
         processedPackages.push(pkg);
 
-        console.log(
-          `[changelog-plugin] "${pkg.slug}": ${releases.length} release(s) written to changelog/${pkg.slug}/`
-        );
+        console.log(`[changelog-plugin] "${pkg.slug}": ${releases.length} release(s) written to changelog/${pkg.slug}/`);
       }
 
       topLevelIndex(processedPackages, allReleases, changelogDir, context.siteConfig.baseUrl);

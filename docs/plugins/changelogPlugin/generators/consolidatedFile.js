@@ -15,15 +15,12 @@ export default function consolidatedFile(releases, pkg, outDir) {
   });
 
   const githubReleasesPageLink = "https://github.com/Ryan-Millard/Img2Num/releases";
-  const sections = releases
-    .map(({ version, date, body }) => {
-        const githubReleaseLink =
-          `${githubReleasesPageLink}/tag/${pkg.releasePleaseVersionPrefix}-v${version}`;
-      return `## [v${version} - ${date} <ExternalLink size={32} />](${githubReleaseLink})
+  const sections = releases.map(({ version, date, body }) => {
+    const githubReleaseLink = `${githubReleasesPageLink}/tag/${pkg.releasePleaseVersionPrefix}-v${version}`;
+    return `## [v${version} - ${date} <ExternalLink size={32} />](${githubReleaseLink})
 
 ${trimTrailing(body)}`;
-      }
-    );
+  });
 
   const content = `${fm}
 

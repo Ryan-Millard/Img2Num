@@ -7,10 +7,16 @@ export default function PackageRow({ name, label, iconSrc, iconAlt, pkgHref, lat
 
       <div className={styles.body}>
         <p className={styles.pkgName}>
-          Changelog: <a href={pkgHref}><code>{name}</code></a>
+          Changelog:{" "}
+          <a href={pkgHref}>
+            <code>{name}</code>
+          </a>
         </p>
         <p className={styles.meta}>
-          Latest: <a href={latestHref} className={styles.badge}>{badgeText}</a>
+          Latest:{" "}
+          <a href={latestHref} className={styles.badge}>
+            {badgeText}
+          </a>
         </p>
       </div>
 
@@ -19,4 +25,4 @@ export default function PackageRow({ name, label, iconSrc, iconAlt, pkgHref, lat
       </div>
     </div>
   );
-};
+}

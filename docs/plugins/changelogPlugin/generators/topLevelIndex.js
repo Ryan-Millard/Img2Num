@@ -16,14 +16,10 @@ export default function topLevelIndex(packages, allReleases, changelogDir, baseU
     .map((pkg) => {
       const pkgReleases = allReleases.get(pkg.slug) ?? [];
       const latest = pkgReleases[0];
-      const badgeText = latest
-        ? `v${latest.version} - ${latest.date}`
-        : "No releases yet";
+      const badgeText = latest ? `v${latest.version} - ${latest.date}` : "No releases yet";
 
       const pkgHref = `${base}/changelog/${pkg.slug}`;
-      const latestHref = latest
-        ? `${base}/changelog/${pkg.slug}/${latest.date}_${latest.version.replace(/\./g, "-")}`
-        : pkgHref;
+      const latestHref = latest ? `${base}/changelog/${pkg.slug}/${latest.date}_${latest.version.replace(/\./g, "-")}` : pkgHref;
 
       return `<PackageRow
   name=\"${pkg.packageName}\"

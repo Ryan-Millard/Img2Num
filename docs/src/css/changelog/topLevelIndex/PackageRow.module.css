@@ -39,7 +39,7 @@
 }
 
 .pkgName {
-  margin: 0,
+  margin: 0;
 }
 
 .meta {
@@ -55,5 +55,5 @@
   padding: 2px 8px;
   border-radius: 20px;
   border: 1px solid;
-  font-size: 0.8rem
+  font-size: 0.8rem;
 }
