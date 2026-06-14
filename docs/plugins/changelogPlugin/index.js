@@ -10,7 +10,7 @@ import { fileURLToPath } from "url";
 import PACKAGES from "./packages.config";
 import { parseChangelog, compareSemver } from "./core"
 import { packageIndex, consolidatedFile, releaseFile, topLevelIndex } from "./generators";
-import { mkdirp } from "./fs";
+import { mkdirp, writeFile } from "./fs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -26,6 +26,7 @@ function changelogPlugin(context) {
         fs.rmSync(changelogDir, { recursive: true, force: true });
       }
       mkdirp(changelogDir);
+      writeFile(path.join(changelogDir, ".gitkeep"), "See the changelog plugin's `index.js` file about this.\n\nThis is for changelog automation inside Docusaurus.");
 
       const processedPackages = [];
       const allReleases = new Map();
@@ -65,7 +66,7 @@ function changelogPlugin(context) {
         processedPackages.push(pkg);
 
         console.log(
-          `[changelog-plugin] "${pkg.slug}" → ${releases.length} release(s) written to changelog/${pkg.slug}/`
+          `[changelog-plugin] "${pkg.slug}": ${releases.length} release(s) written to changelog/${pkg.slug}/`
         );
       }
 
