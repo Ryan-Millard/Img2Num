@@ -243,11 +243,7 @@ importers:
         specifier: ^4.1.6
         version: 4.1.7(@types/node@25.6.0)(@vitest/coverage-v8@4.1.7)(jsdom@29.1.1)(vite@8.0.14(@types/node@25.6.0)(jiti@1.21.7)(terser@5.46.2)(yaml@2.8.3))
 
-  packages/js:
-    dependencies:
-      webgpu:
-        specifier: ^0.4.0
-        version: 0.4.0
+  packages/js: {}
 
   scripts/img2num-dev-scripts:
     dependencies:

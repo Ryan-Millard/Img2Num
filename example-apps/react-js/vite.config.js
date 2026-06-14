@@ -41,7 +41,7 @@ export default defineConfig({
     target: "esnext",
     rollupOptions: {
       // Tells the bundler to ignore these when building for the web browser
-      external: ["worker_threads", "url", "path", "fs"],
+      external: ["webgpu", "worker_threads", "url", "path", "fs"],
     },
   },
 });

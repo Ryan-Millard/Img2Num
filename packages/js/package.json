@@ -40,7 +40,12 @@
     "wasmWorker.js",
     "imageToUint8ClampedArray.js"
   ],
-  "dependencies": {
+  "peerDependencies": {
     "webgpu": "^0.4.0"
+  },
+  "peerDependenciesMeta": {
+    "webgpu": {
+      "optional": true
+    }
   }
 }
