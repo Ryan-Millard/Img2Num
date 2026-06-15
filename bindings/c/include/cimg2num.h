@@ -42,6 +42,7 @@ typedef struct img2num_ImageToSvgConfig {
 
     /// Minimum area (in pixels) for a region to be included in the SVG.
     int min_cluster_area;
+    /// Minimum thickness (in pixels) for a region to be included in the SVG.
     int min_thickness;
 
     /// Color space flag.
