@@ -827,10 +827,8 @@ void coupled_smooth(std::vector<std::vector<Point>>& contours, Rect bounds) {
 }
 
 void coupled_smooth_junctions(std::vector<std::vector<Point>> &contours, Rect bounds, std::vector<uint8_t> junctions, int width) {
-    std::cout << "boundary masks" << std::endl;
     auto lockedMasks = createBoundaryMask(contours, bounds);
 
-    std::cout << "update junctions" << std::endl;
     updateLockedMasks(contours, lockedMasks, junctions, width);
 
     coupledSmooth(contours, lockedMasks, 1.0f);
