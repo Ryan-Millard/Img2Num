@@ -271,129 +271,44 @@ std::vector<uint8_t> Graph::analyzeJunctions(const std::vector<uint8_t>& skel, i
 
 void Graph::compute_contours() {
     
-    if (true) {
 
-        /* This is the new method
-        Shared-edge mode (default): build region boundaries on the crack grid so
-        neighbouring contours are exactly coincident along shared edges -- no
-        overlap band, no gaps
-        */
+    /*
+    Shared-edge mode: build region boundaries on the crack grid so
+    neighbouring contours are exactly coincident along shared edges -- no
+    overlap band, no gaps
+    */
 
-        float eps = 0.25f;
+    float eps = 0.25f;
 
-        std::vector<int32_t> labels(static_cast<size_t>(m_width) * m_height, -1);
-        for (const Node_ptr &n : get_nodes()) {
-            if (n->area() == 0) continue;
-            for (auto &p : n->get_pixels())
-                labels[static_cast<size_t>(p.position.y) * m_width + p.position.x] = n->id();
-        }
-
-        auto loops = build_shared_loops(labels, m_width, m_height, eps);
-
-        for (const Node_ptr &n : get_nodes()) {
-            if (n->area() == 0) continue;
-            n->clear_contour();
-            auto it = loops.find(n->id());
-            if (it == loops.end()) continue;
-            ImageLib::RGBPixel<uint8_t> c = n->color();
-            ImageLib::RGBAPixel<uint8_t> col{c.red, c.green, c.blue, 255};
-            for (std::vector<QuadBezier> &curve : it->second) {
-                std::vector<Point> anchors;  // keep contours[] parallel to curves[]
-                anchors.reserve(curve.size() + 1);
-                for (const QuadBezier &q : curve) anchors.push_back(q.p0);
-                if (!curve.empty()) anchors.push_back(curve.back().p2);
-                n->m_contours.contours.push_back(std::move(anchors));
-                n->m_contours.curves.push_back(std::move(curve));
-                n->m_contours.colors.push_back(col);
-                n->m_contours.hierarchy.push_back({-1, -1, -1, -1});
-                n->m_contours.is_hole.push_back(false);
-            }
-        }
+    std::vector<int32_t> labels(static_cast<size_t>(m_width) * m_height, -1);
+    for (const Node_ptr &n : get_nodes()) {
+        if (n->area() == 0) continue;
+        for (auto &p : n->get_pixels())
+            labels[static_cast<size_t>(p.position.y) * m_width + p.position.x] = n->id();
     }
 
-    else {
-        /* This is the old method - keep for now */
+    auto loops = build_shared_loops(labels, m_width, m_height, eps);
 
-        // overlap edge pixels
-        // then compute contours
-        process_overlapping_edges();
-        // ask each Node to compute contours
-        for (const Node_ptr &n : get_nodes()) {
-            if (n->area() == 0) continue;
-            n->compute_contour();
-        }
-
-        // find junctions - we want to preserve these
-        std::vector<uint8_t> binary(m_width * m_height, 0);
-        for (const Node_ptr &n : get_nodes()) {
-            if (n->area() == 0) continue;
-
-            ColoredContours* c0 = &n->m_contours;
-            for (size_t i = 0; i < c0->contours.size(); ++i) {
-                for (auto &p : c0->contours[i]){
-                    int px = static_cast<int>(p.x);
-                    int py = static_cast<int>(p.y);
-
-                    binary[py * m_width + px] = 1;
-                }
-            }
-        }
-
-        auto junctions = analyzeJunctions(binary, m_width, m_height);
-
-        // smoothing
-        std::vector<std::vector<Point>> all_contours;
-        for (const Node_ptr &n : get_nodes()) {
-            if (n->area() == 0) continue;
-
-            ColoredContours *c0 = &n->m_contours;
-            for (size_t i = 0; i < c0->contours.size(); ++i) {
-                all_contours.push_back(c0->contours[i]);
-            }
-        }
-
-        std::cout << "Apply smoothing" << std::endl;
-
-        contours::coupled_smooth_junctions(
-            all_contours, 
-            Rect{0.0f, 0.0f, static_cast<float>(m_width), static_cast<float>(m_height)},
-            junctions,
-            m_width
-        );
-
-        std::vector<std::vector<uint8_t>> fixed(all_contours.size());
-        for (size_t c = 0; c < all_contours.size(); ++c) {
-            const std::vector<Point> &C = all_contours[c];
-            const int n = static_cast<int>(C.size());
-            fixed[c].assign(n, 0);
-            for (int k = 0; k < n; ++k) {
-                const int px = static_cast<int>(C[k].x);
-                const int py = static_cast<int>(C[k].y);
-                if (px >= 0 && px < m_width && py >= 0 && py < m_height &&
-                    junctions[py * m_width + px]) {
-                    fixed[c][k] = 1;
-                    continue;
-                }
-            }
-        }
-
-        std::vector<std::vector<QuadBezier>> all_curves;
-        fit_curve_reduction(all_contours, fixed, all_curves, 0.5f);
-
-        int j = 0;
-        for (const Node_ptr &n : get_nodes()) {
-            if (n->area() == 0) continue;
-
-            ColoredContours *c0 = &n->m_contours;
-            for (size_t i = 0; i < c0->contours.size(); ++i) {
-                std::copy(all_contours[j].begin(), all_contours[j].end(), c0->contours[i].begin());
-
-                c0->curves[i].resize(all_curves[j].size());
-                std::copy(all_curves[j].begin(), all_curves[j].end(), c0->curves[i].begin());
-                j++;
-            }
+    for (const Node_ptr &n : get_nodes()) {
+        if (n->area() == 0) continue;
+        n->clear_contour();
+        auto it = loops.find(n->id());
+        if (it == loops.end()) continue;
+        ImageLib::RGBPixel<uint8_t> c = n->color();
+        ImageLib::RGBAPixel<uint8_t> col{c.red, c.green, c.blue, 255};
+        for (std::vector<QuadBezier> &curve : it->second) {
+            std::vector<Point> anchors;  // keep contours[] parallel to curves[]
+            anchors.reserve(curve.size() + 1);
+            for (const QuadBezier &q : curve) anchors.push_back(q.p0);
+            if (!curve.empty()) anchors.push_back(curve.back().p2);
+            n->m_contours.contours.push_back(std::move(anchors));
+            n->m_contours.curves.push_back(std::move(curve));
+            n->m_contours.colors.push_back(col);
+            n->m_contours.hierarchy.push_back({-1, -1, -1, -1});
+            n->m_contours.is_hole.push_back(false);
         }
     }
+    
 }
 
 namespace {
