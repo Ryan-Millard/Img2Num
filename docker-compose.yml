@@ -6,7 +6,7 @@ services:
     pull_policy: always
     working_dir: /usr/src/app
     volumes:
-      - .:/usr/src/app:rw,cached
+      - .:/usr/src/app:cached
       - /usr/src/app/.venv      # PROTECTS the container's .venv from being overwritten
       - pnpm-store:/pnpm
     ports:
