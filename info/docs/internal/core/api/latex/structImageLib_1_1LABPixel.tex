@@ -76,8 +76,10 @@ Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00024}{24}} of file \mbo
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ l(l),\ a(a),\ b(b)\ \{}
-\DoxyCodeLine{00025\ \ \ \ \ \}}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ :\ l(l)}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ ,\ a(a)}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ ,\ b(b)\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \}}
 
 \end{DoxyCode}
 
@@ -92,18 +94,19 @@ static float \mbox{\hyperlink{structImageLib_1_1LABPixel}{Image\+Lib\+::\+LABPix
 
 
 
-Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00041}{41}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
+Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00044}{44}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ LABPixel<float>\ af\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a.l),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a.a),}
-\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a.b)\};}
-\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ LABPixel<float>\ bf\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(b.l),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(b.a),}
-\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(b.b)\};}
-\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::sqrt((a.l\ -\/\ b.l)\ *\ (a.l\ -\/\ b.l)\ +\ (a.a\ -\/\ b.a)\ *\ (a.a\ -\/\ b.a)\ +}
-\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (a.b\ -\/\ b.b)\ *\ (a.b\ -\/\ b.b));}
-\DoxyCodeLine{00048\ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ LABPixel<float>\ af\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a.l),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a.a),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a.b)\};}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ LABPixel<float>\ bf\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(b.l),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(b.a),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(b.b)\};}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::sqrt(}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ (a.l\ -\/\ b.l)\ *\ (a.l\ -\/\ b.l)\ +\ (a.a\ -\/\ b.a)\ *\ (a.a\ -\/\ b.a)\ +\ (a.b\ -\/\ b.b)\ *\ (a.b\ -\/\ b.b)}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{structImageLib_1_1LABPixel_ace880bdcfe49d833372f5a6fe8c534e4}\label{structImageLib_1_1LABPixel_ace880bdcfe49d833372f5a6fe8c534e4} 
@@ -115,13 +118,13 @@ bool \mbox{\hyperlink{structImageLib_1_1LABPixel}{Image\+Lib\+::\+LABPixel}}$<$ 
 
 
 
-Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00031}{31}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
+Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00034}{34}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !(*\textcolor{keyword}{this}\ ==\ other);}
-\DoxyCodeLine{00033\ \ \ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !(*\textcolor{keyword}{this}\ ==\ other);}
+\DoxyCodeLine{00036\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{structImageLib_1_1LABPixel_a531082f0189cd721e08dbc966bf56b58}\label{structImageLib_1_1LABPixel_a531082f0189cd721e08dbc966bf56b58} 
@@ -133,13 +136,13 @@ bool \mbox{\hyperlink{structImageLib_1_1LABPixel}{Image\+Lib\+::\+LABPixel}}$<$ 
 
 
 
-Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00028}{28}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
+Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00031}{31}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ l\ ==\ other.l\ \&\&\ a\ ==\ other.a\ \&\&\ b\ ==\ other.b;}
-\DoxyCodeLine{00030\ \ \ \ \ \}}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ l\ ==\ other.l\ \&\&\ a\ ==\ other.a\ \&\&\ b\ ==\ other.b;}
+\DoxyCodeLine{00033\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{structImageLib_1_1LABPixel_a3a4c055d7c39fda7b9d7d5cefc556ce6}\label{structImageLib_1_1LABPixel_a3a4c055d7c39fda7b9d7d5cefc556ce6} 
@@ -151,14 +154,14 @@ void \mbox{\hyperlink{structImageLib_1_1LABPixel}{Image\+Lib\+::\+LABPixel}}$<$ 
 
 
 
-Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00036}{36}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
+Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00039}{39}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ l\ =\ new\_luma;}
-\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ a\ =\ b\ =\ 0;}
-\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ l\ =\ new\_luma;}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ a\ =\ b\ =\ 0;}
+\DoxyCodeLine{00042\ \ \ \ \ \}}
 
 \end{DoxyCode}
 

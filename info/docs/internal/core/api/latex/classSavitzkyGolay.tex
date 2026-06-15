@@ -61,12 +61,14 @@ Definition at line \mbox{\hyperlink{SavitskyGolay_8cpp_source_l00008}{8}} of fil
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00009\ \ \ \ \ :\ window\_radius\_(radius),\ window\_size\_(2\ *\ radius\ +\ 1),\ poly\_order\_(poly\_order)\ \{}
-\DoxyCodeLine{00010\ \ \ \ \ assert(radius\ >=\ 0);}
-\DoxyCodeLine{00011\ \ \ \ \ assert(window\_size\_\ >\ poly\_order\_);}
-\DoxyCodeLine{00012\ }
-\DoxyCodeLine{00013\ \ \ \ \ compute\_coefficients();}
-\DoxyCodeLine{00014\ \}}
+\DoxyCodeLine{00009\ \ \ \ \ :\ window\_radius\_(radius)}
+\DoxyCodeLine{00010\ \ \ \ \ ,\ window\_size\_(2\ *\ radius\ +\ 1)}
+\DoxyCodeLine{00011\ \ \ \ \ ,\ poly\_order\_(poly\_order)\ \{}
+\DoxyCodeLine{00012\ \ \ \ \ assert(radius\ >=\ 0);}
+\DoxyCodeLine{00013\ \ \ \ \ assert(window\_size\_\ >\ poly\_order\_);}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \ \ \ \ compute\_coefficients();}
+\DoxyCodeLine{00016\ \}}
 
 \end{DoxyCode}
 
@@ -80,45 +82,45 @@ Definition at line \mbox{\hyperlink{SavitskyGolay_8cpp_source_l00008}{8}} of fil
 
 
 
-Definition at line \mbox{\hyperlink{SavitskyGolay_8cpp_source_l00101}{101}} of file \mbox{\hyperlink{SavitskyGolay_8cpp_source}{Savitsky\+Golay.\+cpp}}.
+Definition at line \mbox{\hyperlink{SavitskyGolay_8cpp_source_l00107}{107}} of file \mbox{\hyperlink{SavitskyGolay_8cpp_source}{Savitsky\+Golay.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00102\ \ \ \ \ \textcolor{comment}{//\ 1.\ Create\ the\ matrix\ J\ =\ (A\string^T\ *\ A)}}
-\DoxyCodeLine{00103\ \ \ \ \ \textcolor{comment}{//\ Size\ is\ (poly\_order\ +\ 1)\ x\ (poly\_order\ +\ 1)}}
-\DoxyCodeLine{00104\ \ \ \ \ \textcolor{comment}{//\ Element\ J[i][j]\ is\ the\ sum\ of\ k\string^(i+j)\ for\ k\ in\ -\/m..m}}
-\DoxyCodeLine{00105\ }
-\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordtype}{int}\ rows\ =\ poly\_order\_\ +\ 1;}
-\DoxyCodeLine{00107\ \ \ \ \ std::vector<std::vector<float>>\ J(rows,\ std::vector<float>(rows));}
-\DoxyCodeLine{00108\ }
-\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ rows;\ ++i)\ \{}
-\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ rows;\ ++j)\ \{}
-\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ sum\ =\ 0;}
-\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ -\/window\_radius\_;\ k\ <=\ window\_radius\_;\ ++k)\ \{}
-\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sum\ +=\ std::pow(k,\ i\ +\ j);}
-\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ J[i][j]\ =\ sum;}
-\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00117\ \ \ \ \ \}}
-\DoxyCodeLine{00118\ }
-\DoxyCodeLine{00119\ \ \ \ \ \textcolor{comment}{//\ 2.\ Invert\ J\ to\ solve\ the\ normal\ equations}}
-\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{auto}\ J\_inv\ =\ invert\_matrix(J);}
-\DoxyCodeLine{00121\ }
-\DoxyCodeLine{00122\ \ \ \ \ \textcolor{comment}{//\ 3.\ Compute\ the\ weights}}
-\DoxyCodeLine{00123\ \ \ \ \ \textcolor{comment}{//\ The\ smoothed\ value\ is\ the\ coefficient\ c\_0\ of\ the\ polynomial.}}
-\DoxyCodeLine{00124\ \ \ \ \ \textcolor{comment}{//\ c\_0\ =\ sum(\ weight\_k\ *\ y\_k\ )}}
-\DoxyCodeLine{00125\ \ \ \ \ \textcolor{comment}{//\ weight\_k\ =\ sum(\ J\_inv[0][j]\ *\ k\string^j\ )\ for\ j=0..order}}
-\DoxyCodeLine{00126\ }
-\DoxyCodeLine{00127\ \ \ \ \ coeffs\_.resize(window\_size\_);}
-\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ -\/window\_radius\_;\ k\ <=\ window\_radius\_;\ ++k)\ \{}
-\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ weight\ =\ 0.0;}
-\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ rows;\ ++j)\ \{}
-\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ weight\ +=\ J\_inv[0][j]\ *\ std::pow(k,\ j);}
-\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ coeffs\_[k\ +\ window\_radius\_]\ =\ weight;}
-\DoxyCodeLine{00134\ \ \ \ \ \}}
-\DoxyCodeLine{00135\ \}}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{comment}{//\ 1.\ Create\ the\ matrix\ J\ =\ (A\string^T\ *\ A)}}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{comment}{//\ Size\ is\ (poly\_order\ +\ 1)\ x\ (poly\_order\ +\ 1)}}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{comment}{//\ Element\ J[i][j]\ is\ the\ sum\ of\ k\string^(i+j)\ for\ k\ in\ -\/m..m}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordtype}{int}\ rows\ =\ poly\_order\_\ +\ 1;}
+\DoxyCodeLine{00113\ \ \ \ \ std::vector<std::vector<float>>\ J(rows,\ std::vector<float>(rows));}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ rows;\ ++i)\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ rows;\ ++j)\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ sum\ =\ 0;}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ -\/window\_radius\_;\ k\ <=\ window\_radius\_;\ ++k)\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sum\ +=\ std::pow(k,\ i\ +\ j);}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ J[i][j]\ =\ sum;}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{comment}{//\ 2.\ Invert\ J\ to\ solve\ the\ normal\ equations}}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keyword}{auto}\ J\_inv\ =\ invert\_matrix(J);}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{comment}{//\ 3.\ Compute\ the\ weights}}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{comment}{//\ The\ smoothed\ value\ is\ the\ coefficient\ c\_0\ of\ the\ polynomial.}}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{comment}{//\ c\_0\ =\ sum(\ weight\_k\ *\ y\_k\ )}}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{comment}{//\ weight\_k\ =\ sum(\ J\_inv[0][j]\ *\ k\string^j\ )\ for\ j=0..order}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \ \ coeffs\_.resize(window\_size\_);}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ -\/window\_radius\_;\ k\ <=\ window\_radius\_;\ ++k)\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ weight\ =\ 0.0;}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ rows;\ ++j)\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ weight\ +=\ J\_inv[0][j]\ *\ std::pow(k,\ j);}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ coeffs\_[k\ +\ window\_radius\_]\ =\ weight;}
+\DoxyCodeLine{00140\ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \}}
 
 \end{DoxyCode}
 \Hypertarget{classSavitzkyGolay_ad1d9f9045c0dbb8af582d306b4f96650}\label{classSavitzkyGolay_ad1d9f9045c0dbb8af582d306b4f96650} 
@@ -129,33 +131,35 @@ Definition at line \mbox{\hyperlink{SavitskyGolay_8cpp_source_l00101}{101}} of f
 
 
 
-Definition at line \mbox{\hyperlink{SavitskyGolay_8cpp_source_l00016}{16}} of file \mbox{\hyperlink{SavitskyGolay_8cpp_source}{Savitsky\+Golay.\+cpp}}.
+Definition at line \mbox{\hyperlink{SavitskyGolay_8cpp_source_l00018}{18}} of file \mbox{\hyperlink{SavitskyGolay_8cpp_source}{Savitsky\+Golay.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordflow}{if}\ (data.size()\ <\ window\_size\_)\ \{}
-\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data;\ \ \textcolor{comment}{//\ Data\ too\ short\ to\ filter}}
-\DoxyCodeLine{00019\ \ \ \ \ \}}
-\DoxyCodeLine{00020\ }
-\DoxyCodeLine{00021\ \ \ \ \ std::vector<Point>\ result(data.size());}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordflow}{if}\ (data.size()\ <\ window\_size\_)\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data;\ \textcolor{comment}{//\ Data\ too\ short\ to\ filter}}
+\DoxyCodeLine{00021\ \ \ \ \ \}}
 \DoxyCodeLine{00022\ }
-\DoxyCodeLine{00023\ \ \ \ \ \textcolor{comment}{//\ 1.\ Convolution\ for\ the\ valid\ range}}
-\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ window\_radius\_;\ i\ <\ data.size()\ -\/\ window\_radius\_;\ ++i)\ \{}
-\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ val\{0.0,\ 0.0\};}
-\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ -\/window\_radius\_;\ j\ <=\ window\_radius\_;\ ++j)\ \{}
-\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ val\ +=\ data[i\ +\ j]\ *\ coeffs\_[j\ +\ window\_radius\_];}
-\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ result[i]\ =\ val;}
-\DoxyCodeLine{00030\ \ \ \ \ \}}
-\DoxyCodeLine{00031\ }
-\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//\ 2.\ Handle\ Edges\ (Simple\ Repeat/Nearest\ padding\ strategy)}}
-\DoxyCodeLine{00033\ \ \ \ \ \textcolor{comment}{//\ For\ a\ robust\ production\ app,\ you\ might\ calculate\ asymmetric\ kernels\ here.}}
-\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ window\_radius\_;\ ++i)\ result[i]\ =\ data[i];}
-\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ data.size()\ -\/\ window\_radius\_;\ i\ <\ data.size();\ ++i)\ result[i]\ =\ data[i];}
-\DoxyCodeLine{00036\ }
-\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
-\DoxyCodeLine{00038\ \}}
+\DoxyCodeLine{00023\ \ \ \ \ std::vector<Point>\ result(data.size());}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{comment}{//\ 1.\ Convolution\ for\ the\ valid\ range}}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ window\_radius\_;\ i\ <\ data.size()\ -\/\ window\_radius\_;\ ++i)\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ val\ \{0.0,\ 0.0\};}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ -\/window\_radius\_;\ j\ <=\ window\_radius\_;\ ++j)\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ val\ +=\ data[i\ +\ j]\ *\ coeffs\_[j\ +\ window\_radius\_];}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ result[i]\ =\ val;}
+\DoxyCodeLine{00032\ \ \ \ \ \}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{comment}{//\ 2.\ Handle\ Edges\ (Simple\ Repeat/Nearest\ padding\ strategy)}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{comment}{//\ For\ a\ robust\ production\ app,\ you\ might\ calculate\ asymmetric\ kernels\ here.}}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ window\_radius\_;\ ++i)}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ result[i]\ =\ data[i];}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ data.size()\ -\/\ window\_radius\_;\ i\ <\ data.size();\ ++i)}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ result[i]\ =\ data[i];}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00042\ \}}
 
 \end{DoxyCode}
 \Hypertarget{classSavitzkyGolay_aa4e4f99f9a8cf615287a10314126bf3b}\label{classSavitzkyGolay_aa4e4f99f9a8cf615287a10314126bf3b} 
@@ -166,35 +170,35 @@ Definition at line \mbox{\hyperlink{SavitskyGolay_8cpp_source_l00016}{16}} of fi
 
 
 
-Definition at line \mbox{\hyperlink{SavitskyGolay_8cpp_source_l00040}{40}} of file \mbox{\hyperlink{SavitskyGolay_8cpp_source}{Savitsky\+Golay.\+cpp}}.
+Definition at line \mbox{\hyperlink{SavitskyGolay_8cpp_source_l00044}{44}} of file \mbox{\hyperlink{SavitskyGolay_8cpp_source}{Savitsky\+Golay.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00041\ \ \ \ \ \textcolor{comment}{//\ wrap\ around}}
-\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{if}\ (data.size()\ <\ window\_size\_)\ \{}
-\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data;\ \ \textcolor{comment}{//\ Data\ too\ short\ to\ filter}}
-\DoxyCodeLine{00044\ \ \ \ \ \}}
-\DoxyCodeLine{00045\ }
-\DoxyCodeLine{00046\ \ \ \ \ std::vector<Point>\ result(data.size());}
-\DoxyCodeLine{00047\ \ \ \ \ std::copy(data.begin(),\ data.end(),\ result.begin());}
-\DoxyCodeLine{00048\ }
-\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ data.size();\ ++i)\ \{}
-\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ val\{0.0,\ 0.0\};}
-\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ -\/window\_radius\_;\ j\ <=\ window\_radius\_;\ ++j)\ \{}
-\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ k\ =\ i\ +\ j;}
-\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (k\ <\ 0)\ \{}
-\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ k\ =\ data.size()\ +\ k;}
-\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (k\ >=\ data.size())\ \{}
-\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ k\ =\ k\ -\/\ data.size();}
-\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ val\ =\ val\ +\ data[k]\ *\ coeffs\_[j\ +\ window\_radius\_];}
-\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ result[i]\ =\ val;}
-\DoxyCodeLine{00061\ \ \ \ \ \}}
-\DoxyCodeLine{00062\ }
-\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
-\DoxyCodeLine{00064\ \}}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{comment}{//\ wrap\ around}}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{if}\ (data.size()\ <\ window\_size\_)\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ data;\ \textcolor{comment}{//\ Data\ too\ short\ to\ filter}}
+\DoxyCodeLine{00048\ \ \ \ \ \}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ std::vector<Point>\ result(data.size());}
+\DoxyCodeLine{00051\ \ \ \ \ std::copy(data.begin(),\ data.end(),\ result.begin());}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ data.size();\ ++i)\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ val\ \{0.0,\ 0.0\};}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ -\/window\_radius\_;\ j\ <=\ window\_radius\_;\ ++j)\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ k\ =\ i\ +\ j;}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (k\ <\ 0)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ k\ =\ data.size()\ +\ k;}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (k\ >=\ data.size())\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ k\ =\ k\ -\/\ data.size();}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ val\ =\ val\ +\ data[k]\ *\ coeffs\_[j\ +\ window\_radius\_];}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ result[i]\ =\ val;}
+\DoxyCodeLine{00065\ \ \ \ \ \}}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00068\ \}}
 
 \end{DoxyCode}
 \Hypertarget{classSavitzkyGolay_ad9f17e97a8b03db9ec87c66ecdb56e6e}\label{classSavitzkyGolay_ad9f17e97a8b03db9ec87c66ecdb56e6e} 
@@ -222,42 +226,44 @@ Definition at line \mbox{\hyperlink{SavitskyGolay_8h_source_l00024}{24}} of file
 
 
 
-Definition at line \mbox{\hyperlink{SavitskyGolay_8cpp_source_l00068}{68}} of file \mbox{\hyperlink{SavitskyGolay_8cpp_source}{Savitsky\+Golay.\+cpp}}.
+Definition at line \mbox{\hyperlink{SavitskyGolay_8cpp_source_l00072}{72}} of file \mbox{\hyperlink{SavitskyGolay_8cpp_source}{Savitsky\+Golay.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{int}\ n\ =\ A.size();}
-\DoxyCodeLine{00070\ \ \ \ \ std::vector<std::vector<float>>\ inv(n,\ std::vector<float>(n,\ 0.0));}
-\DoxyCodeLine{00071\ }
-\DoxyCodeLine{00072\ \ \ \ \ \textcolor{comment}{//\ Initialize\ inverse\ as\ identity}}
-\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n;\ ++i)\ inv[i][i]\ =\ 1.0;}
-\DoxyCodeLine{00074\ }
-\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n;\ ++i)\ \{}
-\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Find\ pivot}}
-\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ pivot\ =\ A[i][i];}
-\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ (Simple\ pivot\ check,\ typically\ you'd\ swap\ rows\ for\ stability)}}
-\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (std::abs(pivot)\ <\ 1e-\/10)\ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}Matrix\ singular,\ cannot\ invert."{}});}
-\DoxyCodeLine{00080\ }
-\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Normalize\ row}}
-\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ n;\ ++j)\ \{}
-\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ A[i][j]\ /=\ pivot;}
-\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ inv[i][j]\ /=\ pivot;}
-\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{int}\ n\ =\ A.size();}
+\DoxyCodeLine{00074\ \ \ \ \ std::vector<std::vector<float>>\ inv(n,\ std::vector<float>(n,\ 0.0));}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{comment}{//\ Initialize\ inverse\ as\ identity}}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n;\ ++i)}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ inv[i][i]\ =\ 1.0;}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ n;\ ++i)\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Find\ pivot}}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ pivot\ =\ A[i][i];}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ (Simple\ pivot\ check,\ typically\ you'd\ swap\ rows\ for\ stability)}}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (std::abs(pivot)\ <\ 1e-\/10)}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}Matrix\ singular,\ cannot\ invert."{}});}
 \DoxyCodeLine{00086\ }
-\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Eliminate\ other\ rows}}
-\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ n;\ ++k)\ \{}
-\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (k\ !=\ i)\ \{}
-\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ factor\ =\ A[k][i];}
-\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ n;\ ++j)\ \{}
-\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ A[k][j]\ -\/=\ factor\ *\ A[i][j];}
-\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ inv[k][j]\ -\/=\ factor\ *\ inv[i][j];}
-\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00097\ \ \ \ \ \}}
-\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{return}\ inv;}
-\DoxyCodeLine{00099\ \}}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Normalize\ row}}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ n;\ ++j)\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ A[i][j]\ /=\ pivot;}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ inv[i][j]\ /=\ pivot;}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Eliminate\ other\ rows}}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ n;\ ++k)\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (k\ !=\ i)\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ factor\ =\ A[k][i];}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ n;\ ++j)\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ A[k][j]\ -\/=\ factor\ *\ A[i][j];}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ inv[k][j]\ -\/=\ factor\ *\ inv[i][j];}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{return}\ inv;}
+\DoxyCodeLine{00105\ \}}
 
 \end{DoxyCode}
 

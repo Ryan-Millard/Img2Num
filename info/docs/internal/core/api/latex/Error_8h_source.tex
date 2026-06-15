@@ -27,9 +27,9 @@
 \DoxyCodeLine{\Hypertarget{Error_8h_source_l00023}00023\ \textcolor{comment}{//\ Template\ function\ for\ catching\ and\ handling\ exceptions}}
 \DoxyCodeLine{\Hypertarget{Error_8h_source_l00024}00024\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Func,\ \textcolor{keyword}{typename}...\ Args>}
 \DoxyCodeLine{\Hypertarget{Error_8h_source_l00025}00025\ \textcolor{keywordtype}{void}\ clear\_last\_error\_and\_catch(Func\&\&\ exception\_prone\_func,\ Args\&\&...\ args)\ \{}
-\DoxyCodeLine{\Hypertarget{Error_8h_source_l00026}00026\ \ \ \ \ clear\_last\_error();\ \ \textcolor{comment}{//\ Clear\ any\ previous\ error\ state}}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00026}00026\ \ \ \ \ clear\_last\_error();\ \textcolor{comment}{//\ Clear\ any\ previous\ error\ state}}
 \DoxyCodeLine{\Hypertarget{Error_8h_source_l00027}00027\ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{\Hypertarget{Error_8h_source_l00028}00028\ \ \ \ \ \ \ \ \ exception\_prone\_func(std::forward<Args>(args)...);\ \ \textcolor{comment}{//\ Call\ the\ passed\ function}}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00028}00028\ \ \ \ \ \ \ \ \ exception\_prone\_func(std::forward<Args>(args)...);\ \textcolor{comment}{//\ Call\ the\ passed\ function}}
 \DoxyCodeLine{\Hypertarget{Error_8h_source_l00029}00029\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ std::bad\_alloc\&\ e)\ \{}
 \DoxyCodeLine{\Hypertarget{Error_8h_source_l00030}00030\ \ \ \ \ \ \ \ \ set\_error(Error::BAD\_ALLOC,\ e.what());}
 \DoxyCodeLine{\Hypertarget{Error_8h_source_l00031}00031\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ std::invalid\_argument\&\ e)\ \{}
@@ -42,8 +42,8 @@
 \DoxyCodeLine{\Hypertarget{Error_8h_source_l00038}00038\ \ \ \ \ \ \ \ \ set\_error(Error::UNKNOWN,\ \textcolor{stringliteral}{"{}Unknown\ exception\ occurred"{}});}
 \DoxyCodeLine{\Hypertarget{Error_8h_source_l00039}00039\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{Error_8h_source_l00040}00040\ \}}
-\DoxyCodeLine{\Hypertarget{Error_8h_source_l00041}00041\ \}\ \ \textcolor{comment}{//\ namespace\ img2num}}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00041}00041\ \}\ \textcolor{comment}{//\ namespace\ img2num}}
 \DoxyCodeLine{\Hypertarget{Error_8h_source_l00042}00042\ }
-\DoxyCodeLine{\Hypertarget{Error_8h_source_l00043}00043\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ IMG2NUM\_ERROR\_H}}
+\DoxyCodeLine{\Hypertarget{Error_8h_source_l00043}00043\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ IMG2NUM\_ERROR\_H}}
 
 \end{DoxyCode}

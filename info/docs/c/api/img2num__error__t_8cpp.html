@@ -96,8 +96,8 @@ $(document).ready(function(){initNavTree('img2num__error__t_8cpp.html',''); init
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="img2num__error__t_8h_source.html">cimg2num/img2num_error_t.h</a>&quot;</code><br />
-<code>#include &lt;cstring&gt;</code><br />
 <code>#include &quot;img2num/Error.h&quot;</code><br />
+<code>#include &lt;cstring&gt;</code><br />
 </div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for img2num_error_t.cpp:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -133,10 +133,10 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="img2num__error__t_8cpp_source.html#l00034">34</a> of file <a class="el" href="img2num__error__t_8cpp_source.html">img2num_error_t.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>                                {</div>
-<div class="line"><span class="lineno">   35</span>    img2num::clear_last_error();</div>
-<div class="line"><span class="lineno">   36</span>}</div>
+<p class="definition">Definition at line <a class="el" href="img2num__error__t_8cpp_source.html#l00038">38</a> of file <a class="el" href="img2num__error__t_8cpp_source.html">img2num_error_t.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   38</span>                                {</div>
+<div class="line"><span class="lineno">   39</span>    img2num::clear_last_error();</div>
+<div class="line"><span class="lineno">   40</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -155,11 +155,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="img2num__error__t_8cpp_source.html#l00023">23</a> of file <a class="el" href="img2num__error__t_8cpp_source.html">img2num_error_t.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   23</span>                                         {</div>
-<div class="line"><span class="lineno">   24</span>    <span class="keyword">const</span> img2num::Error cpp_err{img2num::get_last_error()};</div>
-<div class="line"><span class="lineno">   25</span>    <span class="keywordflow">return</span> cpp_error_to_c_error(cpp_err);</div>
-<div class="line"><span class="lineno">   26</span>}</div>
+<p class="definition">Definition at line <a class="el" href="img2num__error__t_8cpp_source.html#l00027">27</a> of file <a class="el" href="img2num__error__t_8cpp_source.html">img2num_error_t.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   27</span>                                         {</div>
+<div class="line"><span class="lineno">   28</span>    <span class="keyword">const</span> img2num::Error cpp_err {img2num::get_last_error()};</div>
+<div class="line"><span class="lineno">   29</span>    <span class="keywordflow">return</span> cpp_error_to_c_error(cpp_err);</div>
+<div class="line"><span class="lineno">   30</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -178,12 +178,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="img2num__error__t_8cpp_source.html#l00028">28</a> of file <a class="el" href="img2num__error__t_8cpp_source.html">img2num_error_t.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   28</span>                                             {</div>
-<div class="line"><span class="lineno">   29</span>    <span class="keyword">static</span> <span class="keyword">thread_local</span> std::string msg;</div>
-<div class="line"><span class="lineno">   30</span>    msg = img2num::get_last_error_message();</div>
-<div class="line"><span class="lineno">   31</span>    <span class="keywordflow">return</span> msg.c_str();</div>
-<div class="line"><span class="lineno">   32</span>}</div>
+<p class="definition">Definition at line <a class="el" href="img2num__error__t_8cpp_source.html#l00032">32</a> of file <a class="el" href="img2num__error__t_8cpp_source.html">img2num_error_t.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   32</span>                                             {</div>
+<div class="line"><span class="lineno">   33</span>    <span class="keyword">static</span> <span class="keyword">thread_local</span> std::string msg;</div>
+<div class="line"><span class="lineno">   34</span>    msg = img2num::get_last_error_message();</div>
+<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">return</span> msg.c_str();</div>
+<div class="line"><span class="lineno">   36</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

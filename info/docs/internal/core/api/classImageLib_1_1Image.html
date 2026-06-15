@@ -173,7 +173,7 @@ Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename PixelT&gt;<br />
 class ImageLib::Image&lt; PixelT &gt;</div>
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00014">14</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00013">13</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a2b0d6c0e1b0d86b0ce7bd1ab35c67607" name="a2b0d6c0e1b0d86b0ce7bd1ab35c67607"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2b0d6c0e1b0d86b0ce7bd1ab35c67607">&#9670;&#160;</a></span>const_iter</h2>
@@ -189,7 +189,7 @@ template&lt;typename PixelT &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00052">52</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00060">60</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
 
 </div>
 </div>
@@ -207,7 +207,7 @@ template&lt;typename PixelT &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00045">45</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00053">53</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
 
 </div>
 </div>
@@ -237,9 +237,10 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00019">19</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   19</span>            : width(0), height(0) {</div>
-<div class="line"><span class="lineno">   20</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00020">20</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   21</span>        : width(0)</div>
+<div class="line"><span class="lineno">   22</span>        , height(0) {</div>
+<div class="line"><span class="lineno">   23</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -285,9 +286,11 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00021">21</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   22</span>        : width(width), height(height), data(width * height, fill) {</div>
-<div class="line"><span class="lineno">   23</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00024">24</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span>        : width(width)</div>
+<div class="line"><span class="lineno">   26</span>        , height(height)</div>
+<div class="line"><span class="lineno">   27</span>        , data(width * height, fill) {</div>
+<div class="line"><span class="lineno">   28</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -317,10 +320,10 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00046">46</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>                 {</div>
-<div class="line"><span class="lineno">   47</span>        <span class="keywordflow">return</span> data.begin();</div>
-<div class="line"><span class="lineno">   48</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00054">54</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>                 {</div>
+<div class="line"><span class="lineno">   55</span>        <span class="keywordflow">return</span> data.begin();</div>
+<div class="line"><span class="lineno">   56</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -349,10 +352,10 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00053">53</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span>                             {</div>
-<div class="line"><span class="lineno">   54</span>        <span class="keywordflow">return</span> data.begin();</div>
-<div class="line"><span class="lineno">   55</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00061">61</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span>                             {</div>
+<div class="line"><span class="lineno">   62</span>        <span class="keywordflow">return</span> data.begin();</div>
+<div class="line"><span class="lineno">   63</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -381,10 +384,10 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00049">49</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>               {</div>
-<div class="line"><span class="lineno">   50</span>        <span class="keywordflow">return</span> data.end();</div>
-<div class="line"><span class="lineno">   51</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00057">57</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>               {</div>
+<div class="line"><span class="lineno">   58</span>        <span class="keywordflow">return</span> data.end();</div>
+<div class="line"><span class="lineno">   59</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -413,10 +416,10 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00056">56</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>                           {</div>
-<div class="line"><span class="lineno">   57</span>        <span class="keywordflow">return</span> data.end();</div>
-<div class="line"><span class="lineno">   58</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00064">64</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   64</span>                           {</div>
+<div class="line"><span class="lineno">   65</span>        <span class="keywordflow">return</span> data.end();</div>
+<div class="line"><span class="lineno">   66</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -446,10 +449,10 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00041">41</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>                                   {</div>
-<div class="line"><span class="lineno">   42</span>        std::fill(data.begin(), data.end(), color);</div>
-<div class="line"><span class="lineno">   43</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00049">49</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>                                   {</div>
+<div class="line"><span class="lineno">   50</span>        std::fill(data.begin(), data.end(), color);</div>
+<div class="line"><span class="lineno">   51</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -478,10 +481,10 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00073">73</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   73</span>                                             {</div>
-<div class="line"><span class="lineno">   74</span>        <span class="keywordflow">return</span> data;</div>
-<div class="line"><span class="lineno">   75</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00081">81</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   81</span>                                             {</div>
+<div class="line"><span class="lineno">   82</span>        <span class="keywordflow">return</span> data;</div>
+<div class="line"><span class="lineno">   83</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -510,10 +513,10 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00063">63</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   63</span>                          {</div>
-<div class="line"><span class="lineno">   64</span>        <span class="keywordflow">return</span> height;</div>
-<div class="line"><span class="lineno">   65</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00071">71</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   71</span>                          {</div>
+<div class="line"><span class="lineno">   72</span>        <span class="keywordflow">return</span> height;</div>
+<div class="line"><span class="lineno">   73</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -553,10 +556,10 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00080">80</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>                                   {</div>
-<div class="line"><span class="lineno">   81</span>        <span class="keywordflow">return</span> data[index(x, y)];</div>
-<div class="line"><span class="lineno">   82</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00088">88</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   88</span>                                   {</div>
+<div class="line"><span class="lineno">   89</span>        <span class="keywordflow">return</span> data[index(x, y)];</div>
+<div class="line"><span class="lineno">   90</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -596,10 +599,10 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00077">77</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   77</span>                                               {</div>
-<div class="line"><span class="lineno">   78</span>        <span class="keywordflow">return</span> data[index(x, y)];</div>
-<div class="line"><span class="lineno">   79</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00085">85</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   85</span>                                               {</div>
+<div class="line"><span class="lineno">   86</span>        <span class="keywordflow">return</span> data[index(x, y)];</div>
+<div class="line"><span class="lineno">   87</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -628,10 +631,10 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00066">66</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   66</span>                              {</div>
-<div class="line"><span class="lineno">   67</span>        <span class="keywordflow">return</span> width * height;</div>
-<div class="line"><span class="lineno">   68</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00074">74</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   74</span>                              {</div>
+<div class="line"><span class="lineno">   75</span>        <span class="keywordflow">return</span> width * height;</div>
+<div class="line"><span class="lineno">   76</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -660,10 +663,10 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00069">69</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   69</span>                        {</div>
-<div class="line"><span class="lineno">   70</span>        <span class="keywordflow">return</span> getPixelCount();</div>
-<div class="line"><span class="lineno">   71</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00077">77</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span>                        {</div>
+<div class="line"><span class="lineno">   78</span>        <span class="keywordflow">return</span> getPixelCount();</div>
+<div class="line"><span class="lineno">   79</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -692,10 +695,10 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00060">60</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span>                         {</div>
-<div class="line"><span class="lineno">   61</span>        <span class="keywordflow">return</span> width;</div>
-<div class="line"><span class="lineno">   62</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00068">68</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span>                         {</div>
+<div class="line"><span class="lineno">   69</span>        <span class="keywordflow">return</span> width;</div>
+<div class="line"><span class="lineno">   70</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -735,12 +738,12 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00108">108</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  108</span>                                  {</div>
-<div class="line"><span class="lineno">  109</span>        <span class="keywordflow">if</span> (x &lt; 0 || y &lt; 0 || x &gt;= width || y &gt;= height)</div>
-<div class="line"><span class="lineno">  110</span>            <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;Pixel coordinates out of bounds&quot;</span>);</div>
-<div class="line"><span class="lineno">  111</span>        <span class="keywordflow">return</span> y * width + x;</div>
-<div class="line"><span class="lineno">  112</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00116">116</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  116</span>                                  {</div>
+<div class="line"><span class="lineno">  117</span>        <span class="keywordflow">if</span> (x &lt; 0 || y &lt; 0 || x &gt;= width || y &gt;= height)</div>
+<div class="line"><span class="lineno">  118</span>            <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;Pixel coordinates out of bounds&quot;</span>);</div>
+<div class="line"><span class="lineno">  119</span>        <span class="keywordflow">return</span> y * width + x;</div>
+<div class="line"><span class="lineno">  120</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -794,20 +797,22 @@ template&lt;typename ConverterT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00026">26</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   27</span>                                                              {</div>
-<div class="line"><span class="lineno">   28</span>        <span class="comment">// converter.convert must return exactly PixelT</span></div>
-<div class="line"><span class="lineno">   29</span>        <span class="keyword">static_assert</span>(std::is_same_v&lt;<span class="keyword">decltype</span>(converter.convert((<span class="keyword">const</span> uint8_t *)<span class="keyword">nullptr</span>)), PixelT&gt;,</div>
-<div class="line"><span class="lineno">   30</span>                      <span class="stringliteral">&quot;Converter return type must match PixelT&quot;</span>);</div>
-<div class="line"><span class="lineno">   31</span> </div>
-<div class="line"><span class="lineno">   32</span>        this-&gt;width = width;</div>
-<div class="line"><span class="lineno">   33</span>        this-&gt;height = height;</div>
-<div class="line"><span class="lineno">   34</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> pixelCount = getPixelCount();</div>
-<div class="line"><span class="lineno">   35</span>        data.resize(pixelCount);</div>
-<div class="line"><span class="lineno">   36</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; pixelCount; ++i) {</div>
-<div class="line"><span class="lineno">   37</span>            data[i] = converter.convert(&amp;buffer[i * converter.bytesPerPixel]);</div>
-<div class="line"><span class="lineno">   38</span>        }</div>
-<div class="line"><span class="lineno">   39</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00031">31</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   33</span>      {</div>
+<div class="line"><span class="lineno">   34</span>        <span class="comment">// converter.convert must return exactly PixelT</span></div>
+<div class="line"><span class="lineno">   35</span>        <span class="keyword">static_assert</span>(</div>
+<div class="line"><span class="lineno">   36</span>            std::is_same_v&lt;<span class="keyword">decltype</span>(converter.convert((<span class="keyword">const</span> uint8_t*)<span class="keyword">nullptr</span>)), PixelT&gt;,</div>
+<div class="line"><span class="lineno">   37</span>            <span class="stringliteral">&quot;Converter return type must match PixelT&quot;</span></div>
+<div class="line"><span class="lineno">   38</span>        );</div>
+<div class="line"><span class="lineno">   39</span> </div>
+<div class="line"><span class="lineno">   40</span>        this-&gt;width = width;</div>
+<div class="line"><span class="lineno">   41</span>        this-&gt;height = height;</div>
+<div class="line"><span class="lineno">   42</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> pixelCount = getPixelCount();</div>
+<div class="line"><span class="lineno">   43</span>        data.resize(pixelCount);</div>
+<div class="line"><span class="lineno">   44</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; pixelCount; ++i) {</div>
+<div class="line"><span class="lineno">   45</span>            data[i] = converter.convert(&amp;buffer[i * converter.bytesPerPixel]);</div>
+<div class="line"><span class="lineno">   46</span>        }</div>
+<div class="line"><span class="lineno">   47</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -847,10 +852,10 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00097">97</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   97</span>                                     {</div>
-<div class="line"><span class="lineno">   98</span>        <span class="keywordflow">return</span> data.at(index(x, y));</div>
-<div class="line"><span class="lineno">   99</span>    }  <span class="comment">// set</span></div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00105">105</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  105</span>                                     {</div>
+<div class="line"><span class="lineno">  106</span>        <span class="keywordflow">return</span> data.at(index(x, y));</div>
+<div class="line"><span class="lineno">  107</span>    } <span class="comment">// set</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -890,10 +895,10 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00100">100</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  100</span>                                                 {</div>
-<div class="line"><span class="lineno">  101</span>        <span class="keywordflow">return</span> data.at(index(x, y));</div>
-<div class="line"><span class="lineno">  102</span>    }  <span class="comment">// get</span></div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00108">108</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  108</span>                                                 {</div>
+<div class="line"><span class="lineno">  109</span>        <span class="keywordflow">return</span> data.at(index(x, y));</div>
+<div class="line"><span class="lineno">  110</span>    } <span class="comment">// get</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -923,10 +928,10 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00089">89</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   89</span>                                {</div>
-<div class="line"><span class="lineno">   90</span>        <span class="keywordflow">return</span> data.at(idx);</div>
-<div class="line"><span class="lineno">   91</span>    }  <span class="comment">// set</span></div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00097">97</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   97</span>                                {</div>
+<div class="line"><span class="lineno">   98</span>        <span class="keywordflow">return</span> data.at(idx);</div>
+<div class="line"><span class="lineno">   99</span>    } <span class="comment">// set</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -956,10 +961,10 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00092">92</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   92</span>                                            {</div>
-<div class="line"><span class="lineno">   93</span>        <span class="keywordflow">return</span> data.at(idx);</div>
-<div class="line"><span class="lineno">   94</span>    }  <span class="comment">// get</span></div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00100">100</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  100</span>                                            {</div>
+<div class="line"><span class="lineno">  101</span>        <span class="keywordflow">return</span> data.at(idx);</div>
+<div class="line"><span class="lineno">  102</span>    } <span class="comment">// get</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1005,10 +1010,10 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00084">84</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   84</span>                                                 {</div>
-<div class="line"><span class="lineno">   85</span>        data[index(x, y)] = p;</div>
-<div class="line"><span class="lineno">   86</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00092">92</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   92</span>                                                 {</div>
+<div class="line"><span class="lineno">   93</span>        data[index(x, y)] = p;</div>
+<div class="line"><span class="lineno">   94</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1035,7 +1040,7 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00105">105</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00113">113</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
 
 </div>
 </div>
@@ -1061,7 +1066,7 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00106">106</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00114">114</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
 
 </div>
 </div>
@@ -1087,7 +1092,7 @@ template&lt;typename PixelT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00106">106</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Image_8h_source.html#l00114">114</a> of file <a class="el" href="Image_8h_source.html">Image.h</a>.</p>
 
 </div>
 </div>

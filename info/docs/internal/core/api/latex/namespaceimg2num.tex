@@ -112,19 +112,19 @@ Dox File\+: {\ttfamily doxygen/img2num.\+h.\+dox}
 \end{DoxyNote}
 
 
-Definition at line \mbox{\hyperlink{bilateral__filter_8cpp_source_l00222}{222}} of file \mbox{\hyperlink{bilateral__filter_8cpp_source}{bilateral\+\_\+filter.\+cpp}}.
+Definition at line \mbox{\hyperlink{bilateral__filter_8cpp_source_l00230}{230}} of file \mbox{\hyperlink{bilateral__filter_8cpp_source}{bilateral\+\_\+filter.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00224\ \ \ \ \ GPU::getClassInstance().init\_gpu();}
-\DoxyCodeLine{00225\ }
-\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keywordflow}{if}\ (GPU::getClassInstance().is\_initialized())\ \{}
-\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ bilateral\_filter\_gpu(image,\ width,\ height,\ sigma\_spatial,\ sigma\_range,\ color\_space);}
-\DoxyCodeLine{00228\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ bilateral\_filter\_cpu(image,\ width,\ height,\ sigma\_spatial,\ sigma\_range,\ color\_space);}
-\DoxyCodeLine{00230\ \ \ \ \ \}}
-\DoxyCodeLine{00231\ \}}
+\DoxyCodeLine{00233\ \ \ \{}
+\DoxyCodeLine{00234\ \ \ \ \ GPU::getClassInstance().init\_gpu();}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{keywordflow}{if}\ (GPU::getClassInstance().is\_initialized())\ \{}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ bilateral\_filter\_gpu(image,\ width,\ height,\ sigma\_spatial,\ sigma\_range,\ color\_space);}
+\DoxyCodeLine{00238\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ bilateral\_filter\_cpu(image,\ width,\ height,\ sigma\_spatial,\ sigma\_range,\ color\_space);}
+\DoxyCodeLine{00240\ \ \ \ \ \}}
+\DoxyCodeLine{00241\ \}}
 
 \end{DoxyCode}
 
@@ -167,27 +167,27 @@ Dox File\+: {\ttfamily doxygen/img2num.\+h.\+dox}
 \end{DoxyNote}
 
 
-Definition at line \mbox{\hyperlink{image__utils_8cpp_source_l00135}{135}} of file \mbox{\hyperlink{image__utils_8cpp_source}{image\+\_\+utils.\+cpp}}.
+Definition at line \mbox{\hyperlink{image__utils_8cpp_source_l00136}{136}} of file \mbox{\hyperlink{image__utils_8cpp_source}{image\+\_\+utils.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00137\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ img;}
-\DoxyCodeLine{00138\ \ \ \ \ img.loadFromBuffer(ptr,\ width,\ height,\ ImageLib::RGBA\_CONVERTER<uint8\_t>);}
-\DoxyCodeLine{00139\ }
-\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ imgWidth\{img.getWidth()\},\ imgHeight\{img.getHeight()\};}
-\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\ \&p\ :\ img)\ \{}
-\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ R\{p.red\ <\ num\_thresholds\};}
-\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ G\{p.green\ <\ num\_thresholds\};}
-\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ B\{p.blue\ <\ num\_thresholds\};}
-\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (R\ \&\&\ B\ \&\&\ G)\ \{}
-\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ p.setGray(0);}
-\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00148\ \ \ \ \ \}}
-\DoxyCodeLine{00149\ }
-\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ \&modified\ =\ img.getData();}
-\DoxyCodeLine{00151\ \ \ \ \ std::memcpy(ptr,\ modified.data(),\ modified.size()\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
-\DoxyCodeLine{00152\ \}}
+\DoxyCodeLine{00138\ \ \ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ img;}
+\DoxyCodeLine{00140\ \ \ \ \ img.loadFromBuffer(ptr,\ width,\ height,\ ImageLib::RGBA\_CONVERTER<uint8\_t>);}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ imgWidth\ \{img.getWidth()\},\ imgHeight\ \{img.getHeight()\};}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\&\ p\ :\ img)\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ R\ \{p.red\ <\ num\_thresholds\};}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ G\ \{p.green\ <\ num\_thresholds\};}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ B\ \{p.blue\ <\ num\_thresholds\};}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (R\ \&\&\ B\ \&\&\ G)\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ p.setGray(0);}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \ \ \}}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ modified\ =\ img.getData();}
+\DoxyCodeLine{00153\ \ \ \ \ std::memcpy(ptr,\ modified.data(),\ modified.size()\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
+\DoxyCodeLine{00154\ \}}
 
 \end{DoxyCode}
 \Hypertarget{namespaceimg2num_a70ec94a56c6cdb94a28ed67d6a32e575}\label{namespaceimg2num_a70ec94a56c6cdb94a28ed67d6a32e575} 
@@ -222,9 +222,9 @@ Definition at line \mbox{\hyperlink{Error_8h_source_l00025}{25}} of file \mbox{\
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00026\ \ \ \ \ clear\_last\_error();\ \ \textcolor{comment}{//\ Clear\ any\ previous\ error\ state}}
+\DoxyCodeLine{00026\ \ \ \ \ clear\_last\_error();\ \textcolor{comment}{//\ Clear\ any\ previous\ error\ state}}
 \DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ exception\_prone\_func(std::forward<Args>(args)...);\ \ \textcolor{comment}{//\ Call\ the\ passed\ function}}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ exception\_prone\_func(std::forward<Args>(args)...);\ \textcolor{comment}{//\ Call\ the\ passed\ function}}
 \DoxyCodeLine{00029\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ std::bad\_alloc\&\ e)\ \{}
 \DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ set\_error(Error::BAD\_ALLOC,\ e.what());}
 \DoxyCodeLine{00031\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ std::invalid\_argument\&\ e)\ \{}
@@ -272,59 +272,60 @@ Definition at line \mbox{\hyperlink{image__utils_8cpp_source_l00048}{48}} of fil
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{if}\ (!image\ ||\ width\ ==\ 0\ ||\ height\ ==\ 0\ ||\ sigma\_pixels\ <=\ 0)\ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{00050\ }
-\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ Npix\ =\ width\ *\ height;}
-\DoxyCodeLine{00052\ }
-\DoxyCodeLine{00053\ \ \ \ \ \textcolor{comment}{//\ Compute\ padded\ dimensions\ (next\ power\ of\ two)}}
-\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ W\ =\ fft::next\_power\_of\_two(width);}
-\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ H\ =\ fft::next\_power\_of\_two(height);}
-\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ Npix\_padded\ =\ W\ *\ H;}
-\DoxyCodeLine{00057\ }
-\DoxyCodeLine{00058\ \ \ \ \ \textcolor{comment}{//\ Frequency\ coordinates\ helper\ (DC\ at\ corner)}}
-\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{auto}\ freq\_coord\ =\ [](\textcolor{keywordtype}{int}\ k,\ \textcolor{keywordtype}{int}\ dim)\ -\/>\ \textcolor{keywordtype}{double}\ \{}
-\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (k\ <=\ dim\ /\ 2)\ ?\ double(k)\ /\ dim\ :\ double(k\ -\/\ dim)\ /\ dim;}
-\DoxyCodeLine{00061\ \ \ \ \ \};}
-\DoxyCodeLine{00062\ }
-\DoxyCodeLine{00063\ \ \ \ \ \textcolor{comment}{//\ Precompute\ Gaussian\ factor\ in\ frequency\ domain}}
-\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ two\_pi2\_sigma2\ =\ 2.0\ *\ M\_PI\ *\ M\_PI\ *\ sigma\_pixels\ *\ sigma\_pixels;}
-\DoxyCodeLine{00065\ }
-\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ channel\ =\ 0;\ channel\ <\ 3;\ channel++)\ \{}
-\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Allocate\ padded\ buffer}}
-\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ std::vector<fft::cd>\ data(Npix\_padded,\ \{0.0,\ 0.0\});}
-\DoxyCodeLine{00069\ }
-\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ original\ image\ channel\ into\ padded\ buffer}}
-\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ y\ =\ 0;\ y\ <\ height;\ y++)}
-\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ x\ =\ 0;\ x\ <\ width;\ x++)}
-\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ data[y\ *\ W\ +\ x]\ =\ fft::cd(image[(y\ *\ width\ +\ x)\ *\ 4\ +\ channel],\ 0.0);}
-\DoxyCodeLine{00074\ }
-\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Forward\ 2D\ FFT}}
-\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ fft::iterative\_fft\_2d(data,\ W,\ H,\ \textcolor{keyword}{false});}
-\DoxyCodeLine{00077\ }
-\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Apply\ Gaussian\ filter\ in\ frequency\ domain}}
-\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ y\ =\ 0;\ y\ <\ H;\ y++)\ \{}
-\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ fy2\ =\ freq\_coord(y,\ H)\ *\ freq\_coord(y,\ H);}
-\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ x\ =\ 0;\ x\ <\ W;\ x++)\ \{}
-\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ fx2\ =\ freq\_coord(x,\ W)\ *\ freq\_coord(x,\ W);}
-\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ gain\ =\ std::exp(-\/two\_pi2\_sigma2\ *\ (fx2\ +\ fy2));}
-\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ data[y\ *\ W\ +\ x]\ *=\ gain;}
-\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00087\ }
-\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Inverse\ 2D\ FFT}}
-\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ fft::iterative\_fft\_2d(data,\ W,\ H,\ \textcolor{keyword}{true});}
-\DoxyCodeLine{00090\ }
-\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ back\ only\ the\ original\ width/height\ and\ clamp}}
-\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ y\ =\ 0;\ y\ <\ height;\ y++)}
-\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ x\ =\ 0;\ x\ <\ width;\ x++)\ \{}
-\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ v\ =\ data[y\ *\ W\ +\ x].real();}
-\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ v\ =\ std::clamp(v,\ 0.0,\ 255.0);}
-\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ image[(y\ *\ width\ +\ x)\ *\ 4\ +\ channel]\ =\ \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(std::lrint(v));}
-\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00098\ \ \ \ \ \}}
-\DoxyCodeLine{00099\ }
-\DoxyCodeLine{00100\ \ \ \ \ \textcolor{comment}{//\ Alpha\ channel\ remains\ unchanged}}
-\DoxyCodeLine{00101\ \}}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{if}\ (!image\ ||\ width\ ==\ 0\ ||\ height\ ==\ 0\ ||\ sigma\_pixels\ <=\ 0)}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ Npix\ =\ width\ *\ height;}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{comment}{//\ Compute\ padded\ dimensions\ (next\ power\ of\ two)}}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ W\ =\ fft::next\_power\_of\_two(width);}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ H\ =\ fft::next\_power\_of\_two(height);}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ Npix\_padded\ =\ W\ *\ H;}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{comment}{//\ Frequency\ coordinates\ helper\ (DC\ at\ corner)}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{auto}\ freq\_coord\ =\ [](\textcolor{keywordtype}{int}\ k,\ \textcolor{keywordtype}{int}\ dim)\ -\/>\ \textcolor{keywordtype}{double}\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (k\ <=\ dim\ /\ 2)\ ?\ double(k)\ /\ dim\ :\ double(k\ -\/\ dim)\ /\ dim;}
+\DoxyCodeLine{00062\ \ \ \ \ \};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{comment}{//\ Precompute\ Gaussian\ factor\ in\ frequency\ domain}}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ two\_pi2\_sigma2\ =\ 2.0\ *\ M\_PI\ *\ M\_PI\ *\ sigma\_pixels\ *\ sigma\_pixels;}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ channel\ =\ 0;\ channel\ <\ 3;\ channel++)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Allocate\ padded\ buffer}}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ std::vector<fft::cd>\ data(Npix\_padded,\ \{0.0,\ 0.0\});}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ original\ image\ channel\ into\ padded\ buffer}}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ y\ =\ 0;\ y\ <\ height;\ y++)}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ x\ =\ 0;\ x\ <\ width;\ x++)}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ data[y\ *\ W\ +\ x]\ =\ fft::cd(image[(y\ *\ width\ +\ x)\ *\ 4\ +\ channel],\ 0.0);}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Forward\ 2D\ FFT}}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ fft::iterative\_fft\_2d(data,\ W,\ H,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Apply\ Gaussian\ filter\ in\ frequency\ domain}}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ y\ =\ 0;\ y\ <\ H;\ y++)\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ fy2\ =\ freq\_coord(y,\ H)\ *\ freq\_coord(y,\ H);}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ x\ =\ 0;\ x\ <\ W;\ x++)\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ fx2\ =\ freq\_coord(x,\ W)\ *\ freq\_coord(x,\ W);}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ gain\ =\ std::exp(-\/two\_pi2\_sigma2\ *\ (fx2\ +\ fy2));}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ data[y\ *\ W\ +\ x]\ *=\ gain;}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Inverse\ 2D\ FFT}}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ fft::iterative\_fft\_2d(data,\ W,\ H,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ back\ only\ the\ original\ width/height\ and\ clamp}}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ y\ =\ 0;\ y\ <\ height;\ y++)}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ x\ =\ 0;\ x\ <\ width;\ x++)\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ v\ =\ data[y\ *\ W\ +\ x].real();}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ v\ =\ std::clamp(v,\ 0.0,\ 255.0);}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ image[(y\ *\ width\ +\ x)\ *\ 4\ +\ channel]\ =\ \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(std::lrint(v));}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{comment}{//\ Alpha\ channel\ remains\ unchanged}}
+\DoxyCodeLine{00102\ \}}
 
 \end{DoxyCode}
 \Hypertarget{namespaceimg2num_a9448b2dfdb823340970d0b0bb51fc4e3}\label{namespaceimg2num_a9448b2dfdb823340970d0b0bb51fc4e3} 
@@ -396,27 +397,33 @@ Definition at line \mbox{\hyperlink{image__to__svg_8cpp_source_l00007}{7}} of fi
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00008\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00009\ \ \ \ \ \textcolor{comment}{//\ self\ deallocate}}
-\DoxyCodeLine{00010\ \ \ \ \ std::vector<uint8\_t>\ img\_data(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(width)\ *\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(height)\ *\ 4);}
-\DoxyCodeLine{00011\ \ \ \ \ std::vector<uint8\_t>\ out\_data(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(width)\ *\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(height)\ *\ 4);}
-\DoxyCodeLine{00012\ \ \ \ \ std::vector<int32\_t>\ out\_labels(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(width)\ *\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(height));}
-\DoxyCodeLine{00013\ }
-\DoxyCodeLine{00014\ \ \ \ \ std::memcpy(img\_data.data(),\ data,}
-\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(width)\ *\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(height)\ *\ 4);}
-\DoxyCodeLine{00016\ \ \ \ \ \mbox{\hyperlink{namespaceimg2num_a48d9a04a535198b5fc47905e359961ac}{bilateral\_filter}}(img\_data.data(),\ width,\ height,\ config.bilateral\_filter.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig_a55ea5d975d8f0da9ff8d8412ef2b0bab}{sigma\_spatial}},}
-\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ config.bilateral\_filter.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig_ac3ce10da1c666a3af5a7500d361384b1}{sigma\_range}},\ config.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_aea1a469576eb80f915a1ac73f93f55c1}{color\_space}});}
-\DoxyCodeLine{00018\ \ \ \ \ \mbox{\hyperlink{namespaceimg2num_ae73563e9dd25a8dd2120fd519ef87abd}{kmeans}}(img\_data.data(),\ out\_data.data(),\ out\_labels.data(),\ width,\ height,\ config.kmeans.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig_a75ddf7439fdcf08f636b4475ad9d81a4}{k}},}
-\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ config.kmeans.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig_a803475180df7951e783432e40e192e81}{max\_iter}},\ config.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_aea1a469576eb80f915a1ac73f93f55c1}{color\_space}});}
-\DoxyCodeLine{00020\ \ \ \ \ std::string\ svg\{\mbox{\hyperlink{namespaceimg2num_a36b11018f26b33933eeeb31a7833ea3d}{labels\_to\_svg}}(data,\ out\_labels.data(),\ width,\ height,\ config.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_ab834fb06830058d5d629be5f79ca98c3}{min\_cluster\_area}})\};}
-\DoxyCodeLine{00021\ }
-\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordflow}{return}\ svg;}
-\DoxyCodeLine{00023\ \}}
+\DoxyCodeLine{00009\ \ \ \{}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{comment}{//\ self\ deallocate}}
+\DoxyCodeLine{00011\ \ \ \ \ std::vector<uint8\_t>\ img\_data(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(width)\ *\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(height)\ *\ 4);}
+\DoxyCodeLine{00012\ \ \ \ \ std::vector<uint8\_t>\ out\_data(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(width)\ *\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(height)\ *\ 4);}
+\DoxyCodeLine{00013\ \ \ \ \ std::vector<int32\_t>\ out\_labels(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(width)\ *\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(height));}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \ \ \ \ std::memcpy(}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ img\_data.data(),\ data,\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(width)\ *\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(height)\ *\ 4}
+\DoxyCodeLine{00017\ \ \ \ \ );}
+\DoxyCodeLine{00018\ \ \ \ \ \mbox{\hyperlink{namespaceimg2num_a48d9a04a535198b5fc47905e359961ac}{bilateral\_filter}}(}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ img\_data.data(),\ width,\ height,\ config.bilateral\_filter.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig_a55ea5d975d8f0da9ff8d8412ef2b0bab}{sigma\_spatial}},}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ config.bilateral\_filter.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig_ac3ce10da1c666a3af5a7500d361384b1}{sigma\_range}},\ config.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_aea1a469576eb80f915a1ac73f93f55c1}{color\_space}}}
+\DoxyCodeLine{00021\ \ \ \ \ );}
+\DoxyCodeLine{00022\ \ \ \ \ \mbox{\hyperlink{namespaceimg2num_ae73563e9dd25a8dd2120fd519ef87abd}{kmeans}}(}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ img\_data.data(),\ out\_data.data(),\ out\_labels.data(),\ width,\ height,\ config.kmeans.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig_a75ddf7439fdcf08f636b4475ad9d81a4}{k}},}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ config.kmeans.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig_a803475180df7951e783432e40e192e81}{max\_iter}},\ config.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_aea1a469576eb80f915a1ac73f93f55c1}{color\_space}}}
+\DoxyCodeLine{00025\ \ \ \ \ );}
+\DoxyCodeLine{00026\ \ \ \ \ std::string\ svg\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceimg2num_a36b11018f26b33933eeeb31a7833ea3d}{labels\_to\_svg}}(data,\ out\_labels.data(),\ width,\ height,\ config.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_ab834fb06830058d5d629be5f79ca98c3}{min\_cluster\_area}})\};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordflow}{return}\ svg;}
+\DoxyCodeLine{00030\ \}}
 
 \end{DoxyCode}
 
 
-References \mbox{\hyperlink{bilateral__filter_8cpp_source_l00222}{bilateral\+\_\+filter()}}, \mbox{\hyperlink{img2num_8h_source_l00048}{img2num\+::\+Image\+To\+Svg\+Config\+::color\+\_\+space}}, \mbox{\hyperlink{img2num_8h_source_l00036}{img2num\+::\+Image\+To\+Svg\+Config\+::\+KMeans\+Config\+::k}}, \mbox{\hyperlink{kmeans_8cpp_source_l00239}{kmeans()}}, \mbox{\hyperlink{labels__to__svg_8cpp_source_l00189}{labels\+\_\+to\+\_\+svg()}}, \mbox{\hyperlink{img2num_8h_source_l00039}{img2num\+::\+Image\+To\+Svg\+Config\+::\+KMeans\+Config\+::max\+\_\+iter}}, \mbox{\hyperlink{img2num_8h_source_l00043}{img2num\+::\+Image\+To\+Svg\+Config\+::min\+\_\+cluster\+\_\+area}}, \mbox{\hyperlink{img2num_8h_source_l00029}{img2num\+::\+Image\+To\+Svg\+Config\+::\+Bilateral\+Filter\+Config\+::sigma\+\_\+range}}, and \mbox{\hyperlink{img2num_8h_source_l00026}{img2num\+::\+Image\+To\+Svg\+Config\+::\+Bilateral\+Filter\+Config\+::sigma\+\_\+spatial}}.
+References \mbox{\hyperlink{bilateral__filter_8cpp_source_l00230}{bilateral\+\_\+filter()}}, \mbox{\hyperlink{img2num_8h_source_l00048}{img2num\+::\+Image\+To\+Svg\+Config\+::color\+\_\+space}}, \mbox{\hyperlink{img2num_8h_source_l00036}{img2num\+::\+Image\+To\+Svg\+Config\+::\+KMeans\+Config\+::k}}, \mbox{\hyperlink{kmeans_8cpp_source_l00241}{kmeans()}}, \mbox{\hyperlink{labels__to__svg_8cpp_source_l00203}{labels\+\_\+to\+\_\+svg()}}, \mbox{\hyperlink{img2num_8h_source_l00039}{img2num\+::\+Image\+To\+Svg\+Config\+::\+KMeans\+Config\+::max\+\_\+iter}}, \mbox{\hyperlink{img2num_8h_source_l00043}{img2num\+::\+Image\+To\+Svg\+Config\+::min\+\_\+cluster\+\_\+area}}, \mbox{\hyperlink{img2num_8h_source_l00029}{img2num\+::\+Image\+To\+Svg\+Config\+::\+Bilateral\+Filter\+Config\+::sigma\+\_\+range}}, and \mbox{\hyperlink{img2num_8h_source_l00026}{img2num\+::\+Image\+To\+Svg\+Config\+::\+Bilateral\+Filter\+Config\+::sigma\+\_\+spatial}}.
 
 Here is the call graph for this function\+:
 \nopagebreak
@@ -452,23 +459,23 @@ Dox File\+: {\ttfamily doxygen/img2num.\+h.\+dox}
 \end{DoxyNote}
 
 
-Definition at line \mbox{\hyperlink{image__utils_8cpp_source_l00104}{104}} of file \mbox{\hyperlink{image__utils_8cpp_source}{image\+\_\+utils.\+cpp}}.
+Definition at line \mbox{\hyperlink{image__utils_8cpp_source_l00105}{105}} of file \mbox{\hyperlink{image__utils_8cpp_source}{image\+\_\+utils.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00105\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ img;}
-\DoxyCodeLine{00106\ \ \ \ \ img.loadFromBuffer(ptr,\ width,\ height,\ ImageLib::RGBA\_CONVERTER<uint8\_t>);}
-\DoxyCodeLine{00107\ }
-\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\ \&p\ :\ img)\ \{}
-\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ p.red\ =\ 255\ -\/\ p.red;}
-\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ p.blue\ =\ 255\ -\/\ p.blue;}
-\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ p.green\ =\ 255\ -\/\ p.green;}
-\DoxyCodeLine{00112\ \ \ \ \ \}}
-\DoxyCodeLine{00113\ }
-\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ \&modified\ =\ img.getData();}
-\DoxyCodeLine{00115\ \ \ \ \ std::memcpy(ptr,\ modified.data(),\ modified.size()\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
-\DoxyCodeLine{00116\ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ img;}
+\DoxyCodeLine{00107\ \ \ \ \ img.loadFromBuffer(ptr,\ width,\ height,\ ImageLib::RGBA\_CONVERTER<uint8\_t>);}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\&\ p\ :\ img)\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ p.red\ =\ 255\ -\/\ p.red;}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ p.blue\ =\ 255\ -\/\ p.blue;}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ p.green\ =\ 255\ -\/\ p.green;}
+\DoxyCodeLine{00113\ \ \ \ \ \}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ modified\ =\ img.getData();}
+\DoxyCodeLine{00116\ \ \ \ \ std::memcpy(ptr,\ modified.data(),\ modified.size()\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
+\DoxyCodeLine{00117\ \}}
 
 \end{DoxyCode}
 \Hypertarget{namespaceimg2num_ae73563e9dd25a8dd2120fd519ef87abd}\label{namespaceimg2num_ae73563e9dd25a8dd2120fd519ef87abd} 
@@ -507,19 +514,19 @@ Dox File\+: {\ttfamily doxygen/img2num.\+h.\+dox}
 \end{DoxyNote}
 
 
-Definition at line \mbox{\hyperlink{kmeans_8cpp_source_l00239}{239}} of file \mbox{\hyperlink{kmeans_8cpp_source}{kmeans.\+cpp}}.
+Definition at line \mbox{\hyperlink{kmeans_8cpp_source_l00241}{241}} of file \mbox{\hyperlink{kmeans_8cpp_source}{kmeans.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00242\ \ \ \ \ GPU::getClassInstance().init\_gpu();}
-\DoxyCodeLine{00243\ }
-\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordflow}{if}\ (GPU::getClassInstance().is\_initialized())\ \{}
-\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ kmeans\_gpu(data,\ out\_data,\ out\_labels,\ width,\ height,\ k,\ max\_iter,\ color\_space);}
-\DoxyCodeLine{00246\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ kmeans\_cpu(data,\ out\_data,\ out\_labels,\ width,\ height,\ k,\ max\_iter,\ color\_space);}
-\DoxyCodeLine{00248\ \ \ \ \ \}}
-\DoxyCodeLine{00249\ \}}
+\DoxyCodeLine{00244\ \ \ \{}
+\DoxyCodeLine{00245\ \ \ \ \ GPU::getClassInstance().init\_gpu();}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordflow}{if}\ (GPU::getClassInstance().is\_initialized())\ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ kmeans\_gpu(data,\ out\_data,\ out\_labels,\ width,\ height,\ k,\ max\_iter,\ color\_space);}
+\DoxyCodeLine{00249\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ kmeans\_cpu(data,\ out\_data,\ out\_labels,\ width,\ height,\ k,\ max\_iter,\ color\_space);}
+\DoxyCodeLine{00251\ \ \ \ \ \}}
+\DoxyCodeLine{00252\ \}}
 
 \end{DoxyCode}
 
@@ -565,70 +572,72 @@ Dox File\+: {\ttfamily doxygen/img2num.\+h.\+dox}
 \end{DoxyNote}
 
 
-Definition at line \mbox{\hyperlink{labels__to__svg_8cpp_source_l00189}{189}} of file \mbox{\hyperlink{labels__to__svg_8cpp_source}{labels\+\_\+to\+\_\+svg.\+cpp}}.
+Definition at line \mbox{\hyperlink{labels__to__svg_8cpp_source_l00203}{203}} of file \mbox{\hyperlink{labels__to__svg_8cpp_source}{labels\+\_\+to\+\_\+svg.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ num\_pixels\{width\ *\ height\};}
-\DoxyCodeLine{00192\ \ \ \ \ std::vector<int32\_t>\ labels\_vector\{labels,\ labels\ +\ num\_pixels\};}
-\DoxyCodeLine{00193\ \ \ \ \ std::vector<int32\_t>\ region\_labels;}
-\DoxyCodeLine{00194\ }
-\DoxyCodeLine{00195\ \ \ \ \ \textcolor{comment}{//\ 1.\ enumerate\ regions\ and\ convert\ to\ Nodes}}
-\DoxyCodeLine{00196\ \ \ \ \ std::vector<Node\_ptr>\ nodes;}
-\DoxyCodeLine{00197\ \ \ \ \ region\_labeling(data,\ labels\_vector,\ region\_labels,\ width,\ height,\ nodes);}
-\DoxyCodeLine{00198\ }
-\DoxyCodeLine{00199\ \ \ \ \ \textcolor{comment}{//\ 2.\ initialize\ Graph\ from\ all\ Nodes}}
-\DoxyCodeLine{00200\ \ \ \ \ std::unique\_ptr<std::vector<Node\_ptr>>\ node\_ptr\ =}
-\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ std::make\_unique<std::vector<Node\_ptr>>(std::move(nodes));}
-\DoxyCodeLine{00202\ \ \ \ \ \mbox{\hyperlink{classGraph}{Graph}}\ G(node\_ptr,\ width,\ height);}
-\DoxyCodeLine{00203\ }
-\DoxyCodeLine{00204\ \ \ \ \ \textcolor{comment}{//\ 3.\ Discover\ node\ adjacencies\ -\/\ add\ edges\ to\ Graph}}
-\DoxyCodeLine{00205\ \ \ \ \ G.discover\_edges(region\_labels,\ width,\ height);}
-\DoxyCodeLine{00206\ }
-\DoxyCodeLine{00207\ \ \ \ \ \textcolor{comment}{//\ 4.\ Merge\ small\ area\ nodes\ until\ all\ nodes\ are\ minArea\ or\ larger}}
-\DoxyCodeLine{00208\ \ \ \ \ G.merge\_small\_area\_nodes(min\_area);}
-\DoxyCodeLine{00209\ }
-\DoxyCodeLine{00210\ \ \ \ \ \textcolor{comment}{//\ 5.\ recolor\ image\ on\ new\ regions}}
-\DoxyCodeLine{00211\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ results\{width,\ height\};}
-\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&n\ :\ G.get\_nodes())\ \{}
-\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)\ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00206\ \ \ \{}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ num\_pixels\ \{width\ *\ height\};}
+\DoxyCodeLine{00208\ \ \ \ \ std::vector<int32\_t>\ labels\_vector\ \{labels,\ labels\ +\ num\_pixels\};}
+\DoxyCodeLine{00209\ \ \ \ \ std::vector<int32\_t>\ region\_labels;}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{comment}{//\ 1.\ enumerate\ regions\ and\ convert\ to\ Nodes}}
+\DoxyCodeLine{00212\ \ \ \ \ std::vector<Node\_ptr>\ nodes;}
+\DoxyCodeLine{00213\ \ \ \ \ region\_labeling(data,\ labels\_vector,\ region\_labels,\ width,\ height,\ nodes);}
 \DoxyCodeLine{00214\ }
-\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ [r,\ g,\ b]\ =\ n-\/>color();}
-\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&[\_,\ p]\ :\ n-\/>get\_pixels())\ \{}
-\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \ \ \ \ results(p.x,\ p.y)\ =\ \{r,\ g,\ b\};}
-\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00219\ \ \ \ \ \}}
-\DoxyCodeLine{00220\ }
-\DoxyCodeLine{00221\ \ \ \ \ \textcolor{comment}{//\ 6.\ Contours}}
-\DoxyCodeLine{00222\ \ \ \ \ \textcolor{comment}{//\ graph\ will\ manage\ computing\ contours}}
-\DoxyCodeLine{00223\ \ \ \ \ G.compute\_contours();}
-\DoxyCodeLine{00224\ }
-\DoxyCodeLine{00225\ \ \ \ \ \textcolor{comment}{//\ accumulate\ all\ contours\ for\ svg\ export}}
-\DoxyCodeLine{00226\ \ \ \ \ \mbox{\hyperlink{structColoredContours}{ColoredContours}}\ all\_contours;}
-\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&n\ :\ G.get\_nodes())\ \{}
-\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)\ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structColoredContours}{ColoredContours}}\ node\_contours\ =\ n-\/>get\_contours();}
-\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&c\ :\ node\_contours.contours)\ \{}
-\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.contours.push\_back(c);}
-\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&c\ :\ node\_contours.hierarchy)\ \{}
-\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.hierarchy.push\_back(c);}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{comment}{//\ 2.\ initialize\ Graph\ from\ all\ Nodes}}
+\DoxyCodeLine{00216\ \ \ \ \ std::unique\_ptr<std::vector<Node\_ptr>>\ node\_ptr\ =}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ std::make\_unique<std::vector<Node\_ptr>>(std::move(nodes));}
+\DoxyCodeLine{00218\ \ \ \ \ \mbox{\hyperlink{classGraph}{Graph}}\ G(node\_ptr,\ width,\ height);}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{comment}{//\ 3.\ Discover\ node\ adjacencies\ -\/\ add\ edges\ to\ Graph}}
+\DoxyCodeLine{00221\ \ \ \ \ G.discover\_edges(region\_labels,\ width,\ height);}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{comment}{//\ 4.\ Merge\ small\ area\ nodes\ until\ all\ nodes\ are\ minArea\ or\ larger}}
+\DoxyCodeLine{00224\ \ \ \ \ G.merge\_small\_area\_nodes(min\_area);}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{comment}{//\ 5.\ recolor\ image\ on\ new\ regions}}
+\DoxyCodeLine{00227\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ results\ \{width,\ height\};}
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ n\ :\ G.get\_nodes())\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ [r,\ g,\ b]\ =\ n-\/>color();}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ [\_,\ p]\ :\ n-\/>get\_pixels())\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ results(p.x,\ p.y)\ =\ \{r,\ g,\ b\};}
 \DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{bool}\ b\ :\ node\_contours.is\_hole)\ \{}
-\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.is\_hole.push\_back(b);}
-\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&c\ :\ node\_contours.colors)\ \{}
-\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.colors.push\_back(c);}
-\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&c\ :\ node\_contours.curves)\ \{}
-\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.curves.push\_back(c);}
-\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00245\ \ \ \ \ \}}
-\DoxyCodeLine{00246\ }
-\DoxyCodeLine{00247\ \ \ \ \ \textcolor{comment}{//\ 7.\ Return\ SVG}}
-\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keywordflow}{return}\ contoursResultToSVG(all\_contours,\ width,\ height);}
-\DoxyCodeLine{00249\ \}}
+\DoxyCodeLine{00236\ \ \ \ \ \}}
+\DoxyCodeLine{00237\ }
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{comment}{//\ 6.\ Contours}}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{comment}{//\ graph\ will\ manage\ computing\ contours}}
+\DoxyCodeLine{00240\ \ \ \ \ G.compute\_contours();}
+\DoxyCodeLine{00241\ }
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{comment}{//\ accumulate\ all\ contours\ for\ svg\ export}}
+\DoxyCodeLine{00243\ \ \ \ \ \mbox{\hyperlink{structColoredContours}{ColoredContours}}\ all\_contours;}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ n\ :\ G.get\_nodes())\ \{}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structColoredContours}{ColoredContours}}\ node\_contours\ =\ n-\/>get\_contours();}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ c\ :\ node\_contours.contours)\ \{}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.contours.push\_back(c);}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ c\ :\ node\_contours.hierarchy)\ \{}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.hierarchy.push\_back(c);}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{bool}\ b\ :\ node\_contours.is\_hole)\ \{}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.is\_hole.push\_back(b);}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ c\ :\ node\_contours.colors)\ \{}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.colors.push\_back(c);}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ c\ :\ node\_contours.curves)\ \{}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.curves.push\_back(c);}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00263\ \ \ \ \ \}}
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{comment}{//\ 7.\ Return\ SVG}}
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{keywordflow}{return}\ contoursResultToSVG(all\_contours,\ width,\ height);}
+\DoxyCodeLine{00267\ \}}
 
 \end{DoxyCode}
 
@@ -689,26 +698,26 @@ Dox File\+: {\ttfamily doxygen/img2num.\+h.\+dox}
 \end{DoxyNote}
 
 
-Definition at line \mbox{\hyperlink{image__utils_8cpp_source_l00118}{118}} of file \mbox{\hyperlink{image__utils_8cpp_source}{image\+\_\+utils.\+cpp}}.
+Definition at line \mbox{\hyperlink{image__utils_8cpp_source_l00119}{119}} of file \mbox{\hyperlink{image__utils_8cpp_source}{image\+\_\+utils.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t\ REGION\_SIZE(255\ /\ num\_thresholds);\ \ \textcolor{comment}{//\ Size\ of\ buckets\ per\ colour}}
-\DoxyCodeLine{00120\ }
-\DoxyCodeLine{00121\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ img;}
-\DoxyCodeLine{00122\ \ \ \ \ img.loadFromBuffer(ptr,\ width,\ height,\ ImageLib::RGBA\_CONVERTER<uint8\_t>);}
-\DoxyCodeLine{00123\ }
-\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ imgWidth\{img.getWidth()\},\ imgHeight\{img.getHeight()\};}
-\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\ \&p\ :\ img)\ \{}
-\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ p.red\ =\ quantize(p.red,\ REGION\_SIZE);}
-\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ p.green\ =\ quantize(p.green,\ REGION\_SIZE);}
-\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ p.blue\ =\ quantize(p.blue,\ REGION\_SIZE);}
-\DoxyCodeLine{00129\ \ \ \ \ \}}
-\DoxyCodeLine{00130\ }
-\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ \&modified\ =\ img.getData();}
-\DoxyCodeLine{00132\ \ \ \ \ std::memcpy(ptr,\ modified.data(),\ modified.size()\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
-\DoxyCodeLine{00133\ \}}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t\ REGION\_SIZE(255\ /\ num\_thresholds);\ \textcolor{comment}{//\ Size\ of\ buckets\ per\ colour}}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ img;}
+\DoxyCodeLine{00123\ \ \ \ \ img.loadFromBuffer(ptr,\ width,\ height,\ ImageLib::RGBA\_CONVERTER<uint8\_t>);}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ imgWidth\ \{img.getWidth()\},\ imgHeight\ \{img.getHeight()\};}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\&\ p\ :\ img)\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ p.red\ =\ quantize(p.red,\ REGION\_SIZE);}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ p.green\ =\ quantize(p.green,\ REGION\_SIZE);}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ p.blue\ =\ quantize(p.blue,\ REGION\_SIZE);}
+\DoxyCodeLine{00130\ \ \ \ \ \}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ modified\ =\ img.getData();}
+\DoxyCodeLine{00133\ \ \ \ \ std::memcpy(ptr,\ modified.data(),\ modified.size()\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
+\DoxyCodeLine{00134\ \}}
 
 \end{DoxyCode}
 

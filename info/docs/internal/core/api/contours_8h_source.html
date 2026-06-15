@@ -101,23 +101,23 @@ $(document).ready(function(){initNavTree('contours_8h_source.html',''); initResi
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef CONTOURS_H</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define CONTOURS_H</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;array&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;internal/Image.h&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;internal/PixelConverters.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;internal/Point.h&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;internal/RGBAPixel.h&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;internal/SavitskyGolay.h&quot;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;internal/Image.h&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;internal/PixelConverters.h&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;internal/Point.h&quot;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;internal/RGBAPixel.h&quot;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;internal/SavitskyGolay.h&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;array&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
 <div class="foldopen" id="foldopen00016" data-start="{" data-end="};">
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="structQuadBezier.html">   16</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structQuadBezier.html">QuadBezier</a> {</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <a class="code hl_struct" href="structPoint.html">Point</a> p0{0, 0};  <span class="comment">// Start</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <a class="code hl_struct" href="structPoint.html">Point</a> p1{0, 0};  <span class="comment">// Control</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <a class="code hl_struct" href="structPoint.html">Point</a> p2{0, 0};  <span class="comment">// End</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <a class="code hl_struct" href="structPoint.html">Point</a> p0 {0, 0}; <span class="comment">// Start</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <a class="code hl_struct" href="structPoint.html">Point</a> p1 {0, 0}; <span class="comment">// Control</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <a class="code hl_struct" href="structPoint.html">Point</a> p2 {0, 0}; <span class="comment">// End</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>};</div>
 </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
@@ -152,17 +152,18 @@ $(document).ready(function(){initNavTree('contours_8h_source.html',''); initResi
 </div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">namespace </span>contours {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><a class="code hl_struct" href="structContoursResult.html">ContoursResult</a> find_contours(<span class="keyword">const</span> std::vector&lt;uint8_t&gt; &amp;binary, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><a class="code hl_struct" href="structContoursResult.html">ContoursResult</a> find_contours(<span class="keyword">const</span> std::vector&lt;uint8_t&gt;&amp; binary, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height);</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keywordtype">void</span> stitch_smooth(std::vector&lt;Point&gt; &amp;vecA, std::vector&lt;Point&gt; &amp;vecB);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keywordtype">void</span> coupled_smooth(std::vector&lt;std::vector&lt;Point&gt;&gt; &amp;contours, <a class="code hl_struct" href="structRect.html">Rect</a> bounds);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keywordtype">void</span> stitch_smooth(std::vector&lt;Point&gt;&amp; vecA, std::vector&lt;Point&gt;&amp; vecB);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keywordtype">void</span> coupled_smooth(std::vector&lt;std::vector&lt;Point&gt;&gt;&amp; contours, <a class="code hl_struct" href="structRect.html">Rect</a> bounds);</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keywordtype">void</span> pack_with_boundary_constraints(std::vector&lt;std::vector&lt;Point&gt;&gt; &amp;contours, <a class="code hl_struct" href="structRect.html">Rect</a> bounds,</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                                    <span class="keywordtype">int</span> iterations = 15);</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}  <span class="comment">// namespace contours</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keywordtype">void</span> pack_with_boundary_constraints(</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    std::vector&lt;std::vector&lt;Point&gt;&gt;&amp; contours, <a class="code hl_struct" href="structRect.html">Rect</a> bounds, <span class="keywordtype">int</span> iterations = 15</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>} <span class="comment">// namespace contours</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="astructColoredContours_html"><div class="ttname"><a href="structColoredContours.html">ColoredContours</a></div><div class="ttdef"><b>Definition</b> <a href="contours_8h_source.html#l00040">contours.h:40</a></div></div>
 <div class="ttc" id="astructContoursResult_html"><div class="ttname"><a href="structContoursResult.html">ContoursResult</a></div><div class="ttdef"><b>Definition</b> <a href="contours_8h_source.html#l00026">contours.h:26</a></div></div>
 <div class="ttc" id="astructPoint_html"><div class="ttname"><a href="structPoint.html">Point</a></div><div class="ttdef"><b>Definition</b> <a href="Point_8h_source.html#l00005">Point.h:5</a></div></div>

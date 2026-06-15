@@ -5,22 +5,22 @@
 \DoxyCodeLine{\Hypertarget{contours_8h_source_l00001}00001\ \textcolor{preprocessor}{\#ifndef\ CONTOURS\_H}}
 \DoxyCodeLine{\Hypertarget{contours_8h_source_l00002}00002\ \textcolor{preprocessor}{\#define\ CONTOURS\_H}}
 \DoxyCodeLine{\Hypertarget{contours_8h_source_l00003}00003\ }
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00004}00004\ \textcolor{preprocessor}{\#include\ <array>}}
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00005}00005\ \textcolor{preprocessor}{\#include\ <cstdint>}}
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00006}00006\ \textcolor{preprocessor}{\#include\ <cstdlib>}}
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00007}00007\ \textcolor{preprocessor}{\#include\ <stdexcept>}}
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00008}00008\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00004}00004\ \textcolor{preprocessor}{\#include\ "{}internal/Image.h"{}}}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00005}00005\ \textcolor{preprocessor}{\#include\ "{}internal/PixelConverters.h"{}}}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00006}00006\ \textcolor{preprocessor}{\#include\ "{}internal/Point.h"{}}}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00007}00007\ \textcolor{preprocessor}{\#include\ "{}internal/RGBAPixel.h"{}}}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}internal/SavitskyGolay.h"{}}}
 \DoxyCodeLine{\Hypertarget{contours_8h_source_l00009}00009\ }
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}internal/Image.h"{}}}
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00011}00011\ \textcolor{preprocessor}{\#include\ "{}internal/PixelConverters.h"{}}}
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00012}00012\ \textcolor{preprocessor}{\#include\ "{}internal/Point.h"{}}}
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00013}00013\ \textcolor{preprocessor}{\#include\ "{}internal/RGBAPixel.h"{}}}
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00014}00014\ \textcolor{preprocessor}{\#include\ "{}internal/SavitskyGolay.h"{}}}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00010}00010\ \textcolor{preprocessor}{\#include\ <array>}}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00011}00011\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00012}00012\ \textcolor{preprocessor}{\#include\ <cstdlib>}}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00013}00013\ \textcolor{preprocessor}{\#include\ <stdexcept>}}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00014}00014\ \textcolor{preprocessor}{\#include\ <vector>}}
 \DoxyCodeLine{\Hypertarget{contours_8h_source_l00015}00015\ }
 \DoxyCodeLine{\Hypertarget{contours_8h_source_l00016}\mbox{\hyperlink{structQuadBezier}{00016}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structQuadBezier}{QuadBezier}}\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00017}00017\ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ p0\{0,\ 0\};\ \ \textcolor{comment}{//\ Start}}
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00018}00018\ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ p1\{0,\ 0\};\ \ \textcolor{comment}{//\ Control}}
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00019}00019\ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ p2\{0,\ 0\};\ \ \textcolor{comment}{//\ End}}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00017}00017\ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ p0\ \{0,\ 0\};\ \textcolor{comment}{//\ Start}}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00018}00018\ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ p1\ \{0,\ 0\};\ \textcolor{comment}{//\ Control}}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00019}00019\ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ p2\ \{0,\ 0\};\ \textcolor{comment}{//\ End}}
 \DoxyCodeLine{\Hypertarget{contours_8h_source_l00020}00020\ \};}
 \DoxyCodeLine{\Hypertarget{contours_8h_source_l00021}00021\ }
 \DoxyCodeLine{\Hypertarget{contours_8h_source_l00022}\mbox{\hyperlink{structRect}{00022}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structRect}{Rect}}\ \{}
@@ -48,16 +48,17 @@
 \DoxyCodeLine{\Hypertarget{contours_8h_source_l00044}00044\ \};}
 \DoxyCodeLine{\Hypertarget{contours_8h_source_l00045}00045\ }
 \DoxyCodeLine{\Hypertarget{contours_8h_source_l00046}00046\ \textcolor{keyword}{namespace\ }contours\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00047}00047\ \mbox{\hyperlink{structContoursResult}{ContoursResult}}\ find\_contours(\textcolor{keyword}{const}\ std::vector<uint8\_t>\ \&binary,\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keywordtype}{int}\ height);}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00047}00047\ \mbox{\hyperlink{structContoursResult}{ContoursResult}}\ find\_contours(\textcolor{keyword}{const}\ std::vector<uint8\_t>\&\ binary,\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keywordtype}{int}\ height);}
 \DoxyCodeLine{\Hypertarget{contours_8h_source_l00048}00048\ }
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00049}00049\ \textcolor{keywordtype}{void}\ stitch\_smooth(std::vector<Point>\ \&vecA,\ std::vector<Point>\ \&vecB);}
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00050}00050\ \textcolor{keywordtype}{void}\ coupled\_smooth(std::vector<std::vector<Point>>\ \&contours,\ \mbox{\hyperlink{structRect}{Rect}}\ bounds);}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00049}00049\ \textcolor{keywordtype}{void}\ stitch\_smooth(std::vector<Point>\&\ vecA,\ std::vector<Point>\&\ vecB);}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00050}00050\ \textcolor{keywordtype}{void}\ coupled\_smooth(std::vector<std::vector<Point>>\&\ contours,\ \mbox{\hyperlink{structRect}{Rect}}\ bounds);}
 \DoxyCodeLine{\Hypertarget{contours_8h_source_l00051}00051\ }
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00052}00052\ \textcolor{keywordtype}{void}\ pack\_with\_boundary\_constraints(std::vector<std::vector<Point>>\ \&contours,\ \mbox{\hyperlink{structRect}{Rect}}\ bounds,}
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ iterations\ =\ 15);}
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00054}00054\ }
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00055}00055\ \}\ \ \textcolor{comment}{//\ namespace\ contours}}
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00056}00056\ }
-\DoxyCodeLine{\Hypertarget{contours_8h_source_l00057}00057\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00052}00052\ \textcolor{keywordtype}{void}\ pack\_with\_boundary\_constraints(}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00053}00053\ \ \ \ \ std::vector<std::vector<Point>>\&\ contours,\ \mbox{\hyperlink{structRect}{Rect}}\ bounds,\ \textcolor{keywordtype}{int}\ iterations\ =\ 15}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00054}00054\ );}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00055}00055\ }
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00056}00056\ \}\ \textcolor{comment}{//\ namespace\ contours}}
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{contours_8h_source_l00058}00058\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

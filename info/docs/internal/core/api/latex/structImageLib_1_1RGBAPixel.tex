@@ -92,8 +92,9 @@ Definition at line \mbox{\hyperlink{RGBAPixel_8h_source_l00017}{17}} of file \mb
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ :\ RGBPixel<NumberT>(red,\ green,\ blue),\ alpha(alpha)\ \{}
-\DoxyCodeLine{00019\ \ \ \ \ \}}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ :\ RGBPixel<NumberT>(red,\ green,\ blue)}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ ,\ alpha(alpha)\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \}}
 
 \end{DoxyCode}
 
@@ -108,13 +109,13 @@ bool \mbox{\hyperlink{structImageLib_1_1RGBAPixel}{Image\+Lib\+::\+RGBAPixel}}$<
 
 
 
-Definition at line \mbox{\hyperlink{RGBAPixel_8h_source_l00025}{25}} of file \mbox{\hyperlink{RGBAPixel_8h_source}{RGBAPixel.\+h}}.
+Definition at line \mbox{\hyperlink{RGBAPixel_8h_source_l00026}{26}} of file \mbox{\hyperlink{RGBAPixel_8h_source}{RGBAPixel.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !(*\textcolor{keyword}{this}\ ==\ other);}
-\DoxyCodeLine{00027\ \ \ \ \ \}}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !(*\textcolor{keyword}{this}\ ==\ other);}
+\DoxyCodeLine{00028\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{structImageLib_1_1RGBAPixel_a458b1e4c48d1505e7a14c294bcd5b5cc}\label{structImageLib_1_1RGBAPixel_a458b1e4c48d1505e7a14c294bcd5b5cc} 
@@ -126,13 +127,13 @@ bool \mbox{\hyperlink{structImageLib_1_1RGBAPixel}{Image\+Lib\+::\+RGBAPixel}}$<
 
 
 
-Definition at line \mbox{\hyperlink{RGBAPixel_8h_source_l00022}{22}} of file \mbox{\hyperlink{RGBAPixel_8h_source}{RGBAPixel.\+h}}.
+Definition at line \mbox{\hyperlink{RGBAPixel_8h_source_l00023}{23}} of file \mbox{\hyperlink{RGBAPixel_8h_source}{RGBAPixel.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ RGBPixel<NumberT>::operator==(other)\ \&\&\ alpha\ ==\ other.alpha;}
-\DoxyCodeLine{00024\ \ \ \ \ \}}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ RGBPixel<NumberT>::operator==(other)\ \&\&\ alpha\ ==\ other.alpha;}
+\DoxyCodeLine{00025\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{structImageLib_1_1RGBAPixel_a0a9f15cf6250ea702dc0af2f747fea84}\label{structImageLib_1_1RGBAPixel_a0a9f15cf6250ea702dc0af2f747fea84} 
@@ -144,14 +145,14 @@ void \mbox{\hyperlink{structImageLib_1_1RGBAPixel}{Image\+Lib\+::\+RGBAPixel}}$<
 
 
 
-Definition at line \mbox{\hyperlink{RGBAPixel_8h_source_l00030}{30}} of file \mbox{\hyperlink{RGBAPixel_8h_source}{RGBAPixel.\+h}}.
+Definition at line \mbox{\hyperlink{RGBAPixel_8h_source_l00031}{31}} of file \mbox{\hyperlink{RGBAPixel_8h_source}{RGBAPixel.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ RGBPixel<NumberT>::setGray(gray);}
-\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ this-\/>alpha\ =\ alpha;}
-\DoxyCodeLine{00033\ \ \ \ \ \}}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ RGBPixel<NumberT>::setGray(gray);}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ this-\/>alpha\ =\ alpha;}
+\DoxyCodeLine{00034\ \ \ \ \ \}}
 
 \end{DoxyCode}
 

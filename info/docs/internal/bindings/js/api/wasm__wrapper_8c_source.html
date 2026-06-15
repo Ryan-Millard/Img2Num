@@ -101,57 +101,61 @@ $(document).ready(function(){initNavTree('wasm__wrapper_8c_source.html',''); ini
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &lt;cimg2num.h&gt;</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;emscripten/emscripten.h&gt;</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>EMSCRIPTEN_KEEPALIVE <span class="keywordtype">void</span> gaussian_blur_fft(uint8_t *image, <span class="keywordtype">size_t</span> width, <span class="keywordtype">size_t</span> height,</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>                                            <span class="keywordtype">double</span> sigma) {</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>EMSCRIPTEN_KEEPALIVE <span class="keywordtype">void</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>gaussian_blur_fft(uint8_t* image, <span class="keywordtype">size_t</span> width, <span class="keywordtype">size_t</span> height, <span class="keywordtype">double</span> sigma) {</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    img2num_gaussian_blur_fft(image, width, height, sigma);</div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>}</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>EMSCRIPTEN_KEEPALIVE <span class="keywordtype">void</span> invert_image(uint8_t *ptr, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height) {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>EMSCRIPTEN_KEEPALIVE <span class="keywordtype">void</span> invert_image(uint8_t* ptr, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height) {</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    img2num_invert_image(ptr, width, height);</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>}</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>EMSCRIPTEN_KEEPALIVE <span class="keywordtype">void</span> threshold_image(uint8_t *ptr, <span class="keyword">const</span> <span class="keywordtype">int</span> width, <span class="keyword">const</span> <span class="keywordtype">int</span> height,</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>                                          <span class="keyword">const</span> <span class="keywordtype">int</span> num_thresholds) {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>EMSCRIPTEN_KEEPALIVE <span class="keywordtype">void</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>threshold_image(uint8_t* ptr, <span class="keyword">const</span> <span class="keywordtype">int</span> width, <span class="keyword">const</span> <span class="keywordtype">int</span> height, <span class="keyword">const</span> <span class="keywordtype">int</span> num_thresholds) {</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    img2num_threshold_image(ptr, width, height, num_thresholds);</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>}</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>EMSCRIPTEN_KEEPALIVE <span class="keywordtype">void</span> black_threshold_image(uint8_t *ptr, <span class="keyword">const</span> <span class="keywordtype">int</span> width, <span class="keyword">const</span> <span class="keywordtype">int</span> height,</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>                                                <span class="keyword">const</span> <span class="keywordtype">int</span> num_thresholds) {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>EMSCRIPTEN_KEEPALIVE <span class="keywordtype">void</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>black_threshold_image(uint8_t* ptr, <span class="keyword">const</span> <span class="keywordtype">int</span> width, <span class="keyword">const</span> <span class="keywordtype">int</span> height, <span class="keyword">const</span> <span class="keywordtype">int</span> num_thresholds) {</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    img2num_black_threshold_image(ptr, width, height, num_thresholds);</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>}</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>EMSCRIPTEN_KEEPALIVE <span class="keywordtype">void</span> kmeans(<span class="keyword">const</span> uint8_t *data, uint8_t *out_data, int32_t *out_labels,</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                                 <span class="keyword">const</span> int32_t width, <span class="keyword">const</span> int32_t height, <span class="keyword">const</span> int32_t k,</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                                 <span class="keyword">const</span> int32_t max_iter, <span class="keyword">const</span> uint8_t color_space) {</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    img2num_kmeans(data, out_data, out_labels, width, height, k, max_iter, color_space);</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>}</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>EMSCRIPTEN_KEEPALIVE <span class="keywordtype">void</span> bilateral_filter(uint8_t *image, <span class="keywordtype">size_t</span> width, <span class="keywordtype">size_t</span> height,</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                                           <span class="keywordtype">double</span> sigma_spatial, <span class="keywordtype">double</span> sigma_range,</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                                           uint8_t color_space) {</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    img2num_bilateral_filter(image, width, height, sigma_spatial, sigma_range, color_space);</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>}</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>EMSCRIPTEN_KEEPALIVE <span class="keywordtype">char</span> *labels_to_svg(uint8_t *data, int32_t *labels, <span class="keyword">const</span> <span class="keywordtype">int</span> width,</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                                         <span class="keyword">const</span> <span class="keywordtype">int</span> height, <span class="keyword">const</span> <span class="keywordtype">int</span> min_area) {</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">return</span> img2num_labels_to_svg(data, labels, width, height, min_area);</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>EMSCRIPTEN_KEEPALIVE <span class="keywordtype">char</span> *image_to_svg(<span class="keyword">const</span> uint8_t *data, <span class="keyword">const</span> <span class="keywordtype">int</span> width, <span class="keyword">const</span> <span class="keywordtype">int</span> height,</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                                        <span class="keywordtype">double</span> sigma_spatial, <span class="keywordtype">double</span> sigma_range, <span class="keyword">const</span> int32_t k,</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                                        <span class="keyword">const</span> int32_t max_iter, <span class="keyword">const</span> <span class="keywordtype">int</span> min_area,</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                                        <span class="keyword">const</span> uint8_t color_space) {</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    img2num_ImageToSvgConfig config = img2num_ImageToSvgConfig_default();</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    config.bilateral_filter.sigma_spatial = sigma_spatial;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    config.bilateral_filter.sigma_range = sigma_range;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    config.kmeans.k = k;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    config.kmeans.max_iter = max_iter;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    config.min_cluster_area = min_area;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    config.color_space = color_space;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">return</span> img2num_image_to_svg(data, width, height, &amp;config);</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>}</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>EMSCRIPTEN_KEEPALIVE <span class="keywordtype">void</span> kmeans(</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keyword">const</span> uint8_t* data, uint8_t* out_data, int32_t* out_labels, <span class="keyword">const</span> int32_t width,</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keyword">const</span> int32_t height, <span class="keyword">const</span> int32_t k, <span class="keyword">const</span> int32_t max_iter, <span class="keyword">const</span> uint8_t color_space</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>) {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    img2num_kmeans(data, out_data, out_labels, width, height, k, max_iter, color_space);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>}</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>EMSCRIPTEN_KEEPALIVE <span class="keywordtype">void</span> bilateral_filter(</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    uint8_t* image, <span class="keywordtype">size_t</span> width, <span class="keywordtype">size_t</span> height, <span class="keywordtype">double</span> sigma_spatial, <span class="keywordtype">double</span> sigma_range,</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    uint8_t color_space</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>) {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    img2num_bilateral_filter(image, width, height, sigma_spatial, sigma_range, color_space);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>}</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>EMSCRIPTEN_KEEPALIVE <span class="keywordtype">char</span>* labels_to_svg(</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    uint8_t* data, int32_t* labels, <span class="keyword">const</span> <span class="keywordtype">int</span> width, <span class="keyword">const</span> <span class="keywordtype">int</span> height, <span class="keyword">const</span> <span class="keywordtype">int</span> min_area</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>) {</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordflow">return</span> img2num_labels_to_svg(data, labels, width, height, min_area);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>}</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>EMSCRIPTEN_KEEPALIVE <span class="keywordtype">char</span>* image_to_svg(</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">const</span> uint8_t* data, <span class="keyword">const</span> <span class="keywordtype">int</span> width, <span class="keyword">const</span> <span class="keywordtype">int</span> height, <span class="keywordtype">double</span> sigma_spatial,</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordtype">double</span> sigma_range, <span class="keyword">const</span> int32_t k, <span class="keyword">const</span> int32_t max_iter, <span class="keyword">const</span> <span class="keywordtype">int</span> min_area,</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keyword">const</span> uint8_t color_space</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>) {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    img2num_ImageToSvgConfig config = img2num_ImageToSvgConfig_default();</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    config.bilateral_filter.sigma_spatial = sigma_spatial;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    config.bilateral_filter.sigma_range = sigma_range;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    config.kmeans.k = k;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    config.kmeans.max_iter = max_iter;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    config.min_cluster_area = min_area;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    config.color_space = color_space;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordflow">return</span> img2num_image_to_svg(data, width, height, &amp;config);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

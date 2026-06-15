@@ -118,9 +118,9 @@ Definition at line \mbox{\hyperlink{Error_8h_source_l00025}{25}} of file \mbox{\
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00026\ \ \ \ \ clear\_last\_error();\ \ \textcolor{comment}{//\ Clear\ any\ previous\ error\ state}}
+\DoxyCodeLine{00026\ \ \ \ \ clear\_last\_error();\ \textcolor{comment}{//\ Clear\ any\ previous\ error\ state}}
 \DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
-\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ exception\_prone\_func(std::forward<Args>(args)...);\ \ \textcolor{comment}{//\ Call\ the\ passed\ function}}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ exception\_prone\_func(std::forward<Args>(args)...);\ \textcolor{comment}{//\ Call\ the\ passed\ function}}
 \DoxyCodeLine{00029\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ std::bad\_alloc\&\ e)\ \{}
 \DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ set\_error(Error::BAD\_ALLOC,\ e.what());}
 \DoxyCodeLine{00031\ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ std::invalid\_argument\&\ e)\ \{}

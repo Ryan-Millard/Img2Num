@@ -166,12 +166,14 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="SavitskyGolay_8cpp_source.html#l00008">8</a> of file <a class="el" href="SavitskyGolay_8cpp_source.html">SavitskyGolay.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    9</span>    : window_radius_(radius), window_size_(2 * radius + 1), poly_order_(poly_order) {</div>
-<div class="line"><span class="lineno">   10</span>    assert(radius &gt;= 0);</div>
-<div class="line"><span class="lineno">   11</span>    assert(window_size_ &gt; poly_order_);</div>
-<div class="line"><span class="lineno">   12</span> </div>
-<div class="line"><span class="lineno">   13</span>    compute_coefficients();</div>
-<div class="line"><span class="lineno">   14</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">    9</span>    : window_radius_(radius)</div>
+<div class="line"><span class="lineno">   10</span>    , window_size_(2 * radius + 1)</div>
+<div class="line"><span class="lineno">   11</span>    , poly_order_(poly_order) {</div>
+<div class="line"><span class="lineno">   12</span>    assert(radius &gt;= 0);</div>
+<div class="line"><span class="lineno">   13</span>    assert(window_size_ &gt; poly_order_);</div>
+<div class="line"><span class="lineno">   14</span> </div>
+<div class="line"><span class="lineno">   15</span>    compute_coefficients();</div>
+<div class="line"><span class="lineno">   16</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -199,42 +201,42 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SavitskyGolay_8cpp_source.html#l00101">101</a> of file <a class="el" href="SavitskyGolay_8cpp_source.html">SavitskyGolay.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  101</span>                                         {</div>
-<div class="line"><span class="lineno">  102</span>    <span class="comment">// 1. Create the matrix J = (A^T * A)</span></div>
-<div class="line"><span class="lineno">  103</span>    <span class="comment">// Size is (poly_order + 1) x (poly_order + 1)</span></div>
-<div class="line"><span class="lineno">  104</span>    <span class="comment">// Element J[i][j] is the sum of k^(i+j) for k in -m..m</span></div>
-<div class="line"><span class="lineno">  105</span> </div>
-<div class="line"><span class="lineno">  106</span>    <span class="keywordtype">int</span> rows = poly_order_ + 1;</div>
-<div class="line"><span class="lineno">  107</span>    std::vector&lt;std::vector&lt;float&gt;&gt; J(rows, std::vector&lt;float&gt;(rows));</div>
-<div class="line"><span class="lineno">  108</span> </div>
-<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; rows; ++i) {</div>
-<div class="line"><span class="lineno">  110</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; rows; ++j) {</div>
-<div class="line"><span class="lineno">  111</span>            <span class="keywordtype">float</span> sum = 0;</div>
-<div class="line"><span class="lineno">  112</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = -window_radius_; k &lt;= window_radius_; ++k) {</div>
-<div class="line"><span class="lineno">  113</span>                sum += std::pow(k, i + j);</div>
-<div class="line"><span class="lineno">  114</span>            }</div>
-<div class="line"><span class="lineno">  115</span>            J[i][j] = sum;</div>
-<div class="line"><span class="lineno">  116</span>        }</div>
-<div class="line"><span class="lineno">  117</span>    }</div>
-<div class="line"><span class="lineno">  118</span> </div>
-<div class="line"><span class="lineno">  119</span>    <span class="comment">// 2. Invert J to solve the normal equations</span></div>
-<div class="line"><span class="lineno">  120</span>    <span class="keyword">auto</span> J_inv = invert_matrix(J);</div>
-<div class="line"><span class="lineno">  121</span> </div>
-<div class="line"><span class="lineno">  122</span>    <span class="comment">// 3. Compute the weights</span></div>
-<div class="line"><span class="lineno">  123</span>    <span class="comment">// The smoothed value is the coefficient c_0 of the polynomial.</span></div>
-<div class="line"><span class="lineno">  124</span>    <span class="comment">// c_0 = sum( weight_k * y_k )</span></div>
-<div class="line"><span class="lineno">  125</span>    <span class="comment">// weight_k = sum( J_inv[0][j] * k^j ) for j=0..order</span></div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span>    coeffs_.resize(window_size_);</div>
-<div class="line"><span class="lineno">  128</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = -window_radius_; k &lt;= window_radius_; ++k) {</div>
-<div class="line"><span class="lineno">  129</span>        <span class="keywordtype">float</span> weight = 0.0;</div>
-<div class="line"><span class="lineno">  130</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; rows; ++j) {</div>
-<div class="line"><span class="lineno">  131</span>            weight += J_inv[0][j] * std::pow(k, j);</div>
-<div class="line"><span class="lineno">  132</span>        }</div>
-<div class="line"><span class="lineno">  133</span>        coeffs_[k + window_radius_] = weight;</div>
-<div class="line"><span class="lineno">  134</span>    }</div>
-<div class="line"><span class="lineno">  135</span>}</div>
+<p class="definition">Definition at line <a class="el" href="SavitskyGolay_8cpp_source.html#l00107">107</a> of file <a class="el" href="SavitskyGolay_8cpp_source.html">SavitskyGolay.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  107</span>                                         {</div>
+<div class="line"><span class="lineno">  108</span>    <span class="comment">// 1. Create the matrix J = (A^T * A)</span></div>
+<div class="line"><span class="lineno">  109</span>    <span class="comment">// Size is (poly_order + 1) x (poly_order + 1)</span></div>
+<div class="line"><span class="lineno">  110</span>    <span class="comment">// Element J[i][j] is the sum of k^(i+j) for k in -m..m</span></div>
+<div class="line"><span class="lineno">  111</span> </div>
+<div class="line"><span class="lineno">  112</span>    <span class="keywordtype">int</span> rows = poly_order_ + 1;</div>
+<div class="line"><span class="lineno">  113</span>    std::vector&lt;std::vector&lt;float&gt;&gt; J(rows, std::vector&lt;float&gt;(rows));</div>
+<div class="line"><span class="lineno">  114</span> </div>
+<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; rows; ++i) {</div>
+<div class="line"><span class="lineno">  116</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; rows; ++j) {</div>
+<div class="line"><span class="lineno">  117</span>            <span class="keywordtype">float</span> sum = 0;</div>
+<div class="line"><span class="lineno">  118</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = -window_radius_; k &lt;= window_radius_; ++k) {</div>
+<div class="line"><span class="lineno">  119</span>                sum += std::pow(k, i + j);</div>
+<div class="line"><span class="lineno">  120</span>            }</div>
+<div class="line"><span class="lineno">  121</span>            J[i][j] = sum;</div>
+<div class="line"><span class="lineno">  122</span>        }</div>
+<div class="line"><span class="lineno">  123</span>    }</div>
+<div class="line"><span class="lineno">  124</span> </div>
+<div class="line"><span class="lineno">  125</span>    <span class="comment">// 2. Invert J to solve the normal equations</span></div>
+<div class="line"><span class="lineno">  126</span>    <span class="keyword">auto</span> J_inv = invert_matrix(J);</div>
+<div class="line"><span class="lineno">  127</span> </div>
+<div class="line"><span class="lineno">  128</span>    <span class="comment">// 3. Compute the weights</span></div>
+<div class="line"><span class="lineno">  129</span>    <span class="comment">// The smoothed value is the coefficient c_0 of the polynomial.</span></div>
+<div class="line"><span class="lineno">  130</span>    <span class="comment">// c_0 = sum( weight_k * y_k )</span></div>
+<div class="line"><span class="lineno">  131</span>    <span class="comment">// weight_k = sum( J_inv[0][j] * k^j ) for j=0..order</span></div>
+<div class="line"><span class="lineno">  132</span> </div>
+<div class="line"><span class="lineno">  133</span>    coeffs_.resize(window_size_);</div>
+<div class="line"><span class="lineno">  134</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = -window_radius_; k &lt;= window_radius_; ++k) {</div>
+<div class="line"><span class="lineno">  135</span>        <span class="keywordtype">float</span> weight = 0.0;</div>
+<div class="line"><span class="lineno">  136</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; rows; ++j) {</div>
+<div class="line"><span class="lineno">  137</span>            weight += J_inv[0][j] * std::pow(k, j);</div>
+<div class="line"><span class="lineno">  138</span>        }</div>
+<div class="line"><span class="lineno">  139</span>        coeffs_[k + window_radius_] = weight;</div>
+<div class="line"><span class="lineno">  140</span>    }</div>
+<div class="line"><span class="lineno">  141</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -254,30 +256,32 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SavitskyGolay_8cpp_source.html#l00016">16</a> of file <a class="el" href="SavitskyGolay_8cpp_source.html">SavitskyGolay.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   16</span>                                                                   {</div>
-<div class="line"><span class="lineno">   17</span>    <span class="keywordflow">if</span> (data.size() &lt; window_size_) {</div>
-<div class="line"><span class="lineno">   18</span>        <span class="keywordflow">return</span> data;  <span class="comment">// Data too short to filter</span></div>
-<div class="line"><span class="lineno">   19</span>    }</div>
-<div class="line"><span class="lineno">   20</span> </div>
-<div class="line"><span class="lineno">   21</span>    std::vector&lt;Point&gt; result(data.size());</div>
+<p class="definition">Definition at line <a class="el" href="SavitskyGolay_8cpp_source.html#l00018">18</a> of file <a class="el" href="SavitskyGolay_8cpp_source.html">SavitskyGolay.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   18</span>                                                                   {</div>
+<div class="line"><span class="lineno">   19</span>    <span class="keywordflow">if</span> (data.size() &lt; window_size_) {</div>
+<div class="line"><span class="lineno">   20</span>        <span class="keywordflow">return</span> data; <span class="comment">// Data too short to filter</span></div>
+<div class="line"><span class="lineno">   21</span>    }</div>
 <div class="line"><span class="lineno">   22</span> </div>
-<div class="line"><span class="lineno">   23</span>    <span class="comment">// 1. Convolution for the valid range</span></div>
-<div class="line"><span class="lineno">   24</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = window_radius_; i &lt; data.size() - window_radius_; ++i) {</div>
-<div class="line"><span class="lineno">   25</span>        <a class="code hl_struct" href="structPoint.html">Point</a> val{0.0, 0.0};</div>
-<div class="line"><span class="lineno">   26</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = -window_radius_; j &lt;= window_radius_; ++j) {</div>
-<div class="line"><span class="lineno">   27</span>            val += data[i + j] * coeffs_[j + window_radius_];</div>
-<div class="line"><span class="lineno">   28</span>        }</div>
-<div class="line"><span class="lineno">   29</span>        result[i] = val;</div>
-<div class="line"><span class="lineno">   30</span>    }</div>
-<div class="line"><span class="lineno">   31</span> </div>
-<div class="line"><span class="lineno">   32</span>    <span class="comment">// 2. Handle Edges (Simple Repeat/Nearest padding strategy)</span></div>
-<div class="line"><span class="lineno">   33</span>    <span class="comment">// For a robust production app, you might calculate asymmetric kernels here.</span></div>
-<div class="line"><span class="lineno">   34</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; window_radius_; ++i) result[i] = data[i];</div>
-<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = data.size() - window_radius_; i &lt; data.size(); ++i) result[i] = data[i];</div>
-<div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">return</span> result;</div>
-<div class="line"><span class="lineno">   38</span>}</div>
+<div class="line"><span class="lineno">   23</span>    std::vector&lt;Point&gt; result(data.size());</div>
+<div class="line"><span class="lineno">   24</span> </div>
+<div class="line"><span class="lineno">   25</span>    <span class="comment">// 1. Convolution for the valid range</span></div>
+<div class="line"><span class="lineno">   26</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = window_radius_; i &lt; data.size() - window_radius_; ++i) {</div>
+<div class="line"><span class="lineno">   27</span>        <a class="code hl_struct" href="structPoint.html">Point</a> val {0.0, 0.0};</div>
+<div class="line"><span class="lineno">   28</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = -window_radius_; j &lt;= window_radius_; ++j) {</div>
+<div class="line"><span class="lineno">   29</span>            val += data[i + j] * coeffs_[j + window_radius_];</div>
+<div class="line"><span class="lineno">   30</span>        }</div>
+<div class="line"><span class="lineno">   31</span>        result[i] = val;</div>
+<div class="line"><span class="lineno">   32</span>    }</div>
+<div class="line"><span class="lineno">   33</span> </div>
+<div class="line"><span class="lineno">   34</span>    <span class="comment">// 2. Handle Edges (Simple Repeat/Nearest padding strategy)</span></div>
+<div class="line"><span class="lineno">   35</span>    <span class="comment">// For a robust production app, you might calculate asymmetric kernels here.</span></div>
+<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; window_radius_; ++i)</div>
+<div class="line"><span class="lineno">   37</span>        result[i] = data[i];</div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = data.size() - window_radius_; i &lt; data.size(); ++i)</div>
+<div class="line"><span class="lineno">   39</span>        result[i] = data[i];</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">return</span> result;</div>
+<div class="line"><span class="lineno">   42</span>}</div>
 <div class="ttc" id="astructPoint_html"><div class="ttname"><a href="structPoint.html">Point</a></div><div class="ttdef"><b>Definition</b> <a href="Point_8h_source.html#l00005">Point.h:5</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -298,32 +302,32 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SavitskyGolay_8cpp_source.html#l00040">40</a> of file <a class="el" href="SavitskyGolay_8cpp_source.html">SavitskyGolay.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>                                                                        {</div>
-<div class="line"><span class="lineno">   41</span>    <span class="comment">// wrap around</span></div>
-<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">if</span> (data.size() &lt; window_size_) {</div>
-<div class="line"><span class="lineno">   43</span>        <span class="keywordflow">return</span> data;  <span class="comment">// Data too short to filter</span></div>
-<div class="line"><span class="lineno">   44</span>    }</div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>    std::vector&lt;Point&gt; result(data.size());</div>
-<div class="line"><span class="lineno">   47</span>    std::copy(data.begin(), data.end(), result.begin());</div>
-<div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; data.size(); ++i) {</div>
-<div class="line"><span class="lineno">   50</span>        <a class="code hl_struct" href="structPoint.html">Point</a> val{0.0, 0.0};</div>
-<div class="line"><span class="lineno">   51</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = -window_radius_; j &lt;= window_radius_; ++j) {</div>
-<div class="line"><span class="lineno">   52</span>            <span class="keywordtype">int</span> k = i + j;</div>
-<div class="line"><span class="lineno">   53</span>            <span class="keywordflow">if</span> (k &lt; 0) {</div>
-<div class="line"><span class="lineno">   54</span>                k = data.size() + k;</div>
-<div class="line"><span class="lineno">   55</span>            } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (k &gt;= data.size()) {</div>
-<div class="line"><span class="lineno">   56</span>                k = k - data.size();</div>
-<div class="line"><span class="lineno">   57</span>            }</div>
-<div class="line"><span class="lineno">   58</span>            val = val + data[k] * coeffs_[j + window_radius_];</div>
-<div class="line"><span class="lineno">   59</span>        }</div>
-<div class="line"><span class="lineno">   60</span>        result[i] = val;</div>
-<div class="line"><span class="lineno">   61</span>    }</div>
-<div class="line"><span class="lineno">   62</span> </div>
-<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">return</span> result;</div>
-<div class="line"><span class="lineno">   64</span>}</div>
+<p class="definition">Definition at line <a class="el" href="SavitskyGolay_8cpp_source.html#l00044">44</a> of file <a class="el" href="SavitskyGolay_8cpp_source.html">SavitskyGolay.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>                                                                        {</div>
+<div class="line"><span class="lineno">   45</span>    <span class="comment">// wrap around</span></div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">if</span> (data.size() &lt; window_size_) {</div>
+<div class="line"><span class="lineno">   47</span>        <span class="keywordflow">return</span> data; <span class="comment">// Data too short to filter</span></div>
+<div class="line"><span class="lineno">   48</span>    }</div>
+<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span>    std::vector&lt;Point&gt; result(data.size());</div>
+<div class="line"><span class="lineno">   51</span>    std::copy(data.begin(), data.end(), result.begin());</div>
+<div class="line"><span class="lineno">   52</span> </div>
+<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; data.size(); ++i) {</div>
+<div class="line"><span class="lineno">   54</span>        <a class="code hl_struct" href="structPoint.html">Point</a> val {0.0, 0.0};</div>
+<div class="line"><span class="lineno">   55</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = -window_radius_; j &lt;= window_radius_; ++j) {</div>
+<div class="line"><span class="lineno">   56</span>            <span class="keywordtype">int</span> k = i + j;</div>
+<div class="line"><span class="lineno">   57</span>            <span class="keywordflow">if</span> (k &lt; 0) {</div>
+<div class="line"><span class="lineno">   58</span>                k = data.size() + k;</div>
+<div class="line"><span class="lineno">   59</span>            } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (k &gt;= data.size()) {</div>
+<div class="line"><span class="lineno">   60</span>                k = k - data.size();</div>
+<div class="line"><span class="lineno">   61</span>            }</div>
+<div class="line"><span class="lineno">   62</span>            val = val + data[k] * coeffs_[j + window_radius_];</div>
+<div class="line"><span class="lineno">   63</span>        }</div>
+<div class="line"><span class="lineno">   64</span>        result[i] = val;</div>
+<div class="line"><span class="lineno">   65</span>    }</div>
+<div class="line"><span class="lineno">   66</span> </div>
+<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">return</span> result;</div>
+<div class="line"><span class="lineno">   68</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -381,39 +385,41 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SavitskyGolay_8cpp_source.html#l00068">68</a> of file <a class="el" href="SavitskyGolay_8cpp_source.html">SavitskyGolay.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   68</span>                                                                                      {</div>
-<div class="line"><span class="lineno">   69</span>    <span class="keywordtype">int</span> n = A.size();</div>
-<div class="line"><span class="lineno">   70</span>    std::vector&lt;std::vector&lt;float&gt;&gt; inv(n, std::vector&lt;float&gt;(n, 0.0));</div>
-<div class="line"><span class="lineno">   71</span> </div>
-<div class="line"><span class="lineno">   72</span>    <span class="comment">// Initialize inverse as identity</span></div>
-<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; n; ++i) inv[i][i] = 1.0;</div>
-<div class="line"><span class="lineno">   74</span> </div>
-<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; n; ++i) {</div>
-<div class="line"><span class="lineno">   76</span>        <span class="comment">// Find pivot</span></div>
-<div class="line"><span class="lineno">   77</span>        <span class="keywordtype">float</span> pivot = A[i][i];</div>
-<div class="line"><span class="lineno">   78</span>        <span class="comment">// (Simple pivot check, typically you&#39;d swap rows for stability)</span></div>
-<div class="line"><span class="lineno">   79</span>        <span class="keywordflow">if</span> (std::abs(pivot) &lt; 1e-10) <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Matrix singular, cannot invert.&quot;</span>);</div>
-<div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>        <span class="comment">// Normalize row</span></div>
-<div class="line"><span class="lineno">   82</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; n; ++j) {</div>
-<div class="line"><span class="lineno">   83</span>            A[i][j] /= pivot;</div>
-<div class="line"><span class="lineno">   84</span>            inv[i][j] /= pivot;</div>
-<div class="line"><span class="lineno">   85</span>        }</div>
+<p class="definition">Definition at line <a class="el" href="SavitskyGolay_8cpp_source.html#l00072">72</a> of file <a class="el" href="SavitskyGolay_8cpp_source.html">SavitskyGolay.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   72</span>                                                                                      {</div>
+<div class="line"><span class="lineno">   73</span>    <span class="keywordtype">int</span> n = A.size();</div>
+<div class="line"><span class="lineno">   74</span>    std::vector&lt;std::vector&lt;float&gt;&gt; inv(n, std::vector&lt;float&gt;(n, 0.0));</div>
+<div class="line"><span class="lineno">   75</span> </div>
+<div class="line"><span class="lineno">   76</span>    <span class="comment">// Initialize inverse as identity</span></div>
+<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">   78</span>        inv[i][i] = 1.0;</div>
+<div class="line"><span class="lineno">   79</span> </div>
+<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; n; ++i) {</div>
+<div class="line"><span class="lineno">   81</span>        <span class="comment">// Find pivot</span></div>
+<div class="line"><span class="lineno">   82</span>        <span class="keywordtype">float</span> pivot = A[i][i];</div>
+<div class="line"><span class="lineno">   83</span>        <span class="comment">// (Simple pivot check, typically you&#39;d swap rows for stability)</span></div>
+<div class="line"><span class="lineno">   84</span>        <span class="keywordflow">if</span> (std::abs(pivot) &lt; 1e-10)</div>
+<div class="line"><span class="lineno">   85</span>            <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Matrix singular, cannot invert.&quot;</span>);</div>
 <div class="line"><span class="lineno">   86</span> </div>
-<div class="line"><span class="lineno">   87</span>        <span class="comment">// Eliminate other rows</span></div>
-<div class="line"><span class="lineno">   88</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; n; ++k) {</div>
-<div class="line"><span class="lineno">   89</span>            <span class="keywordflow">if</span> (k != i) {</div>
-<div class="line"><span class="lineno">   90</span>                <span class="keywordtype">float</span> factor = A[k][i];</div>
-<div class="line"><span class="lineno">   91</span>                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; n; ++j) {</div>
-<div class="line"><span class="lineno">   92</span>                    A[k][j] -= factor * A[i][j];</div>
-<div class="line"><span class="lineno">   93</span>                    inv[k][j] -= factor * inv[i][j];</div>
-<div class="line"><span class="lineno">   94</span>                }</div>
-<div class="line"><span class="lineno">   95</span>            }</div>
-<div class="line"><span class="lineno">   96</span>        }</div>
-<div class="line"><span class="lineno">   97</span>    }</div>
-<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">return</span> inv;</div>
-<div class="line"><span class="lineno">   99</span>}</div>
+<div class="line"><span class="lineno">   87</span>        <span class="comment">// Normalize row</span></div>
+<div class="line"><span class="lineno">   88</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; n; ++j) {</div>
+<div class="line"><span class="lineno">   89</span>            A[i][j] /= pivot;</div>
+<div class="line"><span class="lineno">   90</span>            inv[i][j] /= pivot;</div>
+<div class="line"><span class="lineno">   91</span>        }</div>
+<div class="line"><span class="lineno">   92</span> </div>
+<div class="line"><span class="lineno">   93</span>        <span class="comment">// Eliminate other rows</span></div>
+<div class="line"><span class="lineno">   94</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; n; ++k) {</div>
+<div class="line"><span class="lineno">   95</span>            <span class="keywordflow">if</span> (k != i) {</div>
+<div class="line"><span class="lineno">   96</span>                <span class="keywordtype">float</span> factor = A[k][i];</div>
+<div class="line"><span class="lineno">   97</span>                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; n; ++j) {</div>
+<div class="line"><span class="lineno">   98</span>                    A[k][j] -= factor * A[i][j];</div>
+<div class="line"><span class="lineno">   99</span>                    inv[k][j] -= factor * inv[i][j];</div>
+<div class="line"><span class="lineno">  100</span>                }</div>
+<div class="line"><span class="lineno">  101</span>            }</div>
+<div class="line"><span class="lineno">  102</span>        }</div>
+<div class="line"><span class="lineno">  103</span>    }</div>
+<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">return</span> inv;</div>
+<div class="line"><span class="lineno">  105</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -159,8 +159,9 @@ template&lt;typename ConverterT &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="PixelConverter_8h_source.html#l00014">14</a> of file <a class="el" href="PixelConverter_8h_source.html">PixelConverter.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   14</span>                                                 : convert(std::move(conv)), bytesPerPixel(bpp) {</div>
-<div class="line"><span class="lineno">   15</span>    }</div>
+<div class="fragment"><div class="line"><span class="lineno">   15</span>        : convert(std::move(conv))</div>
+<div class="line"><span class="lineno">   16</span>        , bytesPerPixel(bpp) {</div>
+<div class="line"><span class="lineno">   17</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>

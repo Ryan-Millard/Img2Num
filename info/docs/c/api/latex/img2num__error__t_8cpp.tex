@@ -1,8 +1,8 @@
 \doxysection{src/cimg2num/img2num\+\_\+error\+\_\+t.cpp File Reference}
 \hypertarget{img2num__error__t_8cpp}{}\label{img2num__error__t_8cpp}\index{src/cimg2num/img2num\_error\_t.cpp@{src/cimg2num/img2num\_error\_t.cpp}}
 {\ttfamily \#include "{}cimg2num/img2num\+\_\+error\+\_\+t.\+h"{}}\newline
-{\ttfamily \#include $<$cstring$>$}\newline
 {\ttfamily \#include "{}img2num/\+Error.\+h"{}}\newline
+{\ttfamily \#include $<$cstring$>$}\newline
 Include dependency graph for img2num\+\_\+error\+\_\+t.\+cpp\+:
 \nopagebreak
 \begin{figure}[H]
@@ -31,13 +31,13 @@ void \mbox{\hyperlink{img2num__error__t_8cpp_a6e18e50086049cc81d6ab0babacf2dee}{
 
 
 
-Definition at line \mbox{\hyperlink{img2num__error__t_8cpp_source_l00034}{34}} of file \mbox{\hyperlink{img2num__error__t_8cpp_source}{img2num\+\_\+error\+\_\+t.\+cpp}}.
+Definition at line \mbox{\hyperlink{img2num__error__t_8cpp_source_l00038}{38}} of file \mbox{\hyperlink{img2num__error__t_8cpp_source}{img2num\+\_\+error\+\_\+t.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00035\ \ \ \ \ img2num::clear\_last\_error();}
-\DoxyCodeLine{00036\ \}}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00039\ \ \ \ \ img2num::clear\_last\_error();}
+\DoxyCodeLine{00040\ \}}
 
 \end{DoxyCode}
 \Hypertarget{img2num__error__t_8cpp_a19e8b982f542ab10e701fe3557582340}\label{img2num__error__t_8cpp_a19e8b982f542ab10e701fe3557582340} 
@@ -48,14 +48,14 @@ Definition at line \mbox{\hyperlink{img2num__error__t_8cpp_source_l00034}{34}} o
 
 
 
-Definition at line \mbox{\hyperlink{img2num__error__t_8cpp_source_l00023}{23}} of file \mbox{\hyperlink{img2num__error__t_8cpp_source}{img2num\+\_\+error\+\_\+t.\+cpp}}.
+Definition at line \mbox{\hyperlink{img2num__error__t_8cpp_source_l00027}{27}} of file \mbox{\hyperlink{img2num__error__t_8cpp_source}{img2num\+\_\+error\+\_\+t.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{const}\ img2num::Error\ cpp\_err\{img2num::get\_last\_error()\};}
-\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordflow}{return}\ cpp\_error\_to\_c\_error(cpp\_err);}
-\DoxyCodeLine{00026\ \}}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{const}\ img2num::Error\ cpp\_err\ \{img2num::get\_last\_error()\};}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordflow}{return}\ cpp\_error\_to\_c\_error(cpp\_err);}
+\DoxyCodeLine{00030\ \}}
 
 \end{DoxyCode}
 \Hypertarget{img2num__error__t_8cpp_a41d48f4c353c389bd2657f5191479577}\label{img2num__error__t_8cpp_a41d48f4c353c389bd2657f5191479577} 
@@ -66,14 +66,14 @@ Definition at line \mbox{\hyperlink{img2num__error__t_8cpp_source_l00023}{23}} o
 
 
 
-Definition at line \mbox{\hyperlink{img2num__error__t_8cpp_source_l00028}{28}} of file \mbox{\hyperlink{img2num__error__t_8cpp_source}{img2num\+\_\+error\+\_\+t.\+cpp}}.
+Definition at line \mbox{\hyperlink{img2num__error__t_8cpp_source_l00032}{32}} of file \mbox{\hyperlink{img2num__error__t_8cpp_source}{img2num\+\_\+error\+\_\+t.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{thread\_local}\ std::string\ msg;}
-\DoxyCodeLine{00030\ \ \ \ \ msg\ =\ img2num::get\_last\_error\_message();}
-\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordflow}{return}\ msg.c\_str();}
-\DoxyCodeLine{00032\ \}}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{thread\_local}\ std::string\ msg;}
+\DoxyCodeLine{00034\ \ \ \ \ msg\ =\ img2num::get\_last\_error\_message();}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{return}\ msg.c\_str();}
+\DoxyCodeLine{00036\ \}}
 
 \end{DoxyCode}
