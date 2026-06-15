@@ -41,6 +41,10 @@ struct ImageToSvgConfig {
 
     /// Minimum area (in pixels) for a region to be included in the SVG.
     int min_cluster_area = 100;
+
+    /// Minimum thickness (in pixels) for a region to be included in the SVG.
+    /// Regions with an inscribed disk diameter less than this value are merged.
+    /// Set to 0 to disable thickness-based filtering.
     int min_thickness = 0;
 
     /// Color space flag.
