@@ -11,7 +11,7 @@ build-c-cpp:
     cmake --build build-c-cpp/
 
 build-wasm:
-    @echo "Build C++ core and C bindings"
+    @echo "Build JS bindings"
     emcmake cmake -DCMAKE_BUILD_TYPE=Release -B build-wasm/ .
     cmake --build build-wasm/
 
