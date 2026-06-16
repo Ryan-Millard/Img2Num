@@ -20,17 +20,29 @@ build-py:
     uv sync --reinstall
     uv pip install opencv-python
 
-build-all: build-c-cpp build-wasm build-py
+build target:
+    case "{{ target }}" in \
+        cpp) just build-c-cpp ;; \
+        js) just build-wasm ;; \
+        py) just build-py ;; \
+        all) just build-c-cpp build-wasm build-py ;; \
+    esac
 
-clean:
-    @echo "Remove build folders"
-    rm -rf build-wasm/
-    rm -rf build-c-cpp/
+clean target:
+    @echo "Remove {{ target }} folders"
+    case "{{ target }}" in \
+        cpp) rm -rf build-c-cpp/ ;; \
+        js) rm -rf build-wasm/ ;; \
+    esac
 
-docs:
-    @echo "Generate docusaurus server"
-    pnpm -F docs run build
+docs action:
+    @echo "Docusaurus server"
+    case "{{ action }}" in \
+        start) pnpm -F docs run build ;; \
+    esac
 
-react-app: build-wasm
+react-js action: build-wasm
     @echo "Run react sample app"
-    cd example-apps/react-js && pnpm run dev
+    case "{{ action }}" in \
+        start) pnpm -F react-example run dev ;; \
+    esac
