@@ -46,6 +46,7 @@ react-js action: build-wasm
     @echo "Run react sample app"
     case "{{ action }}" in \
         start) pnpm -F react-example run dev ;; \
+        build) pnpm -F react-example run build;; \
     esac
 
 console-py input:
