@@ -38,7 +38,8 @@ clean target:
 docs action:
     @echo "Docusaurus server"
     case "{{ action }}" in \
-        start) pnpm -F docs run build ;; \
+        build) pnpm -F docs run build ;; \
+        start) cd docs/ && pnpm run serve;; \
     esac
 
 react-js action: build-wasm
