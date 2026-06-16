@@ -30,3 +30,7 @@ clean:
 docs:
     @echo "Generate docusaurus server"
     pnpm -F docs run build
+
+react-app: build-wasm
+    @echo "Run react sample app"
+    cd example-apps/react-js && pnpm run dev
