@@ -47,3 +47,15 @@ react-js action: build-wasm
     case "{{ action }}" in \
         start) pnpm -F react-example run dev ;; \
     esac
+
+console-py input:
+    @echo "python example-apps/console-py/main.py {{ input }}"
+    uv run python3 example-apps/console-py/main.py "{{ input }}"
+
+console-cpp input:
+    @echo "./build-c-cpp/example-apps/console-cpp/console_cpp_app {{ input }}"
+    ./build-c-cpp/example-apps/console-cpp/console_cpp_app "{{ input }}"
+
+console-c input:
+    @echo "./build-c-cpp/example-apps/console-c/console_c_app {{ input }}"
+    ./build-c-cpp/example-apps/console-c/console_c_app "{{ input }}"
