@@ -18,7 +18,7 @@ build-wasm:
 build-py:
     @echo "Build python bindings and py package"
     uv sync --reinstall
-    uv pip install opencv-python
+    uv build --wheel
 
 build target:
     case "{{ target }}" in \
@@ -50,6 +50,7 @@ react-js action: build-wasm
 
 console-py input:
     @echo "python example-apps/console-py/main.py {{ input }}"
+    uv pip install opencv-python
     uv run python3 example-apps/console-py/main.py "{{ input }}"
 
 console-cpp input:
