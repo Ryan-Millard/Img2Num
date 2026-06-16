@@ -1,6 +1,4 @@
 packages/js/build-wasm
-docs/.docusaurus
-docs/build/
 example-apps/react-js/dist/
 .clang-format
 .devcontainer
@@ -28,8 +26,6 @@ node_modules/
 scripts/
 pnpm-lock.yaml
 .pnpm-store/
-docs/static/js/api.json
-docs/docs/js/api/
 example-apps/react-js/src/data/contributor-credits.json
 third_party/
 .venv
@@ -42,5 +38,11 @@ example-apps/*-c/
 bindings/py/
 bindings/c/
 packages/py
-docs/static/
 **/CHANGELOG.md
+
+docs/.docusaurus
+docs/build/
+docs/static/js/api.json
+docs/static/docs
+docs/docs/js/api/
+docs/changelog

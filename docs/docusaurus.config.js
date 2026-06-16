@@ -11,6 +11,7 @@ import { changelogSidebarGenerator } from "./changelogSidebarGenerator.js";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import docusaurusPluginTypeDocConfig from "./plugins/docusaurusPluginTypeDocConfig.js";
+import changelogPlugin from "./plugins/changelogPlugin";
 
 const require = createRequire(import.meta.url);
 require("dotenv").config();
@@ -79,13 +80,14 @@ const config = {
   ],
 
   plugins: [
+    changelogPlugin,
     [
       "@docusaurus/plugin-content-docs",
       {
         id: "changelog",
         path: "changelog",
         routeBasePath: "changelog",
-        sidebarPath: require.resolve("./sidebars.js"),
+        sidebarPath: require.resolve("./changelogSidebars.js"),
         sidebarItemsGenerator: changelogSidebarGenerator,
       },
     ],
