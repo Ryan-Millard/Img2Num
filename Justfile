@@ -23,5 +23,10 @@ build-py:
 build-all: build-c-cpp build-wasm build-py
 
 clean:
+    @echo "Remove build folders"
     rm -rf build-wasm/
     rm -rf build-c-cpp/
+
+docs:
+    @echo "Generate docusaurus server"
+    pnpm -F docs run build
