@@ -1,6 +1,10 @@
 version := "0.0.0"
 current_date := `date +%Y-%m-%d`
 
+init:
+    @echo "Pulling submodules"
+    git submodule update --init
+
 format:
     @echo "Format all files"
     pnpm format
@@ -39,14 +43,14 @@ docs action:
     @echo "Docusaurus server"
     case "{{ action }}" in \
         build) pnpm -F docs run build ;; \
-        start) cd docs/ && pnpm run serve;; \
+        start) cd docs/ && pnpm run serve ;; \
     esac
 
 react-js action: build-wasm
     @echo "Run react sample app"
     case "{{ action }}" in \
+        build) pnpm -F react-example run build ;; \
         start) pnpm -F react-example run dev ;; \
-        build) pnpm -F react-example run build;; \
     esac
 
 console-py input:
