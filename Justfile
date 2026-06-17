@@ -20,7 +20,7 @@ help:
     react-js <action>: \n \
     \t build: build example browser app \n \
     \t start: start example browser app on port 5173 \n \
-    console-c-cpp <input_image>: run example C++ app on input image \n \
+    console-cpp <input_image>: run example C++ app on input image \n \
     console-c <input_image>: run example C app on input image \n \
     console-py <input_image>: run example python app on input image \n \
     "
