@@ -1,6 +1,30 @@
 version := "0.0.0"
 current_date := `date +%Y-%m-%d`
 
+help:
+    @echo \
+    "List of commands: \n \
+    init: pull submodules \n \
+    format: format all files \n \
+    build <target>: \n \
+    \t cpp: build c++ core and c bindings \n \
+    \t js: build js/wasm bindings \n \
+    \t py: build python bindings and python package \n \
+    \t all: build all of above \n \
+    clean <target>: \n \
+    \t cpp: delete c++ and c build folder (build-c-cpp) \n \
+    \t js: delete js build folder (build-wasm) \n \
+    docs <action>: \n \
+    \t build: build docusaurus server \n \
+    \t start: start docusaurus server on port 3000 \n \
+    react-js <action>: \n \
+    \t build: build example browser app \n \
+    \t start: start example browser app on port 5173 \n \
+    console-c-cpp <input_image>: run example C++ app on input image \n \
+    console-c <input_image>: run example C app on input image \n \
+    console-py <input_image>: run example python app on input image \n \
+    "
+
 init:
     @echo "Pulling submodules"
     git submodule update --init
