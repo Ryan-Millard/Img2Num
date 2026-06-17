@@ -1,4 +1,3 @@
-import isNode from "./isNode.js";
 /**
  * @file wasmWorker.js
  * @description
@@ -39,7 +38,7 @@ import isNode from "./isNode.js";
  * });
  */
 
-import createImg2NumModule from "./build-wasm/index.js";
+import createImg2NumModule from "@wasm/index.js";
 
 let wasmModule;
 
@@ -207,9 +206,9 @@ async function handleMessage(data) {
       wasmModule._free(result);
     }
 
-    postMsg({ id, output, returnValue });
+    globalThis.postMessage({ id, output, returnValue });
   } catch (error) {
-    postMsg({ id, error: error.message });
+    globalThis.postMessage({ id, error: error.message });
   } finally {
     // -------- Cleanup --------
     for (const { ptr } of pointers.values()) {
@@ -218,15 +217,4 @@ async function handleMessage(data) {
   }
 }
 
-// -------- Environment-aware message binding --------
-// Use worker_threads in Node.js, Web Worker API in browser
-let postMsg;
-
-if (isNode) {
-  const { parentPort } = await import("worker_threads");
-  postMsg = (data) => parentPort.postMessage(data);
-  parentPort.on("message", (data) => handleMessage(data));
-} else {
-  postMsg = (data) => self.postMessage(data);
-  self.onmessage = ({ data }) => handleMessage(data);
-}
+globalThis.onmessage = ({ data }) => handleMessage(data);

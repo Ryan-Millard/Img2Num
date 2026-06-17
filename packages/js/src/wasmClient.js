@@ -1,4 +1,3 @@
-import isNode from "./isNode.js";
 /**
  * @packageDocumentation
  * Advanced low-level interface for communicating with the WASM worker.
@@ -17,6 +16,8 @@ import isNode from "./isNode.js";
  *              You must specify exact C++ function signatures and manage the input data carefully.
  *              This allows more granular control.
  */
+
+import { createWorker } from "@__TARGET__/worker.js";
 
 /**
  * Worker instance that handles communication with the WASM module.
@@ -44,6 +45,22 @@ const callbacks = new Map();
 let initialized = false;
 
 /**
+ * Handle response messages from the WASM worker.
+ * @param {{ id: number, output?: any, returnValue?: any, error?: string }} data
+ */
+function handleMessage(data) {
+  const cb = callbacks.get(data.id);
+  if (!cb) return;
+  callbacks.delete(data.id);
+
+  if (data.error) {
+    cb.reject(new Error(data.error));
+  } else {
+    cb.resolve({ output: data.output, returnValue: data.returnValue });
+  }
+}
+
+/**
  * @summary Initialize the WASM worker.
  *
  * @description
@@ -64,46 +81,9 @@ let initialized = false;
 export async function initWasmWorker() {
   if (initialized) return;
 
-  if (isNode) {
-    const { Worker } = await import("worker_threads");
-    const { fileURLToPath } = await import("url");
-    const { dirname, join } = await import("path");
-    const __dirname = dirname(fileURLToPath(import.meta.url));
-    worker = new Worker(join(__dirname, "./wasmWorker.js"));
+  worker = await createWorker();
 
-    worker.on("message", (data) => {
-      const { id, error, output, returnValue } = data;
-      const cb = callbacks.get(id);
-      if (!cb) return;
-      error ? cb.reject(new Error(error)) : cb.resolve({ output, returnValue });
-      callbacks.delete(id);
-    });
-
-    worker.on("error", (err) => {
-      for (const [_id, cb] of callbacks) {
-        cb.reject(err);
-      }
-      callbacks.clear();
-    });
-  } else {
-    worker = new Worker(new URL("./wasmWorker.js", import.meta.url), { type: "module" });
-
-    worker.onmessage = ({ data }) => {
-      const { id, error, output, returnValue } = data;
-      const cb = callbacks.get(id);
-      if (!cb) return;
-      error ? cb.reject(new Error(error)) : cb.resolve({ output, returnValue });
-      callbacks.delete(id);
-    };
-
-    worker.onerror = (event) => {
-      const err = new Error(event.message || "WASM worker error");
-      for (const [_id, cb] of callbacks) {
-        cb.reject(err);
-      }
-      callbacks.clear();
-    };
-  }
+  worker.onMessage(handleMessage);
 
   initialized = true;
 }
@@ -144,10 +124,13 @@ export async function initWasmWorker() {
  */
 export async function callWasm({ funcName, args = {}, bufferKeys = [], returnType = "void" }) {
   if (!initialized) throw new Error("WASM worker not initialized. Call initWasmWorker() first.");
+
   const id = idCounter++;
+
   return new Promise((resolve, reject) => {
     callbacks.set(id, { resolve, reject });
-    worker.postMessage({ id, funcName, args, bufferKeys, returnType }); // <-- send it
+
+    worker.postMessage({ id, funcName, args, bufferKeys, returnType });
   });
 }
 
