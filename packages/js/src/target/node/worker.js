@@ -1,14 +1,18 @@
 import { Worker } from "node:worker_threads";
-import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
+import { initWebGPU } from "./webgpu.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export async function createWorker() {
-  const worker = new Worker(
-    new URL("@workers/wasmWorker.js", import.meta.url),
-    { type: "module" }
-  );
+  await initWebGPU();
+
+  // Reference the worker by path relative to this file at runtime,
+  // not via import.meta.url which Vite will try to bundle/inline.
+  const workerPath = new URL("./wasmWorker.js", import.meta.url);
+
+  const worker = new Worker(fileURLToPath(workerPath), { type: "module" });
 
   return {
     postMessage: (msg) => worker.postMessage(msg),
