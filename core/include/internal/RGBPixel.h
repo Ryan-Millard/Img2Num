@@ -11,8 +11,7 @@ namespace ImageLib {
 #ifdef _MSC_VER
 #pragma pack(push, 1)
 #endif
-template <typename NumberT>
-struct RGBPixel : public Pixel<NumberT> {
+template <typename NumberT> struct RGBPixel : public Pixel<NumberT> {
     // ----- Members -----
     NumberT red, green, blue;
 

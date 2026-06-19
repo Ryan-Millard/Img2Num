@@ -49,6 +49,23 @@ ContoursResult find_contours(const std::vector<uint8_t>& binary, int width, int 
 void stitch_smooth(std::vector<Point>& vecA, std::vector<Point>& vecB);
 void coupled_smooth(std::vector<std::vector<Point>>& contours, Rect bounds);
 
+/**
+ * `@brief` Applies coupled smoothing with junction point locking.
+ *
+ * Similar to coupled_smooth but additionally locks points identified as junctions,
+ * preventing them from moving during the smoothing process. This preserves junction
+ * positions where multiple region boundaries meet.
+ *
+ * `@param` contours Vector of contour polylines to smooth
+ * `@param` bounds Bounding rectangle defining boundary constraints
+ * `@param` junctions Junction mask (image buffer with nonzero entries marking junction pixels)
+ * `@param` width Image width for raster indexing into the junctions mask
+ */
+void coupled_smooth_junctions(
+    std::vector<std::vector<Point>>& contours, Rect bounds, std::vector<uint8_t> junctions,
+    int width
+);
+
 void pack_with_boundary_constraints(
     std::vector<std::vector<Point>>& contours, Rect bounds, int iterations = 15
 );

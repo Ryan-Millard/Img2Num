@@ -61,8 +61,8 @@ def kmeans(data: npt.NDArray[np.uint8], k: int, max_iter: int, color_space: int,
     return _kmeans(data, width, height, k, max_iter, color_space)
 
 @_inject_dims("data")
-def labels_to_svg(data: npt.NDArray[np.uint8], labels: npt.NDArray[int], min_area: int, *, width: int, height: int) -> str:
-    return _labels_to_svg(data, labels, width, height, min_area)
+def labels_to_svg(data: npt.NDArray[np.uint8], labels: npt.NDArray[int], min_area: int, min_thickness: int, *, width: int, height: int) -> str:
+    return _labels_to_svg(data, labels, width, height, min_area, min_thickness)
 
 @_inject_dims("image")
 def image_to_svg(image: npt.NDArray[np.uint8], *, width: int, height: int, config=None) -> str:
