@@ -28,6 +28,7 @@ help:
 init:
     @echo "Pulling submodules"
     git submodule update --init
+    just build all
 
 format:
     @echo "Format all files"
@@ -35,13 +36,13 @@ format:
 
 build-c-cpp:
     @echo "Build C++ core and C bindings"
-    cmake -B build-c-cpp/ .
-    cmake --build build-c-cpp/
+    cmake -DCMAKE_BUILD_TYPE=Release -B build-c-cpp/ .
+    cmake --build build-c-cpp/ --parallel
 
 build-wasm:
     @echo "Build JS bindings"
     emcmake cmake -DCMAKE_BUILD_TYPE=Release -B build-wasm/ .
-    cmake --build build-wasm/
+    cmake --build build-wasm/ --parallel
 
 build-py:
     @echo "Build python bindings and py package"
@@ -53,7 +54,7 @@ build target:
         cpp) just build-c-cpp ;; \
         js) just build-wasm ;; \
         py) just build-py ;; \
-        all) just build-c-cpp build-wasm build-py ;; \
+        all) just build-c-cpp build-wasm build-py react-js build docs build ;; \
     esac
 
 clean target:
