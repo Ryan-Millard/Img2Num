@@ -49,12 +49,6 @@ ContoursResult find_contours(const std::vector<uint8_t>& binary, int width, int 
 void stitch_smooth(std::vector<Point>& vecA, std::vector<Point>& vecB);
 void coupled_smooth(std::vector<std::vector<Point>>& contours, Rect bounds);
 
-<<<<<<< HEAD
-void coupled_smooth_junctions(std::vector<std::vector<Point>> &contours, Rect bounds, std::vector<uint8_t> junctions, int width);
-
-void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours, Rect bounds,
-                                    int iterations = 15);
-=======
 /**
  * `@brief` Applies coupled smoothing with junction point locking.
  *
@@ -75,7 +69,6 @@ void coupled_smooth_junctions(
 void pack_with_boundary_constraints(
     std::vector<std::vector<Point>>& contours, Rect bounds, int iterations = 15
 );
->>>>>>> dev_sync
 
 } // namespace contours
 

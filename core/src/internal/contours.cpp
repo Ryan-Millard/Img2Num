@@ -679,14 +679,10 @@ createBoundaryMask(const std::vector<std::vector<Point>>& contours, Rect bounds)
     return locked;
 }
 
-<<<<<<< HEAD
-void updateLockedMasks(const std::vector<std::vector<Point>> &contours, std::vector<std::vector<bool>>& locked, std::vector<uint8_t>& junctions, int width){
-=======
 void updateLockedMasks(
     const std::vector<std::vector<Point>>& contours, std::vector<std::vector<bool>>& locked,
     std::vector<uint8_t>& junctions, int width
 ) {
->>>>>>> dev_sync
     for (size_t c = 0; c < contours.size(); ++c) {
         for (size_t p = 0; p < contours[c].size(); ++p) {
             Point pt = contours[c][p];
@@ -729,17 +725,11 @@ void selectiveSmooth(std::vector<Point>& pts, const std::vector<bool>& isLocked)
     }
 }
 
-<<<<<<< HEAD
-void coupledSmooth(std::vector<std::vector<Point>> &contours,
-                   const std::vector<std::vector<bool>> &lockedMasks, float pairRadiusSq = 2.25f) {
-    SavitzkyGolay sg(3, 2);  // radius, polynomial order
-=======
 void coupledSmooth(
     std::vector<std::vector<Point>>& contours, const std::vector<std::vector<bool>>& lockedMasks,
     float pairRadiusSq = 2.25f
 ) {
     SavitzkyGolay sg(3, 2); // radius, polynomial order
->>>>>>> dev_sync
 
     // first fit
     std::vector<std::vector<Point>> smoothedContours;
@@ -841,20 +831,12 @@ void coupled_smooth(std::vector<std::vector<Point>>& contours, Rect bounds) {
     coupledSmooth(contours, lockedMasks, 1.0f);
 }
 
-<<<<<<< HEAD
-void coupled_smooth_junctions(std::vector<std::vector<Point>> &contours, Rect bounds, std::vector<uint8_t> junctions, int width) {
-    std::cout << "boundary masks" << std::endl;
-    auto lockedMasks = createBoundaryMask(contours, bounds);
-
-    std::cout << "update junctions" << std::endl;
-=======
 void coupled_smooth_junctions(
     std::vector<std::vector<Point>>& contours, Rect bounds, std::vector<uint8_t> junctions,
     int width
 ) {
     auto lockedMasks = createBoundaryMask(contours, bounds);
 
->>>>>>> dev_sync
     updateLockedMasks(contours, lockedMasks, junctions, width);
 
     coupledSmooth(contours, lockedMasks, 1.0f);
