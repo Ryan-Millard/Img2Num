@@ -82,8 +82,10 @@ void img2num_bilateral_filter(
 );
 
 /// @copydoc ::IMG2NUM_H_LABELS_TO_SVG_DOC
-char *img2num_labels_to_svg(const uint8_t *data, const int32_t *labels, const int width,
-                            const int height, const int min_area, const int min_thickness);
+char* img2num_labels_to_svg(
+    const uint8_t* data, const int32_t* labels, const int width, const int height,
+    const int min_area, const int min_thickness
+);
 
 /// @copydoc ::IMG2NUM_H_IMAGE_TO_SVG_DOC
 char* img2num_image_to_svg(

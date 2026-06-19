@@ -1,12 +1,12 @@
 #ifndef SHARED_CONTOURS_H
 #define SHARED_CONTOURS_H
 
+#include "internal/contours.h" // QuadBezier
+#include "internal/Point.h"
+
 #include <cstdint>
 #include <unordered_map>
 #include <vector>
-
-#include "internal/Point.h"
-#include "internal/contours.h"  // QuadBezier
 
 /**
  * `@brief` Build crack-grid shared boundary loops for each region.
@@ -21,7 +21,7 @@
  * `@param` eps Curve-fit tolerance applied to each canonical edge.
  * `@return` Per-region closed boundary loops in corner coordinates.
  */
-std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>> build_shared_loops(
-    const std::vector<int32_t> &labels, int w, int h, float eps);
+std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>>
+build_shared_loops(const std::vector<int32_t>& labels, int w, int h, float eps);
 
 #endif

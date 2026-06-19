@@ -65,12 +65,12 @@ int main(int argc, char** argv) {
     // Apply kmeans
     img2num::kmeans(img_data, out_data, out_labels, width, height, 32, 100, 1);
     // Generate SVG
-    std::string res_svg{img2num::labels_to_svg(img_data, out_labels, width, height, 100, 10)};
+    std::string res_svg {img2num::labels_to_svg(img_data, out_labels, width, height, 100, 10)};
 
     img2num::ImageToSvgConfig config;
     config.kmeans.k = 32;
     config.min_thickness = 10;
-    std::string res_svg2{img2num::image_to_svg(img_data, width, height, config)};
+    std::string res_svg2 {img2num::image_to_svg(img_data, width, height, config)};
 
     // Save the blurred image
     std::string out_path {std::string(OUT_DIR) + "/console-cpp-output.png"};

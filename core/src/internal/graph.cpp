@@ -1,7 +1,9 @@
 #include "internal/graph.h"
 
 #include "internal/bezier.h"
+#include "internal/douglas_peucker.h"
 #include "internal/Pixel.h"
+#include "internal/shared_contours.h"
 
 #include <algorithm>
 #include <cmath>
@@ -9,11 +11,6 @@
 #include <iterator>
 #include <queue>
 #include <string>
-
-#include "internal/Pixel.h"
-#include "internal/bezier.h"
-#include "internal/douglas_peucker.h"
-#include "internal/shared_contours.h"
 /*
  Graph class - manages Node class
 */
@@ -223,54 +220,48 @@ void Graph::process_overlapping_edges() {
 
 std::vector<uint8_t> Graph::analyzeJunctions(const std::vector<uint8_t>& skel, int w, int h) {
     std::vector<uint8_t> junction_map(w * h, 0);
-    
+
     // 8-Neighbor Order (Clockwise)
     // P9 P2 P3
     // P8 P1 P4
     // P7 P6 P5
-    int dx[] = {0, 1, 1, 1, 0, -1, -1, -1}; 
+    int dx[] = {0, 1, 1, 1, 0, -1, -1, -1};
     int dy[] = {-1, -1, 0, 1, 1, 1, 0, -1};
 
     for (int y = 0; y < h; ++y) {
         for (int x = 0; x < w; ++x) {
-            if (getPixel(skel, w, h, x, y) == 0) continue;
+            if (getPixel(skel, w, h, x, y) == 0)
+                continue;
 
             // 1. Get Neighbors in Circular Order
             int p[8];
-            for(int k=0; k<8; ++k) {
+            for (int k = 0; k < 8; ++k) {
                 p[k] = getPixel(skel, w, h, x + dx[k], y + dy[k]) ? 1 : 0;
             }
 
             // 2. Count Transitions (0 -> 1)
             // This is the Crossing Number / 2
             int transitions = 0;
-            for(int k=0; k<8; ++k) {
-                if (p[k] == 0 && p[(k+1)%8] == 1) transitions++;
+            for (int k = 0; k < 8; ++k) {
+                if (p[k] == 0 && p[(k + 1) % 8] == 1)
+                    transitions++;
             }
 
             // 3. Count Total Neighbors (for Endpoint check)
             int neighbors = 0;
-            for(int k=0; k<8; ++k) neighbors += p[k];
+            for (int k = 0; k < 8; ++k)
+                neighbors += p[k];
 
             // 4. Classify
             if (transitions >= 3) {
                 junction_map[y * w + x] = 1;
             }
-
-            /*if (neighbors <= 1) {
-                map[y * w + x] = 2; // Endpoint (or isolated)
-            } else if (transitions >= 3) {
-                map[y * w + x] = 3; // Junction (3+ branches)
-            } else {
-                map[y * w + x] = 1; // Line (Body or Corner)
-            }*/
         }
     }
     return junction_map;
 }
 
 void Graph::compute_contours() {
-    
 
     /*
     Shared-edge mode: build region boundaries on the crack grid so
@@ -281,26 +272,31 @@ void Graph::compute_contours() {
     float eps = 0.25f;
 
     std::vector<int32_t> labels(static_cast<size_t>(m_width) * m_height, -1);
-    for (const Node_ptr &n : get_nodes()) {
-        if (n->area() == 0) continue;
-        for (auto &p : n->get_pixels())
+    for (const Node_ptr& n : get_nodes()) {
+        if (n->area() == 0)
+            continue;
+        for (auto& p : n->get_pixels())
             labels[static_cast<size_t>(p.position.y) * m_width + p.position.x] = n->id();
     }
 
     auto loops = build_shared_loops(labels, m_width, m_height, eps);
 
-    for (const Node_ptr &n : get_nodes()) {
-        if (n->area() == 0) continue;
+    for (const Node_ptr& n : get_nodes()) {
+        if (n->area() == 0)
+            continue;
         n->clear_contour();
         auto it = loops.find(n->id());
-        if (it == loops.end()) continue;
+        if (it == loops.end())
+            continue;
         ImageLib::RGBPixel<uint8_t> c = n->color();
-        ImageLib::RGBAPixel<uint8_t> col{c.red, c.green, c.blue, 255};
-        for (std::vector<QuadBezier> &curve : it->second) {
-            std::vector<Point> anchors;  // keep contours[] parallel to curves[]
+        ImageLib::RGBAPixel<uint8_t> col {c.red, c.green, c.blue, 255};
+        for (std::vector<QuadBezier>& curve : it->second) {
+            std::vector<Point> anchors; // keep contours[] parallel to curves[]
             anchors.reserve(curve.size() + 1);
-            for (const QuadBezier &q : curve) anchors.push_back(q.p0);
-            if (!curve.empty()) anchors.push_back(curve.back().p2);
+            for (const QuadBezier& q : curve)
+                anchors.push_back(q.p0);
+            if (!curve.empty())
+                anchors.push_back(curve.back().p2);
             n->m_contours.contours.push_back(std::move(anchors));
             n->m_contours.curves.push_back(std::move(curve));
             n->m_contours.colors.push_back(col);
@@ -308,14 +304,13 @@ void Graph::compute_contours() {
             n->m_contours.is_hole.push_back(false);
         }
     }
-    
 }
 
 namespace {
 
 // 1D squared-distance transform (Felzenszwalb & Huttenlocher): for every q,
 // d[q] = min_p ( (q - p)^2 + f[p] ). O(n).
-void dt_1d(const std::vector<float> &f, std::vector<float> &d, int n) {
+void dt_1d(const std::vector<float>& f, std::vector<float>& d, int n) {
     constexpr float INF = 1e20f;
     std::vector<int> v(n);
     std::vector<float> z(n + 1);
@@ -326,8 +321,7 @@ void dt_1d(const std::vector<float> &f, std::vector<float> &d, int n) {
     for (int q = 1; q < n; ++q) {
         float s;
         while (true) {
-            s = ((f[q] + static_cast<float>(q) * q) -
-                 (f[v[k]] + static_cast<float>(v[k]) * v[k])) /
+            s = ((f[q] + static_cast<float>(q) * q) - (f[v[k]] + static_cast<float>(v[k]) * v[k])) /
                 (2.0f * static_cast<float>(q - v[k]));
             if (s <= z[k] && k > 0) {
                 --k;
@@ -342,7 +336,8 @@ void dt_1d(const std::vector<float> &f, std::vector<float> &d, int n) {
     }
     k = 0;
     for (int q = 0; q < n; ++q) {
-        while (z[k + 1] < static_cast<float>(q)) ++k;
+        while (z[k + 1] < static_cast<float>(q))
+            ++k;
         const float dq = static_cast<float>(q - v[k]);
         d[q] = dq * dq + f[v[k]];
     }
@@ -353,12 +348,13 @@ void dt_1d(const std::vector<float> &f, std::vector<float> &d, int n) {
 // Computed with an exact squared Euclidean distance transform, so the result is
 // independent of how long or how curved the region is -- a property that a
 // bounding-box aspect ratio does not have. Thickness ~= 2 * this radius.
-float max_inscribed_radius(const Node_ptr &n) {
+float max_inscribed_radius(const Node_ptr& n) {
     std::vector<uint8_t> mask;
-    const std::array<int, 4> xywh = n->create_binary_image(mask);  // tight bbox
+    const std::array<int, 4> xywh = n->create_binary_image(mask); // tight bbox
     const int w = xywh[2];
     const int h = xywh[3];
-    if (w <= 0 || h <= 0) return 0.0f;
+    if (w <= 0 || h <= 0)
+        return 0.0f;
 
     // Pad by one pixel so the region's boundary against the exterior is treated
     // as background by the distance transform.
@@ -379,22 +375,26 @@ float max_inscribed_radius(const Node_ptr &n) {
     std::vector<float> in, out(std::max(pw, ph));
     in.resize(ph);
     for (int x = 0; x < pw; ++x) {
-        for (int y = 0; y < ph; ++y) in[y] = grid[static_cast<size_t>(y) * pw + x];
+        for (int y = 0; y < ph; ++y)
+            in[y] = grid[static_cast<size_t>(y) * pw + x];
         dt_1d(in, out, ph);
-        for (int y = 0; y < ph; ++y) grid[static_cast<size_t>(y) * pw + x] = out[y];
+        for (int y = 0; y < ph; ++y)
+            grid[static_cast<size_t>(y) * pw + x] = out[y];
     }
     in.resize(pw);
     float max_d2 = 0.0f;
     for (int y = 0; y < ph; ++y) {
-        for (int x = 0; x < pw; ++x) in[x] = grid[static_cast<size_t>(y) * pw + x];
+        for (int x = 0; x < pw; ++x)
+            in[x] = grid[static_cast<size_t>(y) * pw + x];
         dt_1d(in, out, pw);
         for (int x = 0; x < pw; ++x)
-            if (out[x] > max_d2) max_d2 = out[x];
+            if (out[x] > max_d2)
+                max_d2 = out[x];
     }
     return std::sqrt(max_d2);
 }
 
-}  // namespace
+} // namespace
 
 void Graph::merge_small_area_nodes(const int32_t min_area, const int32_t min_thickness) {
     // Keep merging while any pass still makes progress. Using "did this pass
@@ -405,22 +405,23 @@ void Graph::merge_small_area_nodes(const int32_t min_area, const int32_t min_thi
     while (merged_any) {
         merged_any = false;
 
-        for (const Node_ptr &n : get_nodes()) {
-            if (n->area() == 0) continue;
+        for (const Node_ptr& n : get_nodes()) {
+            if (n->area() == 0)
+                continue;
 
             bool needs_merge = n->area() < static_cast<size_t>(min_area);
             if (!needs_merge && min_thickness > 0) {
                 // too thin == no inscribed disk of radius min_thickness/2 fits.
-                needs_merge =
-                    2.0f * max_inscribed_radius(n) < static_cast<float>(min_thickness);
+                needs_merge = 2.0f * max_inscribed_radius(n) < static_cast<float>(min_thickness);
             }
-            if (!needs_merge) continue;
+            if (!needs_merge)
+                continue;
 
             ImageLib::RGBPixel<uint8_t> col = n->color();
 
             Node_ptr best_neighbor = nullptr;
             float best_score = std::numeric_limits<float>::max();
-            for (const Node_ptr &ne : n->edges()) {
+            for (const Node_ptr& ne : n->edges()) {
                 if (ne->area() > 0) {
                     float cdist = ImageLib::RGBPixel<uint8_t>::colorDistance(ne->color(), col);
                     float score = static_cast<float>(ne->area()) + 10.f * cdist;

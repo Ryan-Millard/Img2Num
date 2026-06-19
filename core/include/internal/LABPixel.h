@@ -16,8 +16,7 @@ namespace ImageLib {
 #ifdef _MSC_VER
 #pragma pack(push, 1)
 #endif
-template <typename NumberT>
-struct LABPixel : public Pixel<NumberT> {
+template <typename NumberT> struct LABPixel : public Pixel<NumberT> {
     // ----- Members -----
     NumberT l, a, b;
 

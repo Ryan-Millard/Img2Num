@@ -8,8 +8,7 @@ namespace ImageLib {
 #ifdef _MSC_VER
 #pragma pack(push, 1)
 #endif
-template <typename NumberT>
-struct LABAPixel : public ImageLib::LABPixel<NumberT> {
+template <typename NumberT> struct LABAPixel : public ImageLib::LABPixel<NumberT> {
     // ----- Members -----
     NumberT alpha;
 

@@ -50,12 +50,14 @@ class Graph {
      * `@return` Pixel value at (x, y), or 0 if out of bounds
      */
     inline uint8_t getPixel(const std::vector<uint8_t>& img, int w, int h, int x, int y) {
-        if (x < 0 || x >= w || y < 0 || y >= h) return 0; // Boundary check
+        if (x < 0 || x >= w || y < 0 || y >= h)
+            return 0; // Boundary check
         return img[y * w + x];
     }
 
     /**
-     * `@brief` Analyzes a skeleton image to detect junction points using 8-neighbor crossing-number.
+     * `@brief` Analyzes a skeleton image to detect junction points using 8-neighbor
+     * crossing-number.
      *
      * Scans the skeleton image and marks pixels as junctions where three or more branches meet,
      * using the crossing-number method (counts 0→1 transitions in the 8-neighbor ring).
@@ -67,9 +69,11 @@ class Graph {
      */
     std::vector<uint8_t> analyzeJunctions(const std::vector<uint8_t>& skel, int w, int h);
 
-   public:
-    inline Graph(std::unique_ptr<std::vector<Node_ptr>> &nodes, int width, int height)
-        : m_nodes(std::move(nodes)), m_width(width), m_height(height) {
+  public:
+    inline Graph(std::unique_ptr<std::vector<Node_ptr>>& nodes, int width, int height)
+        : m_nodes(std::move(nodes))
+        , m_width(width)
+        , m_height(height) {
         hash_node_ids();
     }
 
@@ -94,8 +98,9 @@ class Graph {
         return m_nodes->size();
     }
 
-    void discover_edges(const std::vector<int32_t> &region_labels, const int32_t width,
-                        const int32_t height);
+    void discover_edges(
+        const std::vector<int32_t>& region_labels, const int32_t width, const int32_t height
+    );
     void merge_small_area_nodes(const int32_t min_area, const int32_t min_thickness = 0);
     void compute_contours();
 };

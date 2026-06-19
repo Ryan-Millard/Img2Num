@@ -34,15 +34,18 @@ EMSCRIPTEN_KEEPALIVE void bilateral_filter(
     img2num_bilateral_filter(image, width, height, sigma_spatial, sigma_range, color_space);
 }
 
-EMSCRIPTEN_KEEPALIVE char *labels_to_svg(uint8_t *data, int32_t *labels, const int width,
-                                         const int height, const int min_area, const int min_thickness) {
+EMSCRIPTEN_KEEPALIVE char* labels_to_svg(
+    uint8_t* data, int32_t* labels, const int width, const int height, const int min_area,
+    const int min_thickness
+) {
     return img2num_labels_to_svg(data, labels, width, height, min_area, min_thickness);
 }
 
-EMSCRIPTEN_KEEPALIVE char *image_to_svg(const uint8_t *data, const int width, const int height,
-                                        double sigma_spatial, double sigma_range, const int32_t k,
-                                        const int32_t max_iter, const int min_area, const int min_thickness,
-                                        const uint8_t color_space) {
+EMSCRIPTEN_KEEPALIVE char* image_to_svg(
+    const uint8_t* data, const int width, const int height, double sigma_spatial,
+    double sigma_range, const int32_t k, const int32_t max_iter, const int min_area,
+    const int min_thickness, const uint8_t color_space
+) {
     img2num_ImageToSvgConfig config = img2num_ImageToSvgConfig_default();
 
     config.bilateral_filter.sigma_spatial = sigma_spatial;

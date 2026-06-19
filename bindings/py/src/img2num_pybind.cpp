@@ -122,16 +122,20 @@ PYBIND11_MODULE(_img2num, m) {
         [](pybind11::array_t<uint8_t, pybind11::array::c_style> data,
            pybind11::array_t<int32_t, pybind11::array::c_style> labels, int width, int height,
            int min_area, int min_thickness) {
-            const uint8_t *data_ptr{static_cast<const uint8_t *>(data.request().ptr)};
-            const int32_t *labels_ptr{static_cast<const int32_t *>(labels.request().ptr)};
+            const uint8_t* data_ptr {static_cast<const uint8_t*>(data.request().ptr)};
+            const int32_t* labels_ptr {static_cast<const int32_t*>(labels.request().ptr)};
 
-            std::string svg{img2num::labels_to_svg(data_ptr, labels_ptr, width, height, min_area, min_thickness)};
+            std::string svg {img2num::labels_to_svg(
+                data_ptr, labels_ptr, width, height, min_area, min_thickness
+            )};
             pybind11::str svg_py_str(std::move(svg));
 
             return svg_py_str;
         },
         pybind11::arg("data"), pybind11::arg("labels"), pybind11::arg("width"),
-        pybind11::arg("height"), pybind11::arg("min_area"), pybind11::arg("min_thickness"), "Convert labels to SVG string");
+        pybind11::arg("height"), pybind11::arg("min_area"), pybind11::arg("min_thickness"),
+        "Convert labels to SVG string"
+    );
 
     // ---------------------- Config Structs ----------------------
     pybind11::class_<img2num::ImageToSvgConfig> config(m, "ImageToSvgConfig");
@@ -159,34 +163,36 @@ PYBIND11_MODULE(_img2num, m) {
         });
 
     config
-        .def(pybind11::init([](pybind11::dict bf_dict, pybind11::dict km_dict,
-                               pybind11::kwargs kwargs) {
-                 // hand over ownership to python
-                 std::unique_ptr<img2num::ImageToSvgConfig> c =
-                     std::make_unique<img2num::ImageToSvgConfig>();
-                 if (bf_dict.contains("sigma_spatial"))
-                     c->bilateral_filter.sigma_spatial = bf_dict["sigma_spatial"].cast<double>();
-                 if (bf_dict.contains("sigma_range"))
-                     c->bilateral_filter.sigma_range = bf_dict["sigma_range"].cast<double>();
+        .def(
+            pybind11::init([](pybind11::dict bf_dict, pybind11::dict km_dict,
+                              pybind11::kwargs kwargs) {
+                // hand over ownership to python
+                std::unique_ptr<img2num::ImageToSvgConfig> c =
+                    std::make_unique<img2num::ImageToSvgConfig>();
+                if (bf_dict.contains("sigma_spatial"))
+                    c->bilateral_filter.sigma_spatial = bf_dict["sigma_spatial"].cast<double>();
+                if (bf_dict.contains("sigma_range"))
+                    c->bilateral_filter.sigma_range = bf_dict["sigma_range"].cast<double>();
 
-                 // 3. Process KMeans overrides from the 'km' dictionary
-                 if (km_dict.contains("k")) c->kmeans.k = km_dict["k"].cast<int>();
-                 if (km_dict.contains("max_iter"))
-                     c->kmeans.max_iter = km_dict["max_iter"].cast<int>();
+                // 3. Process KMeans overrides from the 'km' dictionary
+                if (km_dict.contains("k"))
+                    c->kmeans.k = km_dict["k"].cast<int>();
+                if (km_dict.contains("max_iter"))
+                    c->kmeans.max_iter = km_dict["max_iter"].cast<int>();
 
-                 // 4. Process remaining top-level kwargs (like color_space or min_cluster_area)
-                 if (kwargs.contains("min_cluster_area"))
-                     c->min_cluster_area = kwargs["min_cluster_area"].cast<int>();
-                 if (kwargs.contains("min_thickness"))
-                     c->min_thickness = kwargs["min_thickness"].cast<int>();
-                 if (kwargs.contains("color_space"))
-                     c->color_space = kwargs["color_space"].cast<uint8_t>();
+                // 4. Process remaining top-level kwargs (like color_space or min_cluster_area)
+                if (kwargs.contains("min_cluster_area"))
+                    c->min_cluster_area = kwargs["min_cluster_area"].cast<int>();
+                if (kwargs.contains("min_thickness"))
+                    c->min_thickness = kwargs["min_thickness"].cast<int>();
+                if (kwargs.contains("color_space"))
+                    c->color_space = kwargs["color_space"].cast<uint8_t>();
 
-                 return c;
-             }),
-             pybind11::arg("bilateral_filter") = pybind11::dict(),  // Defaults to empty dict
-             pybind11::arg("kmeans") = pybind11::dict()   // Defaults to empty dict
-             )
+                return c;
+            }),
+            pybind11::arg("bilateral_filter") = pybind11::dict(), // Defaults to empty dict
+            pybind11::arg("kmeans") = pybind11::dict()            // Defaults to empty dict
+        )
         .def_readwrite("bilateral_filter", &img2num::ImageToSvgConfig::bilateral_filter)
         .def_readwrite("min_cluster_area", &img2num::ImageToSvgConfig::min_cluster_area)
         .def_readwrite("min_thickness", &img2num::ImageToSvgConfig::min_thickness)

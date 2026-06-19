@@ -1,10 +1,10 @@
 #ifndef DOUGLAS_PEUCKER_H
 #define DOUGLAS_PEUCKER_H
 
+#include "internal/contours.h"
+
 #include <cstdint>
 #include <vector>
-
-#include "internal/contours.h"
 
 /**
  * `@brief` Douglas-Peucker contour point reduction with junction locking and retraction bounds.
@@ -23,8 +23,9 @@
  * `@note` retract_eps (max inward boundary move) defaults to min(eps, 0.5px) and can be
  *       overridden via IMG2NUM_DP_RETRACT environment variable.
  */
-void dp_curve_reduction(const std::vector<std::vector<Point>> &chains,
-                        const std::vector<std::vector<uint8_t>> &fixed,
-                        std::vector<std::vector<QuadBezier>> &results, float eps);
+void dp_curve_reduction(
+    const std::vector<std::vector<Point>>& chains, const std::vector<std::vector<uint8_t>>& fixed,
+    std::vector<std::vector<QuadBezier>>& results, float eps
+);
 
 #endif

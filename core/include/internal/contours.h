@@ -61,10 +61,14 @@ void coupled_smooth(std::vector<std::vector<Point>>& contours, Rect bounds);
  * `@param` junctions Junction mask (image buffer with nonzero entries marking junction pixels)
  * `@param` width Image width for raster indexing into the junctions mask
  */
-void coupled_smooth_junctions(std::vector<std::vector<Point>> &contours, Rect bounds, std::vector<uint8_t> junctions, int width);
+void coupled_smooth_junctions(
+    std::vector<std::vector<Point>>& contours, Rect bounds, std::vector<uint8_t> junctions,
+    int width
+);
 
-void pack_with_boundary_constraints(std::vector<std::vector<Point>> &contours, Rect bounds,
-                                    int iterations = 15);
+void pack_with_boundary_constraints(
+    std::vector<std::vector<Point>>& contours, Rect bounds, int iterations = 15
+);
 
 } // namespace contours
 

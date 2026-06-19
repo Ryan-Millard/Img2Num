@@ -92,19 +92,23 @@ void img2num_bilateral_filter(
     );
 }
 
-char *img2num_labels_to_svg(const uint8_t *data, const int32_t *labels, const int width,
-                            const int height, const int min_area, const int min_thickness) {
-    char *result{nullptr};
+char* img2num_labels_to_svg(
+    const uint8_t* data, const int32_t* labels, const int width, const int height,
+    const int min_area, const int min_thickness
+) {
+    char* result {nullptr};
     img2num::clear_last_error_and_catch(
-        [&](const uint8_t *d, const int32_t *l, const int w, const int h, const int min_a, const int min_t) {
-            std::string svg{img2num::labels_to_svg(d, l, w, h, min_a, min_t)};
-            result = static_cast<char *>(std::malloc(svg.size() + 1));
+        [&](const uint8_t* d, const int32_t* l, const int w, const int h, const int min_a,
+            const int min_t) {
+            std::string svg {img2num::labels_to_svg(d, l, w, h, min_a, min_t)};
+            result = static_cast<char*>(std::malloc(svg.size() + 1));
             if (!result) {
                 return; // Allocation failed
             }
             std::memcpy(result, svg.c_str(), svg.size() + 1);
         },
-        data, labels, width, height, min_area, min_thickness);
+        data, labels, width, height, min_area, min_thickness
+    );
     return result;
 }
 
