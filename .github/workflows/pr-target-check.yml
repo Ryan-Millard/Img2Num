@@ -11,6 +11,7 @@ jobs:
     if: github.base_ref == 'main'
     runs-on: ubuntu-latest
     permissions:
+      # Required to post warning comment
       pull-requests: write
     steps:
       - name: Post warning comment

@@ -2,7 +2,7 @@ name: Release (release-please, multi-language assets)
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [main, dev]
 
 jobs:
   release-please:
@@ -31,7 +31,7 @@ jobs:
           token:         ${{ secrets.GITHUB_TOKEN }}
           config-file:   release-please-config.json
           manifest-file: .release-please-manifest.json
-          dry-run: ${{ github.ref_name == 'dev' }}
+          dry-run: ${{ github.ref_name != 'main' }}
 
       - name: Debug release-please outputs
         run: |
@@ -88,6 +88,7 @@ jobs:
         with:
           ref: ${{ needs.release-please.outputs.is_dry_run == 'true' && github.sha || steps.component.outputs.tag }}
           submodules: true
+          persist-credentials: false
 
       - name: Configure
         if: ${{ steps.component.outputs.created == 'true' }}
@@ -116,7 +117,7 @@ jobs:
           Compress-Archive -Path install\* -DestinationPath $archive
           "ARCHIVE=$archive" | Out-File -FilePath $env:GITHUB_ENV -Append
 
-      # Draft release on dev — real release on main. Draft is not public and can be deleted.
+      # Draft release when not main — real release on main. Draft is not public and can be deleted.
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         if: ${{ steps.component.outputs.created == 'true' }}
         with:
@@ -153,7 +154,7 @@ jobs:
              packages/js/wasmWorker.js \
              packages/js/imageToUint8ClampedArray.js
 
-      # Draft release on dev — same as C/C++ above
+      # Draft release when not main — same as C/C++ above
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         with:
           tag_name: ${{ needs.release-please.outputs.js_tag }}
@@ -251,14 +252,14 @@ jobs:
           name: sdist
           path: wheelhouse
 
-      # Draft release on dev — same as other jobs
+      # Draft release when not main — same as other jobs
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         with:
           tag_name: ${{ needs.release-please.outputs.py_tag }}
           files: wheelhouse/*
           draft: ${{ needs.release-please.outputs.is_dry_run == 'true' }}
 
-      # On dev: publish to TestPyPI instead of prod. This fully exercises the
+      # On branches other than main: publish to TestPyPI instead of prod. This fully exercises the
       # upload path (auth, metadata validation, wheel inspection) against a
       # real registry. You'll need a TEST_PYPI_API_TOKEN secret and a TestPyPI
       # project configured for trusted publishing or token auth.
@@ -272,7 +273,7 @@ jobs:
         with:
           packages-dir: wheelhouse/
           repository-url: https://test.pypi.org/legacy/
-          skip-existing: true   # version may already exist on TestPyPI from previous dev runs
+          skip-existing: true   # version may already exist on TestPyPI from previous runs
 
   propagate-cpp:
     needs: release-please
