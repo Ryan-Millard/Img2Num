@@ -41,6 +41,11 @@ struct ImageToSvgConfig {
     /// Minimum area (in pixels) for a region to be included in the SVG.
     int min_cluster_area = 100;
 
+    /// Minimum thickness (in pixels) for a region to be included in the SVG.
+    /// Regions with an inscribed disk diameter less than this value are merged.
+    /// Set to 0 to disable thickness-based filtering.
+    int min_thickness = 0;
+
     /// Color space flag.
     /// - 0 = CIE LAB (more perceptually accurate)
     /// - 1 = sRGB (faster).
@@ -76,7 +81,7 @@ void bilateral_filter(
 /// @copydoc IMG2NUM_H_LABELS_TO_SVG_DOC
 std::string labels_to_svg(
     const uint8_t* data, const int32_t* labels, const int width, const int height,
-    const int min_area
+    const int min_area, const int min_thickness
 );
 
 /// @copydoc IMG2NUM_H_IMAGE_TO_SVG_DOC

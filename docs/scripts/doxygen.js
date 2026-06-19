@@ -41,52 +41,52 @@ const DOXYFILES = [
   }
 ];
 
-DOXYFILES.forEach(({ fileName, srcDir, outDir }) => {
-  // Step 1: Clear the API output directory
-  if (existsSync(outDir)) {
-    console.log(`Removing ${outDir}...`);
-    rmSync(outDir, { recursive: true, force: true });
-  }
+module.exports = function doxygen({ verbose }) {
+  const stdio = verbose ? "inherit" : "ignore";
 
-  // Step 2: Recreate the API output directory with a .gitkeep
-  console.log("Adding .gitkeep");
-  mkdirSync(outDir, { recursive: true });
-  writeFileSync(join(outDir, ".gitkeep"), "See the `doxygen.js` docs script about this.\n\nThis is for Doxygen's HTML output (C++ API docs).");
-
-  // Step 3: Run Doxygen
-  try {
-    const DOXYFILE_PATH = join(ROOT_DIR, "..", srcDir, fileName);
-    if (!existsSync(DOXYFILE_PATH)) {
-      throw new Error(`Doxyfile not found at: ${DOXYFILE_PATH}`);
+  DOXYFILES.forEach(({ fileName, srcDir, outDir }) => {
+    // Step 1: Clear the API output directory
+    if (existsSync(outDir)) {
+      rmSync(outDir, { recursive: true, force: true });
     }
-    const DOXYFILE_DIR = join(ROOT_DIR, "..", srcDir); // parent dir of the Doxyfile
-    const cmd = `doxygen ${fileName}`;
-    console.log(`Running Doxygen: "${cmd}"`);
-    execSync(cmd, { stdio: "inherit", cwd: DOXYFILE_DIR });
-  } catch (err) {
-    console.error("Doxygen failed: ", err.message);
-    process.exit(1);
-  }
 
-  // Step 4: Move HTML files out of html/ into api/ (parent folder)
-  const HTML_SUBDIR = join(outDir, "html");
-  if (existsSync(HTML_SUBDIR)) {
-    console.log("Moving HTML files to output directory...");
-    const files = readdirSync(HTML_SUBDIR);
-    files.forEach(file => {
-      renameSync(join(HTML_SUBDIR, file), join(outDir, file));
-    });
+    // Step 2: Recreate the API output directory with a .gitkeep
+    mkdirSync(outDir, { recursive: true });
+    writeFileSync(join(outDir, ".gitkeep"), "See the `doxygen.js` docs script about this.\n\nThis is for Doxygen's HTML output (C++ API docs).");
 
-    // Remove the now-empty html folder
-    rmdirSync(HTML_SUBDIR);
-  }
+    // Step 3: Run Doxygen
+    try {
+      const DOXYFILE_PATH = join(ROOT_DIR, "..", srcDir, fileName);
+      if (!existsSync(DOXYFILE_PATH)) {
+        throw new Error(`Doxyfile not found at: ${DOXYFILE_PATH}`);
+      }
+      const DOXYFILE_DIR = join(ROOT_DIR, "..", srcDir); // parent dir of the Doxyfile
+      const cmd = `doxygen ${fileName}`;
+      execSync(cmd, { stdio, cwd: DOXYFILE_DIR });
+    } catch (err) {
+      console.error(`Doxygen generation failed for ${srcDir}/${fileName}: `, err.message);
+      process.exit(1);
+    }
 
-  console.log(
-`================================================================================
-                    DONE: ${srcDir}/${fileName}
-                    OUT:  ${outDir}
-================================================================================`
-  );
-});
+    // Step 4: Move HTML files out of html/ into api/ (parent folder)
+    const HTML_SUBDIR = join(outDir, "html");
+    if (existsSync(HTML_SUBDIR)) {
+      const files = readdirSync(HTML_SUBDIR);
+      files.forEach(file => {
+        renameSync(join(HTML_SUBDIR, file), join(outDir, file));
+      });
 
-console.log("Doxygen build complete.");
+      // Remove the now-empty html folder
+      rmdirSync(HTML_SUBDIR);
+    }
+  });
+
+  console.log("Generated Doxygen docs:");
+  console.table(DOXYFILES);
+  console.log("Doxygen build complete.");
+}
+
+if (require.main === module) {
+  const verbose = (process.argv[2] === "-v" || process.argv[2] === "--verbose") || false;
+  module.exports({ verbose });
+}

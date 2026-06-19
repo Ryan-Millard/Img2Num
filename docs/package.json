@@ -87,7 +87,9 @@
       },
       "doxygen": {
         "desc": "Generate C++ API documentation using Doxygen for internal docs",
-        "args": []
+        "args": [
+          "-v or --verbose    Show Doxygen output during generation"
+        ]
       },
       "help": {
         "desc": "Show this help message",

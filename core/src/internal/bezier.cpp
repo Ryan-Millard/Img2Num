@@ -159,11 +159,20 @@ void fit_curve_reduction(
 // Splits each chain at its fixed (junction) points and fits the pieces
 // separately. Because fitRecursive always keeps a segment's first and last point
 // exactly, every junction becomes a pinned on-curve point the fit cannot move.
+<<<<<<< HEAD
 void fit_curve_reduction(const std::vector<std::vector<Point>> &chains,
                          const std::vector<std::vector<uint8_t>> &fixed,
                          std::vector<std::vector<QuadBezier>> &results, float tolerance) {
     for (size_t i = 0; i < chains.size(); ++i) {
         const std::vector<Point> &chain = chains[i];
+=======
+void fit_curve_reduction(
+    const std::vector<std::vector<Point>>& chains, const std::vector<std::vector<uint8_t>>& fixed,
+    std::vector<std::vector<QuadBezier>>& results, float tolerance
+) {
+    for (size_t i = 0; i < chains.size(); ++i) {
+        const std::vector<Point>& chain = chains[i];
+>>>>>>> dev_sync
         const int n = static_cast<int>(chain.size());
         std::vector<QuadBezier> result;
         if (n < 2) {
@@ -175,7 +184,12 @@ void fit_curve_reduction(const std::vector<std::vector<Point>> &chains,
         std::vector<int> bounds;
         bounds.push_back(0);
         for (int k = 1; k < n - 1; ++k)
+<<<<<<< HEAD
             if (k < static_cast<int>(fixed[i].size()) && fixed[i][k]) bounds.push_back(k);
+=======
+            if (k < static_cast<int>(fixed[i].size()) && fixed[i][k])
+                bounds.push_back(k);
+>>>>>>> dev_sync
         bounds.push_back(n - 1);
 
         // Fit each [bounds[s], bounds[s+1]] piece; consecutive pieces share the

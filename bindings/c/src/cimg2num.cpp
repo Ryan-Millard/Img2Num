@@ -21,6 +21,7 @@ static img2num::ImageToSvgConfig to_cpp(const img2num_ImageToSvgConfig& c) {
         },
 
         .min_cluster_area = c.min_cluster_area,
+        .min_thickness = c.min_thickness,
         .color_space = c.color_space
     };
     // clang-format on
@@ -38,6 +39,7 @@ static img2num_ImageToSvgConfig to_c(const img2num::ImageToSvgConfig& cpp) {
             .max_iter = cpp.kmeans.max_iter
         },
         .min_cluster_area = cpp.min_cluster_area,
+        .min_thickness = cpp.min_thickness,
         .color_space = cpp.color_space
     };
     // clang-format on
@@ -92,19 +94,20 @@ void img2num_bilateral_filter(
 
 char* img2num_labels_to_svg(
     const uint8_t* data, const int32_t* labels, const int width, const int height,
-    const int min_area
+    const int min_area, const int min_thickness
 ) {
     char* result {nullptr};
     img2num::clear_last_error_and_catch(
-        [&](const uint8_t* d, const int32_t* l, const int w, const int h, const int min_a) {
-            std::string svg {img2num::labels_to_svg(d, l, w, h, min_a)};
+        [&](const uint8_t* d, const int32_t* l, const int w, const int h, const int min_a,
+            const int min_t) {
+            std::string svg {img2num::labels_to_svg(d, l, w, h, min_a, min_t)};
             result = static_cast<char*>(std::malloc(svg.size() + 1));
             if (!result) {
                 return; // Allocation failed
             }
             std::memcpy(result, svg.c_str(), svg.size() + 1);
         },
-        data, labels, width, height, min_area
+        data, labels, width, height, min_area, min_thickness
     );
     return result;
 }

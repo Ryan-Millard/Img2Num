@@ -1,13 +1,22 @@
 #include "internal/shared_contours.h"
 
+<<<<<<< HEAD
 #include <algorithm>
 #include <cmath>
+=======
+#include "internal/bezier.h"
+
+#include <algorithm>
+#include <cmath>
+#include <limits>
+>>>>>>> dev_sync
 #include <map>
 #include <set>
 #include <unordered_map>
 #include <utility>
 #include <vector>
 
+<<<<<<< HEAD
 #include "internal/bezier.h"
 
 namespace {
@@ -20,17 +29,38 @@ void smooth_edge(std::vector<Point> &p, int w, int h, int iters) {
     const int n = static_cast<int>(p.size());
     if (n < 3) return;
     auto on_border = [&](const Point &q) {
+=======
+constexpr int SMOOTHING_ITERATIONS {5};
+constexpr int32_t OUTSIDE = std::numeric_limits<int32_t>::min(); // image exterior label
+
+// Endpoint- and border-preserving smoothing of a corner polyline. Points sitting
+// on the image frame are locked so the canvas rectangle stays crisp.
+void smooth_edge(std::vector<Point>& p, int w, int h, int iters) {
+    const int n = static_cast<int>(p.size());
+    if (n < 3)
+        return;
+    auto on_border = [&](const Point& q) {
+>>>>>>> dev_sync
         return q.x <= 0.0f || q.y <= 0.0f || q.x >= w || q.y >= h;
     };
     for (int it = 0; it < iters; ++it) {
         std::vector<Point> q = p;
         for (int i = 1; i < n - 1; ++i) {
+<<<<<<< HEAD
             if (on_border(p[i])) continue;
             const Point &a = p[i - 1];
             const Point &b = p[i];
             const Point &c = p[i + 1];
             q[i] = {0.25f * a.x + 0.5f * b.x + 0.25f * c.x,
                     0.25f * a.y + 0.5f * b.y + 0.25f * c.y};
+=======
+            if (on_border(p[i]))
+                continue;
+            const Point& a = p[i - 1];
+            const Point& b = p[i];
+            const Point& c = p[i + 1];
+            q[i] = {0.25f * a.x + 0.5f * b.x + 0.25f * c.x, 0.25f * a.y + 0.5f * b.y + 0.25f * c.y};
+>>>>>>> dev_sync
         }
         p.swap(q);
     }
@@ -39,6 +69,7 @@ void smooth_edge(std::vector<Point> &p, int w, int h, int iters) {
 // Smooth a corner chain (endpoints fixed) and fit it to quadratic beziers. Done
 // once per canonical edge; both adjacent regions reuse the result, so the fitted
 // curve is shared and the two regions stay exactly coincident.
+<<<<<<< HEAD
 std::vector<QuadBezier> fit_edge(const std::vector<Point> &corners, int w, int h, float eps) {
     std::vector<Point> pts = corners;
     smooth_edge(pts, w, h, 2);
@@ -68,6 +99,44 @@ std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>> build_shared_l
     auto cy_of = [&](int idx) { return idx / W1; };
     auto pt_of = [&](int idx) {
         return Point{static_cast<float>(cx_of(idx)), static_cast<float>(cy_of(idx))};
+=======
+std::vector<QuadBezier> fit_edge(const std::vector<Point>& corners, int w, int h, float eps) {
+    std::vector<Point> pts = corners;
+    smooth_edge(pts, w, h, SMOOTHING_ITERATIONS);
+    if (pts.size() < 2)
+        return {};
+    std::vector<std::vector<Point>> chain {pts};
+    std::vector<std::vector<QuadBezier>> res;
+    fit_curve_reduction(chain, res, eps);
+    return res.empty() ? std::vector<QuadBezier> {} : res[0];
+}
+
+void reverse_curve(std::vector<QuadBezier>& c) {
+    std::reverse(c.begin(), c.end());
+    for (QuadBezier& q : c)
+        std::swap(q.p0, q.p2);
+}
+
+std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>>
+build_shared_loops(const std::vector<int32_t>& labels, int w, int h, float eps) {
+    const int W1 = w + 1; // corner grid width
+    auto L = [&](int x, int y) -> int32_t {
+        if (x < 0 || x >= w || y < 0 || y >= h)
+            return OUTSIDE;
+        return labels[static_cast<size_t>(y) * w + x];
+    };
+    auto cidx = [&](int cx, int cy) {
+        return cy * W1 + cx;
+    };
+    auto cx_of = [&](int idx) {
+        return idx % W1;
+    };
+    auto cy_of = [&](int idx) {
+        return idx / W1;
+    };
+    auto pt_of = [&](int idx) {
+        return Point {static_cast<float>(cx_of(idx)), static_cast<float>(cy_of(idx))};
+>>>>>>> dev_sync
     };
 
     // --- 1. Undirected crack adjacency over corners ---------------------------
@@ -78,8 +147,15 @@ std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>> build_shared_l
     };
     for (int cy = 0; cy <= h; ++cy)
         for (int cx = 0; cx <= w; ++cx) {
+<<<<<<< HEAD
             if (cy < h && L(cx - 1, cy) != L(cx, cy)) add_crack(cidx(cx, cy), cidx(cx, cy + 1));
             if (cx < w && L(cx, cy - 1) != L(cx, cy)) add_crack(cidx(cx, cy), cidx(cx + 1, cy));
+=======
+            if (cy < h && L(cx - 1, cy) != L(cx, cy))
+                add_crack(cidx(cx, cy), cidx(cx, cy + 1));
+            if (cx < w && L(cx, cy - 1) != L(cx, cy))
+                add_crack(cidx(cx, cy), cidx(cx + 1, cy));
+>>>>>>> dev_sync
         }
 
     // A corner is a junction wherever its crack degree != 2: degree 3/4 are branch
@@ -92,6 +168,7 @@ std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>> build_shared_l
 
     // --- 2. Extract canonical edges (junction -> junction chains) -------------
     struct Edge {
+<<<<<<< HEAD
         int a, b;                    // endpoint corners
         bool closed;                 // junction-free loop
         std::vector<int> path;       // full corner sequence (closed: ring, no repeat)
@@ -104,6 +181,23 @@ std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>> build_shared_l
     auto store_edge = [&](std::vector<int> seq, bool closed) {
         std::vector<int> cseq = seq;
         if (closed) cseq.push_back(seq.front());  // close the ring for geometry
+=======
+        int a, b;                      // endpoint corners
+        bool closed;                   // junction-free loop
+        std::vector<int> path;         // full corner sequence (closed: ring, no repeat)
+        std::vector<QuadBezier> curve; // fitted curve (front@a .. back@b)
+    };
+    std::vector<Edge> edges;
+    std::map<std::pair<int, int>, int> crack_edge; // undirected crack -> edge id
+    auto ckey = [](int a, int b) {
+        return std::make_pair(std::min(a, b), std::max(a, b));
+    };
+
+    auto store_edge = [&](std::vector<int> seq, bool closed) {
+        std::vector<int> cseq = seq;
+        if (closed)
+            cseq.push_back(seq.front()); // close the ring for geometry
+>>>>>>> dev_sync
         Edge e;
         e.closed = closed;
         e.path = std::move(seq);
@@ -111,26 +205,49 @@ std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>> build_shared_l
         e.b = cseq.back();
         std::vector<Point> corners;
         corners.reserve(cseq.size());
+<<<<<<< HEAD
         for (int c : cseq) corners.push_back(pt_of(c));
         e.curve = fit_edge(corners, w, h, eps);
         int id = static_cast<int>(edges.size());
         for (size_t i = 0; i + 1 < cseq.size(); ++i) crack_edge[ckey(cseq[i], cseq[i + 1])] = id;
+=======
+        for (int c : cseq)
+            corners.push_back(pt_of(c));
+        e.curve = fit_edge(corners, w, h, eps);
+        int id = static_cast<int>(edges.size());
+        for (size_t i = 0; i + 1 < cseq.size(); ++i)
+            crack_edge[ckey(cseq[i], cseq[i + 1])] = id;
+>>>>>>> dev_sync
         edges.push_back(std::move(e));
     };
 
     auto walk_edge = [&](int start, int first_next) {
+<<<<<<< HEAD
         std::vector<int> seq{start};
         int prev = start, cur = first_next;
         while (true) {
             seq.push_back(cur);
             if (is_junction(cur)) break;
+=======
+        std::vector<int> seq {start};
+        int prev = start, cur = first_next;
+        while (true) {
+            seq.push_back(cur);
+            if (is_junction(cur))
+                break;
+>>>>>>> dev_sync
             int nxt = -1;
             for (int nb : adj[cur])
                 if (nb != prev) {
                     nxt = nb;
                     break;
                 }
+<<<<<<< HEAD
             if (nxt < 0 || cur == start) break;
+=======
+            if (nxt < 0 || cur == start)
+                break;
+>>>>>>> dev_sync
             prev = cur;
             cur = nxt;
         }
@@ -138,6 +255,7 @@ std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>> build_shared_l
     };
 
     // 2a. edges between junctions
+<<<<<<< HEAD
     for (auto &kv : adj) {
         if (!is_junction(kv.first)) continue;
         for (int nb : kv.second)
@@ -148,6 +266,21 @@ std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>> build_shared_l
         for (int nb : kv.second) {
             if (crack_edge.count(ckey(kv.first, nb))) continue;
             std::vector<int> seq{kv.first};
+=======
+    for (auto& kv : adj) {
+        if (!is_junction(kv.first))
+            continue;
+        for (int nb : kv.second)
+            if (!crack_edge.count(ckey(kv.first, nb)))
+                store_edge(walk_edge(kv.first, nb), false);
+    }
+    // 2b. junction-free closed loops
+    for (auto& kv : adj) {
+        for (int nb : kv.second) {
+            if (crack_edge.count(ckey(kv.first, nb)))
+                continue;
+            std::vector<int> seq {kv.first};
+>>>>>>> dev_sync
             int prev = kv.first, cur = nb;
             const size_t cap = adj.size() + 4;
             while (cur != kv.first && seq.size() < cap) {
@@ -158,18 +291,33 @@ std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>> build_shared_l
                         nxt = x;
                         break;
                     }
+<<<<<<< HEAD
                 if (nxt < 0) break;
+=======
+                if (nxt < 0)
+                    break;
+>>>>>>> dev_sync
                 prev = cur;
                 cur = nxt;
             }
             // canonicalise start to smallest corner so both regions agree.
             int mpos = 0;
             for (size_t i = 0; i < seq.size(); ++i)
+<<<<<<< HEAD
                 if (seq[i] < seq[mpos]) mpos = static_cast<int>(i);
             const int mm = static_cast<int>(seq.size());
             std::vector<int> rot;
             rot.reserve(mm);
             for (int i = 0; i < mm; ++i) rot.push_back(seq[(mpos + i) % mm]);
+=======
+                if (seq[i] < seq[mpos])
+                    mpos = static_cast<int>(i);
+            const int mm = static_cast<int>(seq.size());
+            std::vector<int> rot;
+            rot.reserve(mm);
+            for (int i = 0; i < mm; ++i)
+                rot.push_back(seq[(mpos + i) % mm]);
+>>>>>>> dev_sync
             store_edge(rot, true);
         }
     }
@@ -179,6 +327,7 @@ std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>> build_shared_l
     for (int y = 0; y < h; ++y)
         for (int x = 0; x < w; ++x) {
             int32_t r = L(x, y);
+<<<<<<< HEAD
             auto &dir = region_dir[r];
             const int c00 = cidx(x, y), c10 = cidx(x + 1, y);
             const int c11 = cidx(x + 1, y + 1), c01 = cidx(x, y + 1);
@@ -189,24 +338,56 @@ std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>> build_shared_l
         }
 
     auto unit = [&](int from, int to, int &dx, int &dy) {
+=======
+            auto& dir = region_dir[r];
+            const int c00 = cidx(x, y), c10 = cidx(x + 1, y);
+            const int c11 = cidx(x + 1, y + 1), c01 = cidx(x, y + 1);
+            if (L(x, y - 1) != r)
+                dir[c00].push_back(c10); // top
+            if (L(x + 1, y) != r)
+                dir[c10].push_back(c11); // right
+            if (L(x, y + 1) != r)
+                dir[c11].push_back(c01); // bottom
+            if (L(x - 1, y) != r)
+                dir[c01].push_back(c00); // left
+        }
+
+    auto unit = [&](int from, int to, int& dx, int& dy) {
+>>>>>>> dev_sync
         dx = cx_of(to) - cx_of(from);
         dy = cy_of(to) - cy_of(from);
     };
 
     // --- 4. Assemble each region's loops from canonical shared curves ---------
     std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>> result;
+<<<<<<< HEAD
     for (auto &rkv : region_dir) {
         int32_t r = rkv.first;
         if (r == OUTSIDE) continue;
         std::map<int, std::vector<int>> dir = rkv.second;  // erased as consumed
+=======
+    for (auto& rkv : region_dir) {
+        int32_t r = rkv.first;
+        if (r == OUTSIDE)
+            continue;
+        std::map<int, std::vector<int>> dir = rkv.second; // erased as consumed
+>>>>>>> dev_sync
 
         // right-hand rule: prefer right, straight, left, back of incoming dir.
         auto take_from = [&](int from, int dx_in, int dy_in) -> int {
             auto it = dir.find(from);
+<<<<<<< HEAD
             if (it == dir.end() || it->second.empty()) return -1;
             auto &outs = it->second;
             int pref[4][2] = {{-dy_in, dx_in}, {dx_in, dy_in}, {dy_in, -dx_in}, {-dx_in, -dy_in}};
             for (auto &pr : pref)
+=======
+            if (it == dir.end() || it->second.empty())
+                return -1;
+            auto& outs = it->second;
+            int pref[4][2] = {{-dy_in, dx_in}, {dx_in, dy_in}, {dy_in, -dx_in}, {-dx_in, -dy_in}};
+            for (auto& pr : pref)
+>>>>>>> dev_sync
                 for (size_t k = 0; k < outs.size(); ++k) {
                     int dx, dy;
                     unit(from, outs[k], dx, dy);
@@ -222,19 +403,34 @@ std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>> build_shared_l
         };
 
         std::vector<std::vector<int>> loops;
+<<<<<<< HEAD
         for (auto &it : dir) {
             while (!it.second.empty()) {
                 int start = it.first;
                 int nxt = take_from(start, 1, 0);
                 if (nxt < 0) break;
                 std::vector<int> loop{start};
+=======
+        for (auto& it : dir) {
+            while (!it.second.empty()) {
+                int start = it.first;
+                int nxt = take_from(start, 1, 0);
+                if (nxt < 0)
+                    break;
+                std::vector<int> loop {start};
+>>>>>>> dev_sync
                 int dx_in, dy_in;
                 unit(start, nxt, dx_in, dy_in);
                 int cur = nxt;
                 while (cur != start) {
                     loop.push_back(cur);
                     int nn = take_from(cur, dx_in, dy_in);
+<<<<<<< HEAD
                     if (nn < 0) break;
+=======
+                    if (nn < 0)
+                        break;
+>>>>>>> dev_sync
                     unit(cur, nn, dx_in, dy_in);
                     cur = nn;
                 }
@@ -242,10 +438,18 @@ std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>> build_shared_l
             }
         }
 
+<<<<<<< HEAD
         std::vector<std::vector<QuadBezier>> &out_loops = result[r];
         for (auto &loop : loops) {
             int m = static_cast<int>(loop.size());
             if (m < 2) continue;
+=======
+        std::vector<std::vector<QuadBezier>>& out_loops = result[r];
+        for (auto& loop : loops) {
+            int m = static_cast<int>(loop.size());
+            if (m < 2)
+                continue;
+>>>>>>> dev_sync
             // rotate so the loop starts at a junction (edges are entered at ends).
             int js = -1;
             for (int t = 0; t < m; ++t)
@@ -253,7 +457,12 @@ std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>> build_shared_l
                     js = t;
                     break;
                 }
+<<<<<<< HEAD
             if (js > 0) std::rotate(loop.begin(), loop.begin() + js, loop.end());
+=======
+            if (js > 0)
+                std::rotate(loop.begin(), loop.begin() + js, loop.end());
+>>>>>>> dev_sync
 
             std::vector<QuadBezier> curve;
             int i = 0;
@@ -265,11 +474,16 @@ std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>> build_shared_l
                     ++i;
                     continue;
                 }
+<<<<<<< HEAD
                 const Edge &e = edges[eit->second];
+=======
+                const Edge& e = edges[eit->second];
+>>>>>>> dev_sync
                 std::vector<QuadBezier> seg = e.curve;
                 if (e.closed) {
                     int mm = static_cast<int>(e.path.size());
                     int p = 0;
+<<<<<<< HEAD
                     while (p < mm && e.path[p] != from) ++p;
                     bool fwd = (p < mm) && (e.path[(p + 1) % mm] == to);
                     if (!fwd) reverse_curve(seg);
@@ -286,6 +500,31 @@ std::unordered_map<int32_t, std::vector<std::vector<QuadBezier>>> build_shared_l
                 }
             }
             if (curve.size() >= 2) out_loops.push_back(std::move(curve));
+=======
+                    while (p < mm && e.path[p] != from)
+                        ++p;
+                    bool fwd = (p < mm) && (e.path[(p + 1) % mm] == to);
+                    if (!fwd)
+                        reverse_curve(seg);
+                    for (const QuadBezier& q : seg)
+                        curve.push_back(q);
+                    i = m;
+                } else {
+                    bool fwd = (from == e.a);
+                    if (!fwd)
+                        reverse_curve(seg);
+                    for (const QuadBezier& q : seg)
+                        curve.push_back(q);
+                    int other = fwd ? e.b : e.a;
+                    int j = i + 1;
+                    while (j < m && loop[j] != other)
+                        ++j;
+                    i = j;
+                }
+            }
+            if (curve.size() >= 2)
+                out_loops.push_back(std::move(curve));
+>>>>>>> dev_sync
         }
     }
 
