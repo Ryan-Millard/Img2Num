@@ -679,6 +679,21 @@ createBoundaryMask(const std::vector<std::vector<Point>>& contours, Rect bounds)
     return locked;
 }
 
+void updateLockedMasks(
+    const std::vector<std::vector<Point>>& contours, std::vector<std::vector<bool>>& locked,
+    std::vector<uint8_t>& junctions, int width
+) {
+    for (size_t c = 0; c < contours.size(); ++c) {
+        for (size_t p = 0; p < contours[c].size(); ++p) {
+            Point pt = contours[c][p];
+            int idx = pt.y * width + pt.x;
+            if (junctions[idx] > 0) {
+                locked[c][p] = true;
+            }
+        }
+    }
+}
+
 // --- Corner Detection (Feature Preservation) ---
 std::vector<bool> detectCorners(const std::vector<Point>& pts, float angleThresholdDeg = 150.0) {
     std::vector<bool> isCorner(pts.size(), false);
@@ -714,7 +729,7 @@ void coupledSmooth(
     std::vector<std::vector<Point>>& contours, const std::vector<std::vector<bool>>& lockedMasks,
     float pairRadiusSq = 2.25f
 ) {
-    SavitzkyGolay sg(2, 2); // radius, polynomial order
+    SavitzkyGolay sg(3, 2); // radius, polynomial order
 
     // first fit
     std::vector<std::vector<Point>> smoothedContours;
@@ -813,6 +828,17 @@ void coupledSmooth(
 
 void coupled_smooth(std::vector<std::vector<Point>>& contours, Rect bounds) {
     auto lockedMasks = createBoundaryMask(contours, bounds);
+    coupledSmooth(contours, lockedMasks, 1.0f);
+}
+
+void coupled_smooth_junctions(
+    std::vector<std::vector<Point>>& contours, Rect bounds, std::vector<uint8_t> junctions,
+    int width
+) {
+    auto lockedMasks = createBoundaryMask(contours, bounds);
+
+    updateLockedMasks(contours, lockedMasks, junctions, width);
+
     coupledSmooth(contours, lockedMasks, 1.0f);
 }
 
