@@ -1,0 +1,33 @@
+name: PR Target Check
+
+on:
+  pull_request:
+    branches: [main, dev]
+    types: [opened, synchronize, reopened, edited]
+
+jobs:
+  warn-main-pr:
+    name: Warn PR targeting main
+    if: github.base_ref == 'main'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Post warning comment
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## ❌ This PR targets `main` directly — please retarget it to `dev`
+
+            Direct merges into `main` are not permitted. Please update the base branch of this PR to `dev`.
+
+            > [!WARNING]
+            > This comment will reappear on every push until the base branch is changed.
+            >
+            > We block direct merges to main to ensure the quality of production code.
+
+      - name: Fail the job
+        run: |
+          echo "::error::PRs targeting main are not allowed. Please retarget to dev."
+          exit 1
