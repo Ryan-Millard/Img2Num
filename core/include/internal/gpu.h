@@ -228,7 +228,10 @@ class GPU {
                     device = std::move(d);
                     std::cout << "Device Acquired" << std::endl;
                 } else {
-                    std::cerr << "Device Failed: " << msg.data << std::endl;
+                    std::cerr << "Device Failed: "
+                              << (msg.data && msg.length > 0 ? std::string(msg.data, msg.length)
+                                                             : "Unknown error")
+                              << std::endl;
                 }
                 device_ready = true; // Unblock the loop
             }
