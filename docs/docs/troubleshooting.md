@@ -34,6 +34,7 @@ If the result appears over-smoothed (loss of edge detail), reduce the spatial st
 If the result is too noisy or insufficiently smoothed, increase it.
 
 Note that bilateral filtering depends on both spatial and range parameters:
+
 - `sigma_spatial` ($\sigma_s$) controls geometric smoothing
 - `sigma_range` ($\sigma_r$) controls intensity similarity sensitivity
 
