@@ -3,9 +3,10 @@
  * \section intro_sec Introduction
  *
  * The **Img2Num Python Bindings** provide a Python interface to the core Img2Num
- * image processing library via [pybind11](https://github.com/pybind/pybind11) (also see [their docs](https://pybind11.readthedocs.io/en/stable/)). These bindings wrap the underlying C++
- * functionality, exposing image processing operations such as filtering, clustering,
- * thresholding, and SVG conversion to Python code.
+ * image processing library via [pybind11](https://github.com/pybind/pybind11)
+ * (also see [their docs](https://pybind11.readthedocs.io/en/stable/)).
+ * These bindings wrap the underlying C++ functionality, exposing image processing
+ * operations such as filtering, clustering, thresholding, and SVG conversion to Python code.
  *
  * All functions operate on `numpy.ndarray` buffers and return new image data, making
  * them easy to integrate into Python-based image processing pipelines.
