@@ -1,3 +1,9 @@
+# This workflow is designed to warn us when a PR is targeting main
+#
+# For maintainers with bypass permissions, this is important because
+# it protects us from merging without realizing which branch the PR
+# is targeting.
+
 name: PR Target Check
 
 on:
