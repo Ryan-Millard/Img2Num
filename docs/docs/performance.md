@@ -1,7 +1,7 @@
 ---
 id: performance
 title: Performance
-sidebar_position: 5
+sidebar_position: 11
 ---
 
 # Performance Tips

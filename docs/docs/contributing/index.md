@@ -1,7 +1,7 @@
 ---
 id: contributing
 title: Contributing
-sidebar_position: 998
+sidebar_position: 13
 ---
 
 # Contributing to Img2Num
@@ -50,6 +50,8 @@ When a claim expires:
 
 ## Development Setup
 
-The [Setup & Dependencies](/docs/next/contributing/setup-and-dependencies) section shows how to clone and run the application for the first time.
+In a hurry? The [Quickstart](/docs/quickstart) walks you through starting the dev environment and building everything with a single `just` command.
+
+The [Setup & Dependencies](/docs/contributing/setup-and-dependencies) section shows how to clone and run the application for the first time.
 
 The [scripts](../internal/scripts) section shows all of the available scripts you may find useful whilst working on Img2Num's source code as well as a helpful way to find specific scripts if you have forgotten one.

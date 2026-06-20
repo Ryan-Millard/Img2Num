@@ -128,7 +128,7 @@ const config = {
           routeBasePath: "docs",
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
-          lastVersion: "old",
+          lastVersion: "current",
           versions: {
             current: {
               label: "Next",

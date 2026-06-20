@@ -79,7 +79,7 @@ function HeroSection() {
 
           <div className={styles.heroActionsWrapper}>
             <div className={styles.heroActions} style={{ marginBottom: 0 }}>
-              <Link className={styles.btnPrimary} to="/docs/introduction/getting-started">
+              <Link className={styles.btnPrimary} to="/docs/getting-started">
                 <Package size={16} style={{ marginRight: "6px" }} /> Installation guide
               </Link>
               <Link className={styles.btnGhost} to="/docs">
@@ -129,8 +129,8 @@ function BindingsSection() {
       desc: "Quantisation, contour tracing, SVG writer. Add it as a submodule.",
       code: `#include "img2num"\n` + `img2num::ImageToSvgConfig config;\n` + `config.kmeans.k = 32;\n` + `std::string svg {img2num::image_to_svg(img_data, width, height, config)};`,
       docLinks: [
-        { href: useBaseUrl("/docs/next/cpp"), text: "C++ Docs" },
-        { href: useBaseUrl("/docs/next/c"), text: "C Docs" },
+        { href: useBaseUrl("/docs/cpp"), text: "C++ Docs" },
+        { href: useBaseUrl("/docs/c"), text: "C Docs" },
       ],
     },
     {
@@ -152,7 +152,7 @@ function BindingsSection() {
         `import { imageToUint8ClampedArray, imageToSvg } from "img2num"\n\n` +
         `const { pixels, width, height } = await imageToUint8ClampedArray(file);\n` +
         `const svg = await imageToSvg({ pixels, width, height }});`,
-      docLinks: [{ href: useBaseUrl("/docs/next/js/api"), text: "JsDoc" }],
+      docLinks: [{ href: useBaseUrl("/docs/js/api"), text: "JsDoc" }],
     },
   ];
 
@@ -246,7 +246,7 @@ function CtaBand() {
     <section className={styles.ctaBand}>
       <div className={styles.ctaInner}>
         <h2 className={styles.ctaTitle}>Ready to integrate SVG vectorization into your stack?</h2>
-        <Link className={styles.ctaBtn} to="/docs/introduction/getting-started">
+        <Link className={styles.ctaBtn} to="/docs/getting-started">
           Get started →
         </Link>
       </div>

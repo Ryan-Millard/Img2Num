@@ -10,10 +10,10 @@ Img2Num provides bindings for multiple languages. Choose the one that fits your 
 
 | Language       | Docs                                                           |
 | :------------- | :------------------------------------------------------------- |
-| **JavaScript** | [JS API Reference](/docs/next/js/js-api-reference)             |
-| **C++**        | [C++ API Reference](/docs/next/cpp/cpp-api-reference)          |
-| **C**          | [C API Reference](/docs/next/c/c-api-reference)                |
-| **Python**     | [Python API Reference](/docs/next/python/python-api-reference) |
+| **JavaScript** | [JS API Reference](/docs/js/js-api-reference)             |
+| **C++**        | [C++ API Reference](/docs/cpp/cpp-api-reference)          |
+| **C**          | [C API Reference](/docs/c/c-api-reference)                |
+| **Python**     | [Python API Reference](/docs/python/python-api-reference) |
 
 ## Common Concepts Across All Bindings
 

@@ -1,7 +1,7 @@
 ---
 title: Img2Num JavaScript
 sidebar_label: JavaScript
-sidebar_position: 4
+sidebar_position: 9
 ---
 
 > A high-performance raster-to-vector conversion library that transforms images into **SVGs**.
@@ -123,8 +123,8 @@ const { svg } = await findContours({
 
 ## Resources
 
-- [Documentation](/docs/next/js/docs/)
-- [API usage](/docs/next/js/js-api-reference/)
+- [Documentation](/docs/js/docs/)
+- [API usage](/docs/js/js-api-reference/)
 - [GitHub repository](https://github.com/Ryan-Millard/Img2Num)
 - [React demo app](https://ryan-millard.github.io/Img2Num/)
 
