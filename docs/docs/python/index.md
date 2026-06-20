@@ -18,7 +18,7 @@ involved.
 
 ## Installation
 
-:::warning Not yet on PyPI
+:::warning[Not yet on PyPI]
 The Python package has not had its first release yet, so `pip install img2num`
 is not available. Build the wheel from source instead.
 :::
