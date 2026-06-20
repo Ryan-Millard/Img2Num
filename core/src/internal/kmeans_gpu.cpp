@@ -65,7 +65,7 @@ __attribute__((packed))
 struct CentroidParams {
     float r, g, b, a;
     uint32_t width;
-    uint32_t pad[3];  // Padding to align to 16 bytes
+    uint32_t pad[3]; // Padding to align to 16 bytes
 }
 #ifndef _MSC_VER
 __attribute__((packed))

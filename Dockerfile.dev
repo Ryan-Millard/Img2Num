@@ -143,6 +143,11 @@ RUN --mount=type=cache,target=/pnpm/store \
     pnpm install --no-frozen-lockfile
 
 # --------------------------------------------------------------------------------------------------------------
+# Just package manager
+RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh -o setup_just.sh && \
+    bash setup_just.sh --to /usr/local/bin && \
+    rm setup_just.sh
+# --------------------------------------------------------------------------------------------------------------
 # Dev UX settings
 ENV CHOKIDAR_USEPOLLING=true
 ENV CHOKIDAR_INTERVAL=100
