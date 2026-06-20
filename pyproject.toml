@@ -40,7 +40,6 @@ cmake.source-dir = "."
 cmake.build-type = "Release"
 cmake.args = [
   "-DBUILD_PYTHON=ON",
-  "-DPython3_FIND_VIRTUALENV=NEVER",
   "-DIMG2NUM_BUILD_EXAMPLES=OFF",
 ]
 
