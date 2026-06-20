@@ -2,42 +2,80 @@ name: Bug Report
 description: Report a bug
 labels: ["bug"]
 body:
+
   - type: markdown
     attributes:
       value: |
-        Please fill out the sections below to help everyone identify and fix the bug
+        Please fill out the sections below to explain the issue you have discovered.
+
+  - type: checkboxes
+    id: languages
+    attributes:
+      label: Affected languages
+      options:
+        - label: C++
+        - label: C
+        - label: JavaScript
+        - label: Python
+        - label: Other
+        - label: N/A
+    validations:
+      required: true
+
+  - type: textarea
+    id: other_platform
+    attributes:
+      label: If you selected "Other", please specify which language.
+      placeholder: Tell us what "Other" refers to
+    validations:
+      required: false
+
   - type: textarea
     id: description
     attributes:
-      label: Describe your issue
-      placeholder: When I click here this happens
+      label: Describe the issue
+      placeholder: |
+        Example: when I blur the image, my app crashes.
     validations:
       required: true
+
   - type: textarea
     id: steps
     attributes:
       label: Steps to reproduce
       placeholder: |
-        1. Go to page X
-        2. Click here
-        3. Click there
+        Example:
+        1. Load image using STB
+        2. Threshold to 4 colors
+        3. Run K-Means
+        4. Crash before K-Means ends
     validations:
       required: true
+
   - type: textarea
     id: expected
     attributes:
       label: What was the expected result?
-      placeholder: I expected this to happen
+      placeholder: |
+        Example: I expected K-Means to complete segmentation successfully.
+
   - type: textarea
     id: screenshots
     attributes:
-      label: Put here any screenshots or videos (optional)
+      label:  |
+        Please include some screenshots here if necessary.
+        The more information we have, the better-equipped we will be to resolve this issue.
+
   - type: dropdown
     id: assign
     attributes:
       label: "Would you like to work on this issue?"
       options:
+        - "No"
         - "Yes"
+    validations:
+      required: true
+
   - type: markdown
     attributes:
       value: |

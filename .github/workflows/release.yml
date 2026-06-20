@@ -2,7 +2,7 @@ name: Release (release-please, multi-language assets)
 
 on:
   push:
-    branches: [ main ]
+    branches: [main, dev]
 
 jobs:
   release-please:
@@ -23,6 +23,7 @@ jobs:
       py_created:   ${{ steps.rp.outputs['packages/py--release_created'] }}
       py_tag:       ${{ steps.rp.outputs['packages/py--tag_name'] }}
       py_version:   ${{ steps.rp.outputs['packages/py--version'] }}
+      is_dry_run:   ${{ steps.dry_run.outputs.is_dry_run }}
     steps:
       - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7
         id: rp
@@ -30,15 +31,29 @@ jobs:
           token:         ${{ secrets.GITHUB_TOKEN }}
           config-file:   release-please-config.json
           manifest-file: .release-please-manifest.json
+          skip-github-release: ${{ github.ref_name != 'main' }}
+          skip-github-pull-request: ${{ github.ref_name != 'main' }}
 
       - name: Debug release-please outputs
         run: |
           echo '${{ toJSON(steps.rp.outputs) }}'
 
+      - name: Set dry-run flag
+        id: dry_run
+        run: |
+          if [[ "${{ github.ref_name }}" != "main" ]]; then
+            echo "is_dry_run=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_dry_run=false" >> $GITHUB_OUTPUT
+          fi
+
   # C/C++ native artifacts
   build-c-cpp-native:
     needs: release-please
-    if: ${{ needs.release-please.outputs.cpp_created == 'true' || needs.release-please.outputs.c_created == 'true' }}
+    if: >-
+      needs.release-please.outputs.cpp_created == 'true' ||
+      needs.release-please.outputs.c_created == 'true' ||
+      needs.release-please.outputs.is_dry_run == 'true'
     runs-on: ${{ matrix.os }}
     permissions:
       contents: write
@@ -63,31 +78,32 @@ jobs:
         shell: bash
         run: |
           if [[ "${{ matrix.component }}" == "c" ]]; then
-            echo "created=${{ needs.release-please.outputs.c_created }}" >> $GITHUB_OUTPUT
-            echo "tag=${{ needs.release-please.outputs.c_tag }}"         >> $GITHUB_OUTPUT
-            echo "version=${{ needs.release-please.outputs.c_version }}" >> $GITHUB_OUTPUT
+            echo "created=${{ needs.release-please.outputs.c_created }}"   >> $GITHUB_OUTPUT
+            echo "tag=${{ needs.release-please.outputs.c_tag }}"           >> $GITHUB_OUTPUT
+            echo "version=${{ needs.release-please.outputs.c_version || '0.0.0-dev' }}" >> $GITHUB_OUTPUT
           else
             echo "created=${{ needs.release-please.outputs.cpp_created }}" >> $GITHUB_OUTPUT
             echo "tag=${{ needs.release-please.outputs.cpp_tag }}"         >> $GITHUB_OUTPUT
-            echo "version=${{ needs.release-please.outputs.cpp_version }}" >> $GITHUB_OUTPUT
+            echo "version=${{ needs.release-please.outputs.cpp_version || '0.0.0-dev' }}" >> $GITHUB_OUTPUT
           fi
 
       - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
-        if: ${{ steps.component.outputs.created == 'true' }}
+        if: ${{ steps.component.outputs.created == 'true' || needs.release-please.outputs.is_dry_run == 'true' }}
         with:
-          ref: ${{ steps.component.outputs.tag }}
+          ref: ${{ needs.release-please.outputs.is_dry_run == 'true' && github.sha || steps.component.outputs.tag }}
           submodules: true
+          persist-credentials: false
 
       - name: Configure
-        if: ${{ steps.component.outputs.created == 'true' }}
+        if: ${{ steps.component.outputs.created == 'true' || needs.release-please.outputs.is_dry_run == 'true' }}
         run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install
 
       - name: Build
-        if: ${{ steps.component.outputs.created == 'true' }}
+        if: ${{ steps.component.outputs.created == 'true' || needs.release-please.outputs.is_dry_run == 'true' }}
         run: cmake --build build --config Release
 
       - name: Install
-        if: ${{ steps.component.outputs.created == 'true' }}
+        if: ${{ steps.component.outputs.created == 'true' || needs.release-please.outputs.is_dry_run == 'true' }}
         run: cmake --install build --config Release
 
       - name: Package (Linux/macOS)
@@ -105,26 +121,32 @@ jobs:
           Compress-Archive -Path install\* -DestinationPath $archive
           "ARCHIVE=$archive" | Out-File -FilePath $env:GITHUB_ENV -Append
 
+      # Draft release when not main — real release on main. Draft is not public and can be deleted.
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
-        if: ${{ steps.component.outputs.created == 'true' }}
+        if: ${{ steps.component.outputs.created == 'true' || needs.release-please.outputs.is_dry_run == 'true' }}
         with:
           tag_name: ${{ steps.component.outputs.tag }}
           files: ${{ env.ARCHIVE }}
+          draft: ${{ needs.release-please.outputs.is_dry_run == 'true' }}
 
   # WASM + JS
   build-js:
-    if: ${{ needs.release-please.outputs.js_created == 'true' }}
+    if: >-
+     needs.release-please.outputs.js_created == 'true' ||
+     needs.release-please.outputs.is_dry_run == 'true'
     needs: release-please
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      id-token: write # required for OIDC provenance
+      id-token: write
     steps:
       - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
         with:
-          ref: ${{ needs.release-please.outputs.js_tag }}
+          ref: ${{ needs.release-please.outputs.is_dry_run == 'true' && github.sha || needs.release-please.outputs.js_tag }}
           submodules: true
+
       - uses: mymindstorm/setup-emsdk@1f4f5866c1f8745a10fcb64c4d7a0eb7a8daed9d
+
       - name: Build WASM
         run: |
           emcmake cmake -B build-wasm -DCMAKE_BUILD_TYPE=Release .
@@ -137,23 +159,32 @@ jobs:
              packages/js/wasmClient.js \
              packages/js/wasmWorker.js \
              packages/js/imageToUint8ClampedArray.js
+
+      # Draft release when not main — same as C/C++ above
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         with:
           tag_name: ${{ needs.release-please.outputs.js_tag }}
           files: img2num-v${{ needs.release-please.outputs.js_version }}.tar.gz
+          draft: ${{ needs.release-please.outputs.is_dry_run == 'true' }}
+
       - uses: actions/setup-node@670825a89dc0abd596e7a3abd0f5e3f6e5faf37c
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
+
+      # --dry-run exercises the full publish pipeline (auth, package validation,
+      # tarball construction) without actually pushing to the registry.
       - name: Publish to npm
-        run: npm publish --access public --provenance
+        run: npm publish --access public --provenance ${{ needs.release-please.outputs.is_dry_run == 'true' && '--dry-run' || '' }}
         working-directory: packages/js
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   # Wheels + PyPI (Python)
   build-py:
-    if: ${{ needs.release-please.outputs.py_created == 'true' }}
+    if: >-
+      needs.release-please.outputs.py_created == 'true' ||
+      needs.release-please.outputs.is_dry_run == 'true'
     needs: release-please
     runs-on: ${{ matrix.os }}
     permissions:
@@ -166,7 +197,7 @@ jobs:
     steps:
       - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
         with:
-          ref: ${{ needs.release-please.outputs.py_tag }}
+          ref: ${{ needs.release-please.outputs.is_dry_run == 'true' && github.sha || needs.release-please.outputs.py_tag }}
           submodules: true
 
       - uses: pypa/cibuildwheel@a78478edc4b83cce46f23e49e649d3e4b6437df3
@@ -183,7 +214,9 @@ jobs:
           path: wheelhouse/*.whl
 
   build-py-sdist:
-    if: ${{ needs.release-please.outputs.py_created == 'true' }}
+    if: >-
+      needs.release-please.outputs.py_created == 'true' ||
+      needs.release-please.outputs.is_dry_run == 'true'
     needs: release-please
     runs-on: ubuntu-latest
     permissions:
@@ -192,7 +225,7 @@ jobs:
     steps:
       - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
         with:
-          ref: ${{ needs.release-please.outputs.py_tag }}
+          ref: ${{ needs.release-please.outputs.is_dry_run == 'true' && github.sha || needs.release-please.outputs.py_tag }}
           submodules: true
 
       - uses: actions/setup-python@v5
@@ -215,7 +248,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      id-token: write             # required for OIDC trusted publishing
+      id-token: write
 
     steps:
       - uses: actions/download-artifact@v4
@@ -229,18 +262,32 @@ jobs:
           name: sdist
           path: wheelhouse
 
+      # Draft release when not main — same as other jobs
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         with:
           tag_name: ${{ needs.release-please.outputs.py_tag }}
           files: wheelhouse/*
+          draft: ${{ needs.release-please.outputs.is_dry_run == 'true' }}
 
+      # On branches other than main: publish to TestPyPI instead of prod. This fully exercises the
+      # upload path (auth, metadata validation, wheel inspection) against a
+      # real registry. You'll need a TEST_PYPI_API_TOKEN secret and a TestPyPI
+      # project configured for trusted publishing or token auth.
       - uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247
+        if: ${{ needs.release-please.outputs.is_dry_run != 'true' }}
         with:
           packages-dir: wheelhouse/
 
+      - uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247
+        if: ${{ needs.release-please.outputs.is_dry_run == 'true' }}
+        with:
+          packages-dir: wheelhouse/
+          repository-url: https://test.pypi.org/legacy/
+          skip-existing: true   # version may already exist on TestPyPI from previous runs
+
   propagate-cpp:
     needs: release-please
-    if: ${{ needs.release-please.outputs.cpp_created == 'true' }}
+    if: ${{ needs.release-please.outputs.cpp_created == 'true' && needs.release-please.outputs.is_dry_run != 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -288,7 +335,7 @@ jobs:
 
   propagate-c:
     needs: release-please
-    if: ${{ needs.release-please.outputs.c_created == 'true' }}
+    if: ${{ needs.release-please.outputs.c_created == 'true' && needs.release-please.outputs.is_dry_run != 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
