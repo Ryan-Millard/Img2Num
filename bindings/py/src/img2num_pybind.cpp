@@ -134,7 +134,7 @@ PYBIND11_MODULE(_img2num, m) {
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"),
         pybind11::arg("num_thresholds"), R"docstring(
-        Apply black thresholding to the image.
+        Apply thresholding with a bias in favor of black to the image.
 
         Parameters
         ----------
