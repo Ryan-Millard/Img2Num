@@ -117,6 +117,9 @@ void invert_image(uint8_t* ptr, int width, int height) {
 }
 
 void threshold_image(uint8_t* ptr, const int width, const int height, const int num_thresholds) {
+    if (num_thresholds <= 0) {
+        return;
+    }
     const uint8_t REGION_SIZE(255 / num_thresholds); // Size of buckets per colour
 
     ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> img;
@@ -136,6 +139,9 @@ void threshold_image(uint8_t* ptr, const int width, const int height, const int 
 void black_threshold_image(
     uint8_t* ptr, const int width, const int height, const int num_thresholds
 ) {
+    if (num_thresholds <= 0) {
+        return;
+    }
     ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> img;
     img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
