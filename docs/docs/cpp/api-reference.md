@@ -23,14 +23,15 @@ std::string result = img2num::image_to_svg(
 
 ### ImageToSvgConfig
 
-| Member                           | Default | Description                |
-| :------------------------------- | :------ | :------------------------- |
-| `bilateral_filter.sigma_spatial` | 3.0     | Spatial smoothing distance |
-| `bilateral_filter.sigma_range`   | 50.0    | Color intensity smoothing  |
-| `kmeans.k`                       | 16      | Number of colors           |
-| `kmeans.max_iter`                | 100     | K-means iterations         |
-| `min_cluster_area`               | 100     | Minimum contour area (px)  |
-| `color_space`                    | 0       | 0 = CIE LAB, 1 = sRGB      |
+| Member                           | Default | Description                               |
+| :------------------------------- | :------ | :---------------------------------------- |
+| `bilateral_filter.sigma_spatial` | 3.0     | Spatial smoothing distance                |
+| `bilateral_filter.sigma_range`   | 50.0    | Color intensity smoothing                 |
+| `kmeans.k`                       | 16      | Number of colors                          |
+| `kmeans.max_iter`                | 100     | K-means iterations                        |
+| `min_cluster_area`               | 100     | Minimum contour area (px)                 |
+| `min_thickness`                  | 0       | Minimum region thickness (px); 0 disables |
+| `color_space`                    | 0       | 0 = CIE LAB, 1 = sRGB                     |
 
 ## `gaussian_blur_fft`
 
@@ -104,7 +105,8 @@ std::string img2num::labels_to_svg(
     const int32_t* labels,
     int width,
     int height,
-    int min_area
+    int min_area,
+    int min_thickness
 );
 ```
 

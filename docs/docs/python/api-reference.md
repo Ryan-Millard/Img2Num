@@ -88,17 +88,18 @@ from img2num import kmeans
 clustered, labels = kmeans(img, 16, 100, 0)
 ```
 
-## `labels_to_svg(data, labels, min_area)`
+## `labels_to_svg(data, labels, min_area, min_thickness)`
 
 Convert a label map into vector paths.
 
 **Parameters:**
 
-| Name       | Type                | Description                               |
-| :--------- | :------------------ | :---------------------------------------- |
-| `data`     | `NDArray[np.uint8]` | Input RGBA image.                         |
-| `labels`   | `NDArray[np.int32]` | Per-pixel cluster labels (from `kmeans`). |
-| `min_area` | `int`               | Minimum region area (px) to include.      |
+| Name            | Type                | Description                                                              |
+| :-------------- | :------------------ | :----------------------------------------------------------------------- |
+| `data`          | `NDArray[np.uint8]` | Input RGBA image.                                                        |
+| `labels`        | `NDArray[np.int32]` | Per-pixel cluster labels (from `kmeans`).                                |
+| `min_area`      | `int`               | Minimum region area (px) to include.                                     |
+| `min_thickness` | `int`               | Minimum region thickness (px); thinner regions are merged. `0` disables. |
 
 **Returns:** `str` — SVG markup.
 
@@ -106,7 +107,7 @@ Convert a label map into vector paths.
 from img2num import kmeans, labels_to_svg
 
 _, labels = kmeans(img, 16, 100, 0)
-svg = labels_to_svg(img, labels, 100)
+svg = labels_to_svg(img, labels, 100, 0)
 ```
 
 ## `gaussian_blur_fft(image, sigma)`
@@ -165,14 +166,15 @@ Like `threshold_image`, but biased toward darker output.
 Configuration object passed to `image_to_svg`. All parameters have sensible
 defaults and can be set via constructor or attribute assignment.
 
-| Attribute                        | Type    | Default | Description                 |
-| :------------------------------- | :------ | :------ | :-------------------------- |
-| `bilateral_filter.sigma_spatial` | `float` | `3.0`   | Bilateral spatial sigma.    |
-| `bilateral_filter.sigma_range`   | `float` | `50.0`  | Bilateral range sigma.      |
-| `kmeans.k`                       | `int`   | `16`    | Number of clusters.         |
-| `kmeans.max_iter`                | `int`   | `100`   | Maximum k-means iterations. |
-| `min_cluster_area`               | `int`   | `100`   | Minimum region area (px).   |
-| `color_space`                    | `int`   | `0`     | `0` = CIE LAB, `1` = sRGB.  |
+| Attribute                        | Type    | Default | Description                                  |
+| :------------------------------- | :------ | :------ | :------------------------------------------- |
+| `bilateral_filter.sigma_spatial` | `float` | `3.0`   | Bilateral spatial sigma.                     |
+| `bilateral_filter.sigma_range`   | `float` | `50.0`  | Bilateral range sigma.                       |
+| `kmeans.k`                       | `int`   | `16`    | Number of clusters.                          |
+| `kmeans.max_iter`                | `int`   | `100`   | Maximum k-means iterations.                  |
+| `min_cluster_area`               | `int`   | `100`   | Minimum region area (px).                    |
+| `min_thickness`                  | `int`   | `0`     | Minimum region thickness (px); `0` disables. |
+| `color_space`                    | `int`   | `0`     | `0` = CIE LAB, `1` = sRGB.                   |
 
 ```python
 from img2num import ImageToSvgConfig

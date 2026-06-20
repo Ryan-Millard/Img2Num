@@ -18,6 +18,26 @@ involved.
 
 ## Installation
 
+:::warning Not yet on PyPI
+The Python package has not had its first release yet, so `pip install img2num`
+is not available. Build the wheel from source instead.
+:::
+
+Build the wheel with the [Justfile](/docs/quickstart) (inside the Docker dev
+environment):
+
+```bash
+just build py
+```
+
+This produces a wheel in `dist/` that you can install into your environment:
+
+```bash
+pip install dist/img2num-*.whl
+```
+
+Once the first release is published, installation will simply be:
+
 ```bash
 pip install img2num
 ```

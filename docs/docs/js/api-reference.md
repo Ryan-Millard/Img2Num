@@ -24,6 +24,7 @@ One-shot raster → SVG conversion (bilateral filter → k-means → contour tra
 | `num_colors`    | `16`    | K-means cluster count     |
 | `max_iter`      | `100`   | K-means max iterations    |
 | `min_area`      | `100`   | Minimum contour area      |
+| `min_thickness` | `10`    | Minimum region thickness  |
 | `color_space`   | `0`     | `0` = CIE LAB, `1` = sRGB |
 
 **Returns:** `Promise<{ svg: string }>`
@@ -82,14 +83,15 @@ returned values in normal usage.
 
 **Returns:** `Promise<{ pixels: Uint8ClampedArray, labels: Int32Array }>`
 
-## `findContours({ pixels, labels, width, height, min_area })`
+## `findContours({ pixels, labels, width, height, min_area, min_thickness })`
 
 Convert labeled regions (e.g. from `kmeans`) to SVG paths.
 
-| Option     | Default | Description                      |
-| :--------- | :------ | :------------------------------- |
-| `labels`   | —       | `Int32Array` of per-pixel labels |
-| `min_area` | `100`   | Minimum region area to keep      |
+| Option          | Default | Description                      |
+| :-------------- | :------ | :------------------------------- |
+| `labels`        | —       | `Int32Array` of per-pixel labels |
+| `min_area`      | `100`   | Minimum region area to keep      |
+| `min_thickness` | `10`    | Minimum region thickness to keep |
 
 **Returns:** `Promise<{ svg: string }>`
 

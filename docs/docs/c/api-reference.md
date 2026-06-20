@@ -25,6 +25,7 @@ typedef struct img2num_ImageToSvgConfig {
     } kmeans;
 
     int min_cluster_area;
+    int min_thickness;
     uint8_t color_space;
 } img2num_ImageToSvgConfig;
 ```
@@ -107,7 +108,8 @@ char *img2num_labels_to_svg(
     const int32_t *labels,
     int width,
     int height,
-    int min_area
+    int min_area,
+    int min_thickness
 );
 ```
 
