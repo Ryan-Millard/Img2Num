@@ -27,9 +27,29 @@ npm uninstall img2num
 npm install img2num
 ```
 
-## Blurry or Over-Smoothed Output
+## Blurry or Over-Smoothed Output with Bilateral Filter
 
-Increase `sigma_spatial` or decrease it depending on the image. If it's over-smoothed, reduce it.
+If the result appears over-smoothed (loss of edge detail), reduce the spatial standard deviation
+(`sigma_spatial` / $\sigma_s$).
+If the result is too noisy or insufficiently smoothed, increase it.
+
+Note that bilateral filtering depends on both spatial and range parameters:
+- `sigma_spatial` ($\sigma_s$) controls geometric smoothing
+- `sigma_range` ($\sigma_r$) controls intensity similarity sensitivity
+
+Both parameters may need to be adjusted per image depending on texture and noise levels.
+
+:::tip[Default Values]
+
+The default Img2Num bilateral filter parameters are tuned for general natural images and typically produce
+balanced results.
+
+While fixed parameters work well in most cases, adaptive smoothing strategies are commonly used in image
+processing literature to account for variation in noise level and edge density across images
+([_Marr & Hildreth, 1980_](https://www.researchgate.net/publication/17083076_Theory_of_Edge_Detection);
+[_Canny, 1986_](https://www.researchgate.net/publication/224377985_A_Computational_Approach_To_Edge_Detection)).
+
+:::
 
 ## Jagged / Noisy SVG Paths
 
