@@ -34,8 +34,16 @@ Img2Num is a lightweight, high-performance library for converting raster images 
 | **Python**            | 🟡 Early      | [Python API Reference](/docs/python/python-api-reference) |
 
 ## Changelog
+## Changelog
 
-Our [changelog](/changelog) is quite empty right now since we haven't had our first release yet, but it is coming soon!
+We version our language bindings/packages separately. To see all of our changelogs, [click here](/changelog).
+
+### Package Changelogs
+
+- [JavaScript (WASM)](/changelog/js)
+- [C++](/changelog/cpp)
+- [C](/changelog/c)
+- [Python](/changelog/py)
 
 ---
 
