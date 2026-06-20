@@ -36,6 +36,7 @@ Try the [live demo](https://ryan-millard.github.io/Img2Num/)!
 ## Essential links
 
 ### Docs
+- [Quickstart](https://ryan-millard.github.io/Img2Num/info/docs/next/quickstart/)
 - [Full documentation](https://ryan-millard.github.io/Img2Num/info/docs/next/)
 - [C++](https://ryan-millard.github.io/Img2Num/info/docs/next/cpp/)
 - [C](https://ryan-millard.github.io/Img2Num/info/docs/next/c/)
