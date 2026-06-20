@@ -11,11 +11,6 @@
 #include <iterator>
 #include <queue>
 #include <string>
-
-#include "internal/Pixel.h"
-#include "internal/bezier.h"
-#include "internal/douglas_peucker.h"
-#include "internal/shared_contours.h"
 /*
  Graph class - manages Node class
 */

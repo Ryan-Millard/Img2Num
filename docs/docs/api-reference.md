@@ -8,8 +8,8 @@ sidebar_position: 6
 
 Img2Num provides bindings for multiple languages. Choose the one that fits your workflow:
 
-| Language       | Docs                                                           |
-| :------------- | :------------------------------------------------------------- |
+| Language       | Docs                                                      |
+| :------------- | :-------------------------------------------------------- |
 | **JavaScript** | [JS API Reference](/docs/js/js-api-reference)             |
 | **C++**        | [C++ API Reference](/docs/cpp/cpp-api-reference)          |
 | **C**          | [C API Reference](/docs/c/c-api-reference)                |

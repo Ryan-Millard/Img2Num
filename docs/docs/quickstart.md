@@ -13,7 +13,7 @@ import TabItem from "@theme/TabItem";
 This is the **fast path** to a working Img2Num build from source. If you just want to get
 the dev environment running and produce your first build, follow the steps below.
 
-:::tip Just want to *use* the library?
+:::tip Just want to _use_ the library?
 If you only need to consume Img2Num (e.g. via npm), see
 [Installation](/docs/installation) and [Getting Started](/docs/getting-started)
 instead. This page is for building the project itself from source.
@@ -148,16 +148,16 @@ just format
 
 ## Command reference
 
-| Command | What it does |
-| :------ | :----------- |
-| `just` / `just help` | List all available commands |
-| `just init` | Pull submodules, then build all targets |
-| `just build cpp\|js\|py\|all` | Build the C++/C, JS/WASM, Python, or all targets |
-| `just clean cpp\|js` | Delete the C++ or JS build folder |
-| `just format` | Format all files |
-| `just docs build\|start` | Build or serve the documentation site |
-| `just react-js build\|start` | Build or serve the React example app |
-| `just console-cpp\|console-c\|console-py <image>` | Run a console example app on an image |
+| Command                                           | What it does                                     |
+| :------------------------------------------------ | :----------------------------------------------- |
+| `just` / `just help`                              | List all available commands                      |
+| `just init`                                       | Pull submodules, then build all targets          |
+| `just build cpp\|js\|py\|all`                     | Build the C++/C, JS/WASM, Python, or all targets |
+| `just clean cpp\|js`                              | Delete the C++ or JS build folder                |
+| `just format`                                     | Format all files                                 |
+| `just docs build\|start`                          | Build or serve the documentation site            |
+| `just react-js build\|start`                      | Build or serve the React example app             |
+| `just console-cpp\|console-c\|console-py <image>` | Run a console example app on an image            |
 
 ## Next steps
 

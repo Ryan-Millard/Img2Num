@@ -131,7 +131,8 @@ char* img2num_image_to_svg(
             }
             std::memcpy(result, svg.c_str(), svg.size() + 1);
         },
-        data, width, height);
+        data, width, height
+    );
 
     return result;
 }

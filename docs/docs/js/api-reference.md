@@ -37,9 +37,9 @@ const { svg } = await imageToSvg({ pixels, width, height });
 
 Gaussian blur accelerated with a 2-D FFT.
 
-| Option         | Default        | Description                                  |
-| :------------- | :------------- | :------------------------------------------- |
-| `sigma_pixels` | `width * 0.005`| Blur standard deviation (5% of width by default) |
+| Option         | Default         | Description                                      |
+| :------------- | :-------------- | :----------------------------------------------- |
+| `sigma_pixels` | `width * 0.005` | Blur standard deviation (5% of width by default) |
 
 **Returns:** `Promise<Uint8ClampedArray>` — the blurred pixels.
 
@@ -59,8 +59,8 @@ Edge-preserving bilateral smoothing.
 
 Black-biased sRGB bin-based threshold (color quantization toward darker output).
 
-| Option       | Default | Description                          |
-| :----------- | :------ | :----------------------------------- |
+| Option       | Default | Description                             |
+| :----------- | :------ | :-------------------------------------- |
 | `num_colors` | —       | Number of colors to reduce the image to |
 
 **Returns:** `Promise<Uint8ClampedArray>` — the thresholded pixels.
@@ -69,13 +69,13 @@ Black-biased sRGB bin-based threshold (color quantization toward darker output).
 
 K-means color clustering.
 
-| Option        | Default | Description                              |
-| :------------ | :------ | :--------------------------------------- |
-| `num_colors`  | —       | Number of clusters                       |
-| `max_iter`    | `100`   | Maximum iterations                       |
-| `color_space` | `0`     | `0` = CIE LAB, `1` = sRGB                |
-| `out_pixels`  | _auto_  | Optional pre-allocated output buffer      |
-| `out_labels`  | _auto_  | Optional pre-allocated labels buffer      |
+| Option        | Default | Description                          |
+| :------------ | :------ | :----------------------------------- |
+| `num_colors`  | —       | Number of clusters                   |
+| `max_iter`    | `100`   | Maximum iterations                   |
+| `color_space` | `0`     | `0` = CIE LAB, `1` = sRGB            |
+| `out_pixels`  | _auto_  | Optional pre-allocated output buffer |
+| `out_labels`  | _auto_  | Optional pre-allocated labels buffer |
 
 `out_pixels` / `out_labels` are advanced opt-in buffers; omit them and use the
 returned values in normal usage.
@@ -86,10 +86,10 @@ returned values in normal usage.
 
 Convert labeled regions (e.g. from `kmeans`) to SVG paths.
 
-| Option     | Default | Description                          |
-| :--------- | :------ | :----------------------------------- |
-| `labels`   | —       | `Int32Array` of per-pixel labels     |
-| `min_area` | `100`   | Minimum region area to keep          |
+| Option     | Default | Description                      |
+| :--------- | :------ | :------------------------------- |
+| `labels`   | —       | `Int32Array` of per-pixel labels |
+| `min_area` | `100`   | Minimum region area to keep      |
 
 **Returns:** `Promise<{ svg: string }>`
 

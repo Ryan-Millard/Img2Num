@@ -29,9 +29,9 @@ Full raster → SVG pipeline (bilateral filter → k-means → contour tracing).
 
 **Parameters:**
 
-| Name     | Type                | Description                                       |
-| :------- | :------------------ | :------------------------------------------------ |
-| `image`  | `NDArray[np.uint8]` | Input image of shape `(H, W, 4)` (RGBA).          |
+| Name     | Type                | Description                                           |
+| :------- | :------------------ | :---------------------------------------------------- |
+| `image`  | `NDArray[np.uint8]` | Input image of shape `(H, W, 4)` (RGBA).              |
 | `config` | `ImageToSvgConfig`  | Optional configuration. Defaults are used if omitted. |
 
 **Returns:** `str` — SVG markup.
@@ -52,12 +52,12 @@ Edge-preserving smoothing.
 
 **Parameters:**
 
-| Name            | Type                | Description                                          |
-| :-------------- | :------------------ | :--------------------------------------------------- |
-| `image`         | `NDArray[np.uint8]` | Input RGBA image.                                    |
-| `sigma_spatial` | `float`             | Spatial Gaussian standard deviation (proximity).    |
-| `sigma_range`   | `float`             | Range Gaussian standard deviation (color similarity).|
-| `color_space`   | `int`               | `0` = CIE LAB, `1` = sRGB.                           |
+| Name            | Type                | Description                                           |
+| :-------------- | :------------------ | :---------------------------------------------------- |
+| `image`         | `NDArray[np.uint8]` | Input RGBA image.                                     |
+| `sigma_spatial` | `float`             | Spatial Gaussian standard deviation (proximity).      |
+| `sigma_range`   | `float`             | Range Gaussian standard deviation (color similarity). |
+| `color_space`   | `int`               | `0` = CIE LAB, `1` = sRGB.                            |
 
 **Returns:** `NDArray[np.uint8]` — Filtered image.
 
@@ -73,12 +73,12 @@ K-means color clustering.
 
 **Parameters:**
 
-| Name          | Type                | Description                          |
-| :------------ | :------------------ | :----------------------------------- |
-| `data`        | `NDArray[np.uint8]` | Input RGBA image.                    |
-| `k`           | `int`               | Number of clusters (colors).         |
-| `max_iter`    | `int`               | Maximum k-means iterations.          |
-| `color_space` | `int`               | `0` = CIE LAB, `1` = sRGB.           |
+| Name          | Type                | Description                  |
+| :------------ | :------------------ | :--------------------------- |
+| `data`        | `NDArray[np.uint8]` | Input RGBA image.            |
+| `k`           | `int`               | Number of clusters (colors). |
+| `max_iter`    | `int`               | Maximum k-means iterations.  |
+| `color_space` | `int`               | `0` = CIE LAB, `1` = sRGB.   |
 
 **Returns:** `tuple[NDArray[np.uint8], NDArray[np.int32]]` — `(clustered_data, labels)`.
 
@@ -94,11 +94,11 @@ Convert a label map into vector paths.
 
 **Parameters:**
 
-| Name       | Type                | Description                              |
-| :--------- | :------------------ | :--------------------------------------- |
-| `data`     | `NDArray[np.uint8]` | Input RGBA image.                        |
-| `labels`   | `NDArray[np.int32]` | Per-pixel cluster labels (from `kmeans`).|
-| `min_area` | `int`               | Minimum region area (px) to include.     |
+| Name       | Type                | Description                               |
+| :--------- | :------------------ | :---------------------------------------- |
+| `data`     | `NDArray[np.uint8]` | Input RGBA image.                         |
+| `labels`   | `NDArray[np.int32]` | Per-pixel cluster labels (from `kmeans`). |
+| `min_area` | `int`               | Minimum region area (px) to include.      |
 
 **Returns:** `str` — SVG markup.
 
@@ -115,10 +115,10 @@ Apply a Gaussian blur via FFT.
 
 **Parameters:**
 
-| Name    | Type                | Description                            |
-| :------ | :------------------ | :------------------------------------- |
-| `image` | `NDArray[np.uint8]` | Input RGBA image.                      |
-| `sigma` | `float`             | Standard deviation of the Gaussian.    |
+| Name    | Type                | Description                         |
+| :------ | :------------------ | :---------------------------------- |
+| `image` | `NDArray[np.uint8]` | Input RGBA image.                   |
+| `sigma` | `float`             | Standard deviation of the Gaussian. |
 
 **Returns:** `NDArray[np.uint8]` — Blurred image.
 
@@ -140,10 +140,10 @@ Reduce the image to `num_thresholds` discrete intensity levels.
 
 **Parameters:**
 
-| Name             | Type                | Description                  |
-| :--------------- | :------------------ | :--------------------------- |
-| `image`          | `NDArray[np.uint8]` | Input RGBA image.            |
-| `num_thresholds` | `int`               | Number of threshold levels.  |
+| Name             | Type                | Description                 |
+| :--------------- | :------------------ | :-------------------------- |
+| `image`          | `NDArray[np.uint8]` | Input RGBA image.           |
+| `num_thresholds` | `int`               | Number of threshold levels. |
 
 **Returns:** `NDArray[np.uint8]` — Thresholded image.
 
@@ -153,10 +153,10 @@ Like `threshold_image`, but biased toward darker output.
 
 **Parameters:**
 
-| Name             | Type                | Description                  |
-| :--------------- | :------------------ | :--------------------------- |
-| `image`          | `NDArray[np.uint8]` | Input RGBA image.            |
-| `num_thresholds` | `int`               | Number of threshold levels.  |
+| Name             | Type                | Description                 |
+| :--------------- | :------------------ | :-------------------------- |
+| `image`          | `NDArray[np.uint8]` | Input RGBA image.           |
+| `num_thresholds` | `int`               | Number of threshold levels. |
 
 **Returns:** `NDArray[np.uint8]` — Thresholded image.
 
@@ -165,14 +165,14 @@ Like `threshold_image`, but biased toward darker output.
 Configuration object passed to `image_to_svg`. All parameters have sensible
 defaults and can be set via constructor or attribute assignment.
 
-| Attribute                        | Type    | Default | Description                  |
-| :------------------------------- | :------ | :------ | :--------------------------- |
-| `bilateral_filter.sigma_spatial` | `float` | `3.0`   | Bilateral spatial sigma.     |
-| `bilateral_filter.sigma_range`   | `float` | `50.0`  | Bilateral range sigma.       |
-| `kmeans.k`                       | `int`   | `16`    | Number of clusters.          |
-| `kmeans.max_iter`                | `int`   | `100`   | Maximum k-means iterations.  |
-| `min_cluster_area`               | `int`   | `100`   | Minimum region area (px).    |
-| `color_space`                    | `int`   | `0`     | `0` = CIE LAB, `1` = sRGB.   |
+| Attribute                        | Type    | Default | Description                 |
+| :------------------------------- | :------ | :------ | :-------------------------- |
+| `bilateral_filter.sigma_spatial` | `float` | `3.0`   | Bilateral spatial sigma.    |
+| `bilateral_filter.sigma_range`   | `float` | `50.0`  | Bilateral range sigma.      |
+| `kmeans.k`                       | `int`   | `16`    | Number of clusters.         |
+| `kmeans.max_iter`                | `int`   | `100`   | Maximum k-means iterations. |
+| `min_cluster_area`               | `int`   | `100`   | Minimum region area (px).   |
+| `color_space`                    | `int`   | `0`     | `0` = CIE LAB, `1` = sRGB.  |
 
 ```python
 from img2num import ImageToSvgConfig
