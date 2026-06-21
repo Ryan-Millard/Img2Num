@@ -34,6 +34,9 @@ jobs:
           name: wasm-build
           path: ${{ inputs.wasm-artifacts-path }}
 
+      - name: Build img2num module
+        run: pnpm -F img2num build
+
       - name: Build React app
         run: pnpm -F react-example run build
 
