@@ -39,6 +39,7 @@
  */
 
 import createImg2NumModule from "@wasm/index.js";
+import path from "node:path";
 
 let wasmModule;
 
@@ -220,17 +221,22 @@ async function handleMessage(data) {
 if (__TARGET__ === "node") {
   // 1. Dynamically pull in Node's worker thread communications channel
   const { parentPort } = await import("node:worker_threads");
+  const { initWebGPU, destroyWebGPU } = await import("../target/node/webgpu.js");
 
-  const { create } = await import("webgpu");
-  globalThis.navigator ??= {};
-  globalThis.navigator.gpu = create(["backend=vulkan"]);
+  await initWebGPU();
 
   // 2. FIX THE TYPO: Polyfill globalThis.postMessage so handleMessage can call it natively!
   globalThis.postMessage = (data) => parentPort.postMessage(data);
 
   // 3. Listen for incoming messages from the console app main thread
   // (Node passes the raw payload directly, no nested event wrapper needed)
-  parentPort.on("message", (data) => handleMessage(data));
+  parentPort.on("message", async (data) => {
+    await handleMessage(data); 
+    await destroyWebGPU();
+    parentPort.close(); 
+  });
+  
+
 } else {
   // Browser Worker setup: Standard event-unwrapping listener
   globalThis.onmessage = ({ data }) => handleMessage(data);
