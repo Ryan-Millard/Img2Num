@@ -224,10 +224,10 @@ if (__TARGET__ === "node") {
   const { create } = await import("webgpu");
   globalThis.navigator ??= {};
   globalThis.navigator.gpu = create(["backend=vulkan"]);
-  
+
   // 2. FIX THE TYPO: Polyfill globalThis.postMessage so handleMessage can call it natively!
   globalThis.postMessage = (data) => parentPort.postMessage(data);
-  
+
   // 3. Listen for incoming messages from the console app main thread
   // (Node passes the raw payload directly, no nested event wrapper needed)
   parentPort.on("message", (data) => handleMessage(data));
