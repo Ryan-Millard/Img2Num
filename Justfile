@@ -44,19 +44,24 @@ build-wasm:
     @echo "Build JS bindings"
     emcmake cmake -DCMAKE_BUILD_TYPE=Release -B build-wasm/ .
     cmake --build build-wasm/ --parallel
-    pnpm -F img2num build
 
 build-py:
     @echo "Build python bindings and py package"
     uv sync --reinstall
     uv build --wheel
 
+build-packages-js:
+    @echo "Build js packages"
+    just build-wasm
+    pnpm -F img2num build
+
 build target:
     case "{{ target }}" in \
         cpp) just build-c-cpp ;; \
         js) just build-wasm ;; \
         py) just build-py ;; \
-        all) just build-c-cpp build-wasm build-py react-js build docs build ;; \
+        packages-js) just build-packages-js ;; \
+        all) just build-c-cpp build-wasm build-py build-packages-js react-js build docs build ;; \
     esac
 
 clean target:
@@ -75,7 +80,7 @@ docs action:
         start) cd docs/ && pnpm run serve ;; \
     esac
 
-react-js action: build-wasm
+react-js action: build-packages-js
     @echo "Run react sample app"
     case "{{ action }}" in \
         build) pnpm -F react-example run build ;; \
