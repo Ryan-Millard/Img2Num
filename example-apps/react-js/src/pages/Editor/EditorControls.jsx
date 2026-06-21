@@ -4,10 +4,22 @@ import GlassSwitch from "@components/GlassSwitch";
 import GlassCard from "@components/GlassCard";
 import Tooltip from "@components/Tooltip";
 import { useState, useId } from "react";
-import { Undo, Redo, Save, Eye, Brush, Printer, Download, Copy, RotateCcw, Share2, FileText, Expand } from "lucide-react";
+import { Undo, Redo, Save, Eye, Brush, Printer, Download, Copy, RotateCcw, Share2, FileText, Expand, Settings } from "lucide-react";
 import styles from "./EditorControls.module.css";
 
-const EditorControls = ({ svg, fileName, isColorMode = false, setIsColorMode = () => {}, onReset = () => {}, onUndo = () => {}, onRedo = () => {}, onFullscreen = () => {} }) => {
+const EditorControls = ({
+  svg,
+  fileName,
+  isColorMode = false,
+  setIsColorMode = () => {},
+  onReset = () => {},
+  onUndo = () => {},
+  onRedo = () => {},
+  onFullscreen = () => {},
+  showSettingsButton = false,
+  isSettingsOpen = false,
+  onToggleSettings = () => {},
+}) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const switchId = useId();
@@ -253,6 +265,19 @@ const EditorControls = ({ svg, fileName, isColorMode = false, setIsColorMode = (
               <Expand size={18} aria-hidden="true" />
             </button>
           </Tooltip>
+          {showSettingsButton && (
+            <Tooltip position="top" content="Adjust settings">
+              <button
+                type="button"
+                className={`button ${isSettingsOpen ? styles.settingsActive : ""}`}
+                onClick={onToggleSettings}
+                aria-label="Adjust image settings"
+                aria-expanded={isSettingsOpen}
+              >
+                <Settings size={18} aria-hidden="true" />
+              </button>
+            </Tooltip>
+          )}
         </div>
       </div>
     </>

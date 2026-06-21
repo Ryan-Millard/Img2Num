@@ -1,11 +1,13 @@
-import { useEffect, useRef, useState, useCallback } from "react";
-import parse from "html-react-parser";
-import { useLocation } from "react-router-dom";
 import GlassCard from "@components/GlassCard";
 import GlassModal from "@components/GlassModal";
-import EditorHelmet from "./EditorHelmet";
-import EditorControls from "./EditorControls";
 import useFullscreen from "@hooks/useFullscreen";
+import parse from "html-react-parser";
+import { bilateralFilter, findContours, kmeans } from "img2num";
+import { RotateCcw } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
+import EditorControls from "./EditorControls";
+import EditorHelmet from "./EditorHelmet";
 
 import styles from "./Editor.module.css";
 
@@ -13,9 +15,10 @@ const SHAPE_SELECTOR = "path,rect,circle,polygon,ellipse";
 
 export default function Editor() {
   const { state } = useLocation();
-  const { svg } = state || {};
+  const { svg: initialSvg, fileData, originalSrc, imgBilateralFiltered, initialSettings } = state || {};
 
-  const [svgElements] = useState(() => (svg ? parse(svg) : null));
+  const [svg, setSvg] = useState(initialSvg);
+  const [svgElements, setSvgElements] = useState(null);
   const [isColorMode, setIsColorMode] = useState(true);
 
   const [history, setHistory] = useState([]);
@@ -23,6 +26,56 @@ export default function Editor() {
   const [initialSnapshot, setInitialSnapshot] = useState([]);
 
   const [modalOpen, setModalOpen] = useState(false);
+
+  const [numColors, setNumColors] = useState(initialSettings?.numColors ?? 16);
+  const [minArea, setMinArea] = useState(initialSettings?.minArea ?? 100);
+  const [minThickness, setMinThickness] = useState(initialSettings?.minThickness ?? 10);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isReprocessing, setIsReprocessing] = useState(false);
+
+  useEffect(() => {
+    if (svg) {
+      setSvgElements(parse(svg));
+    }
+  }, [svg]);
+
+  const reprocessImage = async () => {
+    if (!fileData) return;
+    setIsReprocessing(true);
+    try {
+      const { width, height } = fileData;
+
+      let filteredPixels = imgBilateralFiltered;
+      if (!filteredPixels) {
+        filteredPixels = await bilateralFilter({
+          pixels: fileData.pixels,
+          width,
+          height,
+        });
+      }
+
+      const { labels } = await kmeans({
+        ...fileData,
+        pixels: filteredPixels,
+        num_colors: numColors,
+      });
+
+      const { svg: newSvg } = await findContours({
+        pixels: filteredPixels,
+        labels,
+        width,
+        height,
+        min_area: minArea,
+        min_thickness: minThickness,
+      });
+
+      setSvg(newSvg);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsReprocessing(false);
+    }
+  };
 
   const viewportRef = useRef(null);
   const innerRef = useRef(null);
@@ -372,6 +425,9 @@ export default function Editor() {
           onUndo={undo}
           onRedo={redo}
           onFullscreen={toggleFullscreen}
+          showSettingsButton={!!fileData}
+          isSettingsOpen={isSettingsOpen}
+          onToggleSettings={() => setIsSettingsOpen((prev) => !prev)}
         />
 
         <GlassModal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
@@ -397,20 +453,117 @@ export default function Editor() {
 
         <div className={styles.hint}>Click shapes to reveal their original colour.</div>
 
-        <GlassCard
-          className={`flex-center ${styles.viewport}`}
-          ref={(el) => {
-            viewportRef.current = el;
-            fsRef.current = el; // link fullscreen ref to viewport
-          }}
-          onPointerDown={onPointerDown}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}
-        >
-          <div ref={innerRef} className={styles.inner}>
-            {svgElements}
-          </div>
-        </GlassCard>
+        <div className={styles.editorMainContainer}>
+          {/* Settings Panel */}
+          {fileData && (
+            <div className={`${styles.settingsPanel} ${isSettingsOpen ? styles.settingsOpen : ""}`} onClick={(e) => e.stopPropagation()}>
+              <h3 className={styles.settingsHeading}>Configuration</h3>
+
+              <div className={styles.settingGroup}>
+                <div className={styles.settingLabelWrapper}>
+                  <label htmlFor="k-colors">
+                    Colors (k): <strong>{numColors}</strong>
+                  </label>
+                  <span className={styles.rangeLimits}>2 - 64</span>
+                </div>
+                <input
+                  id="k-colors"
+                  type="range"
+                  min="2"
+                  max="64"
+                  value={numColors}
+                  onChange={(e) => setNumColors(parseInt(e.target.value, 10))}
+                  className={styles.rangeInput}
+                  disabled={isReprocessing}
+                />
+              </div>
+
+              <div className={styles.settingGroup}>
+                <div className={styles.settingLabelWrapper}>
+                  <label htmlFor="min-area">
+                    Min Area: <strong>{minArea}</strong>
+                  </label>
+                  <span className={styles.rangeLimits}>100 - 1000</span>
+                </div>
+                <input
+                  id="min-area"
+                  type="range"
+                  min="100"
+                  max="1000"
+                  step="50"
+                  value={minArea}
+                  onChange={(e) => setMinArea(parseInt(e.target.value, 10))}
+                  className={styles.rangeInput}
+                  disabled={isReprocessing}
+                />
+              </div>
+
+              <div className={styles.settingGroup}>
+                <div className={styles.settingLabelWrapper}>
+                  <label htmlFor="min-thickness">
+                    Min Thickness: <strong>{minThickness === 0 ? "0 (Disabled)" : minThickness}</strong>
+                  </label>
+                  <span className={styles.rangeLimits}>0 - 100</span>
+                </div>
+                <input
+                  id="min-thickness"
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={minThickness}
+                  onChange={(e) => setMinThickness(parseInt(e.target.value, 10))}
+                  className={styles.rangeInput}
+                  disabled={isReprocessing}
+                />
+              </div>
+
+              <div className="flex-center gap-sm" style={{ marginTop: "var(--spacing-xs)", width: "100%" }}>
+                <button
+                  type="button"
+                  className={`button flex-center gap-xs ${styles.resetButton}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setNumColors(16);
+                    setMinArea(100);
+                    setMinThickness(10);
+                  }}
+                  disabled={isReprocessing}
+                >
+                  <RotateCcw size={16} />
+                  <span>Use Defaults</span>
+                </button>
+
+                <button
+                  type="button"
+                  className="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    reprocessImage();
+                  }}
+                  disabled={isReprocessing}
+                  style={{ flex: 1 }}
+                >
+                  {isReprocessing ? "Applying..." : "Apply"}
+                </button>
+              </div>
+            </div>
+          )}
+
+          <GlassCard
+            className={`flex-center ${styles.viewport}`}
+            ref={(el) => {
+              viewportRef.current = el;
+              fsRef.current = el; // link fullscreen ref to viewport
+            }}
+            onPointerDown={onPointerDown}
+            onPointerUp={onPointerUp}
+            onPointerCancel={onPointerUp}
+          >
+            <div ref={innerRef} className={styles.inner}>
+              {svgElements}
+            </div>
+          </GlassCard>
+        </div>
       </GlassCard>
     </>
   );

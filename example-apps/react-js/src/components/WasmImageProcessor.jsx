@@ -1,11 +1,11 @@
-import { useEffect, useState, useId, useRef, useCallback, useMemo } from "react";
-import { Upload } from "lucide-react";
-import { imageToUint8ClampedArray, bilateralFilter, kmeans, findContours } from "img2num";
 import GlassCard from "@components/GlassCard";
-import styles from "./WasmImageProcessor.module.css";
-import { useNavigate } from "react-router-dom";
 import LoadingHedgehog from "@components/LoadingHedgehog";
 import Tooltip from "@components/Tooltip";
+import { bilateralFilter, findContours, imageToUint8ClampedArray, kmeans } from "img2num";
+import { ChevronDown, ChevronUp, RotateCcw, Settings, Upload } from "lucide-react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styles from "./WasmImageProcessor.module.css";
 
 const WasmImageProcessor = () => {
   const navigate = useNavigate();
@@ -16,6 +16,10 @@ const WasmImageProcessor = () => {
   const [fileData, setFileData] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [numColors, setNumColors] = useState(16);
+  const [minArea, setMinArea] = useState(100);
+  const [minThickness, setMinThickness] = useState(10);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   /* Cleanup object URLs on unmount or src change */
   useEffect(() => {
@@ -87,7 +91,7 @@ const WasmImageProcessor = () => {
       const { labels } = await kmeans({
         ...fileData,
         pixels: imgBilateralFiltered,
-        num_colors: 16,
+        num_colors: numColors,
       });
 
       step(95);
@@ -96,10 +100,18 @@ const WasmImageProcessor = () => {
         labels,
         width,
         height,
+        min_area: minArea,
+        min_thickness: minThickness,
       });
 
       navigate("/editor", {
-        state: { svg },
+        state: {
+          svg,
+          fileData,
+          originalSrc,
+          imgBilateralFiltered,
+          initialSettings: { numColors, minArea, minThickness }
+        },
       });
     } catch (err) {
       console.error(err);
@@ -109,7 +121,7 @@ const WasmImageProcessor = () => {
         step(0);
       }, 800);
     }
-  }, [fileData, navigate, step]);
+  }, [fileData, navigate, step, numColors, minArea, minThickness]);
 
   /* Memo'd UI fragments */
   const EmptyState = useMemo(
@@ -134,27 +146,121 @@ const WasmImageProcessor = () => {
     if (!originalSrc) return null;
 
     return (
-      <>
-        <img src={originalSrc} alt="Original" className={styles.preview} />
+      <div className={styles.loadedContainer} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.previewContainer}>
+          <img src={originalSrc} alt="Original" className={styles.preview} />
 
-        {!isProcessing ? (
-          <Tooltip content="Process the image and convert it to numbers">
-            <button
-              className="uppercase button"
-              onClick={(e) => {
-                e.stopPropagation();
-                processImage();
-              }}
-            >
-              Ok
-            </button>
-          </Tooltip>
-        ) : (
-          <LoadingHedgehog progress={progress} text={`Processing — ${Math.round(progress)}%`} />
-        )}
-      </>
+          <div className={styles.controlsWrapper}>
+            {!isProcessing ? (
+              <div className="flex-center gap-md">
+                <button
+                  type="button"
+                  className={`button flex-center gap-xs ${styles.settingsToggle}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsSettingsOpen((prev) => !prev);
+                  }}
+                  aria-expanded={isSettingsOpen}
+                >
+                  <Settings size={18} />
+                  <span>Settings</span>
+                  {isSettingsOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                </button>
+
+                <Tooltip content="Process the image and convert it to numbers">
+                  <button
+                    className="uppercase button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      processImage();
+                    }}
+                  >
+                    Ok
+                  </button>
+                </Tooltip>
+              </div>
+            ) : (
+              <LoadingHedgehog progress={progress} text={`Processing — ${Math.round(progress)}%`} />
+            )}
+          </div>
+        </div>
+
+        {/* Settings Panel */}
+        <div className={`${styles.settingsPanel} ${isSettingsOpen ? styles.settingsOpen : ""}`}>
+          <h3 className={styles.settingsHeading}>Configuration</h3>
+
+          <div className={styles.settingGroup}>
+            <div className={styles.settingLabelWrapper}>
+              <label htmlFor="k-colors">
+                Colors: <strong>{numColors}</strong>
+              </label>
+              <span className={styles.rangeLimits}>2 - 64</span>
+            </div>
+            <input
+              id="k-colors"
+              type="range"
+              min="2"
+              max="64"
+              value={numColors}
+              onChange={(e) => setNumColors(parseInt(e.target.value, 10))}
+              className={styles.rangeInput}
+            />
+          </div>
+
+          <div className={styles.settingGroup}>
+            <div className={styles.settingLabelWrapper}>
+              <label htmlFor="min-area">
+                Min Area: <strong>{minArea}</strong>
+              </label>
+              <span className={styles.rangeLimits}>100 - 1000</span>
+            </div>
+            <input
+              id="min-area"
+              type="range"
+              min="100"
+              max="1000"
+              step="50"
+              value={minArea}
+              onChange={(e) => setMinArea(parseInt(e.target.value, 10))}
+              className={styles.rangeInput}
+            />
+          </div>
+
+          <div className={styles.settingGroup}>
+            <div className={styles.settingLabelWrapper}>
+              <label htmlFor="min-thickness">
+                Min Thickness: <strong>{minThickness === 0 ? "0 (Disabled)" : minThickness}</strong>
+              </label>
+              <span className={styles.rangeLimits}>0 - 100</span>
+            </div>
+            <input
+              id="min-thickness"
+              type="range"
+              min="0"
+              max="100"
+              value={minThickness}
+              onChange={(e) => setMinThickness(parseInt(e.target.value, 10))}
+              className={styles.rangeInput}
+            />
+          </div>
+
+          <button
+            type="button"
+            className={`button flex-center gap-xs ${styles.resetButton}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setNumColors(16);
+              setMinArea(100);
+              setMinThickness(10);
+            }}
+          >
+            <RotateCcw size={16} />
+            <span>Use Defaults</span>
+          </button>
+        </div>
+      </div>
     );
-  }, [originalSrc, isProcessing, progress, processImage]);
+  }, [originalSrc, isProcessing, progress, processImage, numColors, minArea, minThickness, isSettingsOpen]);
 
   return (
     <GlassCard
