@@ -108,129 +108,11 @@
 
 .editorMainContainer {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   width: 100%;
   gap: var(--spacing-lg);
   align-items: center;
   margin-top: var(--spacing-md);
-}
-
-.settingsPanel {
-  display: none;
-  flex-direction: column;
-  gap: var(--spacing-md);
-  padding: var(--spacing-lg);
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-md);
-  box-shadow: 0 4px 30px var(--glass-shadow);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  width: 100%;
-  max-width: 400px;
-  text-align: left;
-  height: fit-content;
-}
-
-.settingsPanel.settingsOpen {
-  display: flex;
-}
-
-.settingsHeading {
-  margin: 0 0 var(--spacing-xs) 0;
-  font-size: 1.25rem;
-  color: var(--color-primary);
-  border-bottom: 1px solid var(--color-border);
-  padding-bottom: var(--spacing-xs);
-}
-
-.settingGroup {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
-
-.settingLabelWrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.95rem;
-}
-
-.settingLabelWrapper label {
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.settingLabelWrapper label strong {
-  color: var(--color-primary);
-}
-
-.rangeLimits {
-  font-size: 0.8rem;
-  color: var(--color-text-light);
-  opacity: 0.8;
-}
-
-.rangeInput {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 6px;
-  border-radius: 3px;
-  background: var(--color-border);
-  outline: none;
-  margin: var(--spacing-xs) 0;
-}
-
-.rangeInput::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--color-primary);
-  cursor: pointer;
-  transition: transform 0.1s ease, background-color 0.2s ease;
-}
-
-.rangeInput::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
-  background: var(--color-primary-dark);
-}
-
-.rangeInput::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  border: none;
-  border-radius: 50%;
-  background: var(--color-primary);
-  cursor: pointer;
-  transition: transform 0.1s ease, background-color 0.2s ease;
-}
-
-.rangeInput::-moz-range-thumb:hover {
-  transform: scale(1.2);
-  background: var(--color-primary-dark);
-}
-
-.warningText {
-  font-size: 0.8rem;
-  color: var(--color-text-light);
-  margin-top: var(--spacing-xs);
-  line-height: 1.3;
-}
-
-.resetButton {
-  background-color: transparent;
-  border: 1px solid var(--color-primary);
-  color: var(--color-primary);
-  transition: all 0.2s ease;
-}
-
-.resetButton:hover {
-  background-color: var(--color-primary);
-  color: var(--color-bg);
 }
 
 @media (min-width: 768px) {
@@ -238,11 +120,5 @@
     flex-direction: row;
     align-items: stretch;
     justify-content: center;
-  }
-
-  .settingsPanel {
-    display: flex !important;
-    width: 300px;
-    flex-shrink: 0;
   }
 }

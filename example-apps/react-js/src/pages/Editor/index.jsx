@@ -3,11 +3,11 @@ import GlassModal from "@components/GlassModal";
 import useFullscreen from "@hooks/useFullscreen";
 import parse from "html-react-parser";
 import { bilateralFilter, findContours, kmeans } from "img2num";
-import { RotateCcw } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import EditorControls from "./EditorControls";
 import EditorHelmet from "./EditorHelmet";
+import ConfigPanel from "@components/ConfigPanel";
 
 import styles from "./Editor.module.css";
 
@@ -30,6 +30,15 @@ export default function Editor() {
   const [numColors, setNumColors] = useState(initialSettings?.numColors ?? 16);
   const [minArea, setMinArea] = useState(initialSettings?.minArea ?? 100);
   const [minThickness, setMinThickness] = useState(initialSettings?.minThickness ?? 10);
+  const [sigmaSpatial, setSigmaSpatial] = useState(initialSettings?.sigmaSpatial ?? 3);
+  const [sigmaRange, setSigmaRange] = useState(initialSettings?.sigmaRange ?? 50);
+  const [colorSpace, setColorSpace] = useState(initialSettings?.colorSpace ?? 0);
+
+  const [cachedBilateralFiltered, setCachedBilateralFiltered] = useState(imgBilateralFiltered);
+  const [appliedSigmaSpatial, setAppliedSigmaSpatial] = useState(initialSettings?.sigmaSpatial ?? 3);
+  const [appliedSigmaRange, setAppliedSigmaRange] = useState(initialSettings?.sigmaRange ?? 50);
+  const [appliedColorSpace, setAppliedColorSpace] = useState(initialSettings?.colorSpace ?? 0);
+
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isReprocessing, setIsReprocessing] = useState(false);
 
@@ -45,13 +54,27 @@ export default function Editor() {
     try {
       const { width, height } = fileData;
 
-      let filteredPixels = imgBilateralFiltered;
-      if (!filteredPixels) {
+      const bilateralChanged =
+        sigmaSpatial !== appliedSigmaSpatial ||
+        sigmaRange !== appliedSigmaRange ||
+        colorSpace !== appliedColorSpace ||
+        !cachedBilateralFiltered;
+
+      let filteredPixels = cachedBilateralFiltered;
+
+      if (bilateralChanged) {
         filteredPixels = await bilateralFilter({
           pixels: fileData.pixels,
           width,
           height,
+          sigma_spatial: sigmaSpatial,
+          sigma_range: sigmaRange,
+          color_space: colorSpace,
         });
+        setCachedBilateralFiltered(filteredPixels);
+        setAppliedSigmaSpatial(sigmaSpatial);
+        setAppliedSigmaRange(sigmaRange);
+        setAppliedColorSpace(colorSpace);
       }
 
       const { labels } = await kmeans({
@@ -391,6 +414,9 @@ export default function Editor() {
 
     const shapes = svgRoot.querySelectorAll(SHAPE_SELECTOR);
     shapes.forEach((shape, i) => {
+      // Remove coloredRegion class in case the DOM node was recycled
+      shape.classList.remove(styles.coloredRegion);
+
       if (!shape.dataset.id) {
         shape.dataset.id = `shape-${i}`;
       }
@@ -456,97 +482,33 @@ export default function Editor() {
         <div className={styles.editorMainContainer}>
           {/* Settings Panel */}
           {fileData && (
-            <div className={`${styles.settingsPanel} ${isSettingsOpen ? styles.settingsOpen : ""}`} onClick={(e) => e.stopPropagation()}>
-              <h3 className={styles.settingsHeading}>Configuration</h3>
-
-              <div className={styles.settingGroup}>
-                <div className={styles.settingLabelWrapper}>
-                  <label htmlFor="k-colors">
-                    Colors (k): <strong>{numColors}</strong>
-                  </label>
-                  <span className={styles.rangeLimits}>2 - 64</span>
-                </div>
-                <input
-                  id="k-colors"
-                  type="range"
-                  min="2"
-                  max="64"
-                  value={numColors}
-                  onChange={(e) => setNumColors(parseInt(e.target.value, 10))}
-                  className={styles.rangeInput}
-                  disabled={isReprocessing}
-                />
-              </div>
-
-              <div className={styles.settingGroup}>
-                <div className={styles.settingLabelWrapper}>
-                  <label htmlFor="min-area">
-                    Min Area: <strong>{minArea}</strong>
-                  </label>
-                  <span className={styles.rangeLimits}>100 - 1000</span>
-                </div>
-                <input
-                  id="min-area"
-                  type="range"
-                  min="100"
-                  max="1000"
-                  step="50"
-                  value={minArea}
-                  onChange={(e) => setMinArea(parseInt(e.target.value, 10))}
-                  className={styles.rangeInput}
-                  disabled={isReprocessing}
-                />
-              </div>
-
-              <div className={styles.settingGroup}>
-                <div className={styles.settingLabelWrapper}>
-                  <label htmlFor="min-thickness">
-                    Min Thickness: <strong>{minThickness === 0 ? "0 (Disabled)" : minThickness}</strong>
-                  </label>
-                  <span className={styles.rangeLimits}>0 - 100</span>
-                </div>
-                <input
-                  id="min-thickness"
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={minThickness}
-                  onChange={(e) => setMinThickness(parseInt(e.target.value, 10))}
-                  className={styles.rangeInput}
-                  disabled={isReprocessing}
-                />
-              </div>
-
-              <div className="flex-center gap-sm" style={{ marginTop: "var(--spacing-xs)", width: "100%" }}>
-                <button
-                  type="button"
-                  className={`button flex-center gap-xs ${styles.resetButton}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setNumColors(16);
-                    setMinArea(100);
-                    setMinThickness(10);
-                  }}
-                  disabled={isReprocessing}
-                >
-                  <RotateCcw size={16} />
-                  <span>Use Defaults</span>
-                </button>
-
-                <button
-                  type="button"
-                  className="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    reprocessImage();
-                  }}
-                  disabled={isReprocessing}
-                  style={{ flex: 1 }}
-                >
-                  {isReprocessing ? "Applying..." : "Apply"}
-                </button>
-              </div>
-            </div>
+            <ConfigPanel
+              numColors={numColors}
+              setNumColors={setNumColors}
+              minArea={minArea}
+              setMinArea={setMinArea}
+              minThickness={minThickness}
+              setMinThickness={setMinThickness}
+              sigmaSpatial={sigmaSpatial}
+              setSigmaSpatial={setSigmaSpatial}
+              sigmaRange={sigmaRange}
+              setSigmaRange={setSigmaRange}
+              colorSpace={colorSpace}
+              setColorSpace={setColorSpace}
+              isOpen={isSettingsOpen}
+              onReset={() => {
+                setNumColors(16);
+                setMinArea(100);
+                setMinThickness(10);
+                setSigmaSpatial(3);
+                setSigmaRange(50);
+                setColorSpace(0);
+              }}
+              onAction={reprocessImage}
+              actionLabel="Apply"
+              isProcessing={isReprocessing}
+              showWarning={true}
+            />
           )}
 
           <GlassCard

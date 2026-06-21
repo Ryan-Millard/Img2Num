@@ -83,3 +83,9 @@
   background-color: var(--color-primary-dark) !important;
   color: var(--color-accent) !important;
 }
+
+@media (min-width: 768px) {
+  .settingsToggleBtn {
+    display: none !important;
+  }
+}
