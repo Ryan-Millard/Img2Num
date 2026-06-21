@@ -35,7 +35,8 @@ jobs:
           path: ${{ inputs.wasm-artifacts-path }}
 
       - name: Build img2num module
-        run: pnpm -F img2num build
+        # Only build for browser since that is all we need here
+        run: pnpm -F img2num build:browser
 
       - name: Build React app
         run: pnpm -F react-example run build
