@@ -10,10 +10,13 @@ help:
     \t cpp: build c++ core and c bindings \n \
     \t js: build js/wasm bindings \n \
     \t py: build python bindings and python package \n \
+    \t packages-js: build browser and node packages using js/wasm bindings \n \
     \t all: build all of above \n \
     clean <target>: \n \
     \t cpp: delete c++ and c build folder (build-c-cpp) \n \
     \t js: delete js build folder (build-wasm) \n \
+    \t packages-js: delete packages/js/dist folder \n \
+    \t packages-py: delete packages/py/build-py folder \n \
     docs <action>: \n \
     \t build: build docusaurus server \n \
     \t start: start docusaurus server on port 3000 \n \
@@ -23,6 +26,7 @@ help:
     console-cpp <input_image>: run example C++ app on input image \n \
     console-c <input_image>: run example C app on input image \n \
     console-py <input_image>: run example python app on input image \n \
+    console-js <input_image>: run example node app on input image \n \
     "
 
 init:
