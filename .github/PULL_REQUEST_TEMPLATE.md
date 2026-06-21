@@ -8,24 +8,20 @@ Please note that by submitting this pull request to **Img2Num**, you confirm tha
 4. You understand that your contributions may be reviewed and edited for consistency and quality before merging.
  -->
 
-## What was changed & why
+## Changes & Reason
 
-<!-- A sentence or two describing the change. -->
-<!-- A brief motivation for this change -->
+### Changes
+<!--What changed-->
 
-<!-- Use the fixes keyword below and the issue related to this PR to link them. -->
+### Reason
+<!--Why it was changed-->
 
-Fixes: #<issue-number> <!-- use "Fixes: none" if no related issue -->
-
-## Changes
-
-<!-- A list of important changes -->
+## Related Issues
+<!--Related issues (auto close when this PR merges)-->
+Fixes: #
 
 ## Testing & Verification
-
-<!-- If there are tests, explain how you wrote them. Otherwise, explain how you know this works.  -->
-<!-- This doesn't apply to docs -->
+<!--How these changes were tested-->
 
 ## Additional Resources
-
 <!-- Extra information, e.g. screenshots -->
