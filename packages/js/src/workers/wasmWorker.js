@@ -39,7 +39,6 @@
  */
 
 import createImg2NumModule from "@wasm/index.js";
-import path from "node:path";
 
 let wasmModule;
 
@@ -231,11 +230,11 @@ if (__TARGET__ === "node") {
   // 3. Listen for incoming messages from the console app main thread
   // (Node passes the raw payload directly, no nested event wrapper needed)
   parentPort.on("message", async (data) => {
-    await handleMessage(data); 
+    await handleMessage(data);
     await destroyWebGPU();
-    parentPort.close(); 
+    parentPort.close();
   });
-  
+
 
 } else {
   // Browser Worker setup: Standard event-unwrapping listener
