@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import path from "path";
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(() => {
   const __TARGET__ = process.env.TARGET ?? "browser";
   const isNode = __TARGET__ === "node";
 

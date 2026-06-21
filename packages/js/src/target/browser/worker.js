@@ -4,6 +4,7 @@ export async function createWorker() {
   return {
     postMessage: (msg) => worker.postMessage(msg),
     onMessage: (fn) => (worker.onmessage = (e) => fn(e.data)),
+    onError: (fn) => (worker.onerror = fn),
     terminate: () => worker.terminate(),
   };
 }

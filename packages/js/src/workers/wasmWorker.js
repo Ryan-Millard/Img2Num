@@ -218,11 +218,14 @@ async function handleMessage(data) {
 }
 
 if (__TARGET__ === "node") {
-  // 1. Dynamically pull in Node's worker thread communications channel
   const { parentPort } = await import("node:worker_threads");
   const { initWebGPU, destroyWebGPU } = await import("../target/node/webgpu.js");
 
-  await initWebGPU();
+  try {
+    await initWebGPU();
+  } catch (err) {
+    console.error(`[Img2Num node/worker.js] Error: ${err}`);
+  }
 
   // 2. FIX THE TYPO: Polyfill globalThis.postMessage so handleMessage can call it natively!
   globalThis.postMessage = (data) => parentPort.postMessage(data);

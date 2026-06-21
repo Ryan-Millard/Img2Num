@@ -11,9 +11,6 @@ importers:
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
-      vite-plugin-static-copy:
-        specifier: '*'
-        version: 4.1.1(vite@8.0.14(@types/node@25.6.0)(jiti@1.21.7)(terser@5.46.2)(yaml@2.8.3))
     devDependencies:
       clang-format:
         specifier: ^1.8.0
@@ -6027,10 +6024,6 @@ packages:
     resolution: {integrity: sha512-/bjOqmgETBYB5BoEeGVea8dmvHb2m9GLy1E9W43yeyfP6QQCZGFNa+XRceJEuDB6zqr+gKpIAmlLebMpykw/MQ==}
     engines: {node: '>=10'}
 
-  p-map@7.0.4:
-    resolution: {integrity: sha512-tkAQEw8ysMzmkhgw8k+1U/iPhWNhykKnSk4Rd5zLoPJCuJaGRPo6YposrZgaxHKzDHdDWWZvE/Sk7hsL2X/CpQ==}
-    engines: {node: '>=18'}
-
   p-queue@6.6.2:
     resolution: {integrity: sha512-RwFpb72c/BhQLEXIZ5K2e+AhgNVmIejGlTgiB9MzZ0e93GRvqZ7uSi0dvRF7/XIXDeNkra2fNHBxTyPDGySpjQ==}
     engines: {node: '>=8'}
@@ -7417,10 +7410,6 @@ packages:
     resolution: {integrity: sha512-pn99VhoACYR8nFHhxqix+uvsbXineAasWm5ojXoN8xEwK5Kd3/TrhNn1wByuD52UxWRLy8pu+kRMniEi6Eq9Zg==}
     engines: {node: '>=12.0.0'}
 
-  tinyglobby@0.2.17:
-    resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
-    engines: {node: '>=12.0.0'}
-
   tinypool@1.1.1:
     resolution: {integrity: sha512-Zba82s87IFq9A9XmjiX5uZA/ARWDrB03OHlq+Vw1fSdt0I+4/Kutwy8BP4Y/y/aORMo61FQ0vIb5j44vSo5Pkg==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -7696,12 +7685,6 @@ packages:
 
   vite-plugin-sitemap@0.8.2:
     resolution: {integrity: sha512-bqIw6NVOXg6je81lzX8Lm0vjf8/QSAp8di8fYQzZ3ZdVicOm8+6idBGALJiy1R1FiXNIK8rgORO6HBqXyHW+iQ==}
-
-  vite-plugin-static-copy@4.1.1:
-    resolution: {integrity: sha512-GrlA8YklrAfSyxJ4M3fdQLOo9oNkp56IM9FYgX/WtEgeIFkPwhu4wzpufBCIuNKCa6Fn77FkRdYxkHqV0FwjAw==}
-    engines: {node: ^22.0.0 || >=24.0.0}
-    peerDependencies:
-      vite: ^6.0.0 || ^7.0.0 || ^8.0.0
 
   vite-plugin-svgr@5.2.0:
     resolution: {integrity: sha512-qj2eAKF8C6PZWemVTvQA0xgQIcP1hHU6Buh7fl6BhvayWwnuxE+z417miKxeDvRWbDrupQ1oK99hfxElopJ3sQ==}
@@ -15214,8 +15197,6 @@ snapshots:
     dependencies:
       aggregate-error: 3.1.0
 
-  p-map@7.0.4: {}
-
   p-queue@6.6.2:
     dependencies:
       eventemitter3: 4.0.7
@@ -16839,11 +16820,6 @@ snapshots:
       fdir: 6.5.0(picomatch@4.0.4)
       picomatch: 4.0.4
 
-  tinyglobby@0.2.17:
-    dependencies:
-      fdir: 6.5.0(picomatch@4.0.4)
-      picomatch: 4.0.4
-
   tinypool@1.1.1: {}
 
   tinyrainbow@3.1.0: {}
@@ -17100,14 +17076,6 @@ snapshots:
       - rollup
 
   vite-plugin-sitemap@0.8.2: {}
-
-  vite-plugin-static-copy@4.1.1(vite@8.0.14(@types/node@25.6.0)(jiti@1.21.7)(terser@5.46.2)(yaml@2.8.3)):
-    dependencies:
-      chokidar: 3.6.0
-      p-map: 7.0.4
-      picocolors: 1.1.1
-      tinyglobby: 0.2.17
-      vite: 8.0.14(@types/node@25.6.0)(jiti@1.21.7)(terser@5.46.2)(yaml@2.8.3)
 
   vite-plugin-svgr@5.2.0(typescript@6.0.3)(vite@8.0.14(@types/node@25.6.0)(jiti@1.21.7)(terser@5.46.2)(yaml@2.8.3)):
     dependencies:

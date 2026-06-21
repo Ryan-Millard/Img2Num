@@ -89,7 +89,6 @@
     "prettier": "^3.8.3"
   },
   "dependencies": {
-    "fast-glob": "^3.3.3",
-    "vite-plugin-static-copy": "*"
+    "fast-glob": "^3.3.3"
   }
 }

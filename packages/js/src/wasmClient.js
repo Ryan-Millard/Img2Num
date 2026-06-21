@@ -84,6 +84,14 @@ export async function initWasmWorker() {
   worker = await createWorker();
 
   worker.onMessage(handleMessage);
+  worker.onError((event) => {
+    const output = event.message || "WASM worker error";
+    const err = new Error(`[Img2Num wasmClient] Error: ${output}`);
+    for (const [_id, cb] of callbacks) {
+      cb.reject(err);
+    }
+    callbacks.clear();
+  });
 
   initialized = true;
 }
