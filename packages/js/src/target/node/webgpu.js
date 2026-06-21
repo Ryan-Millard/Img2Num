@@ -28,8 +28,8 @@ export async function destroyWebGPU() {
   // 3. Reset our internal module-level promise cache
   gpuInitPromise = null;
 
-  // 4. CRITICAL: Yield to the event loop. This gives Dawn's native engine 
-  // a small time window to notice the reference count hit 0, dismantle its 
+  // 4. CRITICAL: Yield to the event loop. This gives Dawn's native engine
+  // a small time window to notice the reference count hit 0, dismantle its
   // background threads, and flush outstanding callbacks BEFORE the process terminates.
   await new Promise((resolve) => setTimeout(resolve, 50));
 }

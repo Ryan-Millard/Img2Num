@@ -234,8 +234,6 @@ if (__TARGET__ === "node") {
     await destroyWebGPU();
     parentPort.close();
   });
-
-
 } else {
   // Browser Worker setup: Standard event-unwrapping listener
   globalThis.onmessage = ({ data }) => handleMessage(data);
