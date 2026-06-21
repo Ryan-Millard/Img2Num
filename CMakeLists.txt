@@ -2,10 +2,19 @@
 # Img2Num Top-Level (Manages all libs and apps)
 # =================================================================
 cmake_minimum_required(VERSION 3.16)
-project(Img2Num LANGUAGES CXX)
+project(Img2NumRootManager LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# Ensure we strictly conform to the C++17 standard
+# This is important for inter-OS reproducibility
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Reusable flags to ensure good quality code
+set(IMG2NUM_STRICT_CXX_FLAGS
+    $<$<AND:$<COMPILE_LANGUAGE:CXX>,$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>>>:-Wpedantic -Werror=pedantic -Werror=c++20-extensions>
+    $<$<AND:$<COMPILE_LANGUAGE:CXX>,$<CXX_COMPILER_ID:MSVC>>:/permissive->
+)
 
 option(BUILD_PYTHON "Build Python bindings" OFF)
 option(IMG2NUM_BUILD_EXAMPLES "Build example applications" ON)
