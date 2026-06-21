@@ -217,4 +217,21 @@ async function handleMessage(data) {
   }
 }
 
-globalThis.onmessage = ({ data }) => handleMessage(data);
+if (__TARGET__ === "node") {
+  // 1. Dynamically pull in Node's worker thread communications channel
+  const { parentPort } = await import("node:worker_threads");
+
+  const { create } = await import("webgpu");
+  globalThis.navigator ??= {};
+  globalThis.navigator.gpu = create(["backend=vulkan"]);
+  
+  // 2. FIX THE TYPO: Polyfill globalThis.postMessage so handleMessage can call it natively!
+  globalThis.postMessage = (data) => parentPort.postMessage(data);
+  
+  // 3. Listen for incoming messages from the console app main thread
+  // (Node passes the raw payload directly, no nested event wrapper needed)
+  parentPort.on("message", (data) => handleMessage(data));
+} else {
+  // Browser Worker setup: Standard event-unwrapping listener
+  globalThis.onmessage = ({ data }) => handleMessage(data);
+}

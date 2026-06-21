@@ -28,6 +28,7 @@ help:
 init:
     @echo "Pulling submodules"
     git submodule update --init
+    pnpm install
     just build all
 
 format:
@@ -43,6 +44,7 @@ build-wasm:
     @echo "Build JS bindings"
     emcmake cmake -DCMAKE_BUILD_TYPE=Release -B build-wasm/ .
     cmake --build build-wasm/ --parallel
+    pnpm -F img2num build
 
 build-py:
     @echo "Build python bindings and py package"
@@ -62,6 +64,8 @@ clean target:
     case "{{ target }}" in \
         cpp) rm -rf build-c-cpp/ ;; \
         js) rm -rf build-wasm/ ;; \
+        packages-js) rm -rf packages/js/dist/ ;; \
+        packages-py) rm -rf packages/py/build-py/ ;; \
     esac
 
 docs action:
@@ -90,3 +94,7 @@ console-cpp input:
 console-c input:
     @echo "./build-c-cpp/example-apps/console-c/console_c_app {{ input }}"
     ./build-c-cpp/example-apps/console-c/console_c_app "{{ input }}"
+
+console-js input:
+    @echo "node example-apps/console-js/index.js {{ input }}"
+    node example-apps/console-js/index.js "{{ input }}"

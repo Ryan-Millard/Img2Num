@@ -3,36 +3,63 @@ import path from "path";
 
 export default defineConfig(({ mode }) => {
   const __TARGET__ = process.env.TARGET ?? "browser";
-
   const isNode = __TARGET__ === "node";
 
   return {
-    // Set the environment for Vite
-    ...(isNode && { ssr: { target: "node" } }),
     base: "./",
+    plugins: [],
+    
+    // NATIVE COPIER: Copies index.wasm into dist/node/ automatically
+    publicDir: isNode ? "build-wasm" : "src/workers",
 
     build: {
       base: "./",
       outDir: `dist/${__TARGET__}`,
-      publicDir: "src/workers",
-      assetsDir: "assets",
+      assetsDir: ".", 
       emptyOutDir: true,
+      
+      // 1. CRITICAL: This tells the production bundler to preserve 
+      // native Node subsystems (like 'module' and 'fs') instead of shimming them for the web.
+      ssr: isNode, 
       ...(isNode && { target: "node18" }),
 
-      lib: {
-        entry: "src/index.js",
-        formats: ["es"]
-      },
+      minify: !isNode, 
+
+      lib: isNode 
+        ? {
+            entry: {
+              img2num: "src/index.js",
+              wasmWorker: "src/workers/wasmWorker.js"
+            },
+            formats: ["es"],
+            fileName: (format, entryName) => `${entryName}.js`
+          }
+        : {
+            entry: "src/index.js",
+            formats: ["es"]
+          },
 
       rollupOptions: {
         external: isNode
-        ? [
-          "node:worker_threads", "worker_threads",
-          "node:path", "path",
-          "node:url", "url",
-          "webgpu"
-        ]
-        : []
+          ? [
+              "node:worker_threads", "worker_threads",
+              "node:path", "path",
+              "node:url", "url",
+              "node:webgpu", "webgpu",
+              "node:module", "module"
+            ]
+          : [],
+        
+        output: isNode 
+          ? {
+              manualChunks(id) {
+                if (id.includes('build-wasm')) {
+                  return 'wasmWorker';
+                }
+              },
+              assetFileNames: "[name][extname]"
+            }
+          : {}
       }
     },
 
