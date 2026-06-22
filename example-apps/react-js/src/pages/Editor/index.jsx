@@ -42,6 +42,26 @@ export default function Editor() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isReprocessing, setIsReprocessing] = useState(false);
 
+  const viewportRef = useRef(null);
+  const innerRef = useRef(null);
+  const rafRef = useRef(null);
+  const transformRef = useRef({
+    scale: 1,
+    tx: 0,
+    ty: 0,
+  });
+
+  const resetColoring = useCallback(() => {
+    const svgRoot = innerRef.current?.querySelector("svg");
+    if (svgRoot) {
+      svgRoot.querySelectorAll(SHAPE_SELECTOR).forEach((shape) => {
+        shape.classList.remove(styles.coloredRegion);
+      });
+    }
+    setHistory([[]]);
+    setHistoryIndex(0);
+  }, []);
+
   useEffect(() => {
     if (svg) {
       setSvgElements(parse(svg));
@@ -50,6 +70,7 @@ export default function Editor() {
 
   const reprocessImage = async () => {
     if (!fileData) return;
+    resetColoring();
     setIsReprocessing(true);
     try {
       const { width, height } = fileData;
@@ -99,17 +120,6 @@ export default function Editor() {
       setIsReprocessing(false);
     }
   };
-
-  const viewportRef = useRef(null);
-  const innerRef = useRef(null);
-
-  const rafRef = useRef(null);
-
-  const transformRef = useRef({
-    scale: 1,
-    tx: 0,
-    ty: 0,
-  });
 
   const { ref: fsRef, toggle: toggleFullscreen } = useFullscreen();
 
@@ -507,6 +517,7 @@ export default function Editor() {
               onAction={reprocessImage}
               actionLabel="Apply"
               isProcessing={isReprocessing}
+              onClose={() => setIsSettingsOpen(false)}
               showWarning={true}
             />
           )}

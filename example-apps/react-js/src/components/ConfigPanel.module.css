@@ -13,21 +13,80 @@
   max-width: 400px;
   text-align: left;
   height: fit-content;
+  position: relative;
 }
 
 .settingsPanel.settingsOpen {
   display: flex;
 }
 
+.settingsHeaderWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--color-primary);
+  padding-bottom: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
+}
+
 .settingsHeading {
   margin: 0;
   font-size: 1.35rem;
   color: var(--color-primary);
-  border-bottom: 2px solid var(--color-primary);
-  padding-bottom: var(--spacing-xs);
-  margin-bottom: var(--spacing-xs);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.headerButtons {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.collapseButton, .expandButton, .closeButton {
+  background: transparent;
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s;
+}
+
+.collapseButton:hover, .expandButton:hover, .closeButton:hover {
+  background: var(--glass-border);
+}
+
+/* Close button defaults to visible on mobile, hidden on desktop */
+.closeButton {
+  display: flex;
+}
+
+/* Collapse button defaults to hidden on mobile, visible on desktop */
+.collapseButton {
+  display: none;
+}
+
+.settingsCollapsed {
+  width: 50px !important;
+  max-width: 50px !important;
+  padding: var(--spacing-sm) !important;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.verticalText {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  margin-top: var(--spacing-md);
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-primary);
 }
 
 .sectionHeader {
@@ -59,8 +118,21 @@
   font-weight: 500;
 }
 
-.settingLabelWrapper label strong {
-  color: var(--color-primary);
+.labelWithTooltip {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.infoIcon {
+  color: var(--color-text-light);
+  opacity: 0.6;
+  cursor: help;
+  transition: opacity 0.2s;
+}
+
+.infoIcon:hover {
+  opacity: 1;
 }
 
 .rangeLimits {
@@ -111,28 +183,63 @@
   background: var(--color-primary-dark);
 }
 
-.selectInput {
-  width: 100%;
-  padding: var(--spacing-sm);
-  background: var(--glass-bg);
+/* Themed Input box that matches glassmorphic styles instead of solid white */
+.numberInput {
+  width: 60px;
+  padding: 4px 6px;
+  background: rgba(106, 56, 23, 0.08);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
-  color: var(--color-text);
+  color: var(--color-primary);
   font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+:root.dark .numberInput {
+  background: rgba(248, 234, 205, 0.08);
+  color: var(--color-text);
+}
+
+.numberInput:focus {
+  border-color: var(--color-primary);
+  background: rgba(106, 56, 23, 0.15);
+}
+
+:root.dark .numberInput:focus {
+  background: rgba(248, 234, 205, 0.15);
+}
+
+.advancedToggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--color-border);
+  padding: var(--spacing-sm) 0;
+  margin-top: var(--spacing-sm);
+  color: var(--color-primary);
+  font-weight: bold;
+  font-size: 0.95rem;
   cursor: pointer;
   outline: none;
-  transition: border-color 0.2s;
+  transition: opacity 0.2s;
 }
 
-.selectInput:focus {
-  border-color: var(--color-primary);
+.advancedToggle:hover {
+  opacity: 0.8;
 }
 
-.warningText {
-  font-size: 0.8rem;
-  color: var(--color-text-light);
-  margin-top: var(--spacing-xs);
-  line-height: 1.3;
+.advancedContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  width: 100%;
 }
 
 .resetButton {
@@ -147,8 +254,4 @@
   color: var(--color-bg);
 }
 
-@media (min-width: 768px) {
-  .settingsPanel {
-    display: flex !important;
-  }
-}
+

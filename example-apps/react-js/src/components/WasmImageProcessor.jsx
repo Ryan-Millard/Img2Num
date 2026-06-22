@@ -41,6 +41,7 @@ const WasmImageProcessor = () => {
 
     const url = URL.createObjectURL(file);
     setOriginalSrc(url);
+    setIsSettingsOpen(true);
 
     const { pixels, width, height } = await imageToUint8ClampedArray(file);
     setFileData({ pixels, width, height });
@@ -159,9 +160,7 @@ const WasmImageProcessor = () => {
     [],
   );
 
-  const LoadedState = useMemo(() => {
-    if (!originalSrc) return null;
-
+  if (originalSrc) {
     return (
       <div className={styles.loadedContainer} onClick={(e) => e.stopPropagation()}>
         <ConfigPanel
@@ -189,48 +188,59 @@ const WasmImageProcessor = () => {
           onAction={processImage}
           actionLabel="Ok"
           isProcessing={isProcessing}
+          onClose={() => setIsSettingsOpen(false)}
         />
 
-        <div className={styles.previewContainer}>
+        <GlassCard
+          className={`flex-center flex-column ${styles.previewCard}`}
+          onDrop={handleDrop}
+          onDragOver={(e) => e.preventDefault()}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          data-image-loaded={true}
+        >
           <img src={originalSrc} alt="Original" className={styles.preview} />
 
-          <div className={styles.controlsWrapper}>
-            {!isProcessing ? (
-              <div className="flex-center gap-md">
-                <button
-                  type="button"
-                  className={`button flex-center gap-xs ${styles.settingsToggle}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsSettingsOpen((prev) => !prev);
-                  }}
-                  aria-expanded={isSettingsOpen}
-                >
-                  <Settings size={18} />
-                  <span>Settings</span>
-                  {isSettingsOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                </button>
-              </div>
-            ) : (
+          {!isProcessing && !isSettingsOpen && (
+            <>
+              <button
+                type="button"
+                className={`button flex-center ${styles.settingsToggle}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsSettingsOpen(true);
+                }}
+                aria-expanded={isSettingsOpen}
+                aria-label="Toggle settings"
+              >
+                <Settings size={18} />
+              </button>
+
+              <button
+                type="button"
+                className={`button ${styles.okButton}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  processImage();
+                }}
+                disabled={isProcessing}
+              >
+                Ok
+              </button>
+            </>
+          )}
+
+          {isProcessing && (
+            <div className={styles.controlsWrapper}>
               <LoadingHedgehog progress={progress} text={`Processing — ${Math.round(progress)}%`} />
-            )}
-          </div>
-        </div>
+            </div>
+          )}
+        </GlassCard>
+        <input ref={inputRef} id={inputId} type="file" accept="image/*" hidden onChange={handleSelect} />
       </div>
     );
-  }, [
-    originalSrc,
-    isProcessing,
-    progress,
-    processImage,
-    numColors,
-    minArea,
-    minThickness,
-    sigmaSpatial,
-    sigmaRange,
-    colorSpace,
-    isSettingsOpen,
-  ]);
+  }
 
   return (
     <GlassCard
@@ -238,11 +248,11 @@ const WasmImageProcessor = () => {
       onDrop={handleDrop}
       onDragOver={(e) => e.preventDefault()}
       onClick={() => {
-        if (!originalSrc) inputRef.current?.click();
+        inputRef.current?.click();
       }}
-      data-image-loaded={!!originalSrc}
+      data-image-loaded={false}
     >
-      {originalSrc ? LoadedState : EmptyState}
+      {EmptyState}
 
       <input ref={inputRef} id={inputId} type="file" accept="image/*" hidden onChange={handleSelect} />
     </GlassCard>

@@ -265,7 +265,7 @@ const EditorControls = ({
               <Expand size={18} aria-hidden="true" />
             </button>
           </Tooltip>
-          {showSettingsButton && (
+          {showSettingsButton && !isSettingsOpen && (
             <Tooltip position="top" content="Adjust settings">
               <button
                 type="button"

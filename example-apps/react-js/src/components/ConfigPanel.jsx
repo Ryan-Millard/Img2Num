@@ -1,5 +1,6 @@
+import { useState } from "react";
 import PropTypes from "prop-types";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, X, ChevronDown, ChevronUp } from "lucide-react";
 import styles from "./ConfigPanel.module.css";
 
 const ConfigPanel = ({
@@ -13,88 +14,56 @@ const ConfigPanel = ({
   setSigmaSpatial,
   sigmaRange,
   setSigmaRange,
-  colorSpace,
-  setColorSpace,
   isOpen = false,
   onReset,
   onAction,
+  onClose,
   actionLabel = "Apply",
   isProcessing = false,
   className = "",
 }) => {
+  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
+
   return (
     <div
       className={`${styles.settingsPanel} ${isOpen ? styles.settingsOpen : ""} ${className}`}
       onClick={(e) => e.stopPropagation()}
     >
-      <h3 className={styles.settingsHeading}>Configuration</h3>
-
-      {/* Smoothing parameters (originally Bilateral Filter) */}
-      <div className={styles.sectionHeader}>Image Smoothing</div>
-
-      <div className={styles.settingGroup}>
-        <div className={styles.settingLabelWrapper}>
-          <label htmlFor="sigma-spatial">
-            Smoothing Radius: <strong>{sigmaSpatial}</strong>
-          </label>
-          <span className={styles.rangeLimits}>1 - 20</span>
+      <div className={styles.settingsHeaderWrapper}>
+        <h3 className={styles.settingsHeading}>Configuration</h3>
+        <div className={styles.headerButtons}>
+          {onClose && (
+            <button
+              type="button"
+              className={styles.closeButton}
+              onClick={onClose}
+              aria-label="Close settings"
+            >
+              <X size={20} />
+            </button>
+          )}
         </div>
-        <input
-          id="sigma-spatial"
-          type="range"
-          min="1"
-          max="20"
-          value={sigmaSpatial}
-          onChange={(e) => setSigmaSpatial(parseInt(e.target.value, 10))}
-          className={styles.rangeInput}
-          disabled={isProcessing}
-        />
       </div>
 
-      <div className={styles.settingGroup}>
-        <div className={styles.settingLabelWrapper}>
-          <label htmlFor="sigma-range">
-            Color Smoothing: <strong>{sigmaRange}</strong>
-          </label>
-          <span className={styles.rangeLimits}>1 - 200</span>
-        </div>
-        <input
-          id="sigma-range"
-          type="range"
-          min="1"
-          max="200"
-          value={sigmaRange}
-          onChange={(e) => setSigmaRange(parseInt(e.target.value, 10))}
-          className={styles.rangeInput}
-          disabled={isProcessing}
-        />
-      </div>
+      {/* K-Means Parameters (Color Settings) */}
+      <div className={styles.sectionHeader}>K-Means Segmentation</div>
 
       <div className={styles.settingGroup}>
         <div className={styles.settingLabelWrapper}>
-          <label htmlFor="color-space">Processing Mode</label>
-        </div>
-        <select
-          id="color-space"
-          value={colorSpace}
-          onChange={(e) => setColorSpace(parseInt(e.target.value, 10))}
-          className={styles.selectInput}
-          disabled={isProcessing}
-        >
-          <option value={0}>Detailed (Accurate)</option>
-          <option value={1}>Simple (Fast)</option>
-        </select>
-      </div>
-
-      {/* Colors (originally K-Means) */}
-      <div className={styles.sectionHeader}>Color Settings</div>
-
-      <div className={styles.settingGroup}>
-        <div className={styles.settingLabelWrapper}>
-          <label htmlFor="k-colors">
-            Number of Colors: <strong>{numColors}</strong>
-          </label>
-          <span className={styles.rangeLimits}>2 - 64</span>
+          <label htmlFor="k-colors">Number of Colors (k)</label>
+          <input
+            id="k-colors-num"
+            type="number"
+            min="2"
+            max="64"
+            value={numColors}
+            onChange={(e) => {
+              const val = Math.max(2, Math.min(64, parseInt(e.target.value, 10) || 2));
+              setNumColors(val);
+            }}
+            className={styles.numberInput}
+            disabled={isProcessing}
+          />
         </div>
         <input
           id="k-colors"
@@ -108,15 +77,26 @@ const ConfigPanel = ({
         />
       </div>
 
-      {/* Outline settings (originally Contours) */}
+      {/* Contours Parameters (Outline Details) */}
       <div className={styles.sectionHeader}>Outline Details</div>
 
       <div className={styles.settingGroup}>
         <div className={styles.settingLabelWrapper}>
-          <label htmlFor="min-area">
-            Ignore Small Spots: <strong>{minArea}</strong>
-          </label>
-          <span className={styles.rangeLimits}>100 - 1000</span>
+          <label htmlFor="min-area">Minimum Region Area</label>
+          <input
+            id="min-area-num"
+            type="number"
+            min="100"
+            max="1000"
+            step="50"
+            value={minArea}
+            onChange={(e) => {
+              const val = Math.max(100, Math.min(1000, parseInt(e.target.value, 10) || 100));
+              setMinArea(val);
+            }}
+            className={styles.numberInput}
+            disabled={isProcessing}
+          />
         </div>
         <input
           id="min-area"
@@ -133,10 +113,20 @@ const ConfigPanel = ({
 
       <div className={styles.settingGroup}>
         <div className={styles.settingLabelWrapper}>
-          <label htmlFor="min-thickness">
-            Merge Thin Lines: <strong>{minThickness === 0 ? "Disabled" : minThickness}</strong>
-          </label>
-          <span className={styles.rangeLimits}>0 - 100</span>
+          <label htmlFor="min-thickness">Minimum Region Thickness</label>
+          <input
+            id="min-thickness-num"
+            type="number"
+            min="0"
+            max="100"
+            value={minThickness}
+            onChange={(e) => {
+              const val = Math.max(0, Math.min(100, parseInt(e.target.value, 10) || 0));
+              setMinThickness(val);
+            }}
+            className={styles.numberInput}
+            disabled={isProcessing}
+          />
         </div>
         <input
           id="min-thickness"
@@ -150,7 +140,82 @@ const ConfigPanel = ({
         />
       </div>
 
-      <div className="flex-center gap-sm" style={{ marginTop: "var(--spacing-xs)", width: "100%" }}>
+      {/* Advanced Settings Collapsible Toggle */}
+      <button
+        type="button"
+        className={styles.advancedToggle}
+        onClick={() => setIsAdvancedOpen((prev) => !prev)}
+        aria-expanded={isAdvancedOpen}
+      >
+        <span>Advanced Settings</span>
+        {isAdvancedOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+      </button>
+
+      {isAdvancedOpen && (
+        <div className={styles.advancedContent}>
+          <div className={styles.sectionHeader}>Bilateral Filter</div>
+
+          <div className={styles.settingGroup}>
+            <div className={styles.settingLabelWrapper}>
+              <label htmlFor="sigma-spatial">Spatial Sigma (σ<sub>s</sub>)</label>
+              <input
+                id="sigma-spatial-num"
+                type="number"
+                min="1"
+                max="20"
+                value={sigmaSpatial}
+                onChange={(e) => {
+                  const val = Math.max(1, Math.min(20, parseInt(e.target.value, 10) || 1));
+                  setSigmaSpatial(val);
+                }}
+                className={styles.numberInput}
+                disabled={isProcessing}
+              />
+            </div>
+            <input
+              id="sigma-spatial"
+              type="range"
+              min="1"
+              max="20"
+              value={sigmaSpatial}
+              onChange={(e) => setSigmaSpatial(parseInt(e.target.value, 10))}
+              className={styles.rangeInput}
+              disabled={isProcessing}
+            />
+          </div>
+
+          <div className={styles.settingGroup}>
+            <div className={styles.settingLabelWrapper}>
+              <label htmlFor="sigma-range">Range Sigma (σ<sub>range</sub>)</label>
+              <input
+                id="sigma-range-num"
+                type="number"
+                min="1"
+                max="200"
+                value={sigmaRange}
+                onChange={(e) => {
+                  const val = Math.max(1, Math.min(200, parseInt(e.target.value, 10) || 1));
+                  setSigmaRange(val);
+                }}
+                className={styles.numberInput}
+                disabled={isProcessing}
+              />
+            </div>
+            <input
+              id="sigma-range"
+              type="range"
+              min="1"
+              max="200"
+              value={sigmaRange}
+              onChange={(e) => setSigmaRange(parseInt(e.target.value, 10))}
+              className={styles.rangeInput}
+              disabled={isProcessing}
+            />
+          </div>
+        </div>
+      )}
+
+      <div className="flex-center gap-sm" style={{ marginTop: "var(--spacing-md)", width: "100%" }}>
         <button
           type="button"
           className={`button flex-center gap-xs ${styles.resetButton}`}
@@ -192,11 +257,12 @@ ConfigPanel.propTypes = {
   setSigmaSpatial: PropTypes.func.isRequired,
   sigmaRange: PropTypes.number.isRequired,
   setSigmaRange: PropTypes.func.isRequired,
-  colorSpace: PropTypes.number.isRequired,
-  setColorSpace: PropTypes.func.isRequired,
+  colorSpace: PropTypes.number,
+  setColorSpace: PropTypes.func,
   isOpen: PropTypes.bool,
   onReset: PropTypes.func.isRequired,
   onAction: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
   actionLabel: PropTypes.string,
   isProcessing: PropTypes.bool,
   className: PropTypes.string,

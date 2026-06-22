@@ -36,18 +36,21 @@ label * {
 
 .loadedContainer {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column; /* Settings options above image on mobile */
   width: 100%;
   gap: var(--spacing-lg);
   align-items: center;
 }
 
-.previewContainer {
+.previewCard {
+  position: relative;
+  cursor: default;
+  padding: var(--spacing-lg) !important;
+  width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: var(--spacing-md);
-  max-width: 100%;
 }
 
 .controlsWrapper {
@@ -56,30 +59,48 @@ label * {
   justify-content: center;
 }
 
+.settingsToggle {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--color-primary);
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.2s, background-color 0.2s;
+  width: auto;
+}
 
+.settingsToggle:hover {
+  transform: scale(1.1);
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+}
+
+.okButton {
+  margin-top: var(--spacing-md);
+  min-width: 120px;
+  width: fit-content;
+}
 
 @media (min-width: 768px) {
   .loadedContainer {
     flex-direction: row;
     align-items: stretch;
     justify-content: center;
-    max-width: 900px;
+    width: 100%;
+    max-width: 100%;
+    gap: var(--spacing-lg);
   }
 
-  .previewContainer {
+  .previewCard {
     flex: 1;
-    max-width: 55%;
-  }
-
-  .settingsPanel {
-    display: flex !important;
-    flex: 1;
-    max-width: 45%;
-    align-self: stretch;
-    justify-content: flex-start;
-  }
-
-  .settingsToggle {
-    display: none !important;
+    height: auto;
   }
 }
