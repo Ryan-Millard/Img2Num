@@ -32,13 +32,12 @@ block()
 if(IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP)
   string(ASCII 27 ESC)
   set(COLOR_MAGENTA "${ESC}[35m")
-  set(COLOR_YELLOW "${ESC}[33m")
   set(COLOR_CYAN "${ESC}[36m")
   set(COLOR_RESET "${ESC}[0m")
 
-  message(STATUS "${COLOR_YELLOW}===============================================================${COLOR_RESET}")
-  message(STATUS "${COLOR_YELLOW}IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP Output:${COLOR_RESET}")
-  message(STATUS "${COLOR_YELLOW}===============================================================${COLOR_RESET}")
+  message(STATUS "===============================================================")
+  message(STATUS "IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP Output:")
+  message(STATUS "===============================================================")
 
   get_cmake_property(_vars CACHE_VARIABLES)
   list(SORT _vars)
@@ -57,11 +56,11 @@ if(IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP)
     string(TOUPPER "${_var}" _var_upper)
 
     if(NOT _var_upper MATCHES "^IMG2NUM")
-      message(STATUS "${COLOR_YELLOW}${_var}=${${_var}}${COLOR_RESET}")
+      message(STATUS "${_var}=${${_var}}")
     endif()
   endforeach()
 
-  message(STATUS "${COLOR_YELLOW}===============================================================\n\n${COLOR_RESET}")
+  message(STATUS "===============================================================\n\n")
 endif()
 endblock()
 
@@ -74,10 +73,24 @@ add_subdirectory(core)
 if(IMG2NUM_BUILD_PYTHON)
   # Python depends only on core
   add_subdirectory(bindings/py)
-elseif(IMG2NUM_BUILD_C)
+elseif(IMG2NUM_BUILD_C AND NOT EMSCRIPTEN)
   # C depends only on core
   add_subdirectory(bindings/c)
 elseif(EMSCRIPTEN)
+  # Check if the user tried to disable C bindings under Emscripten
+  if(NOT IMG2NUM_BUILD_C)
+    string(ASCII 27 ESC)
+    set(COLOR_RED "${ESC}[31m")
+    set(COLOR_RESET "${ESC}[0m")
+    message(WARNING 
+      "${COLOR_RED}IMG2NUM_BUILD_C was disabled under Emscripten! "
+      "WebAssembly compilation absolutely requires the C bindings. "
+      "Forcing IMG2NUM_BUILD_C=ON to prevent a broken build.${COLOR_RESET}"
+    )
+    # Force the option back to ON in the cache
+    set(IMG2NUM_BUILD_C ON CACHE BOOL "Build C bindings" FORCE)
+  endif()
+
   # WebAssembly relies on C
   add_subdirectory(bindings/c)
   add_subdirectory(bindings/js)
