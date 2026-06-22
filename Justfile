@@ -85,8 +85,8 @@ console-py input:
 
 console-cpp input:
     @echo "./build-c-cpp/example-apps/console-cpp/console_cpp_app {{ input }}"
-    ./build-c-cpp/example-apps/console-cpp/console_cpp_app "{{ input }}"
+    ./build-c-cpp/example-apps/console-cpp/Img2NumExample_console_cpp "{{ input }}"
 
 console-c input:
     @echo "./build-c-cpp/example-apps/console-c/console_c_app {{ input }}"
-    ./build-c-cpp/example-apps/console-c/console_c_app "{{ input }}"
+    ./build-c-cpp/example-apps/console-c/CImg2NumExample_console_c "{{ input }}"
