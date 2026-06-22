@@ -10,7 +10,7 @@ include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 
 set(PYBIND11_FINDPYTHON ON)
-find_package(Python3 REQUIRED COMPONENTS Interpreter Development NumPy)
+find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module NumPy)
 find_package(pybind11 REQUIRED)
 
 file(GLOB BINDING_SRC
