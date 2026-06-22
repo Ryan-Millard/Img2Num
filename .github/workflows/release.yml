@@ -3,6 +3,8 @@ name: Release (release-please, multi-language assets)
 on:
   push:
     branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
 
 jobs:
   release-please:
@@ -78,12 +80,14 @@ jobs:
         shell: bash
         run: |
           if [[ "${{ matrix.component }}" == "c" ]]; then
-            echo "created=${{ needs.release-please.outputs.c_created }}"   >> $GITHUB_OUTPUT
-            echo "tag=${{ needs.release-please.outputs.c_tag }}"           >> $GITHUB_OUTPUT
+            echo "IMG2NUM_BUILD_C_VAL=ON"                                               >> $GITHUB_OUTPUT
+            echo "created=${{ needs.release-please.outputs.c_created }}"                >> $GITHUB_OUTPUT
+            echo "tag=${{ needs.release-please.outputs.c_tag }}"                        >> $GITHUB_OUTPUT
             echo "version=${{ needs.release-please.outputs.c_version || '0.0.0-dev' }}" >> $GITHUB_OUTPUT
           else
-            echo "created=${{ needs.release-please.outputs.cpp_created }}" >> $GITHUB_OUTPUT
-            echo "tag=${{ needs.release-please.outputs.cpp_tag }}"         >> $GITHUB_OUTPUT
+            echo "IMG2NUM_BUILD_C_VAL=OFF"                                                >> $GITHUB_OUTPUT
+            echo "created=${{ needs.release-please.outputs.cpp_created }}"                >> $GITHUB_OUTPUT
+            echo "tag=${{ needs.release-please.outputs.cpp_tag }}"                        >> $GITHUB_OUTPUT
             echo "version=${{ needs.release-please.outputs.cpp_version || '0.0.0-dev' }}" >> $GITHUB_OUTPUT
           fi
 
@@ -96,7 +100,15 @@ jobs:
 
       - name: Configure
         if: ${{ steps.component.outputs.created == 'true' || needs.release-please.outputs.is_dry_run == 'true' }}
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install
+        shell: bash
+        run: |
+          cmake -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install \
+            -DIMG2NUM_BUILD_C=${{ steps.component.outputs.IMG2NUM_BUILD_C_VAL }} \
+            -DIMG2NUM_BUILD_PYTHON=OFF \
+            -DIMG2NUM_BUILD_EXAMPLES=OFF \
+            -DIMG2NUM_DEBUG_CACHE_VARIABLES_DUMP=ON
 
       - name: Build
         if: ${{ steps.component.outputs.created == 'true' || needs.release-please.outputs.is_dry_run == 'true' }}

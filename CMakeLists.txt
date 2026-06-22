@@ -16,8 +16,10 @@ set(IMG2NUM_STRICT_CXX_FLAGS
     $<$<AND:$<COMPILE_LANGUAGE:CXX>,$<CXX_COMPILER_ID:MSVC>>:/permissive->
 )
 
-option(BUILD_PYTHON "Build Python bindings" OFF)
+option(IMG2NUM_BUILD_C "Build C bindings" ON)
+option(IMG2NUM_BUILD_PYTHON "Build Python bindings" OFF)
 option(IMG2NUM_BUILD_EXAMPLES "Build example applications" ON)
+option(IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP "Dump CMake environment variables in Debug mode" ON)
 
 # Force a safe default to avoid the weirdness of CMake's `None`
 if(NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
@@ -25,27 +27,68 @@ if(NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build" FORCE)
 endif()
 
-message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+# Debug variable dump during "cmake -B..."
+block()
+if(IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP)
+  string(ASCII 27 ESC)
+  set(COLOR_MAGENTA "${ESC}[35m")
+  set(COLOR_YELLOW "${ESC}[33m")
+  set(COLOR_CYAN "${ESC}[36m")
+  set(COLOR_RESET "${ESC}[0m")
 
-# Core library
+  message(STATUS "${COLOR_YELLOW}===============================================================${COLOR_RESET}")
+  message(STATUS "${COLOR_YELLOW}IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP Output:${COLOR_RESET}")
+  message(STATUS "${COLOR_YELLOW}===============================================================${COLOR_RESET}")
+
+  get_cmake_property(_vars CACHE_VARIABLES)
+  list(SORT _vars)
+
+  foreach(_var ${_vars})
+    string(TOUPPER "${_var}" _var_upper)
+
+    if(_var MATCHES "^IMG2NUM")
+      message(STATUS "[User-Defined] ${COLOR_MAGENTA}${_var}=${${_var}}${COLOR_RESET}")
+    elseif(_var_upper MATCHES "^IMG2NUM")
+      message(STATUS "[Auto] ${COLOR_CYAN}${_var}=${${_var}}${COLOR_RESET}")
+    endif()
+  endforeach()
+
+  foreach(_var ${_vars})
+    string(TOUPPER "${_var}" _var_upper)
+
+    if(NOT _var_upper MATCHES "^IMG2NUM")
+      message(STATUS "${COLOR_YELLOW}${_var}=${${_var}}${COLOR_RESET}")
+    endif()
+  endforeach()
+
+  message(STATUS "${COLOR_YELLOW}===============================================================\n\n${COLOR_RESET}")
+endif()
+endblock()
+
+# ================================================
+# Library setup
+
+# Always add core because everything depends on it
 add_subdirectory(core)
 
-# C bindings
-add_subdirectory(bindings/c)
-
-if(EMSCRIPTEN)
-  # JS bindings
+if(IMG2NUM_BUILD_PYTHON)
+  # Python depends only on core
+  add_subdirectory(bindings/py)
+elseif(IMG2NUM_BUILD_C)
+  # C depends only on core
+  add_subdirectory(bindings/c)
+elseif(EMSCRIPTEN)
+  # WebAssembly relies on C
+  add_subdirectory(bindings/c)
   add_subdirectory(bindings/js)
-else()
-  # Python bindings
-  if(BUILD_PYTHON)
-    add_subdirectory(bindings/py)
-  endif()
-  
-  if(IMG2NUM_BUILD_EXAMPLES)
-    # Example console app (C++)
-    add_subdirectory(example-apps/console-cpp)
-    # Example console app (C)
+endif()
+
+# ================================================
+# Example apps (Emscripten can't compile them)
+if(NOT EMSCRIPTEN AND IMG2NUM_BUILD_EXAMPLES)
+  add_subdirectory(example-apps/console-cpp)
+
+  if(IMG2NUM_BUILD_C)
     add_subdirectory(example-apps/console-c)
   endif()
 endif()

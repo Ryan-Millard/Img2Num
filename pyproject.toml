@@ -39,7 +39,7 @@ build-backend = "scikit_build_core.build"
 cmake.source-dir = "."
 cmake.build-type = "Release"
 cmake.args = [
-  "-DBUILD_PYTHON=ON",
+  "-DIMG2NUM_BUILD_PYTHON=ON",
   "-DIMG2NUM_BUILD_EXAMPLES=OFF",
 ]
 
@@ -87,3 +87,5 @@ dev = [
   "ruff>=0.4.0",
 ]
 
+[tool.cibuildwheel]
+build-verbosity = 1
