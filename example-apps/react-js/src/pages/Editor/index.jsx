@@ -15,7 +15,7 @@ const SHAPE_SELECTOR = "path,rect,circle,polygon,ellipse";
 
 export default function Editor() {
   const { state } = useLocation();
-  const { svg: initialSvg, fileData, originalSrc, imgBilateralFiltered, initialSettings } = state || {};
+  const { svg: initialSvg, fileData, imgBilateralFiltered, initialSettings } = state || {};
 
   const [svg, setSvg] = useState(initialSvg);
   const [svgElements, setSvgElements] = useState(null);
