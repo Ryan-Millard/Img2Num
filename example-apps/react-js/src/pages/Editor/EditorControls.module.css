@@ -73,10 +73,11 @@
   padding: var(--spacing-md);
   display: grid;
   gap: var(--spacing-sm);
-  h4 {
-    text-transform: uppercase;
-    margin: 0;
-  }
+}
+
+.modalGroupContainer h4 {
+  text-transform: uppercase;
+  margin: 0;
 }
 
 .settingsActive {
