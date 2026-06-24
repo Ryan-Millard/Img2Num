@@ -1,9 +1,6 @@
 # =================================================================
 # Img2Num C Bindings
 # =================================================================
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 project(CImg2Num
   LANGUAGES CXX
   # Don't change the inline comment below - release-please needs it
@@ -20,6 +17,8 @@ set(C_BINDINGS_SRC
 )
 
 add_library(CImg2Num ${C_BINDINGS_SRC})
+
+target_compile_options(CImg2Num PRIVATE ${IMG2NUM_STRICT_CXX_FLAGS})
 
 set_target_properties(CImg2Num PROPERTIES
   VERSION ${PROJECT_VERSION}
