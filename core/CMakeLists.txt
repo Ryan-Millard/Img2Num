@@ -1,9 +1,6 @@
 # =================================================================
 # Img2Num Core (C++)
 # =================================================================
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 project(Img2Num
   LANGUAGES CXX
   # Don't change the inline comment below - release-please needs it
@@ -40,6 +37,8 @@ add_custom_target(Img2Num_shaders ALL
 )
 
 add_library(Img2Num ${CORE_SRC})
+
+target_compile_options(Img2Num PRIVATE ${IMG2NUM_STRICT_CXX_FLAGS})
 
 set_target_properties(Img2Num PROPERTIES
   VERSION ${PROJECT_VERSION}
