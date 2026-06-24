@@ -1,3 +1,4 @@
+import ConfigPanel from "@components/ConfigPanel";
 import GlassCard from "@components/GlassCard";
 import GlassModal from "@components/GlassModal";
 import useFullscreen from "@hooks/useFullscreen";
@@ -7,7 +8,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import EditorControls from "./EditorControls";
 import EditorHelmet from "./EditorHelmet";
-import ConfigPanel from "@components/ConfigPanel";
 
 import styles from "./Editor.module.css";
 
@@ -75,11 +75,7 @@ export default function Editor() {
     try {
       const { width, height } = fileData;
 
-      const bilateralChanged =
-        sigmaSpatial !== appliedSigmaSpatial ||
-        sigmaRange !== appliedSigmaRange ||
-        colorSpace !== appliedColorSpace ||
-        !cachedBilateralFiltered;
+      const bilateralChanged = sigmaSpatial !== appliedSigmaSpatial || sigmaRange !== appliedSigmaRange || colorSpace !== appliedColorSpace || !cachedBilateralFiltered;
 
       let filteredPixels = cachedBilateralFiltered;
 
