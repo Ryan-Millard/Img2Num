@@ -41,7 +41,7 @@ const WasmImageProcessor = () => {
 
     const url = URL.createObjectURL(file);
     setOriginalSrc(url);
-    setIsSettingsOpen(true);
+    setIsSettingsOpen(false);
 
     const { pixels, width, height } = await imageToUint8ClampedArray(file);
     setFileData({ pixels, width, height });
