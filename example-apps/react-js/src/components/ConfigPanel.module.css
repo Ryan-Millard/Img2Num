@@ -254,4 +254,9 @@
   color: var(--color-bg);
 }
 
-
+@media (min-width: 768px) {
+  .settingsPanel {
+    height: auto;
+    align-self: stretch;
+  }
+}
