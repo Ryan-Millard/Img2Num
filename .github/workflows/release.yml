@@ -123,14 +123,14 @@ jobs:
         run: cmake --install build --config Release
 
       - name: Package (Linux/macOS)
-        if: ${{ steps.component.outputs.created == 'true' && runner.os != 'Windows' }}
+        if: ${{ (steps.component.outputs.created == 'true' || needs.release-please.outputs.is_dry_run == 'true') && runner.os != 'Windows' }}
         run: |
           ARCHIVE="img2num-${{ matrix.component }}-v${{ steps.component.outputs.version }}-${{ matrix.plat }}.tar.gz"
           tar -czf "$ARCHIVE" -C install .
           echo "ARCHIVE=$ARCHIVE" >> $GITHUB_ENV
 
       - name: Package (Windows)
-        if: ${{ steps.component.outputs.created == 'true' && runner.os == 'Windows' }}
+        if: ${{ (steps.component.outputs.created == 'true' || needs.release-please.outputs.is_dry_run == 'true') && runner.os == 'Windows' }}
         shell: pwsh
         run: |
           $archive = "img2num-${{ matrix.component }}-v${{ steps.component.outputs.version }}-${{ matrix.plat }}.zip"
