@@ -7,7 +7,17 @@
     "outDir": "dist",
     "rootDir": ".",
     "moduleResolution": "bundler",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    // 1. CRITICAL: Tells TypeScript to stop checking external dependency declarations.
+    // This immediately squashes type collisions originating inside node_modules.
+    "skipLibCheck": true,
+
+    // 2. ISOLATION: Explicitly restrict libraries to standard Core ECMAScript features.
+    // By omitting "DOM" here, you prevent TypeScript from loading its built-in WebGPU types.
+    "lib": ["ESNext"]
   },
-  "include": ["*.js"]
+  "include": ["*.js", "src/*.js", "src/target/**/*.js", "src/workers/*.js"],
+  "typedocOptions": {
+    "exclude": ["node_modules/", "dist/"]
+  }
 }

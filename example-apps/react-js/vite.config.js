@@ -34,4 +34,14 @@ export default defineConfig({
     generateContributorCreditsPlugin(),
     svgr(),
   ],
+  worker: {
+    format: "es", // Keeps your top-level awaits working
+  },
+  build: {
+    target: "esnext",
+    rollupOptions: {
+      // Tells the bundler to ignore these when building for the web browser
+      external: ["webgpu", "worker_threads", "url", "path", "fs"],
+    },
+  },
 });

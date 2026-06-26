@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
 
       - name: Install Dependendencies
-        run: pnpm --filter react-example install
+        run: pnpm install
 
       - name: Download WASM artifacts
         if: ${{ inputs.wasm-artifacts-path }}
@@ -33,6 +33,10 @@ jobs:
         with:
           name: wasm-build
           path: ${{ inputs.wasm-artifacts-path }}
+
+      - name: Build img2num module
+        # Only build for browser since that is all we need here
+        run: pnpm -F img2num build:browser
 
       - name: Build React app
         run: pnpm -F react-example run build
