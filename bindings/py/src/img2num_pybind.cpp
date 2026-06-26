@@ -203,7 +203,7 @@ PYBIND11_MODULE(_img2num, m) {
             // Allocate NumPy arrays for the outputs
             pybind11::array_t<uint8_t, pybind11::array::c_style> out_data(data_buf.shape);
             pybind11::array_t<int32_t, pybind11::array::c_style> out_labels(
-                {(ssize_t)height, (ssize_t)width}
+                {static_cast<size_t>(height), static_cast<size_t>(width)}
             );
 
             img2num::kmeans(
