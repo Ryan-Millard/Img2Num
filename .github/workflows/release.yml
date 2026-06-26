@@ -141,7 +141,7 @@ jobs:
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         if: ${{ steps.component.outputs.created == 'true' || needs.release-please.outputs.is_dry_run == 'true' }}
         with:
-          tag_name: ${{ steps.component.outputs.tag }}
+          tag_name: ${{ needs.release-please.outputs.is_dry_run == 'true' && format('{0}@{1}-{2}', github.ref_name, github.sha, matrix.component) || steps.component.outputs.tag }}
           files: ${{ env.ARCHIVE }}
           draft: ${{ needs.release-please.outputs.is_dry_run == 'true' }}
 
@@ -200,7 +200,7 @@ jobs:
       # Draft release when not main — same as C/C++ above
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         with:
-          tag_name: ${{ needs.release-please.outputs.js_tag }}
+          tag_name: ${{ needs.release-please.outputs.is_dry_run == 'true' && format('{0}@{1}-js', github.ref_name, github.sha) || needs.release-please.outputs.js_tag }}
           files: |
             /tmp/img2num-js-v${{ needs.release-please.outputs.js_version }}.tar.gz
             /tmp/img2num-js-wasm-only-v${{ needs.release-please.outputs.js_version }}.tar.gz
@@ -305,7 +305,7 @@ jobs:
       # Draft release when not main — same as other jobs
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         with:
-          tag_name: ${{ needs.release-please.outputs.py_tag }}
+          tag_name: ${{ needs.release-please.outputs.is_dry_run == 'true' && format('{0}@{1}-py', github.ref_name, github.sha) || needs.release-please.outputs.py_tag }}
           files: wheelhouse/*
           draft: ${{ needs.release-please.outputs.is_dry_run == 'true' }}
 
