@@ -38,7 +38,7 @@
  * });
  */
 
-import createImg2NumModule from "./build-wasm/index.js";
+import createImg2NumModule from "@wasm/index.js";
 
 let wasmModule;
 
@@ -154,7 +154,8 @@ async function callWasm(funcName, argsMap, returnType) {
  *   - returnType: expected return type of the WASM export
  * @param {MessageEvent} event
  */
-self.onmessage = async ({ data }) => {
+
+async function handleMessage(data) {
   await readyPromise;
 
   const { id, funcName, args, bufferKeys, returnType } = data;
@@ -205,13 +206,38 @@ self.onmessage = async ({ data }) => {
       wasmModule._free(result);
     }
 
-    self.postMessage({ id, output, returnValue });
+    globalThis.postMessage({ id, output, returnValue });
   } catch (error) {
-    self.postMessage({ id, error: error.message });
+    globalThis.postMessage({ id, error: error.message });
   } finally {
     // -------- Cleanup --------
     for (const { ptr } of pointers.values()) {
       wasmModule._free(ptr);
     }
   }
-};
+}
+
+if (__TARGET__ === "node") {
+  const { parentPort } = await import("node:worker_threads");
+  const { initWebGPU, destroyWebGPU } = await import("../target/node/webgpu.js");
+
+  try {
+    await initWebGPU();
+  } catch (err) {
+    console.error(`[Img2Num node/worker.js] Error: ${err}`);
+  }
+
+  // 2. FIX THE TYPO: Polyfill globalThis.postMessage so handleMessage can call it natively!
+  globalThis.postMessage = (data) => parentPort.postMessage(data);
+
+  // 3. Listen for incoming messages from the console app main thread
+  // (Node passes the raw payload directly, no nested event wrapper needed)
+  parentPort.on("message", async (data) => {
+    await handleMessage(data);
+    await destroyWebGPU();
+    parentPort.close();
+  });
+} else {
+  // Browser Worker setup: Standard event-unwrapping listener
+  globalThis.onmessage = ({ data }) => handleMessage(data);
+}

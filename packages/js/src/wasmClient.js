@@ -17,6 +17,8 @@
  *              This allows more granular control.
  */
 
+import { createWorker } from "@__TARGET__/worker.js";
+
 /**
  * Worker instance that handles communication with the WASM module.
  * @type {Worker | null}
@@ -43,6 +45,22 @@ const callbacks = new Map();
 let initialized = false;
 
 /**
+ * Handle response messages from the WASM worker.
+ * @param {{ id: number, output?: any, returnValue?: any, error?: string }} data
+ */
+function handleMessage(data) {
+  const cb = callbacks.get(data.id);
+  if (!cb) return;
+  callbacks.delete(data.id);
+
+  if (data.error) {
+    cb.reject(new Error(data.error));
+  } else {
+    cb.resolve({ output: data.output, returnValue: data.returnValue });
+  }
+}
+
+/**
  * @summary Initialize the WASM worker.
  *
  * @description
@@ -59,27 +77,21 @@ let initialized = false;
  *
  * @since 0.0.0
  */
-export function initWasmWorker() {
+
+export async function initWasmWorker() {
   if (initialized) return;
 
-  worker = new Worker(new URL("./wasmWorker.js", import.meta.url), { type: "module" });
+  worker = await createWorker();
 
-  worker.onmessage = ({ data }) => {
-    const { id, error, output, returnValue } = data;
-    const cb = callbacks.get(id);
-    if (!cb) return;
-
-    error ? cb.reject(new Error(error)) : cb.resolve({ output, returnValue });
-    callbacks.delete(id);
-  };
-
-  worker.onerror = (event) => {
-    const err = new Error(event.message || "WASM worker error");
+  worker.onMessage(handleMessage);
+  worker.onError((event) => {
+    const output = event.message || "WASM worker error";
+    const err = new Error(`[Img2Num wasmClient] Error: ${output}`);
     for (const [_id, cb] of callbacks) {
       cb.reject(err);
     }
     callbacks.clear();
-  };
+  });
 
   initialized = true;
 }
@@ -120,10 +132,13 @@ export function initWasmWorker() {
  */
 export async function callWasm({ funcName, args = {}, bufferKeys = [], returnType = "void" }) {
   if (!initialized) throw new Error("WASM worker not initialized. Call initWasmWorker() first.");
+
   const id = idCounter++;
+
   return new Promise((resolve, reject) => {
     callbacks.set(id, { resolve, reject });
-    worker.postMessage({ id, funcName, args, bufferKeys, returnType }); // <-- send it
+
+    worker.postMessage({ id, funcName, args, bufferKeys, returnType });
   });
 }
 
