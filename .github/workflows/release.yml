@@ -208,7 +208,13 @@ jobs:
       # --dry-run exercises the full publish pipeline (auth, package validation,
       # tarball construction) without actually pushing to the registry.
       - name: Publish to npm
-        run: pnpm publish --access public --provenance ${{ needs.release-please.outputs.is_dry_run == 'true' && '--dry-run' || '' }}
+        run: |
+          DRY_RUN_FLAG=${{ needs.release-please.outputs.is_dry_run == 'true' && '--dry-run' || '' }}
+          pnpm publish \
+            --access public \
+            --provenance \
+            --no-git-checks \
+            $DRY_RUN_FLAG
         working-directory: packages/js
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
