@@ -161,35 +161,52 @@ jobs:
 
       - uses: mymindstorm/setup-emsdk@1f4f5866c1f8745a10fcb64c4d7a0eb7a8daed9d
 
-      - name: Build WASM
-        run: |
-          emcmake cmake -B build-wasm -DCMAKE_BUILD_TYPE=Release .
-          cmake --build build-wasm
-          release_version=${{ needs.release-please.outputs.js_version }}
-          tar -czf img2num-v${release_version}.tar.gz \
-             build-wasm \
-             packages/js/index.js \
-             packages/js/safeWasmWrappers.js \
-             packages/js/wasmClient.js \
-             packages/js/wasmWorker.js \
-             packages/js/imageToUint8ClampedArray.js
-
-      # Draft release when not main — same as C/C++ above
-      - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
+      - uses: pnpm/action-setup@v4
         with:
-          tag_name: ${{ needs.release-please.outputs.js_tag }}
-          files: img2num-v${{ needs.release-please.outputs.js_version }}.tar.gz
-          draft: ${{ needs.release-please.outputs.is_dry_run == 'true' }}
+          version: 10
 
       - uses: actions/setup-node@670825a89dc0abd596e7a3abd0f5e3f6e5faf37c
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build WASM
+        run: |
+          emcmake cmake -B build-wasm \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DIMG2NUM_BUILD_C=ON \
+            -DIMG2NUM_BUILD_PYTHON=OFF \
+            -DIMG2NUM_BUILD_EXAMPLES=OFF \
+            -DIMG2NUM_DEBUG_CACHE_VARIABLES_DUMP=ON \
+            .
+          cmake --build build-wasm
+
+      - name: Build JS
+        run: pnpm build
+        working-directory: packages/js
+
+      - name: Package
+        run: |
+          release_version=${{ needs.release-please.outputs.js_version }}
+          tar -czf           img2num-js-v${release_version}.tar.gz packages/js/dist
+          tar -czf img2num-js-wasm-only-v${release_version}.tar.gz packages/js/build-wasm
+
+      # Draft release when not main — same as C/C++ above
+      - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
+        with:
+          tag_name: ${{ needs.release-please.outputs.js_tag }}
+          files: |
+            img2num-js-v${{ needs.release-please.outputs.js_version }}.tar.gz
+            img2num-js-wasm-only-v${{ needs.release-please.outputs.js_version }}.tar.gz
+          draft: ${{ needs.release-please.outputs.is_dry_run == 'true' }}
+
       # --dry-run exercises the full publish pipeline (auth, package validation,
       # tarball construction) without actually pushing to the registry.
       - name: Publish to npm
-        run: npm publish --access public --provenance ${{ needs.release-please.outputs.is_dry_run == 'true' && '--dry-run' || '' }}
+        run: pnpm publish --access public --provenance ${{ needs.release-please.outputs.is_dry_run == 'true' && '--dry-run' || '' }}
         working-directory: packages/js
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
