@@ -167,6 +167,7 @@ jobs:
         with:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
 
       - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271
         with:
