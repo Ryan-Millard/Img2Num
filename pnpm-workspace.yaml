@@ -5,6 +5,12 @@ packages:
   - docs
   - scripts/img2num-dev-scripts
 
+allowBuilds:
+  "@swc/core": true
+  core-js: true
+  sharp: true
+  webgpu: true
+
 onlyBuiltDependencies:
   - "@swc/core"
   - core-js
