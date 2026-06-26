@@ -16,7 +16,7 @@ set(IMG2NUM_STRICT_CXX_FLAGS
     $<$<AND:$<COMPILE_LANGUAGE:CXX>,$<CXX_COMPILER_ID:MSVC>>:/permissive->
 )
 
-option(IMG2NUM_BUILD_C "Build C bindings" ON)
+option(IMG2NUM_BUILD_C "Build C bindings (required for WASM builds)" ON)
 option(IMG2NUM_BUILD_PYTHON "Build Python bindings" OFF)
 option(IMG2NUM_BUILD_EXAMPLES "Build example applications" ON)
 option(IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP "Dump CMake environment variables in Debug mode" ON)
