@@ -28,8 +28,7 @@ Each function is documented with Doxygen and mirrors the functionality of the co
 ## Building the WASM Module
 
 ```bash title="Run this in the root of the project"
-emcmake cmake -B build-wasm .
-cmake --build build-wasm
+just build js
 ```
 
 * The module outputs `index.js` and `index.wasm` in `packages/js/build-wasm`.

@@ -98,7 +98,9 @@ PYBIND11_MODULE(_img2num, m) {
 
             // Allocate NumPy arrays for the outputs
             auto out_data = pybind11::array_t<uint8_t>(data_buf.shape);
-            auto out_labels = pybind11::array_t<int32_t>({static_cast<size_t>(height), static_cast<size_t>(width)});
+            auto out_labels =
+                pybind11::array_t<int32_t>({static_cast<size_t>(height), static_cast<size_t>(width)}
+                );
 
             auto out_data_ptr = static_cast<uint8_t*>(out_data.mutable_data());
             auto out_labels_ptr = static_cast<int32_t*>(out_labels.mutable_data());

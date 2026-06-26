@@ -54,7 +54,7 @@ This clones all submodules:
 - `dawn` (optional, required for local native builds)
 
 ```bash
-git submodule update --init third_party
+just init
 ```
 
   </TabItem>
@@ -204,8 +204,7 @@ values={[
 <TabItem value="release">
 
 ```bash title="Compile Release build"
-cmake -B build-release/ .
-cmake --build build-release/
+just cxx build
 ```
 
 </TabItem>
@@ -245,8 +244,7 @@ values={[
 <TabItem value="release">
 
 ```bash title="Compile Release build"
-emcmake cmake -B build-wasm-release/ .
-cmake --build build-wasm-release/
+just build js
 ```
 
 </TabItem>
@@ -295,13 +293,13 @@ values={[
 <TabItem value="react-example">
 
 ```bash
-pnpm -F react-example dev
+just react-js start
 ```
 
 </TabItem>
 <TabItem value="docs">
 ```bash
-pnpm -F docs start
+just docs start
 ```
 </TabItem>
 </Tabs>

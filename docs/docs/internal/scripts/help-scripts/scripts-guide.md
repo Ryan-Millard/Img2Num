@@ -118,7 +118,7 @@ This ensures documentation for scripts can't be accidentally left out of a PR.
 ### Usage Examples
 
 ```bash title="Run the help CLI from the repo root"
-npm run help
+just help
 ```
 
 ```bash title="Arguments (immediately passed to fuzzy search)"

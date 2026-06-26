@@ -30,8 +30,7 @@ Each function is fully documented with Doxygen and mirrors the corresponding C++
 ## Building the C Bindings
 
 ```bash title="Run this in the root of the project"
-cmake -B build .
-cmake --build build
+just cxx build
 cmake --install build
 ```
 

@@ -20,7 +20,7 @@ Both provide the same interface, but are scoped to their `package.json` scripts.
 Run the following command from the project root:
 
 ```bash
-npm run help
+just help
 ```
 
 This launches an interactive CLI that shows all scripts in `package.json` grouped by category and allows fuzzy search.
