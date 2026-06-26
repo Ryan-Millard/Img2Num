@@ -107,3 +107,4 @@ console-c input:
 console-js input:
     @echo "node example-apps/console-js/index.js {{ input }}"
     node example-apps/console-js/index.js "{{ input }}"
+
