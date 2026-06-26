@@ -8,6 +8,7 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "09:00"
+    target-branch: "dev"
     groups:
       all-deps:
         patterns:
@@ -27,6 +28,7 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "09:00"
+    target-branch: "dev"
     groups:
       all-deps:
         patterns:
@@ -46,6 +48,7 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "09:00"
+    target-branch: "dev"
     groups:
       all-deps:
         patterns:
@@ -65,6 +68,7 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "09:00"
+    target-branch: "dev"
     groups:
       all-deps:
         patterns:
@@ -85,6 +89,7 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "09:00"
+    target-branch: "dev"
     groups:
       all-actions:
         patterns:
@@ -95,3 +100,4 @@ updates:
     open-pull-requests-limit: 3
     commit-message:
       prefix: "ci(deps)"
+
