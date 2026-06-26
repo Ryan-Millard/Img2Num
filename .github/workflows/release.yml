@@ -193,16 +193,16 @@ jobs:
       - name: Package
         run: |
           release_version=${{ needs.release-please.outputs.js_version }}
-          tar -czf           img2num-js-v${release_version}.tar.gz packages/js/dist
-          tar -czf img2num-js-wasm-only-v${release_version}.tar.gz packages/js/build-wasm
+          tar -czf           /tmp/img2num-js-v${release_version}.tar.gz packages/js/dist
+          tar -czf /tmp/img2num-js-wasm-only-v${release_version}.tar.gz packages/js/build-wasm
 
       # Draft release when not main — same as C/C++ above
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         with:
           tag_name: ${{ needs.release-please.outputs.js_tag }}
           files: |
-            img2num-js-v${{ needs.release-please.outputs.js_version }}.tar.gz
-            img2num-js-wasm-only-v${{ needs.release-please.outputs.js_version }}.tar.gz
+            /tmp/img2num-js-v${{ needs.release-please.outputs.js_version }}.tar.gz
+            /tmp/img2num-js-wasm-only-v${{ needs.release-please.outputs.js_version }}.tar.gz
           draft: ${{ needs.release-please.outputs.is_dry_run == 'true' }}
 
       # --dry-run exercises the full publish pipeline (auth, package validation,
