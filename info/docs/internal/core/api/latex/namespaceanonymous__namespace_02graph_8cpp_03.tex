@@ -1,0 +1,117 @@
+\doxysection{anonymous\+\_\+namespace\{graph.\+cpp\} Namespace Reference}
+\hypertarget{namespaceanonymous__namespace_02graph_8cpp_03}{}\label{namespaceanonymous__namespace_02graph_8cpp_03}\index{anonymous\_namespace\lcurly{}graph.cpp\rcurly{}@{anonymous\_namespace\lcurly{}graph.cpp\rcurly{}}}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{namespaceanonymous__namespace_02graph_8cpp_03_a2c835afdb2ace48ce16a50c7ebbc9623}{dt\+\_\+1d}} (const std\+::vector$<$ float $>$ \&f, std\+::vector$<$ float $>$ \&d, int n)
+\item 
+float \mbox{\hyperlink{namespaceanonymous__namespace_02graph_8cpp_03_a1e2816f51a9b28147d48757a6d3961bf}{max\+\_\+inscribed\+\_\+radius}} (const Node\+\_\+ptr \&n)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespaceanonymous__namespace_02graph_8cpp_03_a2c835afdb2ace48ce16a50c7ebbc9623}\label{namespaceanonymous__namespace_02graph_8cpp_03_a2c835afdb2ace48ce16a50c7ebbc9623} 
+\index{anonymous\_namespace\lcurly{}graph.cpp\rcurly{}@{anonymous\_namespace\lcurly{}graph.cpp\rcurly{}}!dt\_1d@{dt\_1d}}
+\index{dt\_1d@{dt\_1d}!anonymous\_namespace\lcurly{}graph.cpp\rcurly{}@{anonymous\_namespace\lcurly{}graph.cpp\rcurly{}}}
+\doxysubsubsection{\texorpdfstring{dt\_1d()}{dt\_1d()}}
+{\footnotesize\ttfamily void anonymous\+\_\+namespace\{graph.\+cpp\}\+::dt\+\_\+1d (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ float $>$ \&}]{f,  }\item[{std\+::vector$<$ float $>$ \&}]{d,  }\item[{int}]{n }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{graph_8cpp_source_l00313}{313}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{float}\ INF\ =\ 1e20f;}
+\DoxyCodeLine{00315\ \ \ \ \ std::vector<int>\ v(n);}
+\DoxyCodeLine{00316\ \ \ \ \ std::vector<float>\ z(n\ +\ 1);}
+\DoxyCodeLine{00317\ \ \ \ \ \textcolor{keywordtype}{int}\ k\ =\ 0;}
+\DoxyCodeLine{00318\ \ \ \ \ v[0]\ =\ 0;}
+\DoxyCodeLine{00319\ \ \ \ \ z[0]\ =\ -\/INF;}
+\DoxyCodeLine{00320\ \ \ \ \ z[1]\ =\ INF;}
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ q\ =\ 1;\ q\ <\ n;\ ++q)\ \{}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ s;}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \ \ \ \ s\ =\ ((f[q]\ +\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(q)\ *\ q)\ -\/\ (f[v[k]]\ +\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(v[k])\ *\ v[k]))\ /}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (2.0f\ *\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(q\ -\/\ v[k]));}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (s\ <=\ z[k]\ \&\&\ k\ >\ 0)\ \{}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ -\/-\/k;}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ ++k;}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ v[k]\ =\ q;}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ z[k]\ =\ s;}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ z[k\ +\ 1]\ =\ INF;}
+\DoxyCodeLine{00336\ \ \ \ \ \}}
+\DoxyCodeLine{00337\ \ \ \ \ k\ =\ 0;}
+\DoxyCodeLine{00338\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ q\ =\ 0;\ q\ <\ n;\ ++q)\ \{}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (z[k\ +\ 1]\ <\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(q))}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \ \ \ \ \ \ ++k;}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ dq\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(q\ -\/\ v[k]);}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ d[q]\ =\ dq\ *\ dq\ +\ f[v[k]];}
+\DoxyCodeLine{00343\ \ \ \ \ \}}
+\DoxyCodeLine{00344\ \}}
+
+\end{DoxyCode}
+\Hypertarget{namespaceanonymous__namespace_02graph_8cpp_03_a1e2816f51a9b28147d48757a6d3961bf}\label{namespaceanonymous__namespace_02graph_8cpp_03_a1e2816f51a9b28147d48757a6d3961bf} 
+\index{anonymous\_namespace\lcurly{}graph.cpp\rcurly{}@{anonymous\_namespace\lcurly{}graph.cpp\rcurly{}}!max\_inscribed\_radius@{max\_inscribed\_radius}}
+\index{max\_inscribed\_radius@{max\_inscribed\_radius}!anonymous\_namespace\lcurly{}graph.cpp\rcurly{}@{anonymous\_namespace\lcurly{}graph.cpp\rcurly{}}}
+\doxysubsubsection{\texorpdfstring{max\_inscribed\_radius()}{max\_inscribed\_radius()}}
+{\footnotesize\ttfamily float anonymous\+\_\+namespace\{graph.\+cpp\}\+::max\+\_\+inscribed\+\_\+radius (\begin{DoxyParamCaption}\item[{const Node\+\_\+ptr \&}]{n }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{graph_8cpp_source_l00351}{351}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00352\ \ \ \ \ std::vector<uint8\_t>\ mask;}
+\DoxyCodeLine{00353\ \ \ \ \ \textcolor{keyword}{const}\ std::array<int,\ 4>\ xywh\ =\ n-\/>create\_binary\_image(mask);\ \textcolor{comment}{//\ tight\ bbox}}
+\DoxyCodeLine{00354\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ w\ =\ xywh[2];}
+\DoxyCodeLine{00355\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ h\ =\ xywh[3];}
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{keywordflow}{if}\ (w\ <=\ 0\ ||\ h\ <=\ 0)}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0.0f;}
+\DoxyCodeLine{00358\ }
+\DoxyCodeLine{00359\ \ \ \ \ \textcolor{comment}{//\ Pad\ by\ one\ pixel\ so\ the\ region's\ boundary\ against\ the\ exterior\ is\ treated}}
+\DoxyCodeLine{00360\ \ \ \ \ \textcolor{comment}{//\ as\ background\ by\ the\ distance\ transform.}}
+\DoxyCodeLine{00361\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ pw\ =\ w\ +\ 2;}
+\DoxyCodeLine{00362\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ ph\ =\ h\ +\ 2;}
+\DoxyCodeLine{00363\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{float}\ INF\ =\ 1e20f;}
+\DoxyCodeLine{00364\ }
+\DoxyCodeLine{00365\ \ \ \ \ std::vector<float>\ grid(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(pw)\ *\ ph);}
+\DoxyCodeLine{00366\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ y\ =\ 0;\ y\ <\ ph;\ ++y)\ \{}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ x\ =\ 0;\ x\ <\ pw;\ ++x)\ \{}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ inside\ =\ x\ >=\ 1\ \&\&\ x\ <=\ w\ \&\&\ y\ >=\ 1\ \&\&\ y\ <=\ h\ \&\&}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mask[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(y\ -\/\ 1)\ *\ w\ +\ (x\ -\/\ 1)];}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \ \ \ \ \ \ grid[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(y)\ *\ pw\ +\ x]\ =\ inside\ ?\ INF\ :\ 0.0f;}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00372\ \ \ \ \ \}}
+\DoxyCodeLine{00373\ }
+\DoxyCodeLine{00374\ \ \ \ \ \textcolor{comment}{//\ Separable\ two-\/pass\ transform:\ columns\ first,\ then\ rows.}}
+\DoxyCodeLine{00375\ \ \ \ \ std::vector<float>\ in,\ out(std::max(pw,\ ph));}
+\DoxyCodeLine{00376\ \ \ \ \ in.resize(ph);}
+\DoxyCodeLine{00377\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ x\ =\ 0;\ x\ <\ pw;\ ++x)\ \{}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ y\ =\ 0;\ y\ <\ ph;\ ++y)}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ \ \ \ \ in[y]\ =\ grid[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(y)\ *\ pw\ +\ x];}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ dt\_1d(in,\ out,\ ph);}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ y\ =\ 0;\ y\ <\ ph;\ ++y)}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \ \ \ \ \ \ grid[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(y)\ *\ pw\ +\ x]\ =\ out[y];}
+\DoxyCodeLine{00383\ \ \ \ \ \}}
+\DoxyCodeLine{00384\ \ \ \ \ in.resize(pw);}
+\DoxyCodeLine{00385\ \ \ \ \ \textcolor{keywordtype}{float}\ max\_d2\ =\ 0.0f;}
+\DoxyCodeLine{00386\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ y\ =\ 0;\ y\ <\ ph;\ ++y)\ \{}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ x\ =\ 0;\ x\ <\ pw;\ ++x)}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \ \ \ \ \ \ in[x]\ =\ grid[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(y)\ *\ pw\ +\ x];}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \ \ dt\_1d(in,\ out,\ pw);}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ x\ =\ 0;\ x\ <\ pw;\ ++x)}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (out[x]\ >\ max\_d2)}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ max\_d2\ =\ out[x];}
+\DoxyCodeLine{00393\ \ \ \ \ \}}
+\DoxyCodeLine{00394\ \ \ \ \ \textcolor{keywordflow}{return}\ std::sqrt(max\_d2);}
+\DoxyCodeLine{00395\ \}}
+
+\end{DoxyCode}

@@ -157,13 +157,18 @@ $(document).ready(function(){initNavTree('contours_8h_source.html',''); initResi
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keywordtype">void</span> stitch_smooth(std::vector&lt;Point&gt;&amp; vecA, std::vector&lt;Point&gt;&amp; vecB);</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keywordtype">void</span> coupled_smooth(std::vector&lt;std::vector&lt;Point&gt;&gt;&amp; contours, <a class="code hl_struct" href="structRect.html">Rect</a> bounds);</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keywordtype">void</span> pack_with_boundary_constraints(</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    std::vector&lt;std::vector&lt;Point&gt;&gt;&amp; contours, <a class="code hl_struct" href="structRect.html">Rect</a> bounds, <span class="keywordtype">int</span> iterations = 15</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>} <span class="comment">// namespace contours</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keywordtype">void</span> coupled_smooth_junctions(</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    std::vector&lt;std::vector&lt;Point&gt;&gt;&amp; contours, <a class="code hl_struct" href="structRect.html">Rect</a> bounds, std::vector&lt;uint8_t&gt; junctions,</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordtype">int</span> width</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keywordtype">void</span> pack_with_boundary_constraints(</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    std::vector&lt;std::vector&lt;Point&gt;&gt;&amp; contours, <a class="code hl_struct" href="structRect.html">Rect</a> bounds, <span class="keywordtype">int</span> iterations = 15</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>} <span class="comment">// namespace contours</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="astructColoredContours_html"><div class="ttname"><a href="structColoredContours.html">ColoredContours</a></div><div class="ttdef"><b>Definition</b> <a href="contours_8h_source.html#l00040">contours.h:40</a></div></div>
 <div class="ttc" id="astructContoursResult_html"><div class="ttname"><a href="structContoursResult.html">ContoursResult</a></div><div class="ttdef"><b>Definition</b> <a href="contours_8h_source.html#l00026">contours.h:26</a></div></div>
 <div class="ttc" id="astructPoint_html"><div class="ttname"><a href="structPoint.html">Point</a></div><div class="ttdef"><b>Definition</b> <a href="Point_8h_source.html#l00005">Point.h:5</a></div></div>

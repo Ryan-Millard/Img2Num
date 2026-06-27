@@ -107,7 +107,16 @@ $(document).ready(function(){initNavTree('bezier_8h_source.html',''); initResiza
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    <span class="keyword">const</span> std::vector&lt;std::vector&lt;Point&gt;&gt;&amp; chains, std::vector&lt;std::vector&lt;QuadBezier&gt;&gt;&amp; results,</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="keywordtype">float</span> tolerance</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>);</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">// Same, but `fixed[i][k]!=0` marks point k of chain i as a junction that must NOT</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">// move: the chain is split at those points so each becomes an exact (pinned)</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">// curve endpoint. Chains with no fixed points fit identically to the overload</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">// above.</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keywordtype">void</span> fit_curve_reduction(</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keyword">const</span> std::vector&lt;std::vector&lt;Point&gt;&gt;&amp; chains, <span class="keyword">const</span> std::vector&lt;std::vector&lt;uint8_t&gt;&gt;&amp; fixed,</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    std::vector&lt;std::vector&lt;QuadBezier&gt;&gt;&amp; results, <span class="keywordtype">float</span> tolerance</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>);</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -1,0 +1,339 @@
+\doxysection{shared\+\_\+contours.\+cpp}
+\hypertarget{shared__contours_8cpp_source}{}\label{shared__contours_8cpp_source}\index{src/internal/shared\_contours.cpp@{src/internal/shared\_contours.cpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00001}00001\ \textcolor{preprocessor}{\#include\ "{}internal/shared\_contours.h"{}}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00002}00002\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00003}00003\ \textcolor{preprocessor}{\#include\ "{}internal/bezier.h"{}}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00005}00005\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00006}00006\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00007}00007\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00008}00008\ \textcolor{preprocessor}{\#include\ <map>}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00009}00009\ \textcolor{preprocessor}{\#include\ <set>}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00010}00010\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00011}00011\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00012}00012\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00013}00013\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00014}00014\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ SMOOTHING\_ITERATIONS\ \{5\};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00015}00015\ \textcolor{keyword}{constexpr}\ int32\_t\ OUTSIDE\ =\ std::numeric\_limits<int32\_t>::min();\ \textcolor{comment}{//\ image\ exterior\ label}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00017}00017\ \textcolor{comment}{//\ Endpoint-\/\ and\ border-\/preserving\ smoothing\ of\ a\ corner\ polyline.\ Points\ sitting}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00018}00018\ \textcolor{comment}{//\ on\ the\ image\ frame\ are\ locked\ so\ the\ canvas\ rectangle\ stays\ crisp.}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00019}00019\ \textcolor{keywordtype}{void}\ smooth\_edge(std::vector<Point>\&\ p,\ \textcolor{keywordtype}{int}\ w,\ \textcolor{keywordtype}{int}\ h,\ \textcolor{keywordtype}{int}\ iters)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00020}00020\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ n\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(p.size());}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00021}00021\ \ \ \ \ \textcolor{keywordflow}{if}\ (n\ <\ 3)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00022}00022\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00023}00023\ \ \ \ \ \textcolor{keyword}{auto}\ on\_border\ =\ [\&](\textcolor{keyword}{const}\ \mbox{\hyperlink{structPoint}{Point}}\&\ q)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00024}00024\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ q.x\ <=\ 0.0f\ ||\ q.y\ <=\ 0.0f\ ||\ q.x\ >=\ w\ ||\ q.y\ >=\ h;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00025}00025\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00026}00026\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ it\ =\ 0;\ it\ <\ iters;\ ++it)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00027}00027\ \ \ \ \ \ \ \ \ std::vector<Point>\ q\ =\ p;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00028}00028\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 1;\ i\ <\ n\ -\/\ 1;\ ++i)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00029}00029\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (on\_border(p[i]))}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00030}00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00031}00031\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structPoint}{Point}}\&\ a\ =\ p[i\ -\/\ 1];}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00032}00032\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structPoint}{Point}}\&\ b\ =\ p[i];}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00033}00033\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structPoint}{Point}}\&\ c\ =\ p[i\ +\ 1];}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00034}00034\ \ \ \ \ \ \ \ \ \ \ \ \ q[i]\ =\ \{0.25f\ *\ a.x\ +\ 0.5f\ *\ b.x\ +\ 0.25f\ *\ c.x,\ 0.25f\ *\ a.y\ +\ 0.5f\ *\ b.y\ +\ 0.25f\ *\ c.y\};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00035}00035\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00036}00036\ \ \ \ \ \ \ \ \ p.swap(q);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00037}00037\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00038}00038\ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00039}00039\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00040}00040\ \textcolor{comment}{//\ Smooth\ a\ corner\ chain\ (endpoints\ fixed)\ and\ fit\ it\ to\ quadratic\ beziers.\ Done}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00041}00041\ \textcolor{comment}{//\ once\ per\ canonical\ edge;\ both\ adjacent\ regions\ reuse\ the\ result,\ so\ the\ fitted}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00042}00042\ \textcolor{comment}{//\ curve\ is\ shared\ and\ the\ two\ regions\ stay\ exactly\ coincident.}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00043}00043\ std::vector<QuadBezier>\ fit\_edge(\textcolor{keyword}{const}\ std::vector<Point>\&\ corners,\ \textcolor{keywordtype}{int}\ w,\ \textcolor{keywordtype}{int}\ h,\ \textcolor{keywordtype}{float}\ eps)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00044}00044\ \ \ \ \ std::vector<Point>\ pts\ =\ corners;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00045}00045\ \ \ \ \ smooth\_edge(pts,\ w,\ h,\ SMOOTHING\_ITERATIONS);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00046}00046\ \ \ \ \ \textcolor{keywordflow}{if}\ (pts.size()\ <\ 2)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00047}00047\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{\};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00048}00048\ \ \ \ \ std::vector<std::vector<Point>>\ chain\ \{pts\};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00049}00049\ \ \ \ \ std::vector<std::vector<QuadBezier>>\ res;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00050}00050\ \ \ \ \ fit\_curve\_reduction(chain,\ res,\ eps);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00051}00051\ \ \ \ \ \textcolor{keywordflow}{return}\ res.empty()\ ?\ std::vector<QuadBezier>\ \{\}\ :\ res[0];}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00052}00052\ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00053}00053\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00054}00054\ \textcolor{keywordtype}{void}\ reverse\_curve(std::vector<QuadBezier>\&\ c)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00055}00055\ \ \ \ \ std::reverse(c.begin(),\ c.end());}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00056}00056\ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{structQuadBezier}{QuadBezier}}\&\ q\ :\ c)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00057}00057\ \ \ \ \ \ \ \ \ std::swap(q.p0,\ q.p2);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00058}00058\ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00060}00060\ std::unordered\_map<int32\_t,\ std::vector<std::vector<QuadBezier>>>}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00061}00061\ build\_shared\_loops(\textcolor{keyword}{const}\ std::vector<int32\_t>\&\ labels,\ \textcolor{keywordtype}{int}\ w,\ \textcolor{keywordtype}{int}\ h,\ \textcolor{keywordtype}{float}\ eps)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00062}00062\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ W1\ =\ w\ +\ 1;\ \textcolor{comment}{//\ corner\ grid\ width}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00063}00063\ \ \ \ \ \textcolor{keyword}{auto}\ L\ =\ [\&](\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y)\ -\/>\ int32\_t\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00064}00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (x\ <\ 0\ ||\ x\ >=\ w\ ||\ y\ <\ 0\ ||\ y\ >=\ h)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ OUTSIDE;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00066}00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ labels[\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(y)\ *\ w\ +\ x];}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00067}00067\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00068}00068\ \ \ \ \ \textcolor{keyword}{auto}\ cidx\ =\ [\&](\textcolor{keywordtype}{int}\ cx,\ \textcolor{keywordtype}{int}\ cy)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00069}00069\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cy\ *\ W1\ +\ cx;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00070}00070\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00071}00071\ \ \ \ \ \textcolor{keyword}{auto}\ cx\_of\ =\ [\&](\textcolor{keywordtype}{int}\ idx)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00072}00072\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ idx\ \%\ W1;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00073}00073\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00074}00074\ \ \ \ \ \textcolor{keyword}{auto}\ cy\_of\ =\ [\&](\textcolor{keywordtype}{int}\ idx)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00075}00075\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ idx\ /\ W1;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00076}00076\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00077}00077\ \ \ \ \ \textcolor{keyword}{auto}\ pt\_of\ =\ [\&](\textcolor{keywordtype}{int}\ idx)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00078}00078\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structPoint}{Point}}\ \{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(cx\_of(idx)),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(cy\_of(idx))\};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00079}00079\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00081}00081\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ 1.\ Undirected\ crack\ adjacency\ over\ corners\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00082}00082\ \ \ \ \ std::unordered\_map<int,\ std::vector<int>>\ adj;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00083}00083\ \ \ \ \ \textcolor{keyword}{auto}\ add\_crack\ =\ [\&](\textcolor{keywordtype}{int}\ a,\ \textcolor{keywordtype}{int}\ b)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00084}00084\ \ \ \ \ \ \ \ \ adj[a].push\_back(b);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00085}00085\ \ \ \ \ \ \ \ \ adj[b].push\_back(a);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00086}00086\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00087}00087\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ cy\ =\ 0;\ cy\ <=\ h;\ ++cy)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00088}00088\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ cx\ =\ 0;\ cx\ <=\ w;\ ++cx)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cy\ <\ h\ \&\&\ L(cx\ -\/\ 1,\ cy)\ !=\ L(cx,\ cy))}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ add\_crack(cidx(cx,\ cy),\ cidx(cx,\ cy\ +\ 1));}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00091}00091\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cx\ <\ w\ \&\&\ L(cx,\ cy\ -\/\ 1)\ !=\ L(cx,\ cy))}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ add\_crack(cidx(cx,\ cy),\ cidx(cx\ +\ 1,\ cy));}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00093}00093\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00095}00095\ \ \ \ \ \textcolor{comment}{//\ A\ corner\ is\ a\ junction\ wherever\ its\ crack\ degree\ !=\ 2:\ degree\ 3/4\ are\ branch}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00096}00096\ \ \ \ \ \textcolor{comment}{//\ points\ (incl.\ diagonal\ pixel\ touches),\ degree\ 1\ is\ a\ dangling\ end.\ Degree-\/2}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00097}00097\ \ \ \ \ \textcolor{comment}{//\ corners\ are\ interior\ to\ a\ single\ two-\/region\ edge.}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00098}00098\ \ \ \ \ \textcolor{keyword}{auto}\ is\_junction\ =\ [\&](\textcolor{keywordtype}{int}\ idx)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00099}00099\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ adj.find(idx);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00100}00100\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ it\ ==\ adj.end()\ ?\ false\ :\ it-\/>second.size()\ !=\ 2;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00101}00101\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00102}00102\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00103}00103\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ 2.\ Extract\ canonical\ edges\ (junction\ -\/>\ junction\ chains)\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00104}00104\ \ \ \ \ \textcolor{keyword}{struct\ }Edge\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00105}00105\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ a,\ b;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ endpoint\ corners}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00106}00106\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ closed;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ junction-\/free\ loop}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00107}00107\ \ \ \ \ \ \ \ \ std::vector<int>\ path;\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ full\ corner\ sequence\ (closed:\ ring,\ no\ repeat)}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00108}00108\ \ \ \ \ \ \ \ \ std::vector<QuadBezier>\ curve;\ \textcolor{comment}{//\ fitted\ curve\ (front@a\ ..\ back@b)}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00109}00109\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00110}00110\ \ \ \ \ std::vector<Edge>\ edges;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00111}00111\ \ \ \ \ std::map<std::pair<int,\ int>,\ \textcolor{keywordtype}{int}>\ crack\_edge;\ \textcolor{comment}{//\ undirected\ crack\ -\/>\ edge\ id}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00112}00112\ \ \ \ \ \textcolor{keyword}{auto}\ ckey\ =\ [](\textcolor{keywordtype}{int}\ a,\ \textcolor{keywordtype}{int}\ b)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00113}00113\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::make\_pair(std::min(a,\ b),\ std::max(a,\ b));}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00114}00114\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00116}00116\ \ \ \ \ \textcolor{keyword}{auto}\ store\_edge\ =\ [\&](std::vector<int>\ seq,\ \textcolor{keywordtype}{bool}\ closed)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00117}00117\ \ \ \ \ \ \ \ \ std::vector<int>\ cseq\ =\ seq;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00118}00118\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (closed)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00119}00119\ \ \ \ \ \ \ \ \ \ \ \ \ cseq.push\_back(seq.front());\ \textcolor{comment}{//\ close\ the\ ring\ for\ geometry}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00120}00120\ \ \ \ \ \ \ \ \ Edge\ e;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00121}00121\ \ \ \ \ \ \ \ \ e.closed\ =\ closed;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00122}00122\ \ \ \ \ \ \ \ \ e.path\ =\ std::move(seq);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00123}00123\ \ \ \ \ \ \ \ \ e.a\ =\ cseq.front();}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00124}00124\ \ \ \ \ \ \ \ \ e.b\ =\ cseq.back();}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00125}00125\ \ \ \ \ \ \ \ \ std::vector<Point>\ corners;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00126}00126\ \ \ \ \ \ \ \ \ corners.reserve(cseq.size());}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00127}00127\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ c\ :\ cseq)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ corners.push\_back(pt\_of(c));}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00129}00129\ \ \ \ \ \ \ \ \ e.curve\ =\ fit\_edge(corners,\ w,\ h,\ eps);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00130}00130\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \textcolor{keywordtype}{id}\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(edges.size());}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00131}00131\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ +\ 1\ <\ cseq.size();\ ++i)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00132}00132\ \ \ \ \ \ \ \ \ \ \ \ \ crack\_edge[ckey(cseq[i],\ cseq[i\ +\ 1])]\ =\ id;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00133}00133\ \ \ \ \ \ \ \ \ edges.push\_back(std::move(e));}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00134}00134\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00135}00135\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00136}00136\ \ \ \ \ \textcolor{keyword}{auto}\ walk\_edge\ =\ [\&](\textcolor{keywordtype}{int}\ start,\ \textcolor{keywordtype}{int}\ first\_next)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00137}00137\ \ \ \ \ \ \ \ \ std::vector<int>\ seq\ \{start\};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00138}00138\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ prev\ =\ start,\ cur\ =\ first\_next;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00139}00139\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00140}00140\ \ \ \ \ \ \ \ \ \ \ \ \ seq.push\_back(cur);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00141}00141\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (is\_junction(cur))}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00142}00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00143}00143\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ nxt\ =\ -\/1;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00144}00144\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ nb\ :\ adj[cur])}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00145}00145\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ (nb\ !=\ prev)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00146}00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nxt\ =\ nb;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00147}00147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00148}00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00149}00149\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (nxt\ <\ 0\ ||\ cur\ ==\ start)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00150}00150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00151}00151\ \ \ \ \ \ \ \ \ \ \ \ \ prev\ =\ cur;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00152}00152\ \ \ \ \ \ \ \ \ \ \ \ \ cur\ =\ nxt;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00153}00153\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00154}00154\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ seq;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00155}00155\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00156}00156\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00157}00157\ \ \ \ \ \textcolor{comment}{//\ 2a.\ edges\ between\ junctions}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00158}00158\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ kv\ :\ adj)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00159}00159\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!is\_junction(kv.first))}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00160}00160\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00161}00161\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ nb\ :\ kv.second)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00162}00162\ \ \ \ \ \ \ \ \ \ \ \ \ if\ (!crack\_edge.count(ckey(kv.first,\ nb)))}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00163}00163\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ store\_edge(walk\_edge(kv.first,\ nb),\ false);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00164}00164\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00165}00165\ \ \ \ \ \textcolor{comment}{//\ 2b.\ junction-\/free\ closed\ loops}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00166}00166\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ kv\ :\ adj)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00167}00167\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ nb\ :\ kv.second)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00168}00168\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (crack\_edge.count(ckey(kv.first,\ nb)))}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00169}00169\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00170}00170\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<int>\ seq\ \{kv.first\};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00171}00171\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ prev\ =\ kv.first,\ cur\ =\ nb;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00172}00172\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ cap\ =\ adj.size()\ +\ 4;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00173}00173\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (cur\ !=\ kv.first\ \&\&\ seq.size()\ <\ cap)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00174}00174\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ seq.push\_back(cur);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00175}00175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ nxt\ =\ -\/1;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00176}00176\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ x\ :\ adj[cur])}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00177}00177\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ (x\ !=\ prev)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00178}00178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nxt\ =\ x;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00179}00179\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00180}00180\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00181}00181\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (nxt\ <\ 0)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00182}00182\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00183}00183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ prev\ =\ cur;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00184}00184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cur\ =\ nxt;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00185}00185\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00186}00186\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ canonicalise\ start\ to\ smallest\ corner\ so\ both\ regions\ agree.}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00187}00187\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ mpos\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00188}00188\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ seq.size();\ ++i)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00189}00189\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (seq[i]\ <\ seq[mpos])}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00190}00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mpos\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(i);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00191}00191\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ mm\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(seq.size());}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00192}00192\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<int>\ rot;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00193}00193\ \ \ \ \ \ \ \ \ \ \ \ \ rot.reserve(mm);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00194}00194\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ mm;\ ++i)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00195}00195\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rot.push\_back(seq[(mpos\ +\ i)\ \%\ mm]);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00196}00196\ \ \ \ \ \ \ \ \ \ \ \ \ store\_edge(rot,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00197}00197\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00198}00198\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00199}00199\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00200}00200\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ 3.\ Per-\/region\ directed\ boundary\ cracks\ (region\ kept\ on\ the\ RIGHT)\ -\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00201}00201\ \ \ \ \ std::unordered\_map<int32\_t,\ std::map<int,\ std::vector<int>>>\ region\_dir;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00202}00202\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ y\ =\ 0;\ y\ <\ h;\ ++y)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00203}00203\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ x\ =\ 0;\ x\ <\ w;\ ++x)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00204}00204\ \ \ \ \ \ \ \ \ \ \ \ \ int32\_t\ r\ =\ L(x,\ y);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00205}00205\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\&\ dir\ =\ region\_dir[r];}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00206}00206\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ c00\ =\ cidx(x,\ y),\ c10\ =\ cidx(x\ +\ 1,\ y);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00207}00207\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ c11\ =\ cidx(x\ +\ 1,\ y\ +\ 1),\ c01\ =\ cidx(x,\ y\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00208}00208\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (L(x,\ y\ -\/\ 1)\ !=\ r)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00209}00209\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ dir[c00].push\_back(c10);\ \textcolor{comment}{//\ top}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00210}00210\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (L(x\ +\ 1,\ y)\ !=\ r)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00211}00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ dir[c10].push\_back(c11);\ \textcolor{comment}{//\ right}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00212}00212\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (L(x,\ y\ +\ 1)\ !=\ r)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00213}00213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ dir[c11].push\_back(c01);\ \textcolor{comment}{//\ bottom}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00214}00214\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (L(x\ -\/\ 1,\ y)\ !=\ r)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00215}00215\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ dir[c01].push\_back(c00);\ \textcolor{comment}{//\ left}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00216}00216\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00217}00217\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00218}00218\ \ \ \ \ \textcolor{keyword}{auto}\ unit\ =\ [\&](\textcolor{keywordtype}{int}\ from,\ \textcolor{keywordtype}{int}\ to,\ \textcolor{keywordtype}{int}\&\ dx,\ \textcolor{keywordtype}{int}\&\ dy)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00219}00219\ \ \ \ \ \ \ \ \ dx\ =\ cx\_of(to)\ -\/\ cx\_of(from);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00220}00220\ \ \ \ \ \ \ \ \ dy\ =\ cy\_of(to)\ -\/\ cy\_of(from);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00221}00221\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00222}00222\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00223}00223\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ 4.\ Assemble\ each\ region's\ loops\ from\ canonical\ shared\ curves\ -\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00224}00224\ \ \ \ \ std::unordered\_map<int32\_t,\ std::vector<std::vector<QuadBezier>>>\ result;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00225}00225\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ rkv\ :\ region\_dir)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00226}00226\ \ \ \ \ \ \ \ \ int32\_t\ r\ =\ rkv.first;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00227}00227\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (r\ ==\ OUTSIDE)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00228}00228\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00229}00229\ \ \ \ \ \ \ \ \ std::map<int,\ std::vector<int>>\ dir\ =\ rkv.second;\ \textcolor{comment}{//\ erased\ as\ consumed}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00230}00230\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00231}00231\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ right-\/hand\ rule:\ prefer\ right,\ straight,\ left,\ back\ of\ incoming\ dir.}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00232}00232\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ take\_from\ =\ [\&](\textcolor{keywordtype}{int}\ from,\ \textcolor{keywordtype}{int}\ dx\_in,\ \textcolor{keywordtype}{int}\ dy\_in)\ -\/>\ \textcolor{keywordtype}{int}\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00233}00233\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ dir.find(from);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00234}00234\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ ==\ dir.end()\ ||\ it-\/>second.empty())}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00235}00235\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00236}00236\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\&\ outs\ =\ it-\/>second;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00237}00237\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ pref[4][2]\ =\ \{\{-\/dy\_in,\ dx\_in\},\ \{dx\_in,\ dy\_in\},\ \{dy\_in,\ -\/dx\_in\},\ \{-\/dx\_in,\ -\/dy\_in\}\};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00238}00238\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ pr\ :\ pref)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00239}00239\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ for\ (size\_t\ k\ =\ 0;\ k\ <\ outs.size();\ ++k)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00240}00240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ dx,\ dy;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00241}00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ unit(from,\ outs[k],\ dx,\ dy);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00242}00242\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dx\ ==\ pr[0]\ \&\&\ dy\ ==\ pr[1])\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00243}00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ to\ =\ outs[k];}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00244}00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ outs.erase(outs.begin()\ +\ k);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00245}00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ to;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00246}00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00247}00247\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00248}00248\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ to\ =\ outs.back();}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00249}00249\ \ \ \ \ \ \ \ \ \ \ \ \ outs.pop\_back();}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00250}00250\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ to;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00251}00251\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00252}00252\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00253}00253\ \ \ \ \ \ \ \ \ std::vector<std::vector<int>>\ loops;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00254}00254\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ it\ :\ dir)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00255}00255\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!it.second.empty())\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00256}00256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ start\ =\ it.first;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00257}00257\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ nxt\ =\ take\_from(start,\ 1,\ 0);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00258}00258\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (nxt\ <\ 0)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00259}00259\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00260}00260\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<int>\ loop\ \{start\};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00261}00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ dx\_in,\ dy\_in;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00262}00262\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ unit(start,\ nxt,\ dx\_in,\ dy\_in);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00263}00263\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ cur\ =\ nxt;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00264}00264\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (cur\ !=\ start)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00265}00265\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ loop.push\_back(cur);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00266}00266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ nn\ =\ take\_from(cur,\ dx\_in,\ dy\_in);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00267}00267\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (nn\ <\ 0)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00268}00268\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00269}00269\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ unit(cur,\ nn,\ dx\_in,\ dy\_in);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00270}00270\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cur\ =\ nn;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00271}00271\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00272}00272\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ loops.push\_back(std::move(loop));}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00273}00273\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00274}00274\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00275}00275\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00276}00276\ \ \ \ \ \ \ \ \ std::vector<std::vector<QuadBezier>>\&\ out\_loops\ =\ result[r];}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00277}00277\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ loop\ :\ loops)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00278}00278\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ m\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(loop.size());}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00279}00279\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\ <\ 2)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00280}00280\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00281}00281\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ rotate\ so\ the\ loop\ starts\ at\ a\ junction\ (edges\ are\ entered\ at\ ends).}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00282}00282\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ js\ =\ -\/1;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00283}00283\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ t\ =\ 0;\ t\ <\ m;\ ++t)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00284}00284\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (is\_junction(loop[t]))\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00285}00285\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ js\ =\ t;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00286}00286\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00287}00287\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00288}00288\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (js\ >\ 0)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00289}00289\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::rotate(loop.begin(),\ loop.begin()\ +\ js,\ loop.end());}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00290}00290\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00291}00291\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<QuadBezier>\ curve;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00292}00292\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ i\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00293}00293\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (i\ <\ m)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00294}00294\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ from\ =\ loop[i];}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00295}00295\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ to\ =\ loop[(i\ +\ 1)\ \%\ m];}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00296}00296\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ eit\ =\ crack\_edge.find(ckey(from,\ to));}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00297}00297\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (eit\ ==\ crack\_edge.end())\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00298}00298\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++i;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00299}00299\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00300}00300\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00301}00301\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Edge\&\ e\ =\ edges[eit-\/>second];}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00302}00302\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<QuadBezier>\ seg\ =\ e.curve;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00303}00303\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (e.closed)\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00304}00304\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ mm\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(e.path.size());}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00305}00305\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ p\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00306}00306\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (p\ <\ mm\ \&\&\ e.path[p]\ !=\ from)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00307}00307\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++p;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00308}00308\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ fwd\ =\ (p\ <\ mm)\ \&\&\ (e.path[(p\ +\ 1)\ \%\ mm]\ ==\ to);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00309}00309\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!fwd)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00310}00310\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reverse\_curve(seg);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00311}00311\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{structQuadBezier}{QuadBezier}}\&\ q\ :\ seg)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00312}00312\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ curve.push\_back(q);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00313}00313\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ i\ =\ m;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00314}00314\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00315}00315\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ fwd\ =\ (from\ ==\ e.a);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00316}00316\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!fwd)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00317}00317\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reverse\_curve(seg);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00318}00318\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{structQuadBezier}{QuadBezier}}\&\ q\ :\ seg)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00319}00319\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ curve.push\_back(q);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00320}00320\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ other\ =\ fwd\ ?\ e.b\ :\ e.a;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00321}00321\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ j\ =\ i\ +\ 1;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00322}00322\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (j\ <\ m\ \&\&\ loop[j]\ !=\ other)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00323}00323\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++j;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00324}00324\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ i\ =\ j;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00325}00325\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00326}00326\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00327}00327\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (curve.size()\ >=\ 2)}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00328}00328\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out\_loops.push\_back(std::move(curve));}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00329}00329\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00330}00330\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00331}00331\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00332}00332\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{\Hypertarget{shared__contours_8cpp_source_l00333}00333\ \}}
+
+\end{DoxyCode}

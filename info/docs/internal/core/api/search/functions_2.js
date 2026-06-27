@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['image_5fto_5fsvg_0',['image_to_svg',['../namespaceimg2num.html#a8183e7b7e8a7efb8ce7ab254f81facb1',1,'img2num']]],
-  ['invert_5fimage_1',['invert_image',['../namespaceimg2num.html#adcf00084d90ead66510dadc459d0990e',1,'img2num']]]
+  ['gaussian_5fblur_5ffft_0',['gaussian_blur_fft',['../namespaceimg2num.html#a365bbbd4976477bdf515be023a73d63f',1,'img2num']]],
+  ['getpixel_1',['getPixel',['../classGraph.html#a0c88d5759816a622560c8d18da2b7902',1,'Graph']]]
 ];

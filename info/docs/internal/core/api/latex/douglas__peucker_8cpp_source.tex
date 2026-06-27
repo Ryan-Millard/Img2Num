@@ -1,0 +1,114 @@
+\doxysection{douglas\+\_\+peucker.\+cpp}
+\hypertarget{douglas__peucker_8cpp_source}{}\label{douglas__peucker_8cpp_source}\index{src/internal/douglas\_peucker.cpp@{src/internal/douglas\_peucker.cpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00001}00001\ \textcolor{preprocessor}{\#include\ "{}internal/douglas\_peucker.h"{}}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00002}00002\ }
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00003}00003\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00004}00004\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00005}00005\ \textcolor{preprocessor}{\#include\ <cstdlib>}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00006}00006\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00008}00008\ \textcolor{comment}{//\ -\/-\/-\/\ Signed\ perpendicular\ distance\ of\ P\ from\ the\ directed\ line\ A-\/>B\ -\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00009}00009\ \textcolor{comment}{//\ Positive\ =\ P\ lies\ to\ the\ "{}left"{}\ of\ the\ A-\/>B\ travel\ direction\ (using\ the}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00010}00010\ \textcolor{comment}{//\ n\ =\ (-\/dy,\ dx)\ normal).\ Falls\ back\ to\ the\ point\ distance\ for\ a\ zero-\/length\ AB.}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00011}00011\ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ signed\_left\_dist(\textcolor{keyword}{const}\ \mbox{\hyperlink{structPoint}{Point}}\&\ A,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structPoint}{Point}}\&\ B,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structPoint}{Point}}\&\ P)\ \{}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00012}00012\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ dx\ =\ B.x\ -\/\ A.x,\ dy\ =\ B.y\ -\/\ A.y;}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00013}00013\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ l\ =\ std::sqrt(dx\ *\ dx\ +\ dy\ *\ dy);}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00014}00014\ \ \ \ \ \textcolor{keywordflow}{if}\ (l\ <\ 1e-\/9f)}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00015}00015\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::sqrt(Point::distSq(P,\ A));}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00016}00016\ \ \ \ \ \textcolor{keywordflow}{return}\ ((P.y\ -\/\ A.y)\ *\ dx\ -\/\ (P.x\ -\/\ A.x)\ *\ dy)\ /\ l;}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00017}00017\ \}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00051}00051\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ dp\_reduce(}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00052}00052\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<Point>\&\ pts,\ \textcolor{keywordtype}{int}\ lo,\ \textcolor{keywordtype}{int}\ hi,\ \textcolor{keywordtype}{float}\ eps,\ \textcolor{keywordtype}{float}\ retract\_eps,}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00053}00053\ \ \ \ \ \textcolor{keywordtype}{float}\ interior\_sign,\ std::vector<uint8\_t>\&\ keep}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00054}00054\ )\ \{}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00055}00055\ \ \ \ \ \textcolor{keywordflow}{if}\ (hi\ -\/\ lo\ <\ 2)}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00056}00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};\ \textcolor{comment}{//\ no\ interior\ vertices\ to\ drop}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00058}00058\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structPoint}{Point}}\&\ A\ =\ pts[lo];}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00059}00059\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structPoint}{Point}}\&\ B\ =\ pts[hi];}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00061}00061\ \ \ \ \ \textcolor{keywordtype}{float}\ max\_abs\_dev\ =\ 0.0f;\ \textcolor{comment}{//\ worst\ |deviation|\ -\/>\ fidelity\ /\ split\ choice}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00062}00062\ \ \ \ \ \textcolor{keywordtype}{float}\ max\_retract\ =\ 0.0f;\ \textcolor{comment}{//\ worst\ inward\ move\ -\/>\ watertightness\ guard}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00063}00063\ \ \ \ \ \textcolor{keywordtype}{int}\ split\ =\ lo;}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00064}00064\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ lo\ +\ 1;\ k\ <\ hi;\ ++k)\ \{}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00065}00065\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ d\ =\ signed\_left\_dist(A,\ B,\ pts[k]);}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00066}00066\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ adev\ =\ std::fabs(d);}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00067}00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (adev\ >\ max\_abs\_dev)\ \{}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ max\_abs\_dev\ =\ adev;}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ split\ =\ k;}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00070}00070\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00071}00071\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ interior\_sign\ *\ d\ >\ 0\ =>\ vertex\ is\ interior\ (concave,\ safe\ to\ flatten);}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00072}00072\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ <\ 0\ =>\ vertex\ is\ exterior\ (convex),\ dropping\ it\ retracts\ the\ boundary.}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00073}00073\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ retract\ =\ -\/interior\_sign\ *\ d;}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00074}00074\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (retract\ >\ max\_retract)}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ max\_retract\ =\ retract;}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00076}00076\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00078}00078\ \ \ \ \ \textcolor{keywordflow}{if}\ (max\_abs\_dev\ <=\ eps\ \&\&\ max\_retract\ <=\ retract\_eps)}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00079}00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};\ \textcolor{comment}{//\ drop\ the\ run}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00081}00081\ \ \ \ \ keep[split]\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00082}00082\ \ \ \ \ dp\_reduce(pts,\ lo,\ split,\ eps,\ retract\_eps,\ interior\_sign,\ keep);}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00083}00083\ \ \ \ \ dp\_reduce(pts,\ split,\ hi,\ eps,\ retract\_eps,\ interior\_sign,\ keep);}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00084}00084\ \}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00104}00104\ \textcolor{keywordtype}{void}\ dp\_curve\_reduction(}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00105}00105\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<std::vector<Point>>\&\ chains,\ \textcolor{keyword}{const}\ std::vector<std::vector<uint8\_t>>\&\ fixed,}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00106}00106\ \ \ \ \ std::vector<std::vector<QuadBezier>>\&\ results,\ \textcolor{keywordtype}{float}\ eps}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00107}00107\ )\ \{}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00108}00108\ \ \ \ \ \textcolor{keywordtype}{float}\ retract\_eps\ =\ std::min(eps,\ 0.5f);}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00110}00110\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ chains.size();\ ++i)\ \{}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00111}00111\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::vector<Point>\&\ chain\ =\ chains[i];}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00112}00112\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ n\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(chain.size());}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00113}00113\ \ \ \ \ \ \ \ \ std::vector<QuadBezier>\ result;}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00114}00114\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n\ <\ 2)\ \{}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ results.push\_back(result);}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00117}00117\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00118}00118\ }
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00119}00119\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Orientation:\ sign\ of\ the\ shoelace\ area\ decides\ which\ side\ of\ a\ chord\ is}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00120}00120\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ the\ region\ interior\ (see\ dp\_reduce).\ Computed\ over\ the\ closed\ chain.}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00121}00121\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sa\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00122}00122\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ n;\ ++k)\ \{}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structPoint}{Point}}\&\ p\ =\ chain[k];}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structPoint}{Point}}\&\ q\ =\ chain[(k\ +\ 1)\ \%\ n];}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ sa\ +=\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(p.x)\ *\ q.y\ -\/\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(q.x)\ *\ p.y;}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00126}00126\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00127}00127\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ interior\_sign\ =\ (sa\ >\ 0.0)\ ?\ 1.0f\ :\ -\/1.0f;}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00128}00128\ }
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00129}00129\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Segment\ boundaries:\ chain\ ends\ plus\ every\ interior\ fixed\ point.\ DP\ runs}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00130}00130\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ inside\ each\ [bounds[s],\ bounds[s+1]]\ span\ with\ its\ ends\ pinned.}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00131}00131\ \ \ \ \ \ \ \ \ std::vector<int>\ bounds;}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00132}00132\ \ \ \ \ \ \ \ \ bounds.push\_back(0);}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00133}00133\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 1;\ k\ <\ n\ -\/\ 1;\ ++k)}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00134}00134\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (k\ <\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(fixed[i].size())\ \&\&\ fixed[i][k])}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00135}00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bounds.push\_back(k);}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00136}00136\ \ \ \ \ \ \ \ \ bounds.push\_back(n\ -\/\ 1);}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00137}00137\ }
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00138}00138\ \ \ \ \ \ \ \ \ std::vector<uint8\_t>\ keep(n,\ 0);}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00139}00139\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ b\ :\ bounds)}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00140}00140\ \ \ \ \ \ \ \ \ \ \ \ \ keep[b]\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00141}00141\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ s\ =\ 0;\ s\ +\ 1\ <\ bounds.size();\ ++s)}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00142}00142\ \ \ \ \ \ \ \ \ \ \ \ \ dp\_reduce(chain,\ bounds[s],\ bounds[s\ +\ 1],\ eps,\ retract\_eps,\ interior\_sign,\ keep);}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00143}00143\ }
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00144}00144\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Emit\ kept\ points\ in\ order\ as\ straight-\/line\ quads.}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00145}00145\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ prev\ =\ -\/1;}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00146}00146\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ n;\ ++k)\ \{}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00147}00147\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!keep[k])}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00148}00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00149}00149\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (prev\ >=\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00150}00150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structPoint}{Point}}\&\ P\ =\ chain[prev];}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00151}00151\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structPoint}{Point}}\&\ Q\ =\ chain[k];}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00152}00152\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result.push\_back(\{P,\ (P\ +\ Q)\ *\ 0.5f,\ Q\});}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00153}00153\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00154}00154\ \ \ \ \ \ \ \ \ \ \ \ \ prev\ =\ k;}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00155}00155\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00156}00156\ \ \ \ \ \ \ \ \ results.push\_back(result);}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00157}00157\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{douglas__peucker_8cpp_source_l00158}00158\ \}}
+
+\end{DoxyCode}

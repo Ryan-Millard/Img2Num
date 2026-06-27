@@ -10,7 +10,8 @@ var group__IMG2NUM__H =
         [ "max_iter", "structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig.html#a803475180df7951e783432e40e192e81", null ]
       ] ],
       [ "color_space", "structimg2num_1_1ImageToSvgConfig.html#aea1a469576eb80f915a1ac73f93f55c1", null ],
-      [ "min_cluster_area", "structimg2num_1_1ImageToSvgConfig.html#ab834fb06830058d5d629be5f79ca98c3", null ]
+      [ "min_cluster_area", "structimg2num_1_1ImageToSvgConfig.html#ab834fb06830058d5d629be5f79ca98c3", null ],
+      [ "min_thickness", "structimg2num_1_1ImageToSvgConfig.html#a3b26653bf8f495b9553066ed1efa78c2", null ]
     ] ],
     [ "IMG2NUM_H_BILATERAL_FILTER_DOC", "group__IMG2NUM__H.html#ga8f2c5c753f174fe926f7d81b190a08c0", null ],
     [ "IMG2NUM_H_BLACK_THRESHOLD_IMAGE_DOC", "group__IMG2NUM__H.html#gaf6f0ca46cdccd2ac8d894666d596f578", null ],

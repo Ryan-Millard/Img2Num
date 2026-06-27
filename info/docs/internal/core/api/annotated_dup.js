@@ -22,7 +22,7 @@ var annotated_dup =
     [ "ContoursResult", "structContoursResult.html", null ],
     [ "FilterParams", "structFilterParams.html", null ],
     [ "GPU", "classGPU.html", null ],
-    [ "Graph", "classGraph.html", null ],
+    [ "Graph", "classGraph.html", "classGraph" ],
     [ "Node", "classNode.html", null ],
     [ "Params", "structParams.html", null ],
     [ "Point", "structPoint.html", null ],

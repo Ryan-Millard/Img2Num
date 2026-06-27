@@ -12,131 +12,128 @@
 \DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00008}00008\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
 \DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00009}00009\ }
 \DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00010}00010\ \textcolor{keyword}{static}\ img2num::ImageToSvgConfig\ to\_cpp(\textcolor{keyword}{const}\ \mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\_ImageToSvgConfig}}\&\ c)\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00011}00011\ \ \ \ \ \textcolor{comment}{//\ clang-\/format\ off}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00012}00012\ \ \ \ \ \textcolor{keywordflow}{return}\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00013}00013\ \ \ \ \ \ \ \ \ .bilateral\_filter\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00014}00014\ \ \ \ \ \ \ \ \ \ \ \ \ .sigma\_spatial\ =\ c.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_afd447463c624f9acb75515ef45b01761}{bilateral\_filter}}.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_1_1BilateralFilterConfig_a08ba38b2bfba755281132c34761fcd4d}{sigma\_spatial}},}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00015}00015\ \ \ \ \ \ \ \ \ \ \ \ \ .sigma\_range\ =\ c.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_afd447463c624f9acb75515ef45b01761}{bilateral\_filter}}.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_1_1BilateralFilterConfig_a811a8ac149472783ed9db7c203cbff9f}{sigma\_range}}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00016}00016\ \ \ \ \ \ \ \ \ \},}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00017}00017\ }
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00018}00018\ \ \ \ \ \ \ \ \ .kmeans\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00019}00019\ \ \ \ \ \ \ \ \ \ \ \ \ .k\ =\ c.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_ae81dd553299c1e7c6b7c16675bc674e1}{kmeans}}.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_1_1KMeansConfig_a654388d6a16f776de298a0b13142736a}{k}},}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00020}00020\ \ \ \ \ \ \ \ \ \ \ \ \ .max\_iter\ =\ c.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_ae81dd553299c1e7c6b7c16675bc674e1}{kmeans}}.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_1_1KMeansConfig_a7e933409d021971dd59cf92c828f0fb2}{max\_iter}}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00021}00021\ \ \ \ \ \ \ \ \ \},}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00011}00011\ \ \ \ \ img2num::ImageToSvgConfig\ cfg\ \{\};}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00012}00012\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00013}00013\ \ \ \ \ cfg.bilateral\_filter.sigma\_spatial\ =\ c.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_afd447463c624f9acb75515ef45b01761}{bilateral\_filter}}.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_1_1BilateralFilterConfig_a08ba38b2bfba755281132c34761fcd4d}{sigma\_spatial}};}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00014}00014\ \ \ \ \ cfg.bilateral\_filter.sigma\_range\ \ \ =\ c.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_afd447463c624f9acb75515ef45b01761}{bilateral\_filter}}.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_1_1BilateralFilterConfig_a811a8ac149472783ed9db7c203cbff9f}{sigma\_range}};}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00016}00016\ \ \ \ \ cfg.kmeans.k\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ c.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_ae81dd553299c1e7c6b7c16675bc674e1}{kmeans}}.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_1_1KMeansConfig_a654388d6a16f776de298a0b13142736a}{k}};}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00017}00017\ \ \ \ \ cfg.kmeans.max\_iter\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ c.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_ae81dd553299c1e7c6b7c16675bc674e1}{kmeans}}.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_1_1KMeansConfig_a7e933409d021971dd59cf92c828f0fb2}{max\_iter}};}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00019}00019\ \ \ \ \ cfg.min\_cluster\_area\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ c.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_ab92279f0e29e770c422096141bb5fb12}{min\_cluster\_area}};}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00020}00020\ \ \ \ \ cfg.min\_thickness\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ c.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_a172896542fc322e81ed6aebde9eec5dd}{min\_thickness}};}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00021}00021\ \ \ \ \ cfg.color\_space\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ c.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_a440a38e0e148c5e8fbe42532f1a1a939}{color\_space}};}
 \DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00022}00022\ }
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00023}00023\ \ \ \ \ \ \ \ \ .min\_cluster\_area\ =\ c.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_ab92279f0e29e770c422096141bb5fb12}{min\_cluster\_area}},}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00024}00024\ \ \ \ \ \ \ \ \ .color\_space\ =\ c.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_a440a38e0e148c5e8fbe42532f1a1a939}{color\_space}}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00025}00025\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00026}00026\ \ \ \ \ \textcolor{comment}{//\ clang-\/format\ on}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00027}00027\ \}}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00023}00023\ \ \ \ \ \textcolor{keywordflow}{return}\ cfg;}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00024}00024\ \}}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00026}00026\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\_ImageToSvgConfig}}\ to\_c(\textcolor{keyword}{const}\ img2num::ImageToSvgConfig\&\ cpp)\ \{}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00027}00027\ \ \ \ \ \mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\_ImageToSvgConfig}}\ cfg\ \{\};}
 \DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00028}00028\ }
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00029}00029\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\_ImageToSvgConfig}}\ to\_c(\textcolor{keyword}{const}\ img2num::ImageToSvgConfig\&\ cpp)\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00030}00030\ \ \ \ \ \textcolor{comment}{//\ clang-\/format\ off}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00031}00031\ \ \ \ \ \textcolor{keywordflow}{return}\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00032}00032\ \ \ \ \ \ \ \ \ .\mbox{\hyperlink{structimg2num__ImageToSvgConfig_afd447463c624f9acb75515ef45b01761}{bilateral\_filter}}\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00033}00033\ \ \ \ \ \ \ \ \ \ \ \ \ .\mbox{\hyperlink{structimg2num__ImageToSvgConfig_1_1BilateralFilterConfig_a08ba38b2bfba755281132c34761fcd4d}{sigma\_spatial}}\ =\ cpp.bilateral\_filter.sigma\_spatial,}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00034}00034\ \ \ \ \ \ \ \ \ \ \ \ \ .sigma\_range\ =\ cpp.bilateral\_filter.sigma\_range}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00035}00035\ \ \ \ \ \ \ \ \ \},}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00036}00036\ \ \ \ \ \ \ \ \ .kmeans\{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00037}00037\ \ \ \ \ \ \ \ \ \ \ \ \ .k\ =\ cpp.kmeans.k,}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \ \ .max\_iter\ =\ cpp.kmeans.max\_iter}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00039}00039\ \ \ \ \ \ \ \ \ \},}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00040}00040\ \ \ \ \ \ \ \ \ .min\_cluster\_area\ =\ cpp.min\_cluster\_area,}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00041}00041\ \ \ \ \ \ \ \ \ .color\_space\ =\ cpp.color\_space}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00042}00042\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00043}00043\ \ \ \ \ \textcolor{comment}{//\ clang-\/format\ on}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00044}00044\ \}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00045}00045\ }
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00046}\mbox{\hyperlink{cimg2num_8h_a5a016ab3fb1a11977549ad30180bdbdc}{00046}}\ \mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\_ImageToSvgConfig}}\ \mbox{\hyperlink{cimg2num_8cpp_a5a016ab3fb1a11977549ad30180bdbdc}{img2num\_ImageToSvgConfig\_default}}(\textcolor{keywordtype}{void})\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00047}00047\ \ \ \ \ \textcolor{comment}{//\ Use\ the\ defaults\ from\ the\ C++\ struct}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00048}00048\ \ \ \ \ \textcolor{keywordflow}{return}\ to\_c(img2num::ImageToSvgConfig\ \{\});}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00029}00029\ \ \ \ \ cfg.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_afd447463c624f9acb75515ef45b01761}{bilateral\_filter}}.\mbox{\hyperlink{structimg2num__ImageToSvgConfig_1_1BilateralFilterConfig_a08ba38b2bfba755281132c34761fcd4d}{sigma\_spatial}}\ =\ cpp.bilateral\_filter.sigma\_spatial;}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00030}00030\ \ \ \ \ cfg.bilateral\_filter.sigma\_range\ \ \ =\ cpp.bilateral\_filter.sigma\_range;}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00032}00032\ \ \ \ \ cfg.kmeans.k\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ cpp.kmeans.k;}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00033}00033\ \ \ \ \ cfg.kmeans.max\_iter\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ cpp.kmeans.max\_iter;}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00035}00035\ \ \ \ \ cfg.min\_cluster\_area\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ cpp.min\_cluster\_area;}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00036}00036\ \ \ \ \ cfg.min\_thickness\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ cpp.min\_thickness;}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00037}00037\ \ \ \ \ cfg.color\_space\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ cpp.color\_space;}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00039}00039\ \ \ \ \ \textcolor{keywordflow}{return}\ cfg;}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00040}00040\ \}}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00042}\mbox{\hyperlink{cimg2num_8h_a5a016ab3fb1a11977549ad30180bdbdc}{00042}}\ \mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\_ImageToSvgConfig}}\ \mbox{\hyperlink{cimg2num_8cpp_a5a016ab3fb1a11977549ad30180bdbdc}{img2num\_ImageToSvgConfig\_default}}(\textcolor{keywordtype}{void})\ \{}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00043}00043\ \ \ \ \ \textcolor{comment}{//\ Use\ the\ defaults\ from\ the\ C++\ struct}}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00044}00044\ \ \ \ \ \textcolor{keywordflow}{return}\ to\_c(img2num::ImageToSvgConfig\ \{\});}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00045}00045\ \}}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00046}00046\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00047}\mbox{\hyperlink{cimg2num_8h_a9ec403b5d2ba9b510eb999dfc8ba9305}{00047}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cimg2num_8cpp_a9ec403b5d2ba9b510eb999dfc8ba9305}{img2num\_gaussian\_blur\_fft}}(uint8\_t*\ image,\ \textcolor{keywordtype}{size\_t}\ width,\ \textcolor{keywordtype}{size\_t}\ height,\ \textcolor{keywordtype}{double}\ sigma)\ \{}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00048}00048\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(img2num::gaussian\_blur\_fft,\ image,\ width,\ height,\ sigma);}
 \DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00049}00049\ \}}
 \DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00050}00050\ }
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00051}\mbox{\hyperlink{cimg2num_8h_a9ec403b5d2ba9b510eb999dfc8ba9305}{00051}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cimg2num_8cpp_a9ec403b5d2ba9b510eb999dfc8ba9305}{img2num\_gaussian\_blur\_fft}}(uint8\_t*\ image,\ \textcolor{keywordtype}{size\_t}\ width,\ \textcolor{keywordtype}{size\_t}\ height,\ \textcolor{keywordtype}{double}\ sigma)\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00052}00052\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(img2num::gaussian\_blur\_fft,\ image,\ width,\ height,\ sigma);}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00051}\mbox{\hyperlink{cimg2num_8h_a1414ef09df95cdbef430433629b2a136}{00051}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cimg2num_8cpp_a938eb2be340be827192bfbcbf6c90af8}{img2num\_invert\_image}}(uint8\_t*\ image,\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keywordtype}{int}\ height)\ \{}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00052}00052\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(img2num::invert\_image,\ image,\ width,\ height);}
 \DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00053}00053\ \}}
 \DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00054}00054\ }
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00055}\mbox{\hyperlink{cimg2num_8h_a1414ef09df95cdbef430433629b2a136}{00055}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cimg2num_8cpp_a938eb2be340be827192bfbcbf6c90af8}{img2num\_invert\_image}}(uint8\_t*\ image,\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keywordtype}{int}\ height)\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00056}00056\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(img2num::invert\_image,\ image,\ width,\ height);}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00057}00057\ \}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00058}00058\ }
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00059}\mbox{\hyperlink{cimg2num_8h_a553a2adf9345b19adc20473ab70692b0}{00059}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cimg2num_8cpp_a553a2adf9345b19adc20473ab70692b0}{img2num\_threshold\_image}}(}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00060}00060\ \ \ \ \ uint8\_t*\ ptr,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ num\_thresholds}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00061}00061\ )\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00062}00062\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00063}00063\ \ \ \ \ \ \ \ \ img2num::threshold\_image,\ ptr,\ width,\ height,\ num\_thresholds}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00064}00064\ \ \ \ \ );}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00065}00065\ \}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00066}00066\ }
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00067}\mbox{\hyperlink{cimg2num_8h_ab121126337eeb4f32e02ad068f784deb}{00067}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cimg2num_8cpp_ab121126337eeb4f32e02ad068f784deb}{img2num\_black\_threshold\_image}}(}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00068}00068\ \ \ \ \ uint8\_t*\ ptr,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ num\_thresholds}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00069}00069\ )\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00070}00070\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00071}00071\ \ \ \ \ \ \ \ \ img2num::black\_threshold\_image,\ ptr,\ width,\ height,\ num\_thresholds}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00072}00072\ \ \ \ \ );}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00073}00073\ \}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00074}00074\ }
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00075}\mbox{\hyperlink{cimg2num_8h_acfb692edf4159d210555b0a42da84993}{00075}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cimg2num_8cpp_acfb692edf4159d210555b0a42da84993}{img2num\_kmeans}}(}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00076}00076\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t*\ data,\ uint8\_t*\ out\_data,\ int32\_t*\ out\_labels,\ \textcolor{keyword}{const}\ int32\_t\ width,}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00077}00077\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ height,\ \textcolor{keyword}{const}\ int32\_t\ k,\ \textcolor{keyword}{const}\ int32\_t\ max\_iter,\ \textcolor{keyword}{const}\ uint8\_t\ color\_space}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00078}00078\ )\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00079}00079\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00080}00080\ \ \ \ \ \ \ \ \ img2num::kmeans,\ data,\ out\_data,\ out\_labels,\ width,\ height,\ k,\ max\_iter,\ color\_space}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00081}00081\ \ \ \ \ );}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00082}00082\ \}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00083}00083\ }
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00084}\mbox{\hyperlink{cimg2num_8h_adb95035702beba616395f6fe92036f10}{00084}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cimg2num_8cpp_adb95035702beba616395f6fe92036f10}{img2num\_bilateral\_filter}}(}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00085}00085\ \ \ \ \ uint8\_t*\ image,\ \textcolor{keywordtype}{size\_t}\ width,\ \textcolor{keywordtype}{size\_t}\ height,\ \textcolor{keywordtype}{double}\ sigma\_spatial,\ \textcolor{keywordtype}{double}\ sigma\_range,}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00086}00086\ \ \ \ \ uint8\_t\ color\_space}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00087}00087\ )\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00088}00088\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00089}00089\ \ \ \ \ \ \ \ \ img2num::bilateral\_filter,\ image,\ width,\ height,\ sigma\_spatial,\ sigma\_range,\ color\_space}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00090}00090\ \ \ \ \ );}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00091}00091\ \}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00092}00092\ }
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00093}\mbox{\hyperlink{cimg2num_8h_a169bee7a27e362ee70f55fd34cb2ac44}{00093}}\ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{cimg2num_8cpp_a169bee7a27e362ee70f55fd34cb2ac44}{img2num\_labels\_to\_svg}}(}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00094}00094\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t*\ data,\ \textcolor{keyword}{const}\ int32\_t*\ labels,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00095}00095\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_area}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00096}00096\ )\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00097}00097\ \ \ \ \ \textcolor{keywordtype}{char}*\ result\ \{\textcolor{keyword}{nullptr}\};}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00098}00098\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00099}00099\ \ \ \ \ \ \ \ \ [\&](\textcolor{keyword}{const}\ uint8\_t*\ d,\ \textcolor{keyword}{const}\ int32\_t*\ l,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ w,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ h,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_a)\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ svg\ \{img2num::labels\_to\_svg(d,\ l,\ w,\ h,\ min\_a)\};}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00101}00101\ \ \ \ \ \ \ \ \ \ \ \ \ result\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(std::malloc(svg.size()\ +\ 1));}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!result)\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00103}00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};\ \textcolor{comment}{//\ Allocation\ failed}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00104}00104\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00105}00105\ \ \ \ \ \ \ \ \ \ \ \ \ std::memcpy(result,\ svg.c\_str(),\ svg.size()\ +\ 1);}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00106}00106\ \ \ \ \ \ \ \ \ \},}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00107}00107\ \ \ \ \ \ \ \ \ data,\ labels,\ width,\ height,\ min\_area}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00108}00108\ \ \ \ \ );}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00109}00109\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00110}00110\ \}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00111}00111\ }
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00112}\mbox{\hyperlink{cimg2num_8h_a255af66a03d8d7aadbc1d0980a1ad04e}{00112}}\ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{cimg2num_8cpp_a255af66a03d8d7aadbc1d0980a1ad04e}{img2num\_image\_to\_svg}}(}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00113}00113\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t*\ data,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\_ImageToSvgConfig}}*\ config}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00114}00114\ )\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00115}00115\ \ \ \ \ \mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\_ImageToSvgConfig}}\ default\_cfg\ \{\mbox{\hyperlink{cimg2num_8cpp_a5a016ab3fb1a11977549ad30180bdbdc}{img2num\_ImageToSvgConfig\_default}}()\};}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00116}00116\ }
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00117}00117\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\_ImageToSvgConfig}}\&\ cfg\ \{config\ ?\ *config\ :\ default\_cfg\};}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00118}00118\ }
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00119}00119\ \ \ \ \ \textcolor{keywordtype}{char}*\ result\ \{\textcolor{keyword}{nullptr}\};}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00120}00120\ }
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00121}00121\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00122}00122\ \ \ \ \ \ \ \ \ [\&](\textcolor{keyword}{const}\ uint8\_t*\ d,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ w,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ h)\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ svg\ \{img2num::image\_to\_svg(d,\ w,\ h,\ to\_cpp(cfg))\};}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00124}00124\ }
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ result\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(std::malloc(svg.size()\ +\ 1));}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00126}00126\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!result)\ \{}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00127}00127\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};\ \textcolor{comment}{//\ Allocation\ failed}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00129}00129\ \ \ \ \ \ \ \ \ \ \ \ \ std::memcpy(result,\ svg.c\_str(),\ svg.size()\ +\ 1);}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00130}00130\ \ \ \ \ \ \ \ \ \},}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00131}00131\ \ \ \ \ \ \ \ \ data,\ width,\ height}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00132}00132\ \ \ \ \ );}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00133}00133\ }
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00134}00134\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00135}00135\ \}}
-\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00136}00136\ \}}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00055}\mbox{\hyperlink{cimg2num_8h_a553a2adf9345b19adc20473ab70692b0}{00055}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cimg2num_8cpp_a553a2adf9345b19adc20473ab70692b0}{img2num\_threshold\_image}}(}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00056}00056\ \ \ \ \ uint8\_t*\ ptr,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ num\_thresholds}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00057}00057\ )\ \{}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00058}00058\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00059}00059\ \ \ \ \ \ \ \ \ img2num::threshold\_image,\ ptr,\ width,\ height,\ num\_thresholds}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00060}00060\ \ \ \ \ );}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00061}00061\ \}}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00062}00062\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00063}\mbox{\hyperlink{cimg2num_8h_ab121126337eeb4f32e02ad068f784deb}{00063}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cimg2num_8cpp_ab121126337eeb4f32e02ad068f784deb}{img2num\_black\_threshold\_image}}(}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00064}00064\ \ \ \ \ uint8\_t*\ ptr,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ num\_thresholds}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00065}00065\ )\ \{}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00066}00066\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00067}00067\ \ \ \ \ \ \ \ \ img2num::black\_threshold\_image,\ ptr,\ width,\ height,\ num\_thresholds}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00068}00068\ \ \ \ \ );}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00069}00069\ \}}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00071}\mbox{\hyperlink{cimg2num_8h_acfb692edf4159d210555b0a42da84993}{00071}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cimg2num_8cpp_acfb692edf4159d210555b0a42da84993}{img2num\_kmeans}}(}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00072}00072\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t*\ data,\ uint8\_t*\ out\_data,\ int32\_t*\ out\_labels,\ \textcolor{keyword}{const}\ int32\_t\ width,}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00073}00073\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ height,\ \textcolor{keyword}{const}\ int32\_t\ k,\ \textcolor{keyword}{const}\ int32\_t\ max\_iter,\ \textcolor{keyword}{const}\ uint8\_t\ color\_space}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00074}00074\ )\ \{}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00075}00075\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00076}00076\ \ \ \ \ \ \ \ \ img2num::kmeans,\ data,\ out\_data,\ out\_labels,\ width,\ height,\ k,\ max\_iter,\ color\_space}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00077}00077\ \ \ \ \ );}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00078}00078\ \}}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00079}00079\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00080}\mbox{\hyperlink{cimg2num_8h_adb95035702beba616395f6fe92036f10}{00080}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cimg2num_8cpp_adb95035702beba616395f6fe92036f10}{img2num\_bilateral\_filter}}(}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00081}00081\ \ \ \ \ uint8\_t*\ image,\ \textcolor{keywordtype}{size\_t}\ width,\ \textcolor{keywordtype}{size\_t}\ height,\ \textcolor{keywordtype}{double}\ sigma\_spatial,\ \textcolor{keywordtype}{double}\ sigma\_range,}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00082}00082\ \ \ \ \ uint8\_t\ color\_space}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00083}00083\ )\ \{}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00084}00084\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00085}00085\ \ \ \ \ \ \ \ \ img2num::bilateral\_filter,\ image,\ width,\ height,\ sigma\_spatial,\ sigma\_range,\ color\_space}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00086}00086\ \ \ \ \ );}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00087}00087\ \}}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00088}00088\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00089}\mbox{\hyperlink{cimg2num_8h_a2c05c294aeddce0f0b4a36b2475b4a6c}{00089}}\ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{cimg2num_8cpp_a2c05c294aeddce0f0b4a36b2475b4a6c}{img2num\_labels\_to\_svg}}(}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00090}00090\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t*\ data,\ \textcolor{keyword}{const}\ int32\_t*\ labels,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00091}00091\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_area,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_thickness}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00092}00092\ )\ \{}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00093}00093\ \ \ \ \ \textcolor{keywordtype}{char}*\ result\ \{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00094}00094\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00095}00095\ \ \ \ \ \ \ \ \ [\&](\textcolor{keyword}{const}\ uint8\_t*\ d,\ \textcolor{keyword}{const}\ int32\_t*\ l,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ w,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ h,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_a,}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_t)\ \{}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ svg\ \{img2num::labels\_to\_svg(d,\ l,\ w,\ h,\ min\_a,\ min\_t)\};}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ result\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(std::malloc(svg.size()\ +\ 1));}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00099}00099\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!result)\ \{}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};\ \textcolor{comment}{//\ Allocation\ failed}}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00101}00101\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ std::memcpy(result,\ svg.c\_str(),\ svg.size()\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00103}00103\ \ \ \ \ \ \ \ \ \},}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00104}00104\ \ \ \ \ \ \ \ \ data,\ labels,\ width,\ height,\ min\_area,\ min\_thickness}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00105}00105\ \ \ \ \ );}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00106}00106\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00107}00107\ \}}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00108}00108\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00109}\mbox{\hyperlink{cimg2num_8h_a255af66a03d8d7aadbc1d0980a1ad04e}{00109}}\ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{cimg2num_8cpp_a255af66a03d8d7aadbc1d0980a1ad04e}{img2num\_image\_to\_svg}}(}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00110}00110\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t*\ data,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\_ImageToSvgConfig}}*\ config}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00111}00111\ )\ \{}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00112}00112\ \ \ \ \ \mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\_ImageToSvgConfig}}\ default\_cfg\ \{\mbox{\hyperlink{cimg2num_8cpp_a5a016ab3fb1a11977549ad30180bdbdc}{img2num\_ImageToSvgConfig\_default}}()\};}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00113}00113\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00114}00114\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\_ImageToSvgConfig}}\&\ cfg\ \{config\ ?\ *config\ :\ default\_cfg\};}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00116}00116\ \ \ \ \ \textcolor{keywordtype}{char}*\ result\ \{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00117}00117\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00118}00118\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00119}00119\ \ \ \ \ \ \ \ \ [\&](\textcolor{keyword}{const}\ uint8\_t*\ d,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ w,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ h)\ \{}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00120}00120\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ svg\ \{img2num::image\_to\_svg(d,\ w,\ h,\ to\_cpp(cfg))\};}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00121}00121\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00122}00122\ \ \ \ \ \ \ \ \ \ \ \ \ result\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(std::malloc(svg.size()\ +\ 1));}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!result)\ \{}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};\ \textcolor{comment}{//\ Allocation\ failed}}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00126}00126\ \ \ \ \ \ \ \ \ \ \ \ \ std::memcpy(result,\ svg.c\_str(),\ svg.size()\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00127}00127\ \ \ \ \ \ \ \ \ \},}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00128}00128\ \ \ \ \ \ \ \ \ data,\ width,\ height}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00129}00129\ \ \ \ \ );}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00130}00130\ }
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00131}00131\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00132}00132\ \}}
+\DoxyCodeLine{\Hypertarget{cimg2num_8cpp_source_l00133}00133\ \}}
 
 \end{DoxyCode}

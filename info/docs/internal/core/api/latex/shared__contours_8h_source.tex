@@ -1,0 +1,20 @@
+\doxysection{shared\+\_\+contours.\+h}
+\hypertarget{shared__contours_8h_source}{}\label{shared__contours_8h_source}\index{include/internal/shared\_contours.h@{include/internal/shared\_contours.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{shared__contours_8h_source_l00001}00001\ \textcolor{preprocessor}{\#ifndef\ SHARED\_CONTOURS\_H}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8h_source_l00002}00002\ \textcolor{preprocessor}{\#define\ SHARED\_CONTOURS\_H}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8h_source_l00003}00003\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8h_source_l00004}00004\ \textcolor{preprocessor}{\#include\ "{}internal/contours.h"{}}\ \textcolor{comment}{//\ QuadBezier}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8h_source_l00005}00005\ \textcolor{preprocessor}{\#include\ "{}internal/Point.h"{}}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8h_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8h_source_l00007}00007\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8h_source_l00008}00008\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8h_source_l00009}00009\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{\Hypertarget{shared__contours_8h_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8h_source_l00024}00024\ std::unordered\_map<int32\_t,\ std::vector<std::vector<QuadBezier>>>}
+\DoxyCodeLine{\Hypertarget{shared__contours_8h_source_l00025}00025\ build\_shared\_loops(\textcolor{keyword}{const}\ std::vector<int32\_t>\&\ labels,\ \textcolor{keywordtype}{int}\ w,\ \textcolor{keywordtype}{int}\ h,\ \textcolor{keywordtype}{float}\ eps);}
+\DoxyCodeLine{\Hypertarget{shared__contours_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{shared__contours_8h_source_l00027}00027\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

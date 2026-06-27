@@ -11,6 +11,15 @@
 \DoxyCodeLine{\Hypertarget{bezier_8h_source_l00007}00007\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<std::vector<Point>>\&\ chains,\ std::vector<std::vector<QuadBezier>>\&\ results,}
 \DoxyCodeLine{\Hypertarget{bezier_8h_source_l00008}00008\ \ \ \ \ \textcolor{keywordtype}{float}\ tolerance}
 \DoxyCodeLine{\Hypertarget{bezier_8h_source_l00009}00009\ );}
-\DoxyCodeLine{\Hypertarget{bezier_8h_source_l00010}00010\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{bezier_8h_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{bezier_8h_source_l00011}00011\ \textcolor{comment}{//\ Same,\ but\ \`{}fixed[i][k]!=0`\ marks\ point\ k\ of\ chain\ i\ as\ a\ junction\ that\ must\ NOT}}
+\DoxyCodeLine{\Hypertarget{bezier_8h_source_l00012}00012\ \textcolor{comment}{//\ move:\ the\ chain\ is\ split\ at\ those\ points\ so\ each\ becomes\ an\ exact\ (pinned)}}
+\DoxyCodeLine{\Hypertarget{bezier_8h_source_l00013}00013\ \textcolor{comment}{//\ curve\ endpoint.\ Chains\ with\ no\ fixed\ points\ fit\ identically\ to\ the\ overload}}
+\DoxyCodeLine{\Hypertarget{bezier_8h_source_l00014}00014\ \textcolor{comment}{//\ above.}}
+\DoxyCodeLine{\Hypertarget{bezier_8h_source_l00015}00015\ \textcolor{keywordtype}{void}\ fit\_curve\_reduction(}
+\DoxyCodeLine{\Hypertarget{bezier_8h_source_l00016}00016\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<std::vector<Point>>\&\ chains,\ \textcolor{keyword}{const}\ std::vector<std::vector<uint8\_t>>\&\ fixed,}
+\DoxyCodeLine{\Hypertarget{bezier_8h_source_l00017}00017\ \ \ \ \ std::vector<std::vector<QuadBezier>>\&\ results,\ \textcolor{keywordtype}{float}\ tolerance}
+\DoxyCodeLine{\Hypertarget{bezier_8h_source_l00018}00018\ );}
+\DoxyCodeLine{\Hypertarget{bezier_8h_source_l00019}00019\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

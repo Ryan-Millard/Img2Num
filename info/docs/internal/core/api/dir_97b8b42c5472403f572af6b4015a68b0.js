@@ -5,6 +5,7 @@ var dir_97b8b42c5472403f572af6b4015a68b0 =
     [ "cielab.h", "cielab_8h_source.html", null ],
     [ "cielab_impl.h", "cielab__impl_8h_source.html", null ],
     [ "contours.h", "contours_8h_source.html", null ],
+    [ "douglas_peucker.h", "douglas__peucker_8h_source.html", null ],
     [ "fft_iterative.h", "fft__iterative_8h_source.html", null ],
     [ "gpu.h", "gpu_8h_source.html", null ],
     [ "graph.h", "graph_8h_source.html", null ],
@@ -20,5 +21,6 @@ var dir_97b8b42c5472403f572af6b4015a68b0 =
     [ "Point.h", "Point_8h_source.html", null ],
     [ "RGBAPixel.h", "RGBAPixel_8h_source.html", null ],
     [ "RGBPixel.h", "RGBPixel_8h_source.html", null ],
-    [ "SavitskyGolay.h", "SavitskyGolay_8h_source.html", null ]
+    [ "SavitskyGolay.h", "SavitskyGolay_8h_source.html", null ],
+    [ "shared_contours.h", "shared__contours_8h_source.html", null ]
 ];

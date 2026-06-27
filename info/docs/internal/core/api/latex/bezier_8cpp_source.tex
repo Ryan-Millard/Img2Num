@@ -158,5 +158,41 @@
 \DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00154}00154\ \ \ \ \ \ \ \ \ results.push\_back(result);}
 \DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00155}00155\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00156}00156\ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00157}00157\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00158}00158\ \textcolor{comment}{//\ -\/-\/-\/\ Junction-\/aware\ wrapper\ -\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00159}00159\ \textcolor{comment}{//\ Splits\ each\ chain\ at\ its\ fixed\ (junction)\ points\ and\ fits\ the\ pieces}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00160}00160\ \textcolor{comment}{//\ separately.\ Because\ fitRecursive\ always\ keeps\ a\ segment's\ first\ and\ last\ point}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00161}00161\ \textcolor{comment}{//\ exactly,\ every\ junction\ becomes\ a\ pinned\ on-\/curve\ point\ the\ fit\ cannot\ move.}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00162}00162\ \textcolor{keywordtype}{void}\ fit\_curve\_reduction(}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00163}00163\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<std::vector<Point>>\&\ chains,\ \textcolor{keyword}{const}\ std::vector<std::vector<uint8\_t>>\&\ fixed,}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00164}00164\ \ \ \ \ std::vector<std::vector<QuadBezier>>\&\ results,\ \textcolor{keywordtype}{float}\ tolerance}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00165}00165\ )\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00166}00166\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ chains.size();\ ++i)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00167}00167\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::vector<Point>\&\ chain\ =\ chains[i];}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00168}00168\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ n\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(chain.size());}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00169}00169\ \ \ \ \ \ \ \ \ std::vector<QuadBezier>\ result;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00170}00170\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n\ <\ 2)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00171}00171\ \ \ \ \ \ \ \ \ \ \ \ \ results.push\_back(result);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00172}00172\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00173}00173\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00174}00174\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00175}00175\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Segment\ boundaries:\ chain\ ends\ plus\ every\ interior\ junction\ point.}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00176}00176\ \ \ \ \ \ \ \ \ std::vector<int>\ bounds;}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00177}00177\ \ \ \ \ \ \ \ \ bounds.push\_back(0);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00178}00178\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 1;\ k\ <\ n\ -\/\ 1;\ ++k)}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00179}00179\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (k\ <\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(fixed[i].size())\ \&\&\ fixed[i][k])}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00180}00180\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bounds.push\_back(k);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00181}00181\ \ \ \ \ \ \ \ \ bounds.push\_back(n\ -\/\ 1);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00182}00182\ }
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00183}00183\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fit\ each\ [bounds[s],\ bounds[s+1]]\ piece;\ consecutive\ pieces\ share\ the}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00184}00184\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ junction\ point,\ so\ the\ curve\ stays\ continuous\ and\ pinned\ there.}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00185}00185\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ s\ =\ 0;\ s\ +\ 1\ <\ bounds.size();\ ++s)\ \{}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00186}00186\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ a\ =\ bounds[s],\ b\ =\ bounds[s\ +\ 1];}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00187}00187\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<Point>\ seg(chain.begin()\ +\ a,\ chain.begin()\ +\ b\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00188}00188\ \ \ \ \ \ \ \ \ \ \ \ \ fitRecursive(seg,\ tolerance,\ result);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00189}00189\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00190}00190\ \ \ \ \ \ \ \ \ results.push\_back(result);}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00191}00191\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bezier_8cpp_source_l00192}00192\ \}}
 
 \end{DoxyCode}

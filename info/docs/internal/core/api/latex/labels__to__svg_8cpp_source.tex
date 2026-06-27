@@ -204,9 +204,9 @@
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00200}00200\ \textcolor{comment}{from\ K-\/Means,\ should\ be\ 1/4\ the\ size\ of\ data\ since\ data\ is\ RGBA\ labels\ :\ width\ *}}
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00201}00201\ \textcolor{comment}{height\ :\ number\ of\ pixels\ in\ image\ =\ 1\ :\ 1\ :\ 1}}
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00202}00202\ \textcolor{comment}{*/}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00203}\mbox{\hyperlink{namespaceimg2num_a36b11018f26b33933eeeb31a7833ea3d}{00203}}\ std::string\ \mbox{\hyperlink{namespaceimg2num_a36b11018f26b33933eeeb31a7833ea3d}{labels\_to\_svg}}(}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00203}\mbox{\hyperlink{namespaceimg2num_a9ec36449ded405f3480e4cb4ebafbe0e}{00203}}\ std::string\ \mbox{\hyperlink{namespaceimg2num_a9ec36449ded405f3480e4cb4ebafbe0e}{labels\_to\_svg}}(}
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00204}00204\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t*\ data,\ \textcolor{keyword}{const}\ int32\_t*\ labels,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00205}00205\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_area}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00205}00205\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_area,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_thickness\ =\ 0}
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00206}00206\ )\ \{}
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00207}00207\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ num\_pixels\ \{width\ *\ height\};}
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00208}00208\ \ \ \ \ std::vector<int32\_t>\ labels\_vector\ \{labels,\ labels\ +\ num\_pixels\};}
@@ -225,7 +225,7 @@
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00221}00221\ \ \ \ \ G.discover\_edges(region\_labels,\ width,\ height);}
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00222}00222\ }
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00223}00223\ \ \ \ \ \textcolor{comment}{//\ 4.\ Merge\ small\ area\ nodes\ until\ all\ nodes\ are\ minArea\ or\ larger}}
-\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00224}00224\ \ \ \ \ G.merge\_small\_area\_nodes(min\_area);}
+\DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00224}00224\ \ \ \ \ G.merge\_small\_area\_nodes(min\_area,\ min\_thickness);}
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00225}00225\ }
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00226}00226\ \ \ \ \ \textcolor{comment}{//\ 5.\ recolor\ image\ on\ new\ regions}}
 \DoxyCodeLine{\Hypertarget{labels__to__svg_8cpp_source_l00227}00227\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ results\ \{width,\ height\};}

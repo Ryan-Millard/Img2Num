@@ -67,7 +67,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="namespaceimg2num.html#a36b11018f26b33933eeeb31a7833ea3d" target="_top" xlink:title="Convert labeled regions of an image into an SVG string.">
+<g id="a_Node000004"><a xlink:href="namespaceimg2num.html#a9ec36449ded405f3480e4cb4ebafbe0e" target="_top" xlink:title="Convert labeled regions of an image into an SVG string.">
 <polygon fill="white" stroke="#666666" points="309,-19 173,-19 173,0 309,0 309,-19"/>
 <text text-anchor="middle" x="241" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">img2num::labels_to_svg</text>
 </a>

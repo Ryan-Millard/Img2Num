@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['threshold_5fimage_0',['threshold_image',['../namespaceimg2num.html#ad36f12c85016e28c7427c356783dea03',1,'img2num']]]
+  ['labels_5fto_5fsvg_0',['labels_to_svg',['../namespaceimg2num.html#a9ec36449ded405f3480e4cb4ebafbe0e',1,'img2num']]]
 ];

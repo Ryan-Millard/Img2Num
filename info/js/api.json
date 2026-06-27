@@ -744,7 +744,7 @@
 			"sources": [
 				{
 					"fileName": "safeWasmWrappers.js",
-					"line": 194,
+					"line": 195,
 					"character": 13
 				}
 			],
@@ -787,14 +787,55 @@
 							},
 							{
 								"tag": "@returns",
-								"content": []
+								"content": [
+									{
+										"kind": "text",
+										"text": "Generated SVG."
+									}
+								]
+							},
+							{
+								"tag": "@throws",
+								"content": [
+									{
+										"kind": "text",
+										"text": "If the WASM function fails or input labels are invalid."
+									}
+								]
+							},
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\nconst { svg } = await findContours({ pixels, labels, width, height });\n```"
+									}
+								]
+							},
+							{
+								"tag": "@variation",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Converts labeled (from a clustering algorithm, e.g. K-Means) image into an SVG."
+									}
+								]
+							},
+							{
+								"tag": "@since",
+								"content": [
+									{
+										"kind": "text",
+										"text": "0.0.0"
+									}
+								]
 							}
 						]
 					},
 					"sources": [
 						{
 							"fileName": "safeWasmWrappers.js",
-							"line": 194,
+							"line": 195,
 							"character": 28
 						}
 					],
@@ -922,6 +963,35 @@
 											"defaultValue": "100"
 										},
 										{
+											"id": 58,
+											"name": "min_thickness",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Minimum thickness of a region to be considered a contour."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 187,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											},
+											"defaultValue": "10"
+										},
+										{
 											"id": 53,
 											"name": "pixels",
 											"variant": "declaration",
@@ -999,6 +1069,7 @@
 												56,
 												54,
 												57,
+												58,
 												53,
 												55
 											]
@@ -1019,14 +1090,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 58,
+									"id": 59,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 59,
+											"id": 60,
 											"name": "svg",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1034,7 +1105,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 187,
+													"line": 188,
 													"character": 22
 												}
 											],
@@ -1048,7 +1119,7 @@
 										{
 											"title": "Properties",
 											"children": [
-												59
+												60
 											]
 										}
 									]
@@ -1385,7 +1456,7 @@
 			]
 		},
 		{
-			"id": 60,
+			"id": 61,
 			"name": "imageToSvg",
 			"variant": "declaration",
 			"kind": 64,
@@ -1393,13 +1464,13 @@
 			"sources": [
 				{
 					"fileName": "safeWasmWrappers.js",
-					"line": 232,
+					"line": 234,
 					"character": 13
 				}
 			],
 			"signatures": [
 				{
-					"id": 61,
+					"id": 62,
 					"name": "imageToSvg",
 					"variant": "signature",
 					"kind": 4096,
@@ -1508,13 +1579,13 @@
 					"sources": [
 						{
 							"fileName": "safeWasmWrappers.js",
-							"line": 232,
+							"line": 234,
 							"character": 26
 						}
 					],
 					"parameters": [
 						{
-							"id": 62,
+							"id": 63,
 							"name": "options",
 							"variant": "param",
 							"kind": 32768,
@@ -1530,14 +1601,14 @@
 							"type": {
 								"type": "reflection",
 								"declaration": {
-									"id": 63,
+									"id": 64,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 72,
+											"id": 74,
 											"name": "color_space",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1555,7 +1626,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 224,
+													"line": 226,
 													"character": 3
 												}
 											],
@@ -1566,7 +1637,7 @@
 											"defaultValue": "0"
 										},
 										{
-											"id": 66,
+											"id": 67,
 											"name": "height",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1582,7 +1653,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 218,
+													"line": 219,
 													"character": 3
 												}
 											],
@@ -1592,7 +1663,7 @@
 											}
 										},
 										{
-											"id": 70,
+											"id": 71,
 											"name": "max_iter",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1610,7 +1681,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 222,
+													"line": 223,
 													"character": 3
 												}
 											],
@@ -1621,7 +1692,7 @@
 											"defaultValue": "100"
 										},
 										{
-											"id": 71,
+											"id": 72,
 											"name": "min_area",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1639,7 +1710,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 223,
+													"line": 224,
 													"character": 3
 												}
 											],
@@ -1650,7 +1721,36 @@
 											"defaultValue": "100"
 										},
 										{
-											"id": 69,
+											"id": 73,
+											"name": "min_thickness",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Minimum thickness of a region to be considered a contour."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "safeWasmWrappers.js",
+													"line": 225,
+													"character": 3
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											},
+											"defaultValue": "10"
+										},
+										{
+											"id": 70,
 											"name": "num_colors",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1668,7 +1768,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 221,
+													"line": 222,
 													"character": 3
 												}
 											],
@@ -1679,7 +1779,7 @@
 											"defaultValue": "16"
 										},
 										{
-											"id": 64,
+											"id": 65,
 											"name": "pixels",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1695,7 +1795,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 216,
+													"line": 217,
 													"character": 3
 												}
 											],
@@ -1723,7 +1823,7 @@
 											}
 										},
 										{
-											"id": 68,
+											"id": 69,
 											"name": "sigma_range",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1741,7 +1841,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 220,
+													"line": 221,
 													"character": 3
 												}
 											],
@@ -1752,7 +1852,7 @@
 											"defaultValue": "50"
 										},
 										{
-											"id": 67,
+											"id": 68,
 											"name": "sigma_spatial",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1770,7 +1870,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 219,
+													"line": 220,
 													"character": 3
 												}
 											],
@@ -1781,7 +1881,7 @@
 											"defaultValue": "3"
 										},
 										{
-											"id": 65,
+											"id": 66,
 											"name": "width",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1797,7 +1897,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 217,
+													"line": 218,
 													"character": 3
 												}
 											],
@@ -1811,15 +1911,16 @@
 										{
 											"title": "Properties",
 											"children": [
-												72,
-												66,
-												70,
-												71,
-												69,
-												64,
-												68,
+												74,
 												67,
-												65
+												71,
+												72,
+												73,
+												70,
+												65,
+												69,
+												68,
+												66
 											]
 										}
 									]
@@ -1838,14 +1939,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 73,
+									"id": 75,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 74,
+											"id": 76,
 											"name": "svg",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1853,7 +1954,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 225,
+													"line": 227,
 													"character": 22
 												}
 											],
@@ -1867,7 +1968,7 @@
 										{
 											"title": "Properties",
 											"children": [
-												74
+												76
 											]
 										}
 									]
@@ -2064,12 +2165,11 @@
 							"type": {
 								"type": "reference",
 								"target": {
-									"packageName": "typescript",
-									"packagePath": "lib/lib.dom.d.ts",
+									"packageName": "docs",
+									"packagePath": "",
 									"qualifiedName": "File"
 								},
-								"name": "File",
-								"package": "typescript"
+								"name": "File"
 							}
 						}
 					],
@@ -2709,7 +2809,7 @@
 				26,
 				49,
 				8,
-				60,
+				61,
 				1,
 				34
 			]
@@ -2719,383 +2819,393 @@
 	"symbolIdMap": {
 		"0": {
 			"packageName": "img2num",
-			"packagePath": "index.js",
+			"packagePath": "src/index.js",
 			"qualifiedName": ""
 		},
 		"1": {
 			"packageName": "img2num",
-			"packagePath": "imageToUint8ClampedArray.js",
+			"packagePath": "src/imageToUint8ClampedArray.js",
 			"qualifiedName": "imageToUint8ClampedArray"
 		},
 		"2": {
 			"packageName": "img2num",
-			"packagePath": "imageToUint8ClampedArray.js",
+			"packagePath": "src/imageToUint8ClampedArray.js",
 			"qualifiedName": "imageToUint8ClampedArray"
 		},
 		"3": {
 			"packageName": "img2num",
-			"packagePath": "imageToUint8ClampedArray.js",
+			"packagePath": "src/imageToUint8ClampedArray.js",
 			"qualifiedName": "file"
 		},
 		"4": {
 			"packageName": "img2num",
-			"packagePath": "imageToUint8ClampedArray.js",
+			"packagePath": "src/imageToUint8ClampedArray.js",
 			"qualifiedName": "__type"
 		},
 		"5": {
 			"packageName": "img2num",
-			"packagePath": "imageToUint8ClampedArray.js",
+			"packagePath": "src/imageToUint8ClampedArray.js",
 			"qualifiedName": "__type.pixels"
 		},
 		"6": {
 			"packageName": "img2num",
-			"packagePath": "imageToUint8ClampedArray.js",
+			"packagePath": "src/imageToUint8ClampedArray.js",
 			"qualifiedName": "__type.width"
 		},
 		"7": {
 			"packageName": "img2num",
-			"packagePath": "imageToUint8ClampedArray.js",
+			"packagePath": "src/imageToUint8ClampedArray.js",
 			"qualifiedName": "__type.height"
 		},
 		"8": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "gaussianBlur"
 		},
 		"9": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "gaussianBlur"
 		},
 		"10": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__0"
 		},
 		"11": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type"
 		},
 		"12": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.pixels"
 		},
 		"13": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.width"
 		},
 		"14": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.height"
 		},
 		"15": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.sigma_pixels"
 		},
 		"16": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "bilateralFilter"
 		},
 		"17": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "bilateralFilter"
 		},
 		"18": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__0"
 		},
 		"19": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type"
 		},
 		"20": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.pixels"
 		},
 		"21": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.width"
 		},
 		"22": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.height"
 		},
 		"23": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.sigma_spatial"
 		},
 		"24": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.sigma_range"
 		},
 		"25": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.color_space"
 		},
 		"26": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "blackThreshold"
 		},
 		"27": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "blackThreshold"
 		},
 		"28": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__0"
 		},
 		"29": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type"
 		},
 		"30": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.pixels"
 		},
 		"31": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.width"
 		},
 		"32": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.height"
 		},
 		"33": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.num_colors"
 		},
 		"34": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "kmeans"
 		},
 		"35": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "kmeans"
 		},
 		"36": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__0"
 		},
 		"37": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type"
 		},
 		"38": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.pixels"
 		},
 		"39": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.out_pixels"
 		},
 		"40": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.out_labels"
 		},
 		"41": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.width"
 		},
 		"42": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.height"
 		},
 		"43": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.num_colors"
 		},
 		"44": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.max_iter"
 		},
 		"45": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.color_space"
 		},
 		"46": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type"
 		},
 		"47": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.pixels"
 		},
 		"48": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.labels"
 		},
 		"49": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "findContours"
 		},
 		"50": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "findContours"
 		},
 		"51": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__0"
 		},
 		"52": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type"
 		},
 		"53": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.pixels"
 		},
 		"54": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.labels"
 		},
 		"55": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.width"
 		},
 		"56": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.height"
 		},
 		"57": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.min_area"
 		},
 		"58": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type"
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.min_thickness"
 		},
 		"59": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type.svg"
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type"
 		},
 		"60": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "imageToSvg"
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.svg"
 		},
 		"61": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "imageToSvg"
 		},
 		"62": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__0"
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "imageToSvg"
 		},
 		"63": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type"
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__0"
 		},
 		"64": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type.pixels"
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type"
 		},
 		"65": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type.width"
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.pixels"
 		},
 		"66": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type.height"
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.width"
 		},
 		"67": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type.sigma_spatial"
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.height"
 		},
 		"68": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type.sigma_range"
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.sigma_spatial"
 		},
 		"69": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type.num_colors"
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.sigma_range"
 		},
 		"70": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type.max_iter"
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.num_colors"
 		},
 		"71": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type.min_area"
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.max_iter"
 		},
 		"72": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type.color_space"
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.min_area"
 		},
 		"73": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
-			"qualifiedName": "__type"
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.min_thickness"
 		},
 		"74": {
 			"packageName": "img2num",
-			"packagePath": "safeWasmWrappers.js",
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.color_space"
+		},
+		"75": {
+			"packageName": "img2num",
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type"
+		},
+		"76": {
+			"packageName": "img2num",
+			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.svg"
 		}
 	},
 	"files": {
 		"entries": {
-			"1": "../packages/js/index.js"
+			"1": "../packages/js/src/index.js"
 		},
 		"reflections": {
 			"1": 0

@@ -4,6 +4,7 @@ var dir_f95be4dee0303231a989ea88ec0f949e =
     [ "bilateral_filter.cpp", "bilateral__filter_8cpp_source.html", null ],
     [ "bilateral_filter_gpu.cpp", "bilateral__filter__gpu_8cpp_source.html", null ],
     [ "contours.cpp", "contours_8cpp_source.html", null ],
+    [ "douglas_peucker.cpp", "douglas__peucker_8cpp_source.html", null ],
     [ "fft_iterative.cpp", "fft__iterative_8cpp_source.html", null ],
     [ "graph.cpp", "graph_8cpp_source.html", null ],
     [ "image_to_svg.cpp", "image__to__svg_8cpp_source.html", null ],
@@ -12,5 +13,6 @@ var dir_f95be4dee0303231a989ea88ec0f949e =
     [ "kmeans_gpu.cpp", "kmeans__gpu_8cpp_source.html", null ],
     [ "labels_to_svg.cpp", "labels__to__svg_8cpp_source.html", null ],
     [ "node.cpp", "node_8cpp_source.html", null ],
-    [ "SavitskyGolay.cpp", "SavitskyGolay_8cpp_source.html", null ]
+    [ "SavitskyGolay.cpp", "SavitskyGolay_8cpp_source.html", null ],
+    [ "shared_contours.cpp", "shared__contours_8cpp_source.html", null ]
 ];

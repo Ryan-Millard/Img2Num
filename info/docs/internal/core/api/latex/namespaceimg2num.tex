@@ -32,7 +32,7 @@ void \mbox{\hyperlink{namespaceimg2num_ae73563e9dd25a8dd2120fd519ef87abd}{kmeans
 \begin{DoxyCompactList}\small\item\em Perform k-\/means clustering on image data.   \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{namespaceimg2num_a48d9a04a535198b5fc47905e359961ac}{bilateral\+\_\+filter}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}image, size\+\_\+t width, size\+\_\+t height, double sigma\+\_\+spatial, double sigma\+\_\+range, uint8\+\_\+t color\+\_\+space)
 \begin{DoxyCompactList}\small\item\em Apply bilateral filtering to an image.   \end{DoxyCompactList}\item 
-std\+::string \mbox{\hyperlink{namespaceimg2num_a36b11018f26b33933eeeb31a7833ea3d}{labels\+\_\+to\+\_\+svg}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, const int32\+\_\+t \texorpdfstring{$\ast$}{*}labels, const int width, const int height, const int min\+\_\+area)
+std\+::string \mbox{\hyperlink{namespaceimg2num_a9ec36449ded405f3480e4cb4ebafbe0e}{labels\+\_\+to\+\_\+svg}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, const int32\+\_\+t \texorpdfstring{$\ast$}{*}labels, const int width, const int height, const int min\+\_\+area, const int min\+\_\+thickness)
 \begin{DoxyCompactList}\small\item\em Convert labeled regions of an image into an SVG string.   \end{DoxyCompactList}\item 
 std\+::string \mbox{\hyperlink{namespaceimg2num_a8183e7b7e8a7efb8ce7ab254f81facb1}{image\+\_\+to\+\_\+svg}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, const int width, const int height, const \mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig}{Image\+To\+Svg\+Config}} \&config)
 \begin{DoxyCompactList}\small\item\em Convert labeled regions of an image into an SVG string.   \end{DoxyCompactList}\item 
@@ -167,27 +167,30 @@ Dox File\+: {\ttfamily doxygen/img2num.\+h.\+dox}
 \end{DoxyNote}
 
 
-Definition at line \mbox{\hyperlink{image__utils_8cpp_source_l00136}{136}} of file \mbox{\hyperlink{image__utils_8cpp_source}{image\+\_\+utils.\+cpp}}.
+Definition at line \mbox{\hyperlink{image__utils_8cpp_source_l00139}{139}} of file \mbox{\hyperlink{image__utils_8cpp_source}{image\+\_\+utils.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00138\ \ \ \{}
-\DoxyCodeLine{00139\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ img;}
-\DoxyCodeLine{00140\ \ \ \ \ img.loadFromBuffer(ptr,\ width,\ height,\ ImageLib::RGBA\_CONVERTER<uint8\_t>);}
-\DoxyCodeLine{00141\ }
-\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ imgWidth\ \{img.getWidth()\},\ imgHeight\ \{img.getHeight()\};}
-\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\&\ p\ :\ img)\ \{}
-\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ R\ \{p.red\ <\ num\_thresholds\};}
-\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ G\ \{p.green\ <\ num\_thresholds\};}
-\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ B\ \{p.blue\ <\ num\_thresholds\};}
-\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (R\ \&\&\ B\ \&\&\ G)\ \{}
-\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ p.setGray(0);}
-\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00150\ \ \ \ \ \}}
-\DoxyCodeLine{00151\ }
-\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ modified\ =\ img.getData();}
-\DoxyCodeLine{00153\ \ \ \ \ std::memcpy(ptr,\ modified.data(),\ modified.size()\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
-\DoxyCodeLine{00154\ \}}
+\DoxyCodeLine{00141\ \ \ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordflow}{if}\ (num\_thresholds\ <=\ 0)\ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00144\ \ \ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ img;}
+\DoxyCodeLine{00146\ \ \ \ \ img.loadFromBuffer(ptr,\ width,\ height,\ ImageLib::RGBA\_CONVERTER<uint8\_t>);}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ imgWidth\ \{img.getWidth()\},\ imgHeight\ \{img.getHeight()\};}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\&\ p\ :\ img)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ R\ \{p.red\ <\ num\_thresholds\};}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ G\ \{p.green\ <\ num\_thresholds\};}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ B\ \{p.blue\ <\ num\_thresholds\};}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (R\ \&\&\ B\ \&\&\ G)\ \{}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ p.setGray(0);}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00156\ \ \ \ \ \}}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ modified\ =\ img.getData();}
+\DoxyCodeLine{00159\ \ \ \ \ std::memcpy(ptr,\ modified.data(),\ modified.size()\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
+\DoxyCodeLine{00160\ \}}
 
 \end{DoxyCode}
 \Hypertarget{namespaceimg2num_a70ec94a56c6cdb94a28ed67d6a32e575}\label{namespaceimg2num_a70ec94a56c6cdb94a28ed67d6a32e575} 
@@ -414,16 +417,17 @@ Definition at line \mbox{\hyperlink{image__to__svg_8cpp_source_l00007}{7}} of fi
 \DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ img\_data.data(),\ out\_data.data(),\ out\_labels.data(),\ width,\ height,\ config.kmeans.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig_a75ddf7439fdcf08f636b4475ad9d81a4}{k}},}
 \DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ config.kmeans.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig_a803475180df7951e783432e40e192e81}{max\_iter}},\ config.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_aea1a469576eb80f915a1ac73f93f55c1}{color\_space}}}
 \DoxyCodeLine{00025\ \ \ \ \ );}
-\DoxyCodeLine{00026\ \ \ \ \ std::string\ svg\ \{}
-\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceimg2num_a36b11018f26b33933eeeb31a7833ea3d}{labels\_to\_svg}}(data,\ out\_labels.data(),\ width,\ height,\ config.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_ab834fb06830058d5d629be5f79ca98c3}{min\_cluster\_area}})\};}
-\DoxyCodeLine{00028\ }
-\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordflow}{return}\ svg;}
-\DoxyCodeLine{00030\ \}}
+\DoxyCodeLine{00026\ \ \ \ \ std::string\ svg\ \{\mbox{\hyperlink{namespaceimg2num_a9ec36449ded405f3480e4cb4ebafbe0e}{labels\_to\_svg}}(}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ data,\ out\_labels.data(),\ width,\ height,\ config.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_ab834fb06830058d5d629be5f79ca98c3}{min\_cluster\_area}},\ config.\mbox{\hyperlink{structimg2num_1_1ImageToSvgConfig_a3b26653bf8f495b9553066ed1efa78c2}{min\_thickness}}}
+\DoxyCodeLine{00028\ \ \ \ \ )\};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{return}\ svg;}
+\DoxyCodeLine{00031\ \}}
 
 \end{DoxyCode}
 
 
-References \mbox{\hyperlink{bilateral__filter_8cpp_source_l00230}{bilateral\+\_\+filter()}}, \mbox{\hyperlink{img2num_8h_source_l00048}{img2num\+::\+Image\+To\+Svg\+Config\+::color\+\_\+space}}, \mbox{\hyperlink{img2num_8h_source_l00036}{img2num\+::\+Image\+To\+Svg\+Config\+::\+KMeans\+Config\+::k}}, \mbox{\hyperlink{kmeans_8cpp_source_l00241}{kmeans()}}, \mbox{\hyperlink{labels__to__svg_8cpp_source_l00203}{labels\+\_\+to\+\_\+svg()}}, \mbox{\hyperlink{img2num_8h_source_l00039}{img2num\+::\+Image\+To\+Svg\+Config\+::\+KMeans\+Config\+::max\+\_\+iter}}, \mbox{\hyperlink{img2num_8h_source_l00043}{img2num\+::\+Image\+To\+Svg\+Config\+::min\+\_\+cluster\+\_\+area}}, \mbox{\hyperlink{img2num_8h_source_l00029}{img2num\+::\+Image\+To\+Svg\+Config\+::\+Bilateral\+Filter\+Config\+::sigma\+\_\+range}}, and \mbox{\hyperlink{img2num_8h_source_l00026}{img2num\+::\+Image\+To\+Svg\+Config\+::\+Bilateral\+Filter\+Config\+::sigma\+\_\+spatial}}.
+References \mbox{\hyperlink{bilateral__filter_8cpp_source_l00230}{bilateral\+\_\+filter()}}, \mbox{\hyperlink{img2num_8h_source_l00053}{img2num\+::\+Image\+To\+Svg\+Config\+::color\+\_\+space}}, \mbox{\hyperlink{img2num_8h_source_l00036}{img2num\+::\+Image\+To\+Svg\+Config\+::\+KMeans\+Config\+::k}}, \mbox{\hyperlink{kmeans_8cpp_source_l00241}{kmeans()}}, \mbox{\hyperlink{labels__to__svg_8cpp_source_l00203}{labels\+\_\+to\+\_\+svg()}}, \mbox{\hyperlink{img2num_8h_source_l00039}{img2num\+::\+Image\+To\+Svg\+Config\+::\+KMeans\+Config\+::max\+\_\+iter}}, \mbox{\hyperlink{img2num_8h_source_l00043}{img2num\+::\+Image\+To\+Svg\+Config\+::min\+\_\+cluster\+\_\+area}}, \mbox{\hyperlink{img2num_8h_source_l00048}{img2num\+::\+Image\+To\+Svg\+Config\+::min\+\_\+thickness}}, \mbox{\hyperlink{img2num_8h_source_l00029}{img2num\+::\+Image\+To\+Svg\+Config\+::\+Bilateral\+Filter\+Config\+::sigma\+\_\+range}}, and \mbox{\hyperlink{img2num_8h_source_l00026}{img2num\+::\+Image\+To\+Svg\+Config\+::\+Bilateral\+Filter\+Config\+::sigma\+\_\+spatial}}.
 
 Here is the call graph for this function\+:
 \nopagebreak
@@ -541,11 +545,11 @@ Here is the caller graph for this function\+:
 \includegraphics[width=350pt]{namespaceimg2num_ae73563e9dd25a8dd2120fd519ef87abd_icgraph}
 \end{center}
 \end{figure}
-\Hypertarget{namespaceimg2num_a36b11018f26b33933eeeb31a7833ea3d}\label{namespaceimg2num_a36b11018f26b33933eeeb31a7833ea3d} 
+\Hypertarget{namespaceimg2num_a9ec36449ded405f3480e4cb4ebafbe0e}\label{namespaceimg2num_a9ec36449ded405f3480e4cb4ebafbe0e} 
 \index{img2num@{img2num}!labels\_to\_svg@{labels\_to\_svg}}
 \index{labels\_to\_svg@{labels\_to\_svg}!img2num@{img2num}}
 \doxysubsubsection{\texorpdfstring{labels\_to\_svg()}{labels\_to\_svg()}}
-{\footnotesize\ttfamily std\+::string img2num\+::labels\+\_\+to\+\_\+svg (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{data,  }\item[{const int32\+\_\+t \texorpdfstring{$\ast$}{*}}]{labels,  }\item[{const int}]{width,  }\item[{const int}]{height,  }\item[{const int}]{min\+\_\+area }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily std\+::string img2num\+::labels\+\_\+to\+\_\+svg (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{data,  }\item[{const int32\+\_\+t \texorpdfstring{$\ast$}{*}}]{labels,  }\item[{const int}]{width,  }\item[{const int}]{height,  }\item[{const int}]{min\+\_\+area,  }\item[{const int}]{min\+\_\+thickness = {\ttfamily 0} }\end{DoxyParamCaption})}
 
 
 
@@ -594,7 +598,7 @@ Definition at line \mbox{\hyperlink{labels__to__svg_8cpp_source_l00203}{203}} of
 \DoxyCodeLine{00221\ \ \ \ \ G.discover\_edges(region\_labels,\ width,\ height);}
 \DoxyCodeLine{00222\ }
 \DoxyCodeLine{00223\ \ \ \ \ \textcolor{comment}{//\ 4.\ Merge\ small\ area\ nodes\ until\ all\ nodes\ are\ minArea\ or\ larger}}
-\DoxyCodeLine{00224\ \ \ \ \ G.merge\_small\_area\_nodes(min\_area);}
+\DoxyCodeLine{00224\ \ \ \ \ G.merge\_small\_area\_nodes(min\_area,\ min\_thickness);}
 \DoxyCodeLine{00225\ }
 \DoxyCodeLine{00226\ \ \ \ \ \textcolor{comment}{//\ 5.\ recolor\ image\ on\ new\ regions}}
 \DoxyCodeLine{00227\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ results\ \{width,\ height\};}
@@ -649,7 +653,7 @@ Here is the caller graph for this function\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{namespaceimg2num_a36b11018f26b33933eeeb31a7833ea3d_icgraph}
+\includegraphics[width=350pt]{namespaceimg2num_a9ec36449ded405f3480e4cb4ebafbe0e_icgraph}
 \end{center}
 \end{figure}
 \Hypertarget{namespaceimg2num_a9f4cebf6c051efd2bcb6e6cc83382aaf}\label{namespaceimg2num_a9f4cebf6c051efd2bcb6e6cc83382aaf} 
@@ -703,21 +707,24 @@ Definition at line \mbox{\hyperlink{image__utils_8cpp_source_l00119}{119}} of fi
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t\ REGION\_SIZE(255\ /\ num\_thresholds);\ \textcolor{comment}{//\ Size\ of\ buckets\ per\ colour}}
-\DoxyCodeLine{00121\ }
-\DoxyCodeLine{00122\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ img;}
-\DoxyCodeLine{00123\ \ \ \ \ img.loadFromBuffer(ptr,\ width,\ height,\ ImageLib::RGBA\_CONVERTER<uint8\_t>);}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{if}\ (num\_thresholds\ <=\ 0)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00122\ \ \ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t\ REGION\_SIZE(255\ /\ num\_thresholds);\ \textcolor{comment}{//\ Size\ of\ buckets\ per\ colour}}
 \DoxyCodeLine{00124\ }
-\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ imgWidth\ \{img.getWidth()\},\ imgHeight\ \{img.getHeight()\};}
-\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\&\ p\ :\ img)\ \{}
-\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ p.red\ =\ quantize(p.red,\ REGION\_SIZE);}
-\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ p.green\ =\ quantize(p.green,\ REGION\_SIZE);}
-\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ p.blue\ =\ quantize(p.blue,\ REGION\_SIZE);}
-\DoxyCodeLine{00130\ \ \ \ \ \}}
-\DoxyCodeLine{00131\ }
-\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ modified\ =\ img.getData();}
-\DoxyCodeLine{00133\ \ \ \ \ std::memcpy(ptr,\ modified.data(),\ modified.size()\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
-\DoxyCodeLine{00134\ \}}
+\DoxyCodeLine{00125\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ img;}
+\DoxyCodeLine{00126\ \ \ \ \ img.loadFromBuffer(ptr,\ width,\ height,\ ImageLib::RGBA\_CONVERTER<uint8\_t>);}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ imgWidth\ \{img.getWidth()\},\ imgHeight\ \{img.getHeight()\};}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\&\ p\ :\ img)\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ p.red\ =\ quantize(p.red,\ REGION\_SIZE);}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ p.green\ =\ quantize(p.green,\ REGION\_SIZE);}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ p.blue\ =\ quantize(p.blue,\ REGION\_SIZE);}
+\DoxyCodeLine{00133\ \ \ \ \ \}}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ modified\ =\ img.getData();}
+\DoxyCodeLine{00136\ \ \ \ \ std::memcpy(ptr,\ modified.data(),\ modified.size()\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
+\DoxyCodeLine{00137\ \}}
 
 \end{DoxyCode}
 

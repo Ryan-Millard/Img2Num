@@ -145,8 +145,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_error</b> (Error 
 <tr class="separator:ae73563e9dd25a8dd2120fd519ef87abd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48d9a04a535198b5fc47905e359961ac" id="r_a48d9a04a535198b5fc47905e359961ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceimg2num.html#a48d9a04a535198b5fc47905e359961ac">bilateral_filter</a> (uint8_t *image, size_t width, size_t height, double sigma_spatial, double sigma_range, uint8_t color_space)</td></tr>
 <tr class="separator:a48d9a04a535198b5fc47905e359961ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36b11018f26b33933eeeb31a7833ea3d" id="r_a36b11018f26b33933eeeb31a7833ea3d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceimg2num.html#a36b11018f26b33933eeeb31a7833ea3d">labels_to_svg</a> (const uint8_t *data, const int32_t *labels, const int width, const int height, const int min_area)</td></tr>
-<tr class="separator:a36b11018f26b33933eeeb31a7833ea3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ec36449ded405f3480e4cb4ebafbe0e" id="r_a9ec36449ded405f3480e4cb4ebafbe0e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceimg2num.html#a9ec36449ded405f3480e4cb4ebafbe0e">labels_to_svg</a> (const uint8_t *data, const int32_t *labels, const int width, const int height, const int min_area, const int min_thickness)</td></tr>
+<tr class="separator:a9ec36449ded405f3480e4cb4ebafbe0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8183e7b7e8a7efb8ce7ab254f81facb1" id="r_a8183e7b7e8a7efb8ce7ab254f81facb1"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceimg2num.html#a8183e7b7e8a7efb8ce7ab254f81facb1">image_to_svg</a> (const uint8_t *data, const int width, const int height, const <a class="el" href="structimg2num_1_1ImageToSvgConfig.html">ImageToSvgConfig</a> &amp;config)</td></tr>
 <tr class="separator:a8183e7b7e8a7efb8ce7ab254f81facb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -578,8 +578,8 @@ template&lt;typename Func , typename... Args&gt; </div>
 
 </div>
 </div>
-<a id="a36b11018f26b33933eeeb31a7833ea3d" name="a36b11018f26b33933eeeb31a7833ea3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a36b11018f26b33933eeeb31a7833ea3d">&#9670;&#160;</a></span>labels_to_svg()</h2>
+<a id="a9ec36449ded405f3480e4cb4ebafbe0e" name="a9ec36449ded405f3480e4cb4ebafbe0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ec36449ded405f3480e4cb4ebafbe0e">&#9670;&#160;</a></span>labels_to_svg()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -612,7 +612,13 @@ template&lt;typename Func , typename... Args&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>min_area</em>&#160;</td>
+          <td class="paramname"><em>min_area</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>min_thickness</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

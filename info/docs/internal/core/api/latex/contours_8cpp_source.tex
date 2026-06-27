@@ -658,222 +658,248 @@
 \DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00679}00679\ \ \ \ \ \textcolor{keywordflow}{return}\ locked;}
 \DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00680}00680\ \}}
 \DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00681}00681\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00682}00682\ \textcolor{comment}{//\ -\/-\/-\/\ Corner\ Detection\ (Feature\ Preservation)\ -\/-\/-\/}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00683}00683\ std::vector<bool>\ detectCorners(\textcolor{keyword}{const}\ std::vector<Point>\&\ pts,\ \textcolor{keywordtype}{float}\ angleThresholdDeg\ =\ 150.0)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00684}00684\ \ \ \ \ std::vector<bool>\ isCorner(pts.size(),\ \textcolor{keyword}{false});}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00685}00685\ \ \ \ \ \textcolor{keywordflow}{if}\ (pts.size()\ <\ 3)}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00686}00686\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ isCorner;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00687}00687\ \ \ \ \ \textcolor{keywordtype}{float}\ threshold\ =\ std::cos(angleThresholdDeg\ *\ M\_PI\ /\ 180.0f);}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00688}00688\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00689}00689\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ pts.size()\ -\/\ 1;\ ++i)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00690}00690\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ v1\ =\ normalize(pts[i]\ -\/\ pts[i\ -\/\ 1]);}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00691}00691\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ v2\ =\ normalize(pts[i\ +\ 1]\ -\/\ pts[i]);}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00692}00692\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (v1.x\ *\ v2.x\ +\ v1.y\ *\ v2.y\ <\ threshold)}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00693}00693\ \ \ \ \ \ \ \ \ \ \ \ \ isCorner[i]\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00682}00682\ \textcolor{keywordtype}{void}\ updateLockedMasks(}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00683}00683\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<std::vector<Point>>\&\ contours,\ std::vector<std::vector<bool>>\&\ locked,}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00684}00684\ \ \ \ \ std::vector<uint8\_t>\&\ junctions,\ \textcolor{keywordtype}{int}\ width}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00685}00685\ )\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00686}00686\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ c\ =\ 0;\ c\ <\ contours.size();\ ++c)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00687}00687\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ p\ =\ 0;\ p\ <\ contours[c].size();\ ++p)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00688}00688\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ pt\ =\ contours[c][p];}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00689}00689\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ idx\ =\ pt.y\ *\ width\ +\ pt.x;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00690}00690\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (junctions[idx]\ >\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00691}00691\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ locked[c][p]\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00692}00692\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00693}00693\ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00694}00694\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00695}00695\ \ \ \ \ \textcolor{comment}{//\ Endpoints\ are\ corners}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00696}00696\ \ \ \ \ isCorner[0]\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00697}00697\ \ \ \ \ isCorner.back()\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00698}00698\ \ \ \ \ \textcolor{keywordflow}{return}\ isCorner;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00699}00699\ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00700}00700\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00701}00701\ \textcolor{comment}{//\ -\/-\/-\/\ Selective\ Smoothing\ -\/-\/-\/}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00702}00702\ \textcolor{keywordtype}{void}\ selectiveSmooth(std::vector<Point>\&\ pts,\ \textcolor{keyword}{const}\ std::vector<bool>\&\ isLocked)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00703}00703\ \ \ \ \ std::vector<Point>\ original\ =\ pts;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00695}00695\ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00696}00696\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00697}00697\ \textcolor{comment}{//\ -\/-\/-\/\ Corner\ Detection\ (Feature\ Preservation)\ -\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00698}00698\ std::vector<bool>\ detectCorners(\textcolor{keyword}{const}\ std::vector<Point>\&\ pts,\ \textcolor{keywordtype}{float}\ angleThresholdDeg\ =\ 150.0)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00699}00699\ \ \ \ \ std::vector<bool>\ isCorner(pts.size(),\ \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00700}00700\ \ \ \ \ \textcolor{keywordflow}{if}\ (pts.size()\ <\ 3)}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00701}00701\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ isCorner;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00702}00702\ \ \ \ \ \textcolor{keywordtype}{float}\ threshold\ =\ std::cos(angleThresholdDeg\ *\ M\_PI\ /\ 180.0f);}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00703}00703\ }
 \DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00704}00704\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ pts.size()\ -\/\ 1;\ ++i)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00705}00705\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ DO\ NOT\ move\ if\ it's\ a\ Corner\ OR\ if\ it's\ Locked\ on\ the\ boundary}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00706}00706\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (isLocked[i])}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00707}00707\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00708}00708\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00709}00709\ \ \ \ \ \ \ \ \ pts[i]\ =\ 0.25f\ *\ original[i\ -\/\ 1]\ +\ 0.5f\ *\ original[i]\ +\ 0.25f\ *\ original[i\ +\ 1];}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00710}00710\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00711}00711\ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00712}00712\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00713}00713\ \textcolor{keywordtype}{void}\ coupledSmooth(}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00714}00714\ \ \ \ \ std::vector<std::vector<Point>>\&\ contours,\ \textcolor{keyword}{const}\ std::vector<std::vector<bool>>\&\ lockedMasks,}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00715}00715\ \ \ \ \ \textcolor{keywordtype}{float}\ pairRadiusSq\ =\ 2.25f}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00716}00716\ )\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00717}00717\ \ \ \ \ \mbox{\hyperlink{classSavitzkyGolay}{SavitzkyGolay}}\ sg(2,\ 2);\ \textcolor{comment}{//\ radius,\ polynomial\ order}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00718}00718\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00719}00719\ \ \ \ \ \textcolor{comment}{//\ first\ fit}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00720}00720\ \ \ \ \ std::vector<std::vector<Point>>\ smoothedContours;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00721}00721\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ c\ =\ 0;\ c\ <\ (int)contours.size();\ ++c)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00722}00722\ \ \ \ \ \ \ \ \ std::vector<Point>\ sc\ =\ sg.filter\_wrap(contours[c]);}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00723}00723\ \ \ \ \ \ \ \ \ smoothedContours.push\_back(sc);}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00724}00724\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00725}00725\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00726}00726\ \ \ \ \ \textcolor{comment}{//\ 1.\ Build\ Spatial\ Grid\ to\ find\ partners\ quickly}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00727}00727\ \ \ \ \ std::map<Coord,\ std::vector<PointID>>\ grid;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00728}00728\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ c\ =\ 0;\ c\ <\ (int)contours.size();\ ++c)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00729}00729\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ p\ =\ 0;\ p\ <\ (int)contours[c].size();\ ++p)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00730}00730\ \ \ \ \ \ \ \ \ \ \ \ \ grid[\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(contours[c][p].x),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(contours[c][p].y)\}]}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00731}00731\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .push\_back(\{c,\ p\});}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00732}00732\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00733}00733\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00734}00734\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00735}00735\ \ \ \ \ \textcolor{comment}{//\ We\ calculate\ ALL\ targets\ before\ applying\ any\ updates\ to\ maintain\ stability}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00736}00736\ \ \ \ \ std::vector<std::vector<Point>>\ targetPos\ =\ contours;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00737}00737\ \ \ \ \ \textcolor{comment}{//\ float\ pairRadiusSq\ =\ 1.5f\ *\ 1.5f;\ //\ Radius\ to\ define\ "{}Connected/Paired"{}}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00738}00738\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00739}00739\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ c\ =\ 0;\ c\ <\ (int)contours.size();\ ++c)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00740}00740\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ p\ =\ 1;\ p\ <\ (int)contours[c].size()\ -\/\ 1;\ ++p)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00741}00741\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ SKIP\ Constraints}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00742}00742\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (lockedMasks[c][p])}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00743}00743\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00744}00744\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00745}00745\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ myPos\ =\ contours[c][p];}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00746}00746\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ prev\ =\ contours[c][p\ -\/\ 1];}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00747}00747\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ next\ =\ contours[c][p\ +\ 1];}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00748}00748\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00749}00749\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 1.\ Calculate\ My\ Laplacian\ Target\ (Where\ I\ want\ to\ go\ to\ be\ smooth)}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00750}00750\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ myTarget\ =\ smoothedContours[c][p];}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00751}00751\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00752}00752\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 2.\ Find\ Partners\ in\ OTHER\ contours}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00753}00753\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ sumPartnerTargets\ =\ \{0,\ 0\};}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00754}00754\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ partnerCount\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00755}00755\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00756}00756\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ gx\ \{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(myPos.x)\};}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00757}00757\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ gy\ \{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(myPos.y)\};}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00758}00758\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00759}00759\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ 3x3\ grid}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00760}00760\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ dy\ =\ -\/1;\ dy\ <=\ 1;\ ++dy)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00761}00761\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ dx\ =\ -\/1;\ dx\ <=\ 1;\ ++dx)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00762}00762\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ grid.find(\{gx\ +\ dx,\ gy\ +\ dy\});}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00763}00763\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ ==\ grid.end())}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00764}00764\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00765}00765\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00766}00766\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ neighbor\ :\ it-\/>second)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00767}00767\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (neighbor.cIdx\ ==\ c)}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00768}00768\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};\ \textcolor{comment}{//\ Ignore\ self}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00769}00769\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00770}00770\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ otherPos\ =\ contours[neighbor.cIdx][neighbor.pIdx];}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00771}00771\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Point::distSq(myPos,\ otherPos)\ <\ pairRadiusSq)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00772}00772\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Found\ a\ partner!}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00773}00773\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Calculate\ where\ the\ PARTNER\ wants\ to\ go}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00774}00774\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ (We\ need\ safe\ access\ to\ partner's\ neighbors)}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00775}00775\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ otherContour\ =\ contours[neighbor.cIdx];}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00776}00776\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ op\ =\ neighbor.pIdx;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00777}00777\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00778}00778\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Only\ calculate\ partner\ target\ if\ they\ are\ not\ constrained}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00779}00779\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (op\ >\ 0\ \&\&\ op\ <\ (\textcolor{keywordtype}{int})otherContour.size()\ -\/\ 1\ \&\&}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00780}00780\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ !cornerMasks[neighbor.cIdx][op]\ \&\&}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00781}00781\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ !lockedMasks[neighbor.cIdx][op])\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00782}00782\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ oPrev\ =\ otherContour[op\ -\/\ 1];}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00783}00783\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ oNext\ =\ otherContour[op\ +\ 1];}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00705}00705\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ v1\ =\ normalize(pts[i]\ -\/\ pts[i\ -\/\ 1]);}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00706}00706\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ v2\ =\ normalize(pts[i\ +\ 1]\ -\/\ pts[i]);}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00707}00707\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (v1.x\ *\ v2.x\ +\ v1.y\ *\ v2.y\ <\ threshold)}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00708}00708\ \ \ \ \ \ \ \ \ \ \ \ \ isCorner[i]\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00709}00709\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00710}00710\ \ \ \ \ \textcolor{comment}{//\ Endpoints\ are\ corners}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00711}00711\ \ \ \ \ isCorner[0]\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00712}00712\ \ \ \ \ isCorner.back()\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00713}00713\ \ \ \ \ \textcolor{keywordflow}{return}\ isCorner;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00714}00714\ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00715}00715\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00716}00716\ \textcolor{comment}{//\ -\/-\/-\/\ Selective\ Smoothing\ -\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00717}00717\ \textcolor{keywordtype}{void}\ selectiveSmooth(std::vector<Point>\&\ pts,\ \textcolor{keyword}{const}\ std::vector<bool>\&\ isLocked)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00718}00718\ \ \ \ \ std::vector<Point>\ original\ =\ pts;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00719}00719\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 1;\ i\ <\ pts.size()\ -\/\ 1;\ ++i)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00720}00720\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ DO\ NOT\ move\ if\ it's\ a\ Corner\ OR\ if\ it's\ Locked\ on\ the\ boundary}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00721}00721\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (isLocked[i])}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00722}00722\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00723}00723\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00724}00724\ \ \ \ \ \ \ \ \ pts[i]\ =\ 0.25f\ *\ original[i\ -\/\ 1]\ +\ 0.5f\ *\ original[i]\ +\ 0.25f\ *\ original[i\ +\ 1];}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00725}00725\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00726}00726\ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00727}00727\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00728}00728\ \textcolor{keywordtype}{void}\ coupledSmooth(}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00729}00729\ \ \ \ \ std::vector<std::vector<Point>>\&\ contours,\ \textcolor{keyword}{const}\ std::vector<std::vector<bool>>\&\ lockedMasks,}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00730}00730\ \ \ \ \ \textcolor{keywordtype}{float}\ pairRadiusSq\ =\ 2.25f}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00731}00731\ )\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00732}00732\ \ \ \ \ \mbox{\hyperlink{classSavitzkyGolay}{SavitzkyGolay}}\ sg(3,\ 2);\ \textcolor{comment}{//\ radius,\ polynomial\ order}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00733}00733\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00734}00734\ \ \ \ \ \textcolor{comment}{//\ first\ fit}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00735}00735\ \ \ \ \ std::vector<std::vector<Point>>\ smoothedContours;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00736}00736\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ c\ =\ 0;\ c\ <\ (int)contours.size();\ ++c)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00737}00737\ \ \ \ \ \ \ \ \ std::vector<Point>\ sc\ =\ sg.filter\_wrap(contours[c]);}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00738}00738\ \ \ \ \ \ \ \ \ smoothedContours.push\_back(sc);}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00739}00739\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00740}00740\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00741}00741\ \ \ \ \ \textcolor{comment}{//\ 1.\ Build\ Spatial\ Grid\ to\ find\ partners\ quickly}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00742}00742\ \ \ \ \ std::map<Coord,\ std::vector<PointID>>\ grid;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00743}00743\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ c\ =\ 0;\ c\ <\ (int)contours.size();\ ++c)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00744}00744\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ p\ =\ 0;\ p\ <\ (int)contours[c].size();\ ++p)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00745}00745\ \ \ \ \ \ \ \ \ \ \ \ \ grid[\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(contours[c][p].x),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(contours[c][p].y)\}]}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00746}00746\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .push\_back(\{c,\ p\});}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00747}00747\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00748}00748\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00749}00749\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00750}00750\ \ \ \ \ \textcolor{comment}{//\ We\ calculate\ ALL\ targets\ before\ applying\ any\ updates\ to\ maintain\ stability}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00751}00751\ \ \ \ \ std::vector<std::vector<Point>>\ targetPos\ =\ contours;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00752}00752\ \ \ \ \ \textcolor{comment}{//\ float\ pairRadiusSq\ =\ 1.5f\ *\ 1.5f;\ //\ Radius\ to\ define\ "{}Connected/Paired"{}}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00753}00753\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00754}00754\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ c\ =\ 0;\ c\ <\ (int)contours.size();\ ++c)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00755}00755\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ p\ =\ 1;\ p\ <\ (int)contours[c].size()\ -\/\ 1;\ ++p)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00756}00756\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ SKIP\ Constraints}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00757}00757\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (lockedMasks[c][p])}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00758}00758\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00759}00759\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00760}00760\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ myPos\ =\ contours[c][p];}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00761}00761\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ prev\ =\ contours[c][p\ -\/\ 1];}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00762}00762\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ next\ =\ contours[c][p\ +\ 1];}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00763}00763\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00764}00764\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 1.\ Calculate\ My\ Laplacian\ Target\ (Where\ I\ want\ to\ go\ to\ be\ smooth)}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00765}00765\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ myTarget\ =\ smoothedContours[c][p];}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00766}00766\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00767}00767\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 2.\ Find\ Partners\ in\ OTHER\ contours}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00768}00768\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ sumPartnerTargets\ =\ \{0,\ 0\};}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00769}00769\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ partnerCount\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00770}00770\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00771}00771\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ gx\ \{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(myPos.x)\};}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00772}00772\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ gy\ \{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(myPos.y)\};}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00773}00773\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00774}00774\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ 3x3\ grid}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00775}00775\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ dy\ =\ -\/1;\ dy\ <=\ 1;\ ++dy)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00776}00776\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ dx\ =\ -\/1;\ dx\ <=\ 1;\ ++dx)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00777}00777\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ grid.find(\{gx\ +\ dx,\ gy\ +\ dy\});}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00778}00778\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ ==\ grid.end())}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00779}00779\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00780}00780\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00781}00781\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ neighbor\ :\ it-\/>second)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00782}00782\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (neighbor.cIdx\ ==\ c)}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00783}00783\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};\ \textcolor{comment}{//\ Ignore\ self}}
 \DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00784}00784\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00785}00785\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ oTarget\ =\ smoothedContours[neighbor.cIdx][op];}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00786}00786\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00787}00787\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sumPartnerTargets\ +=\ oTarget;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00788}00788\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ partnerCount++;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00789}00789\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00790}00790\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ partner\ is\ constrained\ (e.g.\ corner),}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00791}00791\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ we\ should\ probably\ snap\ to\ THEM,\ not\ smooth\ them.}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00792}00792\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ For\ simplicity,\ we\ treat\ their\ current\ pos\ as\ their\ target.}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00793}00793\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sumPartnerTargets\ +=\ otherPos;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00794}00794\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ partnerCount++;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00795}00795\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00796}00796\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00797}00797\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00798}00798\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00799}00799\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00800}00800\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00801}00801\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 3.\ Average\ "{}My\ Desire"{}\ with\ "{}Partners'\ Desires"{}}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00802}00802\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (partnerCount\ >\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00803}00803\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ targetPos[c][p]\ =\ (myTarget\ +\ sumPartnerTargets)\ /\ (1.0f\ +\ partnerCount);}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00804}00804\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00805}00805\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ No\ partners,\ just\ smooth\ myself}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00806}00806\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ targetPos[c][p]\ =\ myTarget;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00807}00807\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00808}00808\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00809}00809\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00810}00810\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00811}00811\ \ \ \ \ contours\ =\ targetPos;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00812}00812\ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00813}00813\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00814}00814\ \textcolor{keywordtype}{void}\ coupled\_smooth(std::vector<std::vector<Point>>\&\ contours,\ \mbox{\hyperlink{structRect}{Rect}}\ bounds)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00815}00815\ \ \ \ \ \textcolor{keyword}{auto}\ lockedMasks\ =\ createBoundaryMask(contours,\ bounds);}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00816}00816\ \ \ \ \ coupledSmooth(contours,\ lockedMasks,\ 1.0f);}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00817}00817\ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00818}00818\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00819}00819\ \textcolor{comment}{//\ -\/-\/-\/\ Main\ Solver\ -\/-\/-\/}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00820}00820\ \textcolor{keywordtype}{void}\ pack\_with\_boundary\_constraints(}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00821}00821\ \ \ \ \ std::vector<std::vector<Point>>\&\ contours,\ \mbox{\hyperlink{structRect}{Rect}}\ bounds,\ \textcolor{keywordtype}{int}\ iterations}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00822}00822\ )\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00823}00823\ \ \ \ \ \textcolor{comment}{//\ 1.\ Identify\ Locked\ Points\ (Boundary\ Constraint)}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00824}00824\ \ \ \ \ \textcolor{keyword}{auto}\ lockedMasks\ =\ createBoundaryMask(contours,\ bounds);}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00785}00785\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ otherPos\ =\ contours[neighbor.cIdx][neighbor.pIdx];}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00786}00786\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Point::distSq(myPos,\ otherPos)\ <\ pairRadiusSq)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00787}00787\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Found\ a\ partner!}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00788}00788\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Calculate\ where\ the\ PARTNER\ wants\ to\ go}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00789}00789\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ (We\ need\ safe\ access\ to\ partner's\ neighbors)}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00790}00790\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ otherContour\ =\ contours[neighbor.cIdx];}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00791}00791\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ op\ =\ neighbor.pIdx;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00792}00792\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00793}00793\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Only\ calculate\ partner\ target\ if\ they\ are\ not\ constrained}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00794}00794\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (op\ >\ 0\ \&\&\ op\ <\ (\textcolor{keywordtype}{int})otherContour.size()\ -\/\ 1\ \&\&}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00795}00795\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ !cornerMasks[neighbor.cIdx][op]\ \&\&}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00796}00796\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ !lockedMasks[neighbor.cIdx][op])\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00797}00797\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ oPrev\ =\ otherContour[op\ -\/\ 1];}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00798}00798\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ oNext\ =\ otherContour[op\ +\ 1];}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00799}00799\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00800}00800\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ oTarget\ =\ smoothedContours[neighbor.cIdx][op];}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00801}00801\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00802}00802\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sumPartnerTargets\ +=\ oTarget;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00803}00803\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ partnerCount++;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00804}00804\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00805}00805\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ partner\ is\ constrained\ (e.g.\ corner),}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00806}00806\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ we\ should\ probably\ snap\ to\ THEM,\ not\ smooth\ them.}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00807}00807\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ For\ simplicity,\ we\ treat\ their\ current\ pos\ as\ their\ target.}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00808}00808\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sumPartnerTargets\ +=\ otherPos;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00809}00809\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ partnerCount++;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00810}00810\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00811}00811\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00812}00812\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00813}00813\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00814}00814\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00815}00815\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00816}00816\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 3.\ Average\ "{}My\ Desire"{}\ with\ "{}Partners'\ Desires"{}}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00817}00817\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (partnerCount\ >\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00818}00818\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ targetPos[c][p]\ =\ (myTarget\ +\ sumPartnerTargets)\ /\ (1.0f\ +\ partnerCount);}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00819}00819\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00820}00820\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ No\ partners,\ just\ smooth\ myself}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00821}00821\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ targetPos[c][p]\ =\ myTarget;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00822}00822\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00823}00823\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00824}00824\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00825}00825\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00826}00826\ \ \ \ \ \textcolor{comment}{//\ 2.\ Identify\ Feature\ Corners\ (Shape\ Constraint)}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00827}00827\ \ \ \ \ \textcolor{comment}{//\ std::vector<std::vector<bool>>\ cornerMasks;}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00828}00828\ \ \ \ \ \textcolor{comment}{//\ for\ (const\ auto\&\ c\ :\ contours)\ cornerMasks.push\_back(detectCorners(c));}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00829}00829\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00830}00830\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{float}\ radiusSq\ =\ 3.0f\ *\ 3.0f;\ \textcolor{comment}{//\ Search\ radius}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00831}00831\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00832}00832\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ iter\ =\ 0;\ iter\ <\ iterations;\ ++iter)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00833}00833\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Build\ Grid}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00834}00834\ \ \ \ \ \ \ \ \ std::map<Coord,\ std::vector<PointID>>\ grid;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00835}00835\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ c\ =\ 0;\ c\ <\ (int)contours.size();\ ++c)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00836}00836\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ p\ =\ 0;\ p\ <\ (int)contours[c].size();\ ++p)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00837}00837\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ grid[\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(contours[c][p].x),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(contours[c][p].y)\}]}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00838}00838\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .push\_back(\{c,\ p\});}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00839}00839\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00840}00840\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00826}00826\ \ \ \ \ contours\ =\ targetPos;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00827}00827\ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00828}00828\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00829}00829\ \textcolor{keywordtype}{void}\ coupled\_smooth(std::vector<std::vector<Point>>\&\ contours,\ \mbox{\hyperlink{structRect}{Rect}}\ bounds)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00830}00830\ \ \ \ \ \textcolor{keyword}{auto}\ lockedMasks\ =\ createBoundaryMask(contours,\ bounds);}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00831}00831\ \ \ \ \ coupledSmooth(contours,\ lockedMasks,\ 1.0f);}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00832}00832\ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00833}00833\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00834}00834\ \textcolor{keywordtype}{void}\ coupled\_smooth\_junctions(}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00835}00835\ \ \ \ \ std::vector<std::vector<Point>>\&\ contours,\ \mbox{\hyperlink{structRect}{Rect}}\ bounds,\ std::vector<uint8\_t>\ junctions,}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00836}00836\ \ \ \ \ \textcolor{keywordtype}{int}\ width}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00837}00837\ )\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00838}00838\ \ \ \ \ \textcolor{keyword}{auto}\ lockedMasks\ =\ createBoundaryMask(contours,\ bounds);}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00839}00839\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00840}00840\ \ \ \ \ updateLockedMasks(contours,\ lockedMasks,\ junctions,\ width);}
 \DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00841}00841\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00842}00842\ \ \ \ \ \ \ \ \ std::vector<std::vector<Point>>\ nextContours\ =\ contours;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00843}00843\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00844}00844\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Apply\ Forces}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00845}00845\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ c\ =\ 0;\ c\ <\ (int)contours.size();\ ++c)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00846}00846\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ p\ =\ 0;\ p\ <\ (int)contours[c].size();\ ++p)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00847}00847\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CRITICAL\ CHECK:\ If\ on\ boundary,\ skip\ all\ movement\ logic}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00848}00848\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (lockedMasks[c][p])}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00849}00849\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00850}00850\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00851}00851\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ currentPos\ =\ contours[c][p];}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00852}00852\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ sumTargets\ =\ \{0,\ 0\};}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00853}00853\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ matchCount\ =\ 0;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00854}00854\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00855}00855\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Scan\ Neighborhood}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00856}00856\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ gx\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(currentPos.x);}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00857}00857\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ gy\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(currentPos.y);}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00858}00858\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00859}00859\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ dy\ =\ -\/1;\ dy\ <=\ 1;\ ++dy)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00860}00860\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ dx\ =\ -\/1;\ dx\ <=\ 1;\ ++dx)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00861}00861\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ grid.find(\{gx\ +\ dx,\ gy\ +\ dy\});}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00862}00862\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ ==\ grid.end())}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00863}00863\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00864}00864\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00865}00865\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ neighbor\ :\ it-\/>second)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00866}00866\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (neighbor.cIdx\ ==\ c)}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00867}00867\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00868}00868\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ other\ =\ contours[neighbor.cIdx];}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00869}00869\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ idxB\ =\ neighbor.pIdx;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00870}00870\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00871}00871\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ checkSeg\ =\ [\&](\textcolor{keywordtype}{int}\ s,\ \textcolor{keywordtype}{int}\ e)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00872}00872\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ t\ =\ getClosestPoint(currentPos,\ other[s],\ other[e]);}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00873}00873\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Point::distSq(currentPos,\ t)\ <\ radiusSq)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00874}00874\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sumTargets\ +=\ t;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00875}00875\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ matchCount++;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00876}00876\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00877}00877\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00878}00878\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (idxB\ <\ (\textcolor{keywordtype}{int})other.size()\ -\/\ 1)}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00879}00879\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ checkSeg(idxB,\ idxB\ +\ 1);}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00880}00880\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (idxB\ >\ 0)}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00881}00881\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ checkSeg(idxB\ -\/\ 1,\ idxB);}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00882}00882\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00883}00883\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00884}00884\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00885}00885\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00886}00886\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (matchCount\ >\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00887}00887\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ stiffness\ \{1.5f\};}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00888}00888\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nextContours[c][p]\ =}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00889}00889\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (sumTargets\ +\ currentPos\ *\ stiffness)\ /\ (matchCount\ +\ stiffness);}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00890}00890\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00891}00891\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00892}00892\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00893}00893\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00894}00894\ \ \ \ \ \ \ \ \ contours\ =\ nextContours;}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00895}00895\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00896}00896\ \}}
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00897}00897\ }
-\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00898}00898\ \}\ \textcolor{comment}{//\ namespace\ contours}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00842}00842\ \ \ \ \ coupledSmooth(contours,\ lockedMasks,\ 1.0f);}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00843}00843\ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00844}00844\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00845}00845\ \textcolor{comment}{//\ -\/-\/-\/\ Main\ Solver\ -\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00846}00846\ \textcolor{keywordtype}{void}\ pack\_with\_boundary\_constraints(}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00847}00847\ \ \ \ \ std::vector<std::vector<Point>>\&\ contours,\ \mbox{\hyperlink{structRect}{Rect}}\ bounds,\ \textcolor{keywordtype}{int}\ iterations}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00848}00848\ )\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00849}00849\ \ \ \ \ \textcolor{comment}{//\ 1.\ Identify\ Locked\ Points\ (Boundary\ Constraint)}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00850}00850\ \ \ \ \ \textcolor{keyword}{auto}\ lockedMasks\ =\ createBoundaryMask(contours,\ bounds);}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00851}00851\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00852}00852\ \ \ \ \ \textcolor{comment}{//\ 2.\ Identify\ Feature\ Corners\ (Shape\ Constraint)}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00853}00853\ \ \ \ \ \textcolor{comment}{//\ std::vector<std::vector<bool>>\ cornerMasks;}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00854}00854\ \ \ \ \ \textcolor{comment}{//\ for\ (const\ auto\&\ c\ :\ contours)\ cornerMasks.push\_back(detectCorners(c));}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00855}00855\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00856}00856\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{float}\ radiusSq\ =\ 3.0f\ *\ 3.0f;\ \textcolor{comment}{//\ Search\ radius}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00857}00857\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00858}00858\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ iter\ =\ 0;\ iter\ <\ iterations;\ ++iter)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00859}00859\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Build\ Grid}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00860}00860\ \ \ \ \ \ \ \ \ std::map<Coord,\ std::vector<PointID>>\ grid;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00861}00861\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ c\ =\ 0;\ c\ <\ (int)contours.size();\ ++c)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00862}00862\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ p\ =\ 0;\ p\ <\ (int)contours[c].size();\ ++p)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00863}00863\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ grid[\{\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(contours[c][p].x),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(contours[c][p].y)\}]}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00864}00864\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .push\_back(\{c,\ p\});}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00865}00865\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00866}00866\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00867}00867\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00868}00868\ \ \ \ \ \ \ \ \ std::vector<std::vector<Point>>\ nextContours\ =\ contours;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00869}00869\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00870}00870\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Apply\ Forces}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00871}00871\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ c\ =\ 0;\ c\ <\ (int)contours.size();\ ++c)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00872}00872\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ p\ =\ 0;\ p\ <\ (int)contours[c].size();\ ++p)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00873}00873\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ CRITICAL\ CHECK:\ If\ on\ boundary,\ skip\ all\ movement\ logic}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00874}00874\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (lockedMasks[c][p])}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00875}00875\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00876}00876\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00877}00877\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ currentPos\ =\ contours[c][p];}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00878}00878\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ sumTargets\ =\ \{0,\ 0\};}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00879}00879\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ matchCount\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00880}00880\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00881}00881\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Scan\ Neighborhood}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00882}00882\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ gx\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(currentPos.x);}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00883}00883\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ gy\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(currentPos.y);}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00884}00884\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00885}00885\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ dy\ =\ -\/1;\ dy\ <=\ 1;\ ++dy)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00886}00886\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ dx\ =\ -\/1;\ dx\ <=\ 1;\ ++dx)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00887}00887\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ grid.find(\{gx\ +\ dx,\ gy\ +\ dy\});}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00888}00888\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ ==\ grid.end())}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00889}00889\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00890}00890\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00891}00891\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ neighbor\ :\ it-\/>second)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00892}00892\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (neighbor.cIdx\ ==\ c)}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00893}00893\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00894}00894\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ other\ =\ contours[neighbor.cIdx];}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00895}00895\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ idxB\ =\ neighbor.pIdx;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00896}00896\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00897}00897\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ checkSeg\ =\ [\&](\textcolor{keywordtype}{int}\ s,\ \textcolor{keywordtype}{int}\ e)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00898}00898\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ t\ =\ getClosestPoint(currentPos,\ other[s],\ other[e]);}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00899}00899\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Point::distSq(currentPos,\ t)\ <\ radiusSq)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00900}00900\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sumTargets\ +=\ t;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00901}00901\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ matchCount++;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00902}00902\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00903}00903\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00904}00904\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (idxB\ <\ (\textcolor{keywordtype}{int})other.size()\ -\/\ 1)}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00905}00905\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ checkSeg(idxB,\ idxB\ +\ 1);}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00906}00906\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (idxB\ >\ 0)}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00907}00907\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ checkSeg(idxB\ -\/\ 1,\ idxB);}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00908}00908\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00909}00909\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00910}00910\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00911}00911\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00912}00912\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (matchCount\ >\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00913}00913\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ stiffness\ \{1.5f\};}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00914}00914\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nextContours[c][p]\ =}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00915}00915\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (sumTargets\ +\ currentPos\ *\ stiffness)\ /\ (matchCount\ +\ stiffness);}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00916}00916\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00917}00917\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00918}00918\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00919}00919\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00920}00920\ \ \ \ \ \ \ \ \ contours\ =\ nextContours;}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00921}00921\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00922}00922\ \}}
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00923}00923\ }
+\DoxyCodeLine{\Hypertarget{contours_8cpp_source_l00924}00924\ \}\ \textcolor{comment}{//\ namespace\ contours}}
 
 \end{DoxyCode}

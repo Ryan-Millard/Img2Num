@@ -39,26 +39,28 @@
 \DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00035}00035\ \}}
 \DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00036}00036\ }
 \DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00037}00037\ EMSCRIPTEN\_KEEPALIVE\ \textcolor{keywordtype}{char}*\ labels\_to\_svg(}
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00038}00038\ \ \ \ \ uint8\_t*\ data,\ int32\_t*\ labels,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_area}
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00039}00039\ )\ \{}
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00040}00040\ \ \ \ \ \textcolor{keywordflow}{return}\ img2num\_labels\_to\_svg(data,\ labels,\ width,\ height,\ min\_area);}
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00041}00041\ \}}
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00042}00042\ }
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00043}00043\ EMSCRIPTEN\_KEEPALIVE\ \textcolor{keywordtype}{char}*\ image\_to\_svg(}
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00044}00044\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t*\ data,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keywordtype}{double}\ sigma\_spatial,}
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00045}00045\ \ \ \ \ \textcolor{keywordtype}{double}\ sigma\_range,\ \textcolor{keyword}{const}\ int32\_t\ k,\ \textcolor{keyword}{const}\ int32\_t\ max\_iter,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_area,}
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00046}00046\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t\ color\_space}
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00047}00047\ )\ \{}
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00048}00048\ \ \ \ \ img2num\_ImageToSvgConfig\ config\ =\ img2num\_ImageToSvgConfig\_default();}
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00049}00049\ }
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00050}00050\ \ \ \ \ config.bilateral\_filter.sigma\_spatial\ =\ sigma\_spatial;}
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00051}00051\ \ \ \ \ config.bilateral\_filter.sigma\_range\ =\ sigma\_range;}
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00052}00052\ \ \ \ \ config.kmeans.k\ =\ k;}
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00053}00053\ \ \ \ \ config.kmeans.max\_iter\ =\ max\_iter;}
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00054}00054\ \ \ \ \ config.min\_cluster\_area\ =\ min\_area;}
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00055}00055\ \ \ \ \ config.color\_space\ =\ color\_space;}
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00056}00056\ }
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00057}00057\ \ \ \ \ \textcolor{keywordflow}{return}\ img2num\_image\_to\_svg(data,\ width,\ height,\ \&config);}
-\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00058}00058\ \}}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00038}00038\ \ \ \ \ uint8\_t*\ data,\ int32\_t*\ labels,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_area,}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00039}00039\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_thickness}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00040}00040\ )\ \{}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00041}00041\ \ \ \ \ \textcolor{keywordflow}{return}\ img2num\_labels\_to\_svg(data,\ labels,\ width,\ height,\ min\_area,\ min\_thickness);}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00042}00042\ \}}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00043}00043\ }
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00044}00044\ EMSCRIPTEN\_KEEPALIVE\ \textcolor{keywordtype}{char}*\ image\_to\_svg(}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00045}00045\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t*\ data,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keywordtype}{double}\ sigma\_spatial,}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00046}00046\ \ \ \ \ \textcolor{keywordtype}{double}\ sigma\_range,\ \textcolor{keyword}{const}\ int32\_t\ k,\ \textcolor{keyword}{const}\ int32\_t\ max\_iter,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_area,}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00047}00047\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ min\_thickness,\ \textcolor{keyword}{const}\ uint8\_t\ color\_space}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00048}00048\ )\ \{}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00049}00049\ \ \ \ \ img2num\_ImageToSvgConfig\ config\ =\ img2num\_ImageToSvgConfig\_default();}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00051}00051\ \ \ \ \ config.bilateral\_filter.sigma\_spatial\ =\ sigma\_spatial;}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00052}00052\ \ \ \ \ config.bilateral\_filter.sigma\_range\ =\ sigma\_range;}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00053}00053\ \ \ \ \ config.kmeans.k\ =\ k;}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00054}00054\ \ \ \ \ config.kmeans.max\_iter\ =\ max\_iter;}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00055}00055\ \ \ \ \ config.min\_cluster\_area\ =\ min\_area;}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00056}00056\ \ \ \ \ config.min\_thickness\ =\ min\_thickness;}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00057}00057\ \ \ \ \ config.color\_space\ =\ color\_space;}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00059}00059\ \ \ \ \ \textcolor{keywordflow}{return}\ img2num\_image\_to\_svg(data,\ width,\ height,\ \&config);}
+\DoxyCodeLine{\Hypertarget{wasm__wrapper_8c_source_l00060}00060\ \}}
 
 \end{DoxyCode}
