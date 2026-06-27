@@ -15,12 +15,6 @@ PYBIND11_MODULE(_img2num, m) {
     All image functions operate on ``numpy.ndarray`` buffers and return new image data,
     making them easy to integrate into Python-based image processing pipelines.
 
-    Submodules
-    ----------
-    proc :
-        Core image processing functions. All functions return new image data.
-    svg :
-        Functions for converting images to SVG strings.
     )docstring";
 
     // -----------------------------------------------------------------------
@@ -231,7 +225,7 @@ PYBIND11_MODULE(_img2num, m) {
         max_iter : int
             Maximum number of iterations for the K-means algorithm.
         color_space : int
-            Color space identifier for clustering.
+            Color space identifier (e.g., 0 for LAB, 1 for sRGB).
 
         Returns
         -------

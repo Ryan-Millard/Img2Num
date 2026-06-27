@@ -40,39 +40,39 @@
  * cmake --install build
  * \endcode
  *
- * The compiled `_img2num` module will be available for import in Python:
+ * The compiled `img2num` module will be available for import in Python:
  *
  * \code{.py}
- * import _img2num
+ * import img2num
  * \endcode
  *
  * \section usage_sec Usage Example
  *
  * \code{.py}
  * import numpy as np
- * import _img2num
+ * import img2num
  *
- * # Load image as uint8 numpy array
- * image = np.array([...], dtype=np.uint8).reshape((height, width, 3))
+ * # Load image as RGBA uint8 numpy array (you may need opencv for the RGBA conversion)
+ * image = cv2.cvtColor(cv2.imread([...]), cv2.COLOR_BGR2RGBA)
  *
  * # Apply Gaussian blur
- * blurred = _img2num.gaussian_blur_fft(image, width, height, sigma=2.0)
+ * blurred = img2num.gaussian_blur_fft(image, width, height, sigma=2.0)
  *
  * # Invert colors
- * inverted = _img2num.invert_image(image, width, height)
+ * inverted = img2num.invert_image(image, width, height)
  *
  * # Threshold
- * thresholded = _img2num.threshold_image(image, width, height, num_thresholds=4)
+ * thresholded = img2num.threshold_image(image, width, height, num_thresholds=4)
  *
  * # K-means clustering
- * clustered_data, labels = _img2num.kmeans(image, width, height, k=8, max_iter=50)
+ * clustered_data, labels = img2num.kmeans(image, width, height, k=8, max_iter=50)
  *
  * # Bilateral filtering
- * filtered = _img2num.bilateral_filter(image, width, height, sigma_spatial=3.0, sigma_range=50.0)
+ * filtered = img2num.bilateral_filter(image, width, height, sigma_spatial=3.0, sigma_range=50.0)
  *
  * # SVG conversion
- * config = _img2num.ImageToSvgConfig()
- * svg_str = _img2num.image_to_svg(image, width, height, config)
+ * config = img2num.ImageToSvgConfig()
+ * svg_str = img2num.image_to_svg(image, width, height, config)
  * \endcode
  *
  * \section api_sec API Reference
