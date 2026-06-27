@@ -17,12 +17,11 @@ Img2Num is a lightweight, high-performance library for converting raster images 
 
 ## Getting Started
 
-1. **[Quickstart](/docs/quickstart)** — Spin up the dev environment and build everything with `just`.
-2. **[Getting Started](/docs/getting-started)** — Your first conversion in under 5 minutes.
-3. **[Concepts](/docs/concepts)** — Learn about color spaces, filtering, and contours.
-4. **[API Reference](/docs/api-reference)** — Full documentation for all bindings.
-5. **[Performance](/docs/performance)** — Tips for speeding up your pipeline.
-6. **[Troubleshooting](/docs/troubleshooting)** — Common issues and fixes.
+1. **[Getting Started](/docs/getting-started)** — Your first conversion in under 5 minutes.
+2. **[Concepts](/docs/concepts)** — Learn about color spaces, filtering, and contours.
+3. **[API Reference](/docs/api-reference)** — Full documentation for all bindings.
+4. **[Performance](/docs/performance)** — Tips for speeding up your pipeline.
+5. **[Troubleshooting](/docs/troubleshooting)** — Common issues and fixes.
 
 ## API Bindings
 
@@ -30,7 +29,7 @@ Img2Num is a lightweight, high-performance library for converting raster images 
 | :-------------------- | :------------ | :-------------------------------------------------------- |
 | **JavaScript (WASM)** | ✅ Production | [JS API Reference](/docs/js/js-api-reference)             |
 | **C++**               | ✅ Production | [C++ API Reference](/docs/cpp/cpp-api-reference)          |
-| **C**                 | ✅ Production | [C API Reference](/docs/c/c-api-reference)                |
+| **C**                 | ✅ Production | [C API Reference](/docs/c/docs/c-api-reference)                |
 | **Python**            | 🟡 Early      | [Python API Reference](/docs/python/python-api-reference) |
 
 ## Changelog

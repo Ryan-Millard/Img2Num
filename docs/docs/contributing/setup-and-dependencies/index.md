@@ -9,7 +9,7 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
 :::tip Just want to build quickly?
-See the [Quickstart](/docs/quickstart) for the condensed, `just`-driven
+See the [Quickstart](/docs/contributing/quickstart) for the condensed, `just`-driven
 workflow. This page covers the full manual toolchain in detail.
 :::
 

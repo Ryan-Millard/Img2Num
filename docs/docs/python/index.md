@@ -23,7 +23,7 @@ The Python package has not had its first release yet, so `pip install img2num`
 is not available. Build the wheel from source instead.
 :::
 
-Build the wheel with the [Justfile](/docs/quickstart) (inside the Docker dev
+Build the wheel with the [Justfile](/docs/contributing/quickstart) (inside the Docker dev
 environment):
 
 ```bash

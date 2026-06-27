@@ -70,7 +70,7 @@ Copy `cimg2num.h` and the compiled `.so`/`.dylib`/`.dll` to your project.
 
 :::warning
 Python bindings are not yet available on PyPI. Build the wheel from source with
-`just build py` (see the [Quickstart](/docs/quickstart)), then
+`just build py` (see the [Quickstart](/docs/contributing/quickstart)), then
 `pip install dist/img2num-*.whl`. See the [Python docs](/docs/python) for details.
 :::
 
