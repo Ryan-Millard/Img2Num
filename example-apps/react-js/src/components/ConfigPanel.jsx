@@ -25,20 +25,12 @@ const ConfigPanel = ({
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
 
   return (
-    <div
-      className={`${styles.settingsPanel} ${isOpen ? styles.settingsOpen : ""} ${className}`}
-      onClick={(e) => e.stopPropagation()}
-    >
+    <div className={`${styles.settingsPanel} ${isOpen ? styles.settingsOpen : ""} ${className}`} onClick={(e) => e.stopPropagation()}>
       <div className={styles.settingsHeaderWrapper}>
         <h3 className={styles.settingsHeading}>Configuration</h3>
         <div className={styles.headerButtons}>
           {onClose && (
-            <button
-              type="button"
-              className={styles.closeButton}
-              onClick={onClose}
-              aria-label="Close settings"
-            >
+            <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Close settings">
               <X size={20} />
             </button>
           )}
@@ -65,16 +57,7 @@ const ConfigPanel = ({
             disabled={isProcessing}
           />
         </div>
-        <input
-          id="k-colors"
-          type="range"
-          min="2"
-          max="64"
-          value={numColors}
-          onChange={(e) => setNumColors(parseInt(e.target.value, 10))}
-          className={styles.rangeInput}
-          disabled={isProcessing}
-        />
+        <input id="k-colors" type="range" min="2" max="64" value={numColors} onChange={(e) => setNumColors(parseInt(e.target.value, 10))} className={styles.rangeInput} disabled={isProcessing} />
       </div>
 
       {/* Contours Parameters (Outline Details) */}
@@ -141,12 +124,7 @@ const ConfigPanel = ({
       </div>
 
       {/* Advanced Settings Collapsible Toggle */}
-      <button
-        type="button"
-        className={styles.advancedToggle}
-        onClick={() => setIsAdvancedOpen((prev) => !prev)}
-        aria-expanded={isAdvancedOpen}
-      >
+      <button type="button" className={styles.advancedToggle} onClick={() => setIsAdvancedOpen((prev) => !prev)} aria-expanded={isAdvancedOpen}>
         <span>Advanced Settings</span>
         {isAdvancedOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
       </button>
@@ -157,7 +135,9 @@ const ConfigPanel = ({
 
           <div className={styles.settingGroup}>
             <div className={styles.settingLabelWrapper}>
-              <label htmlFor="sigma-spatial">Spatial Sigma (σ<sub>s</sub>)</label>
+              <label htmlFor="sigma-spatial">
+                Spatial Sigma (σ<sub>s</sub>)
+              </label>
               <input
                 id="sigma-spatial-num"
                 type="number"
@@ -186,7 +166,9 @@ const ConfigPanel = ({
 
           <div className={styles.settingGroup}>
             <div className={styles.settingLabelWrapper}>
-              <label htmlFor="sigma-range">Range Sigma (σ<sub>range</sub>)</label>
+              <label htmlFor="sigma-range">
+                Range Sigma (σ<sub>range</sub>)
+              </label>
               <input
                 id="sigma-range-num"
                 type="number"

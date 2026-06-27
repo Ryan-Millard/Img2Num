@@ -115,8 +115,6 @@
   margin-top: var(--spacing-md);
 }
 
-
-
 @media (min-width: 768px) {
   .editorMainContainer {
     flex-direction: row;

@@ -73,7 +73,9 @@ label * {
   justify-content: center;
   cursor: pointer;
   z-index: 10;
-  transition: transform 0.2s, background-color 0.2s;
+  transition:
+    transform 0.2s,
+    background-color 0.2s;
   width: auto;
 }
 

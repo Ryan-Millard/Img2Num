@@ -43,7 +43,9 @@
   gap: var(--spacing-sm);
 }
 
-.collapseButton, .expandButton, .closeButton {
+.collapseButton,
+.expandButton,
+.closeButton {
   background: transparent;
   border: none;
   color: var(--color-primary);
@@ -56,7 +58,9 @@
   transition: background-color 0.2s;
 }
 
-.collapseButton:hover, .expandButton:hover, .closeButton:hover {
+.collapseButton:hover,
+.expandButton:hover,
+.closeButton:hover {
   background: var(--glass-border);
 }
 
@@ -160,7 +164,9 @@
   border-radius: 50%;
   background: var(--color-primary);
   cursor: pointer;
-  transition: transform 0.1s ease, background-color 0.2s ease;
+  transition:
+    transform 0.1s ease,
+    background-color 0.2s ease;
 }
 
 .rangeInput::-webkit-slider-thumb:hover {
@@ -175,7 +181,9 @@
   border-radius: 50%;
   background: var(--color-primary);
   cursor: pointer;
-  transition: transform 0.1s ease, background-color 0.2s ease;
+  transition:
+    transform 0.1s ease,
+    background-color 0.2s ease;
 }
 
 .rangeInput::-moz-range-thumb:hover {
@@ -196,7 +204,9 @@
   font-weight: bold;
   text-align: center;
   outline: none;
-  transition: border-color 0.2s, background-color 0.2s;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
 }
 
 :root.dark .numberInput {
