@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.2.0](https://github.com/Ryan-Millard/Img2Num/compare/cpp-v0.1.0...cpp-v0.2.0) (2026-06-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* **core:** prevent holes during SVG generation ([#429](https://github.com/Ryan-Millard/Img2Num/issues/429))
+
+### 🐛 Bug Fixes
+
+* **ci:** add NPM_TOKEN to npm publish step so packages/js can authenticate and publish to the npm registry ([2427d1d](https://github.com/Ryan-Millard/Img2Num/commit/2427d1d3c67b9ebafcbf3a5021ed335a3d0683fc))
+* **core:** add guard against invalid num_thresholds, preventing division by zero ([#445](https://github.com/Ryan-Millard/Img2Num/issues/445)) ([31eb2d1](https://github.com/Ryan-Millard/Img2Num/commit/31eb2d17811be70c092fdba8743eb9888c4f69c4))
+* **core:** add MSVC support via conditional compiler directives — ([2427d1d](https://github.com/Ryan-Millard/Img2Num/commit/2427d1d3c67b9ebafcbf3a5021ed335a3d0683fc))
+* **core:** prevent holes during SVG generation ([#429](https://github.com/Ryan-Millard/Img2Num/issues/429)) ([14e49f9](https://github.com/Ryan-Millard/Img2Num/commit/14e49f9a05496524e0190ddddf14283fbc907c0b))
+* fix broken v0.1.0 release pipeline ([#417](https://github.com/Ryan-Millard/Img2Num/issues/417)) ([2427d1d](https://github.com/Ryan-Millard/Img2Num/commit/2427d1d3c67b9ebafcbf3a5021ed335a3d0683fc))
+* **packages/js:** support browser and node builds from shared Vite setup ([#449](https://github.com/Ryan-Millard/Img2Num/issues/449)) ([0b2467c](https://github.com/Ryan-Millard/Img2Num/commit/0b2467c672474ef438f17ade91bfb7ed966632ca))
+* **packages/py:** include third_party/ in sdist and disable example builds (IMG2NUM_BUILD_EXAMPLES=OFF) in CMake args so Python source distributions bundle all required dependencies ([2427d1d](https://github.com/Ryan-Millard/Img2Num/commit/2427d1d3c67b9ebafcbf3a5021ed335a3d0683fc))
+* replace C++20 designated initializers with C++17 compatible assignments ([#448](https://github.com/Ryan-Millard/Img2Num/issues/448)) ([174b8a4](https://github.com/Ryan-Millard/Img2Num/commit/174b8a4b0c86bb62f929bae6e36a64896eba0f21))
+
 ## 0.1.0 (2026-05-29)
 
 
