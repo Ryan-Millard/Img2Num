@@ -29,7 +29,7 @@ Img2Num is a lightweight, high-performance library for converting raster images 
 | :-------------------- | :------------ | :-------------------------------------------------------- |
 | **JavaScript (WASM)** | ✅ Production | [JS API Reference](/docs/js/js-api-reference)             |
 | **C++**               | ✅ Production | [C++ API Reference](/docs/cpp/cpp-api-reference)          |
-| **C**                 | ✅ Production | [C API Reference](/docs/c/docs/c-api-reference)                |
+| **C**                 | ✅ Production | [C API Reference](/docs/c/docs/c-api-reference)           |
 | **Python**            | 🟡 Early      | [Python API Reference](/docs/python/python-api-reference) |
 
 ## Changelog
