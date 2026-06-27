@@ -215,11 +215,6 @@ The WASM module is compiled from C++ using Emscripten. See the [contributor setu
 just build js
 ```
 
-```bash
-# Run tests
-npx vitest run
-```
-
 ## License
 
 [MIT](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE) © Ryan Millard
