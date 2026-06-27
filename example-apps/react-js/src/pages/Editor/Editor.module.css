@@ -105,3 +105,25 @@
 .historyContainer {
   width: 100%;
 }
+
+.editorMainContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: var(--spacing-lg);
+  align-items: center;
+  margin-top: var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+  .editorMainContainer {
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+  }
+
+  .viewport {
+    flex: 1;
+    width: auto !important;
+  }
+}
