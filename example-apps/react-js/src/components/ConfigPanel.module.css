@@ -1,0 +1,272 @@
+.settingsPanel {
+  display: none;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 30px var(--glass-shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  width: 100%;
+  max-width: 400px;
+  text-align: left;
+  height: fit-content;
+  position: relative;
+}
+
+.settingsPanel.settingsOpen {
+  display: flex;
+}
+
+.settingsHeaderWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--color-primary);
+  padding-bottom: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
+}
+
+.settingsHeading {
+  margin: 0;
+  font-size: 1.35rem;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.headerButtons {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.collapseButton,
+.expandButton,
+.closeButton {
+  background: transparent;
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s;
+}
+
+.collapseButton:hover,
+.expandButton:hover,
+.closeButton:hover {
+  background: var(--glass-border);
+}
+
+/* Close button defaults to visible on mobile, hidden on desktop */
+.closeButton {
+  display: flex;
+}
+
+/* Collapse button defaults to hidden on mobile, visible on desktop */
+.collapseButton {
+  display: none;
+}
+
+.settingsCollapsed {
+  width: 50px !important;
+  max-width: 50px !important;
+  padding: var(--spacing-sm) !important;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.verticalText {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  margin-top: var(--spacing-md);
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.sectionHeader {
+  margin-top: var(--spacing-sm);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  letter-spacing: 1px;
+  border-bottom: 1px dashed var(--color-border);
+  padding-bottom: 2px;
+}
+
+.settingGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.settingLabelWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.settingLabelWrapper label {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.labelWithTooltip {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.infoIcon {
+  color: var(--color-text-light);
+  opacity: 0.6;
+  cursor: help;
+  transition: opacity 0.2s;
+}
+
+.infoIcon:hover {
+  opacity: 1;
+}
+
+.rangeLimits {
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+  opacity: 0.8;
+}
+
+.rangeInput {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--color-border);
+  outline: none;
+  margin: var(--spacing-xs) 0;
+}
+
+.rangeInput::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  cursor: pointer;
+  transition:
+    transform 0.1s ease,
+    background-color 0.2s ease;
+}
+
+.rangeInput::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  background: var(--color-primary-dark);
+}
+
+.rangeInput::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-primary);
+  cursor: pointer;
+  transition:
+    transform 0.1s ease,
+    background-color 0.2s ease;
+}
+
+.rangeInput::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  background: var(--color-primary-dark);
+}
+
+/* Themed Input box that matches glassmorphic styles instead of solid white */
+.numberInput {
+  width: 60px;
+  padding: 4px 6px;
+  background: rgba(106, 56, 23, 0.08);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-primary);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-align: center;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+}
+
+:root.dark .numberInput {
+  background: rgba(248, 234, 205, 0.08);
+  color: var(--color-text);
+}
+
+.numberInput:focus {
+  border-color: var(--color-primary);
+  background: rgba(106, 56, 23, 0.15);
+}
+
+:root.dark .numberInput:focus {
+  background: rgba(248, 234, 205, 0.15);
+}
+
+.advancedToggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--color-border);
+  padding: var(--spacing-sm) 0;
+  margin-top: var(--spacing-sm);
+  color: var(--color-primary);
+  font-weight: bold;
+  font-size: 0.95rem;
+  cursor: pointer;
+  outline: none;
+  transition: opacity 0.2s;
+}
+
+.advancedToggle:hover {
+  opacity: 0.8;
+}
+
+.advancedContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+.resetButton {
+  background-color: transparent;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  transition: all 0.2s ease;
+}
+
+.resetButton:hover {
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+}
+
+@media (min-width: 768px) {
+  .settingsPanel {
+    height: auto;
+    align-self: stretch;
+  }
+}

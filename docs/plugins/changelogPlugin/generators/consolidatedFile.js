@@ -1,8 +1,8 @@
-import { writeFile } from "../fs";
 import path from "path";
+import { writeFile } from "../fs";
 import frontMatter from "./frontMatter";
-import trimTrailing from "./trimTrailing";
 import renderTemplate from "./renderTemplate.js";
+import trimTrailing from "./trimTrailing";
 
 export default function consolidatedFile(releases, pkg, outDir) {
   const filePath = path.join(outDir, "changelog.md");
@@ -28,7 +28,7 @@ ${trimTrailing(body)}`;
     PACKAGE_LABEL: pkg.label,
     PACKAGE_NAME: pkg.packageName,
     RELEASES_URL: githubReleasesPageLink,
-    RELEASES: sections,
+    RELEASES: sections.join("\n---\n"),
   });
 
   writeFile(filePath, content);

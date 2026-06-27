@@ -1,11 +1,13 @@
-import { useEffect, useRef, useState, useCallback } from "react";
-import parse from "html-react-parser";
-import { useLocation } from "react-router-dom";
+import ConfigPanel from "@components/ConfigPanel";
 import GlassCard from "@components/GlassCard";
 import GlassModal from "@components/GlassModal";
-import EditorHelmet from "./EditorHelmet";
-import EditorControls from "./EditorControls";
 import useFullscreen from "@hooks/useFullscreen";
+import parse from "html-react-parser";
+import { bilateralFilter, findContours, kmeans } from "img2num";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
+import EditorControls from "./EditorControls";
+import EditorHelmet from "./EditorHelmet";
 
 import styles from "./Editor.module.css";
 
@@ -13,9 +15,10 @@ const SHAPE_SELECTOR = "path,rect,circle,polygon,ellipse";
 
 export default function Editor() {
   const { state } = useLocation();
-  const { svg } = state || {};
+  const { svg: initialSvg, fileData, imgBilateralFiltered, initialSettings } = state || {};
 
-  const [svgElements] = useState(() => (svg ? parse(svg) : null));
+  const [svg, setSvg] = useState(initialSvg);
+  const [svgElements, setSvgElements] = useState(null);
   const [isColorMode, setIsColorMode] = useState(true);
 
   const [history, setHistory] = useState([]);
@@ -24,16 +27,95 @@ export default function Editor() {
 
   const [modalOpen, setModalOpen] = useState(false);
 
+  const [numColors, setNumColors] = useState(initialSettings?.numColors ?? 16);
+  const [minArea, setMinArea] = useState(initialSettings?.minArea ?? 100);
+  const [minThickness, setMinThickness] = useState(initialSettings?.minThickness ?? 10);
+  const [sigmaSpatial, setSigmaSpatial] = useState(initialSettings?.sigmaSpatial ?? 3);
+  const [sigmaRange, setSigmaRange] = useState(initialSettings?.sigmaRange ?? 50);
+  const [colorSpace, setColorSpace] = useState(initialSettings?.colorSpace ?? 0);
+
+  const [cachedBilateralFiltered, setCachedBilateralFiltered] = useState(imgBilateralFiltered);
+  const [appliedSigmaSpatial, setAppliedSigmaSpatial] = useState(initialSettings?.sigmaSpatial ?? 3);
+  const [appliedSigmaRange, setAppliedSigmaRange] = useState(initialSettings?.sigmaRange ?? 50);
+  const [appliedColorSpace, setAppliedColorSpace] = useState(initialSettings?.colorSpace ?? 0);
+
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isReprocessing, setIsReprocessing] = useState(false);
+
   const viewportRef = useRef(null);
   const innerRef = useRef(null);
-
   const rafRef = useRef(null);
-
   const transformRef = useRef({
     scale: 1,
     tx: 0,
     ty: 0,
   });
+
+  const resetColoring = useCallback(() => {
+    const svgRoot = innerRef.current?.querySelector("svg");
+    if (svgRoot) {
+      svgRoot.querySelectorAll(SHAPE_SELECTOR).forEach((shape) => {
+        shape.classList.remove(styles.coloredRegion);
+      });
+    }
+    setHistory([[]]);
+    setHistoryIndex(0);
+  }, []);
+
+  useEffect(() => {
+    if (svg) {
+      setSvgElements(parse(svg));
+    }
+  }, [svg]);
+
+  const reprocessImage = async () => {
+    if (!fileData) return;
+    resetColoring();
+    setIsReprocessing(true);
+    try {
+      const { width, height } = fileData;
+
+      const bilateralChanged = sigmaSpatial !== appliedSigmaSpatial || sigmaRange !== appliedSigmaRange || colorSpace !== appliedColorSpace || !cachedBilateralFiltered;
+
+      let filteredPixels = cachedBilateralFiltered;
+
+      if (bilateralChanged) {
+        filteredPixels = await bilateralFilter({
+          pixels: fileData.pixels,
+          width,
+          height,
+          sigma_spatial: sigmaSpatial,
+          sigma_range: sigmaRange,
+          color_space: colorSpace,
+        });
+        setCachedBilateralFiltered(filteredPixels);
+        setAppliedSigmaSpatial(sigmaSpatial);
+        setAppliedSigmaRange(sigmaRange);
+        setAppliedColorSpace(colorSpace);
+      }
+
+      const { labels } = await kmeans({
+        ...fileData,
+        pixels: filteredPixels,
+        num_colors: numColors,
+      });
+
+      const { svg: newSvg } = await findContours({
+        pixels: filteredPixels,
+        labels,
+        width,
+        height,
+        min_area: minArea,
+        min_thickness: minThickness,
+      });
+
+      setSvg(newSvg);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsReprocessing(false);
+    }
+  };
 
   const { ref: fsRef, toggle: toggleFullscreen } = useFullscreen();
 
@@ -338,6 +420,9 @@ export default function Editor() {
 
     const shapes = svgRoot.querySelectorAll(SHAPE_SELECTOR);
     shapes.forEach((shape, i) => {
+      // Remove coloredRegion class in case the DOM node was recycled
+      shape.classList.remove(styles.coloredRegion);
+
       if (!shape.dataset.id) {
         shape.dataset.id = `shape-${i}`;
       }
@@ -372,6 +457,9 @@ export default function Editor() {
           onUndo={undo}
           onRedo={redo}
           onFullscreen={toggleFullscreen}
+          showSettingsButton={!!fileData}
+          isSettingsOpen={isSettingsOpen}
+          onToggleSettings={() => setIsSettingsOpen((prev) => !prev)}
         />
 
         <GlassModal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
@@ -397,20 +485,54 @@ export default function Editor() {
 
         <div className={styles.hint}>Click shapes to reveal their original colour.</div>
 
-        <GlassCard
-          className={`flex-center ${styles.viewport}`}
-          ref={(el) => {
-            viewportRef.current = el;
-            fsRef.current = el; // link fullscreen ref to viewport
-          }}
-          onPointerDown={onPointerDown}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}
-        >
-          <div ref={innerRef} className={styles.inner}>
-            {svgElements}
-          </div>
-        </GlassCard>
+        <div className={styles.editorMainContainer}>
+          {/* Settings Panel */}
+          {fileData && (
+            <ConfigPanel
+              numColors={numColors}
+              setNumColors={setNumColors}
+              minArea={minArea}
+              setMinArea={setMinArea}
+              minThickness={minThickness}
+              setMinThickness={setMinThickness}
+              sigmaSpatial={sigmaSpatial}
+              setSigmaSpatial={setSigmaSpatial}
+              sigmaRange={sigmaRange}
+              setSigmaRange={setSigmaRange}
+              colorSpace={colorSpace}
+              setColorSpace={setColorSpace}
+              isOpen={isSettingsOpen}
+              onReset={() => {
+                setNumColors(16);
+                setMinArea(100);
+                setMinThickness(10);
+                setSigmaSpatial(3);
+                setSigmaRange(50);
+                setColorSpace(0);
+              }}
+              onAction={reprocessImage}
+              actionLabel="Apply"
+              isProcessing={isReprocessing}
+              onClose={() => setIsSettingsOpen(false)}
+              showWarning={true}
+            />
+          )}
+
+          <GlassCard
+            className={`flex-center ${styles.viewport}`}
+            ref={(el) => {
+              viewportRef.current = el;
+              fsRef.current = el; // link fullscreen ref to viewport
+            }}
+            onPointerDown={onPointerDown}
+            onPointerUp={onPointerUp}
+            onPointerCancel={onPointerUp}
+          >
+            <div ref={innerRef} className={styles.inner}>
+              {svgElements}
+            </div>
+          </GlassCard>
+        </div>
       </GlassCard>
     </>
   );
