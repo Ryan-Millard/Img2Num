@@ -38,6 +38,7 @@
       "initial-version": "0.1.0",
       "bump-minor-pre-major": true,
       "component": "packages-js",
+      "dependencies": ["bindings/c", "core"],
       "package-name": "img2num-js"
     },
     "packages/py": {
@@ -45,6 +46,7 @@
       "initial-version": "0.1.0",
       "bump-minor-pre-major": true,
       "component": "packages-py",
+      "dependencies": ["core"],
       "package-name": "img2num-py",
       "extra-files": [{ "type": "generic", "path": "pyproject.toml" }]
     }
