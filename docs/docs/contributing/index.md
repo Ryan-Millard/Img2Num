@@ -8,7 +8,7 @@ sidebar_position: 13
 
 First off, thank you for considering contributing to Img2Num! We welcome any kind of contribution—bug reports, feature requests, documentation improvements, code fixes, or optimizations. This document outlines the process for contributing, from setting up your development environment to submitting pull requests.
 
-Check [Quickstart Guide](/docs/contributing/quickstart.md) for setting up the docker environment and building.
+Check [Quickstart Guide](/docs/contributing/quickstart) for setting up the docker environment and building.
 
 ## Code of Conduct
 

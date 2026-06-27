@@ -95,7 +95,7 @@ Already initialised and only want to rebuild one piece? Pass a target to `just b
 just build cpp           # C++ core and C bindings        -> build-c-cpp/
 just build js            # JS / WASM bindings             -> build-wasm/
 just build packages-js   # Browser + Node.js npm packages -> packages/js/dist/
-just build py            # Python bindings + wheel
+just build py            # Python bindings + wheel        -> packages/py/build-py/
 just build all           # everything above (+ react app + docs)
 ```
 
