@@ -28,7 +28,7 @@ ${trimTrailing(body)}`;
     PACKAGE_LABEL: pkg.label,
     PACKAGE_NAME: pkg.packageName,
     RELEASES_URL: githubReleasesPageLink,
-    RELEASES: sections.join("\n\n"),
+    RELEASES: sections.join("\n---\n"),
   });
 
   writeFile(filePath, content);
