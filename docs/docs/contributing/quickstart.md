@@ -92,17 +92,28 @@ This is the only command most contributors need to get a complete, working check
 Already initialised and only want to rebuild one piece? Pass a target to `just build`:
 
 ```bash title="From inside the Docker terminal"
-just build cpp   # C++ core and C bindings   -> build-c-cpp/
-just build js    # JS / WASM bindings         -> build-wasm/
-just build py    # Python bindings + wheel
-just build all   # everything above (+ react app + docs)
+just build cpp           # C++ core and C bindings        -> build-c-cpp/
+just build js            # JS / WASM bindings             -> build-wasm/
+just build packages-js   # Browser + Node.js npm packages -> packages/js/dist/
+just build py            # Python bindings + wheel
+just build all           # everything above (+ react app + docs)
 ```
+
+:::info Browser & Node.js packages
+`just build js` only produces the raw WASM/JS bindings. To build the publishable
+`img2num` npm package — which targets **both the browser and Node.js** — run
+`just build packages-js`. It compiles the WASM bindings first (so it works from a
+clean checkout) and then bundles the browser and Node builds into
+`packages/js/dist/`.
+:::
 
 To remove generated build folders:
 
 ```bash title="From inside the Docker terminal"
-just clean cpp   # delete build-c-cpp/
-just clean js    # delete build-wasm/
+just clean cpp           # delete build-c-cpp/
+just clean js            # delete build-wasm/
+just clean packages-js   # delete packages/js/dist/
+just clean packages-py   # delete packages/py/build-py/
 ```
 
 ## 5. Run something
@@ -131,11 +142,14 @@ Convert an image straight from the command line in your language of choice:
 just console-cpp path/to/image.png   # C++ example app
 just console-c   path/to/image.png   # C example app
 just console-py  path/to/image.png   # Python example app
+just console-js  path/to/image.png   # Node.js example app
 ```
 
 :::info
-The console C/C++ apps require a prior `just build cpp` (or `just init`). The Python app
-installs its own runtime dependencies on first run.
+The console C/C++ apps require a prior `just build cpp` (or `just init`). The Node.js app
+(`console-js`) requires a prior `just build packages-js` (or `just init`) and decodes the
+input image with [`sharp`](https://sharp.pixelplumbing.com/). The Python app installs its
+own runtime dependencies on first run.
 :::
 
 ## 6. Format your changes
@@ -148,16 +162,16 @@ just format
 
 ## Command reference
 
-| Command                                           | What it does                                     |
-| :------------------------------------------------ | :----------------------------------------------- |
-| `just` / `just help`                              | List all available commands                      |
-| `just init`                                       | Pull submodules, then build all targets          |
-| `just build cpp\|js\|py\|all`                     | Build the C++/C, JS/WASM, Python, or all targets |
-| `just clean cpp\|js`                              | Delete the C++ or JS build folder                |
-| `just format`                                     | Format all files                                 |
-| `just docs build\|start`                          | Build or serve the documentation site            |
-| `just react-js build\|start`                      | Build or serve the React example app             |
-| `just console-cpp\|console-c\|console-py <image>` | Run a console example app on an image            |
+| Command                                                       | What it does                                                   |
+| :------------------------------------------------------------ | :------------------------------------------------------------- |
+| `just` / `just help`                                          | List all available commands                                    |
+| `just init`                                                   | Pull submodules, then build all targets                        |
+| `just build cpp\|js\|packages-js\|py\|all`                    | Build the C++/C, JS/WASM, npm packages, Python, or all targets |
+| `just clean cpp\|js\|packages-js\|packages-py`                | Delete the corresponding build folder                          |
+| `just format`                                                 | Format all files                                               |
+| `just docs build\|start`                                      | Build or serve the documentation site                          |
+| `just react-js build\|start`                                  | Build or serve the React example app                           |
+| `just console-cpp\|console-c\|console-py\|console-js <image>` | Run a console example app on an image                          |
 
 ## Next steps
 

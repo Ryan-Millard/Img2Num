@@ -79,11 +79,21 @@ import TabItem from "@theme/TabItem";
 
 ## Usage
 
-### Basic Usage
+Img2Num runs in both the **browser** and **Node.js**. The conversion functions
+(`imageToSvg`, `bilateralFilter`, `kmeans`, `findContours`, …) are identical
+across environments — the only difference is how you obtain the RGBA pixel
+buffer they operate on. The package automatically resolves the right WASM build
+for your environment via its `exports` map, so the `img2num` import is the same
+in both cases.
+
+### Browser
+
+In the browser, use `imageToUint8ClampedArray` to decode a `File` or `Blob`
+(e.g. from an `<input type="file">` element) into RGBA pixels.
 
 > This example mirrors that of the [React example app](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/react-js/src/components/WasmImageProcessor.jsx).
 
-```js title="Convert an image to an SVG"
+```js title="Convert an image to an SVG (browser)"
 import {
   imageToUint8ClampedArray,
   bilateralFilter,
@@ -119,6 +129,45 @@ const { svg } = await findContours({
   width,
   height,
 });
+```
+
+### Node.js
+
+Node has no DOM, so `imageToUint8ClampedArray` (which relies on `<canvas>`) is
+**not** available. Instead, decode the image to a raw RGBA buffer with a
+library such as [`sharp`](https://sharp.pixelplumbing.com/), then hand the
+pixels to `imageToSvg` (or the individual stages). Reading the file with
+`fs.readFile` alone is not enough — the bytes must be decoded into raw RGBA.
+
+```bash title="Install a decoder alongside img2num"
+npm install img2num sharp
+```
+
+> This example mirrors the [Node console example app](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/console-js/index.js).
+
+```js title="Convert an image to an SVG (Node.js)"
+import { writeFileSync } from "fs";
+import { imageToSvg } from "img2num";
+import sharp from "sharp";
+
+const imagePath = process.argv[2];
+
+// Decode the image into a flat RGBA Uint8ClampedArray
+const { data, info } = await sharp(imagePath).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+
+const pixels = new Uint8ClampedArray(data.buffer);
+const { width, height } = info;
+
+// One-shot conversion (bilateral filter → k-means → contour tracing)
+const { svg } = await imageToSvg({ pixels, width, height });
+
+writeFileSync("output.svg", svg);
+```
+
+You can run this end-to-end from the repository with:
+
+```bash
+just console-js <input-image>
 ```
 
 ## Resources

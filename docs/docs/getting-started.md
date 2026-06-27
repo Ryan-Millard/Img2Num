@@ -29,8 +29,11 @@ import {
   findContours
 } from "img2num";
 
-// Load your image
-const imageFile = /* File object from <input> or fs.readFile */;
+// Load your image into RGBA pixels.
+// Browser: imageToUint8ClampedArray decodes a File/Blob from an <input>.
+// Node.js: decode with a library such as `sharp` (see the JavaScript guide) —
+//          imageToUint8ClampedArray is browser-only.
+const imageFile = /* File object, e.g. input.files[0] */;
 const { pixels, width, height } = await imageToUint8ClampedArray(imageFile);
 
 // Optional: denoise with bilateral filter
