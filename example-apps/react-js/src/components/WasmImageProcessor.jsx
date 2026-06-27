@@ -119,8 +119,6 @@ const WasmImageProcessor = () => {
         state: {
           svg,
           fileData,
-          originalSrc,
-          imgBilateralFiltered,
           initialSettings: {
             numColors,
             minArea,
