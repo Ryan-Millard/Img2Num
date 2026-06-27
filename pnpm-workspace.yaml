@@ -1,8 +1,15 @@
 packages:
   - packages/js
   - example-apps/react-js
+  - example-apps/console-js
   - docs
   - scripts/img2num-dev-scripts
+
+allowBuilds:
+  "@swc/core": true
+  core-js: true
+  sharp: true
+  webgpu: true
 
 onlyBuiltDependencies:
   - "@swc/core"
@@ -10,3 +17,4 @@ onlyBuiltDependencies:
   - core-js-pure
   - esbuild
   - sharp
+  - webgpu

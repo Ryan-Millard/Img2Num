@@ -25,4 +25,4 @@ target_compile_definitions(CImg2NumExample_console_c PRIVATE
 )
 
 # Link against the C bindings
-target_link_libraries(CImg2NumExample_console_c PRIVATE CImg2Num m)
+target_link_libraries(CImg2NumExample_console_c PRIVATE CImg2Num)

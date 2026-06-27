@@ -4,6 +4,10 @@ on:
   push:
     branches: [main, dev]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 jobs:
   release-please:
     runs-on: ubuntu-latest
@@ -78,12 +82,14 @@ jobs:
         shell: bash
         run: |
           if [[ "${{ matrix.component }}" == "c" ]]; then
-            echo "created=${{ needs.release-please.outputs.c_created }}"   >> $GITHUB_OUTPUT
-            echo "tag=${{ needs.release-please.outputs.c_tag }}"           >> $GITHUB_OUTPUT
+            echo "IMG2NUM_BUILD_C_VAL=ON"                                               >> $GITHUB_OUTPUT
+            echo "created=${{ needs.release-please.outputs.c_created }}"                >> $GITHUB_OUTPUT
+            echo "tag=${{ needs.release-please.outputs.c_tag }}"                        >> $GITHUB_OUTPUT
             echo "version=${{ needs.release-please.outputs.c_version || '0.0.0-dev' }}" >> $GITHUB_OUTPUT
           else
-            echo "created=${{ needs.release-please.outputs.cpp_created }}" >> $GITHUB_OUTPUT
-            echo "tag=${{ needs.release-please.outputs.cpp_tag }}"         >> $GITHUB_OUTPUT
+            echo "IMG2NUM_BUILD_C_VAL=OFF"                                                >> $GITHUB_OUTPUT
+            echo "created=${{ needs.release-please.outputs.cpp_created }}"                >> $GITHUB_OUTPUT
+            echo "tag=${{ needs.release-please.outputs.cpp_tag }}"                        >> $GITHUB_OUTPUT
             echo "version=${{ needs.release-please.outputs.cpp_version || '0.0.0-dev' }}" >> $GITHUB_OUTPUT
           fi
 
@@ -96,7 +102,14 @@ jobs:
 
       - name: Configure
         if: ${{ steps.component.outputs.created == 'true' || needs.release-please.outputs.is_dry_run == 'true' }}
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/install
+        shell: bash
+        run: |
+          cmake -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DIMG2NUM_BUILD_C=${{ steps.component.outputs.IMG2NUM_BUILD_C_VAL }} \
+            -DIMG2NUM_BUILD_PYTHON=OFF \
+            -DIMG2NUM_BUILD_EXAMPLES=OFF \
+            -DIMG2NUM_DEBUG_CACHE_VARIABLES_DUMP=ON
 
       - name: Build
         if: ${{ steps.component.outputs.created == 'true' || needs.release-please.outputs.is_dry_run == 'true' }}
@@ -104,28 +117,29 @@ jobs:
 
       - name: Install
         if: ${{ steps.component.outputs.created == 'true' || needs.release-please.outputs.is_dry_run == 'true' }}
-        run: cmake --install build --config Release
+        shell: bash
+        run: cmake --install build --config Release --prefix install
 
       - name: Package (Linux/macOS)
-        if: ${{ steps.component.outputs.created == 'true' && runner.os != 'Windows' }}
+        if: ${{ (steps.component.outputs.created == 'true' || needs.release-please.outputs.is_dry_run == 'true') && runner.os != 'Windows' }}
         run: |
           ARCHIVE="img2num-${{ matrix.component }}-v${{ steps.component.outputs.version }}-${{ matrix.plat }}.tar.gz"
           tar -czf "$ARCHIVE" -C install .
           echo "ARCHIVE=$ARCHIVE" >> $GITHUB_ENV
 
       - name: Package (Windows)
-        if: ${{ steps.component.outputs.created == 'true' && runner.os == 'Windows' }}
+        if: ${{ (steps.component.outputs.created == 'true' || needs.release-please.outputs.is_dry_run == 'true') && runner.os == 'Windows' }}
         shell: pwsh
         run: |
           $archive = "img2num-${{ matrix.component }}-v${{ steps.component.outputs.version }}-${{ matrix.plat }}.zip"
-          Compress-Archive -Path install\* -DestinationPath $archive
+          Compress-Archive -Path "${{ github.workspace }}\install\*" -DestinationPath $archive
           "ARCHIVE=$archive" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       # Draft release when not main — real release on main. Draft is not public and can be deleted.
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         if: ${{ steps.component.outputs.created == 'true' || needs.release-please.outputs.is_dry_run == 'true' }}
         with:
-          tag_name: ${{ steps.component.outputs.tag }}
+          tag_name: ${{ needs.release-please.outputs.is_dry_run == 'true' && format('{0}@{1}-{2}', github.ref_name, github.sha, matrix.component) || steps.component.outputs.tag }}
           files: ${{ env.ARCHIVE }}
           draft: ${{ needs.release-please.outputs.is_dry_run == 'true' }}
 
@@ -147,35 +161,59 @@ jobs:
 
       - uses: mymindstorm/setup-emsdk@1f4f5866c1f8745a10fcb64c4d7a0eb7a8daed9d
 
+      - uses: actions/setup-node@670825a89dc0abd596e7a3abd0f5e3f6e5faf37c
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
+
+      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271
+        with:
+          version: 11.4.0
+
+      - name: Install dependencies
+        run: pnpm install
+
       - name: Build WASM
         run: |
-          emcmake cmake -B build-wasm -DCMAKE_BUILD_TYPE=Release .
+          emcmake cmake -B build-wasm \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DIMG2NUM_BUILD_C=ON \
+            -DIMG2NUM_BUILD_PYTHON=OFF \
+            -DIMG2NUM_BUILD_EXAMPLES=OFF \
+            -DIMG2NUM_DEBUG_CACHE_VARIABLES_DUMP=ON \
+            .
           cmake --build build-wasm
+
+      - name: Build JS
+        run: pnpm build
+        working-directory: packages/js
+
+      - name: Package
+        run: |
           release_version=${{ needs.release-please.outputs.js_version }}
-          tar -czf img2num-v${release_version}.tar.gz \
-             build-wasm \
-             packages/js/index.js \
-             packages/js/safeWasmWrappers.js \
-             packages/js/wasmClient.js \
-             packages/js/wasmWorker.js \
-             packages/js/imageToUint8ClampedArray.js
+          tar -czf           /tmp/img2num-js-v${release_version}.tar.gz packages/js/dist
+          tar -czf /tmp/img2num-js-wasm-only-v${release_version}.tar.gz packages/js/build-wasm
 
       # Draft release when not main — same as C/C++ above
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         with:
-          tag_name: ${{ needs.release-please.outputs.js_tag }}
-          files: img2num-v${{ needs.release-please.outputs.js_version }}.tar.gz
+          tag_name: ${{ needs.release-please.outputs.is_dry_run == 'true' && format('{0}@{1}-js', github.ref_name, github.sha) || needs.release-please.outputs.js_tag }}
+          files: |
+            /tmp/img2num-js-v${{ needs.release-please.outputs.js_version }}.tar.gz
+            /tmp/img2num-js-wasm-only-v${{ needs.release-please.outputs.js_version }}.tar.gz
           draft: ${{ needs.release-please.outputs.is_dry_run == 'true' }}
-
-      - uses: actions/setup-node@670825a89dc0abd596e7a3abd0f5e3f6e5faf37c
-        with:
-          node-version: '20'
-          registry-url: 'https://registry.npmjs.org'
 
       # --dry-run exercises the full publish pipeline (auth, package validation,
       # tarball construction) without actually pushing to the registry.
       - name: Publish to npm
-        run: npm publish --access public --provenance ${{ needs.release-please.outputs.is_dry_run == 'true' && '--dry-run' || '' }}
+        run: |
+          DRY_RUN_FLAG=${{ needs.release-please.outputs.is_dry_run == 'true' && '--dry-run' || '' }}
+          pnpm publish \
+            --access public \
+            --provenance \
+            --no-git-checks \
+            $DRY_RUN_FLAG
         working-directory: packages/js
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -265,7 +303,7 @@ jobs:
       # Draft release when not main — same as other jobs
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         with:
-          tag_name: ${{ needs.release-please.outputs.py_tag }}
+          tag_name: ${{ needs.release-please.outputs.is_dry_run == 'true' && format('{0}@{1}-py', github.ref_name, github.sha) || needs.release-please.outputs.py_tag }}
           files: wheelhouse/*
           draft: ${{ needs.release-please.outputs.is_dry_run == 'true' }}
 

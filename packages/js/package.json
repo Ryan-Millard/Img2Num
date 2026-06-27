@@ -1,6 +1,6 @@
 {
   "name": "img2num",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Img2Num is a raster vectorization library - it converts images to SVGs",
   "publishConfig": {
     "access": "public"
@@ -23,21 +23,28 @@
   "license": "MIT",
   "author": "Ryan-Millard",
   "type": "module",
-  "main": "./index.js",
+  "main": "./dist/browser/img2num.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:browser": "cross-env TARGET=browser vite build",
+    "build:node": "cross-env TARGET=node vite build",
+    "build": "pnpm build:browser && pnpm build:node"
   },
   "engines": {
     "node": ">=14"
   },
-  "files": [
-    "build-wasm/index.js",
-    "build-wasm/index.wasm",
-    "index.js",
-    "safeWasmWrappers.js",
-    "wasmClient.js",
-    "wasmWorker.js",
-    "imageToUint8ClampedArray.js"
-  ],
-  "dependencies": {}
+  "exports": {
+    ".": {
+      "node": "./dist/node/img2num.js",
+      "browser": "./dist/browser/img2num.js",
+      "import": "./dist/browser/img2num.js",
+      "default": "./dist/browser/img2num.js"
+    }
+  },
+  "optionalDependencies": {
+    "webgpu": "^0.4.0"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0",
+    "vite": "^8.0.14"
+  }
 }

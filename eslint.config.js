@@ -15,6 +15,7 @@ export default defineConfig([
 
     "scripts/img2num-dev-scripts/node_modules",
 
+    "packages/js/dist",
     "packages/js/build-wasm",
     "packages/js/node_modules",
 

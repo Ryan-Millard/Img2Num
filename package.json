@@ -2,7 +2,7 @@
   "name": "img2num-workspace",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@10.29.1",
+  "packageManager": "pnpm@11.4.0",
   "engines": {
     "pnpm": ">=10"
   },

@@ -16,10 +16,10 @@
  *              Each function handles memory management and exposes a JavaScript-friendly API.
  */
 
-import { initWasmWorker, callWasm } from "./wasmClient.js";
+import { callWasm, initWasmWorker } from "./wasmClient.js";
 
 // Ensure worker is ready as soon as this module is imported
-initWasmWorker();
+await initWasmWorker(); //it's an async function as of #433
 
 /**
  * @summary Apply a Gaussian blur to an image using FFT in WASM.

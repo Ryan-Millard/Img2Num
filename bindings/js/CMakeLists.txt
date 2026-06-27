@@ -22,7 +22,7 @@ target_include_directories(img2num_wasm PRIVATE
 set(COMMON_FLAGS
     "SHELL:-sMODULARIZE=1"
     "SHELL:-sEXPORT_ES6=1"
-    "SHELL:-sENVIRONMENT=web,worker"
+    "SHELL:-sENVIRONMENT=web,worker,node"
     "SHELL:-sEXPORTED_FUNCTIONS=['_malloc','_free']"
     "SHELL:-sEXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPU8','HEAP32','UTF8ToString','stringToUTF8','lengthBytesUTF8']"
     "SHELL:-sINITIAL_MEMORY=2GB"
