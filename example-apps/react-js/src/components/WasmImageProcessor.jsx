@@ -4,6 +4,7 @@ import { imageToUint8ClampedArray, bilateralFilter, kmeans, findContours } from 
 import GlassCard from "@components/GlassCard";
 import styles from "./WasmImageProcessor.module.css";
 import { useNavigate } from "react-router-dom";
+import { setEditorHandoff } from "@utils/editorHandoff";
 import LoadingHedgehog from "@components/LoadingHedgehog";
 import Tooltip from "@components/Tooltip";
 import ConfigPanel from "@components/ConfigPanel";
@@ -115,20 +116,23 @@ const WasmImageProcessor = () => {
         min_thickness: minThickness,
       });
 
-      navigate("/editor", {
-        state: {
-          svg,
-          fileData,
-          initialSettings: {
-            numColors,
-            minArea,
-            minThickness,
-            sigmaSpatial,
-            sigmaRange,
-            colorSpace,
-          },
+      // Hand the heavy payload (SVG + the original pixel buffer) to the editor
+      // via an in-memory store rather than router/history state, which would
+      // serialize tens of MB into the History API and OOM-kill the tab.
+      setEditorHandoff({
+        svg,
+        fileData,
+        initialSettings: {
+          numColors,
+          minArea,
+          minThickness,
+          sigmaSpatial,
+          sigmaRange,
+          colorSpace,
         },
       });
+
+      navigate("/editor");
     } catch (err) {
       console.error(err);
     } finally {
