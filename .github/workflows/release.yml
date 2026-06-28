@@ -242,21 +242,21 @@ jobs:
           submodules: true
 
       - name: Sync released version into root pyproject.toml
-          shell: bash
-          run: |
-            VERSION="${{ needs.release-please.outputs.py_version }}"
-            VERSION="${VERSION:-0.0.0}"   # dry-run on non-main has no version
-            python << 'EOF'
-            import os, re, pathlib
-            v = os.environ["VERSION"]
-            p = pathlib.Path("pyproject.toml")
-            s = p.read_text()
-            s = re.sub(r'^version = ".*"(\s*#\s*x-release-please-version)',
-                       f'version = "{v}"\\1', s, flags=re.M)
-            p.write_text(s)
-            EOF
-          env:
-            VERSION: ${{ needs.release-please.outputs.py_version }}
+        shell: bash
+        run: |
+          VERSION="${{ needs.release-please.outputs.py_version }}"
+          VERSION="${VERSION:-0.0.0}"   # dry-run on non-main has no version
+          python << 'EOF'
+          import os, re, pathlib
+          v = os.environ["VERSION"]
+          p = pathlib.Path("pyproject.toml")
+          s = p.read_text()
+          s = re.sub(r'^version = ".*"(\s*#\s*x-release-please-version)',
+                     f'version = "{v}"\\1', s, flags=re.M)
+          p.write_text(s)
+          EOF
+        env:
+          VERSION: ${{ needs.release-please.outputs.py_version }}
 
       - uses: pypa/cibuildwheel@a78478edc4b83cce46f23e49e649d3e4b6437df3
         with:
@@ -291,21 +291,21 @@ jobs:
           python-version: "3.12"
 
       - name: Sync released version into root pyproject.toml
-          shell: bash
-          run: |
-            VERSION="${{ needs.release-please.outputs.py_version }}"
-            VERSION="${VERSION:-0.0.0}"   # dry-run on non-main has no version
-            python << 'EOF'
-            import os, re, pathlib
-            v = os.environ["VERSION"]
-            p = pathlib.Path("pyproject.toml")
-            s = p.read_text()
-            s = re.sub(r'^version = ".*"(\s*#\s*x-release-please-version)',
-                       f'version = "{v}"\\1', s, flags=re.M)
-            p.write_text(s)
-            EOF
-          env:
-            VERSION: ${{ needs.release-please.outputs.py_version }}
+        shell: bash
+        run: |
+          VERSION="${{ needs.release-please.outputs.py_version }}"
+          VERSION="${VERSION:-0.0.0}"   # dry-run on non-main has no version
+          python << 'EOF'
+          import os, re, pathlib
+          v = os.environ["VERSION"]
+          p = pathlib.Path("pyproject.toml")
+          s = p.read_text()
+          s = re.sub(r'^version = ".*"(\s*#\s*x-release-please-version)',
+                     f'version = "{v}"\\1', s, flags=re.M)
+          p.write_text(s)
+          EOF
+        env:
+          VERSION: ${{ needs.release-please.outputs.py_version }}
 
       - name: Build sdist
         run: |
