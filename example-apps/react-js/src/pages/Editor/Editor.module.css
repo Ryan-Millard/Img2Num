@@ -15,7 +15,7 @@
   background: transparent;
 }
 /* Single <canvas> that renders every region — replaces thousands of SVG DOM
-   nodes so large/detailed images stay smooth instead of choking the browser. */
+  nodes so large/detailed images stay smooth instead of choking the browser. */
 .canvas {
   display: block;
   width: 100%;
