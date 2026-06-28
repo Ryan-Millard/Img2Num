@@ -50,7 +50,10 @@ function parseSvg(svgString) {
     const a = svgTag[1];
     const vbAttr = attr(a, "viewBox");
     if (vbAttr) {
-      const [x, y, w, h] = vbAttr.trim().split(/[\s,]+/).map(Number);
+      const [x, y, w, h] = vbAttr
+        .trim()
+        .split(/[\s,]+/)
+        .map(Number);
       vb = { x, y, w, h };
     } else {
       vb = { x: 0, y: 0, w: parseFloat(attr(a, "width")) || 0, h: parseFloat(attr(a, "height")) || 0 };
@@ -522,16 +525,7 @@ const SvgCanvas = forwardRef(function SvgCanvas({ svg, isColorMode, onHistoryCha
     };
   }, []);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className={styles.canvas}
-      onPointerDown={onPointerDown}
-      onPointerUp={onPointerUp}
-      onPointerCancel={onPointerUp}
-      data-testid="svg-canvas"
-    />
-  );
+  return <canvas ref={canvasRef} className={styles.canvas} onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={onPointerUp} data-testid="svg-canvas" />;
 });
 
 export default SvgCanvas;
