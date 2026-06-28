@@ -47,8 +47,7 @@
       "bump-minor-pre-major": true,
       "component": "packages-py",
       "dependencies": ["core"],
-      "package-name": "img2num-py",
-      "extra-files": [{ "type": "toml", "path": "pyproject.toml", "jsonpath": "$.project.version" }]
+      "package-name": "img2num-py"
     }
   }
 }
