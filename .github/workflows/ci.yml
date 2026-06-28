@@ -125,4 +125,4 @@ jobs:
 
   release-please:
     name: Release please trigger
-    user: ./.github/workflows/release.yml
+    uses: ./.github/workflows/release.yml
