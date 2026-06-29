@@ -115,13 +115,12 @@ const SvgCanvas = forwardRef(function SvgCanvas({ svg, isColorMode, onHistoryCha
   const fittedRef = useRef(false);
 
   const rafRef = useRef(null);
-  const settleRef = useRef(null);
   const colorModeRef = useRef(isColorMode);
   colorModeRef.current = isColorMode;
 
   // --- Rendering ----------------------------------------------------------
 
-  const draw = useCallback((quality) => {
+  const draw = useCallback(() => {
     const canvas = canvasRef.current;
     const ctx = ctxRef.current;
     if (!canvas || !ctx) return;
@@ -148,7 +147,6 @@ const SvgCanvas = forwardRef(function SvgCanvas({ svg, isColorMode, onHistoryCha
 
     const regions = sceneRef.current.regions;
     const revealed = revealedRef.current;
-    const drawStroke = quality !== "fast";
 
     for (let i = 0; i < regions.length; i++) {
       const r = regions[i];
@@ -158,30 +156,20 @@ const SvgCanvas = forwardRef(function SvgCanvas({ svg, isColorMode, onHistoryCha
       }
       ctx.fillStyle = colorAll || revealed.has(i) ? r.fill : UNREVEALED_FILL;
       ctx.fill(r.path, r.fillRule);
-      if (drawStroke) ctx.stroke(r.path);
+      ctx.stroke(r.path);
     }
   }, []);
 
-  const renderNow = useCallback(
-    (quality) => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      rafRef.current = requestAnimationFrame(() => {
-        rafRef.current = null;
-        draw(quality);
-      });
-    },
-    [draw],
-  );
+  const renderNow = useCallback(() => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null;
+      draw();
+    });
+  }, [draw]);
 
-  // During pan/zoom we render strokes-off for speed, then re-render with full
-  // crisp outlines once interaction settles.
   const renderInteractive = useCallback(() => {
-    renderNow("fast");
-    if (settleRef.current) clearTimeout(settleRef.current);
-    settleRef.current = setTimeout(() => {
-      settleRef.current = null;
-      renderNow("full");
-    }, 120);
+    renderNow();
   }, [renderNow]);
 
   // --- Sizing & fit -------------------------------------------------------
@@ -252,13 +240,13 @@ const SvgCanvas = forwardRef(function SvgCanvas({ svg, isColorMode, onHistoryCha
 
     if (resizeBackingStore() || true) {
       fitToView();
-      renderNow("full");
+      renderNow();
     }
   }, [svg, emitHistory, fitToView, renderNow, resizeBackingStore]);
 
   // Re-render when the color/preview mode flips.
   useEffect(() => {
-    renderNow("full");
+    renderNow();
   }, [isColorMode, renderNow]);
 
   // --- Context + resize observer ------------------------------------------
@@ -271,7 +259,7 @@ const SvgCanvas = forwardRef(function SvgCanvas({ svg, isColorMode, onHistoryCha
     const onResize = () => {
       resizeBackingStore();
       if (!fittedRef.current) fitToView();
-      renderNow("full");
+      renderNow();
     };
 
     let observer;
@@ -426,7 +414,7 @@ const SvgCanvas = forwardRef(function SvgCanvas({ svg, isColorMode, onHistoryCha
 
       revealedRef.current.add(idx);
       pushHistory();
-      renderNow("full");
+      renderNow();
     },
     [hitTest, pushHistory, renderNow],
   );
@@ -497,21 +485,21 @@ const SvgCanvas = forwardRef(function SvgCanvas({ svg, isColorMode, onHistoryCha
         historyIndexRef.current -= 1;
         applySnapshot(historyRef.current[historyIndexRef.current]);
         emitHistory();
-        renderNow("full");
+        renderNow();
       },
       redo() {
         if (historyIndexRef.current >= historyRef.current.length - 1) return;
         historyIndexRef.current += 1;
         applySnapshot(historyRef.current[historyIndexRef.current]);
         emitHistory();
-        renderNow("full");
+        renderNow();
       },
       reset() {
         revealedRef.current = new Set();
         historyRef.current = [[]];
         historyIndexRef.current = 0;
         emitHistory();
-        renderNow("full");
+        renderNow();
       },
       getContainer: () => canvasRef.current,
     }),
@@ -521,11 +509,12 @@ const SvgCanvas = forwardRef(function SvgCanvas({ svg, isColorMode, onHistoryCha
   useEffect(() => {
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      if (settleRef.current) clearTimeout(settleRef.current);
     };
   }, []);
 
-  return <canvas ref={canvasRef} className={styles.canvas} onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={onPointerUp} data-testid="svg-canvas" />;
+  const canvasClass = [styles.canvas, !isColorMode && styles.grabCursor].filter(Boolean).join(" ");
+
+  return <canvas ref={canvasRef} className={canvasClass} onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={onPointerUp} data-testid="svg-canvas" />;
 });
 
 export default SvgCanvas;
