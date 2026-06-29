@@ -3,9 +3,6 @@ name: Release (release-please, multi-language assets)
 on:
   push:
     branches: [main, dev]
-  pull_request:
-      branches:
-          [dev]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -241,27 +238,6 @@ jobs:
           ref: ${{ needs.release-please.outputs.is_dry_run == 'true' && github.sha || needs.release-please.outputs.py_tag }}
           submodules: true
 
-      - name: Sync released version into root pyproject.toml
-        shell: bash
-        run: |
-          python << 'EOF'
-          import os, re, pathlib
-          v = os.environ.get("VERSION", "").strip()
-          if not v:
-              # dry-run / non-main: release-please emits no version output,
-              # so fall back to the release-please-tracked file.
-              src = pathlib.Path("packages/py/pyproject.toml").read_text()
-              m = re.search(r'^version = "([^"]+)"', src, flags=re.M)
-              v = m.group(1) if m else "0.0.0"
-          p = pathlib.Path("pyproject.toml")
-          s = p.read_text()
-          s = re.sub(r'^version = ".*"(\s*#\s*x-release-please-version)',
-                     f'version = "{v}"\\1', s, flags=re.M)
-          p.write_text(s)
-          EOF
-        env:
-          VERSION: ${{ needs.release-please.outputs.py_version }}
-
       - uses: pypa/cibuildwheel@a78478edc4b83cce46f23e49e649d3e4b6437df3
         with:
           package-dir: .
@@ -293,27 +269,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
-      - name: Sync released version into root pyproject.toml
-        shell: bash
-        run: |
-          python << 'EOF'
-          import os, re, pathlib
-          v = os.environ.get("VERSION", "").strip()
-          if not v:
-              # dry-run / non-main: release-please emits no version output,
-              # so fall back to the release-please-tracked file.
-              src = pathlib.Path("packages/py/pyproject.toml").read_text()
-              m = re.search(r'^version = "([^"]+)"', src, flags=re.M)
-              v = m.group(1) if m else "0.0.0"
-          p = pathlib.Path("pyproject.toml")
-          s = p.read_text()
-          s = re.sub(r'^version = ".*"(\s*#\s*x-release-please-version)',
-                     f'version = "{v}"\\1', s, flags=re.M)
-          p.write_text(s)
-          EOF
-        env:
-          VERSION: ${{ needs.release-please.outputs.py_version }}
 
       - name: Build sdist
         run: |
