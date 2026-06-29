@@ -1,0 +1,48 @@
+name: Test Python wheel version
+
+on:
+  pull_request:
+    branches: [dev]
+
+jobs:
+  test-wheel-version:
+    name: Verify wheel version matches packages/py/pyproject.toml
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/ryan-millard/img2num-dev:dev
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          submodules: true
+
+      - name: Get expected version from packages/py/pyproject.toml
+        id: expected
+        run: |
+          VERSION=$(python3 -c "
+          import re, pathlib
+          text = pathlib.Path('packages/py/pyproject.toml').read_text()
+          m = re.search(r'^version = \"(?P<value>[^\"]+)\"', text, re.MULTILINE)
+          print(m.group('value') if m else 'NO_MATCH')
+          ")
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Expected version: ${VERSION}"
+
+      - name: Build wheel
+        run: |
+          uv pip install scikit-build-core pybind11 "numpy>=2.0" build
+          python -m build --wheel --no-isolation --outdir /tmp/test-wheel .
+
+      - name: Check wheel version
+        run: |
+          EXPECTED="${{ steps.expected.outputs.version }}"
+          ACTUAL=$(unzip -p /tmp/test-wheel/img2num-*.whl '*/METADATA' | grep '^Version:' | cut -d' ' -f2 | tr -d '[:space:]')
+
+          echo "Expected : ${EXPECTED}"
+          echo "Actual   : ${ACTUAL}"
+
+          if [[ "$ACTUAL" == "$EXPECTED" ]]; then
+            echo "✅ Version is correct."
+          else
+            echo "❌ Version mismatch! Wheel says ${ACTUAL} but packages/py/pyproject.toml says ${EXPECTED}."
+            exit 1
+          fi
