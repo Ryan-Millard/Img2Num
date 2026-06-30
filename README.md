@@ -27,7 +27,7 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 
 <table>
 <tr>
-<td valign="top">
+<td valign="center">
 
 - [Before vs After](#before-vs-after)
 - [Why Img2Num?](#why-img2num)
@@ -37,7 +37,7 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 - [Can't find something?](#cant-find-something)
 
 </td>
-<td valign="top">
+<td valign="center">
 
 - [Quick Start](#quick-start)
   - [C / C++](#c--c)
