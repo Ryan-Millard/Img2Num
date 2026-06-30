@@ -23,7 +23,7 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 [![Docs](https://img.shields.io/badge/docs-full-blue?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/docs/next/)
 [![Changelog](https://img.shields.io/badge/changelog-full-orange?logo=git&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/changelog/)
 
-### Before vs After
+## Before vs After
 
 | Input (Original Raster) | Output (SVG) |
 |----------|------------------|
