@@ -1,0 +1,53 @@
+\chapter{Img2\+Num Python Bindings}
+\hypertarget{index}{}\label{index}\index{Img2Num Python Bindings@{Img2Num Python Bindings}}
+\hypertarget{index_intro_sec}{}\doxysection{\texorpdfstring{Introduction}{Introduction}}\label{index_intro_sec}
+The {\bfseries{Img2\+Num Python Bindings}} provide a Python interface to the core Img2\+Num image processing library via \href{https://github.com/pybind/pybind11}{\texttt{ pybind11}} (also see \href{https://pybind11.readthedocs.io/en/stable/}{\texttt{ their docs}}). These bindings wrap the underlying C++ functionality, exposing image processing operations such as filtering, clustering, thresholding, and SVG conversion to Python code.
+
+All functions operate on {\ttfamily numpy.\+ndarray} buffers and return new image data, making them easy to integrate into Python-\/based image processing pipelines.\hypertarget{index_features_sec}{}\doxysection{\texorpdfstring{Key Features}{Key Features}}\label{index_features_sec}
+The Python bindings expose the following core capabilities\+:
+\begin{DoxyItemize}
+\item {\bfseries{FFT-\/based Gaussian blur}} — Fast frequency-\/domain blurring
+\item {\bfseries{Image inversion}} — Invert pixel values
+\item {\bfseries{Thresholding}} — Standard and black-\/thresholding operations
+\item {\bfseries{K-\/means clustering}} — Pixel clustering for color quantization
+\item {\bfseries{Bilateral filtering}} — Edge-\/preserving smoothing
+\item {\bfseries{Label-\/to-\/\+SVG conversion}} — Convert labeled images to SVG strings
+\item {\bfseries{Image-\/to-\/\+SVG conversion}} — Full image vectorization with configurable parameters
+\item {\bfseries{Image\+To\+Svg\+Config}} — Python-\/accessible configuration for SVG generation
+\end{DoxyItemize}\hypertarget{index_building_sec}{}\doxysection{\texorpdfstring{Building the Python Bindings}{Building the Python Bindings}}\label{index_building_sec}
+The Python bindings are built using CMake from the project root\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cmake\ -\/B\ build\ .}
+\DoxyCodeLine{cmake\ -\/-\/build\ build}
+
+\end{DoxyCode}
+\hypertarget{index_install_sec}{}\doxysection{\texorpdfstring{Installation}{Installation}}\label{index_install_sec}
+Install the bindings to your system\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cmake\ -\/-\/install\ build}
+
+\end{DoxyCode}
+
+
+The compiled {\ttfamily img2num} module will be available for import in Python\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{import}\ img2num}
+
+\end{DoxyCode}
+\hypertarget{index_usage_sec}{}\doxysection{\texorpdfstring{Usage Example}{Usage Example}}\label{index_usage_sec}
+
+\begin{DoxyItemize}
+\item To see the Pybind11 bindings directly used, see \href{https://github.com/Ryan-Millard/Img2Num/blob/main/packages/py/img2num/api.py}{\texttt{ {\ttfamily packages/py/img2num/api.\+py}}}.
+\item To see the usage in Python, see \href{https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps/console-py}{\texttt{ {\ttfamily example-\/apps/console-\/py}}}.
+\end{DoxyItemize}\hypertarget{index_api_sec}{}\doxysection{\texorpdfstring{API Reference}{API Reference}}\label{index_api_sec}
+Browse the detailed function and class documentation\+:
+\begin{DoxyItemize}
+\item \doxylink{group__img2num__functions}{Core Image Processing Functions}
+\item \doxylink{group__img2num__classes}{Configuration Classes} 
+\end{DoxyItemize}
