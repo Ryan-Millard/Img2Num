@@ -10,6 +10,7 @@ Cross-platform library for converting natural raster images (like PNGs and JPEGs
   <a href="https://www.codetriage.com/Ryan-Millard/img2num"><img src="https://www.codetriage.com/ryan-millard/img2num/badges/users.svg" alt="Code helpers" /></a>
   <a href="https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License" /></a>
 </p>
+
 ## Supported Runtimes
 
 - **Browsers** — via Web Workers
@@ -123,15 +124,12 @@ Try the [live demo (`React example`)](https://ryan-millard.github.io/Img2Num/).
 
 ---
 
-
 <div align="center">
-  <a href="https://ryan-millard.github.io/Img2Num/info/docs/">Documentation</a> ·
-  <a href="https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/CHANGELOG.md">Changelog</a> ·
-  <a href="https://github.com/Ryan-Millard/Img2Num">GitHub</a>
+  <a href="https://ryan-millard.github.io/Img2Num/info/docs/">Documentation</a> · <a href="https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/CHANGELOG.md">Changelog</a> · <a href="https://github.com/Ryan-Millard/Img2Num">GitHub</a>
 
-  <br /><br />
+  <br><br>
 
   <a href="https://github.com/Ryan-Millard/Img2Num/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=Ryan-Millard/Img2Num" alt="Contributors" />
+    <img src="https://contrib.rocks/image?repo=Ryan-Millard/Img2Num" alt="Contributors">
   </a>
 </div>
