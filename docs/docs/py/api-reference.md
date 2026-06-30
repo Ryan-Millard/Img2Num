@@ -6,11 +6,21 @@ sidebar_position: 1
 
 # Python API Reference
 
+:::danger[This Page Was Not Auto-Generated]
+
+These docs have not been automatically generated from doc strings, so they are likely
+to drift slightly from the actual API.
+
+[#477](https://github.com/Ryan-Millard/Img2Num/issues/477) tracks this issue.
+
+:::
+
 All functions are exposed via the `img2num` Python package. They accept NumPy
 arrays and **automatically inject `width`/`height` from the array shape** — you
 do not pass these yourself.
 
-:::important Input images must be RGBA
+:::important[Input images must be RGBA]
+
 The core library operates on 4-channel RGBA buffers. Convert your image before
 calling any function, e.g. with OpenCV:
 

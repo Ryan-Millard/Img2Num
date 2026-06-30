@@ -31,6 +31,14 @@ Key files:
 
 ## WASM Memory Handling
 
+:::important[Internally Managed]
+
+This section covers a topic that is internally managed by Img2Num.
+
+This is the interface between C++ and JavaScript.
+
+:::
+
 The worker passes typed arrays between JavaScript and WASM memory via:
 
 1. **Allocation** — `_malloc` in WASM for the buffer size.

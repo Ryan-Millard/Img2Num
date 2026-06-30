@@ -48,32 +48,11 @@
  *
  * \section usage_sec Usage Example
  *
- * \code{.py}
- * import numpy as np
- * import img2num
- *
- * # Load image as RGBA uint8 numpy array (you may need opencv for the RGBA conversion)
- * image = cv2.cvtColor(cv2.imread([...]), cv2.COLOR_BGR2RGBA)
- *
- * # Apply Gaussian blur
- * blurred = img2num.gaussian_blur_fft(image, sigma=2.0)
- *
- * # Invert colors
- * inverted = img2num.invert_image(image)
- *
- * # Threshold
- * thresholded = img2num.threshold_image(image, num_thresholds=4)
- *
- * # K-means clustering
- * clustered_data, labels = img2num.kmeans(image, k=8, max_iter=50)
- *
- * # Bilateral filtering
- * filtered = img2num.bilateral_filter(image, sigma_spatial=3.0, sigma_range=50.0)
- *
- * # SVG conversion
- * config = img2num.ImageToSvgConfig()
- * svg_str = img2num.image_to_svg(image, config)
- * \endcode
+ * - To see the Pybind11 bindings directly used, see
+ * [`packages/py/api.py](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/py/img2num/api.py).
+
+ * - To see the usage in Python, see
+ * [`example-apps/console-py](https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps/console-py).
  *
  * \section api_sec API Reference
  *

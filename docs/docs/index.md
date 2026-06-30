@@ -25,12 +25,12 @@ Img2Num is a lightweight, high-performance library for converting raster images 
 
 ## API Bindings
 
-| Binding               | Status        | Docs                                                      |
-| :-------------------- | :------------ | :-------------------------------------------------------- |
-| **JavaScript (WASM)** | ✅ Production | [JS API Reference](/docs/js/js-api-reference)             |
-| **C++**               | ✅ Production | [C++ API Reference](/docs/cpp/cpp-api-reference)          |
-| **C**                 | ✅ Production | [C API Reference](/docs/c/docs/c-api-reference)           |
-| **Python**            | 🟡 Early      | [Python API Reference](/docs/python/python-api-reference) |
+| Language              | Status        | Docs                                                      |
+| --------------------: | :------------ | :-------------------------------------------------------- |
+| <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" width="30" /></a> | [![Status](https://img.shields.io/badge/status-active_development-orange?logo=github)](https://github.com/Ryan-Millard/Img2Num/tree/main/core) | [JS API Reference](/docs/js/js-api-reference)             |
+| <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=cpp"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" width="30" /></a> | [![Status](https://img.shields.io/badge/status-active_development-orange?logo=github)](https://github.com/Ryan-Millard/Img2Num/tree/main/bindings/c) | [C++ API Reference](/docs/cpp/cpp-api-reference)          |
+| <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-js"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="30" /></a> | [![Status](https://img.shields.io/badge/status-active_development-orange?logo=github)](https://github.com/Ryan-Millard/Img2Num/tree/main/packages/js) | [C API Reference](/docs/c/docs/c-api-reference)           |
+| <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" width="30" /></a> | [![Status](https://img.shields.io/badge/status-active_development-orange?logo=github)](https://github.com/Ryan-Millard/Img2Num/tree/main/packages/js) | [Python API Reference](/docs/python/python-api-reference) |
 
 ## Changelog
 
@@ -40,16 +40,16 @@ We version our language bindings/packages separately. To see all of our changelo
 
 ### Package Changelogs
 
-- [JavaScript (WASM)](/changelog/js)
-- [C++](/changelog/cpp)
 - [C](/changelog/c)
+- [C++](/changelog/cpp)
+- [JavaScript (WASM)](/changelog/js)
 - [Python](/changelog/py)
 
 ---
 
 We hope you enjoy using **Img2Num**!
-For issues or contributions, see our [contributors guide](/docs/contributing) or visit our
-[GitHub repository](https://github.com/Ryan-Millard/Img2Num/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22).
+For issues or contributions, see our [contributors guide](/docs/contributing) as well as our
+[Good First Issues List](https://github.com/Ryan-Millard/Img2Num/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22).
 
 :::note
 If you spot something wrong in the documentation or elsewhere, please help the community by opening an issue for it!

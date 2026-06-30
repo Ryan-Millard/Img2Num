@@ -13,39 +13,20 @@ involved.
 
 ## Requirements
 
-- Python ≥ 3.7
-- NumPy
+- Python>=3.10
+- NumPy>=1.23.5
 
 ## Installation
 
-:::warning[Not yet on PyPI]
-The Python package has not had its first release yet, so `pip install img2num`
-is not available. Build the wheel from source instead.
-:::
-
-Build the wheel with the [Justfile](/docs/contributing/quickstart) (inside the Docker dev
-environment):
-
-```bash
-just build py
-```
-
-This produces a wheel in `dist/` that you can install into your environment:
-
-```bash
-pip install dist/img2num-*.whl
-```
-
-Once the first release is published, installation will simply be:
-
-```bash
+```bash title="Install Using pip"
 pip install img2num
 ```
 
 ## Usage
 
-Input images must be **RGBA** (4 channels). `width`/`height` are inferred from
-the array shape automatically — you don't pass them.
+Input images must be **RGBA** (4 channels).
+
+> `width` and `height` are inferred from the array shape automatically - you don't pass them.
 
 ```python
 import cv2
@@ -53,7 +34,7 @@ from img2num import image_to_svg
 
 # Load and convert to RGBA (img2num requires 4 channels)
 img = cv2.imread("input.png")
-img = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)  # VERY IMPORTANT
+img = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA) # VERY IMPORTANT: Must be RGBA format
 
 svg = image_to_svg(img)
 print(svg)

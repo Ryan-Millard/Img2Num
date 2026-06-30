@@ -3,6 +3,8 @@
 
 import CodeBlock from "@theme/CodeBlock";
 import { useDoc } from "@docusaurus/plugin-content-docs/client";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 ## Installing from Source Code
 
@@ -15,6 +17,14 @@ git submodule add https://github.com/Ryan-Millard/Img2Num.git Img2Num
 git submodule update --init --recursive
 ```
 
+:::danger[Not Updating Submodules]
+
+Img2Num relies on Google's [Dawn WebGPU](https://github.com/google/dawn) implementation to speed
+up the library. If you do not run `git submodule update --init --recursive`, the library may
+fail to compile.
+
+:::
+
 #### Update your CMakeLists.txt
 
 <CodeBlock language="cmake" title="Add Img2Num as a subdirectory and link the library">
@@ -24,9 +34,24 @@ target_link_libraries(<your-project-name> PRIVATE ${useDoc().metadata.title.incl
 
 #### Include an Img2Num Header
 
-<CodeBlock language="cpp" title="Include any public header">
-  {`#include "${useDoc().metadata.title.includes("C++") ? "img2num" : "cimg2num"}"`}
-</CodeBlock>
+<Tabs
+  defaultValue="normal-include"
+  values={[
+    { label: "Normal", value: "normal-include" },
+    { label: "Namespaced", value: "namespaced-include" },
+  ]}
+>
+  <TabItem value="normal-include">
+    <CodeBlock language="cpp" title="Include any public header">
+      {`#include <${useDoc().metadata.title.includes("C++") ? "img2num" : "cimg2num"}.h>`}
+    </CodeBlock>
+  </TabItem>
+  <TabItem value="namespaced-include">
+    <CodeBlock language="cpp" title="Include any public header">
+      {`#include <${useDoc().metadata.title.includes("C++") ? "img2num/img2num" : "cimg2num/cimg2num"}.h>`}
+    </CodeBlock>
+  </TabItem>
+</Tabs>
 
 #### Build your project
 
@@ -53,7 +78,7 @@ cmake -S . -B build
 cmake --build build
 ```
 
-:::tip Failed to build?
+:::tip[Failed to build?]
 
 ```bash title="Try running this to refresh the submodules"
 git submodule update --init --recursive
@@ -81,24 +106,21 @@ target_link_libraries(my_app PRIVATE Img2Num::Img2Num)`}
 
 #### Include an Img2Num Header
 
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
-
 <Tabs
-  defaultValue="namespaced-include"
+  defaultValue="normal-include"
   values={[
-    { label: "Namespaced", value: "namespaced-include" },
     { label: "Normal", value: "normal-include" },
+    { label: "Namespaced", value: "namespaced-include" },
   ]}
 >
-  <TabItem value="namespaced-include">
-    <CodeBlock language="cpp" title="Include any public header">
-      {`#include <${useDoc().metadata.title.includes("C++") ? "img2num/img2num" : "cimg2num/cimg2num"}.h>`}
-    </CodeBlock>
-  </TabItem>
   <TabItem value="normal-include">
     <CodeBlock language="cpp" title="Include any public header">
       {`#include <${useDoc().metadata.title.includes("C++") ? "img2num" : "cimg2num"}.h>`}
+    </CodeBlock>
+  </TabItem>
+  <TabItem value="namespaced-include">
+    <CodeBlock language="cpp" title="Include any public header">
+      {`#include <${useDoc().metadata.title.includes("C++") ? "img2num/img2num" : "cimg2num/cimg2num"}.h>`}
     </CodeBlock>
   </TabItem>
 </Tabs>

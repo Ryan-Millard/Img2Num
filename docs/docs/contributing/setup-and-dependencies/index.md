@@ -8,17 +8,17 @@ sidebar_position: 1
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-:::tip Just want to build quickly?
+:::tip[Just want to build quickly?]
+
 See the [Quickstart](/docs/contributing/quickstart) for the condensed, `just`-driven
 workflow. This page covers the full manual toolchain in detail.
+
 :::
 
 ## Prerequisites
 
 - [Git](https://git-scm.com/downloads)
-- Docker (choose one of the following):
-  - [**Docker Desktop**](https://www.docker.com/products/docker-desktop/) (recommended)
-  - [Docker Engine](https://docs.docker.com/engine/install/)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (recommended) or [Docker Engine](https://docs.docker.com/engine/install/)
 
 ### Verify Prerequisite Installations
 
@@ -27,11 +27,13 @@ git --version
 docker --version
 ```
 
-:::important Docker Dev Environment
+:::important[Docker Dev Environment]
+
 We recommend using the Docker dev environment.
 Setting up the environment locally adds unnecessary complexity and is not officially supported.
 
 _If you choose to develop locally, you are responsible for configuring and maintaining your own environment._
+
 :::
 
 ## Clone the repository
@@ -41,7 +43,7 @@ git clone --recursive https://github.com/Ryan-Millard/Img2Num.git
 cd Img2Num/
 ```
 
-:::warning[Missing submodules after cloning]
+:::danger[Missing submodules after cloning]
 
 <details className="alert--warning">
 <summary>
@@ -119,11 +121,11 @@ values={[
 </TabItem>
 </Tabs>
 
-:::info About the `img2num` script
+:::info[About the `img2num` script]
 
 It is a thin wrapper around Docker and pnpm that allows you to conveniently run scripts inside the Docker environment.
 
-> See [img2num](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/react-js/src/components/WasmImageProcessor.jsx),
+> See [img2num](https://github.com/Ryan-Millard/Img2Num/blob/main/img2num),
 > [img2num.ps1](https://github.com/Ryan-Millard/Img2Num/blob/main/img2num.ps1),
 > and [img2num.bat](https://github.com/Ryan-Millard/Img2Num/blob/main/img2num.bat).
 
@@ -159,42 +161,17 @@ values={[
 </TabItem>
 </Tabs>
 
-:::warning Warning: Environment assumptions
-In future docs, assume that the commands are to be run in the Docker terminal.
+:::warning[Warning: Environment assumptions]
+
+Elsewhere in this documentation (specifically the [Internal Documentation](../../internal)),
+we assume that all commands are to be run in the Docker terminal.
+
 :::
-
-<details open>
-<summary>
-#### More about the `img2num` script
-</summary>
-
-- `./img2num pnpm <args>` is a proxy to pnpm inside the Docker container's shell.
-  <Tabs
-    defaultValue="root"
-    values={[
-      { label: "Root", value: "root" },
-      { label: "Docs", value: "docs" },
-      { label: "React Example App", value: "react-example" },
-    ]}
-  >
-    <TabItem value="root">`bash title="Fuzzy find scripts local to the root project" ./img2num pnpm run help `</TabItem>
-    <TabItem value="docs">`bash title="Fuzzy find scripts local to the documentation" ./img2num pnpm run -F docs help `</TabItem>
-    <TabItem value="react-example">`bash title="Fuzzy find scripts local to the React Example app" ./img2num pnpm run -F react-example help `</TabItem>
-  </Tabs>
-- `./img2num sh`, `./img2num shell`, and `./img2num bash` all open the Docker container's interactive terminal.
-
-  ```bash title="Open the Docker terminal"
-  ./img2num sh
-  ```
-
-- The rest of the arguments that can be passed to the script (e.g., `stop`, `restart`, `down`, `purge`, `destroy`, and `logs`)
-  manage the container itself.
-
-</details>
 
 ## Set up the C++ Library
 
-> All CMake commands should be run from the root of the project.
+> All CMake commands should be run from the root of the project (and inside the Docker
+> container as mentioned above).
 
 ### Compilation & Installation
 
@@ -232,10 +209,11 @@ cmake --install build
 
 ### WebAssembly (WASM) Compilation
 
-:::info JavaScript Prerequisite
+:::danger[JavaScript Prerequisite]
+
 Excluding the documentation and CLI scripts, compiling the library to WASM is required before using the JavaScript library.
 
-The example apps depend on the library, so they will also fail if you have not compiled the WASM.
+The JavaScript example apps depend on the library, so they will also fail if you have not compiled the WASM.
 
 :::
 
@@ -269,44 +247,12 @@ cmake --build build-wasm/
 
 These are required for running the documentation, packages, and some example apps.
 
-<Tabs
-defaultValue="docker-term"
-values={[
-{ label: 'Docker Terminal', value: 'docker-term' },
-{ label: 'Normal Terminal', value: 'normal-term' },
-]}>
-<TabItem value="docker-term">
-
 ```bash title="From inside the Docker terminal"
 pnpm install
 ```
 
-</TabItem>
-<TabItem value="normal-term">
-```bash title="From outside the Docker terminal one-off command forwarded to Docker"
-./img2num pnpm install
-```
-</TabItem>
-</Tabs>
-
 ### Running a project
-
-<Tabs
-defaultValue="react-example"
-values={[
-{ label: 'React Example App', value: 'react-example' },
-{ label: 'Documentation Site', value: 'docs' },
-]}>
-<TabItem value="react-example">
 
 ```bash
 pnpm -F react-example dev
 ```
-
-</TabItem>
-<TabItem value="docs">
-```bash
-pnpm -F docs start
-```
-</TabItem>
-</Tabs>

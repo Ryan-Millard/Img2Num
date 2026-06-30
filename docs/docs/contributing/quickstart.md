@@ -10,14 +10,17 @@ import TabItem from "@theme/TabItem";
 
 # Quickstart
 
-This is the **fast path** to a working Img2Num build from source. If you just want to get
-the dev environment running and produce your first build, follow the steps below.
+:::tip[Just want to _use_ the library?]
 
-:::tip Just want to _use_ the library?
-If you only need to consume Img2Num (e.g. via npm), see
-[Installation](/docs/installation) and [Getting Started](/docs/getting-started)
+If you only need to consume Img2Num (e.g. via npm), see [Installation](/docs/installation)
 instead. This page is for building the project itself from source.
+
 :::
+
+This is the **fast path** to a working Img2Num build from source. If you just want to get
+the dev environment running and produce your first build, follow the steps below. For
+the full breakdown of requirements, see the [Setup & Dependencies](../setup-and-dependencies)
+page
 
 Img2Num ships a [`Justfile`](https://github.com/Ryan-Millard/Img2Num/blob/main/Justfile)
 that wraps every common build and run task behind a single [`just`](https://just.systems)
@@ -31,8 +34,8 @@ git clone --recursive https://github.com/Ryan-Millard/Img2Num.git
 cd Img2Num/
 ```
 
-The `--recursive` flag pulls the required submodules. If you forgot it, `just init`
-(below) will pull them for you.
+> The `--recursive` flag pulls the required submodules. If you forgot it, `just init`
+> (below) will pull them for you.
 
 ## 2. Start the dev environment
 
@@ -71,7 +74,7 @@ values={[
 
 You are now in the container's shell. Every command from here on is a `just` recipe.
 
-:::note See every available command
+:::note[See every available command]
 Run `just` (or `just help`) at any time to print the full list of recipes.
 :::
 
@@ -87,19 +90,27 @@ just init
 
 This is the only command most contributors need to get a complete, working checkout.
 
-## 4. Build a single target (optional)
+## 4. Build Targets
 
-Already initialised and only want to rebuild one piece? Pass a target to `just build`:
+Already initialised and only want to rebuild one piece? Pass a target to `just build`
+from inside the Docker terminal:
 
-```bash title="From inside the Docker terminal"
-just build cpp           # C++ core and C bindings        -> build-c-cpp/
-just build js            # JS / WASM bindings             -> build-wasm/
-just build packages-js   # Browser + Node.js npm packages -> packages/js/dist/
-just build py            # Python bindings + wheel        -> packages/py/build-py/
-just build all           # everything above (+ react app + docs)
+<Tabs groupId="build-target">
+  <TabItem value="cpp" label="C++ / C">
+
+```bash title="Build C++ Core and C Bindings: build-c-cpp/ folder"
+just build cpp
 ```
 
-:::info Browser & Node.js packages
+  </TabItem>
+
+  <TabItem value="js" label="JS / WASM">
+
+```bash title="Build JavaScript / WASM Bindings: build-wasm/ folder"
+just build js
+```
+
+:::info[Browser & Node.js packages]
 `just build js` only produces the raw WASM/JS bindings. To build the publishable
 `img2num` npm package — which targets **both the browser and Node.js** — run
 `just build packages-js`. It compiles the WASM bindings first (so it works from a
@@ -107,16 +118,72 @@ clean checkout) and then bundles the browser and Node builds into
 `packages/js/dist/`.
 :::
 
-To remove generated build folders:
+  </TabItem>
 
-```bash title="From inside the Docker terminal"
-just clean cpp           # delete build-c-cpp/
-just clean js            # delete build-wasm/
-just clean packages-js   # delete packages/js/dist/
-just clean packages-py   # delete packages/py/build-py/
+  <TabItem value="packages-js" label="npm Package">
+
+```bash title="Build Browser + Node.js npm Packages: build-wasm/ and packages/js/dist/ folder"
+just build packages-js
 ```
 
-## 5. Run something
+  </TabItem>
+
+  <TabItem value="py" label="Python">
+
+```bash title="Build Python Bindings + Wheel: packages/py/build-py/ folder"
+just build py
+```
+
+  </TabItem>
+
+  <TabItem value="all" label="Everything">
+
+```bash title="Build Everything (C++, C, JS, WASM, Python, React App, Docs, ...)"
+just build all
+```
+
+  </TabItem>
+</Tabs>
+
+## 5. Clean Build Targets
+
+To remove generated build folders:
+
+<Tabs groupId="clean-target">
+  <TabItem value="cpp" label="C++ / C">
+
+```bash title="Clean C++ Core and C Bindings → build-c-cpp/"
+just clean cpp
+```
+
+  </TabItem>
+
+  <TabItem value="js" label="JS / WASM">
+
+```bash title="Clean JavaScript / WASM Bindings → build-wasm/"
+just clean js
+```
+
+  </TabItem>
+
+  <TabItem value="packages-js" label="npm Package">
+
+```bash title="Clean Browser + Node.js npm Packages → packages/js/dist/"
+just clean packages-js
+```
+
+  </TabItem>
+
+  <TabItem value="py" label="Python">
+
+```bash title="Clean Python Bindings + Wheel → packages/py/build-py/"
+just clean packages-py
+```
+
+  </TabItem>
+</Tabs>
+
+## 6. Run something
 
 ### Documentation site
 

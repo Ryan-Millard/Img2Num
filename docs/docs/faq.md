@@ -1,20 +1,21 @@
 ---
-id: troubleshooting
-title: Troubleshooting
+id: faq
+title: FAQ (Frequently Asked Questions)
 sidebar_position: 12
 ---
-
-# Troubleshooting
 
 Common issues and their solutions.
 
 ## WASM Loading Fails in Node.js
 
-**Symptom:** `Error: Could not load WASM module` or similar.
+### Symptom
+`Error: Could not load WASM module` or similar.
 
-**Cause:** The `.wasm` binary is not found relative to `index.js`.
+### Cause
+The `.wasm` binary is not found relative to `index.js`.
 
-**Fix:** Ensure `build-wasm/index.wasm` is present alongside `index.js` in the installed package:
+### Fix
+Ensure `build-wasm/index.wasm` is present alongside `index.js` in the installed package:
 
 ```bash
 ls node_modules/img2num/build-wasm/

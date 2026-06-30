@@ -1,7 +1,7 @@
 ---
 title: Img2Num C++
 sidebar_label: C++
-sidebar_position: 7
+sidebar_position: 8
 ---
 
 {/* DO NOT CHANGE THE TITLE (see @site/src/md/_partials/IntsallingCoreOrCFromSrc.md and the C version of this page to understand why */}
