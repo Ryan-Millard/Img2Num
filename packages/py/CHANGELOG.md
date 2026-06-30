@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.1](https://github.com/Ryan-Millard/Img2Num/compare/packages-py-v0.2.0...packages-py-v0.2.1) (2026-06-30)
+
+
+> [0.2.0](https://github.com/Ryan-Millard/Img2Num/compare/packages-py-v0.1.0...packages-py-v0.2.0) was released as [0.0.0](https://pypi.org/manage/project/img2num/release/0.0.0/) on PyPI. This release fixes that.
+
+### 📚 Documentation
+
+* refresh docs, add Python guides, and remove outdated versioning ([#446](https://github.com/Ryan-Millard/Img2Num/issues/446)) ([8edaadd](https://github.com/Ryan-Millard/Img2Num/commit/8edaadddf18ca20407b7f480cd88c72b11c99000))
+
 ## [0.2.0](https://github.com/Ryan-Millard/Img2Num/compare/packages-py-v0.1.0...packages-py-v0.2.0) (2026-06-27)
 
 
