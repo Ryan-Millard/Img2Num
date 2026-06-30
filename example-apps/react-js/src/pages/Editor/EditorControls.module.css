@@ -73,8 +73,14 @@
   padding: var(--spacing-md);
   display: grid;
   gap: var(--spacing-sm);
-  h4 {
-    text-transform: uppercase;
-    margin: 0;
-  }
+}
+
+.modalGroupContainer h4 {
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.settingsActive {
+  background-color: var(--color-primary-dark) !important;
+  color: var(--color-accent) !important;
 }

@@ -128,13 +128,6 @@ const config = {
           routeBasePath: "docs",
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
-          lastVersion: "old",
-          versions: {
-            current: {
-              label: "Next",
-              banner: "unreleased",
-            },
-          },
         },
         blog: {
           showReadingTime: true,
@@ -169,7 +162,6 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       docs: {
-        versionPersistence: "localStorage",
         sidebar: {
           hideable: true,
           autoCollapseCategories: true,
@@ -218,10 +210,6 @@ const config = {
           },
           { to: "/blog", label: "Blog", position: "left" },
           { to: "/changelog", label: "Changelog", position: "left" },
-          {
-            type: "docsVersionDropdown",
-            position: "right",
-          },
           {
             href: "https://github.com/Ryan-Millard/Img2Num",
             label: "GitHub",

@@ -3,7 +3,7 @@ title: Internal Documentations
 sidebar_label: Internal Docs
 description: Complete reference for Img2Num\'s codebase including WASM modules, React components, and developer tools - designed for developers to use. This is the detailed reference documentation for all Img2Num code, including WebAssembly modules and React components. Use this as a guide to understand, use, and contribute to the project.
 keywords: [reference, API, wasm, react, Img2Num, documentation, developer guide]
-sidebar_position: 999
+sidebar_position: 14
 ---
 
 # Internal Documentation
@@ -29,12 +29,12 @@ This documentation serves three main goals:
 
 ## What You Will Find Here
 
-- [Core docs](./core)
-- [Bindings](./bindings)
-- [Example app documentation](./example-apps)
-- [Internal package docs](./packages)
+- [Core docs](/docs/internal/core)
+- [Bindings](/docs/internal/bindings)
+- [Example app documentation](/docs/internal/example-apps)
+- [Internal package docs](/docs/internal/packages)
 - Development tools
-  - [CLI scripts](./scripts)
+  - [CLI scripts](/docs/internal/scripts)
   - [GitHub Actions workflows](./dot-github/workflows)
 - Brief explanations of the theory behind each part of the project
 
