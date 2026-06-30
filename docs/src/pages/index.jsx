@@ -1,5 +1,4 @@
 import Link from "@docusaurus/Link";
-import useBaseUrl from "@docusaurus/useBaseUrl";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import { BookOpen, Cpu, FileText, GitBranch, Globe, Layers, Package, Palette, Target, Terminal, Zap } from "lucide-react";
@@ -25,13 +24,13 @@ function RasterToSvgDemo() {
       </div>
       <div className={styles.grid}>
         <figure className={styles.figure}>
-          <img src="https://images-assets.nasa.gov/image/PIA01481/PIA01481~small.jpg" alt="Jupiter system montage raster image" className={styles.image} />
+          <img src={"./img/homepage-demo.jpg"} alt="Jupiter system montage raster image" className={styles.image} />
           <figcaption className={styles.caption}>
             raster input
           </figcaption>
         </figure>
         <figure className={styles.figure}>
-          <img src={useBaseUrl("/img/homepage-demo.svg")} alt="Vectorized SVG output" className={styles.image} />
+          <img src={"./img/homepage-demo.svg"} alt="Vectorized SVG output" className={styles.image} />
           <figcaption className={styles.caption}>svg output</figcaption>
         </figure>
       </div>
@@ -131,8 +130,8 @@ function BindingsSection() {
       desc: "Quantisation, contour tracing, SVG writer. Add it as a submodule.",
       code: `#include "img2num"\n` + `img2num::ImageToSvgConfig config;\n` + `config.kmeans.k = 32;\n` + `std::string svg {img2num::image_to_svg(img_data, width, height, config)};`,
       docLinks: [
-        { href: useBaseUrl("/docs/cpp"), text: "C++ Docs" },
-        { href: useBaseUrl("/docs/c"), text: "C Docs" },
+        { href: "./docs/cpp", text: "C++ Docs" },
+        { href: "./docs/c", text: "C Docs" },
       ],
     },
     {
@@ -153,8 +152,8 @@ function BindingsSection() {
       code:
         `import { imageToUint8ClampedArray, imageToSvg } from "img2num"\n\n` +
         `const { pixels, width, height } = await imageToUint8ClampedArray(file);\n` +
-        `const svg = await imageToSvg({ pixels, width, height }});`,
-      docLinks: [{ href: useBaseUrl("/docs/js/api"), text: "JsDoc" }],
+        `const svg = await imageToSvg({ pixels, width, height });`,
+      docLinks: [{ href: "./docs/js/api", text: "JsDoc" }],
     },
   ];
 
@@ -162,7 +161,7 @@ function BindingsSection() {
     <section className={styles.section}>
       <div className={styles.sectionHeader}>
         <h2 className={styles.sectionTitle}>Use it anywhere</h2>
-        <Link className={styles.sectionLink} to="/docs">
+        <Link className={styles.sectionLink} to="./docs">
           See all bindings →
         </Link>
       </div>
@@ -264,7 +263,7 @@ function LinksSection() {
       icon: <BookOpen size={16} color="var(--accent)" />,
       title: "C++ API Reference",
       desc: "Full reference, parameter tuning, build instructions.",
-      to: "/docs",
+      to: "./docs",
     },
     {
       eyebrow: "PyPI",

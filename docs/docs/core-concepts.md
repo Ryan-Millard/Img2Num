@@ -53,7 +53,7 @@ and get smoothed together.
 K-means groups pixels into _k_ clusters based on color distance in the chosen color space.
 
 - **`k` (num_colors)**: How many colors the output should contain.
-- **`max_iter`**: Stop the algorithm early if `100` iterations aren't enough.
+- **`max_iter`**: Maximum iterations allowed before forcing termination.
 
 :::note
 
