@@ -182,7 +182,9 @@ from img2num import image_to_svg
 
 ## License
 
-The library is [MIT-licensed ![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?logo=open-source-initiative)](LICENSE)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?logo=open-source-initiative)](LICENSE)
+
+The library is [MIT-licensed](LICENSE)
 
 > Prior to the refactor in [#250](https://github.com/Ryan-Millard/Img2Num/pull/250), the entire project was
 > licensed under AGPLv3. The core library was relicensed to MIT to make it easier to embed in commercial and
