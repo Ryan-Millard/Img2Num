@@ -179,7 +179,6 @@ writeFileSync("output.svg", svg);
 ## Resources
 
 - [Documentation](/docs/js/docs/)
-- [API usage](/docs/js/js-api-reference/)
 - [GitHub repository](https://github.com/Ryan-Millard/Img2Num)
 - [React demo app](https://ryan-millard.github.io/Img2Num/)
 

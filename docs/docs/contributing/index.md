@@ -19,7 +19,7 @@ Check the [Setup & Dependencies](./setup-and-dependencies) page to set up your e
 
 ## Code of Conduct
 
-Please review and adhere to our [Code of Conduct](/docs/contributing/code-of-conduct.md) to help foster an open and welcoming environment.
+Please review and adhere to our [Code of Conduct](./code-of-conduct) to help foster an open and welcoming environment.
 
 ## Reporting Issues
 
