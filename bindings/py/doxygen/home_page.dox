@@ -49,10 +49,10 @@
  * \section usage_sec Usage Example
  *
  * - To see the Pybind11 bindings directly used, see
- * [`packages/py/api.py](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/py/img2num/api.py).
+ * [`packages/py/img2num/api.py`](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/py/img2num/api.py).
 
  * - To see the usage in Python, see
- * [`example-apps/console-py](https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps/console-py).
+ * [`example-apps/console-py`](https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps/console-py).
  *
  * \section api_sec API Reference
  *

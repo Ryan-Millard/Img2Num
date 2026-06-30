@@ -1,7 +1,7 @@
 ---
 id: faq
 title: FAQ (Frequently Asked Questions)
-sidebar_label: ❓ FAQ
+sidebar_title: FAQ
 ---
 
 Common issues and their solutions.
@@ -44,7 +44,7 @@ export default defineConfig({
 
 :::
 
-If you encounter any problems, please [open an issue](https://github.com/Ryan-Millard/Img2Num/issues/new) so we can document the solution.
+If you encounter bundler-related WASM errors, please open an issue so we can document the solution.
 
 ## Blurry or Over-Smoothed Output with Bilateral Filter
 
