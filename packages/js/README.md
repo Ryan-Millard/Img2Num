@@ -125,11 +125,19 @@ Try the [live demo (`React example`)](https://ryan-millard.github.io/Img2Num/).
 ---
 
 <div align="center">
-  <a href="https://ryan-millard.github.io/Img2Num/info/docs/">Documentation</a> · <a href="https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/CHANGELOG.md">Changelog</a> · <a href="https://github.com/Ryan-Millard/Img2Num">GitHub</a>
 
-  <br><br>
+<p>
+  <a href="https://ryan-millard.github.io/Img2Num/info/docs/">Documentation</a>
+  &middot;
+  <a href="https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/CHANGELOG.md">Changelog</a>
+  &middot;
+  <a href="https://github.com/Ryan-Millard/Img2Num">GitHub</a>
+</p>
 
+<p>
   <a href="https://github.com/Ryan-Millard/Img2Num/graphs/contributors">
     <img src="https://contrib.rocks/image?repo=Ryan-Millard/Img2Num" alt="Contributors">
   </a>
+</p>
+
 </div>
