@@ -65,7 +65,7 @@ Try our [image to color-by-number demo](https://ryan-millard.github.io/Img2Num/)
 | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" width="30" /></a> | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c"><img src="https://img.shields.io/badge/GitHub_Releases-C_Bindings-A8B9CC?logo=github" /></a> [![Docs](https://img.shields.io/badge/docs-C-A8B9CC?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/docs/next/c/) [![C Changelog](https://img.shields.io/badge/changelog-C-A8B9CC?logo=c)](https://ryan-millard.github.io/Img2Num/info/changelog/c/) |
 | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=cpp"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" width="30" /></a> | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=cpp"><img src="https://img.shields.io/badge/GitHub_Releases-C++-00599C?logo=github" /></a> [![Docs](https://img.shields.io/badge/docs-C++-00599C?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/docs/next/cpp/) [![C++ Changelog](https://img.shields.io/badge/changelog-C%2B%2B-00599C?logo=c%2B%2B&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/changelog/cpp/) |
 | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-js"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="30" /></a> | [![npm](https://img.shields.io/npm/v/img2num?logo=npm)](https://www.npmjs.com/package/img2num) ![Downloads](https://img.shields.io/npm/dm/img2num?logo=npm) <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-js"><img src="https://img.shields.io/badge/GitHub_Releases-JavaScript_Package-F7DF1E?logo=github" /></a>  [![Docs](https://img.shields.io/badge/docs-JavaScript-F7DF1E?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/docs/next/js/) [![JavaScript Changelog](https://img.shields.io/badge/changelog-JavaScript-F7DF1E?logo=javascript)](https://ryan-millard.github.io/Img2Num/info/changelog/js/) |
-| <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" width="30" /></a> | ![PyPI](https://img.shields.io/pypi/v/img2num?logo=pypi) [![PyPI Downloads](https://img.shields.io/pypi/dm/img2num?logo=pypi)](https://pypi.org/project/img2num/) [![Supported Versions](https://img.shields.io/pypi/pyversions/img2num?logo=python)](https://pypi.org/project/img2num/) <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py"><img src="https://img.shields.io/badge/GitHub_Releases-Python_Package-3776AB?logo=github" /></a> [![Python Changelog](https://img.shields.io/badge/changelog-Python-3776AB?logo=python)](https://ryan-millard.github.io/Img2Num/info/changelog/py/) |
+| <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" width="30" /></a> | ![PyPI](https://img.shields.io/pypi/v/img2num?logo=pypi) [![PyPI Downloads](https://img.shields.io/pypi/dm/img2num?logo=pypi)](https://pypi.org/project/img2num/) [![Supported Versions](https://img.shields.io/pypi/pyversions/img2num?logo=python)](https://pypi.org/project/img2num/) <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py"><img src="https://img.shields.io/badge/GitHub_Releases-Python_Package-3776AB?logo=github" /></a> [![Docs](https://img.shields.io/badge/docs-Python-3776AB?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/docs/next/py/) [![Python Changelog](https://img.shields.io/badge/changelog-Python-3776AB?logo=python)](https://ryan-millard.github.io/Img2Num/info/changelog/py/) |
 
 ## Community Links
 [![Changelog](https://img.shields.io/badge/Changelog-Full-orange?logo=git&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/changelog/)
@@ -79,9 +79,69 @@ Try our [image to color-by-number demo](https://ryan-millard.github.io/Img2Num/)
 
 ### C / C++
 
+[![Documentation](https://img.shields.io/badge/Documentation-C-A8B9CC?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/docs/next/c/)
+[![Documentation](https://img.shields.io/badge/Documentation-C++-00599C?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/docs/next/cpp/)
+
+This process is too detailed to put in a `README.md` file, so please see our documentation:
+- [<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" width="28" alt="C"/> Documentation](https://ryan-millard.github.io/Img2Num/info/docs/next/c/)
+- [<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" width="28" alt="C++"/> Documentation](https://ryan-millard.github.io/Img2Num/info/docs/next/cpp/)
+
+> [!TIP]
+> You can install the library from our GitHub releases:
+> 
+> - [C](https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c&expanded=true)
+> - [C++](https://github.com/Ryan-Millard/Img2Num/releases?q=cpp&expanded=true)
+
 ### JavaScript
 
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="30" />
+
+For more detailed information on installing this package, please refer to [our documentation](http://localhost:3000/Img2Num/info/docs/js/):
+
+[![Docs](https://img.shields.io/badge/docs-JavaScript-F7DF1E?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/docs/next/js/)
+
+#### CDN
+
+[![CDN: jsDelivr](https://img.shields.io/badge/CDN-jsDelivr-%23f7df1e?logo=jsdelivr&logoColor=black)](https://www.jsdelivr.com/package/npm/img2num)
+
+```html
+<!-- IMPORTANT: this is browser-only -->
+<script src="https://cdn.jsdelivr.net/npm/img2num@0.2.0/dist/browser/img2num.js"></script>
+```
+
+#### Package Manager
+
+##### Install Img2Num from npm
+
+```sh
+npm install img2num
+```
+
+##### Import the Img2Num package
+
+```js
+import { imageToSvg } from "img2num";
+```
+
 ### Python
+
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" width="30" />
+
+For more detailed information on installing this package, please refer to [our documentation](http://localhost:3000/Img2Num/info/docs/py/):
+
+[![Docs](https://img.shields.io/badge/docs-Python-3776AB?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/docs/next/py/)
+
+#### Install Img2Num using pip
+
+```sh
+pip install img2num
+```
+
+#### Import Img2Num
+
+```py
+from img2num import image_to_svg
+```
 
 ## License
 
