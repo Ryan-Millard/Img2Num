@@ -106,7 +106,7 @@ If you can't find it, feel free to open an [issue](https://github.com/Ryan-Milla
 [![@Prachi](https://img.shields.io/badge/@Prachi--Gupta2808-black?logo=github)](https://github.com/Prachi-Gupta2808)
 
 > [!NOTE]
-> #### Maintainers wanted
+> ### Maintainers wanted
 > We’re looking for new maintainers.
 > [Read more here](https://ryan-millard.github.io/Img2Num/info/blog/img2num-maintainer-expansion/).
 
