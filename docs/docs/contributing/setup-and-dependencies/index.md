@@ -2,7 +2,7 @@
 id: setup-and-dependencies
 title: Setup & Dependencies
 sidebar_label: 🛠️ Setup & Dependencies
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 import Tabs from "@theme/Tabs";

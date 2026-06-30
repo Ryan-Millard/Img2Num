@@ -53,7 +53,7 @@ print(svg)
 | `threshold_image`       | Posterize to N intensity levels      |
 | `black_threshold_image` | Posterize, biased toward dark output |
 
-See the [Python API Reference](/docs/python/python-api-reference) for full
+See the [Python API Reference](./api-reference) for full
 signatures.
 
 ## Configuration

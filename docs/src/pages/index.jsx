@@ -16,16 +16,18 @@ function RasterToSvgDemo() {
           <span className={`${styles.dot} ${styles.yellow}`} />
           <span className={`${styles.dot} ${styles.green}`} />
         </div>
-        <span className={styles.chromeText}>NASA/JPL PIA01481 demo</span>
+        <span className={styles.chromeText}>
+          <a href="https://images.nasa.gov/details/PIA01481" target="_blank" rel="noopener noreferrer">
+            NASA/JPL (PIA01481)
+          </a>{' '}
+          demo
+        </span>
       </div>
       <div className={styles.grid}>
         <figure className={styles.figure}>
           <img src="https://images-assets.nasa.gov/image/PIA01481/PIA01481~small.jpg" alt="Jupiter system montage raster image" className={styles.image} />
           <figcaption className={styles.caption}>
-            raster input —{" "}
-            <a href="https://images.nasa.gov/details/PIA01481" target="_blank" rel="noopener noreferrer">
-              NASA/JPL (PIA01481)
-            </a>
+            raster input
           </figcaption>
         </figure>
         <figure className={styles.figure}>
@@ -79,11 +81,11 @@ function HeroSection() {
 
           <div className={styles.heroActionsWrapper}>
             <div className={styles.heroActions} style={{ marginBottom: 0 }}>
-              <Link className={styles.btnPrimary} to="/docs/getting-started">
-                <Package size={16} style={{ marginRight: "6px" }} /> Installation guide
+              <Link className={styles.btnPrimary} to="./docs">
+                <Package size={16} style={{ marginRight: "6px" }} /> Installation and Setup
               </Link>
-              <Link className={styles.btnGhost} to="/docs">
-                Read the docs
+              <Link className={styles.btnGhost} to="/changelog">
+                Changelog
               </Link>
               <Link className={styles.btnGhost} to="https://github.com/Ryan-Millard/Img2Num">
                 GitHub →
@@ -246,7 +248,7 @@ function CtaBand() {
     <section className={styles.ctaBand}>
       <div className={styles.ctaInner}>
         <h2 className={styles.ctaTitle}>Ready to integrate SVG vectorization into your stack?</h2>
-        <Link className={styles.ctaBtn} to="/docs/getting-started">
+        <Link className={styles.ctaBtn} to="./docs">
           Get started →
         </Link>
       </div>

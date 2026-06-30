@@ -1,8 +1,8 @@
 ---
 id: quickstart
 title: Quickstart
-sidebar_label: Quickstart
-sidebar_position: 2
+sidebar_label: ⚡ Quickstart
+sidebar_position: 3
 ---
 
 import Tabs from "@theme/Tabs";
@@ -12,8 +12,19 @@ import TabItem from "@theme/TabItem";
 
 :::tip[Just want to _use_ the library?]
 
-If you only need to consume Img2Num (e.g. via npm), see [Installation](/docs/installation)
-instead. This page is for building the project itself from source.
+If you only need to consume Img2Num (e.g. via npm), see the relevant package documentation from the links below instead. This page is for building the project itself from source.
+
+<div style={{ display: "flex", justifyContent: "space-evenly", maxWidth: "500px", margin: "0 auto" }}>
+
+  [<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" width="30" />](../../c)
+
+  [<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" width="30" />](../../cpp)
+
+  [<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="30" />](../../js)
+
+  [<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" width="30" />](../../py)
+
+</div>
 
 :::
 
@@ -239,9 +250,3 @@ just format
 | `just docs build\|start`                                      | Build or serve the documentation site                          |
 | `just react-js build\|start`                                  | Build or serve the React example app                           |
 | `just console-cpp\|console-c\|console-py\|console-js <image>` | Run a console example app on an image                          |
-
-## Next steps
-
-- [Setup & Dependencies](/docs/contributing/setup-and-dependencies) — the full, manual toolchain walkthrough.
-- [Development scripts](/docs/internal/scripts) — finer-grained scripts beyond the `just` recipes.
-- [Contributing](/docs/contributing) — how to open issues and pull requests.
