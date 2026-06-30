@@ -2,13 +2,14 @@
 
 Cross-platform library for converting natural raster images (like PNGs and JPEGs) into clean SVGs - fast, precise and configurable.
 
-[![npm version](https://img.shields.io/npm/v/img2num.svg?style=flat-square)](https://www.npmjs.org/package/img2num)
-[![Build status](https://img.shields.io/github/actions/workflow/status/Ryan-Millard/Img2Num/release.yml?branch=main&label=CI&logo=github&style=flat-square)](https://github.com/img2num/img2num/actions/workflows/release.yml)
-[![install size](https://img.shields.io/badge/dynamic/json?url=https://packagephobia.com/v2/api.json?p=img2num&query=$.install.pretty&label=install%20size&style=flat-square)](https://packagephobia.now.sh/result?p=img2num)
-[![npm downloads](https://img.shields.io/npm/dm/img2num.svg?style=flat-square)](https://npm-stat.com/charts.html?package=img2num)
-[![code helpers](https://www.codetriage.com/ryan-millard/img2num/badges/users.svg)](https://www.codetriage.com/Ryan-Millard/img2num)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE)
-
+<p align="center">
+  <a href="https://www.npmjs.org/package/img2num"><img src="https://img.shields.io/npm/v/img2num.svg?style=flat-square" alt="npm version" /></a>
+  <a href="https://github.com/img2num/img2num/actions/workflows/release.yml"><img src="https://img.shields.io/github/actions/workflow/status/Ryan-Millard/Img2Num/release.yml?branch=main&label=CI&logo=github&style=flat-square" alt="Build status" /></a>
+  <a href="https://packagephobia.now.sh/result?p=img2num"><img src="https://img.shields.io/badge/dynamic/json?url=https://packagephobia.com/v2/api.json?p=img2num&query=$.install.pretty&label=install%20size&style=flat-square" alt="Install size" /></a>
+  <a href="https://npm-stat.com/charts.html?package=img2num"><img src="https://img.shields.io/npm/dm/img2num.svg?style=flat-square" alt="npm downloads" /></a>
+  <a href="https://www.codetriage.com/Ryan-Millard/img2num"><img src="https://www.codetriage.com/ryan-millard/img2num/badges/users.svg" alt="Code helpers" /></a>
+  <a href="https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License" /></a>
+</p>
 ## Supported Runtimes
 
 - **Browsers** — via Web Workers
@@ -39,13 +40,13 @@ bun add img2num
 > IMPORTANT: This is browser-only usage.
 
 ### jsDelivr CDN
-
+[![jsDelivr](https://img.shields.io/badge/CDN-jsDelivr-ff5627?logo=jsdelivr&logoColor=white)](https://www.jsdelivr.com/package/npm/img2num)
 <!-- IMPORTANT: this is browser-only -->
 ```html
 <script src="https://cdn.jsdelivr.net/npm/img2num@0.2.0/dist/browser/img2num.js"></script>
 ```
 ### unpkg CDN
-
+[![unpkg](https://img.shields.io/badge/CDN-unpkg-red?logo=npm&logoColor=white)](https://app.unpkg.com/img2num@0.2.0)
 <!-- IMPORTANT: this is browser-only -->
 ```html
 <script src="https://unpkg.com/img2num@0.2.0/dist/browser/img2num.js"></script>
@@ -124,9 +125,13 @@ Try the [live demo (`React example`)](https://ryan-millard.github.io/Img2Num/).
 
 
 <div align="center">
-[Documentation](https://ryan-millard.github.io/Img2Num/info/docs/) · [Changelog](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/CHANGELOG.md) · [GitHub](https://github.com/Ryan-Millard/Img2Num)
+  <a href="https://ryan-millard.github.io/Img2Num/info/docs/">Documentation</a> ·
+  <a href="https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/CHANGELOG.md">Changelog</a> ·
+  <a href="https://github.com/Ryan-Millard/Img2Num">GitHub</a>
+
+  <br /><br />
+
+  <a href="https://github.com/Ryan-Millard/Img2Num/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=Ryan-Millard/Img2Num" alt="Contributors" />
+  </a>
 </div>
-
-<br />
-
-[![Contributors](https://contrib.rocks/image?repo=Ryan-Millard/Img2Num)](https://github.com/Ryan-Millard/Img2Num/graphs/contributors)
