@@ -4,20 +4,28 @@
 
 # Img2Num
 
+_Img2Num_ is a fast and accurate raster vectorizer. 
+
+It converts raster images (like PNGs and JPGs) into clean SVGs with _high accuracy and performance_.
+
+<sub>_Img2Num_ is **optimized for natural images**.</sub>
+
+![Status](https://img.shields.io/badge/status-active_development-brightgreen?logo=github)
+
 [![Deploy to GitHub Pages](https://github.com/Ryan-Millard/Img2Num/actions/workflows/deploy.yml/badge.svg)](https://github.com/Ryan-Millard/Img2Num/actions/workflows/deploy.yml)
+[![Multi-Language Release Generation](https://github.com/Ryan-Millard/Img2Num/actions/workflows/release.yml/badge.svg)](https://github.com/Ryan-Millard/Img2Num/actions/workflows/release.yml)
+
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE)
+[![Contributors](https://img.shields.io/github/contributors/Ryan-Millard/Img2Num)](https://github.com/Ryan-Millard/Img2Num/graphs/contributors)
+[![Stars](https://img.shields.io/github/stars/Ryan-Millard/Img2Num?style=social)](https://github.com/Ryan-Millard/Img2Num)
 [![Docker Pulls](https://img.shields.io/docker/pulls/ryanmillard/img2num-dev)](https://hub.docker.com/repository/docker/ryanmillard/img2num-dev/general)
 [![Open in Codespaces](https://img.shields.io/badge/-Open%20in%20Codespaces-black?logo=github)](https://codespaces.new/Ryan-Millard/Img2Num)
-
-<a href="https://skillicons.dev">
-  <img height="25px" src="https://skillicons.dev/icons?i=cpp,c,js,py" alt="C++, C, JavaScript, Python" />
-</a>
- 
-_Img2Num_ converts raster images into clean SVGs with _high accuracy and performance_.
+[![Docs](https://img.shields.io/badge/docs-full-blue?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/docs/next/)
+[![Changelog](https://img.shields.io/badge/changelog-full-orange?logo=git&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/changelog/)
 
 ### Before vs After
 
-| Original | Vectorized (SVG) |
+| Input (Original Raster) | Output (SVG) |
 |----------|------------------|
 | <img src="docs/static/img/readme-demo/aerial-view-mountains_pexels-pixabay-51373.jpg" width="300" alt="Original input raster image (Aerial view of mountains)"> | <img src="docs/static/img/readme-demo/output-aerial-view-mountains_pexels-pixabay-51373.svg" width="300" alt="Final output SVG image (Aerial view of mountains)"> |
 | <img src="docs/static/img/readme-demo/margate-garden.jpg" width="300" alt="Original input raster image (A garden in Margate, South Africa)" /> | <img width="300" alt="Final output SVG image (A garden in Margate, South Africa)" src="docs/static/img/readme-demo/output-margate-garden.svg" /> |
@@ -25,7 +33,7 @@ _Img2Num_ converts raster images into clean SVGs with _high accuracy and perform
 
 ### What are you waiting for?
 
-Try the [live demo](https://ryan-millard.github.io/Img2Num/)!
+Try our [image to color-by-number demo](https://ryan-millard.github.io/Img2Num/)!
 
 </div>
 
@@ -33,52 +41,65 @@ Try the [live demo](https://ryan-millard.github.io/Img2Num/)!
 <br />
 <br />
 
-## Essential links
+## Features
 
-### Docs
-- [Full documentation](https://ryan-millard.github.io/Img2Num/info/docs/next/)
-- [C++](https://ryan-millard.github.io/Img2Num/info/docs/next/cpp/)
-- [C](https://ryan-millard.github.io/Img2Num/info/docs/next/c/)
-- [JavaScript](https://ryan-millard.github.io/Img2Num/info/docs/next/js/)
-- [Internal docs](https://ryan-millard.github.io/Img2Num/info/docs/next/internal/) (for contributors)
+- **Built for real-world photos** - Designed from the ground up to handle natural, noisy raster images (photographs, scans, etc.), unlike many vectorization libraries that are optimized for clean, synthetic source images (icons, logos, flat illustrations).
+- **Raster to SVG vectorization** - Converts PNG/JPEG images into clean, layered SVG paths using color quantization, contour tracing, and an integrated SVG writer.
+- **GPU-accelerated processing** - Leverages [Dawn](https://dawn.googlesource.com/dawn) (Google's WebGPU implementation) for hardware-accelerated quantization and image processing.
+- **Color quantization & palette control** - Reduce an image to any K number of colors (K-Means), with output SVGs organized into logical color groups.
+- **Precise contour extraction** - Edge detection and polygon simplification with tunable fidelity for accuracy vs. performance trade-offs.
+- [**Multi-language bindings**](#multi-language-support) - Native C++17 core with first-class bindings for:
+  - **C** - lightweight C API (add as a submodule)
+  - **Python** (`pip install img2num`) - NumPy arrays in, SVG strings out
+  - **JavaScript** (`npm i img2num`) - same C++ core compiled to WebAssembly, works in browser and Node
+- **Zero-copy bindings** - Direct memory access via NumPy in Python and TypedArrays in JS, avoiding unnecessary data copying.
+- **Minimal dependencies** - Core library built for speed with only one external runtime dependency (Google's [Dawn](https://dawn.googlesource.com/dawn)).
+- **Cross-platform CI** - Tested on Linux, macOS, Windows, and WASM.
+- **Flexible distribution** - Available via PyPI, npm, and Docker Hub.
+- **Permissive licensing** - MIT-licensed core (libraries, packages, build tools), with AGPLv3 covering docs, example apps, and CI/config - see [below](#license) for details.
 
-### Community
-- [Changelog](https://ryan-millard.github.io/Img2Num/info/changelog)
-- [Contributing guide](https://github.com/Ryan-Millard/Img2Num/blob/main/CONTRIBUTING.md)
-- [Issues](https://github.com/Ryan-Millard/Img2Num/issues)
+## Multi-Language Support
 
-### Deployments
-- [Demo app (React)](https://ryan-millard.github.io/Img2Num/)
-- [Docker Hub](https://hub.docker.com/repository/docker/ryanmillard/img2num-dev/general)
+| Language | Package Info |
+|-----------:|:------------|
+| <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" width="30" /></a> | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c"><img src="https://img.shields.io/badge/GitHub_Releases-C_Bindings-A8B9CC?logo=github" /></a> [![Docs](https://img.shields.io/badge/docs-C-A8B9CC?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/docs/next/c/) [![C Changelog](https://img.shields.io/badge/changelog-C-A8B9CC?logo=c)](https://ryan-millard.github.io/Img2Num/info/changelog/c/) |
+| <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=cpp"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" width="30" /></a> | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=cpp"><img src="https://img.shields.io/badge/GitHub_Releases-C++-00599C?logo=github" /></a> [![Docs](https://img.shields.io/badge/docs-C++-00599C?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/docs/next/cpp/) [![C++ Changelog](https://img.shields.io/badge/changelog-C%2B%2B-00599C?logo=c%2B%2B&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/changelog/cpp/) |
+| <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-js"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="30" /></a> | ![npm](https://img.shields.io/npm/v/img2num?logo=npm) ![Downloads](https://img.shields.io/npm/dm/img2num?logo=npm) <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-js"><img src="https://img.shields.io/badge/GitHub_Releases-JavaScript_Package-F7DF1E?logo=github" /></a>  [![Docs](https://img.shields.io/badge/docs-JavaScript-F7DF1E?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/docs/next/js/) [![JS Changelog](https://img.shields.io/badge/changelog-JS-F7DF1E?logo=javascript)](https://ryan-millard.github.io/Img2Num/info/changelog/js/) |
+| <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" width="30" /></a> | ![PyPI](https://img.shields.io/pypi/v/img2num?logo=pypi) [![PyPI Downloads](https://img.shields.io/pypi/dm/img2num?logo=pypi)](https://pypi.org/project/img2num/) [![Supported Versions](https://img.shields.io/pypi/pyversions/img2num?logo=python)](https://pypi.org/project/img2num/) <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py"><img src="https://img.shields.io/badge/GitHub_Releases-Python_Package-3776AB?logo=github" /></a> [![Py Changelog](https://img.shields.io/badge/changelog-Python-3776AB?logo=python)](https://ryan-millard.github.io/Img2Num/info/changelog/py/) |
 
-## Contributing
-
-We'd love some help! Check out our [CONTRIBUTING.md](https://github.com/Ryan-Millard/Img2Num/blob/main/CONTRIBUTING.md).
+## Community Links
+[![Changelog](https://img.shields.io/badge/Changelog-Full-orange?logo=git&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/changelog/)
+[![Contributing](https://img.shields.io/badge/Contributing-Guide-blue?logo=github)](https://github.com/Ryan-Millard/Img2Num/blob/main/CONTRIBUTING.md)
+[![Issues](https://img.shields.io/badge/Issues-Available-brightgreen?logo=github)](https://github.com/Ryan-Millard/Img2Num/issues/views/1151)
+[![Good First Issues](https://img.shields.io/badge/Good%20First%20Issues-Welcome-6cc644?logo=github)](https://github.com/Ryan-Millard/Img2Num/issues/views/1155)
+[![Blog](https://img.shields.io/badge/Blog-Updates-ff6f00?logo=githubpages)](https://ryan-millard.github.io/Img2Num/info/blog/)
 
 ## License
 
-The library is licensed under the [MIT License](LICENSE).
+The library is [MIT-licensed ![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?logo=open-source-initiative)](LICENSE)
 
-Certain subdirectories retain their own licenses:
+Subdirectories retain their own licenses:
 
-| Subdirectory | License |
-| ------------: | ------- |
-| [`docs`](docs/) | GNU AGPLv3 (see [`docs/LICENSE`](docs/LICENSE)) |
-| [`example-apps/react-js/`](example-apps/react-js/) | GNU AGPLv3 (see [`example-apps/react-js/LICENSE`](example-apps/react-js/LICENSE)) |
-| [`.github/`](.github/) | GNU AGPLv3 (see [`.github/LICENSE`](.github/LICENSE)) |
+- [`docs/` ![AGPLv3](https://img.shields.io/badge/license-AGPLv3-red.svg?logo=docusaurus)](docs/LICENSE)
+- [`example-apps/react-js/` ![AGPLv3](https://img.shields.io/badge/license-AGPLv3-red.svg?logo=react)](example-apps/react-js/LICENSE)
+- [`.github/` ![AGPLv3](https://img.shields.io/badge/license-AGPLv3-red.svg?logo=github)](.github/LICENSE)
 
 ## Can't find something?
 
-If you need something, you should be able to find it on the [docs site](https://ryan-millard.github.io/Img2Num/info/docs/).
-If it isn't there, feel free to open a ["New Feature" issue](https://github.com/Ryan-Millard/Img2Num/issues/new?template=feature_request.yml) 
-to request its addition to the docs and someone will assist you with finding or creating what you need.
+If you need something, see [our documentation](https://ryan-millard.github.io/Img2Num/info/docs/).
+
+If you can't find it, feel free to open an [issue](https://github.com/Ryan-Millard/Img2Num/issues/new) to request assistance with finding or creating what you need.
 
 ## Maintainers
 
-| GitHub | Role |
-|--------|------|
-| [<img src="https://github.com/Ryan-Millard.png" width="20" height="20" valign="middle" alt="Ryan-Millard avatar"> `@Ryan-Millard`](https://github.com/Ryan-Millard) | Lead Maintainer |
-| [<img src="https://github.com/krasner.png" width="20" height="20" valign="middle" alt="krasner avatar"> `@krasner`](https://github.com/krasner) | Core Maintainer |
+[![@Ryan-Millard](https://img.shields.io/badge/@Ryan--Millard-black?logo=github)](https://github.com/Ryan-Millard)
+[![@krasner](https://img.shields.io/badge/@krasner-black?logo=github)](https://github.com/krasner)
+[![@Prachi](https://img.shields.io/badge/@Prachi--Gupta2808-black?logo=github)](https://github.com/Prachi-Gupta2808)
+
+> [!NOTE]
+> #### Maintainers wanted
+> We’re looking for new maintainers.
+> [Read more here](https://ryan-millard.github.io/Img2Num/info/blog/img2num-maintainer-expansion/).
 
 
 ## Contributors & Credits
