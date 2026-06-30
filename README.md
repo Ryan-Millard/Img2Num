@@ -34,16 +34,13 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 - [Features](#features)
 - [Multi-Language Support](#multi-language-support)
 - [Community Links](#community-links)
-- [Can't find something?](#cant-find-something)
 
 </td>
 <td valign="center">
 
 - [Quick Start](#quick-start)
-  - [C / C++](#c--c)
-  - [JavaScript](#javascript)
-  - [Python](#python)
 - [License](#license)
+- [Can't find something?](#cant-find-something)
 - [Maintainers](#maintainers)
 - [Contributors & Credits](#contributors--credits)
 
