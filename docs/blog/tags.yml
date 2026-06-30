@@ -7,3 +7,8 @@ tutorial:
   label: Tutorial
   permalink: /tutorial
   description: Guides on how the app works
+
+maintainers:
+  label: Maintainers
+  permalink: /maintainers
+  description: Updates from maintainers and openings

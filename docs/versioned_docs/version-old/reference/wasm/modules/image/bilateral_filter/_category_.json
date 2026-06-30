@@ -1,9 +1,0 @@
-{
-  "label": "bilateral_filter.h",
-  "link": {
-    "type": "generated-index",
-    "title": "Bilateral Filter",
-    "description": "Documentation for the Bilateral Filter in the Image WebAssembly (WASM) module in Img2Num.",
-    "slug": "/reference/wasm/modules/image/bilateral_filter"
-  }
-}

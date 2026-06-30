@@ -11,14 +11,14 @@ static img2num::ImageToSvgConfig to_cpp(const img2num_ImageToSvgConfig& c) {
     img2num::ImageToSvgConfig cfg {};
 
     cfg.bilateral_filter.sigma_spatial = c.bilateral_filter.sigma_spatial;
-    cfg.bilateral_filter.sigma_range   = c.bilateral_filter.sigma_range;
+    cfg.bilateral_filter.sigma_range = c.bilateral_filter.sigma_range;
 
-    cfg.kmeans.k                       = c.kmeans.k;
-    cfg.kmeans.max_iter                = c.kmeans.max_iter;
+    cfg.kmeans.k = c.kmeans.k;
+    cfg.kmeans.max_iter = c.kmeans.max_iter;
 
-    cfg.min_cluster_area               = c.min_cluster_area;
-    cfg.min_thickness                  = c.min_thickness;
-    cfg.color_space                    = c.color_space;
+    cfg.min_cluster_area = c.min_cluster_area;
+    cfg.min_thickness = c.min_thickness;
+    cfg.color_space = c.color_space;
 
     return cfg;
 }
@@ -27,14 +27,14 @@ static img2num_ImageToSvgConfig to_c(const img2num::ImageToSvgConfig& cpp) {
     img2num_ImageToSvgConfig cfg {};
 
     cfg.bilateral_filter.sigma_spatial = cpp.bilateral_filter.sigma_spatial;
-    cfg.bilateral_filter.sigma_range   = cpp.bilateral_filter.sigma_range;
+    cfg.bilateral_filter.sigma_range = cpp.bilateral_filter.sigma_range;
 
-    cfg.kmeans.k                       = cpp.kmeans.k;
-    cfg.kmeans.max_iter                = cpp.kmeans.max_iter;
+    cfg.kmeans.k = cpp.kmeans.k;
+    cfg.kmeans.max_iter = cpp.kmeans.max_iter;
 
-    cfg.min_cluster_area               = cpp.min_cluster_area;
-    cfg.min_thickness                  = cpp.min_thickness;
-    cfg.color_space                    = cpp.color_space;
+    cfg.min_cluster_area = cpp.min_cluster_area;
+    cfg.min_thickness = cpp.min_thickness;
+    cfg.color_space = cpp.color_space;
 
     return cfg;
 }
