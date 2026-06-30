@@ -23,6 +23,34 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 [![Docs](https://img.shields.io/badge/docs-full-blue?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/docs/next/)
 [![Changelog](https://img.shields.io/badge/changelog-full-orange?logo=git&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/changelog/)
 
+## Contents
+
+<table>
+<tr>
+<td valign="top">
+
+- [Before vs After](#before-vs-after)
+- [Why Img2Num?](#why-img2num)
+- [Features](#features)
+- [Multi-Language Support](#multi-language-support)
+- [Community Links](#community-links)
+- [Can't find something?](#cant-find-something)
+
+</td>
+<td valign="top">
+
+- [Quick Start](#quick-start)
+  - [C / C++](#c--c)
+  - [JavaScript](#javascript)
+  - [Python](#python)
+- [License](#license)
+- [Maintainers](#maintainers)
+- [Contributors & Credits](#contributors--credits)
+
+</td>
+</tr>
+</table>
+
 ## Before vs After
 
 | Input (Original Raster) | Output (SVG) |
@@ -36,6 +64,18 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 Try our [image to color-by-number demo](https://ryan-millard.github.io/Img2Num/)!
 
 </div>
+
+> [!IMPORTANT]
+> ### Why Img2Num?
+>
+> Most raster-to-SVG vectorizers were designed for clean, synthetic input images such as logos, icons, diagrams, and flat illustrations.
+> When applied to real-world photographs, they often struggle with noise, gradients, fine detail, and complex textures, resulting in less accurate vectorizations.
+>
+> Img2Num takes the opposite approach. It was designed from the ground up for natural images, combining color quantization, contour extraction, and GPU-accelerated processing to produce high-quality SVGs from photographs while still performing well on synthetic artwork.
+>
+> If your input images are photographs rather than logos or illustrations, Img2Num was built specifically for that use case.
+>
+> <sub><b>What is Img2Num?</b> Think of tools like [Potrace](https://potrace.sourceforge.net/) or [imagetracerjs](https://github.com/jankovicsandras/imagetracerjs/), but designed with first-class support for natural photographs and other real-world imagery.</sub>
 
 <br />
 <br />
@@ -96,7 +136,7 @@ This process is too detailed to put in a `README.md` file, so please see our doc
 
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="30" />
 
-For more detailed information on installing this package, please refer to [our documentation](http://localhost:3000/Img2Num/info/docs/js/):
+For more detailed information on installing this package, please refer to [our documentation](https://ryan-millard.github.io/Img2Num/info/docs/next/js/):
 
 [![Docs](https://img.shields.io/badge/docs-JavaScript-F7DF1E?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/docs/next/js/)
 
@@ -127,7 +167,7 @@ import { imageToSvg } from "img2num";
 
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" width="30" />
 
-For more detailed information on installing this package, please refer to [our documentation](http://localhost:3000/Img2Num/info/docs/py/):
+For more detailed information on installing this package, please refer to [our documentation](https://ryan-millard.github.io/Img2Num/info/docs/next/py/):
 
 [![Docs](https://img.shields.io/badge/docs-Python-3776AB?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/docs/next/py/)
 
@@ -146,6 +186,11 @@ from img2num import image_to_svg
 ## License
 
 The library is [MIT-licensed ![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?logo=open-source-initiative)](LICENSE)
+
+> Prior to the refactor in [#250](https://github.com/Ryan-Millard/Img2Num/pull/250), the entire project was
+> licensed under AGPLv3. The core library was relicensed to MIT to make it easier to embed in commercial and
+> closed-source projects, while documentation, example apps, and CI/config retained AGPLv3 to discourage
+> unattributed reuse of project infrastructure that isn't part of the redistributable library itself.
 
 Subdirectories retain their own licenses:
 
