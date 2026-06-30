@@ -9,12 +9,15 @@ Common issues and their solutions.
 ## WASM Loading Fails in Node.js
 
 ### Symptom
+
 `Error: Could not load WASM module` or similar.
 
 ### Cause
+
 The `.wasm` binary is not found relative to `index.js`.
 
 ### Fix
+
 Ensure `build-wasm/index.wasm` is present alongside `index.js` in the installed package:
 
 ```bash
@@ -38,7 +41,7 @@ Include WASM files as assets in `vite.config.js`:
 
 ```js
 export default defineConfig({
-  assetsInclude: ['**/*.wasm'],
+  assetsInclude: ["**/*.wasm"],
 });
 ```
 

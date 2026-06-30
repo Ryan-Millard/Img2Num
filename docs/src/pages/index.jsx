@@ -18,16 +18,14 @@ function RasterToSvgDemo() {
         <span className={styles.chromeText}>
           <a href="https://images.nasa.gov/details/PIA01481" target="_blank" rel="noopener noreferrer">
             NASA/JPL (PIA01481)
-          </a>{' '}
+          </a>{" "}
           demo
         </span>
       </div>
       <div className={styles.grid}>
         <figure className={styles.figure}>
           <img src={"./img/homepage-demo.jpg"} alt="Jupiter system montage raster image" className={styles.image} />
-          <figcaption className={styles.caption}>
-            raster input
-          </figcaption>
+          <figcaption className={styles.caption}>raster input</figcaption>
         </figure>
         <figure className={styles.figure}>
           <img src={"./img/homepage-demo.svg"} alt="Vectorized SVG output" className={styles.image} />

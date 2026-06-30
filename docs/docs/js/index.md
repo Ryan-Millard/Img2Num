@@ -71,22 +71,22 @@ import TabItem from "@theme/TabItem";
 <Tabs defaultValue="jsDelivr">
   <TabItem value="jsDelivr">
 
-  [![CDN: jsDelivr](https://img.shields.io/badge/CDN-jsDelivr-%23f7df1e?logo=jsdelivr&logoColor=black)](https://www.jsdelivr.com/package/npm/img2num)
+[![CDN: jsDelivr](https://img.shields.io/badge/CDN-jsDelivr-%23f7df1e?logo=jsdelivr&logoColor=black)](https://www.jsdelivr.com/package/npm/img2num)
 
-  ```html title="Paste this into your HTML file"
-  <!-- IMPORTANT: this is browser-only -->
-  <script src="https://cdn.jsdelivr.net/npm/img2num@0.2.0/dist/browser/img2num.js"></script>
-  ```
+```html title="Paste this into your HTML file"
+<!-- IMPORTANT: this is browser-only -->
+<script src="https://cdn.jsdelivr.net/npm/img2num@0.2.0/dist/browser/img2num.js"></script>
+```
 
   </TabItem>
   <TabItem value="unpkg">
 
-  [![CDN: unpkg](https://img.shields.io/badge/CDN-unpkg-%23cb3837?logo=npm&logoColor=white)](https://unpkg.com/img2num/)
+[![CDN: unpkg](https://img.shields.io/badge/CDN-unpkg-%23cb3837?logo=npm&logoColor=white)](https://unpkg.com/img2num/)
 
-  ```html title="Paste this into your HTML file"
-  <!-- IMPORTANT: this is browser-only -->
-  <script src="https://unpkg.com/img2num@0.2.0/dist/browser/img2num.js"></script>
-  ```
+```html title="Paste this into your HTML file"
+<!-- IMPORTANT: this is browser-only -->
+<script src="https://unpkg.com/img2num@0.2.0/dist/browser/img2num.js"></script>
+```
 
   </TabItem>
 </Tabs>

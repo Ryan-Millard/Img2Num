@@ -35,7 +35,7 @@ $$
 $\sigma_{s}$ (`sigma_spatial`) is the parameter that controls neighbor pixel smoothing in the image plane.
 Neighbors are pixels that are close to each other.
 
-import RgbVsLabRangeKernel from '@site/src/components/docs/reference/wasm/modules/image/bilateral_filter/RgbVsLabRangeKernel';
+import RgbVsLabRangeKernel from "@site/src/components/docs/reference/wasm/modules/image/bilateral_filter/RgbVsLabRangeKernel";
 
 <RgbVsLabRangeKernel />
 
@@ -61,7 +61,7 @@ K-means groups pixels into _k_ clusters based on color distance in the chosen co
 
 - `k` cannot force new colors: if the image only has `2` colors and $k=5$, the image cannot gain more color.
 - `max_iter` is an upper limit **only**: if $max_{iter}=999$ and it only takes `50` iterations to cluster the image,
-the function will return early (before the 999<sup>th</sup> iteration).
+  the function will return early (before the 999<sup>th</sup> iteration).
 
 :::
 

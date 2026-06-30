@@ -59,6 +59,7 @@ pull request within that time to show that you are working on it.
 
 The maintainers are happy to help and will do so if you let them know that you're unsure about
 something.
+
 > The more you ask, the more you understand, and the better your contribution will be.
 
 ### Claim Commands
