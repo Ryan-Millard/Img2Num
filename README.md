@@ -40,6 +40,7 @@ Try the [live demo](https://ryan-millard.github.io/Img2Num/)!
 - [C++](https://ryan-millard.github.io/Img2Num/info/docs/next/cpp/)
 - [C](https://ryan-millard.github.io/Img2Num/info/docs/next/c/)
 - [JavaScript](https://ryan-millard.github.io/Img2Num/info/docs/next/js/)
+- [Python](https://ryan-millard.github.io/Img2Num/info/docs/next/python/)
 - [Internal docs](https://ryan-millard.github.io/Img2Num/info/docs/next/internal/) (for contributors)
 
 ### Community
