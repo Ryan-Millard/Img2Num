@@ -1,22 +1,38 @@
-# img2num
+<div align="center">
 
-Cross-platform library for converting natural raster images (like PNGs and JPEGs) into clean SVGs - fast, precise and configurable.
+<img src="https://github.com/user-attachments/assets/d75b402e-03af-403f-8637-f9eb8a24c8c0" alt="Logo" height="100px" />
 
-<p align="center">
-  <a href="https://www.npmjs.org/package/img2num"><img src="https://img.shields.io/npm/v/img2num.svg?style=flat-square" alt="npm version" /></a>
-  <a href="https://github.com/img2num/img2num/actions/workflows/release.yml"><img src="https://img.shields.io/github/actions/workflow/status/Ryan-Millard/Img2Num/release.yml?branch=main&label=CI&logo=github&style=flat-square" alt="Build status" /></a>
-  <a href="https://packagephobia.now.sh/result?p=img2num"><img src="https://img.shields.io/badge/dynamic/json?url=https://packagephobia.com/v2/api.json?p=img2num&query=$.install.pretty&label=install%20size&style=flat-square" alt="Install size" /></a>
-  <a href="https://npm-stat.com/charts.html?package=img2num"><img src="https://img.shields.io/npm/dm/img2num.svg?style=flat-square" alt="npm downloads" /></a>
-  <a href="https://www.codetriage.com/Ryan-Millard/img2num"><img src="https://www.codetriage.com/ryan-millard/img2num/badges/users.svg" alt="Code helpers" /></a>
-  <a href="https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License" /></a>
-</p>
+# Img2Num
+
+_Img2Num_ is a fast and accurate raster vectorizer. 
+
+It converts raster images (like PNGs and JPGs) into clean SVGs with _high accuracy and performance_.
+
+<sub>_Img2Num_ is **optimized for natural images**.</sub>
+
+![Status](https://img.shields.io/badge/status-active_development-brightgreen?logo=github)
+
+[![Deploy to GitHub Pages](https://github.com/Ryan-Millard/Img2Num/actions/workflows/deploy.yml/badge.svg)](https://github.com/Ryan-Millard/Img2Num/actions/workflows/deploy.yml)
+[![Multi-Language Release Generation](https://github.com/Ryan-Millard/Img2Num/actions/workflows/release.yml/badge.svg)](https://github.com/Ryan-Millard/Img2Num/actions/workflows/release.yml)
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE)
+[![Contributors](https://img.shields.io/github/contributors/Ryan-Millard/Img2Num)](https://github.com/Ryan-Millard/Img2Num/graphs/contributors)
+[![Stars](https://img.shields.io/github/stars/Ryan-Millard/Img2Num?style=social)](https://github.com/Ryan-Millard/Img2Num)
+[![Docker Pulls](https://img.shields.io/docker/pulls/ryanmillard/img2num-dev)](https://hub.docker.com/repository/docker/ryanmillard/img2num-dev/general)
+[![Open in Codespaces](https://img.shields.io/badge/-Open%20in%20Codespaces-black?logo=github)](https://codespaces.new/Ryan-Millard/Img2Num)
+[![Docs](https://img.shields.io/badge/docs-full-blue?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/docs/)
+[![Changelog](https://img.shields.io/badge/changelog-full-orange?logo=git&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/changelog/)
+
+
+</div>
 
 ## Supported Runtimes
 
-- **Browsers** — via Web Workers
-- **Node.js** — supported (`node >= 14`), uses `worker_threads` with WebGPU via Dawn
+![Browsers](https://img.shields.io/badge/Browsers-Modern_Browsers-4CAF50?logo=googlechrome&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-%3E%3D14-339933?logo=nodedotjs&logoColor=white)
 
-> **ESM only.** This package uses `"type": "module"` and has no CommonJS entry point.
+> [!CAUTION]
+>  This package currently supports **ESM only.** [#483](https://github.com/Ryan-Millard/Img2Num/issues/483) tracks this fix.
 
 ## Installation
 
@@ -38,63 +54,44 @@ bun add img2num
 
 ## Browser Usage (CDN)
 
-> IMPORTANT: This is browser-only usage.
+> [!IMPORTANT]
+>  This approach only works in Browsers.
 
 ### jsDelivr CDN
 [![jsDelivr](https://img.shields.io/badge/CDN-jsDelivr-ff5627?logo=jsdelivr&logoColor=white)](https://www.jsdelivr.com/package/npm/img2num)
-<!-- IMPORTANT: this is browser-only -->
+
 ```html
+<!-- IMPORTANT: this is browser-only -->
 <script src="https://cdn.jsdelivr.net/npm/img2num@0.2.0/dist/browser/img2num.js"></script>
 ```
 ### unpkg CDN
 [![unpkg](https://img.shields.io/badge/CDN-unpkg-red?logo=npm&logoColor=white)](https://app.unpkg.com/img2num@0.2.0)
-<!-- IMPORTANT: this is browser-only -->
+
 ```html
+<!-- IMPORTANT: this is browser-only -->
 <script src="https://unpkg.com/img2num@0.2.0/dist/browser/img2num.js"></script>
 ```
 
 ## Quick Start
 
 ### All-in-one (recommended)
-
 ```js
 import { imageToUint8ClampedArray, imageToSvg } from "img2num";
-
+// Browsers:
 const { pixels, width, height } = await imageToUint8ClampedArray(file);
+// Node.js equivalent:
+// const { data, info } = await sharp(imagePath).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+// const { width, height } = info;
 const { svg } = await imageToSvg({ pixels, width, height });
 
-console.log(svg); // SVG string
 ```
 
-### Step-by-step pipeline
-
-```js
-import {
-  imageToUint8ClampedArray,
-  bilateralFilter,
-  kmeans,
-  findContours,
-} from "img2num";
-
-const { pixels, width, height } = await imageToUint8ClampedArray(file);
-
-const filtered = await bilateralFilter({ pixels, width, height });
-
-const { labels } = await kmeans({
-  pixels: filtered,
-  width,
-  height,
-  num_colors: 16,
-});
-
-const { svg } = await findContours({ pixels: filtered, labels, width, height });
-```
-
-> **Note:** `imageToUint8ClampedArray` uses browser APIs (`Image`, `canvas`) and is only available in browser environments. In Node.js, use a library like `sharp` to decode images to a `Uint8ClampedArray` in RGBA format before passing to the WASM functions.
+> [!NOTE]
+> `imageToUint8ClampedArray` uses browser APIs (`Image`, `canvas`) and is only available in browser environments. In Node.js, use a library like [`sharp`](https://www.npmjs.com/package/sharp) to decode images to a `Uint8ClampedArray` in RGBA format before passing to the WASM functions.
 
 ## API Reference
 
-All WASM-backed functions are `async` and return Promises. For full details see the [JavaScript API reference](https://ryan-millard.github.io/Img2Num/info/docs/next/js/api/).
+All WASM-backed functions are `async` and return Promises. For full details see the [JavaScript API reference](https://ryan-millard.github.io/Img2Num/info/docs/js/api/).
 
 ---
 
@@ -139,5 +136,4 @@ Try the [live demo (`React example`)](https://ryan-millard.github.io/Img2Num/).
     <img src="https://contrib.rocks/image?repo=Ryan-Millard/Img2Num" alt="Contributors">
   </a>
 </p>
-
 </div>
