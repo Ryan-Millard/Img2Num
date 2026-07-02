@@ -2,5 +2,5 @@
   "core": "0.2.0",
   "bindings/c": "0.2.0",
   "packages/js": "0.2.0",
-  "packages/py": "0.2.0"
+  "packages/py": "0.2.1"
 }
