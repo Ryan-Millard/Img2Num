@@ -23,13 +23,40 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 [![Docs](https://img.shields.io/badge/docs-full-blue?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/docs/)
 [![Changelog](https://img.shields.io/badge/changelog-full-orange?logo=git&logoColor=white)](https://ryan-millard.github.io/Img2Num/info/changelog/)
 
-## Before vs After
+## Contents
 
+<table>
+<tr>
+<td valign="top">
+
+- [Before vs After](#before-vs-after)
+- [Why Img2Num?](#why-img2num)
+- [Features](#features)
+- [Multi-Language Support](#multi-language-support)
+- [Community Links](#community-links)
+- [Supported Runtimes](#supported-runtimes)
+
+
+</td>
+<td valign="top">
+  
+- [Installation](#installation)
+- [Browser Usage (CDN)](#browser-usage-cdn)
+- [Quick Start](#quick-start)
+- [API Reference](#api-reference)
+- [Navigating WebAssembly](#navigating-webassembly)
+- [Examples](#examples)
+
+</td>
+</tr>
+</table>
+
+## Before vs After
 | Input (Original Raster) | Output (SVG) |
 |----------|------------------|
-| <img src="docs/static/img/readme-demo/aerial-view-mountains_pexels-pixabay-51373.jpg" width="300" alt="Original input raster image (Aerial view of mountains)"> | <img src="docs/static/img/readme-demo/output-aerial-view-mountains_pexels-pixabay-51373.svg" width="300" alt="Final output SVG image (Aerial view of mountains)"> |
-| <img src="docs/static/img/readme-demo/margate-garden.jpg" width="300" alt="Original input raster image (A garden in Margate, South Africa)" /> | <img width="300" alt="Final output SVG image (A garden in Margate, South Africa)" src="docs/static/img/readme-demo/output-margate-garden.svg" /> |
-| <img src="docs/static/img/readme-demo/ring-on-hand.jpg" width="300" alt="Original input raster image (A ring on a woman's hand)" /> | <img width="300" alt="Final output SVG image  (A ring on a woman's hand)" src="docs/static/img/readme-demo/output-ring-on-hand.svg" /> |
+| <img src="https://github.com/Ryan-Millard/Img2Num/blob/2e71ee9c2018bba9dc214f0d58b3cadfb0a4fe2f/docs/static/img/readme-demo/aerial-view-mountains_pexels-pixabay-51373.jpg" width="300" alt="Original input raster image (Aerial view of mountains)"> | <img src="https://github.com/Ryan-Millard/Img2Num/blob/2e71ee9c2018bba9dc214f0d58b3cadfb0a4fe2f/docs/static/img/readme-demo/output-aerial-view-mountains_pexels-pixabay-51373.svg" width="300" alt="Final output SVG image (Aerial view of mountains)"> |
+| <img src="https://github.com/Ryan-Millard/Img2Num/blob/2e71ee9c2018bba9dc214f0d58b3cadfb0a4fe2f/docs/static/img/readme-demo/margate-garden.jpg" width="300" alt="Original input raster image (A garden in Margate, South Africa)" /> | <img width="300" alt="Final output SVG image (A garden in Margate, South Africa)" src="https://github.com/Ryan-Millard/Img2Num/blob/2e71ee9c2018bba9dc214f0d58b3cadfb0a4fe2f/docs/static/img/readme-demo/output-margate-garden.svg" /> |
+| <img src="https://github.com/Ryan-Millard/Img2Num/blob/2e71ee9c2018bba9dc214f0d58b3cadfb0a4fe2f/docs/static/img/readme-demo/ring-on-hand.jpg" width="300" alt="Original input raster image (A ring on a woman's hand)" /> | <img width="300" alt="Final output SVG image  (A ring on a woman's hand)" src="https://github.com/Ryan-Millard/Img2Num/blob/2e71ee9c2018bba9dc214f0d58b3cadfb0a4fe2f/docs/static/img/readme-demo/output-ring-on-hand.svg" /> |
 
 ### What are you waiting for?
 
@@ -63,6 +90,7 @@ Try our [image to color-by-number demo](https://ryan-millard.github.io/Img2Num/)
   - **C** - lightweight C API (add as a submodule)
   - **Python** (`pip install img2num`) - NumPy arrays in, SVG strings out
   - **JavaScript** (`npm i img2num`) - same C++ core compiled to WebAssembly, works in browser and Node
+- **WebAssembly-powered** - The native C++ core is compiled to WebAssembly (WASM) for high-performance execution in browsers.
 - **Zero-copy bindings** - Direct memory access via NumPy in Python and TypedArrays in JS, avoiding unnecessary data copying.
 - **Minimal dependencies** - Core library built for speed with only one external runtime dependency (Google's [Dawn](https://dawn.googlesource.com/dawn)).
 - **Cross-platform CI** - Tested on Linux, macOS, Windows, and WASM.
@@ -151,7 +179,7 @@ const { svg } = await imageToSvg({ pixels, width, height });
 
 ## API Reference
 
-All WASM-backed functions are `async` and return Promises. For full details see the [JavaScript API reference](https://ryan-millard.github.io/Img2Num/info/docs/js/api/).
+All WebAssembly-backed functions are `async` and return Promises. For full details see the [JavaScript API reference](https://ryan-millard.github.io/Img2Num/info/docs/js/api/).
 
 ---
 
@@ -184,11 +212,17 @@ Try the [live demo (`React example`)](https://ryan-millard.github.io/Img2Num/).
 <div align="center">
 
 <p>
+  <a href="https://github.com/Ryan-Millard/Img2Num">GitHub</a>
+  &middot;
   <a href="https://ryan-millard.github.io/Img2Num/info/docs/">Documentation</a>
   &middot;
   <a href="https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/CHANGELOG.md">Changelog</a>
   &middot;
-  <a href="https://github.com/Ryan-Millard/Img2Num">GitHub</a>
+  <a href="https://github.com/Ryan-Millard/Img2Num/issues">Issues</a>
+  &middot;
+  <a href="https://github.com/Ryan-Millard/Img2Num/discussions">Discussions</a>
+  &middot;
+  <a href="https://ryan-millard.github.io/Img2Num/info/blog/">Blog</a>
 </p>
 
 <p>
