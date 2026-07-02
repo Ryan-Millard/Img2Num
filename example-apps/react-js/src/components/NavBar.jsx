@@ -16,7 +16,7 @@ const INTERNAL_LINKS = [
 ];
 
 const EXTERNAL_LINKS = [
-  { href: "https://ryan-millard.github.io/Img2Num/info/", label: "Docs", icon: Info, tooltip: "View documentation" },
+  { href: "https://ryan-millard.github.io/Img2Num/", label: "Docs", icon: Info, tooltip: "View documentation" },
   {
     href: "https://github.com/Ryan-Millard/Img2Num",
     label: "GitHub",
@@ -40,7 +40,7 @@ export default function NavBar() {
         {/* Logo */}
         <Tooltip content="Go to home page">
           <Link to="/" className={styles.logo} onClick={closeMenu}>
-            <img src="/Img2Num/favicon.svg" alt="" className={styles.logoIcon} />
+            <img src="/Img2Num/example-apps/react-js/favicon.svg" alt="" className={styles.logoIcon} />
             <span>Img2Num</span>
           </Link>
         </Tooltip>

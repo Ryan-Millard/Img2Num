@@ -31,7 +31,7 @@ describe("NavBar", () => {
     it("should render the logo with correct text and link", () => {
       renderWithRouter(<NavBar />);
 
-      const logo = screen.getByRole("link", { name: /Img2Num/i });
+      const logo = screen.getByRole("link", { name: /Img2Num/example-apps/react-js/i });
       expect(logo).toBeInTheDocument();
       expect(logo).toHaveAttribute("href", "/");
       expect(screen.getByText("Img2Num")).toBeInTheDocument();
@@ -231,7 +231,7 @@ describe("NavBar", () => {
       });
 
       // Click logo
-      const logo = screen.getByRole("link", { name: /Img2Num/i });
+      const logo = screen.getByRole("link", { name: /Img2Num/example-apps/react-js/i });
       fireEvent.click(logo);
 
       await waitFor(() => {
@@ -326,7 +326,7 @@ describe("NavBar", () => {
       const docsLink = screen.getByRole("menuitem", { name: /docs/i });
       const githubLink = screen.getByRole("menuitem", { name: /github/i });
 
-      expect(docsLink).toHaveAttribute("href", "https://ryan-millard.github.io/Img2Num/info/");
+      expect(docsLink).toHaveAttribute("href", "https://ryan-millard.github.io/Img2Num/");
       expect(githubLink).toHaveAttribute("href", "https://github.com/Ryan-Millard/Img2Num");
     });
   });

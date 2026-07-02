@@ -17,7 +17,7 @@ export default function DependencyCreditsCard() {
   const [devDepPage, setDevDepPage] = useState(0);
 
   useEffect(() => {
-    const url = "https://raw.githubusercontent.com/Ryan-Millard/Img2Num/main/package.json";
+    const url = "https://raw.githubusercontent.com/Ryan-Millard/Img2Num/main/example-apps/react-js/package.json";
 
     fetch(url)
       .then((res) => res.json())
