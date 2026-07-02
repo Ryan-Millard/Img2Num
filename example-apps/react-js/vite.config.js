@@ -3,7 +3,6 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { imagetools } from "vite-imagetools";
 import generateContributorCreditsPlugin from "./scripts/generate-contributor-credits-json.js";
-import VitePluginSitemap from "vite-plugin-sitemap";
 import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
@@ -27,10 +26,6 @@ export default defineConfig({
   plugins: [
     react(),
     imagetools(),
-    VitePluginSitemap({
-      hostname: "https://ryan-millard.github.io/Img2Num",
-      dynamicRoutes: ["/", "/credits"],
-    }),
     generateContributorCreditsPlugin(),
     svgr(),
   ],
