@@ -1,5 +1,8 @@
 ---
+id: code-of-conduct
 title: Code of Conduct
+sidebar_position: 1
+sidebar_label: 📄 Code of Conduct
 ---
 
 ## Our Pledge
