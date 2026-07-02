@@ -52,7 +52,7 @@ const config = {
   url: "https://ryan-millard.github.io/",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/Img2Num/info/",
+  baseUrl: "/Img2Num/",
 
   // GitHub Pages fix: canonical URL with trailing slash
   trailingSlash: true,
@@ -184,7 +184,7 @@ const config = {
 
       announcementBar: {
         id: "docs-refactor-notice",
-        content: `⚠️ Some documentation pages are incomplete due to a recent refactor. <a href="/Img2Num/info/notices/refactor-notice">Learn more</a>.`,
+        content: `⚠️ Some documentation pages are incomplete due to a recent refactor. <a href="/Img2Num/notices/refactor-notice">Learn more</a>.`,
         backgroundColor: "#fdfd96", // light background
         textColor: "#091E42", // dark text
         isCloseable: true,

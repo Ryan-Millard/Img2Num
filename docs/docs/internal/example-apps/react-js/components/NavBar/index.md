@@ -208,7 +208,7 @@ const INTERNAL_LINKS = [
 ];
 
 const EXTERNAL_LINKS = [
-  { href: "https://ryan-millard.github.io/Img2Num/info/", label: "Docs", icon: Info, tooltip: "View documentation" },
+  { href: "https://ryan-millard.github.io/Img2Num/", label: "Docs", icon: Info, tooltip: "View documentation" },
   {
     href: "https://github.com/Ryan-Millard/Img2Num",
     label: "GitHub",

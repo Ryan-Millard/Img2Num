@@ -3,11 +3,10 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { imagetools } from "vite-imagetools";
 import generateContributorCreditsPlugin from "./scripts/generate-contributor-credits-json.js";
-import VitePluginSitemap from "vite-plugin-sitemap";
 import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
-  base: "/Img2Num/", // important for GitHub Pages
+  base: "/Img2Num/example-apps/react-js/", // important for GitHub Pages
   server: {
     host: "0.0.0.0", // Allow connections from outside Docker
     port: 5173, // Match docker-compose port
@@ -27,10 +26,6 @@ export default defineConfig({
   plugins: [
     react(),
     imagetools(),
-    VitePluginSitemap({
-      hostname: "https://ryan-millard.github.io/Img2Num",
-      dynamicRoutes: ["/", "/credits"],
-    }),
     generateContributorCreditsPlugin(),
     svgr(),
   ],
@@ -43,5 +38,6 @@ export default defineConfig({
       // Tells the bundler to ignore these when building for the web browser
       external: ["webgpu", "worker_threads", "url", "path", "fs"],
     },
+    outDir: "../../docs/static/example-apps/react-js",
   },
 });

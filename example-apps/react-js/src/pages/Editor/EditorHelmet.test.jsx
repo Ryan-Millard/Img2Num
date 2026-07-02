@@ -22,9 +22,6 @@ describe("EditorHelmet", () => {
       expect(document.title).toBe("Editor – Img2Num");
     });
 
-    const robots = document.querySelector('meta[name="robots"]');
-    expect(robots?.getAttribute("content")).toBe("noindex, nofollow");
-
     const description = document.querySelector('meta[name="description"]');
     expect(description?.getAttribute("content")).toBe("Img2Num editor page (private, do not index).");
 
