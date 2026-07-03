@@ -11,6 +11,9 @@ allowBuilds:
   sharp: true
   webgpu: true
 
+minimumReleaseAgeExclude:
+  - lucide-react@1.22.0
+
 onlyBuiltDependencies:
   - "@swc/core"
   - core-js

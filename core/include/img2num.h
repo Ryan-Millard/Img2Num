@@ -18,7 +18,6 @@ namespace img2num {
 /// @brief Configuration options for image_to_svg.
 /// @ingroup IMG2NUM_H
 struct ImageToSvgConfig {
-
     /// Configuration settings for the bilateral filter in image_to_svg.
     struct BilateralFilterConfig {
         /// Standard deviation for spatial Gaussian (proximity weight).
