@@ -183,10 +183,11 @@ const config = {
       },
 
       announcementBar: {
-        id: "docs-refactor-notice",
-        content: `⚠️ Some documentation pages are incomplete due to a recent refactor. <a href="/Img2Num/notices/refactor-notice">Learn more</a>.`,
-        backgroundColor: "#fdfd96", // light background
-        textColor: "#091E42", // dark text
+        id: 'support_us', // Unique ID
+        content:
+        '⚠️Some links may be broken. If you find any, please let us know on <a href="https://github.com/Ryan-Millard/Img2Num/issues/404" target="_blank" rel="noopener noreferrer">issue #404</a>. Thank you!',
+        backgroundColor: 'var(--accent)',
+        textColor: 'var(--white)',
         isCloseable: true,
       },
 
