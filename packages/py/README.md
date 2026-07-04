@@ -4,7 +4,7 @@
 
 # Img2Num
 
-_Img2Num_ is a fast and accurate raster vectorizer. 
+_Img2Num_ is a fast and accurate raster vectorizer.
 
 It converts raster images (like PNGs and JPGs) into clean SVGs with _high accuracy and performance_.
 
@@ -42,7 +42,6 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 - [Quick Start](#quick-start)
 - [API Reference](#api-reference)
 - [Examples](#examples)
-- [Development](#development)
 - [Building and Publishing](#building-and-publishing)
 
 </td>
@@ -124,8 +123,9 @@ pip install img2num
 
 ## Quick Start
 
+
 > [!Important]
-> Input images must be RGBA `uint8` arrays with shape `(H, W, 4)`.
+> Input images must be 4 channel `uint8` arrays with channel order RGBA
 
 ### All-in-one (recommended)
 
@@ -152,25 +152,6 @@ For full API details see the [Python API reference](https://ryan-millard.github.
 ## Examples
 
 - **Console app:** [`example-apps/console-py`](https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps/console-py)
-- **Live demo:** [ryan-millard.github.io/Img2Num](https://ryan-millard.github.io/Img2Num/)
-
-## Development
-
-```bash
-# Create and activate a virtual environment
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-
-# Install dev dependencies
-pip install -e ".[dev]"
-
-# Lint
-ruff check .
-
-# Smoke check (after building)
-just build py
-python -c "import img2num; print('OK')"
-```
 
 > A formal test suite is not yet present. Verification is done via linting and build/import smoke checks.
 
