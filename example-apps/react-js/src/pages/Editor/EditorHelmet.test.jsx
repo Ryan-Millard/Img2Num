@@ -26,6 +26,6 @@ describe("EditorHelmet", () => {
     expect(description?.getAttribute("content")).toBe("Img2Num editor page (private, do not index).");
 
     const canonical = document.querySelector('link[rel="canonical"]');
-    expect(canonical?.getAttribute("href")).toBe("https://ryan-millard.github.io/Img2Num/editor");
+    expect(canonical?.getAttribute("href")).toBe("https://ryan-millard.github.io/Img2Num/example-apps/react-js/editor");
   });
 });

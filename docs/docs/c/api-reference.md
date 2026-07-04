@@ -10,10 +10,10 @@ import FullscreenIframe from "@site/src/components/FullscreenIframe";
 
 export const DocsLink = () => (
   <a
-    href="/Img2Num/info/docs/c/api/"
+    href="/Img2Num/docs/c/api/"
     onClick={(e) => {
       e.preventDefault();
-      window.location.href = "/Img2Num/info/docs/c/api/";
+      window.location.href = "/Img2Num/docs/c/api/";
     }}
   >
     {" "}
@@ -24,8 +24,8 @@ export const DocsLink = () => (
 > Don't like iframes?
 > Visit the{' '} <DocsLink /> directly.
 
-<FullscreenIframe src="/Img2Num/info/docs/c/api/" title="C API Reference (Doxygen)" />
+<FullscreenIframe src="/Img2Num/docs/c/api/" title="C API Reference (Doxygen)" />
 
 ## About this page
 
-This page is a direct proxy for the{' '} <a href="/Img2Num/info/docs/c/api/" onClick={(e) => { e.preventDefault(); window.location.href = "/Img2Num/info/docs/c/api/"; }}> Doxygen documentation </a> generated from the C core directory.
+This page is a direct proxy for the{' '} <a href="/Img2Num/docs/c/api/" onClick={(e) => { e.preventDefault(); window.location.href = "/Img2Num/docs/c/api/"; }}> Doxygen documentation </a> generated from the C core directory.

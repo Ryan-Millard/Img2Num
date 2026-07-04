@@ -8,7 +8,7 @@ sidebar_position: 1
 
 Img2Num is a lightweight, high-performance library for converting raster images to SVGs with ease and speed.
 
-[![Docs](https://img.shields.io/badge/docs-full-blue?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/docs/next/)
+[![Docs](https://img.shields.io/badge/docs-full-blue?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/docs/)
 [![Changelog](https://img.shields.io/badge/changelog-full-orange?logo=git&logoColor=white)](https://ryan-millard.github.io/Img2Num/changelog/)
 
 ## Quick Overview
