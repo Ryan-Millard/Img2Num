@@ -23,12 +23,7 @@ export default defineConfig({
       "@data": path.resolve(__dirname, "src/data"),
     },
   },
-  plugins: [
-    react(),
-    imagetools(),
-    generateContributorCreditsPlugin(),
-    svgr(),
-  ],
+  plugins: [react(), imagetools(), generateContributorCreditsPlugin(), svgr()],
   worker: {
     format: "es", // Keeps your top-level awaits working
   },
