@@ -6,6 +6,9 @@ on:
       image:
         required: true
         type: string
+      wasm-artifacts-path:
+        required: true
+        type: string
     secrets:
       ALGOLIA_APP_ID:
         required: true
