@@ -30,13 +30,7 @@ jobs:
     uses: ./.github/workflows/cmake-build.yml
     with:
       image: ${{ needs.setup.outputs.image }}
-  build-react-app:
-    name: Build React App
-    uses: ./.github/workflows/build-react-app.yml
-    needs: [cmake-build, wait-for-image, setup]
-    with:
-      wasm-artifacts-path: packages/js/build-wasm/
-      image: ${{ needs.setup.outputs.image }}
+
   build-docs:
     name: Build Documentation Site
     needs: [wait-for-image, setup]
@@ -50,15 +44,9 @@ jobs:
 
   deploy:
     name: Deploy site to GH Pages
-    needs: [build-react-app, build-docs, wait-for-image]
+    needs: [build-docs, wait-for-image]
     runs-on: ubuntu-latest
     steps:
-      - name: Download React build artifacts
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
-        with:
-          name: react-build
-          path: ./new-react-build
-
       - name: Download Docs build artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
@@ -67,12 +55,11 @@ jobs:
 
       - name: Prepare built assets
         run: |
-          mkdir -p ./new-build/info
+          mkdir -p ./new-build
           # We could just mv, but cp keeps the structure and works like a log for debugging if necessary
-          cp -r ./new-react-build/* ./new-build
-          cp -r ./new-docs-build/* ./new-build/info
+          cp -r ./new-docs-build/* ./new-build
 
-      - name: Deploy React App
+      - name: Deploy Website
         uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -81,4 +68,4 @@ jobs:
           user_email: "github-actions[bot]@users.noreply.github.com"
 
       - name: Clean temp folders
-        run: rm -rf ./new-react-build ./new-docs-build
+        run: rm -rf ./new-docs-build

@@ -104,18 +104,11 @@ jobs:
     with:
       image: ${{ needs.set-image.outputs.image }}
 
-  build-react-app:
-    name: Build React App
-    uses: ./.github/workflows/build-react-app.yml
-    needs: [set-image, cmake-build]
-    with:
-      image: ${{ needs.set-image.outputs.image }}
-      wasm-artifacts-path: packages/js/build-wasm/
-
+  # Docs now builds react app internally
   build-docs:
     name: Build Documentation Site
     uses: ./.github/workflows/build-docs.yml
-    needs: [set-image]
+    needs: [set-image, cmake-build]
     with:
       image: ${{ needs.set-image.outputs.image }}
     secrets:

@@ -29,7 +29,18 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
 
       - name: Install Dependendencies
-        run: pnpm --filter docs install
+        run: pnpm install
+
+      - name: Download WASM artifacts
+        if: ${{ inputs.wasm-artifacts-path }}
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: wasm-build
+          path: ${{ inputs.wasm-artifacts-path }}
+
+      - name: Build packages/js
+        # Only build for browser since that is all we need here
+        run: pnpm -F img2num build:browser
 
       - name: Build Docusaurus
         env:
