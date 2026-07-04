@@ -111,6 +111,7 @@ jobs:
     needs: [set-image, cmake-build]
     with:
       image: ${{ needs.set-image.outputs.image }}
+      wasm-artifacts-path: packages/js/build-wasm/
     secrets:
       ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
       ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
