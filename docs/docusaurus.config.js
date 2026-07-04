@@ -183,11 +183,11 @@ const config = {
       },
 
       announcementBar: {
-        id: 'support_us', // Unique ID
-        content:
-        '⚠️Some links may be broken. If you find any, please let us know on <a href="https://github.com/Ryan-Millard/Img2Num/issues/404" target="_blank" rel="noopener noreferrer">issue #404</a>. Thank you!',
-        backgroundColor: 'var(--accent)',
-        textColor: 'var(--white)',
+        id: "support_us", // Unique ID
+        content: `⚠️Some links may be broken. If you find any, please let us know on
+<a href="https://github.com/Ryan-Millard/Img2Num/issues/404" target="_blank" rel="noopener noreferrer">issue #404</a>. Thank you!`,
+        backgroundColor: "var(--accent)",
+        textColor: "var(--white)",
         isCloseable: true,
       },
 
