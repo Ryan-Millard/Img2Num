@@ -29,6 +29,6 @@ describe("EditorHelmet", () => {
     expect(robots?.getAttribute("content")).toBe("noindex, nofollow");
 
     const canonical = document.querySelector('link[rel="canonical"]');
-    expect(canonical?.getAttribute("href")).toBe("https://ryan-millard.github.io/Img2Num/example-apps/react-js/editor");
+    expect(canonical?.getAttribute("href")).toBe("https://img2num.dev/example-apps/react-js/editor");
   });
 });

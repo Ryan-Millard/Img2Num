@@ -10,13 +10,13 @@ import FullscreenIframe from '@site/src/components/FullscreenIframe';
 
 > Don't like iframes?
 Visit the{' '}
-<a href="/Img2Num/docs/internal/bindings/js/api/" onClick={(e) => { e.preventDefault(); window.location.href = "/Img2Num/docs/internal/bindings/js/api/"; }}> Doxygen documentation </a>{' '} directly.
+<a href="/docs/internal/bindings/js/api/" onClick={(e) => { e.preventDefault(); window.location.href = "/docs/internal/bindings/js/api/"; }}> Doxygen documentation </a>{' '} directly.
 
 <FullscreenIframe
-  src="/Img2Num/docs/internal/bindings/js/api/"
+  src="/docs/internal/bindings/js/api/"
   title="JS/WASM API Reference (Doxygen)"
 />
 
 ## About this page
 
-This page is a direct proxy for the{' '} <a href="/Img2Num/docs/internal/bindings/js/api/" onClick={(e) => { e.preventDefault(); window.location.href = "/Img2Num/docs/internal/bindings/js/api/"; }}> Doxygen documentation </a> generated from the `bindings/js` directory.
+This page is a direct proxy for the{' '} <a href="/docs/internal/bindings/js/api/" onClick={(e) => { e.preventDefault(); window.location.href = "/docs/internal/bindings/js/api/"; }}> Doxygen documentation </a> generated from the `bindings/js` directory.

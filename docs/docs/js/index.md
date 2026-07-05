@@ -180,7 +180,7 @@ writeFileSync("output.svg", svg);
 
 - [Documentation](/docs/js/docs/)
 - [GitHub repository](https://github.com/Ryan-Millard/Img2Num)
-- [React demo app](https://ryan-millard.github.io/Img2Num/example-apps/react-js/)
+- [React demo app](https://img2num.dev/example-apps/react-js/)
 
 ## License
 

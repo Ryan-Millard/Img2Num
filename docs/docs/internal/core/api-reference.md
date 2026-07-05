@@ -10,13 +10,13 @@ import FullscreenIframe from '@site/src/components/FullscreenIframe';
 
 > Don't like iframes?
 Visit the{' '}
-<a href="/Img2Num/docs/internal/core/api/" onClick={(e) => { e.preventDefault(); window.location.href = "/Img2Num/docs/internal/core/api/"; }}> Doxygen documentation </a>{' '} directly.
+<a href="/docs/internal/core/api/" onClick={(e) => { e.preventDefault(); window.location.href = "/docs/internal/core/api/"; }}> Doxygen documentation </a>{' '} directly.
 
 <FullscreenIframe
-  src="/Img2Num/docs/internal/core/api/"
+  src="/docs/internal/core/api/"
   title="C++ API Reference (Doxygen)"
 />
 
 ## About this page
 
-This page is a direct proxy for the{' '} <a href="/Img2Num/docs/internal/core/api/" onClick={(e) => { e.preventDefault(); window.location.href = "/Img2Num/docs/internal/core/api/"; }}> Doxygen documentation </a> generated from the C++ core directory.
+This page is a direct proxy for the{' '} <a href="/docs/internal/core/api/" onClick={(e) => { e.preventDefault(); window.location.href = "/docs/internal/core/api/"; }}> Doxygen documentation </a> generated from the C++ core directory.
