@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.1](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.2.0...packages-js-v0.2.1) (2026-07-05)
+
+
+### 🐛 Bug Fixes
+
+* **ImageToUint8Array:** memory leak and silent failure ([#487](https://github.com/Ryan-Millard/Img2Num/issues/487)) ([0eb0598](https://github.com/Ryan-Millard/Img2Num/commit/0eb0598ec64ce6859946f79b89a554da87717f9c))
+
+
+### 📚 Documentation
+
+* **packages/js:** add README for npm package ([#466](https://github.com/Ryan-Millard/Img2Num/issues/466)) ([f193a54](https://github.com/Ryan-Millard/Img2Num/commit/f193a543f872b60a735706c1b5c1d6671c31563b))
+
 ## [0.2.0](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.1.0...packages-js-v0.2.0) (2026-06-27)
 
 
