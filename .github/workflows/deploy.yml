@@ -33,7 +33,7 @@ jobs:
 
   build-docs:
     name: Build Documentation Site
-    needs: [wait-for-image, setup]
+    needs: [wait-for-image, setup, cmake-build]
     uses: ./.github/workflows/build-docs.yml
     with:
       image: ${{ needs.setup.outputs.image }}
