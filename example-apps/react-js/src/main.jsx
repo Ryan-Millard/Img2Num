@@ -9,7 +9,7 @@ import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter basename="/Img2Num/">
+    <BrowserRouter basename="/Img2Num/example-apps/react-js/">
       <QueryClientProvider client={queryClient}>
         <HelmetProvider>
           <App />

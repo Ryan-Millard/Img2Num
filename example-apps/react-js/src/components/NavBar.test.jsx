@@ -326,7 +326,7 @@ describe("NavBar", () => {
       const docsLink = screen.getByRole("menuitem", { name: /docs/i });
       const githubLink = screen.getByRole("menuitem", { name: /github/i });
 
-      expect(docsLink).toHaveAttribute("href", "https://ryan-millard.github.io/Img2Num/info/");
+      expect(docsLink).toHaveAttribute("href", "https://ryan-millard.github.io/Img2Num/");
       expect(githubLink).toHaveAttribute("href", "https://github.com/Ryan-Millard/Img2Num");
     });
   });

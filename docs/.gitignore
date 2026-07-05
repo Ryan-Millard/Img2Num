@@ -1,11 +1,15 @@
 # Dependencies
 node_modules
+
+# Static files
 /static/docs/internal/**/api/*
 !/static/docs/internal/**/api/.gitkeep
 /static/docs/cpp/api/*
 !/static/docs/cpp/api/.gitkeep
 /static/docs/c/api/*
 !/static/docs/c/api/.gitkeep
+/static/example-apps/react-js/*
+!/static/example-apps/react-js/.gitkeep
 
 # Production
 /build

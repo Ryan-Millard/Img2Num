@@ -104,20 +104,14 @@ jobs:
     with:
       image: ${{ needs.set-image.outputs.image }}
 
-  build-react-app:
-    name: Build React App
-    uses: ./.github/workflows/build-react-app.yml
+  # Docs now builds react app internally
+  build-docs:
+    name: Build Documentation Site
+    uses: ./.github/workflows/build-docs.yml
     needs: [set-image, cmake-build]
     with:
       image: ${{ needs.set-image.outputs.image }}
       wasm-artifacts-path: packages/js/build-wasm/
-
-  build-docs:
-    name: Build Documentation Site
-    uses: ./.github/workflows/build-docs.yml
-    needs: [set-image]
-    with:
-      image: ${{ needs.set-image.outputs.image }}
     secrets:
       ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
       ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}

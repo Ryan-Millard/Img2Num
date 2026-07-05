@@ -42,6 +42,5 @@ packages/py
 
 docs/.docusaurus
 docs/build/
-docs/static/js/api.json
-docs/static/docs
+docs/static/*
 docs/docs/js/api/

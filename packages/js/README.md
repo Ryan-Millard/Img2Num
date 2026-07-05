@@ -27,39 +27,41 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 
 <table>
 <tr>
-<td valign="center">
+<td valign="top">
 
 - [Before vs After](#before-vs-after)
 - [Why Img2Num?](#why-img2num)
 - [Features](#features)
 - [Multi-Language Support](#multi-language-support)
 - [Community Links](#community-links)
+- [Supported Runtimes](#supported-runtimes)
+
 
 </td>
-<td valign="center">
-
+<td valign="top">
+  
+- [Installation](#installation)
+- [Browser Usage (CDN)](#browser-usage-cdn)
 - [Quick Start](#quick-start)
-- [License](#license)
-- [Can't find something?](#cant-find-something)
-- [Maintainers](#maintainers)
-- [Contributors & Credits](#contributors--credits)
+- [API Reference](#api-reference)
+- [Navigating WebAssembly](#navigating-webassembly)
+- [Examples](#examples)
 
 </td>
 </tr>
 </table>
 
 ## Before vs After
-
 | Input (Original Raster) | Output (SVG) |
 |----------|------------------|
-| <img src="docs/static/img/readme-demo/aerial-view-mountains_pexels-pixabay-51373.jpg" width="300" alt="Original input raster image (Aerial view of mountains)"> | <img src="docs/static/img/readme-demo/output-aerial-view-mountains_pexels-pixabay-51373.svg" width="300" alt="Final output SVG image (Aerial view of mountains)"> |
-| <img src="docs/static/img/readme-demo/margate-garden.jpg" width="300" alt="Original input raster image (A garden in Margate, South Africa)" /> | <img width="300" alt="Final output SVG image (A garden in Margate, South Africa)" src="docs/static/img/readme-demo/output-margate-garden.svg" /> |
-| <img src="docs/static/img/readme-demo/ring-on-hand.jpg" width="300" alt="Original input raster image (A ring on a woman's hand)" /> | <img width="300" alt="Final output SVG image  (A ring on a woman's hand)" src="docs/static/img/readme-demo/output-ring-on-hand.svg" /> |
+| <img src="https://github.com/Ryan-Millard/Img2Num/blob/2e71ee9c2018bba9dc214f0d58b3cadfb0a4fe2f/docs/static/img/readme-demo/aerial-view-mountains_pexels-pixabay-51373.jpg" width="300" alt="Original input raster image (Aerial view of mountains)"> | <img src="https://github.com/Ryan-Millard/Img2Num/blob/2e71ee9c2018bba9dc214f0d58b3cadfb0a4fe2f/docs/static/img/readme-demo/output-aerial-view-mountains_pexels-pixabay-51373.svg" width="300" alt="Final output SVG image (Aerial view of mountains)"> |
+| <img src="https://github.com/Ryan-Millard/Img2Num/blob/2e71ee9c2018bba9dc214f0d58b3cadfb0a4fe2f/docs/static/img/readme-demo/margate-garden.jpg" width="300" alt="Original input raster image (A garden in Margate, South Africa)" /> | <img width="300" alt="Final output SVG image (A garden in Margate, South Africa)" src="https://github.com/Ryan-Millard/Img2Num/blob/2e71ee9c2018bba9dc214f0d58b3cadfb0a4fe2f/docs/static/img/readme-demo/output-margate-garden.svg" /> |
+| <img src="https://github.com/Ryan-Millard/Img2Num/blob/2e71ee9c2018bba9dc214f0d58b3cadfb0a4fe2f/docs/static/img/readme-demo/ring-on-hand.jpg" width="300" alt="Original input raster image (A ring on a woman's hand)" /> | <img width="300" alt="Final output SVG image  (A ring on a woman's hand)" src="https://github.com/Ryan-Millard/Img2Num/blob/2e71ee9c2018bba9dc214f0d58b3cadfb0a4fe2f/docs/static/img/readme-demo/output-ring-on-hand.svg" /> |
 
 ### What are you waiting for?
 
 Try our [image to color-by-number demo](https://ryan-millard.github.io/Img2Num/example-apps/react-js/)!
-
+<br />
 </div>
 
 > [!IMPORTANT]
@@ -76,7 +78,6 @@ Try our [image to color-by-number demo](https://ryan-millard.github.io/Img2Num/e
 
 <br />
 <br />
-<br />
 
 ## Features
 
@@ -89,6 +90,7 @@ Try our [image to color-by-number demo](https://ryan-millard.github.io/Img2Num/e
   - **C** - lightweight C API (add as a submodule)
   - **Python** (`pip install img2num`) - NumPy arrays in, SVG strings out
   - **JavaScript** (`npm i img2num`) - same C++ core compiled to WebAssembly, works in browser and Node
+- **WebAssembly-powered** - The native C++ core is compiled to WebAssembly (WASM) for high-performance execution in browsers.
 - **Zero-copy bindings** - Direct memory access via NumPy in Python and TypedArrays in JS, avoiding unnecessary data copying.
 - **Minimal dependencies** - Core library built for speed with only one external runtime dependency (Google's [Dawn](https://dawn.googlesource.com/dawn)).
 - **Cross-platform CI** - Tested on Linux, macOS, Windows, and WASM.
@@ -112,111 +114,120 @@ Try our [image to color-by-number demo](https://ryan-millard.github.io/Img2Num/e
 [![Blog](https://img.shields.io/badge/Blog-Updates-ff6f00?logo=githubpages)](https://ryan-millard.github.io/Img2Num/blog/)
 [![GitHub Discussions](https://img.shields.io/badge/discussions-join_the_chat-4c1?logo=github)](https://github.com/Ryan-Millard/Img2Num/discussions)
 
-## Quick Start
+## Supported Runtimes
 
-### C / C++
+![Browsers](https://img.shields.io/badge/Browsers-Modern_Browsers-4CAF50?logo=googlechrome&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-%3E%3D14-339933?logo=nodedotjs&logoColor=white)
 
-[![Documentation](https://img.shields.io/badge/Documentation-C-A8B9CC?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/docs/c/)
-[![Documentation](https://img.shields.io/badge/Documentation-C++-00599C?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/docs/cpp/)
+> [!CAUTION]
+>  This package currently supports **ESM only.** [#483](https://github.com/Ryan-Millard/Img2Num/issues/483) tracks this fix.
 
-This process is too detailed to put in a `README.md` file, so please see our documentation:
-- [<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" width="28" alt="C"/> Documentation](https://ryan-millard.github.io/Img2Num/docs/c/)
-- [<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" width="28" alt="C++"/> Documentation](https://ryan-millard.github.io/Img2Num/docs/cpp/)
+## Installation
 
-> [!TIP]
-> You can install the library from our GitHub releases:
-> 
-> - [C](https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c&expanded=true)
-> - [C++](https://github.com/Ryan-Millard/Img2Num/releases?q=cpp&expanded=true)
+```bash
+npm install img2num
+```
 
-### JavaScript
+```bash
+pnpm add img2num
+```
 
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="30" />
+```bash
+yarn add img2num
+```
 
-For more detailed information on installing this package, please refer to [our documentation](https://ryan-millard.github.io/Img2Num/docs/js/):
+```bash
+bun add img2num
+```
 
-[![Docs](https://img.shields.io/badge/docs-JavaScript-F7DF1E?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/docs/js/)
+## Browser Usage (CDN)
 
-#### CDN
+> [!IMPORTANT]
+>  This approach only works in Browsers.
 
-[![CDN: jsDelivr](https://img.shields.io/badge/CDN-jsDelivr-%23f7df1e?logo=jsdelivr&logoColor=black)](https://www.jsdelivr.com/package/npm/img2num)
+### jsDelivr CDN
+[![jsDelivr](https://img.shields.io/badge/CDN-jsDelivr-ff5627?logo=jsdelivr&logoColor=white)](https://www.jsdelivr.com/package/npm/img2num)
 
 ```html
 <!-- IMPORTANT: this is browser-only -->
 <script src="https://cdn.jsdelivr.net/npm/img2num@0.2.0/dist/browser/img2num.js"></script>
 ```
+### unpkg CDN
+[![unpkg](https://img.shields.io/badge/CDN-unpkg-red?logo=npm&logoColor=white)](https://app.unpkg.com/img2num@0.2.0)
 
-#### Package Manager
-
-##### Install Img2Num from npm
-
-```sh
-npm install img2num
+```html
+<!-- IMPORTANT: this is browser-only -->
+<script src="https://unpkg.com/img2num@0.2.0/dist/browser/img2num.js"></script>
 ```
 
-##### Import the Img2Num package
+## Quick Start
 
+### All-in-one (recommended)
 ```js
-import { imageToSvg } from "img2num";
+import { imageToUint8ClampedArray, imageToSvg } from "img2num";
+// Browsers:
+const { pixels, width, height } = await imageToUint8ClampedArray(file);
+// Node.js equivalent:
+// const { data, info } = await sharp(imagePath).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+// const { width, height } = info;
+const { svg } = await imageToSvg({ pixels, width, height });
+
 ```
 
-### Python
+> [!NOTE]
+> `imageToUint8ClampedArray` uses browser APIs (`Image`, `canvas`) and is only available in browser environments. In Node.js, use a library like [`sharp`](https://www.npmjs.com/package/sharp) to decode images to a `Uint8ClampedArray` in RGBA format before passing to the WASM functions.
 
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" width="30" />
+## API Reference
 
-For more detailed information on installing this package, please refer to [our documentation](https://ryan-millard.github.io/Img2Num/docs/py/):
+All WebAssembly-backed functions are `async` and return Promises. For full details see the [JavaScript API reference](https://ryan-millard.github.io/Img2Num/docs/js/api/).
 
-[![Docs](https://img.shields.io/badge/docs-Python-3776AB?logo=gitbook&logoColor=white)](https://ryan-millard.github.io/Img2Num/docs/py/)
+---
 
-#### Install Img2Num using pip
+## Navigating WebAssembly
 
-```sh
-pip install img2num
+This package ships a `.wasm` binary and a worker file. The library automatically selects the correct worker implementation for your runtime — browser Web Workers or Node.js `worker_threads`. Some bundlers need extra configuration to handle `.wasm` assets correctly:
+
+- **Vite** — add to `vite.config.js`:
+```js
+  assetsInclude: ["**/*.wasm"]
 ```
+- **Webpack 5** — enable `asyncWebAssembly: true` in `experiments`.
+- **Other bundlers** — if you run into issues, please [open an issue](https://github.com/Ryan-Millard/Img2Num/issues) so we can document the solution and help others facing the same problem.
 
-#### Import Img2Num
+We actively welcome contributions to this section — if you've configured a bundler not listed here, please open a PR to add it to our [documentation](https://ryan-millard.github.io/Img2Num/docs/).
 
-```py
-from img2num import image_to_svg
-```
+## Examples
+- **React** color-by-number website: [`example-apps/react-js`](https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps/react-js)
+- **Node.js** console app: [`example-apps/console-js`](https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps/console-js)
+Try the [live demo (`React example`)](https://ryan-millard.github.io/Img2Num/example-apps/react-js/).
+> **Have a cool idea or want to showcase a new environment?💡**
+> We welcome new [example apps](https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps).
 
 ## License
 
-[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?logo=open-source-initiative)](LICENSE)
+[MIT](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE) © Ryan Millard
 
-The library is [MIT-licensed](LICENSE)
+---
 
-> Prior to the refactor in [#250](https://github.com/Ryan-Millard/Img2Num/pull/250), the entire project was
-> licensed under AGPLv3. The core library was relicensed to MIT to make it easier to embed in commercial and
-> closed-source projects, while documentation, example apps, and CI/config retained AGPLv3 to discourage
-> unattributed reuse of project infrastructure that isn't part of the redistributable library itself.
+<div align="center">
 
-Subdirectories retain their own licenses:
+<p>
+  <a href="https://github.com/Ryan-Millard/Img2Num">GitHub</a>
+  &middot;
+  <a href="https://ryan-millard.github.io/Img2Num/docs/">Documentation</a>
+  &middot;
+  <a href="https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/CHANGELOG.md">Changelog</a>
+  &middot;
+  <a href="https://github.com/Ryan-Millard/Img2Num/issues">Issues</a>
+  &middot;
+  <a href="https://github.com/Ryan-Millard/Img2Num/discussions">Discussions</a>
+  &middot;
+  <a href="https://ryan-millard.github.io/Img2Num/blog/">Blog</a>
+</p>
 
-- [`docs/` ![AGPLv3](https://img.shields.io/badge/license-AGPLv3-red.svg?logo=docusaurus)](docs/LICENSE)
-- [`example-apps/react-js/` ![AGPLv3](https://img.shields.io/badge/license-AGPLv3-red.svg?logo=react)](example-apps/react-js/LICENSE)
-- [`.github/` ![AGPLv3](https://img.shields.io/badge/license-AGPLv3-red.svg?logo=github)](.github/LICENSE)
-
-## Can't find something?
-
-If you need something, see [our documentation](https://ryan-millard.github.io/Img2Num/docs/).
-
-If you can't find it, feel free to open an [issue](https://github.com/Ryan-Millard/Img2Num/issues/new) to request assistance with finding or creating what you need.
-
-## Maintainers
-
-[![@Ryan-Millard](https://img.shields.io/badge/@Ryan--Millard-black?logo=github)](https://github.com/Ryan-Millard)
-[![@krasner](https://img.shields.io/badge/@krasner-black?logo=github)](https://github.com/krasner)
-[![@Prachi](https://img.shields.io/badge/@Prachi--Gupta2808-black?logo=github)](https://github.com/Prachi-Gupta2808)
-
-> [!NOTE]
-> ### Maintainers wanted
-> We’re looking for new maintainers.
-> [Read more here](https://ryan-millard.github.io/Img2Num/blog/img2num-maintainer-expansion/).
-
-
-## Contributors & Credits
-
-Thanks to all of our contributors - your impact on this project has been greatly appreciated!
-
-[![GitHub Contributors Image](https://contrib.rocks/image?repo=Ryan-Millard/Img2Num)](https://github.com/Ryan-Millard/Img2Num/graphs/contributors)
+<p>
+  <a href="https://github.com/Ryan-Millard/Img2Num/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=Ryan-Millard/Img2Num" alt="Contributors">
+  </a>
+</p>
+</div>

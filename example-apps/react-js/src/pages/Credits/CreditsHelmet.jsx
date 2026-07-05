@@ -7,8 +7,8 @@ const CreditsHelmet = () => (
     <meta property="og:title" content="Img2Num – Credits & Contributors" />
     <meta property="og:description" content="Learn about the people, libraries, and resources that made Img2Num possible." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://ryan-millard.github.io/Img2Num/credits" />
-    <link rel="canonical" href="https://ryan-millard.github.io/Img2Num/credits" />
+    <meta property="og:url" content="https://ryan-millard.github.io/Img2Num/example-apps/react-js/credits" />
+    <link rel="canonical" href="https://ryan-millard.github.io/Img2Num/example-apps/react-js/credits" />
   </Helmet>
 );
 

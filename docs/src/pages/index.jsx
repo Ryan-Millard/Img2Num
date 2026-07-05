@@ -109,7 +109,7 @@ function HeroSection() {
 
         <div className={styles.heroRight}>
           <RasterToSvgDemo />
-          <Link className={styles.btnPrimary} to="https://ryan-millard.github.io/Img2Num/">
+          <Link className={styles.btnPrimary} to="https://ryan-millard.github.io/Img2Num/example-apps/react-js/">
             Try Live Demo →
           </Link>
         </div>
