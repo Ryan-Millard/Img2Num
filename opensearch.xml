@@ -4,8 +4,8 @@
   <ShortName>Img2Num</ShortName>
   <Description>Search Img2Num</Description>
   <InputEncoding>UTF-8</InputEncoding>
-  <Image width="16" height="16" type="image/x-icon">https://ryan-millard.github.io/Img2Num/img/favicon.svg</Image>
-  <Url type="text/html" method="get" template="https://ryan-millard.github.io/Img2Num/search?q={searchTerms}"/>
-  <Url type="application/opensearchdescription+xml" rel="self" template="https://ryan-millard.github.io/Img2Num/opensearch.xml" />
-  <moz:SearchForm>https://ryan-millard.github.io/Img2Num/</moz:SearchForm>
+  <Image width="16" height="16" type="image/x-icon">https://img2num.dev/img/favicon.svg</Image>
+  <Url type="text/html" method="get" template="https://img2num.dev/search?q={searchTerms}"/>
+  <Url type="application/opensearchdescription+xml" rel="self" template="https://img2num.dev/opensearch.xml" />
+  <moz:SearchForm>https://img2num.dev/</moz:SearchForm>
 </OpenSearchDescription>
