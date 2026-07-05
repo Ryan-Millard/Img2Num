@@ -298,7 +298,7 @@ const SvgCanvas = forwardRef(function SvgCanvas({ svg, isColorMode, onHistoryCha
 
   // --- Pointer interaction (pan / zoom / pinch / click) -------------------
 
-  const pointerState = useRef({ dragging: false, lastX: 0, lastY: 0, moved: false });
+  const pointerState = useRef({ dragging: false, startX: 0, startY: 0, lastX: 0, lastY: 0, moved: false });
   const activePointersRef = useRef(new Map());
   const pinchRef = useRef({ active: false, startDist: 0, startScale: 1, startCx: 0, startCy: 0 });
 
@@ -368,7 +368,9 @@ const SvgCanvas = forwardRef(function SvgCanvas({ svg, isColorMode, onHistoryCha
 
       const dx = e.clientX - pointerState.current.lastX;
       const dy = e.clientY - pointerState.current.lastY;
-      if (!pointerState.current.moved && Math.hypot(dx, dy) > 5) pointerState.current.moved = true;
+      const totalDx = e.clientX - pointerState.current.startX;
+      const totalDy = e.clientY - pointerState.current.startY;
+      if (!pointerState.current.moved && Math.hypot(totalDx, totalDy) > 5) pointerState.current.moved = true;
       pointerState.current.lastX = e.clientX;
       pointerState.current.lastY = e.clientY;
 
@@ -418,6 +420,19 @@ const SvgCanvas = forwardRef(function SvgCanvas({ svg, isColorMode, onHistoryCha
     },
     [hitTest, pushHistory, renderNow],
   );
+
+  const onPointerCancel = useCallback((e) => {
+    const canvas = canvasRef.current;
+    activePointersRef.current.delete(e.pointerId);
+    pinchRef.current.active = false;
+    pointerState.current.dragging = activePointersRef.current.size > 0;
+    pointerState.current.moved = true;
+  
+    try {
+      canvas?.releasePointerCapture(e.pointerId);
+    } catch {}
+    if (!pointerState.current.dragging) canvas?.classList.remove(styles.grabbing);
+  }, []);
 
   // Wheel zoom toward the cursor (non-passive so we can preventDefault).
   useEffect(() => {
@@ -514,7 +529,7 @@ const SvgCanvas = forwardRef(function SvgCanvas({ svg, isColorMode, onHistoryCha
 
   const canvasClass = [styles.canvas, !isColorMode && styles.grabCursor].filter(Boolean).join(" ");
 
-  return <canvas ref={canvasRef} className={canvasClass} onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={onPointerUp} data-testid="svg-canvas" />;
+  return <canvas ref={canvasRef} className={canvasClass} onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={onPointerCancel} data-testid="svg-canvas" />;
 });
 
 export default SvgCanvas;

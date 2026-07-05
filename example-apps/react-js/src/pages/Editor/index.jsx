@@ -3,7 +3,7 @@ import GlassCard from "@components/GlassCard";
 import GlassModal from "@components/GlassModal";
 import useFullscreen from "@hooks/useFullscreen";
 import { bilateralFilter, findContours, kmeans } from "img2num";
-import { getEditorHandoff } from "@utils/editorHandoff";
+import { clearEditorHandoff, getEditorHandoff } from "@utils/editorHandoff";
 import { useEffect, useRef, useState } from "react";
 import EditorControls from "./EditorControls";
 import EditorHelmet from "./EditorHelmet";
@@ -12,7 +12,12 @@ import SvgCanvas from "./SvgCanvas";
 import styles from "./Editor.module.css";
 
 export default function Editor() {
-  const { svg: initialSvg, fileData, imgBilateralFiltered, initialSettings } = getEditorHandoff() || {};
+  const [handoff] = useState(() => getEditorHandoff());
+  const { svg: initialSvg, fileData, imgBilateralFiltered, initialSettings } = handoff || {};
+
+  useEffect(() => {
+    return () => clearEditorHandoff();
+  }, []);
 
   const [svg, setSvg] = useState(initialSvg);
   const [isColorMode, setIsColorMode] = useState(true);
@@ -45,7 +50,6 @@ export default function Editor() {
 
   const reprocessImage = async () => {
     if (!fileData) return;
-    canvasRef.current?.reset();
     setIsReprocessing(true);
     try {
       const { width, height } = fileData;
@@ -83,7 +87,7 @@ export default function Editor() {
         min_area: minArea,
         min_thickness: minThickness,
       });
-
+      canvasRef.current?.reset();
       setSvg(newSvg);
     } catch (err) {
       console.error(err);
