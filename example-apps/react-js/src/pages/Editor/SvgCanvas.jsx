@@ -427,7 +427,7 @@ const SvgCanvas = forwardRef(function SvgCanvas({ svg, isColorMode, onHistoryCha
     pinchRef.current.active = false;
     pointerState.current.dragging = activePointersRef.current.size > 0;
     pointerState.current.moved = true;
-  
+
     try {
       canvas?.releasePointerCapture(e.pointerId);
     } catch {}
