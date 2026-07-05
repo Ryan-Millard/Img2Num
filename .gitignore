@@ -42,3 +42,6 @@ logs
 console-py_outputs
 # img2num destroy state
 .img2num-state
+
+# Output files
+output.svg
