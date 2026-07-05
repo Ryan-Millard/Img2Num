@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="rss.xsl"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>Img2Num Blog</title>
+        <link>https://ryan-millard.github.io/Img2Num/blog/</link>
+        <description>Img2Num Blog</description>
+        <lastBuildDate>Sat, 02 May 2026 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>en</language>
+        <item>
+            <title><![CDATA[We're Expanding the Maintainer Team]]></title>
+            <link>https://ryan-millard.github.io/Img2Num/blog/img2num-maintainer-expansion/</link>
+            <guid>https://ryan-millard.github.io/Img2Num/blog/img2num-maintainer-expansion/</guid>
+            <pubDate>Sat, 02 May 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[Img2Num is expanding its maintainer team across C++, JavaScript, CI/CD, bindings, and documentation. Learn about available roles, maintainer levels, and how to apply.
+]]></description>
+            <content:encoded><![CDATA[<p><img decoding="async" loading="lazy" alt="Img2Num maintainer expansion" src="https://ryan-millard.github.io/Img2Num/assets/images/2026-05-02-maintainers-expansion-a0919b4870176cdd32db75246f79fc50.png" width="1536" height="1024" class="img_CA2f"></p>
+<p>Img2Num has grown well past the point where one or two people can own it responsibly.</p>
+<p>The codebase now spans a performance-critical C++ core, cross-language bindings (Python, JavaScript, C), a WebAssembly build pipeline, CI/CD automation, and a Docusaurus docs site. Keeping all of that high-quality and sustainable requires real ownership — not just occasional PRs.</p>
+<p>We're looking for experienced contributors ready to take on scoped, ongoing responsibility.</p>
+<!-- -->
+<h2 class="anchor anchorTargetStickyNavbar_Gguh" id="architecture-overview">Architecture Overview<a href="https://ryan-millard.github.io/Img2Num/blog/img2num-maintainer-expansion/#architecture-overview" class="hash-link" aria-label="Direct link to Architecture Overview" title="Direct link to Architecture Overview" translate="no">​</a></h2>
+<p>Img2Num is a layered system. Here's how the pieces fit together:</p>
+<!-- -->
+<table><thead><tr><th>Layer</th><th>Path</th><th>Notes</th></tr></thead><tbody><tr><td>C++ Core</td><td><code>core/</code></td><td>Source of truth for all algorithms</td></tr><tr><td>C ABI</td><td><code>bindings/c/</code></td><td>Stable ABI boundary; feeds the Wasm pipeline</td></tr><tr><td>WebAssembly</td><td><code>bindings/js/</code></td><td>Built via Emscripten from the C ABI</td></tr><tr><td>JavaScript package</td><td><code>packages/js/</code></td><td>Safe runtime wrapper over the Wasm module</td></tr><tr><td>Python bindings</td><td><code>bindings/py/</code></td><td>pybind11 directly on the C++ core</td></tr><tr><td>Python package</td><td><code>packages/py/</code></td><td>Exposes the native Python module</td></tr></tbody></table>
+<h2 class="anchor anchorTargetStickyNavbar_Gguh" id="open-maintainer-areas">Open Maintainer Areas<a href="https://ryan-millard.github.io/Img2Num/blog/img2num-maintainer-expansion/#open-maintainer-areas" class="hash-link" aria-label="Direct link to Open Maintainer Areas" title="Direct link to Open Maintainer Areas" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Gguh" id="cicd">CI/CD<a href="https://ryan-millard.github.io/Img2Num/blog/img2num-maintainer-expansion/#cicd" class="hash-link" aria-label="Direct link to CI/CD" title="Direct link to CI/CD" translate="no">​</a></h3>
+<ul>
+<li class="">GitHub Actions workflows, Docker builds, release pipelines, automated publishing.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Gguh" id="c-abi-bindingsc">C ABI (<code>bindings/c</code>)<a href="https://ryan-millard.github.io/Img2Num/blog/img2num-maintainer-expansion/#c-abi-bindingsc" class="hash-link" aria-label="Direct link to c-abi-bindingsc" title="Direct link to c-abi-bindingsc" translate="no">​</a></h3>
+<ul>
+<li class="">Maintain the C ABI over the C++ core. Must stay compatible with external C consumers and the Wasm pipeline.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Gguh" id="javascript--webassembly-bindingsjs-packagesjs">JavaScript / WebAssembly (<code>bindings/js</code>, <code>packages/js</code>)<a href="https://ryan-millard.github.io/Img2Num/blog/img2num-maintainer-expansion/#javascript--webassembly-bindingsjs-packagesjs" class="hash-link" aria-label="Direct link to javascript--webassembly-bindingsjs-packagesjs" title="Direct link to javascript--webassembly-bindingsjs-packagesjs" translate="no">​</a></h3>
+<ul>
+<li class="">Emscripten integration, browser and Node.js compatibility, pnpm workspace tooling, React example app.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Gguh" id="python-bindingspy-packagespy">Python (<code>bindings/py</code>, <code>packages/py</code>)<a href="https://ryan-millard.github.io/Img2Num/blog/img2num-maintainer-expansion/#python-bindingspy-packagespy" class="hash-link" aria-label="Direct link to python-bindingspy-packagespy" title="Direct link to python-bindingspy-packagespy" translate="no">​</a></h3>
+<ul>
+<li class="">pybind11 bindings, uv workspace tooling, console example app.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Gguh" id="docs--dx-docs-doxygen">Docs &amp; DX (<code>docs/</code>, <code>doxygen/</code>)<a href="https://ryan-millard.github.io/Img2Num/blog/img2num-maintainer-expansion/#docs--dx-docs-doxygen" class="hash-link" aria-label="Direct link to docs--dx-docs-doxygen" title="Direct link to docs--dx-docs-doxygen" translate="no">​</a></h3>
+<ul>
+<li class="">Docusaurus site, Doxygen integration, tutorials, onboarding experience.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Gguh" id="releases--packaging">Releases &amp; Packaging<a href="https://ryan-millard.github.io/Img2Num/blog/img2num-maintainer-expansion/#releases--packaging" class="hash-link" aria-label="Direct link to Releases &amp; Packaging" title="Direct link to Releases &amp; Packaging" translate="no">​</a></h3>
+<ul>
+<li class="">Versioning, tagging, GitHub Releases, npm and Docker Hub publishing.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Gguh" id="testing--validation">Testing &amp; Validation<a href="https://ryan-millard.github.io/Img2Num/blog/img2num-maintainer-expansion/#testing--validation" class="hash-link" aria-label="Direct link to Testing &amp; Validation" title="Direct link to Testing &amp; Validation" translate="no">​</a></h3>
+<ul>
+<li class="">CI test coverage, linting/formatting enforcement, regression testing.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Gguh" id="internal-tooling-scripts">Internal Tooling (<code>scripts/</code>)<a href="https://ryan-millard.github.io/Img2Num/blog/img2num-maintainer-expansion/#internal-tooling-scripts" class="hash-link" aria-label="Direct link to internal-tooling-scripts" title="Direct link to internal-tooling-scripts" translate="no">​</a></h3>
+<ul>
+<li class="">Cross-platform CLI utilities, developer automation, local workflow improvements.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Gguh" id="maintainer-tiers">Maintainer Tiers<a href="https://ryan-millard.github.io/Img2Num/blog/img2num-maintainer-expansion/#maintainer-tiers" class="hash-link" aria-label="Direct link to Maintainer Tiers" title="Direct link to Maintainer Tiers" translate="no">​</a></h2>
+<!-- -->
+<table><thead><tr><th>Tier</th><th>Merge Access</th><th>Responsibilities</th></tr></thead><tbody><tr><td><strong>Junior</strong></td><td>None</td><td>Review small PRs, contribute within a defined scope</td></tr><tr><td><strong>Scoped</strong></td><td>Within their domain</td><td>Own a specific area — review, approve, maintain quality</td></tr><tr><td><strong>Core</strong></td><td>Broad</td><td>Cross-domain architecture, final merge authority, long-term direction</td></tr></tbody></table>
+<p>Trust is earned through consistent contributions. Everyone starts scoped.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Gguh" id="how-to-apply">How to Apply<a href="https://ryan-millard.github.io/Img2Num/blog/img2num-maintainer-expansion/#how-to-apply" class="hash-link" aria-label="Direct link to How to Apply" title="Direct link to How to Apply" translate="no">​</a></h2>
+<p>Reply to <a href="https://github.com/Ryan-Millard/Img2Num/discussions/309" target="_blank" rel="noopener noreferrer" class="">#309</a> with:</p>
+<ul>
+<li class="">Which area(s) you want to own</li>
+<li class="">A short summary of relevant experience</li>
+<li class="">GitHub profile or projects (optional)</li>
+</ul>
+<p>We'll follow up directly.</p>]]></content:encoded>
+            <category>Maintainers</category>
+        </item>
+        <item>
+            <title><![CDATA[Welcome to Img2Num!]]></title>
+            <link>https://ryan-millard.github.io/Img2Num/blog/launch/</link>
+            <guid>https://ryan-millard.github.io/Img2Num/blog/launch/</guid>
+            <pubDate>Fri, 05 Dec 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[We are excited to launch Img2Num, the interactive app that converts any image into a color-by-number template.]]></description>
+            <content:encoded><![CDATA[<p>We are excited to launch <strong>Img2Num</strong>, the interactive app that converts any image into a color-by-number template.</p>
+<p>:::note [Edit: 20 June 2026]</p>
+<p>Img2Num is no longer an application for converting images into color-by-number templates.
+Instead, it is now a library that supports C, C++, Python, and JavaScript.</p>
+<p>:::</p>
+<!-- -->
+<p>Try it out online at <a href="https://ryan-millard.github.io/Img2Num/example-apps/react-js/" target="_blank" rel="noopener noreferrer" class="">https://ryan-millard.github.io/Img2Num/example-apps/react-js/</a> and start coloring your favorite images today!</p>
+<p>Stay tuned for tutorials, tips, and updates right here on the blog.</p>]]></content:encoded>
+            <category>Launch</category>
+            <category>Tutorial</category>
+        </item>
+    </channel>
+</rss>
