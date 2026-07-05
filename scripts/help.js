@@ -1,8 +1,6 @@
 import { runFuzzyCli, readPackageJsonScripts } from "./img2num-dev-scripts/index.js";
 
-const title = `Img2Num root CLI Scripts
-Also see: https://img2num.dev/docs/category/-project-scripts
-`;
+const title = `Img2Num root CLI Scripts`;
 
 try {
   const { flat: items, basicItems } = readPackageJsonScripts(new URL("../package.json", import.meta.url));
