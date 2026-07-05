@@ -30,7 +30,7 @@ export default function StaticCreditsCard() {
               </Tooltip>
               {" · "}
               <Tooltip content="Open the Img2Num website">
-                <a href="https://ryan-millard.github.io/Img2Num/" target="_blank" rel="noopener noreferrer">
+                <a href="https://img2num.dev/" target="_blank" rel="noopener noreferrer">
                   Website on GitHub Pages
                 </a>
               </Tooltip>

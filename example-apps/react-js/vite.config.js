@@ -6,7 +6,7 @@ import generateContributorCreditsPlugin from "./scripts/generate-contributor-cre
 import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
-  base: "/Img2Num/example-apps/react-js/", // important for GitHub Pages
+  base: "/example-apps/react-js/", // important for GitHub Pages
   server: {
     host: "0.0.0.0", // Allow connections from outside Docker
     port: 5173, // Match docker-compose port

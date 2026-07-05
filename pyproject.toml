@@ -21,9 +21,9 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage      = "https://ryan-millard.github.io/Img2Num"
+Homepage      = "https://img2num.dev"
 Repository    = "https://github.com/Ryan-Millard/Img2Num"
-Documentation = "https://ryan-millard.github.io/Img2Num/docs/"
+Documentation = "https://img2num.dev/docs/"
 Changelog     = "https://github.com/Ryan-Millard/Img2Num/blob/main/CHANGELOG.md"
 "Bug Tracker" = "https://github.com/Ryan-Millard/Img2Num/issues"
 

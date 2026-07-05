@@ -6,7 +6,7 @@ const EditorHelmet = () => (
     <title>Editor – Img2Num</title>
     <meta name="robots" content="noindex, nofollow" />
     <meta name="description" content="Img2Num editor page (private, do not index)." />
-    <link rel="canonical" href="https://ryan-millard.github.io/Img2Num/example-apps/react-js/editor" />
+    <link rel="canonical" href="https://img2num.dev/example-apps/react-js/editor" />
   </Helmet>
 );
 

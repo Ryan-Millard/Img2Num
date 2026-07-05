@@ -49,10 +49,10 @@ const config = {
   themes: ["@docusaurus/theme-mermaid"],
 
   // Set the production url of your site here
-  url: "https://ryan-millard.github.io/",
+  url: "https://img2num.dev/",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/Img2Num/",
+  baseUrl: "",
 
   // GitHub Pages fix: canonical URL with trailing slash
   trailingSlash: true,

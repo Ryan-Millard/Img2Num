@@ -7,8 +7,8 @@ const HomeHelmet = () => (
     <meta property="og:title" content="Img2Num – Color-by-Number from your images" />
     <meta property="og:description" content="Drag & Drop or Choose File. Fast, lightweight, near-native performance with WebAssembly." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://ryan-millard.github.io/Img2Num/example-apps/react-js/" />
-    <link rel="canonical" href="https://ryan-millard.github.io/Img2Num/example-apps/react-js/" />
+    <meta property="og:url" content="https://img2num.dev/example-apps/react-js/" />
+    <link rel="canonical" href="https://img2num.dev/example-apps/react-js/" />
   </Helmet>
 );
 
