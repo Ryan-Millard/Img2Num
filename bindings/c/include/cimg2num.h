@@ -19,7 +19,6 @@ extern "C" {
 /// @brief Configuration options for image_to_svg.
 /// @ingroup CIMG2NUM_H
 typedef struct img2num_ImageToSvgConfig {
-
     /// Configuration settings for the bilateral filter in image_to_svg.
     struct BilateralFilterConfig {
         /// Standard deviation for spatial Gaussian (proximity weight).

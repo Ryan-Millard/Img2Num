@@ -1,6 +1,6 @@
 [project]
 name = "img2num"
-version = "0.0.0"  # x-release-please-version
+dynamic = ["version"] # see tool.scikit-buil
 description = "A fast and accurate raster image to SVG conversion library"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -21,9 +21,9 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage      = "https://ryan-millard.github.io/Img2Num/info/docs/"
+Homepage      = "https://ryan-millard.github.io/Img2Num"
 Repository    = "https://github.com/Ryan-Millard/Img2Num"
-Documentation = "https://ryan-millard.github.io/Img2Num/info/docs/"
+Documentation = "https://ryan-millard.github.io/Img2Num/docs/"
 Changelog     = "https://github.com/Ryan-Millard/Img2Num/blob/main/CHANGELOG.md"
 "Bug Tracker" = "https://github.com/Ryan-Millard/Img2Num/issues"
 
@@ -42,6 +42,10 @@ cmake.args = [
   "-DIMG2NUM_BUILD_PYTHON=ON",
   "-DIMG2NUM_BUILD_EXAMPLES=OFF",
 ]
+# Derive version from version definition in packages/py/pyproject.toml
+metadata.version.provider = "scikit_build_core.metadata.regex"
+metadata.version.input = "packages/py/pyproject.toml"
+metadata.version.regex = '^version = "(?P<value>[^"]+)"'
 
 wheel.packages = ["img2num"]
 

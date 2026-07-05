@@ -1,0 +1,75 @@
+/*! \mainpage Img2Num Python Bindings
+ *
+ * \section intro_sec Introduction
+ *
+ * The **Img2Num Python Bindings** provide a Python interface to the core Img2Num
+ * image processing library via [pybind11](https://github.com/pybind/pybind11)
+ * (also see [their docs](https://pybind11.readthedocs.io/en/stable/)).
+ * These bindings wrap the underlying C++ functionality, exposing image processing
+ * operations such as filtering, clustering, thresholding, and SVG conversion to Python code.
+ *
+ * All functions operate on `numpy.ndarray` buffers and return new image data, making
+ * them easy to integrate into Python-based image processing pipelines.
+ *
+ * \section features_sec Key Features
+ *
+ * The Python bindings expose the following core capabilities:
+ * - **FFT-based Gaussian blur** — Fast frequency-domain blurring
+ * - **Image inversion** — Invert pixel values
+ * - **Thresholding** — Standard and black-thresholding operations
+ * - **K-means clustering** — Pixel clustering for color quantization
+ * - **Bilateral filtering** — Edge-preserving smoothing
+ * - **Label-to-SVG conversion** — Convert labeled images to SVG strings
+ * - **Image-to-SVG conversion** — Full image vectorization with configurable parameters
+ * - **ImageToSvgConfig** — Python-accessible configuration for SVG generation
+ *
+ * \section building_sec Building the Python Bindings
+ *
+ * The Python bindings are built using CMake from the project root:
+ *
+ * \code{.sh}
+ * cmake -B build .
+ * cmake --build build
+ * \endcode
+ *
+ * \section install_sec Installation
+ *
+ * Install the bindings to your system:
+ *
+ * \code{.sh}
+ * cmake --install build
+ * \endcode
+ *
+ * The compiled `img2num` module will be available for import in Python:
+ *
+ * \code{.py}
+ * import img2num
+ * \endcode
+ *
+ * \section usage_sec Usage Example
+ *
+ * - To see the Pybind11 bindings directly used, see
+ * [`packages/py/img2num/api.py`](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/py/img2num/api.py).
+
+ * - To see the usage in Python, see
+ * [`example-apps/console-py`](https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps/console-py).
+ *
+ * \section api_sec API Reference
+ *
+ * Browse the detailed function and class documentation:
+ * - \ref img2num_functions "Core Image Processing Functions"
+ * - \ref img2num_classes "Configuration Classes"
+ */
+
+/** \defgroup img2num_functions Image Processing Functions
+ *  @ingroup mainpage
+ *  @brief Image processing functions exposed via Python bindings.
+ *  @{
+ */
+
+/** \defgroup img2num_classes Configuration Classes
+ *  @ingroup mainpage
+ *  @brief Configuration classes for image processing and SVG generation.
+ *  @{
+ */
+

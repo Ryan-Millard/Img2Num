@@ -1,5 +1,4 @@
 import Link from "@docusaurus/Link";
-import useBaseUrl from "@docusaurus/useBaseUrl";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import { BookOpen, Cpu, FileText, GitBranch, Globe, Layers, Package, Palette, Target, Terminal, Zap } from "lucide-react";
@@ -16,20 +15,20 @@ function RasterToSvgDemo() {
           <span className={`${styles.dot} ${styles.yellow}`} />
           <span className={`${styles.dot} ${styles.green}`} />
         </div>
-        <span className={styles.chromeText}>NASA/JPL PIA01481 demo</span>
+        <span className={styles.chromeText}>
+          <a href="https://images.nasa.gov/details/PIA01481" target="_blank" rel="noopener noreferrer">
+            NASA/JPL (PIA01481)
+          </a>{" "}
+          demo
+        </span>
       </div>
       <div className={styles.grid}>
         <figure className={styles.figure}>
-          <img src="https://images-assets.nasa.gov/image/PIA01481/PIA01481~small.jpg" alt="Jupiter system montage raster image" className={styles.image} />
-          <figcaption className={styles.caption}>
-            raster input —{" "}
-            <a href="https://images.nasa.gov/details/PIA01481" target="_blank" rel="noopener noreferrer">
-              NASA/JPL (PIA01481)
-            </a>
-          </figcaption>
+          <img src={"./img/homepage-demo.jpg"} alt="Jupiter system montage raster image" className={styles.image} />
+          <figcaption className={styles.caption}>raster input</figcaption>
         </figure>
         <figure className={styles.figure}>
-          <img src={useBaseUrl("/img/homepage-demo.svg")} alt="Vectorized SVG output" className={styles.image} />
+          <img src={"./img/homepage-demo.svg"} alt="Vectorized SVG output" className={styles.image} />
           <figcaption className={styles.caption}>svg output</figcaption>
         </figure>
       </div>
@@ -79,11 +78,11 @@ function HeroSection() {
 
           <div className={styles.heroActionsWrapper}>
             <div className={styles.heroActions} style={{ marginBottom: 0 }}>
-              <Link className={styles.btnPrimary} to="/docs/introduction/getting-started">
-                <Package size={16} style={{ marginRight: "6px" }} /> Installation guide
+              <Link className={styles.btnPrimary} to="./docs">
+                <Package size={16} style={{ marginRight: "6px" }} /> Installation and Setup
               </Link>
-              <Link className={styles.btnGhost} to="/docs">
-                Read the docs
+              <Link className={styles.btnGhost} to="/changelog">
+                Changelog
               </Link>
               <Link className={styles.btnGhost} to="https://github.com/Ryan-Millard/Img2Num">
                 GitHub →
@@ -110,7 +109,7 @@ function HeroSection() {
 
         <div className={styles.heroRight}>
           <RasterToSvgDemo />
-          <Link className={styles.btnPrimary} to="https://ryan-millard.github.io/Img2Num/">
+          <Link className={styles.btnPrimary} to="https://ryan-millard.github.io/Img2Num/example-apps/react-js/">
             Try Live Demo →
           </Link>
         </div>
@@ -129,8 +128,8 @@ function BindingsSection() {
       desc: "Quantisation, contour tracing, SVG writer. Add it as a submodule.",
       code: `#include "img2num"\n` + `img2num::ImageToSvgConfig config;\n` + `config.kmeans.k = 32;\n` + `std::string svg {img2num::image_to_svg(img_data, width, height, config)};`,
       docLinks: [
-        { href: useBaseUrl("/docs/next/cpp"), text: "C++ Docs" },
-        { href: useBaseUrl("/docs/next/c"), text: "C Docs" },
+        { href: "./docs/cpp", text: "C++ Docs" },
+        { href: "./docs/c", text: "C Docs" },
       ],
     },
     {
@@ -151,8 +150,8 @@ function BindingsSection() {
       code:
         `import { imageToUint8ClampedArray, imageToSvg } from "img2num"\n\n` +
         `const { pixels, width, height } = await imageToUint8ClampedArray(file);\n` +
-        `const svg = await imageToSvg({ pixels, width, height }});`,
-      docLinks: [{ href: useBaseUrl("/docs/next/js/api"), text: "JsDoc" }],
+        `const svg = await imageToSvg({ pixels, width, height });`,
+      docLinks: [{ href: "./docs/js/api", text: "JsDoc" }],
     },
   ];
 
@@ -160,7 +159,7 @@ function BindingsSection() {
     <section className={styles.section}>
       <div className={styles.sectionHeader}>
         <h2 className={styles.sectionTitle}>Use it anywhere</h2>
-        <Link className={styles.sectionLink} to="/docs">
+        <Link className={styles.sectionLink} to="./docs">
           See all bindings →
         </Link>
       </div>
@@ -246,7 +245,7 @@ function CtaBand() {
     <section className={styles.ctaBand}>
       <div className={styles.ctaInner}>
         <h2 className={styles.ctaTitle}>Ready to integrate SVG vectorization into your stack?</h2>
-        <Link className={styles.ctaBtn} to="/docs/introduction/getting-started">
+        <Link className={styles.ctaBtn} to="./docs">
           Get started →
         </Link>
       </div>
@@ -262,7 +261,7 @@ function LinksSection() {
       icon: <BookOpen size={16} color="var(--accent)" />,
       title: "C++ API Reference",
       desc: "Full reference, parameter tuning, build instructions.",
-      to: "/docs",
+      to: "./docs",
     },
     {
       eyebrow: "PyPI",

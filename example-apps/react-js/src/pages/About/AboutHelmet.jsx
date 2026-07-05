@@ -7,8 +7,8 @@ const AboutHelmet = () => (
     <meta property="og:title" content="Img2Num – About" />
     <meta property="og:description" content="Discover how Img2Num blends creativity, technology, and personal tribute to offer a unique colour-by-number experience." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://ryan-millard.github.io/Img2Num/about" />
-    <link rel="canonical" href="https://ryan-millard.github.io/Img2Num/about" />
+    <meta property="og:url" content="https://ryan-millard.github.io/Img2Num/example-apps/react-js/about" />
+    <link rel="canonical" href="https://ryan-millard.github.io/Img2Num/example-apps/react-js/about" />
   </Helmet>
 );
 
