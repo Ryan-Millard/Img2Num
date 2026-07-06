@@ -13,6 +13,7 @@ allowBuilds:
 
 minimumReleaseAgeExclude:
   - lucide-react@1.22.0
+  - typedoc@0.28.20
 
 onlyBuiltDependencies:
   - "@swc/core"
