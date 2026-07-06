@@ -44,7 +44,8 @@ jobs:
       - name: Set Fallback Version
         id: fallback_version
         run: |
-          echo "fallback_version=${GITHUB_REF_NAME:+${GITHUB_REF_NAME}@}${GITHUB_SHA}" >> $GITHUB_OUTPUT
+          SAFE_REF="${GITHUB_REF_NAME//\//_}"
+          echo "fallback_version=${SAFE_REF:+${SAFE_REF}@}${GITHUB_SHA}" >> $GITHUB_OUTPUT
 
       - name: Debug release-please outputs
         run: |
