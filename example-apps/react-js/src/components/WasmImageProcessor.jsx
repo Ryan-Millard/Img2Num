@@ -136,7 +136,6 @@ const WasmImageProcessor = () => {
       setEditorHandoff({
         svg,
         fileData,
-        imgBilateralFiltered: logoMode ? undefined : contourPixels,
         initialSettings: {
           numColors,
           minArea,
@@ -144,7 +143,6 @@ const WasmImageProcessor = () => {
           sigmaSpatial,
           sigmaRange,
           colorSpace,
-          logoMode,
         },
       });
 
