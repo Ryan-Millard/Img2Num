@@ -248,10 +248,10 @@ void frequency_histogram(
         int cum_pixels {0};
         for (int i = 0; i < vec.size(); ++i) {
             cum_pixels += vec[i].second;
+            centroids.push_back(vec[i].first);
             if (float(cum_pixels) >= coverage * float(num_pixels)) {
                 break;
             }
-            centroids.push_back(vec[i].first);
         }
         out_centroids.resize(centroids.size(), 1, PixelT());
     }
@@ -269,6 +269,15 @@ void dominant_colors(
     ImageLib::Image<ImageLib::RGBAPixel<float>> centroids {k, 1};
     ImageLib::Image<ImageLib::LABAPixel<float>> centroids_lab {k, 1};
     std::vector<int32_t> labels(num_pixels, 0);
+
+    // may need to wipe alpha values which can mess with dominant colors
+    for (int x {0}; x < width; ++x){
+        for (int y {0}; y < height; ++ y){
+            auto p = pixels.getPixel(x, y);
+            p.alpha = 255.0f;
+            pixels.setPixel(x, y, p);
+        }
+    }
 
     ImageLib::Image<ImageLib::LABAPixel<float>> lab(pixels.getWidth(), pixels.getHeight());
     if (color_space == COLOR_SPACE_OPTION_CIELAB) {
