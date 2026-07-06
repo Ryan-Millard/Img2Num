@@ -3,6 +3,7 @@ name: Release (release-please, multi-language assets)
 on:
   push:
     branches: [main, dev]
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -15,18 +16,19 @@ jobs:
       contents: write
       pull-requests: write
     outputs:
-      cpp_created:  ${{ steps.rp.outputs['core--release_created'] }}
-      cpp_tag:      ${{ steps.rp.outputs['core--tag_name'] }}
-      cpp_version:  ${{ steps.rp.outputs['core--version'] }}
-      c_created:    ${{ steps.rp.outputs['bindings/c--release_created'] }}
-      c_tag:        ${{ steps.rp.outputs['bindings/c--tag_name'] }}
-      c_version:    ${{ steps.rp.outputs['bindings/c--version'] }}
-      js_created:   ${{ steps.rp.outputs['packages/js--release_created'] }}
-      js_tag:       ${{ steps.rp.outputs['packages/js--tag_name'] }}
-      js_version:   ${{ steps.rp.outputs['packages/js--version'] }}
-      py_created:   ${{ steps.rp.outputs['packages/py--release_created'] }}
-      py_tag:       ${{ steps.rp.outputs['packages/py--tag_name'] }}
-      py_version:   ${{ steps.rp.outputs['packages/py--version'] }}
+      cpp_created: ${{ steps.rp.outputs['core--release_created'] }}
+      cpp_tag:     ${{ steps.rp.outputs['core--tag_name'] }}
+      cpp_version: ${{ steps.rp.outputs['core--version'] }}
+      c_created:   ${{ steps.rp.outputs['bindings/c--release_created'] }}
+      c_tag:       ${{ steps.rp.outputs['bindings/c--tag_name'] }}
+      c_version:   ${{ steps.rp.outputs['bindings/c--version'] }}
+      js_created:  ${{ steps.rp.outputs['packages/js--release_created'] }}
+      js_tag:      ${{ steps.rp.outputs['packages/js--tag_name'] }}
+      js_version:  ${{ steps.rp.outputs['packages/js--version'] }}
+      py_created:  ${{ steps.rp.outputs['packages/py--release_created'] }}
+      py_tag:      ${{ steps.rp.outputs['packages/py--tag_name'] }}
+      py_version:  ${{ steps.rp.outputs['packages/py--version'] }}
+      fallback_version: ${{ steps.fallback_version.outputs.fallback_version }}
     steps:
       - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7
         id: rp
@@ -36,6 +38,11 @@ jobs:
           manifest-file: .release-please-manifest.json
           skip-github-release: ${{ github.ref_name != 'main' }}
           skip-github-pull-request: ${{ github.ref_name != 'main' }}
+
+      - name: Set Fallback Version
+        id: fallback_version
+        run: |
+          echo "fallback_version=${GITHUB_REF_NAME:+${GITHUB_REF_NAME}@}${GITHUB_SHA}" >> $GITHUB_OUTPUT
 
       - name: Debug release-please outputs
         run: |
@@ -71,12 +78,12 @@ jobs:
             echo "IMG2NUM_BUILD_C_VAL=ON"                                               >> $GITHUB_OUTPUT
             echo "created=${{ needs.release-please.outputs.c_created }}"                >> $GITHUB_OUTPUT
             echo "tag=${{ needs.release-please.outputs.c_tag }}"                        >> $GITHUB_OUTPUT
-            echo "version=${{ needs.release-please.outputs.c_version || '0.0.0-dev' }}" >> $GITHUB_OUTPUT
+            echo "version=${{ needs.release-please.outputs.c_version || needs.release-please.outputs.fallback_version }}" >> $GITHUB_OUTPUT
           else
             echo "IMG2NUM_BUILD_C_VAL=OFF"                                                >> $GITHUB_OUTPUT
             echo "created=${{ needs.release-please.outputs.cpp_created }}"                >> $GITHUB_OUTPUT
             echo "tag=${{ needs.release-please.outputs.cpp_tag }}"                        >> $GITHUB_OUTPUT
-            echo "version=${{ needs.release-please.outputs.cpp_version || '0.0.0-dev' }}" >> $GITHUB_OUTPUT
+            echo "version=${{ needs.release-please.outputs.cpp_version || needs.release-please.outputs.fallback_version }}" >> $GITHUB_OUTPUT
           fi
 
       - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
@@ -170,7 +177,7 @@ jobs:
 
       - name: Package
         run: |
-          release_version=${{ needs.release-please.outputs.js_version || '0.0.0-dev' }}
+          release_version=${{ needs.release-please.outputs.js_version || needs.release-please.outputs.fallback_version }}
           tar -czf           /tmp/img2num-js-v${release_version}.tar.gz packages/js/dist
           tar -czf /tmp/img2num-js-wasm-only-v${release_version}.tar.gz packages/js/build-wasm
 
@@ -179,8 +186,8 @@ jobs:
         with:
           tag_name: ${{ needs.release-please.outputs.js_created == 'true' && needs.release-please.outputs.js_tag || format('{0}@{1}-js', github.ref_name, github.sha) }}
           files: |
-            /tmp/img2num-js-v${{ needs.release-please.outputs.js_version || '0.0.0-dev' }}.tar.gz
-            /tmp/img2num-js-wasm-only-v${{ needs.release-please.outputs.js_version || '0.0.0-dev' }}.tar.gz
+            /tmp/img2num-js-v${{ needs.release-please.outputs.js_version || needs.release-please.outputs.fallback_version }}.tar.gz
+            /tmp/img2num-js-wasm-only-v${{ needs.release-please.outputs.js_version || needs.release-please.outputs.fallback_version }}.tar.gz
           draft: ${{ needs.release-please.outputs.js_created != 'true' }}
 
       # Real publish when release-please created a release; otherwise --dry-run,
@@ -374,6 +381,6 @@ jobs:
 
           gh pr create \
             --title "fix(packages/js): propagate bindings/c v${VERSION} release" \
-            --body "Automated patch bump for \`packages/js\` following the **bindings/c v${VERSION}** release.\n\n > Merging this PR will allow release-please to open a patch release PR for \`packages/js\`.\n\n**Dependency:** \`bindings/c\` ΓåÆ \`packages/js\`" \
+            --body "Automated patch bump for \`packages/js\` following the **bindings/c v${VERSION}** release.\n\n > Merging this PR will allow release-please to open a patch release PR for \`packages/js\`.\n\n**Dependency:** \`bindings/c\` -> \`packages/js\`" \
             --base main \
             --head "$BRANCH"
