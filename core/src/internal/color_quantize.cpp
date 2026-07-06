@@ -22,7 +22,7 @@ static constexpr uint8_t COLOR_SPACE_OPTION_RGB {1};
 
 template <typename PixelT>
 void frequency_histogram(
-    const ImageLib::Image<PixelT>& pixels, ImageLib::Image<PixelT>& out_centroids, int k
+    const ImageLib::Image<PixelT>& pixels, ImageLib::Image<PixelT>& out_centroids, int k, float coverage
 ) {
     const int32_t num_pixels {pixels.getSize()};
     std::vector<PixelT> centroids;
@@ -58,7 +58,7 @@ void frequency_histogram(
         int cum_pixels{0};
         for (int i = 0; i < vec.size(); ++i) {
             cum_pixels += vec[i].second;
-            if (float(cum_pixels) >= 0.9f * float(num_pixels)) {
+            if (float(cum_pixels) >= coverage * float(num_pixels)) {
                 break;
             }
             centroids.push_back(vec[i].first);
@@ -70,7 +70,7 @@ void frequency_histogram(
 
 void dominant_colors(
     const uint8_t* data, uint8_t* out_data, int32_t* out_labels, const int32_t width,
-    const int32_t height, const int32_t k, const uint8_t color_space
+    const int32_t height, const int32_t k, const float coverage, const uint8_t color_space
 ) {
     ImageLib::Image<ImageLib::RGBAPixel<float>> pixels;
     pixels.loadFromBuffer(data, width, height, ImageLib::RGBA_CONVERTER<float>);
@@ -90,7 +90,7 @@ void dominant_colors(
     int32_t _k {k};
     switch (color_space) {
     case COLOR_SPACE_OPTION_RGB: {
-        frequency_histogram<ImageLib::RGBAPixel<float>>(pixels, centroids, k);
+        frequency_histogram<ImageLib::RGBAPixel<float>>(pixels, centroids, k, coverage);
         if (k == 0) {
             _k = centroids.getSize();
             centroids_lab.resize(_k, 1, ImageLib::LABAPixel<float>());
@@ -98,7 +98,7 @@ void dominant_colors(
         break;
     }
     case COLOR_SPACE_OPTION_CIELAB: {
-        frequency_histogram<ImageLib::LABAPixel<float>>(lab, centroids_lab, k);
+        frequency_histogram<ImageLib::LABAPixel<float>>(lab, centroids_lab, k, coverage);
         if (k == 0) {
             _k = centroids_lab.getSize();
             centroids.resize(_k, 1, ImageLib::RGBAPixel<float>());
@@ -155,8 +155,8 @@ void dominant_colors(
 namespace img2num {
 void color_quantize(
     const uint8_t* data, uint8_t* out_data, int32_t* out_labels, const int32_t width,
-    const int32_t height, const int32_t k, const uint8_t color_space
+    const int32_t height, const int32_t k, const float coverage, const uint8_t color_space
 ) {
-    dominant_colors(data, out_data, out_labels, width, height, k, color_space);
+    dominant_colors(data, out_data, out_labels, width, height, k, coverage, color_space);
 }
 } // namespace img2num

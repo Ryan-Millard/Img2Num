@@ -74,7 +74,7 @@ void kmeans(
 
 void color_quantize(
     const uint8_t* data, uint8_t* out_data, int32_t* out_labels, const int32_t width,
-    const int32_t height, const int32_t k, const uint8_t color_space
+    const int32_t height, const int32_t k, const float coverage, const uint8_t color_space
 );
 
 /// @copydoc IMG2NUM_H_BILATERAL_FILTER_DOC

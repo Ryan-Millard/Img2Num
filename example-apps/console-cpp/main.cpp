@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
     // img2num::bilateral_filter(img_data, width, height, sigma, 50.0, 0);
     // Apply kmeans
     // img2num::kmeans(img_data, out_data, out_labels, width, height, 32, 100, 1);
-    img2num::color_quantize(img_data, out_data, out_labels, width, height, 0, 0);
+    img2num::color_quantize(img_data, out_data, out_labels, width, height, 0, 0.95f, 0);
 
     // Generate SVG
     std::string res_svg {img2num::labels_to_svg(img_data, out_labels, width, height, 100, 10)};
