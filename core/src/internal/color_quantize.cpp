@@ -12,7 +12,6 @@
 #include <cstring>
 #include <ctime>
 #include <functional>
-#include <iostream>
 #include <limits>
 #include <map>
 #include <numeric>
@@ -172,11 +171,11 @@ void dist_gpu(
                 bool* flag = static_cast<bool*>(userdata);
                 bool success = false;
                 if (status == wgpu::MapAsyncStatus::Success) {
-                    std::cout << "Map success: " << msg.data << std::endl;
+                    // std::cout << "Map success: " << msg.data << std::endl;
                     success = true;
                 } else {
                     // Handle error
-                    std::cerr << "Map failed: " << msg.data << std::endl;
+                    // std::cerr << "Map failed: " << msg.data << std::endl;
                     success = false;
                 }
                 *flag = true;
