@@ -146,13 +146,7 @@ const ConfigPanel = ({
       </div>
 
       {/* Advanced Settings Collapsible Toggle - Bilateral Filter is unused in Logo Mode */}
-      <button
-        type="button"
-        className={styles.advancedToggle}
-        onClick={() => setIsAdvancedOpen((prev) => !prev)}
-        aria-expanded={isAdvancedOpen}
-        disabled={logoMode}
-      >
+      <button type="button" className={styles.advancedToggle} onClick={() => setIsAdvancedOpen((prev) => !prev)} aria-expanded={isAdvancedOpen} disabled={logoMode}>
         <span>Advanced Settings</span>
         {isAdvancedOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
       </button>

@@ -2,7 +2,7 @@ import ConfigPanel from "@components/ConfigPanel";
 import GlassCard from "@components/GlassCard";
 import GlassModal from "@components/GlassModal";
 import useFullscreen from "@hooks/useFullscreen";
-import { bilateralFilter, findContours, kmeans } from "img2num";
+import { bilateralFilter, findContours, kmeans, color_quantize } from "img2num";
 import { clearEditorHandoff, getEditorHandoff } from "@utils/editorHandoff";
 import { useEffect, useRef, useState } from "react";
 import EditorControls from "./EditorControls";
@@ -30,6 +30,7 @@ export default function Editor() {
   const [sigmaSpatial, setSigmaSpatial] = useState(initialSettings?.sigmaSpatial ?? 3);
   const [sigmaRange, setSigmaRange] = useState(initialSettings?.sigmaRange ?? 50);
   const [colorSpace, setColorSpace] = useState(initialSettings?.colorSpace ?? 0);
+  const [logoMode, setLogoMode] = useState(initialSettings?.logoMode ?? false);
 
   const [cachedBilateralFiltered, setCachedBilateralFiltered] = useState(imgBilateralFiltered);
   const [appliedSigmaSpatial, setAppliedSigmaSpatial] = useState(initialSettings?.sigmaSpatial ?? 3);
@@ -54,33 +55,46 @@ export default function Editor() {
     try {
       const { width, height } = fileData;
 
-      const bilateralChanged = sigmaSpatial !== appliedSigmaSpatial || sigmaRange !== appliedSigmaRange || colorSpace !== appliedColorSpace || !cachedBilateralFiltered;
+      let contourPixels = fileData.pixels;
+      let labels;
 
-      let filteredPixels = cachedBilateralFiltered;
-
-      if (bilateralChanged) {
-        filteredPixels = await bilateralFilter({
+      if (logoMode) {
+        const result = await color_quantize({
+          ...fileData,
           pixels: fileData.pixels,
-          width,
-          height,
-          sigma_spatial: sigmaSpatial,
-          sigma_range: sigmaRange,
-          color_space: colorSpace,
+          num_colors: 0,
         });
-        setCachedBilateralFiltered(filteredPixels);
-        setAppliedSigmaSpatial(sigmaSpatial);
-        setAppliedSigmaRange(sigmaRange);
-        setAppliedColorSpace(colorSpace);
+        labels = result.labels;
+      } else {
+        const bilateralChanged = sigmaSpatial !== appliedSigmaSpatial || sigmaRange !== appliedSigmaRange || colorSpace !== appliedColorSpace || !cachedBilateralFiltered;
+
+        contourPixels = cachedBilateralFiltered;
+
+        if (bilateralChanged) {
+          contourPixels = await bilateralFilter({
+            pixels: fileData.pixels,
+            width,
+            height,
+            sigma_spatial: sigmaSpatial,
+            sigma_range: sigmaRange,
+            color_space: colorSpace,
+          });
+          setCachedBilateralFiltered(contourPixels);
+          setAppliedSigmaSpatial(sigmaSpatial);
+          setAppliedSigmaRange(sigmaRange);
+          setAppliedColorSpace(colorSpace);
+        }
+
+        const kmeansResult = await kmeans({
+          ...fileData,
+          pixels: contourPixels,
+          num_colors: numColors,
+        });
+        labels = kmeansResult.labels;
       }
 
-      const { labels } = await kmeans({
-        ...fileData,
-        pixels: filteredPixels,
-        num_colors: numColors,
-      });
-
       const { svg: newSvg } = await findContours({
-        pixels: filteredPixels,
+        pixels: contourPixels,
         labels,
         width,
         height,
@@ -184,6 +198,8 @@ export default function Editor() {
               setSigmaRange={setSigmaRange}
               colorSpace={colorSpace}
               setColorSpace={setColorSpace}
+              logoMode={logoMode}
+              setLogoMode={setLogoMode}
               isOpen={isSettingsOpen}
               onReset={() => {
                 setNumColors(16);
@@ -192,6 +208,7 @@ export default function Editor() {
                 setSigmaSpatial(3);
                 setSigmaRange(50);
                 setColorSpace(0);
+                setLogoMode(false);
               }}
               onAction={reprocessImage}
               actionLabel="Apply"
