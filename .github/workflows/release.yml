@@ -327,7 +327,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Create propagation PR: ${{ matrix.target.path }}
+      - name: Create propagation PR - ${{ matrix.target.path }}
         env:
           GH_TOKEN: ${{ secrets.RELEASE_PROPAGATION_TOKEN }}
           VERSION:  ${{ needs.release-please.outputs.cpp_version }}
@@ -367,7 +367,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Create propagation PR: packages/js
+      - name: Create propagation PR - packages/js
         env:
           GH_TOKEN: ${{ secrets.RELEASE_PROPAGATION_TOKEN }}
           VERSION:  ${{ needs.release-please.outputs.c_version }}
