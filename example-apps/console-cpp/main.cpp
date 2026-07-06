@@ -61,14 +61,16 @@ int main(int argc, char** argv) {
 
     // Apply bilateral
     const double sigma {width * SIGMA_WIDTH_RATIO};
-    img2num::bilateral_filter(img_data, width, height, sigma, 50.0, 0);
+    // img2num::bilateral_filter(img_data, width, height, sigma, 50.0, 0);
     // Apply kmeans
-    img2num::kmeans(img_data, out_data, out_labels, width, height, 32, 100, 1);
+    // img2num::kmeans(img_data, out_data, out_labels, width, height, 32, 100, 1);
+    img2num::color_quantize(img_data, out_data, out_labels, width, height, 0, 0);
+
     // Generate SVG
     std::string res_svg {img2num::labels_to_svg(img_data, out_labels, width, height, 100, 10)};
 
     img2num::ImageToSvgConfig config;
-    config.kmeans.k = 32;
+    config.kmeans.k = 16;
     config.min_thickness = 10;
     std::string res_svg2 {img2num::image_to_svg(img_data, width, height, config)};
 
@@ -76,6 +78,7 @@ int main(int argc, char** argv) {
     std::string out_path {std::string(OUT_DIR) + "/console-cpp-output.png"};
     std::string kmeans_path {std::string(OUT_DIR) + "/console-cpp-kmeans.png"};
     std::string svg_path {std::string(OUT_DIR) + "/console-cpp-svg.svg"};
+    std::string svg_path2 {std::string(OUT_DIR) + "/console-cpp-svg2.svg"};
 
     int exit_code {0};
     const bool blur_save_success {
@@ -97,8 +100,18 @@ int main(int argc, char** argv) {
         exit_code = 1;
     }
     if (exit_code == 0) {
-        svgFile << res_svg2;
+        svgFile << res_svg;
         svgFile.close();
+    }
+
+    std::ofstream svgFile2(svg_path2);
+    if (!svgFile2.is_open()) {
+        std::cerr << "Error: Could not open the file!" << std::endl;
+        exit_code = 1;
+    }
+    if (exit_code == 0) {
+        svgFile2 << res_svg2;
+        svgFile2.close();
     }
 
     if (blur_save_success && kmeans_save_success && (exit_code == 0)) {

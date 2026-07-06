@@ -32,6 +32,12 @@ template <typename NumberT> struct RGBAPixel : public ImageLib::RGBPixel<NumberT
         this->alpha = alpha;
     }
 
+    [[nodiscard]] inline bool operator<(const RGBAPixel<NumberT>& rhs) const {
+        auto this_tuple = std::make_tuple(this->red, this->green, this->blue, this->alpha);
+        auto rhs_tuple = std::make_tuple(rhs.red, rhs.green, rhs.blue, rhs.alpha);
+        return this_tuple < rhs_tuple;
+    };
+
 }
 #ifndef _MSC_VER
 __attribute__((packed))
