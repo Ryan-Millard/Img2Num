@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { RotateCcw, X, ChevronDown, ChevronUp } from "lucide-react";
+import GlassSwitch from "./GlassSwitch";
 import styles from "./ConfigPanel.module.css";
 
 const ConfigPanel = ({
@@ -14,6 +15,8 @@ const ConfigPanel = ({
   setSigmaSpatial,
   sigmaRange,
   setSigmaRange,
+  logoMode = false,
+  setLogoMode,
   isOpen = false,
   onReset,
   onAction,
@@ -37,7 +40,17 @@ const ConfigPanel = ({
         </div>
       </div>
 
-      {/* K-Means Parameters (Color Settings) */}
+      {/* Logo Mode: color_quantize -> findContours instead of bilateralFilter -> kmeans -> findContours */}
+      {setLogoMode && (
+        <div className={styles.settingGroup}>
+          <div className={styles.settingLabelWrapper}>
+            <label>Logo Mode</label>
+            <GlassSwitch isOn={logoMode} onChange={() => setLogoMode(!logoMode)} ariaLabel="toggle logo mode" disabled={isProcessing} />
+          </div>
+        </div>
+      )}
+
+      {/* K-Means Parameters (Color Settings) - unused in Logo Mode */}
       <div className={styles.sectionHeader}>K-Means Segmentation</div>
 
       <div className={styles.settingGroup}>
@@ -54,10 +67,19 @@ const ConfigPanel = ({
               setNumColors(val);
             }}
             className={styles.numberInput}
-            disabled={isProcessing}
+            disabled={isProcessing || logoMode}
           />
         </div>
-        <input id="k-colors" type="range" min="2" max="64" value={numColors} onChange={(e) => setNumColors(parseInt(e.target.value, 10))} className={styles.rangeInput} disabled={isProcessing} />
+        <input
+          id="k-colors"
+          type="range"
+          min="2"
+          max="64"
+          value={numColors}
+          onChange={(e) => setNumColors(parseInt(e.target.value, 10))}
+          className={styles.rangeInput}
+          disabled={isProcessing || logoMode}
+        />
       </div>
 
       {/* Contours Parameters (Outline Details) */}
@@ -123,13 +145,19 @@ const ConfigPanel = ({
         />
       </div>
 
-      {/* Advanced Settings Collapsible Toggle */}
-      <button type="button" className={styles.advancedToggle} onClick={() => setIsAdvancedOpen((prev) => !prev)} aria-expanded={isAdvancedOpen}>
+      {/* Advanced Settings Collapsible Toggle - Bilateral Filter is unused in Logo Mode */}
+      <button
+        type="button"
+        className={styles.advancedToggle}
+        onClick={() => setIsAdvancedOpen((prev) => !prev)}
+        aria-expanded={isAdvancedOpen}
+        disabled={logoMode}
+      >
         <span>Advanced Settings</span>
         {isAdvancedOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
       </button>
 
-      {isAdvancedOpen && (
+      {isAdvancedOpen && !logoMode && (
         <div className={styles.advancedContent}>
           <div className={styles.sectionHeader}>Bilateral Filter</div>
 
@@ -241,6 +269,8 @@ ConfigPanel.propTypes = {
   setSigmaRange: PropTypes.func.isRequired,
   colorSpace: PropTypes.number,
   setColorSpace: PropTypes.func,
+  logoMode: PropTypes.bool,
+  setLogoMode: PropTypes.func,
   isOpen: PropTypes.bool,
   onReset: PropTypes.func.isRequired,
   onAction: PropTypes.func.isRequired,

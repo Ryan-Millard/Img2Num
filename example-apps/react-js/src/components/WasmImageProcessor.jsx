@@ -1,6 +1,6 @@
 import { useEffect, useState, useId, useRef, useCallback, useMemo } from "react";
 import { Upload, Settings, ChevronDown, ChevronUp } from "lucide-react";
-import { imageToUint8ClampedArray, bilateralFilter, kmeans, findContours } from "img2num";
+import { imageToUint8ClampedArray, bilateralFilter, kmeans, findContours, color_quantize } from "img2num";
 import GlassCard from "@components/GlassCard";
 import styles from "./WasmImageProcessor.module.css";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +26,7 @@ const WasmImageProcessor = () => {
   const [sigmaSpatial, setSigmaSpatial] = useState(3);
   const [sigmaRange, setSigmaRange] = useState(50);
   const [colorSpace, setColorSpace] = useState(0);
+  const [logoMode, setLogoMode] = useState(false);
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -88,27 +89,40 @@ const WasmImageProcessor = () => {
       const { width, height } = fileData;
 
       step(20);
-      // NOTE: Gaussian blur destroys the sharp outlines first, preventing the Bilateral filter from detecting and preserving them
-      const imgBilateralFiltered = await bilateralFilter({
-        pixels: fileData.pixels,
-        width,
-        height,
-        sigma_spatial: sigmaSpatial,
-        sigma_range: sigmaRange,
-        color_space: colorSpace,
-      });
 
-      step(70);
-      // kmeansed pixels are unused - filtered pixels are better for findContours
-      const { labels } = await kmeans({
-        ...fileData,
-        pixels: imgBilateralFiltered,
-        num_colors: numColors,
-      });
+      let contourPixels = fileData.pixels;
+      let labels;
+
+      if (logoMode) {
+        const result = await color_quantize({
+          ...fileData,
+          pixels: fileData.pixels,
+          num_colors: 0,
+        });
+        labels = result.labels;
+      } else {
+        // NOTE: Gaussian blur destroys the sharp outlines first, preventing the Bilateral filter from detecting and preserving them
+        contourPixels = await bilateralFilter({
+          pixels: fileData.pixels,
+          width,
+          height,
+          sigma_spatial: sigmaSpatial,
+          sigma_range: sigmaRange,
+          color_space: colorSpace,
+        });
+
+        step(70);
+        const kmeansResult = await kmeans({
+          ...fileData,
+          pixels: contourPixels,
+          num_colors: numColors,
+        });
+        labels = kmeansResult.labels;
+      }
 
       step(95);
       const { svg } = await findContours({
-        pixels: imgBilateralFiltered,
+        pixels: contourPixels,
         labels,
         width,
         height,
@@ -122,6 +136,7 @@ const WasmImageProcessor = () => {
       setEditorHandoff({
         svg,
         fileData,
+        imgBilateralFiltered: logoMode ? undefined : contourPixels,
         initialSettings: {
           numColors,
           minArea,
@@ -129,6 +144,7 @@ const WasmImageProcessor = () => {
           sigmaSpatial,
           sigmaRange,
           colorSpace,
+          logoMode,
         },
       });
 
@@ -141,7 +157,7 @@ const WasmImageProcessor = () => {
         step(0);
       }, 800);
     }
-  }, [fileData, navigate, step, numColors, minArea, minThickness, sigmaSpatial, sigmaRange, colorSpace]);
+  }, [fileData, navigate, step, numColors, minArea, minThickness, sigmaSpatial, sigmaRange, colorSpace, logoMode]);
 
   /* Memo'd UI fragments */
   const EmptyState = useMemo(
@@ -178,6 +194,8 @@ const WasmImageProcessor = () => {
           setSigmaRange={setSigmaRange}
           colorSpace={colorSpace}
           setColorSpace={setColorSpace}
+          logoMode={logoMode}
+          setLogoMode={setLogoMode}
           isOpen={isSettingsOpen}
           onReset={() => {
             setNumColors(16);
@@ -186,6 +204,7 @@ const WasmImageProcessor = () => {
             setSigmaSpatial(3);
             setSigmaRange(50);
             setColorSpace(0);
+            setLogoMode(false);
           }}
           onAction={processImage}
           actionLabel="Ok"

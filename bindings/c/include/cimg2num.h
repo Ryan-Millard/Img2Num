@@ -74,6 +74,11 @@ void img2num_kmeans(
     const int32_t height, const int32_t k, const int32_t max_iter, const uint8_t color_space
 );
 
+void img2num_color_quantize(
+    const uint8_t* data, uint8_t* out_data, int32_t* out_labels, const int32_t width,
+    const int32_t height, const int32_t k, const float coverage, const uint8_t color_space
+);
+
 /// @copydoc ::IMG2NUM_H_BILATERAL_FILTER_DOC
 void img2num_bilateral_filter(
     uint8_t* image, size_t width, size_t height, double sigma_spatial, double sigma_range,
