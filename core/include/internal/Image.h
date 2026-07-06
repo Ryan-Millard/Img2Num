@@ -111,7 +111,8 @@ template <typename PixelT> class Image {
 
     void resize(int new_width, int new_height, PixelT fill_value = PixelT()) {
         // In rare cases we may want to dynamically change the size of the Image container
-        if (new_width == width && new_height == height) return;
+        if (new_width == width && new_height == height)
+            return;
 
         // 1. Allocate the new blank canvas
         std::vector<PixelT> new_data(new_width * new_height, fill_value);

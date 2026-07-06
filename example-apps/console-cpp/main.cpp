@@ -72,6 +72,8 @@ int main(int argc, char** argv) {
     img2num::ImageToSvgConfig config;
     config.kmeans.k = 16;
     config.min_thickness = 10;
+    // config.bilateral_filter.sigma_spatial=1.0;
+    // config.bilateral_filter.sigma_range=10.0;
     std::string res_svg2 {img2num::image_to_svg(img_data, width, height, config)};
 
     // Save the blurred image
