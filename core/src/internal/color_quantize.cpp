@@ -87,10 +87,13 @@ void dominant_colors(
         }
     }
 
+    // make sure coverage is (0.0f, 1.0f)
+    float cov = std::clamp(coverage, 0.0f, 1.0f);
+
     int32_t _k {k};
     switch (color_space) {
     case COLOR_SPACE_OPTION_RGB: {
-        frequency_histogram<ImageLib::RGBAPixel<float>>(pixels, centroids, k, coverage);
+        frequency_histogram<ImageLib::RGBAPixel<float>>(pixels, centroids, k, cov);
         if (k == 0) {
             _k = centroids.getSize();
             centroids_lab.resize(_k, 1, ImageLib::LABAPixel<float>());
@@ -98,7 +101,7 @@ void dominant_colors(
         break;
     }
     case COLOR_SPACE_OPTION_CIELAB: {
-        frequency_histogram<ImageLib::LABAPixel<float>>(lab, centroids_lab, k, coverage);
+        frequency_histogram<ImageLib::LABAPixel<float>>(lab, centroids_lab, k, cov);
         if (k == 0) {
             _k = centroids_lab.getSize();
             centroids.resize(_k, 1, ImageLib::RGBAPixel<float>());
