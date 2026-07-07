@@ -4,7 +4,7 @@ dynamic = ["version"] # see tool.scikit-buil
 description = "A fast and accurate raster image to SVG conversion library"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-readme = "README.md"
+readme = "packages/py/README.md"
 authors = [{ name = "Ryan Millard" }]
 dependencies = [
   "numpy>=1.23.5"
