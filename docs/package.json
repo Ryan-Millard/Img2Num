@@ -135,6 +135,8 @@
     "@docusaurus/module-type-aliases": "3.10.1",
     "@docusaurus/plugin-content-docs": "^3.10.1",
     "@docusaurus/preset-classic": "^3.10.1",
+    "@docusaurus/theme-common": "^3.10.1",
+    "docusaurus-plugin-copy-page-button": "^0.8.4",
     "@docusaurus/types": "3.10.1",
     "docusaurus-plugin-typedoc": "^1.4.2",
     "fuzzy": "^0.1.3",
