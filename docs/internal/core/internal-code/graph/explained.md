@@ -1,0 +1,92 @@
+# Graph and Node Explained
+
+URL: https://img2num.dev/docs/internal/core/internal-code/graph/explained
+
+To explain Graph creation from image regions we show a diagram representation followed by a concrete step-by-step example.
+
+## Mapping Images to Graphs
+
+Assume a region partition image as shown. Each partition (and the pixels contained within) are represented as a Node. Nodes exist in the heap. A Graph is a collection of shared pointers to these Nodes ( `std::unique_ptr<std::vector<std::shared_ptr<Node>>>` ). A Graph has unique ownership over these Nodes pointers.
+
+![slide1](/assets/images/Slide1-ed35c2d110911c3ec6df8d2e4a5b7c3f.svg)*Figure 1: Partitioned Image*
+
+Below is a visualization of the Graph with its connections forming a undirected graph (a). In reality each `Node` contains a list of pointers to their neighbors, represented as edges (b). Note that adjacent nodes point to each other. Edge management is handled by the Graph. ![slide2](/assets/images/Slide2-03810d5a9194bde0cf14deb784645b3f.svg)*Figure 2: Visualizing a Graph. Note in (b) only 3 nodes are displayed 0,1,3. The remaining nodes have a similar structure*
+
+## Small Area Node Merging (Small Region Pruning)
+
+One of the Graph's main operations is Node merging. Suppose we want to absorb/merge region 0 (Node 0) into region 2 (Node 2). Node 2 will assume ownership of Nodes 0's pixels and neighbors. The following figure shows the step-by-step process that happens in Graph.
+
+![slide3](/assets/images/Slide3-88b196db16ac94f1173978fd21adc5de.svg)*Figure 3: Step-by-step visualization of node merging*
+
+**a** . Consider merging Node 0 into Node 2
+
+**b** . Disconnect edges to Node 0 neighbors. This requires iterating over Nodes 1, 2, and 3, and removing Node 0 from their edge set.
+
+**c** . Transferring edges to absorbing node (Node 2). Again, iterate over Nodes 1 and 3 to assign Node 2 as an edge. Similarly Node 2 adds Node 1 and 3 as edges. In this case Node 2 and Node 3 already share an edge, but Node 1 gets a new edge.
+
+**d** . Pixels owned by Node 0 are passed to Node 2. Node 0 is removed from the graph.
+
+**e** . In image space, Node 2 (region 2) now contains the area that used to be Node 0's.
+
+## Example
+
+1. Consider starting from an image (after bilateral-filtering).
+![Image](/assets/images/image-057a954a2b33a21a4b536dec5e456164.png)
+
+We use KMeans or a similar method to generate initial regions. But these regions do not have unique identifiers.
+Notice also that there are many tiny regions caused by quantization noise even after filtering.
+
+![KMeans](/assets/images/kmeans-37664bf183cce53132893adbeb0743a5.png)
+
+We want a smart approach to merge small regions into neighboring regions. To do this build a `Graph` .
+
+1. Building graphs consists of 2 steps:
+
+- Uniquely label neighboring regions. Floodfill is used for this. This discovers connected components - each connected component becomes a `Node`
+![Regions](/assets/images/regions-9eaab8746ffce84cfddac96dee40545f.png)
+
+- Tracking neighbors - the region labels are parsed to check for neighbors by looking at 3x3 neighborhoods. Each `Node` is updated with a list of neighbors forming an undirected graph.
+![Graph](/assets/images/region_graph-25af62d8c2fb23967e231aa033926071.png)
+2. Uniquely label neighboring regions. Floodfill is used for this. This discovers connected components - each connected component becomes a `Node`
+3. Tracking neighbors - the region labels are parsed to check for neighbors by looking at 3x3 neighborhoods. Each `Node` is updated with a list of neighbors forming an undirected graph.
+:::note Unexpected Centroid Locations Since many regions are concave, their centroids may appear to be lying far away, but this is correct. Centroids here are just used for visualizing the graph. :::
+
+1. Merging small regions
+The `Graph` is parsed to locate small area nodes. Each small node is merged with a larger neighbor node by transferring its pixels and edges to the absorbing neighbor node.
+
+![Graph2](/assets/images/region_graph2-d7aea4d6565df4afca62edc7dd7a692b.png)![Regions2](/assets/images/regions2-80c0ccdc75080b69dd4cafed442eadcc.png)
+
+1. Contour creation
+Now that small nodes have been pruned, each `Node` can compute its own contour using the Suzuki-Abe method.
+
+![Contours](/assets/images/contours-70b5c11976e1d599ac893d771293bac0.png)
+
+:::caution SVG space offset
+
+While Suzuki-Abe contour tracing correctly captures topological data, adjacent nodes end up with contours offset by ~1 pixel when mapped to SVG coordinates.
+
+See [this PR discussion](https://github.com/Ryan-Millard/Img2Num/pull/245#issuecomment-3807553622) for details on why this happens. ![ContoursZ](data:image/png;base64,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)
+
+:::
+
+1. Contour Management
+To solve this problem `Graph` has to overlap neighboring contours. For this `Nodes` have a special `edge_pixel` property to keep track of additional pixels to be considered for the contour. This forces neighboring contours to perfectly overlap creating no gaps or holes, which is important for SVGs.
+
+Before gap management
+
+Pull the code locally from PR #238
+```bash
+# 1. Clone the repo (if you haven't already)
+git clone --recursive https://github.com/Ryan-Millard/Img2Num.git
+cd Img2Num
+# 2. Fetch the specific commit from the PR
+git fetch origin 9eb23f9a56edaeec95e2dfcfc8389b11bfd777b6
+# 3. Create a local branch pointing at it
+git checkout -b try-pr-238 9eb23f9a56edaeec95e2dfcfc8389b11bfd777b6
+```
+
+![gaps](/assets/images/cow_contours_gap-5a68e1b3e641c1a8caa312d246a0593b.png)
+
+After gap management
+
+![nogaps](/assets/images/cow_contours-e6ff395c2782555c42cc4e31f93271fb.png)
