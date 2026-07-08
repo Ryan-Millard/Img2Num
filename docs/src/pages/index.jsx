@@ -1,7 +1,7 @@
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
-import { BookOpen, Cpu, FileText, GitBranch, Globe, Layers, Package, Palette, Target, Terminal, Zap } from "lucide-react";
+import { BookOpen, Cpu, FileText, GitBranch, Globe, Layers, Package, Palette, Target, Terminal, Zap, Mailbox } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Hedgehog from "../components/Hedgehog";
 import styles from "./index.module.css";
@@ -63,7 +63,7 @@ function HeroSection() {
         <div className={styles.heroLeft}>
           <div className={styles.eyebrow}>
             <span className={styles.eyebrowBar}></span>
-            vectorize · quantize · export
+            filter · segment · trace
           </div>
 
           <h1 className={styles.heroTitle}>
@@ -74,7 +74,10 @@ function HeroSection() {
             JavaScript &amp; C
           </h1>
 
-          <p className={styles.heroLead}>Img2Num is a cross-platform library that converts PNG/JPEG to clean, layered SVG paths. Built for speed, zero dependencies, and multi-language bindings.</p>
+          <p className={styles.heroLead}>
+            Img2Num is a cross-platform raster-to-SVG conversion library - it converts bitmap images like PNGs and JPEGs into clean, scalable SVG paths. Built for speed, minimal dependencies, and
+            multi-language bindings.
+          </p>
 
           <div className={styles.heroActionsWrapper}>
             <div className={styles.heroActions} style={{ marginBottom: 0 }}>
@@ -139,7 +142,7 @@ function BindingsSection() {
       title: "pip install img2num",
       desc: "Numpy array in → SVG string out. Seamless integration.",
       code: `import img2num\n\n` + `cfg = img2num.ImageToSvgConfig(kmeans = {"k": 16})\n` + `svg = img2num.image_to_svg(img, config=cfg)`,
-      docLinks: [],
+      docLinks: [{ href: "./docs/py", text: "Docs" }],
     },
     {
       lang: "JS",
@@ -151,7 +154,7 @@ function BindingsSection() {
         `import { imageToUint8ClampedArray, imageToSvg } from "img2num"\n\n` +
         `const { pixels, width, height } = await imageToUint8ClampedArray(file);\n` +
         `const svg = await imageToSvg({ pixels, width, height });`,
-      docLinks: [{ href: "./docs/js/api", text: "JsDoc" }],
+      docLinks: [{ href: "./docs/js", text: "Docs" }],
     },
   ];
 
@@ -278,13 +281,6 @@ function LinksSection() {
       to: "https://www.npmjs.com/package/img2num",
     },
     {
-      eyebrow: "Conan",
-      icon: <Layers size={16} color="var(--coral)" />,
-      title: "Conan Center",
-      desc: "C++ package manager integration.",
-      to: "https://conan.io/center",
-    },
-    {
       eyebrow: "Contributing",
       icon: <GitBranch size={16} color="var(--accent)" />,
       title: "GitHub issues",
@@ -297,6 +293,13 @@ function LinksSection() {
       title: "MIT",
       desc: "Permissive, commercial friendly.",
       to: "https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE",
+    },
+    {
+      eyebrow: "Changelog",
+      icon: <Mailbox size={16} color="var(--coral)" />,
+      title: "Changelog",
+      desc: "Stay up to date with the latest changes Img2Num.",
+      to: "./changelog",
     },
   ];
 

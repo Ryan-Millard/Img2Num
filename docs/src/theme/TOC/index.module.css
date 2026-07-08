@@ -48,7 +48,8 @@
   background: none !important;
 }
 
-.copyContainer button:hover, .copyContainer button:hover * {
+.copyContainer button:hover,
+.copyContainer button:hover * {
   color: var(--ifm-link-hover-color);
 }
 .copyContainer * {

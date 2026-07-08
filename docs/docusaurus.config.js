@@ -87,32 +87,6 @@ const config = {
         injectButton: false,
         generateMarkdownRoutes: true,
         markdownUrl: true,
-        //customStyles: {
-          //button: {
-            //className: "my-custom-button",
-            //style: {
-              //backgroundColor: "red",
-              //color: "red",
-              //borderRadius: "8px",
-            //},
-          //},
-          //dropdown: {
-            //className: "my-custom-dropdown",
-            //style: {
-              //backgroundColor: "red",
-              //border: "2px solid #4CAF50",
-            //},
-          //},
-          //dropdownItem: {
-            //style: {
-              //padding: "12px 20px",
-              //fontSize: "16px",
-            //},
-          //},
-          //container: {
-            //className: "my-button-container",
-          //},
-        //},
       },
     ],
     [
