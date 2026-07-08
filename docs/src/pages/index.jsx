@@ -5,6 +5,7 @@ import { BookOpen, Cpu, FileText, GitBranch, Globe, Layers, Package, Palette, Ta
 import React, { useEffect, useState } from "react";
 import Hedgehog from "../components/Hedgehog";
 import styles from "./index.module.css";
+import CodeBlock from "@theme/CodeBlock";
 
 function RasterToSvgDemo() {
   return (
@@ -125,6 +126,7 @@ function BindingsSection() {
   const bindings = [
     {
       lang: "C++17",
+      codeLang: "cpp",
       icon: <Zap size={22} color="var(--accent)" />,
       accentVar: "--accent-light",
       title: "Native speed",
@@ -137,6 +139,7 @@ function BindingsSection() {
     },
     {
       lang: "Python",
+      codeLang: "python",
       icon: <Terminal size={22} color="var(--amber)" />,
       accentVar: "--amber-light",
       title: "pip install img2num",
@@ -146,6 +149,7 @@ function BindingsSection() {
     },
     {
       lang: "JS",
+      codeLang: "javascript",
       icon: <Globe size={22} color="var(--blue)" />,
       accentVar: "--blue-light",
       title: "npm i img2num",
@@ -175,9 +179,9 @@ function BindingsSection() {
             </div>
             <h3 className={styles.bindingTitle}>{b.title}</h3>
             <p className={styles.bindingDesc}>{b.desc}</p>
-            <pre className={styles.codeSnippet}>
-              <code>{b.code}</code>
-            </pre>
+            <CodeBlock language={b.codeLang} className={styles.codeSnippet}>
+              {b.code}
+            </CodeBlock>
             <p>
               {b.docLinks.map(({ href, text }, index) => (
                 <React.Fragment key={href}>
