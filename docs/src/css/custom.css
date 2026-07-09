@@ -1,26 +1,3 @@
-/**
- * Hedgehog Theme — Docusaurus custom.css
- * -----------------------------------------------------------------------
- * Full replacement stylesheet mapping a warm hedgehog palette onto
- * Docusaurus' Infima design system, with light/dark variants and
- * matching Algolia DocSearch styling.
- *
- * Drop this in as src/css/custom.css (referenced by docusaurus.config.js
- * under themeConfig / presets -> theme.customCss).
- *
- * FIXES APPLIED (see chat for full explanation):
- * 1. Dark theme --secondary was identical to --text (#f8eacd == #f8eacd),
- *    which made text invisible on table headers, secondary buttons, and
- *    the DocSearch key badge. --secondary is now a distinct warm brown.
- * 2. Light theme --ifm-background-surface-color was a stark #ffffff that
- *    clashed against the warm cream --bg. Changed to a warm off-white
- *    that matches the palette.
- */
-
-/* -------------------------------------------------------------------- */
-/* 0. Raw palette + shared tokens (kept as-is from your source, plus a  */
-/*    few additions Docusaurus needs: fonts, spacing, radii)            */
-/* -------------------------------------------------------------------- */
 :root {
   --font-sans: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   --spacing-xs: 4px;
@@ -42,7 +19,6 @@
   --radius-lg: 20px;
 }
 
-/* Light theme (default) — Warm hedgehog palette */
 :root,
 :root.light,
 [data-theme='light'] {
@@ -79,7 +55,6 @@
   --glass-table-stacked: rgba(238, 206, 164, 0.7);
 }
 
-/* Dark theme — Deep forest night with warm accents */
 :root.dark,
 [data-theme='dark'] {
   --amber: #e08c38;
@@ -100,11 +75,6 @@
   --bg: #1a0f1f;
   --primary: #e0ad7d;
   --primary-dark: #d7a47d;
-  /* FIX: was #f8eacd, identical to --text below, which made secondary
-     buttons, table headers, and the DocSearch key badge unreadable
-     (cream text on cream background). Now a distinct warm brown that
-     contrasts with cream text while staying in the same family as
-     --primary-dark. */
   --secondary: #7a4a2e;
   --text: #f8eacd;
   --text-light: #eecea4;
@@ -121,11 +91,7 @@
   --glass-table-stacked: rgba(238, 206, 164, 0.7);
 }
 
-/* -------------------------------------------------------------------- */
-/* 1. Map palette onto Infima (Docusaurus' theme engine)                 */
-/* -------------------------------------------------------------------- */
 :root {
-  /* Brand / primary color ramp */
   --ifm-primary: var(--primary);
   --ifm-primary-dark: var(--primary-dark);
   --ifm-primary-darker: #4a2814;
@@ -134,23 +100,17 @@
   --ifm-primary-lighter: #8a4a1f;
   --ifm-primary-lightest: #a25a26;
 
-  /* Feedback colors */
   --ifm-danger: var(--error);
   --ifm-success: var(--success);
   --ifm-warning: var(--secondary);
   --ifm-info: var(--secondary);
 
-  /* Typography */
   --ifm-font-family-base: var(--font-sans);
   --ifm-font-family-monospace: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   --ifm-font-base: var(--text);
   --ifm-heading-color: var(--text);
 
-  /* Backgrounds & surfaces */
   --ifm-background-color: var(--bg);
-  /* FIX: was a hardcoded #ffffff, a cold stark white that clashed
-     against the warm cream --bg. Now uses the warm off-white already
-     defined in the palette above. */
   --ifm-background-surface-color: var(--white);
   --ifm-navbar-background-color: var(--bg);
   --ifm-footer-background-color: var(--surface);
@@ -158,7 +118,6 @@
   --ifm-footer-link-color: var(--text-light);
   --ifm-footer-title-color: var(--primary);
 
-  /* Borders / radii / spacing reuse your tokens */
   --ifm-emphasis-300: var(--border);
   --ifm-toc-border-color: var(--border);
   --ifm-hr-border-color: var(--border);
@@ -226,9 +185,6 @@
   --ifm-global-shadow-tl: 0 6px 20px var(--glass-shadow);
 }
 
-/* -------------------------------------------------------------------- */
-/* 2. Base element styling                                               */
-/* -------------------------------------------------------------------- */
 html {
   font-family: var(--font-sans);
 }
@@ -241,22 +197,18 @@ body {
 a {
   color: var(--ifm-link-color);
   font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: text-decoration-color 0.15s ease, color 0.15s ease;
 }
 a:hover {
   color: var(--text-light);
-  text-decoration-color: var(--border);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s ease, color 0.15s ease;
 }
 
 hr {
   border-color: var(--border);
 }
 
-/* -------------------------------------------------------------------- */
-/* 3. Navbar                                                             */
-/* -------------------------------------------------------------------- */
 .navbar {
   background-color: var(--glass-bg);
   backdrop-filter: blur(10px);
@@ -301,14 +253,10 @@ hr {
   z-index: var(--navbar-menu-z-index);
 }
 
-/* Theme toggle icon accent */
 [class*='toggle_'] svg {
   color: var(--primary);
 }
 
-/* -------------------------------------------------------------------- */
-/* 4. Sidebar / doc menu                                                 */
-/* -------------------------------------------------------------------- */
 .theme-doc-sidebar-container {
   border-right: 1px solid var(--border);
   background-color: var(--bg);
@@ -334,9 +282,6 @@ hr {
   filter: none;
 }
 
-/* -------------------------------------------------------------------- */
-/* 6. Buttons                                                            */
-/* -------------------------------------------------------------------- */
 .button {
   border-radius: var(--radius-sm);
   font-weight: 600;
@@ -367,9 +312,6 @@ hr {
   color: var(--bg);
 }
 
-/* -------------------------------------------------------------------- */
-/* 7. Cards / admonitions / callouts                                     */
-/* -------------------------------------------------------------------- */
 .card {
   background-color: var(--glass-bg);
   border: 1px solid var(--glass-border);
@@ -391,13 +333,10 @@ hr {
   fill: var(--primary);
 }
 
-/* -------------------------------------------------------------------- */
-/* 8. Tables                                                             */
-/* -------------------------------------------------------------------- */
 table {
   border: 1px solid var(--glass-table-border);
   border-radius: var(--radius-sm);
-  overflow: hidden;
+  width: fit-content;
 }
 table thead {
   background-color: var(--secondary);
@@ -414,16 +353,12 @@ table td {
   border: 1px solid var(--glass-table-border);
 }
 
-/* Stacked/responsive tables on small screens */
 @media (max-width: 768px) {
   table tr {
     background-color: var(--glass-table-stacked);
   }
 }
 
-/* -------------------------------------------------------------------- */
-/* 9. Code blocks                                                        */
-/* -------------------------------------------------------------------- */
 code {
   background-color: var(--ifm-code-background);
   border-radius: var(--radius-sm);
@@ -440,8 +375,6 @@ div[class^='codeBlockContainer'] {
   box-shadow: 0 2px 6px var(--glass-shadow);
 }
 
-/* Force readable contrast on the actual code surface, regardless of
-which Prism theme is configured in docusaurus.config.js */
 div[class^='codeBlockContainer'] pre,
 div[class^='codeBlockContainer'] code,
 .prism-code {
@@ -453,7 +386,6 @@ div[class^='codeBlockContainer'] pre,
   color: var(--text) !important;
 }
 
-/* Line-number gutter / copy button stay legible too */
 .theme-code-block-highlighted-line {
   background-color: var(--glass-table-row-hover);
 }
@@ -463,9 +395,6 @@ div[class^='buttonGroup'] button {
   border: 1px solid var(--glass-border);
 }
 
-/* -------------------------------------------------------------------- */
-/* 10. Footer                                                            */
-/* -------------------------------------------------------------------- */
 .footer {
   background-color: var(--ifm-footer-background-color);
   border-top: 1px solid var(--border);
@@ -489,18 +418,6 @@ div[class^='buttonGroup'] button {
   opacity: 0.8;
 }
 
-/* -------------------------------------------------------------------- */
-/* 11. Pagination / breadcrumbs                                          */
-/* -------------------------------------------------------------------- */
-.pagination-nav__link {
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background-color: var(--glass-bg);
-}
-.pagination-nav__link:hover {
-  border-color: var(--primary);
-}
-
 .breadcrumbs__link {
   color: var(--text-light);
 }
@@ -509,11 +426,7 @@ div[class^='buttonGroup'] button {
   color: var(--primary);
 }
 
-/* -------------------------------------------------------------------- */
-/* 12. Algolia DocSearch                                                 */
-/* -------------------------------------------------------------------- */
 
-/* Search bar trigger in navbar */
 .DocSearch-Button {
   background-color: var(--glass-bg);
   border: 1px solid var(--glass-border);
@@ -538,7 +451,6 @@ div[class^='buttonGroup'] button {
   color: var(--primary);
 }
 
-/* DocSearch modal theming — override its own CSS variables */
 :root {
   --docsearch-primary-color: var(--primary);
   --docsearch-text-color: var(--text);
@@ -582,7 +494,6 @@ div[class^='buttonGroup'] button {
   --docsearch-footer-background: #241629;
 }
 
-/* Fine-tune bits DocSearch variables don't cover */
 .DocSearch-Modal {
   border: 1px solid var(--glass-border);
 }
