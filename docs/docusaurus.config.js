@@ -82,6 +82,14 @@ const config = {
   plugins: [
     changelogPlugin,
     [
+      "docusaurus-plugin-copy-page-button",
+      {
+        injectButton: false,
+        generateMarkdownRoutes: true,
+        markdownUrl: true,
+      },
+    ],
+    [
       "@docusaurus/plugin-content-docs",
       {
         id: "changelog",
@@ -231,8 +239,24 @@ const config = {
             title: "Documentation",
             items: [
               {
-                label: "Documentation",
+                label: "All Docs",
                 to: "/docs",
+              },
+              {
+                label: "C",
+                to: "/docs/c",
+              },
+              {
+                label: "C++",
+                to: "/docs/cpp",
+              },
+              {
+                label: "JavaScript",
+                to: "/docs/js",
+              },
+              {
+                label: "Python",
+                to: "/docs/py",
               },
             ],
           },
@@ -240,21 +264,66 @@ const config = {
             title: "Community",
             items: [
               {
-                label: "GitHub Discussions",
+                label: "GitHub",
+                href: "https://github.com/Ryan-Millard/Img2Num",
+              },
+              {
+                label: "Issues",
+                href: "https://github.com/Ryan-Millard/Img2Num/issues",
+              },
+              {
+                label: "Discussions",
                 href: "https://github.com/Ryan-Millard/Img2Num/discussions",
               },
-            ],
-          },
-          {
-            title: "More",
-            items: [
+              {
+                label: "Good First Issues",
+                href: "https://github.com/Ryan-Millard/Img2Num/issues/views/1155",
+              },
               {
                 label: "Blog",
                 to: "/blog",
               },
+            ],
+          },
+          {
+            title: "Download",
+            items: [
               {
-                label: "GitHub",
-                href: "https://github.com/Ryan-Millard/Img2Num",
+                label: "C",
+                href: "https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c&expanded=true",
+              },
+              {
+                label: "C++",
+                href: "https://github.com/Ryan-Millard/Img2Num/releases?q=cpp&expanded=true",
+              },
+              {
+                label: "JavaScript",
+                href: "https://www.npmjs.com/package/img2num",
+              },
+              {
+                label: "Python",
+                href: "https://pypi.org/project/img2num/",
+              },
+            ],
+          },
+          {
+            title: "Changelogs",
+            items: [
+              {
+                label: "C",
+                href: "/changelog/c",
+              },
+              {
+                label: "C++",
+                href: "/changelog/cpp",
+              },
+              {
+                label: "JavaScript",
+                href: "/changelog/js",
+              },
+              {
+                label: "Python",
+                href: "/changelog/py",
               },
             ],
           },

@@ -1,0 +1,76 @@
+.tocContainer {
+  border-left: 1px solid var(--ifm-toc-border-color);
+  padding: 16px;
+  min-width: 250px;
+  width: fit-content;
+  top: calc(var(--ifm-navbar-height) + 1rem);
+  position: sticky;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 90vh;
+}
+.tocContainer ul {
+  list-style: none;
+  padding-left: 0;
+  margin-left: 8px;
+}
+.tocContainer > * {
+  overflow: visible; /* or overflow: unset */
+}
+
+.tableOfContents {
+  max-height: calc(100vh - (var(--ifm-navbar-height) + 2rem));
+  overflow-y: auto;
+  position: sticky;
+}
+
+@media (max-width: 996px) {
+  .tableOfContents {
+    display: none;
+  }
+
+  .docItemContainer {
+    padding: 0 0.3rem;
+  }
+}
+
+.tocHeader {
+  font-size: var(--ifm-h3-font-size);
+  color: var(--ifm-heading-color);
+  font-family: var(--ifm-heading-font-family);
+  font-weight: var(--ifm-heading-font-weight);
+  line-height: var(--ifm-heading-line-height);
+}
+
+[data-copy-page-button-container] button {
+  border: none;
+  background: none !important;
+}
+
+.copyContainer button:hover,
+.copyContainer button:hover * {
+  color: var(--ifm-link-hover-color);
+}
+.copyContainer * {
+  border: none !important;
+  background: var(--ifm-background-color) !important;
+}
+
+.editMeta {
+  padding: 8px;
+  color: var(--ifm-toc-link-color);
+}
+
+.reportIssueLink {
+  padding: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.githubIcon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}

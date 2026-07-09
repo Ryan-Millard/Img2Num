@@ -306,19 +306,6 @@
   margin: 0;
 }
 
-.codeSnippet {
-  background: var(--surface-2);
-  border-radius: 8px;
-  padding: 12px 14px;
-  font-family: "DM Mono", monospace;
-  font-size: 12px;
-  color: var(--ink-2);
-  white-space: pre;
-  overflow-x: auto;
-  margin: 0;
-  max-width: 100%;
-}
-
 .featuresSectionBg {
   background: #1a1916;
   padding: 72px 32px;

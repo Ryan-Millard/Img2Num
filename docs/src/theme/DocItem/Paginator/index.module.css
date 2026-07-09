@@ -1,0 +1,8 @@
+.docPaginator {
+  display: flex;
+  justify-content: space-between;
+}
+.docPaginator > * {
+  border: none;
+  padding-inline: 0;
+}
