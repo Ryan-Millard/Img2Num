@@ -2,7 +2,7 @@ import ConfigPanel from "@components/ConfigPanel";
 import GlassCard from "@components/GlassCard";
 import GlassModal from "@components/GlassModal";
 import useFullscreen from "@hooks/useFullscreen";
-import { bilateralFilter, findContours, kmeans } from "img2num";
+import { bilateralFilter, findContours, kmeans, color_quantize } from "img2num";
 import { clearEditorHandoff, getEditorHandoff } from "@utils/editorHandoff";
 import { useEffect, useRef, useState } from "react";
 import EditorControls from "./EditorControls";
