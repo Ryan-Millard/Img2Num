@@ -218,7 +218,6 @@ hr {
 .navbar__inner {
   display: flex;
   gap: 25vw;
-  max-width: 1400px;
   margin: 0 auto;
 }
 .navbar__items {
