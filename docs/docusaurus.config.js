@@ -287,15 +287,15 @@ const config = {
           },
           {
             title: `Copyright © ${new Date().getFullYear()} Img2Num.`,
-              items: [
-                {
-                  html: `
+            items: [
+              {
+                html: `
                     <a href="/">
                       <img src="/img/favicon.svg" alt="Img2Num Logo" height="150" />
                     </a>
                   `,
-                },
-              ],
+              },
+            ],
           },
           {
             title: "Download",

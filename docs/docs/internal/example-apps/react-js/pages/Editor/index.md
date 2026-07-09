@@ -5,7 +5,7 @@ keywords: [editor, svg, pan, zoom, pinch, pointer events, react-router, Img2Num]
 sidebar_label: Editor
 ---
 
-import { MoveRight } from 'lucide-react';
+import { MoveRight } from "lucide-react";
 
 ## Overview
 

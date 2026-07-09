@@ -4,7 +4,7 @@ title: Img2Num Docs
 sidebar_position: 1
 ---
 
-import { MoveRight } from 'lucide-react';
+import { MoveRight } from "lucide-react";
 
 # Welcome to Img2Num! 🦔
 

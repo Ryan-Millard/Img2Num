@@ -4,7 +4,7 @@ title: Python API Reference
 sidebar_position: 1
 ---
 
-import { MoveRight } from 'lucide-react';
+import { MoveRight } from "lucide-react";
 
 # Python API Reference
 

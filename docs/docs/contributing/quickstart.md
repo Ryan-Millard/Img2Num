@@ -5,8 +5,6 @@ sidebar_label: ⚡ Quickstart
 sidebar_position: 3
 ---
 
-import { MoveRight } from 'lucide-react';
-
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
@@ -165,7 +163,7 @@ To remove generated build folders:
 <Tabs groupId="clean-target">
   <TabItem value="cpp" label="C++ / C">
 
-```bash title="Clean C++ Core and C Bindings <MoveRight size={15} /> build-c-cpp/"
+```bash title="Clean C++ Core and C Bindings (build-c-cpp/)"
 just clean cpp
 ```
 
@@ -173,7 +171,7 @@ just clean cpp
 
   <TabItem value="js" label="JS / WASM">
 
-```bash title="Clean JavaScript / WASM Bindings <MoveRight size={15} /> build-wasm/"
+```bash title="Clean JavaScript / WASM Bindings (build-wasm/)"
 just clean js
 ```
 
@@ -181,7 +179,7 @@ just clean js
 
   <TabItem value="packages-js" label="npm Package">
 
-```bash title="Clean Browser + Node.js npm Packages <MoveRight size={15} /> packages/js/dist/"
+```bash title="Clean Browser + Node.js npm Packages (packages/js/dist/)"
 just clean packages-js
 ```
 
@@ -189,7 +187,7 @@ just clean packages-js
 
   <TabItem value="py" label="Python">
 
-```bash title="Clean Python Bindings + Wheel <MoveRight size={15} /> packages/py/build-py/"
+```bash title="Clean Python Bindings + Wheel (packages/py/build-py/)"
 just clean packages-py
 ```
 

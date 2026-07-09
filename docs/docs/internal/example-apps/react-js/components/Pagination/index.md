@@ -14,7 +14,7 @@ tags:
   - navigation
 ---
 
-import { MoveRight } from 'lucide-react';
+import { MoveRight } from "lucide-react";
 
 ## Overview
 
@@ -55,9 +55,9 @@ function Gallery() {
 
 Users can navigate pages using keyboard arrow keys:
 
-| Key            | Action              |
-| -------------- | ------------------- |
-| `←` ArrowLeft  | Go to previous page |
+| Key                                  | Action              |
+| ------------------------------------ | ------------------- |
+| `←` ArrowLeft                        | Go to previous page |
 | `<MoveRight size={15} />` ArrowRight | Go to next page     |
 
 :::note

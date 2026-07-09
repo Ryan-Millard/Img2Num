@@ -4,7 +4,7 @@ sidebar_label: Python
 sidebar_position: 10
 ---
 
-import { MoveRight } from 'lucide-react';
+import { MoveRight } from "lucide-react";
 
 # Python Binding
 
@@ -44,16 +44,16 @@ print(svg)
 
 ## Available Functions
 
-| Function                | Description                          |
-| :---------------------- | :----------------------------------- |
-| `image_to_svg`          | Full raster <MoveRight size={15} /> SVG pipeline           |
-| `bilateral_filter`      | Edge-preserving smoothing            |
-| `kmeans`                | Color clustering                     |
-| `labels_to_svg`         | Convert a label map to SVG paths     |
-| `gaussian_blur_fft`     | FFT-based Gaussian blur              |
-| `invert_image`          | Invert pixel values                  |
-| `threshold_image`       | Posterize to N intensity levels      |
-| `black_threshold_image` | Posterize, biased toward dark output |
+| Function                | Description                                      |
+| :---------------------- | :----------------------------------------------- |
+| `image_to_svg`          | Full raster <MoveRight size={15} /> SVG pipeline |
+| `bilateral_filter`      | Edge-preserving smoothing                        |
+| `kmeans`                | Color clustering                                 |
+| `labels_to_svg`         | Convert a label map to SVG paths                 |
+| `gaussian_blur_fft`     | FFT-based Gaussian blur                          |
+| `invert_image`          | Invert pixel values                              |
+| `threshold_image`       | Posterize to N intensity levels                  |
+| `black_threshold_image` | Posterize, biased toward dark output             |
 
 See the [Python API Reference](./api-reference) for full
 signatures.

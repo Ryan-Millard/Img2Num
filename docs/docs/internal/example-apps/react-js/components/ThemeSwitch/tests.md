@@ -2,7 +2,7 @@
 title: ThemeSwitch Tests
 ---
 
-import { MoveRight } from 'lucide-react';
+import { MoveRight } from "lucide-react";
 
 The ThemeSwitch component has 7 tests covering rendering, icon display, theme toggling, hook integration, and edge cases.
 

@@ -4,7 +4,7 @@ sidebar_label: JavaScript
 sidebar_position: 9
 ---
 
-import { MoveRight } from 'lucide-react';
+import { MoveRight } from "lucide-react";
 
 import Features from "@site/src/md/\_partials/library-features.md";
 import Tabs from "@theme/Tabs";
