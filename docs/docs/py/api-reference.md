@@ -4,6 +4,8 @@ title: Python API Reference
 sidebar_position: 1
 ---
 
+import { MoveRight } from "lucide-react";
+
 # Python API Reference
 
 :::danger[This Page Was Not Auto-Generated]
@@ -35,7 +37,7 @@ img = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)  # VERY IMPORTANT
 
 ## `image_to_svg(image, *, config=None)`
 
-Full raster → SVG pipeline (bilateral filter → k-means → contour tracing).
+Full raster <MoveRight size={15} /> SVG pipeline (bilateral filter <MoveRight size={15} /> k-means <MoveRight size={15} /> contour tracing).
 
 **Parameters:**
 

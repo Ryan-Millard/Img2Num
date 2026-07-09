@@ -5,6 +5,8 @@ sidebar_label: API Reference
 sidebar_position: 2
 ---
 
+import { MoveRight } from 'lucide-react';
+
 # CIELAB Color Space Conversion API
 
 ## Overview
@@ -62,15 +64,15 @@ void rgb_to_lab(
 
 #### Transformation Pipeline
 
-1. **sRGB → Linear RGB**: Inverse gamma correction (gamma expansion)
+1. **sRGB <MoveRight size={15} /> Linear RGB**: Inverse gamma correction (gamma expansion)
    - Applies IEC 61966-2-1:1999 sRGB transfer function
-   - Converts [0, 255] → [0, 1] → linear [0, 1]
+   - Converts [0, 255] <MoveRight size={15} /> [0, 1] <MoveRight size={15} /> linear [0, 1]
 
-2. **Linear RGB → XYZ**: Matrix multiplication
+2. **Linear RGB <MoveRight size={15} /> XYZ**: Matrix multiplication
    - Uses D65 illuminant (standard daylight, 6500K)
    - Applies ITU-R BT.709 color primaries
 
-3. **XYZ → CIELAB**: Normalization and nonlinear transform
+3. **XYZ <MoveRight size={15} /> CIELAB**: Normalization and nonlinear transform
    - Normalizes by D65 reference white point
    - Applies CIE-defined piecewise function (cube root or linear near zero)
 
@@ -129,14 +131,14 @@ void lab_to_rgb(
 
 #### Transformation Pipeline
 
-1. **CIELAB → XYZ**: Inverse nonlinear transform and denormalization
+1. **CIELAB <MoveRight size={15} /> XYZ**: Inverse nonlinear transform and denormalization
    - Applies inverse piecewise function (cube or linear)
    - Denormalizes by D65 white point
 
-2. **XYZ → Linear RGB**: Inverse matrix multiplication
+2. **XYZ <MoveRight size={15} /> Linear RGB**: Inverse matrix multiplication
    - May produce out-of-gamut values (negative or >1.0)
 
-3. **Linear RGB → sRGB**: Gamma correction
+3. **Linear RGB <MoveRight size={15} /> sRGB**: Gamma correction
    - Applies gamma compression using sRGB transfer function
    - Clamps to [0, 1], rounds, and converts to [0, 255]
 

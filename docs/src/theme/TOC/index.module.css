@@ -25,6 +25,11 @@
   position: sticky;
 }
 
+.tableOfContents li a {
+  margin: 0;
+  padding: 6px 12px;
+}
+
 @media (max-width: 996px) {
   .tableOfContents {
     display: none;
