@@ -4,6 +4,8 @@ title: Fourier Cheat Sheet
 sidebar_position: 9
 ---
 
+import { MoveRight } from 'lucide-react';
+
 # Cheatsheet — Fourier Quick References
 
 ## Core identities
@@ -104,7 +106,7 @@ $$
 
 # Practical tips & gotchas
 
-- **DFT implicitly assumes periodicity** of the finite sequence → circular convolution.
+- **DFT implicitly assumes periodicity** of the finite sequence <MoveRight size={15} /> circular convolution.
   - Use **zero-padding** to reduce wrap-around / increase frequency resolution.
   - Use **windowing** (Hann, Hamming, Blackman) to reduce spectral leakage for non-periodic segments.
 - **Zero-padding**: increases bin count (interpolates spectrum) but does **not** add new information.

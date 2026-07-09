@@ -4,6 +4,8 @@ sidebar_label: Python
 sidebar_position: 10
 ---
 
+import { MoveRight } from 'lucide-react';
+
 # Python Binding
 
 The Python binding provides NumPy-backed wrappers around the Img2Num core
@@ -44,7 +46,7 @@ print(svg)
 
 | Function                | Description                          |
 | :---------------------- | :----------------------------------- |
-| `image_to_svg`          | Full raster → SVG pipeline           |
+| `image_to_svg`          | Full raster <MoveRight size={15} /> SVG pipeline           |
 | `bilateral_filter`      | Edge-preserving smoothing            |
 | `kmeans`                | Color clustering                     |
 | `labels_to_svg`         | Convert a label map to SVG paths     |

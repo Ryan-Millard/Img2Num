@@ -5,6 +5,8 @@ sidebar_label: Testing
 sidebar_position: 2
 ---
 
+import { MoveRight } from 'lucide-react';
+
 # NavBar Testing
 
 This document describes the test suite for the NavBar component, covering rendering, interactions, accessibility, and edge cases.
@@ -116,12 +118,12 @@ Verify hamburger menu functionality:
 
 | Test                                                         | Description                        |
 | ------------------------------------------------------------ | ---------------------------------- |
-| `should open mobile menu when toggle is clicked`             | Click hamburger → menu opens       |
-| `should close mobile menu when toggle is clicked again`      | Click X → menu closes              |
+| `should open mobile menu when toggle is clicked`             | Click hamburger <MoveRight size={15} /> menu opens       |
+| `should close mobile menu when toggle is clicked again`      | Click X <MoveRight size={15} /> menu closes              |
 | `should show backdrop when mobile menu is open`              | Backdrop appears when menu is open |
-| `should close mobile menu when backdrop is clicked`          | Click backdrop → menu closes       |
-| `should close mobile menu when a navigation link is clicked` | Click nav link → menu closes       |
-| `should close mobile menu when logo is clicked`              | Click logo → menu closes           |
+| `should close mobile menu when backdrop is clicked`          | Click backdrop <MoveRight size={15} /> menu closes       |
+| `should close mobile menu when a navigation link is clicked` | Click nav link <MoveRight size={15} /> menu closes       |
+| `should close mobile menu when logo is clicked`              | Click logo <MoveRight size={15} /> menu closes           |
 
 **Example:**
 
@@ -201,7 +203,7 @@ Verify link destinations:
 
 | Test                                          | Description                            |
 | --------------------------------------------- | -------------------------------------- |
-| `should have correct href for internal links` | Home → "/", Credits → "/credits", etc. |
+| `should have correct href for internal links` | Home <MoveRight size={15} /> "/", Credits <MoveRight size={15} /> "/credits", etc. |
 | `should have correct href for external links` | GitHub URL, Docs URL                   |
 
 ### 7. Icons Tests

@@ -4,6 +4,8 @@ title: Fourier Series - the bridge (periodic signals)
 sidebar_position: 4
 ---
 
+import { MoveRight } from 'lucide-react';
+
 import harmonics_individual from './img/harmonics_individual.png';
 import sum_jittered from './img/sum_jittered.png';
 import time_freq_domain from './img/time_freq_domain.png';
@@ -96,8 +98,8 @@ When you see a Fourier coefficient $X_k = a + jb$, it's easy to forget what the 
 
 Using **Euler's formula** ($e^{i \theta} = \cos\theta + i \sin\theta$), we know that:
 
-- **Real part ($a = \Re(X_k)$)** → corresponds to the **cosine** component
-- **Imag part ($b = \Im(X_k)$)** → corresponds to the **sine** component
+- **Real part ($a = \Re(X_k)$)** <MoveRight size={15} /> corresponds to the **cosine** component
+- **Imag part ($b = \Im(X_k)$)** <MoveRight size={15} /> corresponds to the **sine** component
 
 Think of $X_k$ as a **vector in the complex plane**:
 
@@ -121,9 +123,9 @@ Think of $X_k$ as a **vector in the complex plane**:
    This is the angle the vector makes with the real axis — the **phase shift** of the sinusoid.
 3. **Trigonometric intuition**:
    Using SOH CAH TOA:
-   - Opposite side → $b$ (imaginary / sine)
-   - Adjacent side → $a$ (real / cosine)
-   - $\tan\theta = \frac{b}{a}$ → angle of the vector
+   - Opposite side <MoveRight size={15} /> $b$ (imaginary / sine)
+   - Adjacent side <MoveRight size={15} /> $a$ (real / cosine)
+   - $\tan\theta = \frac{b}{a}$ <MoveRight size={15} /> angle of the vector
 
 ### Why this matters:
 

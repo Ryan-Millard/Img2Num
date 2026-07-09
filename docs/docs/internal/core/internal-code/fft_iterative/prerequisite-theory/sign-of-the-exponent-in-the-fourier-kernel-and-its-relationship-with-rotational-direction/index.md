@@ -4,6 +4,8 @@ title: Sign of the Exponent in the Fourier Kernel and Its Relationship to Rotati
 sidebar_position: 6
 ---
 
+import { MoveRight } from 'lucide-react';
+
 In the Fourier transform, the kernel contains a complex exponential of the form:
 
 $$
@@ -12,8 +14,8 @@ $$
 
 The **sign** in the exponent determines the **direction of rotation** of the phasor in the complex plane:
 
-- **Negative sign** $e^{-j 2\pi f t}$ → **Clockwise rotation** (commonly used in the analysis formula of the Fourier transform).
-- **Positive sign** $e^{+j 2\pi f t}$ → **Counterclockwise rotation** (commonly used in the synthesis formula to reconstruct the signal).
+- **Negative sign** $e^{-j 2\pi f t}$ <MoveRight size={15} /> **Clockwise rotation** (commonly used in the analysis formula of the Fourier transform).
+- **Positive sign** $e^{+j 2\pi f t}$ <MoveRight size={15} /> **Counterclockwise rotation** (commonly used in the synthesis formula to reconstruct the signal).
 
 This follows directly from Euler’s formula:
 

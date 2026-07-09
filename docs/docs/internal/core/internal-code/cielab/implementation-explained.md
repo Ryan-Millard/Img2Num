@@ -4,13 +4,15 @@ title: Implementation Explained
 sidebar_position: 1
 ---
 
+import { MoveRight } from 'lucide-react';
+
 # RGB ↔ CIELAB Conversion Guide
 
 This explains the full mathematical conversion pipeline between **sRGB** and **CIELAB (Lab)** color spaces.
 
 # 1. Conversion Pipeline Overview
 
-## RGB → CIELAB
+## RGB <MoveRight size={15} /> CIELAB
 
 ```mermaid
 flowchart LR
@@ -19,11 +21,11 @@ flowchart LR
     C --> D[CIELAB]
 ```
 
-1. sRGB → Linear RGB
-2. Linear RGB → XYZ
-3. XYZ → CIELAB
+1. sRGB <MoveRight size={15} /> Linear RGB
+2. Linear RGB <MoveRight size={15} /> XYZ
+3. XYZ <MoveRight size={15} /> CIELAB
 
-## CIELAB → RGB
+## CIELAB <MoveRight size={15} /> RGB
 
 ```mermaid
 flowchart LR
@@ -32,9 +34,9 @@ flowchart LR
     C --> D[sRGB]
 ```
 
-1. CIELAB → XYZ
-2. XYZ → Linear RGB
-3. Linear RGB → sRGB
+1. CIELAB <MoveRight size={15} /> XYZ
+2. XYZ <MoveRight size={15} /> Linear RGB
+3. Linear RGB <MoveRight size={15} /> sRGB
 
 # 2. sRGB to Linear RGB
 
@@ -166,19 +168,19 @@ Clamp results to \([0,1]\) and scaled by 255 before converting to 8‑bit.
 
 # 8. Summary
 
-## RGB → Lab
+## RGB <MoveRight size={15} /> Lab
 
-- Remove gamma (sRGB → linear)
+- Remove gamma (sRGB <MoveRight size={15} /> linear)
 - Convert to XYZ
 - Normalize by D65
 - Apply nonlinear transform
 - Produce L\*, a\*, b\*
 
-## Lab → RGB
+## Lab <MoveRight size={15} /> RGB
 
-- Convert Lab → XYZ via inverse nonlinear transform
-- XYZ → linear RGB
-- Linear RGB → sRGB (gamma)
+- Convert Lab <MoveRight size={15} /> XYZ via inverse nonlinear transform
+- XYZ <MoveRight size={15} /> linear RGB
+- Linear RGB <MoveRight size={15} /> sRGB (gamma)
 - Clamp to valid output
 
 # 9. References

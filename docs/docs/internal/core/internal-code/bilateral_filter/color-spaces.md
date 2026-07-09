@@ -5,6 +5,8 @@ sidebar_label: Color Space Selection
 sidebar_position: 6
 ---
 
+import { MoveRight } from 'lucide-react';
+
 # Color Space Selection — RGB vs CIELAB
 
 The bilateral filter in Img2Num supports two color spaces for computing range (color) distances: **RGB** and **CIELAB**. This guide explains the differences, trade-offs, and when to use each.
@@ -75,7 +77,7 @@ $$
 :::important Key Insight
 In practice, most real-world pixel differences are **much smaller** than the maximum possible distance. CIELAB distances for neighboring pixels are typically smaller than RGB distances due to:
 
-1. **Numerical compression** from the RGB→LAB conversion
+1. **Numerical compression** from the RGB<MoveRight size={15} />LAB conversion
 2. **Perceptual scaling** — LAB is designed to reflect human vision, which perceives smaller differences
    :::
 
@@ -91,8 +93,8 @@ $$
 w_{\text{range}} = \exp\left(-\frac{\text{distance}^2}{2\sigma_{\text{range}}^2}\right)
 $$
 
-- When distance is **small**, weight is **high** (≈1) → strong contribution
-- When distance is **large**, weight is **low** (≈0) → weak contribution
+- When distance is **small**, weight is **high** (≈1) <MoveRight size={15} /> strong contribution
+- When distance is **large**, weight is **low** (≈0) <MoveRight size={15} /> weak contribution
 
 ### Why the Same Sigma Produces Different Results
 
@@ -102,8 +104,8 @@ import RgbVsLabRangeKernel from '@site/src/components/docs/reference/wasm/module
 
 **With `sigma_range = 50`**:
 
-- **RGB**: Typical neighboring pixel distances are small relative to 50, so many neighbors contribute significantly → **moderate blur**
-- **CIELAB**: Typical neighboring pixel distances are even smaller, so almost all neighbors contribute strongly → **stronger blur**
+- **RGB**: Typical neighboring pixel distances are small relative to 50, so many neighbors contribute significantly <MoveRight size={15} /> **moderate blur**
+- **CIELAB**: Typical neighboring pixel distances are even smaller, so almost all neighbors contribute strongly <MoveRight size={15} /> **stronger blur**
 
 ### Sigma_range Scaling for Visual Consistency
 
@@ -207,7 +209,7 @@ The factor remains stable for natural images because:
 - **RGB channels are highly correlated**
   Euclidean RGB distance accumulates redundant energy across channels.
 - **Bilateral filters operate locally**
-  In the small-delta regime, the RGB→LAB transform is locally quasi-linear.
+  In the small-delta regime, the RGB<MoveRight size={15} />LAB transform is locally quasi-linear.
 
 However, the factor may vary if:
 
@@ -242,7 +244,7 @@ However, the factor may vary if:
 
 ### CIELAB Performance
 
-- **Full image conversion**: RGB→LAB conversion for entire image upfront
+- **Full image conversion**: RGB<MoveRight size={15} />LAB conversion for entire image upfront
 - **On-the-fly computation**: Range weights computed using `exp()` for each neighbor
 - **Slower but optimized**: Conversion is done once; only distance calculation repeated
 
@@ -278,7 +280,7 @@ double w_range = range_lut[dist_sq]; // O(1) lookup
 ### CIELAB Range Weights (On-the-fly)
 
 ```cpp
-// Precompute full-image RGB → LAB conversion
+// Precompute full-image RGB <MoveRight size={15} /> LAB conversion
 std::vector<double> cie_image(width * height * 4);
 for (each pixel) {
     rgb_to_lab(r, g, b, L, A, B);
@@ -321,8 +323,8 @@ Consider CIELAB when you observe:
 
 **Adjustment guidelines**:
 
-- Increase `sigma_range` → more blur, less edge preservation
-- Decrease `sigma_range` → sharper edges, less smoothing
+- Increase `sigma_range` <MoveRight size={15} /> more blur, less edge preservation
+- Decrease `sigma_range` <MoveRight size={15} /> sharper edges, less smoothing
 - Test with your specific images — optimal values vary by content
 
 ## See Also

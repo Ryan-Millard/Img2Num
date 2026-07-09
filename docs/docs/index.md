@@ -4,6 +4,8 @@ title: Img2Num Docs
 sidebar_position: 1
 ---
 
+import { MoveRight } from 'lucide-react';
+
 # Welcome to Img2Num! 🦔
 
 Img2Num is a lightweight, high-performance library for converting raster images to SVGs with ease and speed.
@@ -13,7 +15,7 @@ Img2Num is a lightweight, high-performance library for converting raster images 
 
 ## Quick Overview
 
-- **Convert raster images to SVG** — PNG, JPG, BMP → scalable vector paths
+- **Convert raster images to SVG** — PNG, JPG, BMP <MoveRight size={15} /> scalable vector paths
 - **Multi-platform** — C++, C, Python, and JavaScript (WASM)
 - **High performance** — WASM-powered, runs in browsers and Node.js
 - **Highly configurable** — bilateral filtering, k-means clustering, contour tracing

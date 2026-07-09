@@ -5,6 +5,8 @@ keywords: [editor, svg, pan, zoom, pinch, pointer events, react-router, Img2Num]
 sidebar_label: Editor
 ---
 
+import { MoveRight } from 'lucide-react';
+
 ## Overview
 
 - Interactive SVG viewer that supports pan, zoom (wheel/pinch), and a one-way “reveal color” mode; preview mode disables interaction but keeps revealed regions visible.
@@ -21,13 +23,13 @@ sidebar_label: Editor
 
 - Route: `/editor` via [src/App.jsx](https://github.com/Ryan-Millard/Img2Num/blob/main/src/App.jsx).
 - Entry: `navigate('/editor', { state: { svg } });` from the pipeline end ([src/components/WasmImageProcessor.jsx](https://github.com/Ryan-Millard/Img2Num/blob/main/src/components/WasmImageProcessor.jsx)).
-- No `svg` in navigation state → render the “No SVG data found” empty state.
+- No `svg` in navigation state <MoveRight size={15} /> render the “No SVG data found” empty state.
 
 ## Mental model
 
 - Layout: outer `GlassCard` wrapper; top-right `GlassSwitch` toggles Color vs Preview.
 - Viewport: inner `GlassCard` captures pointer + wheel; `div.inner` carries `translate + scale`.
-- Rendering: SVG string → React elements via `html-react-parser`; transform sits on the wrapper, not the `<svg>`.
+- Rendering: SVG string <MoveRight size={15} /> React elements via `html-react-parser`; transform sits on the wrapper, not the `<svg>`.
 
 ## Core state + refs
 
