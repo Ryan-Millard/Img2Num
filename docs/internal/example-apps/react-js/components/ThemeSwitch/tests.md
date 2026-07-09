@@ -27,7 +27,7 @@ npm test -- --watch ThemeSwitch.test.jsx
 
 ### 1. Rendering & accessibility (2 tests)
 
-- Renders a switch with the correct aria-label based on the theme (light → "switch to dark mode", dark → "switch to light mode")
+- Renders a switch with the correct aria-label based on the theme (light"switch to dark mode", dark"switch to light mode")
 - Uses `type="button"` and `role="switch"` with proper `aria-checked`
 
 ### 2. Icon display based on theme (2 tests)

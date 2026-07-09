@@ -103,25 +103,25 @@ just build all
 To remove generated build folders:
 
 - C++ / C - JS / WASM - npm Package - Python
-Clean C++ Core and C Bindings → build-c-cpp/
+Clean C++ Core and C Bindings (build-c-cpp/)
 
 ```bash
 just clean cpp
 ```
 
-Clean JavaScript / WASM Bindings → build-wasm/
+Clean JavaScript / WASM Bindings (build-wasm/)
 
 ```bash
 just clean js
 ```
 
-Clean Browser + Node.js npm Packages → packages/js/dist/
+Clean Browser + Node.js npm Packages (packages/js/dist/)
 
 ```bash
 just clean packages-js
 ```
 
-Clean Python Bindings + Wheel → packages/py/build-py/
+Clean Python Bindings + Wheel (packages/py/build-py/)
 
 ```bash
 just clean packages-py

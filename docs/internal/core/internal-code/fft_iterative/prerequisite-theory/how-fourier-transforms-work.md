@@ -4,8 +4,8 @@ URL: https://img2num.dev/docs/internal/core/internal-code/fft_iterative/prerequi
 
 To understand how Fourier transforms work "under the hood", we must start by recognising the similarities between the Continuous Fourier Transform (CFT) and the Discrete Fourier Transform (DFT). They serve the same purpose—mapping a time-domain signal into its frequency-domain representation—but operate on different types of signals:
 
-- **CFT → continuous-time signals**
-- **DFT → discrete-time, finite-length signals**
+- **CFTcontinuous-time signals**
+- **DFTdiscrete-time, finite-length signals**
 Despite these differences, their mathematics is closely related. Below are the core equations and a breakdown of their similarities and differences.
 
 ## Continuous Fourier Transform (CFT) vs Discrete Fourier Transform (DFT)

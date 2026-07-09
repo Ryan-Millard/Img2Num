@@ -50,19 +50,19 @@ void rgb_to_lab(
 
 #### Transformation Pipeline
 
-1. **sRGB → Linear RGB** : Inverse gamma correction (gamma expansion)
+1. **sRGBLinear RGB** : Inverse gamma correction (gamma expansion)
 
 - Applies IEC 61966-2-1:1999 sRGB transfer function
-- Converts [0, 255] → [0, 1] → linear [0, 1]
+- Converts [0, 255][0, 1]linear [0, 1]
 2. Applies IEC 61966-2-1:1999 sRGB transfer function
-3. Converts [0, 255] → [0, 1] → linear [0, 1]
-4. **Linear RGB → XYZ** : Matrix multiplication
+3. Converts [0, 255][0, 1]linear [0, 1]
+4. **Linear RGBXYZ** : Matrix multiplication
 
 - Uses D65 illuminant (standard daylight, 6500K)
 - Applies ITU-R BT.709 color primaries
 5. Uses D65 illuminant (standard daylight, 6500K)
 6. Applies ITU-R BT.709 color primaries
-7. **XYZ → CIELAB** : Normalization and nonlinear transform
+7. **XYZCIELAB** : Normalization and nonlinear transform
 
 - Normalizes by D65 reference white point
 - Applies CIE-defined piecewise function (cube root or linear near zero)
@@ -115,17 +115,17 @@ void lab_to_rgb(
 
 #### Transformation Pipeline
 
-1. **CIELAB → XYZ** : Inverse nonlinear transform and denormalization
+1. **CIELABXYZ** : Inverse nonlinear transform and denormalization
 
 - Applies inverse piecewise function (cube or linear)
 - Denormalizes by D65 white point
 2. Applies inverse piecewise function (cube or linear)
 3. Denormalizes by D65 white point
-4. **XYZ → Linear RGB** : Inverse matrix multiplication
+4. **XYZLinear RGB** : Inverse matrix multiplication
 
 - May produce out-of-gamut values (negative or >1.0)
 5. May produce out-of-gamut values (negative or >1.0)
-6. **Linear RGB → sRGB** : Gamma correction
+6. **Linear RGBsRGB** : Gamma correction
 
 - Applies gamma compression using sRGB transfer function
 - Clamps to [0, 1], rounds, and converts to [0, 255]

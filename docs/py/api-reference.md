@@ -18,7 +18,7 @@ img = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)  # VERY IMPORTANT
 
 ## `image_to_svg(image, *, config=None)`
 
-Full raster → SVG pipeline (bilateral filter → k-means → contour tracing).
+Full rasterSVG pipeline (bilateral filterk-meanscontour tracing).
 
 **Parameters:**
 

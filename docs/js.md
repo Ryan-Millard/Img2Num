@@ -149,7 +149,7 @@ const { data, info } = await sharp(imagePath).ensureAlpha().raw().toBuffer({ res
 const pixels = new Uint8ClampedArray(data.buffer);
 const { width, height } = info;
 
-// One-shot conversion (bilateral filter → k-means → contour tracing)
+// One-shot conversion (bilateral filter <MoveRight size={15} /> k-means <MoveRight size={15} /> contour tracing)
 const { svg } = await imageToSvg({ pixels, width, height });
 
 writeFileSync("output.svg", svg);

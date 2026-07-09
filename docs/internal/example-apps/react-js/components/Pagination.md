@@ -10,7 +10,7 @@ The component uses **0-indexed** page values internally but displays **1-indexed
 
 ## ✨ Features
 
-- **Keyboard Navigation** : Navigate pages using Arrow keys (← →)
+- **Keyboard Navigation** : Navigate pages using Arrow keys (←)
 - **Smart Ellipsis** : Automatically shows ellipsis for large page ranges
 - **Accessible** : Full ARIA support with proper labels and current page indication
 - **Input-Aware** : Keyboard navigation is disabled when user is typing in form fields
@@ -38,7 +38,7 @@ function Gallery() {
 
 Users can navigate pages using keyboard arrow keys:
 
-| Key | Action | `←` ArrowLeft | Go to previous page | `→` ArrowRight | Go to next page 
+| Key | Action | `←` ArrowLeft | Go to previous page | `<MoveRight size={15} />` ArrowRight | Go to next page 
 
 note
 Keyboard navigation is automatically disabled when the user is focused on an `<input>` , `<textarea>` , or any content-editable element to prevent interfering with text editing.

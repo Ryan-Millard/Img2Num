@@ -6,8 +6,8 @@ In the Fourier transform, the kernel contains a complex exponential of the form:
 
 e ± j 2 π f t e^{\pm j 2\pi f t} e ± j 2 π f tThe **sign** in the exponent determines the **direction of rotation** of the phasor in the complex plane:
 
-- **Negative sign**e − j 2 π f t e^{-j 2\pi f t} e − j 2 π f t → **Clockwise rotation** (commonly used in the analysis formula of the Fourier transform).
-- **Positive sign**e + j 2 π f t e^{+j 2\pi f t} e + j 2 π f t → **Counterclockwise rotation** (commonly used in the synthesis formula to reconstruct the signal).
+- **Negative sign**e − j 2 π f t e^{-j 2\pi f t} e − j 2 π f t**Clockwise rotation** (commonly used in the analysis formula of the Fourier transform).
+- **Positive sign**e + j 2 π f t e^{+j 2\pi f t} e + j 2 π f t**Counterclockwise rotation** (commonly used in the synthesis formula to reconstruct the signal).
 This follows directly from Euler's formula:
 
 e j θ = cos ⁡ θ + j sin ⁡ θ e^{j\theta} = \cos\theta + j\sin\theta e j θ= cosθ+ jsinθe − j θ = cos ⁡ θ − j sin ⁡ θ e^{-j\theta} = \cos\theta - j\sin\theta e − j θ= cosθ− jsinθIn the complex plane:

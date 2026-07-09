@@ -94,7 +94,7 @@ it("should mark the home link as active when on home page", () => {
 
 Verify hamburger menu functionality:
 
-| Test | Description | `should open mobile menu when toggle is clicked` | Click hamburger → menu opens | `should close mobile menu when toggle is clicked again` | Click X → menu closes | `should show backdrop when mobile menu is open` | Backdrop appears when menu is open | `should close mobile menu when backdrop is clicked` | Click backdrop → menu closes | `should close mobile menu when a navigation link is clicked` | Click nav link → menu closes | `should close mobile menu when logo is clicked` | Click logo → menu closes 
+| Test | Description | `should open mobile menu when toggle is clicked` | Click hamburgermenu opens | `should close mobile menu when toggle is clicked again` | Click Xmenu closes | `should show backdrop when mobile menu is open` | Backdrop appears when menu is open | `should close mobile menu when backdrop is clicked` | Click backdropmenu closes | `should close mobile menu when a navigation link is clicked` | Click nav linkmenu closes | `should close mobile menu when logo is clicked` | Click logomenu closes 
 
 **Example:**
 
@@ -163,7 +163,7 @@ it("should have proper security attributes on external links", () => {
 
 Verify link destinations:
 
-| Test | Description | `should have correct href for internal links` | Home → "/", Credits → "/credits", etc. | `should have correct href for external links` | GitHub URL, Docs URL 
+| Test | Description | `should have correct href for internal links` | Home"/", Credits"/credits", etc. | `should have correct href for external links` | GitHub URL, Docs URL 
 
 ### 7. Icons Tests
 

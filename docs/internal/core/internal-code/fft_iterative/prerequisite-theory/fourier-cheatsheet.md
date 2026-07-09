@@ -50,7 +50,7 @@ x [ n − n 0 ]↔X [ k ] e − j 2 π N k n 0 x[n-n_0] \quad ↔ \quad X[k] e^{
 e j 2 π N m n x [ n ]shifts bins e^{j\frac{2\pi}{N} m n}x[n] \quad \text{shifts bins} e j N2 π mn x [ n ]shifts bins
 # Practical tips & gotchas
 
-- **DFT implicitly assumes periodicity** of the finite sequence → circular convolution.
+- **DFT implicitly assumes periodicity** of the finite sequencecircular convolution.
 - Use **zero-padding** to reduce wrap-around / increase frequency resolution.
 - Use **windowing** (Hann, Hamming, Blackman) to reduce spectral leakage for non-periodic segments.
 - **Zero-padding** : increases bin count (interpolates spectrum) but does **not** add new information.

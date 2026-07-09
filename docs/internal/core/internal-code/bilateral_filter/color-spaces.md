@@ -48,7 +48,7 @@ distance LAB = Δ L 2 + Δ a 2 + Δ b 2 \text{distance}_{\text{LAB}} = \sqrt{\De
 
 max LAB = 100 2 + 255 2 + 255 2 ≈ 373.56 \text{max}_{\text{LAB}} = \sqrt{100^2 + 255^2 + 255^2} \approx 373.56 max LAB= 10 0 2+25 5 2+25 5 2≈ 373.56:::important Key Insight In practice, most real-world pixel differences are **much smaller** than the maximum possible distance. CIELAB distances for neighboring pixels are typically smaller than RGB distances due to:
 
-1. **Numerical compression** from the RGB→LAB conversion
+1. **Numerical compression** from the RGBLAB conversion
 2. **Perceptual scaling** — LAB is designed to reflect human vision, which perceives smaller differences :::
 
 ## Sigma_range Behavior Differences
@@ -60,16 +60,16 @@ The `sigma_range` parameter controls edge preservation by weighting color simila
 The bilateral filter computes range weights using a Gaussian:
 
 w range = exp ⁡ ( − distance 2 2 σ range 2 ) w_{\text{range}} = \exp\left(-\frac{\text{distance}^2}{2\sigma_{\text{range}}^2}\right) w range= exp( − 2 σ range 2distance 2 )
-- When distance is **small** , weight is **high** (≈1) → strong contribution
-- When distance is **large** , weight is **low** (≈0) → weak contribution
+- When distance is **small** , weight is **high** (≈1)strong contribution
+- When distance is **large** , weight is **low** (≈0)weak contribution
 
 ### Why the Same Sigma Produces Different Results
 
 RGB LUT CIELAB (on-the-fly)Color difference ΔRGB Color difference ΔLAB Above, σ r = 20 for RGB and σ r = 15 for CIELAB.
 **With `sigma_range = 50`** :
 
-- **RGB** : Typical neighboring pixel distances are small relative to 50, so many neighbors contribute significantly → **moderate blur**
-- **CIELAB** : Typical neighboring pixel distances are even smaller, so almost all neighbors contribute strongly → **stronger blur**
+- **RGB** : Typical neighboring pixel distances are small relative to 50, so many neighbors contribute significantly**moderate blur**
+- **CIELAB** : Typical neighboring pixel distances are even smaller, so almost all neighbors contribute strongly**stronger blur**
 
 ### Sigma_range Scaling for Visual Consistency
 
@@ -139,7 +139,7 @@ The factor remains stable for natural images because:
 
 - **LAB compresses perceptual differences** Equal perceived color changes produce smaller numeric deltas than in RGB.
 - **RGB channels are highly correlated** Euclidean RGB distance accumulates redundant energy across channels.
-- **Bilateral filters operate locally** In the small-delta regime, the RGB→LAB transform is locally quasi-linear.
+- **Bilateral filters operate locally** In the small-delta regime, the RGBLAB transform is locally quasi-linear.
 However, the factor may vary if:
 
 - Images are synthetic or heavily quantized
@@ -167,7 +167,7 @@ k = E [ d R G B ] E [ d L A B ] k = \frac{\mathbb{E}[d_{RGB}]}{\mathbb{E}[d_{LAB
 
 ### CIELAB Performance
 
-- **Full image conversion** : RGB→LAB conversion for entire image upfront
+- **Full image conversion** : RGBLAB conversion for entire image upfront
 - **On-the-fly computation** : Range weights computed using `exp()` for each neighbor
 - **Slower but optimized** : Conversion is done once; only distance calculation repeated
 **Performance Impact** : CIELAB is typically **2-4× slower** than RGB, depending on image size and kernel radius.
@@ -200,7 +200,7 @@ double w_range = range_lut[dist_sq]; // O(1) lookup
 ### CIELAB Range Weights (On-the-fly)
 
 ```cpp
-// Precompute full-image RGB → LAB conversion
+// Precompute full-image RGB <MoveRight size={15} /> LAB conversion
 std::vector<double> cie_image(width * height * 4);
 for (each pixel) {
     rgb_to_lab(r, g, b, L, A, B);
@@ -242,8 +242,8 @@ Consider CIELAB when you observe:
 - `sigma_range = 50.0` (CIELAB) or `sigma_range = 200.0` (RGB for similar visual effect)
 **Adjustment guidelines** :
 
-- Increase `sigma_range` → more blur, less edge preservation
-- Decrease `sigma_range` → sharper edges, less smoothing
+- Increase `sigma_range`more blur, less edge preservation
+- Decrease `sigma_range`sharper edges, less smoothing
 - Test with your specific images — optimal values vary by content
 
 ## See Also

@@ -167,8 +167,8 @@ k < 0 k < 0 k< 0 corresponds to negative frequency components (complex conjugate
 - **Phase (angle)** : arg ⁡ ( X k ) = tan ⁡ − 1 ( b a ) \arg(X_k) = \tan^{-1}\left(\frac{b}{a}\right) ar g ( X k )= tan − 1( ab )
 - This means the **real part measures how much cosine of that frequency is present** , the **imaginary part measures how much sine** , and together they define the sinusoid's amplitude and phase.
 Understanding Magnitude and Phase of Fourier Coefficients When you see a Fourier coefficient X k = a + j b X_k = a + jb X k= a+ j b , it's easy to forget what the real and imaginary parts mean. Here's a clear way to visualize it: Using **Euler's formula** ( e i θ = cos ⁡ θ + i sin ⁡ θ e^{i \theta} = \cos\theta + i \sin\theta e i θ= cosθ+ isinθ ), we know that:
-- **Real part ( a = ℜ ( X k ) a = \Re(X_k) a= ℜ ( X k ) )** → corresponds to the **cosine** component
-- **Imag part ( b = ℑ ( X k ) b = \Im(X_k) b= ℑ ( X k ) )** → corresponds to the **sine** component
+- **Real part ( a = ℜ ( X k ) a = \Re(X_k) a= ℜ ( X k ) )**corresponds to the **cosine** component
+- **Imag part ( b = ℑ ( X k ) b = \Im(X_k) b= ℑ ( X k ) )**corresponds to the **sine** component
 Think of X k X_k X k as a **vector in the complex plane** :
 
 ![Complex Fourier Coefficient Triangle](/assets/images/fourier_coefficient_triangle-be55e8ef6ebc51108b5863ce13e5a857.png) View the above image's code
@@ -235,12 +235,12 @@ plt.show()
 1. **Amplitude (magnitude)** :∣ X k ∣ = a 2 + b 2 |X_k| = \sqrt{a^2 + b^2} ∣ X k ∣= a 2+b 2This is the hypotenuse of the triangle and gives the overall **strength** of the sinusoid.
 2. **Phase (angle)** :arg ⁡ ( X k ) = θ = tan ⁡ − 1 ( b a ) \arg(X_k) = \theta = \tan^{-1}\left(\frac{b}{a}\right) ar g ( X k )= θ= tan − 1( ab )This is the angle the vector makes with the real axis — the **phase shift** of the sinusoid.
 3. **Trigonometric intuition** : Using SOH CAH TOA:
-- Opposite side → b b b (imaginary / sine)
-- Adjacent side → a a a (real / cosine)
-- tan ⁡ θ = b a \tan\theta = \frac{b}{a} tanθ= ab → angle of the vector
-4. Opposite side → b b b (imaginary / sine)
-5. Adjacent side → a a a (real / cosine)
-6. tan ⁡ θ = b a \tan\theta = \frac{b}{a} tanθ= ab → angle of the vector
+- Opposite sideb b b (imaginary / sine)
+- Adjacent sidea a a (real / cosine)
+- tan ⁡ θ = b a \tan\theta = \frac{b}{a} tanθ= abangle of the vector
+4. Opposite sideb b b (imaginary / sine)
+5. Adjacent sidea a a (real / cosine)
+6. tan ⁡ θ = b a \tan\theta = \frac{b}{a} tanθ= abangle of the vector
 
 ### Why this matters:
 

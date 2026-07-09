@@ -18,13 +18,13 @@ URL: https://img2num.dev/docs/internal/example-apps/react-js/pages/Editor
 
 - Route: `/editor` via [src/App.jsx](https://github.com/Ryan-Millard/Img2Num/blob/main/src/App.jsx) .
 - Entry: `navigate('/editor', { state: { svg } });` from the pipeline end ( [src/components/WasmImageProcessor.jsx](https://github.com/Ryan-Millard/Img2Num/blob/main/src/components/WasmImageProcessor.jsx) ).
-- No `svg` in navigation state → render the "No SVG data found" empty state.
+- No `svg` in navigation staterender the "No SVG data found" empty state.
 
 ## Mental model
 
 - Layout: outer `GlassCard` wrapper; top-right `GlassSwitch` toggles Color vs Preview.
 - Viewport: inner `GlassCard` captures pointer + wheel; `div.inner` carries `translate + scale` .
-- Rendering: SVG string → React elements via `html-react-parser` ; transform sits on the wrapper, not the `<svg>` .
+- Rendering: SVG stringReact elements via `html-react-parser` ; transform sits on the wrapper, not the `<svg>` .
 
 ## Core state + refs
 

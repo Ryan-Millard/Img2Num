@@ -6,17 +6,17 @@ This explains the full mathematical conversion pipeline between **sRGB** and **C
 
 # 1. Conversion Pipeline Overview
 
-## RGB → CIELAB
+## RGBCIELAB
 
-1. sRGB → Linear RGB
-2. Linear RGB → XYZ
-3. XYZ → CIELAB
+1. sRGBLinear RGB
+2. Linear RGBXYZ
+3. XYZCIELAB
 
-## CIELAB → RGB
+## CIELABRGB
 
-1. CIELAB → XYZ
-2. XYZ → Linear RGB
-3. Linear RGB → sRGB
+1. CIELABXYZ
+2. XYZLinear RGB
+3. Linear RGBsRGB
 
 # 2. sRGB to Linear RGB
 
@@ -54,19 +54,19 @@ C srgb = { 12.92C lin , C lin ≤ 0.0031308 1.055C lin 1 / 2.4 − 0.055 , C lin
 
 # 8. Summary
 
-## RGB → Lab
+## RGBLab
 
-- Remove gamma (sRGB → linear)
+- Remove gamma (sRGBlinear)
 - Convert to XYZ
 - Normalize by D65
 - Apply nonlinear transform
 - Produce L*, a*, b*
 
-## Lab → RGB
+## LabRGB
 
-- Convert Lab → XYZ via inverse nonlinear transform
-- XYZ → linear RGB
-- Linear RGB → sRGB (gamma)
+- Convert LabXYZ via inverse nonlinear transform
+- XYZlinear RGB
+- Linear RGBsRGB (gamma)
 - Clamp to valid output
 
 # 9. References
