@@ -1,30 +1,598 @@
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * Hedgehog Theme — Docusaurus custom.css
+ * -----------------------------------------------------------------------
+ * Full replacement stylesheet mapping a warm hedgehog palette onto
+ * Docusaurus' Infima design system, with light/dark variants and
+ * matching Algolia DocSearch styling.
+ *
+ * Drop this in as src/css/custom.css (referenced by docusaurus.config.js
+ * under themeConfig / presets -> theme.customCss).
+ *
+ * FIXES APPLIED (see chat for full explanation):
+ * 1. Dark theme --secondary was identical to --text (#f8eacd == #f8eacd),
+ *    which made text invisible on table headers, secondary buttons, and
+ *    the DocSearch key badge. --secondary is now a distinct warm brown.
+ * 2. Light theme --ifm-background-surface-color was a stark #ffffff that
+ *    clashed against the warm cream --bg. Changed to a warm off-white
+ *    that matches the palette.
  */
 
-/* You can override the default Infima variables here. */
+/* -------------------------------------------------------------------- */
+/* 0. Raw palette + shared tokens (kept as-is from your source, plus a  */
+/*    few additions Docusaurus needs: fonts, spacing, radii)            */
+/* -------------------------------------------------------------------- */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --font-sans: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+
+  --navbar-menu-backdrop-z-index: 99;
+  --navbar-menu-z-index: 100;
+
+  --accent: #e8899a;
+  --accent-2: #e28fa0;
+  --accent-light: rgba(232, 137, 154, 0.15);
+
+  --radius: 12px;
+  --radius-lg: 20px;
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme="dark"] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+/* Light theme (default) — Warm hedgehog palette */
+:root,
+:root.light,
+[data-theme='light'] {
+  --amber: #c77a27;
+  --amber-light: #fef3c7;
+  --blue: #1d6fa4;
+  --blue-light: #dbeafe;
+  --coral: #c2441e;
+  --coral-light: #fde8e0;
+  --ink: #1a1916;
+  --ink-2: #3d3c38; --ink-3: #7a7972;
+  --ink-4: #b8b6ae;
+  --surface: #f5f3ee;
+  --surface-2: #eceae3;
+  --surface-3: #e2dfd8;
+  --white: #fdfcf9;
+
+  --bg: #f8eacd;
+  --primary: #6a3817;
+  --primary-dark: #532e1a;
+  --secondary: #d7a47d;
+  --text: #2c1a1a;
+  --text-light: #69432e;
+  --border: #eecea4;
+  --error: #e94b4b;
+  --success: #4bb543;
+
+  --glass-bg: rgba(248, 234, 205, 0.25);
+  --glass-border: rgba(106, 56, 23, 0.15);
+  --glass-shadow: rgba(83, 46, 26, 0.1);
+  --glass-table-border: rgba(215, 164, 125, 0.3);
+  --glass-table-row-odd: rgba(248, 234, 205, 0.5);
+  --glass-table-row-hover: rgba(250, 191, 192, 0.3);
+  --glass-table-stacked: rgba(238, 206, 164, 0.7);
+}
+
+/* Dark theme — Deep forest night with warm accents */
+:root.dark,
+[data-theme='dark'] {
+  --amber: #e08c38;
+  --amber-light: rgba(224, 140, 56, 0.15);
+  --blue: #3a9ad9;
+  --blue-light: rgba(58, 154, 217, 0.15);
+  --coral: #d95e36;
+  --coral-light: rgba(217, 94, 54, 0.15);
+  --ink: #fdfcf9;
+  --ink-2: #eceae3;
+  --ink-3: #b8b6ae;
+  --ink-4: #7a7972;
+  --surface: #121110;
+  --surface-2: #1a1816;
+  --surface-3: #2d2a27;
+  --white: #1e1c1a;
+
+  --bg: #1a0f1f;
+  --primary: #e0ad7d;
+  --primary-dark: #d7a47d;
+  /* FIX: was #f8eacd, identical to --text below, which made secondary
+     buttons, table headers, and the DocSearch key badge unreadable
+     (cream text on cream background). Now a distinct warm brown that
+     contrasts with cream text while staying in the same family as
+     --primary-dark. */
+  --secondary: #7a4a2e;
+  --text: #f8eacd;
+  --text-light: #eecea4;
+  --border: #3d2a3d;
+  --error: #ff6b6b;
+  --success: #51cf66;
+
+  --glass-bg: rgba(61, 42, 61, 0.4);
+  --glass-border: rgba(215, 164, 125, 0.2);
+  --glass-shadow: rgba(248, 234, 205, 0.05);
+  --glass-table-border: rgba(215, 164, 125, 0.15);
+  --glass-table-row-odd: rgba(42, 26, 42, 0.5);
+  --glass-table-row-hover: rgba(224, 173, 125, 0.15);
+  --glass-table-stacked: rgba(238, 206, 164, 0.7);
+}
+
+/* -------------------------------------------------------------------- */
+/* 1. Map palette onto Infima (Docusaurus' theme engine)                 */
+/* -------------------------------------------------------------------- */
+:root {
+  /* Brand / primary color ramp */
+  --ifm-primary: var(--primary);
+  --ifm-primary-dark: var(--primary-dark);
+  --ifm-primary-darker: #4a2814;
+  --ifm-primary-darkest: #3a1f10;
+  --ifm-primary-light: #7d431c;
+  --ifm-primary-lighter: #8a4a1f;
+  --ifm-primary-lightest: #a25a26;
+
+  /* Feedback colors */
+  --ifm-danger: var(--error);
+  --ifm-success: var(--success);
+  --ifm-warning: var(--secondary);
+  --ifm-info: var(--secondary);
+
+  /* Typography */
+  --ifm-font-family-base: var(--font-sans);
+  --ifm-font-family-monospace: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  --ifm-font-base: var(--text);
+  --ifm-heading-color: var(--text);
+
+  /* Backgrounds & surfaces */
+  --ifm-background-color: var(--bg);
+  /* FIX: was a hardcoded #ffffff, a cold stark white that clashed
+     against the warm cream --bg. Now uses the warm off-white already
+     defined in the palette above. */
+  --ifm-background-surface-color: var(--white);
+  --ifm-navbar-background-color: var(--bg);
+  --ifm-footer-background-color: var(--surface);
+  --ifm-footer-color: var(--text-light);
+  --ifm-footer-link-color: var(--text-light);
+  --ifm-footer-title-color: var(--primary);
+
+  /* Borders / radii / spacing reuse your tokens */
+  --ifm-emphasis-300: var(--border);
+  --ifm-toc-border-color: var(--border);
+  --ifm-hr-border-color: var(--border);
+  --ifm-global-radius: var(--radius-md);
+  --ifm-button-border-radius: var(--radius-sm);
+  --ifm-code-border-radius: var(--radius-sm);
+  --ifm-spacing-horizontal: var(--spacing-md);
+
+  --ifm-link-color: var(--accent);
+  --ifm-menu-color: var(--text-light);
+  --ifm-menu-active: var(--primary);
+  --ifm-menu-background-active: var(--glass-table-row-hover);
+  --ifm-menu-background-hover: var(--glass-table-row-odd);
+
+  --ifm-code-background: #f1e3c6;
+  --ifm-pre-background: #fdf6e8;
+
+  --ifm-navbar-shadow: 0 1px 4px var(--glass-shadow);
+  --ifm-global-shadow-lw: 0 1px 3px var(--glass-shadow);
+  --ifm-global-shadow-md: 0 3px 8px var(--glass-shadow);
+  --ifm-global-shadow-tl: 0 6px 20px var(--glass-shadow);
+}
+
+[data-theme='dark'] {
+  --ifm-primary: var(--primary);
+  --ifm-primary-dark: #d19b6a;
+  --ifm-primary-darker: #c78f5b;
+  --ifm-primary-darkest: #b17a46;
+  --ifm-primary-light: #e6bd93;
+  --ifm-primary-lighter: #ecc9a5;
+  --ifm-primary-lightest: #f2d6ba;
+
+  --ifm-danger: var(--error);
+  --ifm-success: var(--success);
+  --ifm-warning: var(--secondary);
+  --ifm-info: var(--secondary);
+
+  --ifm-font-base: var(--text);
+  --ifm-heading-color: var(--text);
+
+  --ifm-background-color: var(--bg);
+  --ifm-background-surface-color: #241629;
+  --ifm-navbar-background-color: var(--bg);
+  --ifm-footer-background-color: #120a15;
+  --ifm-footer-color: var(--text-light);
+  --ifm-footer-link-color: var(--text-light);
+  --ifm-footer-title-color: var(--primary);
+
+  --ifm-emphasis-300: var(--border);
+  --ifm-toc-border-color: var(--border);
+  --ifm-hr-border-color: var(--border);
+
+  --ifm-link-color: var(--accent);
+  --ifm-menu-color: var(--text-light);
+  --ifm-menu-active: var(--primary);
+  --ifm-menu-background-active: var(--glass-table-row-hover);
+  --ifm-menu-background-hover: var(--glass-table-row-odd);
+
+  --ifm-code-background: #2a1a2a;
+  --ifm-pre-background: #120a15;
+
+  --ifm-navbar-shadow: 0 1px 4px var(--glass-shadow);
+  --ifm-global-shadow-lw: 0 1px 3px var(--glass-shadow);
+  --ifm-global-shadow-md: 0 3px 8px var(--glass-shadow);
+  --ifm-global-shadow-tl: 0 6px 20px var(--glass-shadow);
+}
+
+/* -------------------------------------------------------------------- */
+/* 2. Base element styling                                               */
+/* -------------------------------------------------------------------- */
+html {
+  font-family: var(--font-sans);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+a {
+  color: var(--ifm-link-color);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s ease, color 0.15s ease;
+}
+a:hover {
+  color: var(--text-light);
+  text-decoration-color: var(--border);
+}
+
+hr {
+  border-color: var(--border);
+}
+
+/* -------------------------------------------------------------------- */
+/* 3. Navbar                                                             */
+/* -------------------------------------------------------------------- */
+.navbar {
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: 0 2px 10px var(--glass-shadow);
+}
+
+.navbar__title,
+.navbar__brand,
+.navbar__toggle,
+.navbar__item,
+.navbar__link {
+  color: var(--text);
+  text-decoration: none;
+}
+.navbar__title:hover,
+.navbar__brand:hover,
+.navbar__toggle:hover,
+.navbar__item:hover,
+.navbar__link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s ease, color 0.15s ease;
+}
+
+.navbar__link--active {
+  color: var(--ifm-link-color);
+}
+
+.clean-btn {
+  display: hidden;
+}
+
+.navbar-sidebar {
+  background-color: var(--bg);
+}
+.navbar-sidebar__backdrop {
+  z-index: var(--navbar-menu-backdrop-z-index);
+}
+.navbar-sidebar {
+  z-index: var(--navbar-menu-z-index);
+}
+
+/* Theme toggle icon accent */
+[class*='toggle_'] svg {
+  color: var(--primary);
+}
+
+/* -------------------------------------------------------------------- */
+/* 4. Sidebar / doc menu                                                 */
+/* -------------------------------------------------------------------- */
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--border);
+  background-color: var(--bg);
+}
+
+.menu__link,
+.table-of-contents__link {
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  text-decoration: none;
+}
+.menu__link--active,
+.menu__link--active:hover,
+.table-of-contents__link--active,
+.table-of-contents__link:hover {
+  background-color: var(--glass-table-row-hover);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.menu__caret:before {
+  filter: none;
+}
+
+/* -------------------------------------------------------------------- */
+/* 6. Buttons                                                            */
+/* -------------------------------------------------------------------- */
+.button {
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+.button--primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: var(--bg);
+}
+.button--primary:hover {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
+.button--secondary {
+  background-color: var(--secondary);
+  border-color: var(--secondary);
+  color: var(--text);
+}
+
+.button--outline {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.button--outline:hover {
+  background-color: var(--primary);
+  color: var(--bg);
+}
+
+/* -------------------------------------------------------------------- */
+/* 7. Cards / admonitions / callouts                                     */
+/* -------------------------------------------------------------------- */
+.card {
+  background-color: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 2px 6px var(--glass-shadow);
+  border-radius: var(--radius-md);
+}
+
+.alert {
+  border-radius: var(--radius-md);
+  border-left-width: 4px;
+}
+
+.admonition {
+  border-radius: var(--radius-md);
+  background-color: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+.admonition-icon svg {
+  fill: var(--primary);
+}
+
+/* -------------------------------------------------------------------- */
+/* 8. Tables                                                             */
+/* -------------------------------------------------------------------- */
+table {
+  border: 1px solid var(--glass-table-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+table thead {
+  background-color: var(--secondary);
+  color: var(--text);
+}
+table tr:nth-child(odd) {
+  background-color: var(--glass-table-row-odd);
+}
+table tr:hover {
+  background-color: var(--glass-table-row-hover);
+}
+table th,
+table td {
+  border: 1px solid var(--glass-table-border);
+}
+
+/* Stacked/responsive tables on small screens */
+@media (max-width: 768px) {
+  table tr {
+    background-color: var(--glass-table-stacked);
+  }
+}
+
+/* -------------------------------------------------------------------- */
+/* 9. Code blocks                                                        */
+/* -------------------------------------------------------------------- */
+code {
+  background-color: var(--ifm-code-background);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+}
+
+[data-theme='dark'] code {
+  color: var(--text);
+}
+
+div[class^='codeBlockContainer'] {
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 6px var(--glass-shadow);
+}
+
+/* Force readable contrast on the actual code surface, regardless of
+which Prism theme is configured in docusaurus.config.js */
+div[class^='codeBlockContainer'] pre,
+div[class^='codeBlockContainer'] code,
+.prism-code {
+  background-color: var(--ifm-pre-background) !important;
+}
+
+div[class^='codeBlockContainer'] pre,
+.prism-code {
+  color: var(--text) !important;
+}
+
+/* Line-number gutter / copy button stay legible too */
+.theme-code-block-highlighted-line {
+  background-color: var(--glass-table-row-hover);
+}
+div[class^='buttonGroup'] button {
+  color: var(--text-light);
+  background-color: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+
+/* -------------------------------------------------------------------- */
+/* 10. Footer                                                            */
+/* -------------------------------------------------------------------- */
+.footer {
+  background-color: var(--ifm-footer-background-color);
+  border-top: 1px solid var(--border);
+}
+.footer__title {
+  color: var(--ifm-footer-title-color);
+  font-weight: 700;
+}
+.footer__item {
+  color: var(--ifm-footer-color);
+}
+.footer__link-item {
+  color: var(--ifm-footer-link-color);
+}
+.footer__link-item:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+.footer__copyright {
+  color: var(--text-light);
+  opacity: 0.8;
+}
+
+/* -------------------------------------------------------------------- */
+/* 11. Pagination / breadcrumbs                                          */
+/* -------------------------------------------------------------------- */
+.pagination-nav__link {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background-color: var(--glass-bg);
+}
+.pagination-nav__link:hover {
+  border-color: var(--primary);
+}
+
+.breadcrumbs__link {
+  color: var(--text-light);
+}
+.breadcrumbs__item--active .breadcrumbs__link {
+  background-color: var(--glass-table-row-hover);
+  color: var(--primary);
+}
+
+/* -------------------------------------------------------------------- */
+/* 12. Algolia DocSearch                                                 */
+/* -------------------------------------------------------------------- */
+
+/* Search bar trigger in navbar */
+.DocSearch-Button {
+  background-color: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  color: var(--text-light);
+}
+.DocSearch-Button:hover,
+.DocSearch-Button:focus {
+  background-color: var(--glass-table-row-hover);
+  box-shadow: 0 0 0 2px var(--primary);
+  color: var(--primary);
+}
+.DocSearch-Button-Placeholder {
+  color: var(--text-light);
+}
+.DocSearch-Button-Key {
+  background-color: var(--secondary);
+  color: var(--text);
+  box-shadow: none;
+}
+.DocSearch-Search-Icon {
+  color: var(--primary);
+}
+
+/* DocSearch modal theming — override its own CSS variables */
+:root {
+  --docsearch-primary-color: var(--primary);
+  --docsearch-text-color: var(--text);
+  --docsearch-spacing: var(--spacing-md);
+  --docsearch-icon-stroke-width: 1.4;
+  --docsearch-highlight-color: var(--primary);
+  --docsearch-muted-color: var(--text-light);
+  --docsearch-container-background: rgba(44, 26, 26, 0.5);
+  --docsearch-modal-width: 600px;
+  --docsearch-modal-height: 680px;
+  --docsearch-modal-background: var(--bg);
+  --docsearch-modal-shadow: 0 6px 20px var(--glass-shadow);
+  --docsearch-searchbox-height: 56px;
+  --docsearch-searchbox-background: var(--glass-bg);
+  --docsearch-searchbox-focus-background: #ffffff;
+  --docsearch-searchbox-shadow: inset 0 0 0 2px var(--primary);
+  --docsearch-hit-height: 56px;
+  --docsearch-hit-color: var(--text);
+  --docsearch-hit-active-color: var(--bg);
+  --docsearch-hit-background: #ffffff;
+  --docsearch-hit-shadow: 0 1px 3px var(--glass-shadow);
+  --docsearch-key-gradient: linear-gradient(-225deg, var(--secondary), var(--accent));
+  --docsearch-key-shadow: 0 1px 0 var(--border);
+  --docsearch-footer-height: 44px;
+  --docsearch-footer-background: var(--bg);
+  --docsearch-footer-shadow: 0 -1px 0 var(--glass-border);
+}
+
+[data-theme='dark'] {
+  --docsearch-primary-color: var(--primary);
+  --docsearch-text-color: var(--text);
+  --docsearch-container-background: rgba(0, 0, 0, 0.6);
+  --docsearch-modal-background: var(--bg);
+  --docsearch-searchbox-background: var(--glass-bg);
+  --docsearch-searchbox-focus-background: #241629;
+  --docsearch-hit-color: var(--text);
+  --docsearch-hit-background: #241629;
+  --docsearch-hit-active-color: #1a0f1f;
+  --docsearch-key-gradient: linear-gradient(-225deg, #3d2a3d, #2a1a2a);
+  --docsearch-key-shadow: 0 1px 0 var(--border);
+  --docsearch-footer-background: #241629;
+}
+
+/* Fine-tune bits DocSearch variables don't cover */
+.DocSearch-Modal {
+  border: 1px solid var(--glass-border);
+}
+.DocSearch-Hit[aria-selected='true'] a {
+  background-color: var(--primary);
+}
+.DocSearch-Hit-source {
+  color: var(--primary);
+  background-color: var(--bg);
+}
+.DocSearch-Cancel {
+  color: var(--text-light);
 }
