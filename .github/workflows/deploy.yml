@@ -60,6 +60,10 @@ jobs:
           # We could just mv, but cp keeps the structure and works like a log for debugging if necessary
           cp -r ./new-docs-build/* ./new-build
 
+      - name: Add CNAME file
+        # Important for using a custom domain on GitHub Pages via a branch
+        run: echo 'img2num.dev' > ./new-build/CNAME
+
       - name: Deploy Website
         uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e
         with:
