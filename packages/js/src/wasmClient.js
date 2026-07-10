@@ -141,7 +141,6 @@ export async function callWasm({ funcName, args = {}, bufferKeys = [], returnTyp
   } catch (error) {
     throw new Error(`[Img2Num wasmClient] Error: ${error?.message ?? error}`, { cause: error });
   } finally {
-  } finally {
     for (const { ptr } of pointers.values()) {
       wasmModule._free(ptr);
     }
