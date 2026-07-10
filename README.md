@@ -220,3 +220,5 @@ If you can't find it, feel free to open an [issue](https://github.com/Ryan-Milla
 Thanks to all of our contributors - your impact on this project has been greatly appreciated!
 
 [![GitHub Contributors Image](https://contrib.rocks/image?repo=Ryan-Millard/Img2Num)](https://github.com/Ryan-Millard/Img2Num/graphs/contributors)
+
+PR guide: [docs/pr-guide.md](docs/pr-guide.md).
