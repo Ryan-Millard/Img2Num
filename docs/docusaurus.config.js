@@ -16,15 +16,12 @@ import changelogPlugin from "./plugins/changelogPlugin";
 const require = createRequire(import.meta.url);
 require("dotenv").config();
 
-const hasAlgoliaEnvDefined = process.env.ALGOLIA_APP_ID && process.env.ALGOLIA_API_KEY && process.env.ALGOLIA_INDEX_NAME;
-const algolia = hasAlgoliaEnvDefined
-  ? {
-      appId: process.env.ALGOLIA_APP_ID,
-      apiKey: process.env.ALGOLIA_API_KEY,
-      indexName: process.env.ALGOLIA_INDEX_NAME,
+const algolia = {
+      appId: process.env.ALGOLIA_APP_ID ?? "Dummy value for development",
+      apiKey: process.env.ALGOLIA_API_KEY ?? "Dummy value for development",
+      indexName: process.env.ALGOLIA_INDEX_NAME ?? "Dummy value for development",
       contextualSearch: false,
-    }
-  : undefined;
+    };
 const algoliaHeadTag = {
   name: "algolia-site-verification",
   content: "DB4B5FEC1545D32B",
