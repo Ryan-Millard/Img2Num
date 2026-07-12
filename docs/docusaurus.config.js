@@ -17,11 +17,11 @@ const require = createRequire(import.meta.url);
 require("dotenv").config();
 
 const algolia = {
-      appId: process.env.ALGOLIA_APP_ID ?? "Dummy value for development",
-      apiKey: process.env.ALGOLIA_API_KEY ?? "Dummy value for development",
-      indexName: process.env.ALGOLIA_INDEX_NAME ?? "Dummy value for development",
-      contextualSearch: false,
-    };
+  appId: process.env.ALGOLIA_APP_ID ?? "Dummy value for development",
+  apiKey: process.env.ALGOLIA_API_KEY ?? "Dummy value for development",
+  indexName: process.env.ALGOLIA_INDEX_NAME ?? "Dummy value for development",
+  contextualSearch: false,
+};
 const algoliaHeadTag = {
   name: "algolia-site-verification",
   content: "DB4B5FEC1545D32B",

@@ -75,7 +75,8 @@ Key files:
 - [core/CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/core/CMakeLists.txt).
 - [bindings/c/CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/bindings/c/CMakeLists.txt).
 
-{/*Docusaurus has problems with the list above, so just keep this empty div*/}
+{/* Docusaurus has problems with the list above, so just keep this empty div */}
+
 <div />
 
   </TabItem>
@@ -94,10 +95,12 @@ just build js
 ```
 
 Key Files:
+
 - [CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/CMakeLists.txt)
 - [bindings/js/CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/bindings/js/CMakeLists.txt).
 
-{/*Docusaurus has problems with the list above, so just keep this empty div*/}
+{/* Docusaurus has problems with the list above, so just keep this empty div */}
+
 <div />
 
 **Build _Browser_ & _Node.js_ npm packages.**
@@ -112,12 +115,14 @@ just build packages-js
 ```
 
 Key files:
+
 - [package.json](https://github.com/Ryan-Millard/Img2Num/blob/main/package.json)
 - [pnpm-workspace.yaml](https://github.com/Ryan-Millard/Img2Num/blob/main/pnpm-workspace.yaml)
 - [packages/js/package.json](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/package.json)
 - [packages/js/vite.config.js](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/vite.config.js)
 
-{/*Docusaurus has problems with the list above, so just keep this empty div*/}
+{/* Docusaurus has problems with the list above, so just keep this empty div */}
+
 <div />
 
 :::caution[Common Confusion]
@@ -146,12 +151,14 @@ just build py
 ```
 
 Key files:
+
 - [pyproject.toml](https://github.com/Ryan-Millard/Img2Num/blob/main/pyproject.toml)
 - [packages/py/pyproject.toml](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/py/pyproject.toml)
 - [CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/CMakeLists.txt)
 - [bindings/py/CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/bindings/py/CMakeLists.txt).
 
-{/*Docusaurus has problems with the list above, so just keep this empty div*/}
+{/* Docusaurus has problems with the list above, so just keep this empty div */}
+
 <div />
 
   </TabItem>
@@ -177,6 +184,7 @@ Start the documentation server:
 ```bash title="Paste this in the Docker shell"
 just docs start
 ```
+
   </TabItem>
 
 </Tabs>
