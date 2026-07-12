@@ -18,7 +18,7 @@ Both applications demonstrate how to process an image using the Img2Num library.
 
 #### Prerequisites and Build Instructions
 
-See the [Setup & Dependencies](../../../contributing/setup-and-dependencies) page in the [Contributing](../../../contributing) section.
+See the [Setup & Dependencies](../../../contributing/project-setup) page in the [Contributing](../../../contributing) section.
 
 :::note
 If you have already set up the project, you will only need to run the below to build these apps:
@@ -33,7 +33,7 @@ cmake -S . --build build
 
 :::important
 The application needs to be compiled beforehand, so make sure to follow the instructions in the
-[Setup & Dependencies](../../../contributing/setup-and-dependencies) page.
+[Setup & Dependencies](../../../contributing/project-setup) page.
 Once built, you can run the applications as shown below.
 :::
 
