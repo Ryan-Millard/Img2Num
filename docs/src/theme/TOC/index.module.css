@@ -1,8 +1,6 @@
 .tocContainer {
   border-left: 1px solid var(--ifm-toc-border-color);
-  padding: 16px;
-  min-width: 250px;
-  width: fit-content;
+  padding: 8px;
   top: calc(var(--ifm-navbar-height) + 1rem);
   position: sticky;
   display: flex;
@@ -13,7 +11,6 @@
 .tocContainer ul {
   list-style: none;
   padding-left: 0;
-  margin-left: 8px;
 }
 .tocContainer > * {
   overflow: visible; /* or overflow: unset */

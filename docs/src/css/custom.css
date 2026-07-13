@@ -217,7 +217,7 @@ hr {
 
 .navbar__inner {
   display: flex;
-  gap: 25vw;
+  gap: min(25vw, 100px);
   margin: 0 auto;
 }
 .navbar__items {
@@ -297,10 +297,6 @@ hr {
   font-weight: 600;
 }
 
-.menu__caret:before {
-  filter: none;
-}
-
 .button {
   border-radius: var(--radius-sm);
   font-weight: 600;
@@ -353,9 +349,10 @@ hr {
 }
 
 table {
-  border: 1px solid var(--glass-table-border);
-  border-radius: var(--radius-sm);
-  width: fit-content;
+  display: table;
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
 }
 table thead {
   background-color: var(--secondary);
