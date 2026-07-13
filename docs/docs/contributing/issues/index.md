@@ -4,6 +4,8 @@ title: Issues
 sidebar_position: 5
 ---
 
+import { MoveRight } from "lucide-react";
+
 GitHub Issues are where Img2Num tracks bugs, feature requests, documentation
 improvements, and other work.
 
@@ -21,7 +23,13 @@ The **Finding Issues** guide explains how to:
 - discover high-priority work,
 - browse issues by label.
 
-➡️ Continue to **Finding Issues**.
+<a style={{ display: "inline-flex", alignItems: "center", gap: "1rem" }} href="./browsing-issues">
+
+<strong>Finding Issues</strong>
+
+<MoveRight size={20} />
+
+</a>
 
 ## Claiming an issue
 
@@ -34,7 +42,13 @@ The **Issue Claims** guide explains how to:
 - release an issue using `/untake`,
 - understand how issue claims expire.
 
-➡️ Continue to **Issue Claims**.
+<a style={{ display: "inline-flex", alignItems: "center", gap: "1rem" }} href="./issue-claims">
+
+<strong>Issue Claims</strong>
+
+<MoveRight size={15} />
+
+</a>
 
 ## Next steps
 

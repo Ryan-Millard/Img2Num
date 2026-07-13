@@ -217,7 +217,7 @@ hr {
 
 .navbar__inner {
   display: flex;
-  gap: 25vw;
+  gap: min(25vw, 100px);
   margin: 0 auto;
 }
 .navbar__items {
