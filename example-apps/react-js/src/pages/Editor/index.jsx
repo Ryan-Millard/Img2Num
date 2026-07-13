@@ -30,7 +30,7 @@ export default function Editor() {
   const [sigmaSpatial, setSigmaSpatial] = useState(initialSettings?.sigmaSpatial ?? 3);
   const [sigmaRange, setSigmaRange] = useState(initialSettings?.sigmaRange ?? 50);
   const [colorSpace, setColorSpace] = useState(initialSettings?.colorSpace ?? 0);
-  const [logoMode, setLogoMode] = useState(initialSettings?.logoMode ?? false);
+  const [synthetic, setSyntheticFlag] = useState(initialSettings?.synthetic ?? false);
 
   const [cachedBilateralFiltered, setCachedBilateralFiltered] = useState(imgBilateralFiltered);
   const [appliedSigmaSpatial, setAppliedSigmaSpatial] = useState(initialSettings?.sigmaSpatial ?? 3);
@@ -58,7 +58,7 @@ export default function Editor() {
       let contourPixels = fileData.pixels;
       let labels;
 
-      if (logoMode) {
+      if (synthetic) {
         const result = await color_quantize({
           ...fileData,
           pixels: fileData.pixels,
@@ -198,8 +198,8 @@ export default function Editor() {
               setSigmaRange={setSigmaRange}
               colorSpace={colorSpace}
               setColorSpace={setColorSpace}
-              logoMode={logoMode}
-              setLogoMode={setLogoMode}
+              synthetic={synthetic}
+              setSyntheticFlag={setSyntheticFlag}
               isOpen={isSettingsOpen}
               onReset={() => {
                 setNumColors(16);
@@ -208,7 +208,7 @@ export default function Editor() {
                 setSigmaSpatial(3);
                 setSigmaRange(50);
                 setColorSpace(0);
-                setLogoMode(false);
+                setSyntheticFlag(false);
               }}
               onAction={reprocessImage}
               actionLabel="Apply"

@@ -26,7 +26,7 @@ const WasmImageProcessor = () => {
   const [sigmaSpatial, setSigmaSpatial] = useState(3);
   const [sigmaRange, setSigmaRange] = useState(50);
   const [colorSpace, setColorSpace] = useState(0);
-  const [logoMode, setLogoMode] = useState(false);
+  const [synthetic, setSyntheticFlag] = useState(false);
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -93,7 +93,7 @@ const WasmImageProcessor = () => {
       let contourPixels = fileData.pixels;
       let labels;
 
-      if (logoMode) {
+      if (synthetic) {
         const result = await color_quantize({
           ...fileData,
           pixels: fileData.pixels,
@@ -155,7 +155,7 @@ const WasmImageProcessor = () => {
         step(0);
       }, 800);
     }
-  }, [fileData, navigate, step, numColors, minArea, minThickness, sigmaSpatial, sigmaRange, colorSpace, logoMode]);
+  }, [fileData, navigate, step, numColors, minArea, minThickness, sigmaSpatial, sigmaRange, colorSpace, synthetic]);
 
   /* Memo'd UI fragments */
   const EmptyState = useMemo(
@@ -192,8 +192,8 @@ const WasmImageProcessor = () => {
           setSigmaRange={setSigmaRange}
           colorSpace={colorSpace}
           setColorSpace={setColorSpace}
-          logoMode={logoMode}
-          setLogoMode={setLogoMode}
+          synthetic={synthetic}
+          setSyntheticFlag={setSyntheticFlag}
           isOpen={isSettingsOpen}
           onReset={() => {
             setNumColors(16);
@@ -202,7 +202,7 @@ const WasmImageProcessor = () => {
             setSigmaSpatial(3);
             setSigmaRange(50);
             setColorSpace(0);
-            setLogoMode(false);
+            setSyntheticFlag(false);
           }}
           onAction={processImage}
           actionLabel="Ok"

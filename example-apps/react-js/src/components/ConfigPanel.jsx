@@ -15,8 +15,8 @@ const ConfigPanel = ({
   setSigmaSpatial,
   sigmaRange,
   setSigmaRange,
-  logoMode = false,
-  setLogoMode,
+  synthetic = false,
+  setSyntheticFlag,
   isOpen = false,
   onReset,
   onAction,
@@ -40,17 +40,17 @@ const ConfigPanel = ({
         </div>
       </div>
 
-      {/* Logo Mode: color_quantize -> findContours instead of bilateralFilter -> kmeans -> findContours */}
-      {setLogoMode && (
+      {/* Synthetic Mode: color_quantize -> findContours instead of bilateralFilter -> kmeans -> findContours */}
+      {setSyntheticFlag && (
         <div className={styles.settingGroup}>
           <div className={styles.settingLabelWrapper}>
-            <label>Logo Mode</label>
-            <GlassSwitch isOn={logoMode} onChange={() => setLogoMode(!logoMode)} ariaLabel="toggle logo mode" disabled={isProcessing} />
+            <label>Synthetic Mode</label>
+            <GlassSwitch isOn={synthetic} onChange={() => setSyntheticFlag(!synthetic)} ariaLabel="toggle synthetic mode" disabled={isProcessing} />
           </div>
         </div>
       )}
 
-      {/* K-Means Parameters (Color Settings) - unused in Logo Mode */}
+      {/* K-Means Parameters (Color Settings) - unused in Synthetic Mode */}
       <div className={styles.sectionHeader}>K-Means Segmentation</div>
 
       <div className={styles.settingGroup}>
@@ -67,7 +67,7 @@ const ConfigPanel = ({
               setNumColors(val);
             }}
             className={styles.numberInput}
-            disabled={isProcessing || logoMode}
+            disabled={isProcessing || synthetic}
           />
         </div>
         <input
@@ -78,7 +78,7 @@ const ConfigPanel = ({
           value={numColors}
           onChange={(e) => setNumColors(parseInt(e.target.value, 10))}
           className={styles.rangeInput}
-          disabled={isProcessing || logoMode}
+          disabled={isProcessing || synthetic}
         />
       </div>
 
@@ -145,13 +145,13 @@ const ConfigPanel = ({
         />
       </div>
 
-      {/* Advanced Settings Collapsible Toggle - Bilateral Filter is unused in Logo Mode */}
-      <button type="button" className={styles.advancedToggle} onClick={() => setIsAdvancedOpen((prev) => !prev)} aria-expanded={isAdvancedOpen} disabled={logoMode}>
+      {/* Advanced Settings Collapsible Toggle - Bilateral Filter is unused in Synthetic Mode */}
+      <button type="button" className={styles.advancedToggle} onClick={() => setIsAdvancedOpen((prev) => !prev)} aria-expanded={isAdvancedOpen} disabled={synthetic}>
         <span>Advanced Settings</span>
         {isAdvancedOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
       </button>
 
-      {isAdvancedOpen && !logoMode && (
+      {isAdvancedOpen && !synthetic && (
         <div className={styles.advancedContent}>
           <div className={styles.sectionHeader}>Bilateral Filter</div>
 
@@ -263,8 +263,8 @@ ConfigPanel.propTypes = {
   setSigmaRange: PropTypes.func.isRequired,
   colorSpace: PropTypes.number,
   setColorSpace: PropTypes.func,
-  logoMode: PropTypes.bool,
-  setLogoMode: PropTypes.func,
+  synthetic: PropTypes.bool,
+  setSyntheticFlag: PropTypes.func,
   isOpen: PropTypes.bool,
   onReset: PropTypes.func.isRequired,
   onAction: PropTypes.func.isRequired,
