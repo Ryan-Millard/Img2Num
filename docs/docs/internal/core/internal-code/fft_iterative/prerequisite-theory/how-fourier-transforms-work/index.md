@@ -4,6 +4,8 @@ title: How Fourier Transforms Work
 sidebar_position: 6
 ---
 
+import { MoveRight } from 'lucide-react';
+
 import styles from './index.module.css';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -14,8 +16,8 @@ and the Discrete Fourier Transform (DFT). They serve the same purpose—mapping
 a time-domain signal into its frequency-domain representation—but operate on
 different types of signals:
 
-- **CFT → continuous-time signals**
-- **DFT → discrete-time, finite-length signals**
+- **CFT <MoveRight size={15} /> continuous-time signals**
+- **DFT <MoveRight size={15} /> discrete-time, finite-length signals**
 
 Despite these differences, their mathematics is closely related. Below are the
 core equations and a breakdown of their similarities and differences.

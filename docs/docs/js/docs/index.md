@@ -10,7 +10,7 @@ A([Browser / Node.js]) --> B
 B["safeWasmWrappers.js <br> <font size=2 color=gray>Public API (imageToSvg, kmeans, etc.)</font>"]
 C["wasmClient.js <br> <font size=2 color=gray>Worker communication (postMessage)</font>"]
 D["wasmWorker.js <br> <font size=2 color=gray>WASM module loader & message handler</font>"]
-E["img2num_core.wasm <br> <font size=2 color=gray>Emscripten-compiled core (C++ → WASM)</font>"]
+E["img2num_core.wasm <br> <font size=2 color=gray>Emscripten-compiled core<br />(C++ -> WASM)</font>"]
 
 B --> C
 C --> D

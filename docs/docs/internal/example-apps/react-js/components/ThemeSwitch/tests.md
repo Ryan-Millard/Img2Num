@@ -2,6 +2,8 @@
 title: ThemeSwitch Tests
 ---
 
+import { MoveRight } from "lucide-react";
+
 The ThemeSwitch component has 7 tests covering rendering, icon display, theme toggling, hook integration, and edge cases.
 
 ## Test file location
@@ -27,7 +29,7 @@ npm test -- --watch ThemeSwitch.test.jsx
 
 ### 1. Rendering & accessibility (2 tests)
 
-- Renders a switch with the correct aria-label based on the theme (light → "switch to dark mode", dark → "switch to light mode")
+- Renders a switch with the correct aria-label based on the theme (light <MoveRight size={15} /> "switch to dark mode", dark <MoveRight size={15} /> "switch to light mode")
 - Uses `type="button"` and `role="switch"` with proper `aria-checked`
 
 ### 2. Icon display based on theme (2 tests)
