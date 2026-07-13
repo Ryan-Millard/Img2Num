@@ -25,7 +25,7 @@ just help
 
 :::info
 
-If you have already run `just init` before (liek when following the [Project Setup Guide](../project-setup)),
+If you have already run `just init` before (like when following the [Project Setup Guide](../project-setup)),
 you don't need to run it again.
 
 There is no harm in re-running it, though.
