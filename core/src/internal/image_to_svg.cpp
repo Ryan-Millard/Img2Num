@@ -15,14 +15,22 @@ std::string image_to_svg(
     std::memcpy(
         img_data.data(), data, static_cast<size_t>(width) * static_cast<size_t>(height) * 4
     );
-    bilateral_filter(
-        img_data.data(), width, height, config.bilateral_filter.sigma_spatial,
-        config.bilateral_filter.sigma_range, config.color_space
-    );
-    kmeans(
-        img_data.data(), out_data.data(), out_labels.data(), width, height, config.kmeans.k,
-        config.kmeans.max_iter, config.color_space
-    );
+    if (config.synthetic) {
+        color_quantize(
+            img_data.data(), out_data.data(), out_labels.data(), width, height, config.quantize.k,
+            config.quantize.coverage, config.color_space
+        );
+    }
+    else {
+        bilateral_filter(
+            img_data.data(), width, height, config.bilateral_filter.sigma_spatial,
+            config.bilateral_filter.sigma_range, config.color_space
+        );
+        kmeans(
+            img_data.data(), out_data.data(), out_labels.data(), width, height, config.kmeans.k,
+            config.kmeans.max_iter, config.color_space
+        );
+    }
     std::string svg {labels_to_svg(
         data, out_labels.data(), width, height, config.min_cluster_area, config.min_thickness
     )};

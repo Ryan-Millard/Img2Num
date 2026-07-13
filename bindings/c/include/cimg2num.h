@@ -39,6 +39,15 @@ typedef struct img2num_ImageToSvgConfig {
         int32_t max_iter;
     } kmeans;
 
+    struct QuantizeConfig {
+        /// Number of dominant colors to find in the image.
+        /// If 0 (default) use `coverage` to threshold based on area.
+        int32_t k;
+        /// Area ratio to consider when determining dominant colors.
+        /// Top dominant colors must cover at least `coverage` * `width` * `height` number of pixels.
+        float coverage;
+    } quantize;
+
     /// Minimum area (in pixels) for a region to be included in the SVG.
     int min_cluster_area;
     /// Minimum thickness (in pixels) for a region to be included in the SVG.
@@ -48,6 +57,11 @@ typedef struct img2num_ImageToSvgConfig {
     /// - 0 = CIE LAB (more perceptually accurate)
     /// - 1 = sRGB (faster).
     uint8_t color_space;
+
+    /// Synthetic flag.
+    /// - 0 = Natural image (default)
+    /// - 1 = Synthetic image
+    uint8_t synthetic;
 } img2num_ImageToSvgConfig;
 
 img2num_ImageToSvgConfig img2num_ImageToSvgConfig_default(void);
