@@ -51,6 +51,13 @@ When a claim expires:
 If you're still actively working on an issue after several weeks, simply
 leave a comment on the issue so maintainers know it is still being worked on.
 
+:::note[Commenting doesn't reset the timer]
+
+Note that commenting does not reset the 21-day timer; if your claim is about
+to expire, comment `/untake` followed by `/take` to re-claim it.
+
+:::
+
 ## Frequently Asked Questions
 
 ### Can I work on an issue that is already claimed?

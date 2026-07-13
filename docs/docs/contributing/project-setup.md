@@ -95,7 +95,7 @@ values={[
 
 ```sh title="Paste this in your terminal"
 # Clone the repository
-git clone https://github.com/Ryan-Millard/Img2Num.git
+git clone https://github.com/<your-username>/Img2Num.git
 cd Img2Num/
 
 # Open Docker container
@@ -110,7 +110,7 @@ just init
 
 ```sh title="Paste this in your terminal"
 # Clone the repository
-git clone https://github.com/Ryan-Millard/Img2Num.git
+git clone https://github.com/<your-username>/Img2Num.git
 cd Img2Num/
 
 # Open Docker container
@@ -125,7 +125,7 @@ just init
 
 ```sh title="Paste this in your terminal"
 # Clone the repository
-git clone https://github.com/Ryan-Millard/Img2Num.git
+git clone https://github.com/<your-username>/Img2Num.git
 cd Img2Num/
 
 # Open Docker container
@@ -153,7 +153,7 @@ and [Just](../just) pages to understand how the development environment works.
 ## 1. Clone the repository
 
 ```bash title="Paste this in your terminal"
-git clone https://github.com/Ryan-Millard/Img2Num.git
+git clone https://github.com/<your-username>/Img2Num.git
 cd Img2Num/
 ```
 
@@ -162,8 +162,7 @@ cd Img2Num/
 Recursing all Git submodules (especially Dawn's) can be very slow and takes up a lot of space.
 We don't recommend worrying about them at this stage - [Step 3](./#3-initialise-and-build-everything) will handle it for you.
 
-The `--recursive` flag pulls the required submodules. If you forgot it, `just init`
-(below) will pull them for you.
+`just init` (in [Step 3](./#3-initialise-and-build-everything)) will pull and manage the submodules automatically for you.
 
 :::
 
@@ -215,7 +214,7 @@ This only needs to be done once and allows locally created PowerShell scripts (l
 </TabItem>
 </Tabs>
 
-> See [Img2Num Docker Script](../img2num-docker-script) for more information about this.
+> See the [Img2Num Docker Script](../img2num-docker-script) page for more information about this.
 
 ## 3. Initialise and build everything
 
@@ -233,7 +232,7 @@ As mentioned in [Step 1](./#1-clone-the-repository) `just init`:
 1. **Installs dependencies** (shallow Git submodule pull, `pnpm install`, etc.)
 2. Compiles all code (C++, C, JavaScript, Python package, etc.) via `just build all`.
 
-See [Img2Num's Just documentation](../just) for more information.
+See [Img2Num's Just documentation](../just) page for more information.
 
 ## 4. Test that everything works
 
@@ -251,8 +250,8 @@ Picsum Photos offers some nice random images:
 :::
 
 To test that you have built everything properly, we recommend running `just build all` from above
-and testing each example app. You can find out how to use the example app on our
-[Just documentation page](../just/#example-applications).
+and testing each example app. You can find out how to use the example app on
+[our Just documentation](../just/#example-applications) page.
 
 ---
 

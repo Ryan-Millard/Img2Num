@@ -11,14 +11,14 @@ The GitHub issue tracker is the best place to find tasks that need contributors.
 
 ## Browse all issues
 
-You can browse every open issue here: https://github.com/Ryan-Millard/Img2Num/issues
+You can browse every open issue [here](https://github.com/Ryan-Millard/Img2Num/issues).
 
 If you're looking for something specific, GitHub's search bar and filters can
 help narrow the list.
 
 ## Good first issues
 
-If you're new to the project, start here: https://github.com/Ryan-Millard/Img2Num/issues/views/1148
+If you're new to the project, start [here](https://github.com/Ryan-Millard/Img2Num/issues/views/1148).
 
 These issues are intended to be approachable for new contributors and are a
 great way to become familiar with the project.
@@ -27,14 +27,14 @@ great way to become familiar with the project.
 
 Looking for something that needs attention?
 
-Browse issues marked as needing contributors: https://github.com/Ryan-Millard/Img2Num/issues/views/1155
+Browse issues marked as [needing contributors](https://github.com/Ryan-Millard/Img2Num/issues/views/3733).
 
 These issues have been identified as work that would benefit from community
 contributions.
 
 ## Browse by label
 
-You can also browse issues by their labels: https://github.com/Ryan-Millard/Img2Num/labels
+You can also browse issues by their [labels](https://github.com/Ryan-Millard/Img2Num/labels).
 
 Labels make it easy to find work that matches your interests or experience.
 

@@ -15,7 +15,7 @@ running and cleaning the project.
 
 To see every available command at any time, run:
 
-```bash
+```bash title="Show available Just commands"
 just help
 ```
 
