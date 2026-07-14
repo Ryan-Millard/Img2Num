@@ -131,7 +131,7 @@ This process is too detailed to put in a `README.md` file, so please see our doc
 
 ### JavaScript
 
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="30" alt="" />
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="30" alt="JavaScript Logo" />
 
 For more detailed information on installing this package, please refer to [our documentation](https://img2num.dev/docs/js/):
 
@@ -162,7 +162,7 @@ import { imageToSvg } from "img2num";
 
 ### Python
 
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" width="30" alt="" />
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" width="30" alt="Python Logo" />
 
 For more detailed information on installing this package, please refer to [our documentation](https://img2num.dev/docs/py/):
 
