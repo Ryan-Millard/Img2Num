@@ -10,11 +10,8 @@ Img2Num Author
 
 We are excited to launch **Img2Num** , the interactive app that converts any image into a color-by-number template.
 
-:::note [Edit: 20 June 2026]
-
+Edit: 20 June 2026
 Img2Num is no longer an application for converting images into color-by-number templates. Instead, it is now a library that supports C, C++, Python, and JavaScript.
-
-:::
 
 **Tags:**
 - Launch - Tutorial
