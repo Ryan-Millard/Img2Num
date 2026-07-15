@@ -427,6 +427,7 @@ PYBIND11_MODULE(_img2num, m) {
         .def_readwrite("color_space", &img2num::ImageToSvgConfig::color_space)
         .def_readwrite("kmeans", &img2num::ImageToSvgConfig::kmeans)
         .def_readwrite("quantize", &img2num::ImageToSvgConfig::quantize)
+        .def_readwrite("synthetic", &img2num::ImageToSvgConfig::synthetic)
         .def("__repr__", [](const img2num::ImageToSvgConfig& c) {
             // We use pybind11::repr() to trigger the __repr__ of the nested objects
             std::stringstream ss;
