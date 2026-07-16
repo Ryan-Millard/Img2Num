@@ -6,8 +6,9 @@
 #include <emscripten/html5.h>
 #endif
 
+#include "internal/debug.h"
+
 #include <fstream>
-#include <iostream>
 #include <iterator>
 #include <map>
 #include <sstream>
@@ -117,12 +118,11 @@ class GPU {
 
                 for (uint32_t i = 0; i < info->messageCount; ++i) {
                     const auto& msg = info->messages[i];
-                    std::cerr << "Shader Error ["
-                              << (msg.type == wgpu::CompilationMessageType::Error ? "ERR" : "WARN")
-                              << "]"
-                              << " Line " << msg.lineNum << ":" << msg.linePos << " - "
-                              << msg.message.data // .data for StringView
-                              << std::endl;
+                    IMG2NUM_LOG_ERROR(
+                        "Shader Error [{}] Line {}:{} - {}",
+                        msg.type == wgpu::CompilationMessageType::Error ? "ERR" : "WARN",
+                        msg.lineNum, msg.linePos, msg.message.data
+                    );
                 }
             }
         );
@@ -136,14 +136,14 @@ class GPU {
         instance = wgpu::CreateInstance(&instanceDesc);
 
         if (!instance) {
-            std::cerr << "Fatal: WebGPU instance creation failed." << std::endl;
+            IMG2NUM_LOG_ERROR("Fatal: WebGPU instance creation failed.");
             return;
         }
 
         // ---------------------------------------------------------
         // 1. Get Adapter
         // ---------------------------------------------------------
-        std::cout << "Requesting Adapter..." << std::endl;
+        IMG2NUM_LOG_INFO("Requesting Adapter...");
         adapter_ready = false;
 
         instance.RequestAdapter(
@@ -152,11 +152,11 @@ class GPU {
             [this](wgpu::RequestAdapterStatus status, wgpu::Adapter a, wgpu::StringView msg) {
                 if (status == wgpu::RequestAdapterStatus::Success) {
                     adapter = std::move(a);
-                    std::cout << "Adapter Acquired" << std::endl;
+                    IMG2NUM_LOG_INFO("Adapter Acquired");
                 } else {
-                    std::cerr << "Adapter Failed: "
-                              << std::string_view(msg.data ? msg.data : "", msg.length)
-                              << std::endl;
+                    IMG2NUM_LOG_ERROR(
+                        "Adapter Failed: {}", std::string_view(msg.data ? msg.data : "", msg.length)
+                    );
                 }
                 adapter_ready = true; // Unblock the loop
             }
@@ -171,14 +171,14 @@ class GPU {
         }
 
         if (!adapter) {
-            std::cerr << "Fatal: Could not get WebGPU Adapter." << std::endl;
+            IMG2NUM_LOG_ERROR("Fatal: Could not get WebGPU Adapter.");
             return;
         }
 
         // ---------------------------------------------------------
         // 2. Get Device
         // ---------------------------------------------------------
-        std::cout << "Requesting Device..." << std::endl;
+        IMG2NUM_LOG_INFO("Requesting Device...");
         device_ready = false;
 
         wgpu::DeviceDescriptor deviceDesc = {};
@@ -189,9 +189,9 @@ class GPU {
                                                                : "Unknown Error (Null message)";
 
             // 2. Print it safely
-            std::cerr << "\n[WEBGPU FATAL ERROR] Type: " << static_cast<uint32_t>(type)
-                      << " | Msg: " << err_str << "\n"
-                      << std::endl;
+            IMG2NUM_LOG_ERROR(
+                "\n[WEBGPU FATAL ERROR] Type: {} | Msg: {}\n", static_cast<uint32_t>(type), err_str
+            );
         });
         deviceDesc.SetDeviceLostCallback(
             wgpu::CallbackMode::AllowProcessEvents,
@@ -199,8 +199,9 @@ class GPU {
                 std::string err_msg = (msg.data && msg.length > 0)
                                           ? std::string(msg.data, msg.length)
                                           : "Unknown device lost reason";
-                std::cerr << "[DEVICE LOST] Reason: " << static_cast<int>(reason)
-                          << " Msg: " << err_msg << std::endl;
+                IMG2NUM_LOG_ERROR(
+                    "[DEVICE LOST] Reason: {} Msg: {}", static_cast<int>(reason), err_msg
+                );
             }
         );
 
@@ -213,9 +214,10 @@ class GPU {
             // Copy the adapter's physical limits over to your requested limits
             requiredLimits = supportedLimits;
 
-            std::cout << "maxBufferSize: " << requiredLimits.maxBufferSize << std::endl;
-            std::cout << "maxStorageBufferBindingSize: "
-                      << requiredLimits.maxStorageBufferBindingSize << std::endl;
+            IMG2NUM_LOG_INFO("maxBufferSize: {}", requiredLimits.maxBufferSize);
+            IMG2NUM_LOG_INFO(
+                "maxStorageBufferBindingSize: {}", requiredLimits.maxStorageBufferBindingSize
+            );
 
             deviceDesc.requiredLimits = &requiredLimits;
         }
@@ -226,12 +228,13 @@ class GPU {
             [this](wgpu::RequestDeviceStatus status, wgpu::Device d, wgpu::StringView msg) {
                 if (status == wgpu::RequestDeviceStatus::Success) {
                     device = std::move(d);
-                    std::cout << "Device Acquired" << std::endl;
+                    IMG2NUM_LOG_INFO("Device Acquired");
                 } else {
-                    std::cerr << "Device Failed: "
-                              << (msg.data && msg.length > 0 ? std::string(msg.data, msg.length)
-                                                             : "Unknown error")
-                              << std::endl;
+                    IMG2NUM_LOG_ERROR(
+                        "Device Failed: {}", msg.data && msg.length > 0
+                                                 ? std::string(msg.data, msg.length)
+                                                 : "Unknown error"
+                    );
                 }
                 device_ready = true; // Unblock the loop
             }
@@ -246,18 +249,18 @@ class GPU {
         }
 
         if (!device) {
-            std::cerr << "Fatal: Could not get WebGPU Device." << std::endl;
+            IMG2NUM_LOG_ERROR("Fatal: Could not get WebGPU Device.");
             return;
         }
 
         if (!validate_device()) {
-            std::cerr << "Fatal: Could not get WebGPU Device." << std::endl;
+            IMG2NUM_LOG_ERROR("Fatal: Could not get WebGPU Device.");
             return;
         }
 
         queue = device.GetQueue();
         gpu_initialized = true;
-        std::cout << "GPU Fully Initialized." << std::endl;
+        IMG2NUM_LOG_INFO("GPU Fully Initialized.");
     };
 
     ~GPU() {

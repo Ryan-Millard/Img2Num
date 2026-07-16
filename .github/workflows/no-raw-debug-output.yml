@@ -1,0 +1,38 @@
+name: CI / No Raw Debug Output
+
+on:
+  pull_request:
+  push:
+    branches: [dev, main]
+
+jobs:
+  check-debug-output:
+    name: Check for raw debug output
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ripgrep
+        run: sudo apt-get install -y ripgrep
+
+      - name: Check for std::cout
+        run: |
+          if rg "std::cout" \
+            --type cpp \
+            -g '!third_party/**' \
+            -g '!example-apps/**' \
+            -l; then
+            echo "ERROR: Raw std::cout found. Use IMG2NUM_LOG_* macros instead."
+            exit 1
+          fi
+
+      - name: Check for std::cerr
+        run: |
+          if rg "std::cerr" \
+            --type cpp \
+            -g '!third_party/**' \
+            -g '!example-apps/**' \
+            -l; then
+            echo "ERROR: Raw std::cerr found. Use IMG2NUM_LOG_* macros instead."
+            exit 1
+          fi
