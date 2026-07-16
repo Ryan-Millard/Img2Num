@@ -45,8 +45,7 @@
       <p>A simple demo app to show how to use <a href="https://img2num.dev/docs/js/">Img2Num's JavaScript library</a>.</p>
       <p>Upload an image to convert it to an SVG</p>
 
-      <div id="dropZone" class="hero shadow--md padding--lg margin-top--md" style="text-align:center; border:2px dashed var(--border); border-radius:12px;"
-      >
+      <div id="dropZone" class="hero shadow--md padding--lg margin-top--md" style="text-align: center; border: 2px dashed var(--border); border-radius: 12px">
         <p>Drag &amp; drop an image here, paste one (Ctrl+V), or <input type="file" id="fileInput" accept="image/*" /></p>
       </div>
 
@@ -89,76 +88,73 @@
     <script type="module">
       import { imageToSvg, terminateWasmModule } from "img2num";
 
-  async function processImage(file) {
-    if (!file) return;
+      async function processImage(file) {
+        if (!file) return;
 
-    originalImg.src = URL.createObjectURL(file);
-    previewImg.src = "";
-    spinner.style.display = "block";
+        originalImg.src = URL.createObjectURL(file);
+        previewImg.src = "";
+        spinner.style.display = "block";
 
-    try {
-      const bitmap = await createImageBitmap(file);
+        try {
+          const bitmap = await createImageBitmap(file);
 
-      const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
-      const ctx = canvas.getContext("2d");
+          const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
+          const ctx = canvas.getContext("2d");
 
-      ctx.drawImage(bitmap, 0, 0);
+          ctx.drawImage(bitmap, 0, 0);
 
-      const { data } = ctx.getImageData(0, 0, bitmap.width, bitmap.height);
+          const { data } = ctx.getImageData(0, 0, bitmap.width, bitmap.height);
 
-      const { svg } = await imageToSvg({
-        pixels: new Uint8ClampedArray(data),
-        width: bitmap.width,
-        height: bitmap.height,
+          const { svg } = await imageToSvg({
+            pixels: new Uint8ClampedArray(data),
+            width: bitmap.width,
+            height: bitmap.height,
+          });
+
+          previewImg.src = "data:image/svg+xml;base64," + btoa(svg);
+        } catch (error) {
+          console.error("Failed to convert image:", error);
+        } finally {
+          spinner.style.display = "none";
+          await terminateWasmModule();
+        }
+      }
+
+      // File picker
+      fileInput.addEventListener("change", (e) => {
+        processImage(e.target.files[0]);
       });
 
-      previewImg.src =
-        "data:image/svg+xml;base64," + btoa(svg);
-    } catch (error) {
-      console.error("Failed to convert image:", error);
-    } finally {
-      spinner.style.display = "none";
-      await terminateWasmModule();
-    }
-  }
+      // Paste (Ctrl+V)
+      document.addEventListener("paste", (e) => {
+        for (const item of e.clipboardData.items) {
+          if (item.type.startsWith("image/")) {
+            processImage(item.getAsFile());
+            break;
+          }
+        }
+      });
 
-  // File picker
-  fileInput.addEventListener("change", (e) => {
-    processImage(e.target.files[0]);
-  });
+      // Drag & drop
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("hero--primary");
+      });
 
-  // Paste (Ctrl+V)
-  document.addEventListener("paste", (e) => {
-    for (const item of e.clipboardData.items) {
-      if (item.type.startsWith("image/")) {
-        processImage(item.getAsFile());
-        break;
-      }
-    }
-  });
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.classList.remove("hero--primary");
+      });
 
-  // Drag & drop
-  dropZone.addEventListener("dragover", (e) => {
-    e.preventDefault();
-    dropZone.classList.add("hero--primary");
-  });
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("hero--primary");
 
-  dropZone.addEventListener("dragleave", () => {
-    dropZone.classList.remove("hero--primary");
-  });
+        const file = [...e.dataTransfer.files].find((f) => f.type.startsWith("image/"));
 
-  dropZone.addEventListener("drop", (e) => {
-    e.preventDefault();
-    dropZone.classList.remove("hero--primary");
-
-    const file = [...e.dataTransfer.files].find((f) =>
-      f.type.startsWith("image/")
-    );
-
-    if (file) {
-      processImage(file);
-    }
-  });
+        if (file) {
+          processImage(file);
+        }
+      });
     </script>
   </body>
 </html>
