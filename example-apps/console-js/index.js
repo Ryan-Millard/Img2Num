@@ -1,5 +1,5 @@
 import { writeFileSync } from "fs";
-import { imageToSv, terminateWasmModuleg } from "img2num";
+import { imageToSvg, terminateWasmModule } from "img2num";
 import sharp from "sharp";
 
 const imagePath = process.argv[2];
