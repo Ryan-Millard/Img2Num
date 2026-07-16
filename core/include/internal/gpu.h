@@ -121,7 +121,8 @@ class GPU {
                     IMG2NUM_LOG_ERROR(
                         "Shader Error [{}] Line {}:{} - {}",
                         msg.type == wgpu::CompilationMessageType::Error ? "ERR" : "WARN",
-                        msg.lineNum, msg.linePos, msg.message.data
+                        msg.lineNum, msg.linePos,
+                        std::string_view(msg.message.data ? msg.message.data : "", msg.message.length)
                     );
                 }
             }
