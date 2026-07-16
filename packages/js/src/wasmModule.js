@@ -12,6 +12,11 @@ export function getWasmModule() {
   return wasmModule;
 }
 
+/**
+ * `@summary` Initialize the WASM module. Async as of `#433`. Previously `initWasmWorker`.
+ * `@function` initWasmModule
+ * `@since` 0.0.0
+ */
 export async function initWasmModule() {
   if (initialized) return;
 

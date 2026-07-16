@@ -164,14 +164,14 @@ bun add img2num
 
 ### All-in-one (recommended)
 ```js
-import { imageToUint8ClampedArray, imageToSvg } from "img2num";
+import { imageToUint8ClampedArray, imageToSvg, terminateWasmModule } from "img2num";
 // Browsers:
 const { pixels, width, height } = await imageToUint8ClampedArray(file);
 // Node.js equivalent:
 // const { data, info } = await sharp(imagePath).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
 // const { width, height } = info;
 const { svg } = await imageToSvg({ pixels, width, height });
-
+await terminateWasmModule();
 ```
 
 > [!NOTE]

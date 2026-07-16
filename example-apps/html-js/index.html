@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <title>Img2Num demo</title>
     <!--Import built Docusaurus styles-->
@@ -19,6 +19,9 @@
           transform: rotate(360deg);
         }
       }
+      .mouse-hover:hover {
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -35,7 +38,8 @@
         <div class="navbar__items navbar__items--right">
           <a class="navbar__item navbar__link" href="https://github.com/Ryan-Millard/Img2Num">GitHub</a>
           <a class="navbar__item navbar__link" href="https://www.npmjs.com/package/img2num">npm</a>
-          <button id="themeToggle" class="button button--outline button--sm navbar__item">🌙</button>
+          <button id="themeToggle" class="button button--outline button--sm navbar__item" style="padding:auto;" type="button"></button>
+          <div style="display:none;" /> <!-- Absorb intrusive Docusaurus style without major refactor -->
         </div>
       </div>
     </nav>
@@ -45,9 +49,16 @@
       <p>A simple demo app to show how to use <a href="https://img2num.dev/docs/js/">Img2Num's JavaScript library</a>.</p>
       <p>Upload an image to convert it to an SVG</p>
 
-      <div id="dropZone" class="hero shadow--md padding--lg margin-top--md" style="text-align: center; border: 2px dashed var(--border); border-radius: 12px">
-        <p>Drag &amp; drop an image here, paste one (Ctrl+V), or <input type="file" id="fileInput" accept="image/*" /></p>
-      </div>
+      <label
+        id="dropZone"
+        class="hero shadow--md padding--lg margin-top--md mouse-hover"
+        style="text-align: center; border: 2px dashed var(--border); border-radius: 12px;"
+        for="fileInput"
+        tabindex="0"
+      >
+        Drag &amp; drop an image here, paste one (Ctrl+V), or&nbsp;
+        <input type="file" id="fileInput" aria-describedby="uploadHelp" accept=".png,.jpg,.jpeg,.gif,.bmp,.webp,.avif,.tif,.tiff,image/png,image/jpeg,image/gif,image/bmp,image/webp,image/avif,image/tiff" />
+      </label>
 
       <section class="margin-top--md">
         <h4>Original</h4>
@@ -91,6 +102,7 @@
       async function processImage(file) {
         if (!file) return;
 
+        if (originalImg.src && originalImg.src.startsWith("blob:")) { URL.revokeObjectURL(originalImg.src); }
         originalImg.src = URL.createObjectURL(file);
         previewImg.src = "";
         spinner.style.display = "block";
@@ -153,6 +165,14 @@
 
         if (file) {
           processImage(file);
+        }
+      });
+
+      // Tab & Enter/Space
+      dropZone.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          fileInput.click();
         }
       });
     </script>
