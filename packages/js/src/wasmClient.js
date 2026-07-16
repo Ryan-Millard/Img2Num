@@ -60,11 +60,11 @@ const WASM_TYPES = {
 };
 
 /**
- * @summary Initialize the WASM module.
+ * @summary Initialize the WASM module. Async as of #43.
  * @function initWasmWorker
  * @since 0.0.0
  */
-export async function initWasmWorker() {
+async function initWasmWorker() {
   if (initialized) return;
   if (!readyPromise) {
     readyPromise = (async () => {
@@ -104,7 +104,9 @@ async function ccallAsync(funcName, argsMap, returnType) {
  * @since 0.0.0
  */
 export async function callWasm({ funcName, args = {}, bufferKeys = [], returnType = "void" }) {
-  if (!initialized) throw new Error("WASM module not initialized. Call initWasmWorker() first.");
+  if (!initialized) {
+    await initWasmWorker();
+  }
 
   const pointers = new Map();
   const argsMap = new Map(Object.entries(args));
