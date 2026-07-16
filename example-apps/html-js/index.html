@@ -38,8 +38,9 @@
         <div class="navbar__items navbar__items--right">
           <a class="navbar__item navbar__link" href="https://github.com/Ryan-Millard/Img2Num">GitHub</a>
           <a class="navbar__item navbar__link" href="https://www.npmjs.com/package/img2num">npm</a>
-          <button id="themeToggle" class="button button--outline button--sm navbar__item" style="padding:auto;" type="button"></button>
-          <div style="display:none;" /> <!-- Absorb intrusive Docusaurus style without major refactor -->
+          <button id="themeToggle" class="button button--outline button--sm navbar__item" style="padding: auto" type="button"></button>
+          <div style="display: none" />
+          <!-- Absorb intrusive Docusaurus style without major refactor -->
         </div>
       </div>
     </nav>
@@ -52,12 +53,17 @@
       <label
         id="dropZone"
         class="hero shadow--md padding--lg margin-top--md mouse-hover"
-        style="text-align: center; border: 2px dashed var(--border); border-radius: 12px;"
+        style="text-align: center; border: 2px dashed var(--border); border-radius: 12px"
         for="fileInput"
         tabindex="0"
       >
         Drag &amp; drop an image here, paste one (Ctrl+V), or&nbsp;
-        <input type="file" id="fileInput" aria-describedby="uploadHelp" accept=".png,.jpg,.jpeg,.gif,.bmp,.webp,.avif,.tif,.tiff,image/png,image/jpeg,image/gif,image/bmp,image/webp,image/avif,image/tiff" />
+        <input
+          type="file"
+          id="fileInput"
+          aria-describedby="uploadHelp"
+          accept=".png,.jpg,.jpeg,.gif,.bmp,.webp,.avif,.tif,.tiff,image/png,image/jpeg,image/gif,image/bmp,image/webp,image/avif,image/tiff"
+        />
       </label>
 
       <section class="margin-top--md">
@@ -102,7 +108,9 @@
       async function processImage(file) {
         if (!file) return;
 
-        if (originalImg.src && originalImg.src.startsWith("blob:")) { URL.revokeObjectURL(originalImg.src); }
+        if (originalImg.src && originalImg.src.startsWith("blob:")) {
+          URL.revokeObjectURL(originalImg.src);
+        }
         originalImg.src = URL.createObjectURL(file);
         previewImg.src = "";
         spinner.style.display = "block";
