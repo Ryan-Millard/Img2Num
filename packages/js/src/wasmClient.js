@@ -70,13 +70,5 @@ export async function callWasm({ funcName, args = {}, bufferKeys = [], returnTyp
     for (const { ptr } of pointers.values()) {
       wasmModule._free(ptr);
     }
-
-    if (__TARGET__ === "node") {
-      import("./target/node/webgpu.js").then(({ destroyWebGPU }) => destroyWebGPU());
-    }
   }
-}
-
-export function terminateWasmWorker() {
-  terminateWasmModule();
 }

@@ -40,9 +40,10 @@ export async function initWasmModule() {
   initialized = true;
 }
 
-export function terminateWasmModule() {
+export async function terminateWasmModule() {
   if (__TARGET__ === "node") {
-    import("./target/node/webgpu.js").then(({ destroyWebGPU }) => destroyWebGPU());
+    const { destroyWebGPU } = await import("./target/node/webgpu.js");
+    await destroyWebGPU();
   }
 
   wasmModule = undefined;
