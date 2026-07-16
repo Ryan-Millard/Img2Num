@@ -4,15 +4,15 @@ Thank you for helping keep Img2Num and its users secure. We take security issues
 
 ## Supported Versions
 
-Security updates are currently provided only for the latest **v0.2.x** release series of each component.
+Security updates are provided for the latest **v0.2.x** release series of each component. The `main` branch is actively maintained for development, but it is not a supported release channel.
 
 | Component                           | Supported Versions |     Supported      |
 | ----------------------------------- | ------------------ | :----------------: |
-| C++ Library                         | v0.2.x             | :white_check_mark: |
-| C Bindings                          | v0.2.x             | :white_check_mark: |
-| JavaScript Package                  | v0.2.x             | :white_check_mark: |
-| Python Package                      | v0.2.x             | :white_check_mark: |
-| Development (`main`)                | Latest             | :white_check_mark: |
+| C++ Library                         | `v0.2.x`           | :white_check_mark: |
+| C Bindings                          | `v0.2.x`           | :white_check_mark: |
+| JavaScript Package                  | `v0.2.x`           | :white_check_mark: |
+| Python Package                      | `v0.2.x`           | :white_check_mark: |
+| Development (`main`)                | `Latest`           |  Development Only  |
 | Older releases (v0.1.x and earlier) | -                  |        :x:         |
 
 ## Release History
@@ -54,19 +54,30 @@ After receiving your report, we aim to:
 
 Response times may vary depending on the severity and complexity of the issue.
 
-## Scope
+## Scope and Authorized Security Testing
 
-This policy applies to:
+This policy covers security research performed in good faith against Img2Num assets that are owned and operated by the project, including:
 
-- The core C++ library.
-- All official language bindings and packages.
-- Command-line tools.
-- Official example applications.
-- Build and packaging scripts.
-- Official Docker images.
-- The Img2Num website.
+- The source code in this repository and official releases published by the project.
+- Official Img2Num language bindings, packages, command-line tools, and example applications.
+- Official build, packaging, and Docker image definitions.
+- The official Img2Num website and services owned or operated by the project.
 
-Third-party dependencies should generally be reported to their respective maintainers unless the vulnerability arises from Img2Num's integration with them.
+Security testing is authorized only when it is limited to these assets and is performed without harming users, systems, or data.
+
+> [!CAUTION]
+>
+> ### Do not:
+>
+> - Disrupt, degrade, or deny service to Img2Num or third-party systems.
+> - Access, modify, delete, or exfiltrate data that does not belong to you.
+> - Test accounts, credentials, infrastructure, domains, APIs, or services not explicitly owned or operated by Img2Num.
+> - Use social engineering, phishing, physical attacks, spam, or denial-of-service techniques.
+> - Publicly disclose a vulnerability before coordinating with the project maintainers.
+
+Third-party dependency vulnerabilities should be reported to the relevant maintainer unless the issue is caused by Img2Num's integration or configuration.
+
+Subject to these conditions, the project will not pursue legal action against researchers acting in good faith under this policy. This statement does not authorize activity that violates applicable law or affects systems outside the authorized scope.
 
 ## Security Best Practices
 
