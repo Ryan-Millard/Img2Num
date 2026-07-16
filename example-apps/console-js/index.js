@@ -1,5 +1,5 @@
 import { writeFileSync } from "fs";
-import { imageToSvg } from "img2num";
+import { imageToSv, terminateWasmModuleg } from "img2num";
 import sharp from "sharp";
 
 const imagePath = process.argv[2];
@@ -19,8 +19,18 @@ const { width, height } = info;
 console.log(`Image size: ${width}x${height}`);
 console.log("Running img2num in Node.js...");
 
-const { svg } = await imageToSvg({ pixels, width, height });
+try {
+  const { svg } = await imageToSvg({ pixels, width, height });
 
-writeFileSync("output.svg", svg);
-console.log("Done! SVG saved to output.svg");
+  writeFileSync("output.svg", svg);
+  console.log("Done! SVG saved to output.svg");
+} catch (error) {
+  console.error("Failed to convert image:");
+  console.error(error);
+
+  process.exitCode = 1;
+} finally {
+  await terminateWasmModule();
+}
+
 process.exit();

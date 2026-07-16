@@ -82,39 +82,38 @@
   </script>
 
   <script type="module">
-    import { imageToSvg } from "img2num";
-
-    const fileInput = document.getElementById("fileInput");
-    const originalImg = document.getElementById("original");
-    const previewImg = document.getElementById("preview");
-    const spinner = document.getElementById("spinner");
+    import { imageToSvg, terminateWasmModule } from "img2num";
 
     fileInput.addEventListener("change", async (e) => {
       const file = e.target.files[0];
       if (!file) return;
 
-      // 1. Show the uploaded image right away
       originalImg.src = URL.createObjectURL(file);
       previewImg.src = "";
       spinner.style.display = "block";
 
-      // 2. Read the image's pixel data using a canvas
-      const bitmap = await createImageBitmap(file);
-      const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(bitmap, 0, 0);
-      const { data } = ctx.getImageData(0, 0, bitmap.width, bitmap.height);
+      try {
+        const bitmap = await createImageBitmap(file);
+        const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
+        const ctx = canvas.getContext("2d");
 
-      // 3. Convert the pixel data to an SVG
-      const { svg } = await imageToSvg({
-        pixels: new Uint8ClampedArray(data),
-        width: bitmap.width,
-        height: bitmap.height,
-      });
+        ctx.drawImage(bitmap, 0, 0);
 
-      // 4. Show the result and hide the spinner
-      previewImg.src = "data:image/svg+xml;base64," + btoa(svg);
-      spinner.style.display = "none";
+        const { data } = ctx.getImageData(0, 0, bitmap.width, bitmap.height);
+
+        const { svg } = await imageToSvg({
+          pixels: new Uint8ClampedArray(data),
+          width: bitmap.width,
+          height: bitmap.height,
+        });
+
+        previewImg.src = "data:image/svg+xml;base64," + btoa(svg);
+      } catch (error) {
+        console.error("Failed to convert image:", error);
+      } finally {
+        spinner.style.display = "none";
+        await terminateWasmModule();
+      }
     });
   </script>
 </body>
