@@ -20,11 +20,7 @@ export const WASM_TYPES = {
 
     read: (ptr, len) => {
       const wasmModule = getWasmModule();
-      return new Int32Array(
-        wasmModule.HEAP32.buffer,
-        ptr,
-        len,
-      ).slice();
+      return new Int32Array(wasmModule.HEAP32.buffer, ptr, len).slice();
     },
   },
 
@@ -52,9 +48,7 @@ export const WASM_TYPES = {
 
     read: (ptr, len) => {
       const wasmModule = getWasmModule();
-      return new Uint8ClampedArray(
-        wasmModule.HEAPU8.slice(ptr, ptr + len),
-      );
+      return new Uint8ClampedArray(wasmModule.HEAPU8.slice(ptr, ptr + len));
     },
   },
 

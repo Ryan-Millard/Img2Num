@@ -6,22 +6,13 @@
  */
 
 import { WASM_TYPES } from "./wasmTypes.js";
-import {
-  getWasmModule,
-  initWasmModule,
-  terminateWasmModule,
-} from "./wasmModule.js";
+import { getWasmModule, initWasmModule, terminateWasmModule } from "./wasmModule.js";
 import { ccallAsync } from "./ccall.js";
 
 /**
  * Call a WASM function.
  */
-export async function callWasm({
-  funcName,
-  args = {},
-  bufferKeys = [],
-  returnType = "void",
-}) {
+export async function callWasm({ funcName, args = {}, bufferKeys = [], returnType = "void" }) {
   await initWasmModule();
 
   const wasmModule = getWasmModule();
@@ -49,11 +40,7 @@ export async function callWasm({
       argsMap.set(key, ptr);
     }
 
-    const result = await ccallAsync(
-      funcName,
-      argsMap,
-      returnType,
-    );
+    const result = await ccallAsync(funcName, argsMap, returnType);
 
     const output = Object.create(null);
 
@@ -78,18 +65,14 @@ export async function callWasm({
       returnValue,
     };
   } catch (error) {
-    throw new Error(
-      `[Img2Num wasmClient] Error: ${error?.message ?? error}`,
-      { cause: error },
-    );
+    throw new Error(`[Img2Num wasmClient] Error: ${error?.message ?? error}`, { cause: error });
   } finally {
     for (const { ptr } of pointers.values()) {
       wasmModule._free(ptr);
     }
 
     if (__TARGET__ === "node") {
-      import("./target/node/webgpu.js")
-        .then(({ destroyWebGPU }) => destroyWebGPU());
+      import("./target/node/webgpu.js").then(({ destroyWebGPU }) => destroyWebGPU());
     }
   }
 }

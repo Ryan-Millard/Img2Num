@@ -23,9 +23,7 @@ export async function initWasmModule() {
         try {
           await initWebGPU();
         } catch (err) {
-          console.error(
-            `[Img2Num wasmClient] WebGPU init error: ${err}`,
-          );
+          console.error(`[Img2Num wasmClient] WebGPU init error: ${err}`);
         }
       }
 
@@ -39,8 +37,7 @@ export async function initWasmModule() {
 
 export function terminateWasmModule() {
   if (__TARGET__ === "node") {
-    import("./target/node/webgpu.js")
-      .then(({ destroyWebGPU }) => destroyWebGPU());
+    import("./target/node/webgpu.js").then(({ destroyWebGPU }) => destroyWebGPU());
   }
 
   wasmModule = undefined;

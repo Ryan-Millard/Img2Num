@@ -9,16 +9,7 @@ export async function ccallAsync(funcName, argsMap, returnType) {
 
   const argTypes = Array(argsMap.size).fill("number");
 
-  const retType =
-    returnType === "void"
-      ? null
-      : "number";
+  const retType = returnType === "void" ? null : "number";
 
-  return wasmModule.ccall(
-    funcName,
-    retType,
-    argTypes,
-    [...argsMap.values()],
-    { async: true },
-  );
+  return wasmModule.ccall(funcName, retType, argTypes, [...argsMap.values()], { async: true });
 }
