@@ -15,21 +15,14 @@ export default function TOCWrapper(props) {
       <div className={clsx(styles.tableOfContents, "thin-scrollbar", props.className)}>
         <p className={styles.tocHeader}>Contents</p>
 
-        <TOCItems
-          {...props}
-          linkClassName={LINK_CLASS_NAME}
-          linkActiveClassName={LINK_ACTIVE_CLASS_NAME}
-        />
+        <TOCItems {...props} linkClassName={LINK_CLASS_NAME} linkActiveClassName={LINK_ACTIVE_CLASS_NAME} />
       </div>
 
       <div className={styles.copyContainer}>
         <CopyPageButton generateMarkdownRoutes />
       </div>
 
-      <Link
-        href="https://github.com/Ryan-Millard/Img2Num/issues/new"
-        className={styles.reportIssueLink}
-      >
+      <Link href="https://github.com/Ryan-Millard/Img2Num/issues/new" className={styles.reportIssueLink}>
         <GitHub className={styles.githubIcon} />
         <span>Report issue</span>
       </Link>

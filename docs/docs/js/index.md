@@ -222,4 +222,4 @@ be freed.
 
 The JavaScript package is licensed under the following:
 
-- [![MIT &copy; Img2Num](https://img.shields.io/badge/LICENSE:-MIT-blue.svg?logo=open-source-initiative)](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE)
+- [![MIT © Img2Num](https://img.shields.io/badge/LICENSE:-MIT-blue.svg?logo=open-source-initiative)](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE)
