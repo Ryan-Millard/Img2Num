@@ -10,8 +10,12 @@ import Features from "@site/src/md/\_partials/library-features.md";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-> A high-performance raster-to-vector conversion library that transforms images into **SVGs**.
-> It is powered by WebAssembly (WASM) for speed, while providing easy-to-use JavaScript wrappers for integration into web or Node.js projects.
+:::info
+
+A high-performance raster-to-vector conversion library that transforms images into **SVGs**.
+It is powered by WebAssembly (WASM) for speed, while providing easy-to-use JavaScript wrappers for integration into web or Node.js projects.
+
+:::
 
 <Features />
 
@@ -102,90 +106,120 @@ buffer they operate on. The package automatically resolves the right WASM build
 for your environment via its `exports` map, so the `img2num` import is the same
 in both cases.
 
-### Browser
-
-In the browser, use `imageToUint8ClampedArray` to decode a `File` or `Blob`
-(e.g. from an `<input type="file">` element) into RGBA pixels.
-
-> This example mirrors that of the [React example app](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/react-js/src/components/WasmImageProcessor.jsx).
-
-```js title="Convert an image to an SVG (browser)"
+```js title="Basic usage"
 import {
-  imageToUint8ClampedArray,
-  bilateralFilter,
-  kmeans,
-  findContours
+  imageToSvg,
+  terminateWasmModule
 } from "img2num";
 
-// Get your image from somewhere, e.g. a File from an <input> element:
-const imageFile = /* File object, e.g., input.files[0] */;
+// Step 1: Obtain image data (see below)
+const { pixels, width, height } = /* your image */;
 
-// Convert image to a Uint8ClampedArray
-const { pixels, width, height } = await imageToUint8ClampedArray(imageFile);
-
-// Reduce noise with a bilateral filter
-const filtered = await bilateralFilter({
-  pixels,
-  width,
-  height,
-});
-
-// Label the image using K-Means (labels needed for next step)
-const { labels } = await kmeans({
-  pixels: filtered,
-  width,
-  height,
-  num_colors: 16,
-});
-
-// Convert image to SVG
-const { svg } = await findContours({
-  pixels: filtered,
-  labels,
-  width,
-  height,
-});
+try {
+  // Step 2: Create the SVG
+  const { svg } = await imageToSvg({ pixels, width, height });
+} catch(e) {
+  // ...
+} finally {
+  // Step 3: Cleanup up dynamic resources (see below)
+  await terminateWasmModule();
+}
 ```
 
-### Node.js
+### Step 1: Obtaining the image data
 
-Node has no DOM, so `imageToUint8ClampedArray` (which relies on `<canvas>`) is
+In order to obtain the image data in the format specified by the [imageToSvg API docs](./api/functions/imageToSvg)
+
+<Tabs defaultValue="Browser">
+  <TabItem value="Browser">
+
+    For browsers, we already have a function that makes it easy to read out the image's data and use it.
+
+    Use [imageToUint8ClampedArray](./api/functions/imageToUint8ClampedArray) to decode a `File` or `Blob`
+    (e.g. from an `<input type="file">` element) into RGBA pixels.
+
+    ```js title="Additional import"
+    import { imageToUint8ClampedArray } from "img2num";
+    ```
+
+    ```js title="Substitute Step 1 (above) with this"
+    const { pixels, width, height } = await imageToUint8ClampedArray(imageFile);
+    ```
+
+    :::tip[See how we use it]
+    See our [`html-js` example application's code](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/html-js/index.html)
+    :::
+
+  </TabItem>
+  <TabItem value="Node.js">
+
+Node has no DOM, so [imageToUint8ClampedArray](./api/functions/imageToUint8ClampedArray) (which relies on `<canvas>`) is
 **not** available. Instead, decode the image to a raw RGBA buffer with a
-library such as [`sharp`](https://sharp.pixelplumbing.com/), then hand the
-pixels to `imageToSvg` (or the individual stages). Reading the file with
-`fs.readFile` alone is not enough - the bytes must be decoded into raw RGBA.
+library such as [sharp](https://sharp.pixelplumbing.com/), then hand the
+pixels to [imageToSvg](./api/functions/imageToSvg).
 
 [![sharp](https://img.shields.io/npm/v/sharp?logo=npm&label=sharp)](https://www.npmjs.com/package/sharp)
 
-> This example mirrors the [Node console example app](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/console-js/index.js).
+```bash title="Install sharp"
+npm install sharp
+```
 
-```js title="Convert an image to an SVG (Node.js)"
-import { writeFileSync } from "fs";
-import { imageToSvg } from "img2num";
+```js title="Import sharp"
 import sharp from "sharp";
+```
 
-const imagePath = process.argv[2];
-
-// Decode the image into a flat RGBA Uint8ClampedArray
+```js title="Substitute Step 1 (above) with this"
+// Decode the image into a flat RGBA Uint8ClampedArray using sharp
 const { data, info } = await sharp(imagePath).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
 
 const pixels = new Uint8ClampedArray(data.buffer);
 const { width, height } = info;
-
-// One-shot conversion (bilateral filter <MoveRight size={15} /> k-means <MoveRight size={15} /> contour tracing)
-const { svg } = await imageToSvg({ pixels, width, height });
-
-writeFileSync("output.svg", svg);
 ```
+
+:::caution[`fs.readFile` is insufficient]
+
+Reading the file with `fs.readFile` alone is not enough - the bytes must be decoded into raw RGBA format.
+
+:::
+
+  </TabItem>
+</Tabs>
+
+### Step 2: Raster <MoveRight alt="to" /> SVG
+
+See the [imageToSvg API docs](./api/functions/imageToSvg) for more information on configuring the library.
+
+The example above shows the most basic usage of the function, however you can configure parameters such as
+$k \text{ (K-Means)}$, $\sigma_{range} \text{ and } \sigma_{spatial} \text{ (bilateral filter)}$, and others.
+You **must** include `pixels` (a `Uint8ClampedArray`), `width` (an `int`), and `height` (an `int`) when calling
+[imageToSvg](./api/functions/imageToSvg); the other parameters have defaults and are thus optional.
+
+### Step 3: Dynamic Resource cleanup
+
+:::info[Not a necessary step]
+
+Calling [terminateWasmModule](./api/functions/terminateWasmModule) is not always necessary because it will be called upon teardown of your application.
+
+We provide the function as a way to free up resources before program termination in case the program requires them
+after using our library and before exiting.
+
+:::
+
+This function accepts no arguments and allows early cleanup of the resources dynamically allocated to the Img2Num library
+during runtime. Calling this function does not deactivate the library - it will still be usable thereafter - but it does
+make calling it again later slower as it will have to re-allocate those resources that were freed.
+
+_Img2Num manages its own resources._ Although that is the case, we offer you the ability to determine when they should
+be freed.
 
 ## Resources
 
-- [Documentation](/docs/js/docs/)
-- [GitHub repository](https://github.com/Ryan-Millard/Img2Num)
-- [React demo app](https://img2num.dev/example-apps/react-js/)
+- [HTML demo app](https://img2num.dev/example-apps/html-js/) (low-code)
+- [Node.js console demo app](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/console-js/index.js) (low-code)
+- [React.js demo app](https://img2num.dev/example-apps/react-js/)
 
 ## License
 
 The JavaScript package is licensed under the following:
 
-- [![MIT © Ryan Millard](https://img.shields.io/badge/LICENSE:-MIT-blue.svg?logo=open-source-initiative)](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE)
+- [![MIT &copy; Img2Num](https://img.shields.io/badge/LICENSE:-MIT-blue.svg?logo=open-source-initiative)](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE)

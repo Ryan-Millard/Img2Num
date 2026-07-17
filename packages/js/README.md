@@ -171,7 +171,7 @@ const { pixels, width, height } = await imageToUint8ClampedArray(file);
 // const { data, info } = await sharp(imagePath).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
 // const { width, height } = info;
 const { svg } = await imageToSvg({ pixels, width, height });
-await terminateWasmModule();
+await terminateWasmModule(); // WebAssembly and GPU cleanup
 ```
 
 > [!NOTE]
