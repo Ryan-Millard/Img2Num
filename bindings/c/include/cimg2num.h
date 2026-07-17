@@ -44,7 +44,8 @@ typedef struct img2num_ImageToSvgConfig {
         /// If 0 (default) use `coverage` to threshold based on area.
         int32_t k;
         /// Area ratio to consider when determining dominant colors.
-        /// Top dominant colors must cover at least `coverage` * `width` * `height` number of pixels.
+        /// Top dominant colors must cover at least `coverage` * `width` * `height` number of
+        /// pixels.
         float coverage;
     } quantize;
 

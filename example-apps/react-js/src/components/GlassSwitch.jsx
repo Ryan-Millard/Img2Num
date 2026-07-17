@@ -2,7 +2,7 @@ import styles from "./GlassSwitch.module.css";
 import Tooltip from "@components/Tooltip";
 import PropTypes from "prop-types";
 
-const GlassSwitch = ({ onChange, isOn, ariaLabel, thumbContent, disabled = false, tooltipPosition="right" }) => {
+const GlassSwitch = ({ onChange, isOn, ariaLabel, thumbContent, disabled = false, tooltipPosition = "right" }) => {
   const fallbackContent = isOn ? styles.fallbackThumbContentOn : styles.fallbackThumbContentOff;
   return (
     <Tooltip content={ariaLabel} position={tooltipPosition}>

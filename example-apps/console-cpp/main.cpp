@@ -23,8 +23,14 @@ constexpr int MAX_ITER {100};
 
 int main(int argc, char** argv) {
     if (argc < 2) {
-        std::cerr << "Usage: " << argv[0] << " <image_file>" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <image_file> "
+                  << "[optional] synthetic flag" << std::endl;
         return 1;
+    }
+
+    bool is_synthetic = false;
+    if (argc == 3) {
+        is_synthetic = std::stoi(argv[2]) > 0;
     }
 
     std::string image_path {argv[1]};
@@ -59,21 +65,30 @@ int main(int argc, char** argv) {
         static_cast<size_t>(width) * static_cast<size_t>(height) * NUM_CHANNELS
     );
 
-    // Apply bilateral
     const double sigma {width * SIGMA_WIDTH_RATIO};
-    // img2num::bilateral_filter(img_data, width, height, sigma, 50.0, 0);
-    // Apply kmeans
-    // img2num::kmeans(img_data, out_data, out_labels, width, height, 32, 100, 1);
-    img2num::color_quantize(img_data, out_data, out_labels, width, height, 0, 0.95f, 0);
+    if (!is_synthetic) {
+        std::cout << "Processing Natural image" << std::endl;
+        // Apply bilateral
+        img2num::bilateral_filter(img_data, width, height, sigma, 50.0, 0);
+        // Apply kmeans
+        img2num::kmeans(img_data, out_data, out_labels, width, height, 32, 100, 0);
+    } else {
+        std::cout << "Processing Synthetic image" << std::endl;
+        img2num::color_quantize(img_data, out_data, out_labels, width, height, 0, 0.95f, 0);
+    }
 
     // Generate SVG
     std::string res_svg {img2num::labels_to_svg(img_data, out_labels, width, height, 100, 10)};
 
     img2num::ImageToSvgConfig config;
-    config.kmeans.k = 16;
+    config.kmeans.k = 32;
     config.min_thickness = 10;
-    // config.bilateral_filter.sigma_spatial=1.0;
-    // config.bilateral_filter.sigma_range=10.0;
+    config.bilateral_filter.sigma_spatial=sigma;
+    config.synthetic = static_cast<uint8_t>(is_synthetic);
+    config.quantize.k = 0;
+    config.quantize.coverage = 0.90f;
+
+    std::cout << "Processing with image_to_svg" << std::endl;
     std::string res_svg2 {img2num::image_to_svg(img_data, width, height, config)};
 
     // Save the blurred image

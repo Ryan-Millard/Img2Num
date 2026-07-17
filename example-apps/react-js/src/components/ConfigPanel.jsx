@@ -1,6 +1,5 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
-import { RotateCcw, X, ChevronDown, ChevronUp } from "lucide-react";
+import { RotateCcw, X } from "lucide-react";
 import GlassSwitch from "./GlassSwitch";
 import styles from "./ConfigPanel.module.css";
 

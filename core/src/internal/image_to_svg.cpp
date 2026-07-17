@@ -20,8 +20,7 @@ std::string image_to_svg(
             img_data.data(), out_data.data(), out_labels.data(), width, height, config.quantize.k,
             config.quantize.coverage, config.color_space
         );
-    }
-    else {
+    } else {
         bilateral_filter(
             img_data.data(), width, height, config.bilateral_filter.sigma_spatial,
             config.bilateral_filter.sigma_range, config.color_space

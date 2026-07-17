@@ -140,7 +140,8 @@ void label_gpu(
     centroidDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::StorageBinding |
                          wgpu::TextureUsage::CopyDst | wgpu::TextureUsage::CopySrc;
     centroidDesc.label = "centroidTexture";
-    wgpu::Texture centroidTexture = GPU::getClassInstance().get_device().CreateTexture(&centroidDesc);
+    wgpu::Texture centroidTexture =
+        GPU::getClassInstance().get_device().CreateTexture(&centroidDesc);
 
     wgpu::TexelCopyTextureInfo cdst = {};
     cdst.texture = centroidTexture;
@@ -211,7 +212,8 @@ void label_gpu(
 
     bindGroupDesc1.entryCount = 4;
     bindGroupDesc1.entries = entries1;
-    wgpu::BindGroup bindGroup1 = GPU::getClassInstance().get_device().CreateBindGroup(&bindGroupDesc1);
+    wgpu::BindGroup bindGroup1 =
+        GPU::getClassInstance().get_device().CreateBindGroup(&bindGroupDesc1);
 
     uint32_t wgX = (width + 15) / 16;
     uint32_t wgY = (height + 15) / 16;
@@ -358,8 +360,8 @@ void dominant_colors(
     std::vector<int32_t> labels(num_pixels, 0);
 
     // may need to wipe alpha values which can mess with dominant colors
-    for (int x {0}; x < width; ++x){
-        for (int y {0}; y < height; ++ y){
+    for (int x {0}; x < width; ++x) {
+        for (int y {0}; y < height; ++y) {
             auto p = pixels.getPixel(x, y);
             p.alpha = 255.0f;
             pixels.setPixel(x, y, p);

@@ -249,9 +249,7 @@ PYBIND11_MODULE(_img2num, m) {
             img2num::color_quantize(
                 static_cast<const uint8_t*>(data_buf.ptr),
                 static_cast<uint8_t*>(out_data.mutable_data()),
-                static_cast<int32_t*>(out_labels.mutable_data()), 
-                width, height, 
-                k, coverage,
+                static_cast<int32_t*>(out_labels.mutable_data()), width, height, k, coverage,
                 color_space
             );
             return pybind11::make_tuple(out_data, out_labels);
@@ -367,16 +365,20 @@ PYBIND11_MODULE(_img2num, m) {
             return "{'k': " + std::to_string(c.k) + ", 'max_iter': " + std::to_string(c.max_iter) +
                    "}";
         });
-    pybind11::class_<img2num::ImageToSvgConfig::QuantizeConfig>(config, "QuantizeConfig", R"docstring(
+    pybind11::class_<img2num::ImageToSvgConfig::QuantizeConfig>(
+        config, "QuantizeConfig", R"docstring(
     Configuration for the color quantization used in image_to_svg for synthetic images.
-    )docstring")
+    )docstring"
+    )
         .def(pybind11::init<>())
         .def_readwrite("k", &img2num::ImageToSvgConfig::QuantizeConfig::k, R"docstring(
     Number of dominant colors to find in the image. If 0 (default) use `coverage` to threshold based on area. Default: 0
     )docstring")
-        .def_readwrite("coverage", &img2num::ImageToSvgConfig::QuantizeConfig::coverage, R"docstring(
+        .def_readwrite(
+            "coverage", &img2num::ImageToSvgConfig::QuantizeConfig::coverage, R"docstring(
     Area ratio to consider when determining dominant colors. Default: 0.9
-    )docstring")
+    )docstring"
+        )
         .def("__repr__", [](const img2num::ImageToSvgConfig::QuantizeConfig& c) {
             return "{'k': " + std::to_string(c.k) + ", 'coverage': " + std::to_string(c.coverage) +
                    "}";
@@ -385,8 +387,7 @@ PYBIND11_MODULE(_img2num, m) {
     config
         .def(
             pybind11::init([](pybind11::dict bf_dict, pybind11::dict km_dict,
-                              pybind11::dict quant_dict,
-                              pybind11::kwargs kwargs) {
+                              pybind11::dict quant_dict, pybind11::kwargs kwargs) {
                 // hand over ownership to python
                 std::unique_ptr<img2num::ImageToSvgConfig> c =
                     std::make_unique<img2num::ImageToSvgConfig>();
@@ -441,8 +442,8 @@ PYBIND11_MODULE(_img2num, m) {
                << "color_space: " << (int)c.color_space << ", "
                << "kmeans: " << pybind11::repr(pybind11::cast(c.kmeans)).cast<std::string>() << ", "
                << "synthetic: " << int(c.synthetic) << ", "
-               << "color quantize: " << pybind11::repr(pybind11::cast(c.quantize)).cast<std::string>()
-               << "}>";
+               << "color quantize: "
+               << pybind11::repr(pybind11::cast(c.quantize)).cast<std::string>() << "}>";
             return ss.str();
         });
 
