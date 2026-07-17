@@ -41,10 +41,11 @@ struct ImageToSvgConfig {
     struct QuantizeConfig {
         /// Number of dominant colors to find in the image.
         /// If 0 (default) use `coverage` to threshold based on area.
-        int32_t k = 0;
+        int32_t k;
         /// Area ratio to consider when determining dominant colors.
         /// Top dominant colors must cover at least `coverage` * `width` * `height` number of pixels.
-        float coverage = 0.9;
+        /// Example: 0.38 means that the top dominant colors must cover at least 38% of the image's pixels
+        float coverage;
     } quantize;
 
     /// Minimum area (in pixels) for a region to be included in the SVG.

@@ -51,6 +51,10 @@ template <typename NumberT> struct RGBPixel : public Pixel<NumberT> {
         return this_tuple < rhs_tuple;
     };
 
+    [[nodiscard]] inline bool operator>(const RGBPixel<NumberT>& rhs) const {
+        return rhs < *this;
+    };
+
 }
 #ifndef _MSC_VER
 __attribute__((packed))

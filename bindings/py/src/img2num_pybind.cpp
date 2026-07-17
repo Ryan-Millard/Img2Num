@@ -249,7 +249,9 @@ PYBIND11_MODULE(_img2num, m) {
             img2num::color_quantize(
                 static_cast<const uint8_t*>(data_buf.ptr),
                 static_cast<uint8_t*>(out_data.mutable_data()),
-                static_cast<int32_t*>(out_labels.mutable_data()), width, height, k, coverage,
+                static_cast<int32_t*>(out_labels.mutable_data()), 
+                width, height, 
+                k, coverage,
                 color_space
             );
             return pybind11::make_tuple(out_data, out_labels);
@@ -269,7 +271,7 @@ PYBIND11_MODULE(_img2num, m) {
         k : int
             Number of clusters to compute. If set to 0 - autodetermine the number of dominant colors
         coverage : float
-            Area fraction needed to determine the number of dominant colors if k=0. Suggest using 0.9.
+            Area fraction needed to determine the number of dominant colors if k=0. Recommended value: 0.9 (90%).
         color_space : int
             Color space identifier (e.g., 0 for LAB, 1 for sRGB).
 
@@ -370,7 +372,7 @@ PYBIND11_MODULE(_img2num, m) {
     )docstring")
         .def(pybind11::init<>())
         .def_readwrite("k", &img2num::ImageToSvgConfig::QuantizeConfig::k, R"docstring(
-    umber of dominant colors to find in the image. If 0 (default) use `coverage` to threshold based on area. Default: 0
+    Number of dominant colors to find in the image. If 0 (default) use `coverage` to threshold based on area. Default: 0
     )docstring")
         .def_readwrite("coverage", &img2num::ImageToSvgConfig::QuantizeConfig::coverage, R"docstring(
     Area ratio to consider when determining dominant colors. Default: 0.9

@@ -38,6 +38,10 @@ template <typename NumberT> struct RGBAPixel : public ImageLib::RGBPixel<NumberT
         return this_tuple < rhs_tuple;
     };
 
+    [[nodiscard]] inline bool operator>(const RGBAPixel<NumberT>& rhs) const {
+        return rhs < *this;
+    };
+
 }
 #ifndef _MSC_VER
 __attribute__((packed))
