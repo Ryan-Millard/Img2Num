@@ -58,7 +58,7 @@ typedef struct img2num_ImageToSvgConfig {
     /// - 1 = sRGB (faster).
     uint8_t color_space;
 
-    /// Synthetic flag.
+    /// Synthetic vs. Natural image flag.
     /// - 0 = Natural image (default)
     /// - 1 = Synthetic image
     uint8_t synthetic;
