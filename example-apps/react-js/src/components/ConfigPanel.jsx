@@ -25,8 +25,6 @@ const ConfigPanel = ({
   isProcessing = false,
   className = "",
 }) => {
-  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
-
   return (
     <div className={`${styles.settingsPanel} ${isOpen ? styles.settingsOpen : ""} ${className}`} onClick={(e) => e.stopPropagation()}>
       <div className={styles.settingsHeaderWrapper}>
@@ -45,7 +43,7 @@ const ConfigPanel = ({
         <div className={styles.settingGroup}>
           <div className={styles.settingLabelWrapper}>
             <label>Synthetic Mode</label>
-            <GlassSwitch isOn={synthetic} onChange={() => setSyntheticFlag(!synthetic)} ariaLabel="toggle synthetic mode" disabled={isProcessing} />
+            <GlassSwitch isOn={synthetic} onChange={() => setSyntheticFlag(!synthetic)} ariaLabel="toggle synthetic mode" disabled={isProcessing} tooltipPosition="top" />
           </div>
         </div>
       )}
@@ -145,78 +143,76 @@ const ConfigPanel = ({
         />
       </div>
 
-      {/* Advanced Settings Collapsible Toggle - Bilateral Filter is unused in Synthetic Mode */}
-      <button type="button" className={styles.advancedToggle} onClick={() => setIsAdvancedOpen((prev) => !prev)} aria-expanded={isAdvancedOpen} disabled={synthetic}>
-        <span>Advanced Settings</span>
-        {isAdvancedOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-      </button>
+      {!synthetic && (
+        <details className={styles.advancedToggle}>
+          <summary>Advanced Settings</summary>
 
-      {isAdvancedOpen && !synthetic && (
-        <div className={styles.advancedContent}>
-          <div className={styles.sectionHeader}>Bilateral Filter</div>
+          <div className={styles.advancedContent}>
+            <div className={styles.sectionHeader}>Bilateral Filter</div>
 
-          <div className={styles.settingGroup}>
-            <div className={styles.settingLabelWrapper}>
-              <label htmlFor="sigma-spatial">
-                Spatial Sigma (σ<sub>s</sub>)
-              </label>
+            <div className={styles.settingGroup}>
+              <div className={styles.settingLabelWrapper}>
+                <label htmlFor="sigma-spatial">
+                  Spatial Sigma (σ<sub>s</sub>)
+                </label>
+                <input
+                  id="sigma-spatial-num"
+                  type="number"
+                  min="1"
+                  max="20"
+                  value={sigmaSpatial}
+                  onChange={(e) => {
+                    const val = Math.max(1, Math.min(20, parseInt(e.target.value, 10) || 1));
+                    setSigmaSpatial(val);
+                  }}
+                  className={styles.numberInput}
+                  disabled={isProcessing}
+                />
+              </div>
               <input
-                id="sigma-spatial-num"
-                type="number"
+                id="sigma-spatial"
+                type="range"
                 min="1"
                 max="20"
                 value={sigmaSpatial}
-                onChange={(e) => {
-                  const val = Math.max(1, Math.min(20, parseInt(e.target.value, 10) || 1));
-                  setSigmaSpatial(val);
-                }}
-                className={styles.numberInput}
+                onChange={(e) => setSigmaSpatial(parseInt(e.target.value, 10))}
+                className={styles.rangeInput}
                 disabled={isProcessing}
               />
             </div>
-            <input
-              id="sigma-spatial"
-              type="range"
-              min="1"
-              max="20"
-              value={sigmaSpatial}
-              onChange={(e) => setSigmaSpatial(parseInt(e.target.value, 10))}
-              className={styles.rangeInput}
-              disabled={isProcessing}
-            />
-          </div>
 
-          <div className={styles.settingGroup}>
-            <div className={styles.settingLabelWrapper}>
-              <label htmlFor="sigma-range">
-                Range Sigma (σ<sub>range</sub>)
-              </label>
+            <div className={styles.settingGroup}>
+              <div className={styles.settingLabelWrapper}>
+                <label htmlFor="sigma-range">
+                  Range Sigma (σ<sub>range</sub>)
+                </label>
+                <input
+                  id="sigma-range-num"
+                  type="number"
+                  min="1"
+                  max="200"
+                  value={sigmaRange}
+                  onChange={(e) => {
+                    const val = Math.max(1, Math.min(200, parseInt(e.target.value, 10) || 1));
+                    setSigmaRange(val);
+                  }}
+                  className={styles.numberInput}
+                  disabled={isProcessing}
+                />
+              </div>
               <input
-                id="sigma-range-num"
-                type="number"
+                id="sigma-range"
+                type="range"
                 min="1"
                 max="200"
                 value={sigmaRange}
-                onChange={(e) => {
-                  const val = Math.max(1, Math.min(200, parseInt(e.target.value, 10) || 1));
-                  setSigmaRange(val);
-                }}
-                className={styles.numberInput}
+                onChange={(e) => setSigmaRange(parseInt(e.target.value, 10))}
+                className={styles.rangeInput}
                 disabled={isProcessing}
               />
             </div>
-            <input
-              id="sigma-range"
-              type="range"
-              min="1"
-              max="200"
-              value={sigmaRange}
-              onChange={(e) => setSigmaRange(parseInt(e.target.value, 10))}
-              className={styles.rangeInput}
-              disabled={isProcessing}
-            />
           </div>
-        </div>
+        </details>
       )}
 
       <div className="flex-center gap-sm" style={{ marginTop: "var(--spacing-md)", width: "100%" }}>
