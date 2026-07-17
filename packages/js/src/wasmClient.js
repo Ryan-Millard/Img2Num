@@ -6,7 +6,7 @@
  */
 
 import { WASM_TYPES } from "./wasmTypes.js";
-import { getWasmModule, initWasmModule, terminateWasmModule } from "./wasmModule.js";
+import { getWasmModule, initWasmModule } from "./wasmModule.js";
 import { ccallAsync } from "./ccall.js";
 
 /**
