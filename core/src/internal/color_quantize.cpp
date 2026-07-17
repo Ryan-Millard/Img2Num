@@ -239,7 +239,6 @@ void label_gpu(
 
     std::cout << "mapping labels" << std::endl;
     const uint8_t* mappedData = (const uint8_t*)readLabelsBuffer.GetConstMappedRange();
-    // ... Copy data to your C++ vector ...
     // Copy row by row to remove padding and put data into 'result'
     for (size_t y = 0; y < height; ++y) {
         const uint8_t* rowPtr = mappedData + (y * bytesPerRowLabels);
