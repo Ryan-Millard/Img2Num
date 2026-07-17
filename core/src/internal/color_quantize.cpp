@@ -54,6 +54,35 @@ __attribute__((packed))
 #endif
 
 template <typename PixelT>
+void label_cpu(
+    const ImageLib::Image<PixelT>& pixels, ImageLib::Image<PixelT>& centroids,
+    std::vector<int32_t>& labels
+) {
+    size_t width = pixels.getWidth();
+    size_t height = pixels.getHeight();
+    size_t num_pixels = width * height;
+    size_t num_centroids = centroids.getSize();
+
+    for (int32_t i {0}; i < num_pixels; ++i) {
+        float min_color_dist {std::numeric_limits<float>::max()};
+        int32_t best_cluster {0};
+
+        // Iterate over centroids to find centroid with most similar color to
+        // pixels[i]
+        float dist;
+        for (int32_t j {0}; j < num_centroids; ++j) {
+            dist = PixelT::colorDistance(pixels[i], centroids[j]);
+            if (dist < min_color_dist) {
+                min_color_dist = dist;
+                best_cluster = j;
+            }
+        }
+
+        labels[i] = best_cluster;
+    }
+}
+
+template <typename PixelT>
 void label_gpu(
     const ImageLib::Image<PixelT>& pixels, ImageLib::Image<PixelT>& centroids,
     std::vector<int32_t>& labels
@@ -385,49 +414,25 @@ void dominant_colors(
         }
         }
 
-        for (int32_t i = 0; i < num_pixels; ++i) {
-            const int32_t cluster = labels[i];
-            out_data[i * 4 + 0] = static_cast<uint8_t>(centroids[cluster].red);
-            out_data[i * 4 + 1] = static_cast<uint8_t>(centroids[cluster].green);
-            out_data[i * 4 + 2] = static_cast<uint8_t>(centroids[cluster].blue);
-            out_data[i * 4 + 3] = 255;
-        }
-
     } else {
-        // Iterate over pixels - cpu bound
-        for (int32_t i {0}; i < num_pixels; ++i) {
-            float min_color_dist {std::numeric_limits<float>::max()};
-            int32_t best_cluster {0};
-
-            // Iterate over centroids to find centroid with most similar color to
-            // pixels[i]
-            float dist;
-            for (int32_t j {0}; j < _k; ++j) {
-                switch (color_space) {
-                case COLOR_SPACE_OPTION_RGB: {
-                    dist = ImageLib::RGBAPixel<float>::colorDistance(pixels[i], centroids[j]);
-                    break;
-                }
-                case COLOR_SPACE_OPTION_CIELAB: {
-                    dist = ImageLib::LABAPixel<float>::colorDistance(lab[i], centroids_lab[j]);
-                    break;
-                }
-                }
-                if (dist < min_color_dist) {
-                    min_color_dist = dist;
-                    best_cluster = j;
-                }
-            }
-
-            labels[i] = best_cluster;
-            out_data[i * 4 + 0] =
-                static_cast<uint8_t>(std::clamp(centroids[best_cluster].red, 0.0f, 255.0f));
-            out_data[i * 4 + 1] =
-                static_cast<uint8_t>(std::clamp(centroids[best_cluster].green, 0.0f, 255.0f));
-            out_data[i * 4 + 2] =
-                static_cast<uint8_t>(std::clamp(centroids[best_cluster].blue, 0.0f, 255.0f));
-            out_data[i * 4 + 3] = 255;
+        switch (color_space) {
+        case COLOR_SPACE_OPTION_RGB: {
+            label_cpu<ImageLib::RGBAPixel<float>>(pixels, centroids, labels);
+            break;
         }
+        case COLOR_SPACE_OPTION_CIELAB: {
+            label_cpu<ImageLib::LABAPixel<float>>(lab, centroids_lab, labels);
+            break;
+        }
+        }
+    }
+    // Assign colors
+    for (int32_t i = 0; i < num_pixels; ++i) {
+        const int32_t cluster = labels[i];
+        out_data[i * 4 + 0] = static_cast<uint8_t>(centroids[cluster].red);
+        out_data[i * 4 + 1] = static_cast<uint8_t>(centroids[cluster].green);
+        out_data[i * 4 + 2] = static_cast<uint8_t>(centroids[cluster].blue);
+        out_data[i * 4 + 3] = 255;
     }
 
     // Write labels to out_labels
