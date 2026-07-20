@@ -18,7 +18,7 @@ help narrow the list.
 
 ## Good first issues
 
-If you're new to the project, start [here](https://github.com/Ryan-Millard/Img2Num/issues/views/1148).
+If you're new to the project, see [Issues in Progress](https://github.com/Ryan-Millard/Img2Num/issues/views/1148).
 
 These issues are intended to be approachable for new contributors and are a
 great way to become familiar with the project.
