@@ -11,7 +11,7 @@ The GitHub issue tracker is the best place to find tasks that need contributors.
 
 ## Browse all issues
 
-You can browse every open issue [here](https://github.com/Ryan-Millard/Img2Num/issues).
+You can browse [every open issue](https://github.com/Ryan-Millard/Img2Num/issues).
 
 If you're looking for something specific, GitHub's search bar and filters can
 help narrow the list.
