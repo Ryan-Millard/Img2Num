@@ -137,6 +137,16 @@ importers:
         specifier: ^0.35.2
         version: 0.35.2
 
+  example-apps/html-js:
+    dependencies:
+      img2num:
+        specifier: workspace:*
+        version: link:../../packages/js
+    devDependencies:
+      vite:
+        specifier: ^8.1.0
+        version: 8.1.0(@types/node@26.0.1)(jiti@1.21.7)(terser@5.48.0)(yaml@2.9.0)
+
   example-apps/react-js:
     dependencies:
       '@tanstack/react-query':

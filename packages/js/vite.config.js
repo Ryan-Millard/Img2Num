@@ -9,8 +9,8 @@ export default defineConfig(() => {
     base: "./",
     plugins: [],
 
-    // NATIVE COPIER: Copies index.wasm into dist/node/ automatically
-    publicDir: isNode ? "build-wasm" : "src/workers",
+    // NATIVE COPIER: Copies index.wasm into dist/<target>/ automatically.
+    publicDir: "build-wasm",
 
     build: {
       base: "./",
@@ -25,33 +25,14 @@ export default defineConfig(() => {
 
       minify: !isNode,
 
-      lib: isNode
-        ? {
-            entry: {
-              img2num: "src/index.js",
-              wasmWorker: "src/workers/wasmWorker.js",
-            },
-            formats: ["es"],
-            fileName: (format, entryName) => `${entryName}.js`,
-          }
-        : {
-            entry: "src/index.js",
-            formats: ["es"],
-          },
+      lib: {
+        entry: "src/index.js",
+        formats: ["es"],
+      },
 
       rollupOptions: {
-        external: isNode ? ["node:worker_threads", "worker_threads", "node:path", "path", "node:url", "url", "node:webgpu", "webgpu", "node:module", "module"] : [],
-
-        output: isNode
-          ? {
-              manualChunks(id) {
-                if (id.includes("build-wasm")) {
-                  return "wasmWorker";
-                }
-              },
-              assetFileNames: "[name][extname]",
-            }
-          : {},
+        external: isNode ? ["node:webgpu", "webgpu", "node:module", "module"] : [],
+        output: isNode ? { entryFileNames: "img2num.js" } : {},
       },
     },
 
@@ -63,12 +44,7 @@ export default defineConfig(() => {
       alias: {
         "@__TARGET__": path.resolve(__dirname, `./src/target/${__TARGET__}`),
         "@wasm": path.resolve(__dirname, "./build-wasm"),
-        "@workers": path.resolve(__dirname, "./src/workers"),
       },
-    },
-
-    worker: {
-      format: "es",
     },
   };
 });
