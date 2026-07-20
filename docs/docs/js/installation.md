@@ -11,27 +11,28 @@ sidebar_position: 3
 ## Using a package manager
 
 ### npm
-    ```bash title="Run this in your terminal"
-    npm install img2num
-    ```
+
+```bash title="Run this in your terminal"
+npm install img2num
+```
 
 ### pnpm
 
-    ```bash title="Run this in your terminal"
-    pnpm add img2num
-    ```
+```bash title="Run this in your terminal"
+pnpm add img2num
+```
 
 ### yarn
 
-    ```bash title="Run this in your terminal"
-    yarn add img2num
-    ```
+```bash title="Run this in your terminal"
+yarn add img2num
+```
 
 ### bun
 
-    ```bash title="Run this in your terminal"
-    bun add img2num
-    ```
+```bash title="Run this in your terminal"
+bun add img2num
+```
 
 ## Using a CDN
 
