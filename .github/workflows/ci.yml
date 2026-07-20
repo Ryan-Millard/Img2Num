@@ -91,7 +91,7 @@ jobs:
       - name: Validate format
         run: pnpm run format:check
 
-      - name: Validate .editorconfig adherance
+      - name: Validate .editorconfig adherence
         run: pnpm run editorconfig:check
 
       - name: Validate scriptsInfo in package.json
