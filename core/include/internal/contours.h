@@ -5,7 +5,7 @@
 #include "internal/PixelConverters.h"
 #include "internal/Point.h"
 #include "internal/RGBAPixel.h"
-#include "internal/SavitskyGolay.h"
+#include "internal/SavitzkyGolay.h"
 
 #include <array>
 #include <cstdint>

@@ -29,7 +29,7 @@ colorDistance(const ImageLib::RGBPixel<uint8_t>& a, const ImageLib::RGBPixel<uin
 
 /*
 To quickly search m_nodes (std::vector) for the index of a node id
-create an std::unordered_map of node id - index pairs
+create a std::unordered_map of node id - index pairs
 indexing time of std::vector by value is O(N)
 lookup time of std::unordered_map by key is O(log(N))
 */
