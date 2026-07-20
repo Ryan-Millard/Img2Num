@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.3.0](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.2.1...packages-js-v0.3.0) (2026-07-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* **js:** img2num no longer offloads WASM execution to a background thread automatically. Heavy operations (gaussianBlur, bilateralFilter, kmeans, imageToSvg) now run on whichever thread calls them. This can block the calling thread (browser main thread/UI or the Node event loop during processing. Consumers who need non-blocking behavior must now wrap calls in their own Worker or worker_thread.
+
+### ✨ Features
+
+* **example app:** add html-js example app to demo basic library usage ([72c4669](https://github.com/Ryan-Millard/Img2Num/commit/72c466913d2ea0d33f910eeffb5e87ab0b463beb))
+
+
+### 📚 Documentation
+
+* **CSS:** fix table of contents styling and layout ([72c4669](https://github.com/Ryan-Millard/Img2Num/commit/72c466913d2ea0d33f910eeffb5e87ab0b463beb))
+* **README.md:** add alt attributes to language icons and badges ([#498](https://github.com/Ryan-Millard/Img2Num/issues/498)) ([21cf395](https://github.com/Ryan-Millard/Img2Num/commit/21cf39517785890cb7970e6e351b095558f85d87)), closes [#492](https://github.com/Ryan-Millard/Img2Num/issues/492)
+* update JSDoc comments and break up website docs ([72c4669](https://github.com/Ryan-Millard/Img2Num/commit/72c466913d2ea0d33f910eeffb5e87ab0b463beb))
+* **website:** update documentation based on refactor in [#510](https://github.com/Ryan-Millard/Img2Num/issues/510) ([72c4669](https://github.com/Ryan-Millard/Img2Num/commit/72c466913d2ea0d33f910eeffb5e87ab0b463beb))
+
+
+### ♻️ Refactoring
+
+* **js:** run WASM calls on the caller's thread instead of a Worker ([#510](https://github.com/Ryan-Millard/Img2Num/issues/510)) ([72c4669](https://github.com/Ryan-Millard/Img2Num/commit/72c466913d2ea0d33f910eeffb5e87ab0b463beb))
+
 ## [0.2.1](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.2.0...packages-js-v0.2.1) (2026-07-05)
 
 
