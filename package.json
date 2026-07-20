@@ -81,12 +81,12 @@
   "devDependencies": {
     "clang-format": "^1.8.0",
     "editorconfig-checker": "^6.1.1",
-    "eslint": "^10.6.0",
+    "eslint": "^10.7.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.3",
     "globals": "^17.7.0",
     "img2num-dev-scripts": "workspace:*",
-    "prettier": "^3.9.1"
+    "prettier": "^3.9.5"
   },
   "dependencies": {
     "fast-glob": "^3.3.3"
