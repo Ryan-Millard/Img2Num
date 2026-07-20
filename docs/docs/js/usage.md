@@ -39,13 +39,13 @@ try {
 
 ## 1. Obtaining the image data
 
-In order to obtain the image data in the format specified by the [imageToSvg API docs](./api/functions/imageToSvg)
+In order to obtain the image data in the format specified by the [imageToSvg API docs](../api/functions/imageToSvg)
 
 ### Browsers
 
 For browsers, we already have a function that makes it easy to read out the image's data and use it.
 
-Use [imageToUint8ClampedArray](./api/functions/imageToUint8ClampedArray) to decode a `File` or `Blob`
+Use [imageToUint8ClampedArray](../api/functions/imageToUint8ClampedArray) to decode a `File` or `Blob`
 (e.g. from an `<input type="file">` element) into RGBA pixels.
 
 ```js title="Additional import"
@@ -62,10 +62,10 @@ See our [`html-js` example application's code](https://github.com/Ryan-Millard/I
 
 ### Node.js
 
-Node has no DOM, so [imageToUint8ClampedArray](./api/functions/imageToUint8ClampedArray) (which relies on `<canvas>`) is
+Node has no DOM, so [imageToUint8ClampedArray](../api/functions/imageToUint8ClampedArray) (which relies on `<canvas>`) is
 **not** available. Instead, decode the image to a raw RGBA buffer with a
 library such as [sharp](https://sharp.pixelplumbing.com/), then hand the
-pixels to [imageToSvg](./api/functions/imageToSvg).
+pixels to [imageToSvg](../api/functions/imageToSvg).
 
 [![sharp](https://img.shields.io/npm/v/sharp?logo=npm&label=sharp)](https://www.npmjs.com/package/sharp)
 
@@ -93,18 +93,18 @@ Reading the file with `fs.readFile` alone is not enough - the bytes must be deco
 
 ## 2. Raster <span style={{ display: 'none' }}>to </span><MoveRight /> SVG
 
-See the [imageToSvg API docs](./api/functions/imageToSvg) for more information on configuring the library.
+See the [imageToSvg API docs](../api/functions/imageToSvg) for more information on configuring the library.
 
 The example above shows the most basic usage of the function, however you can configure parameters such as
 $k \text{ (K-Means)}$, $\sigma_{range} \text{ and } \sigma_{spatial} \text{ (bilateral filter)}$, and others.
 You **must** include `pixels` (a `Uint8ClampedArray`), `width` (an `int`), and `height` (an `int`) when calling
-[imageToSvg](./api/functions/imageToSvg); the other parameters have defaults and are thus optional.
+[imageToSvg](../api/functions/imageToSvg); the other parameters have defaults and are thus optional.
 
 ## 3. Dynamic Resource cleanup
 
 :::info[Not a necessary step]
 
-Calling [terminateWasmModule](./api/functions/terminateWasmModule) is not always necessary because it will be called upon teardown of your application.
+Calling [terminateWasmModule](../api/functions/terminateWasmModule) is not always necessary because it will be called upon teardown of your application.
 
 We provide the function as a way to free up resources before program termination in case the program requires them
 after using our library and before exiting.
