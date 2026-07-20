@@ -4,6 +4,22 @@
 
 import { getWasmModule } from "./wasmModule.js";
 
+/**
+ * @internal
+ * @summary Type marshaling definitions used by the WASM client.
+ *
+ * @description
+ * Maps supported JavaScript types to allocation and readback handlers used
+ * when transferring values between JavaScript and the WebAssembly heap.
+ *
+ * Each handler exposes:
+ * - `alloc(value)` — allocates and writes data into WASM memory.
+ * - `read(ptr, length)` — reconstructs a JavaScript value from WASM memory.
+ *
+ * @constant
+ * @type {Object}
+ * @since 0.3.0
+ */
 export const WASM_TYPES = {
   void: {
     alloc: () => null,

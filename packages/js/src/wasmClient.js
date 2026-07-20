@@ -10,7 +10,25 @@ import { getWasmModule, initWasmModule } from "./wasmModule.js";
 import { ccallAsync } from "./ccall.js";
 
 /**
- * Call a WASM function.
+ * @internal
+ * @summary Invoke a WASM function with automatic memory management.
+ *
+ * @description
+ * Allocates input buffers, marshals JavaScript values into WASM memory,
+ * invokes the requested exported function, reads modified buffers and return
+ * values back into JavaScript, and finally releases all temporary WASM
+ * allocations.
+ *
+ * @async
+ * @function callWasm
+ * @param {Object} options
+ * @param {string} options.funcName - Name of the exported WASM function.
+ * @param {Object} [options.args={}] - Function arguments.
+ * @param {Array<{key:string,type:string}>} [options.bufferKeys=[]] - Buffer arguments requiring allocation.
+ * @param {string} [options.returnType="void"] - Expected return type.
+ * @returns {Promise<{output:Object, returnValue:any}>}
+ * @throws {Error} If allocation or the WASM call fails.
+ * @since 0.0.0
  */
 export async function callWasm({ funcName, args = {}, bufferKeys = [], returnType = "void" }) {
   await initWasmModule();
