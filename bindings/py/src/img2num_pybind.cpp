@@ -235,6 +235,52 @@ PYBIND11_MODULE(_img2num, m) {
     );
 
     m.def(
+        "color_quantize",
+        [](pybind11::array_t<uint8_t, pybind11::array::c_style> data, int32_t width, int32_t height,
+           int32_t k, float coverage, uint8_t color_space) {
+            pybind11::buffer_info data_buf = data.request();
+
+            // Allocate NumPy arrays for the outputs
+            pybind11::array_t<uint8_t, pybind11::array::c_style> out_data(data_buf.shape);
+            pybind11::array_t<int32_t, pybind11::array::c_style> out_labels(
+                {static_cast<size_t>(height), static_cast<size_t>(width)}
+            );
+
+            img2num::color_quantize(
+                static_cast<const uint8_t*>(data_buf.ptr),
+                static_cast<uint8_t*>(out_data.mutable_data()),
+                static_cast<int32_t*>(out_labels.mutable_data()), width, height, k, coverage,
+                color_space
+            );
+            return pybind11::make_tuple(out_data, out_labels);
+        },
+        pybind11::arg("data"), pybind11::arg("width"), pybind11::arg("height"), pybind11::arg("k"),
+        pybind11::arg("coverage"), pybind11::arg("color_space"), R"docstring(
+        Perform K-means clustering on the image data.
+
+        Parameters
+        ----------
+        data : numpy.ndarray
+            Input image data as a uint8 numpy array.
+        width : int
+            Width of the image.
+        height : int
+            Height of the image.
+        k : int
+            Number of clusters to compute. If set to 0 - autodetermine the number of dominant colors
+        coverage : float
+            Area fraction needed to determine the number of dominant colors if k=0. Recommended value: 0.9 (90%).
+        color_space : int
+            Color space identifier (e.g., 0 for LAB, 1 for sRGB).
+
+        Returns
+        -------
+        tuple
+            A tuple containing two NumPy arrays: (clustered_data, labels).
+        )docstring"
+    );
+
+    m.def(
         "labels_to_svg",
         [](pybind11::array_t<uint8_t, pybind11::array::c_style> data,
            pybind11::array_t<int32_t, pybind11::array::c_style> labels, int width, int height,
@@ -319,11 +365,29 @@ PYBIND11_MODULE(_img2num, m) {
             return "{'k': " + std::to_string(c.k) + ", 'max_iter': " + std::to_string(c.max_iter) +
                    "}";
         });
+    pybind11::class_<img2num::ImageToSvgConfig::QuantizeConfig>(
+        config, "QuantizeConfig", R"docstring(
+    Configuration for the color quantization used in image_to_svg for synthetic images.
+    )docstring"
+    )
+        .def(pybind11::init<>())
+        .def_readwrite("k", &img2num::ImageToSvgConfig::QuantizeConfig::k, R"docstring(
+    Number of dominant colors to find in the image. If 0 (default) use `coverage` to threshold based on area. Default: 0
+    )docstring")
+        .def_readwrite(
+            "coverage", &img2num::ImageToSvgConfig::QuantizeConfig::coverage, R"docstring(
+    Area ratio to consider when determining dominant colors. Default: 0.9
+    )docstring"
+        )
+        .def("__repr__", [](const img2num::ImageToSvgConfig::QuantizeConfig& c) {
+            return "{'k': " + std::to_string(c.k) + ", 'coverage': " + std::to_string(c.coverage) +
+                   "}";
+        });
 
     config
         .def(
             pybind11::init([](pybind11::dict bf_dict, pybind11::dict km_dict,
-                              pybind11::kwargs kwargs) {
+                              pybind11::dict quant_dict, pybind11::kwargs kwargs) {
                 // hand over ownership to python
                 std::unique_ptr<img2num::ImageToSvgConfig> c =
                     std::make_unique<img2num::ImageToSvgConfig>();
@@ -338,24 +402,35 @@ PYBIND11_MODULE(_img2num, m) {
                 if (km_dict.contains("max_iter"))
                     c->kmeans.max_iter = km_dict["max_iter"].cast<int>();
 
-                // 4. Process remaining top-level kwargs (like color_space or min_cluster_area)
+                // 4. Color quantization overrides from 'quant' dictionary
+                if (quant_dict.contains("k"))
+                    c->quantize.k = quant_dict["k"].cast<int>();
+                if (quant_dict.contains("coverage"))
+                    c->quantize.coverage = quant_dict["coverage"].cast<float>();
+
+                // 5. Process remaining top-level kwargs (like color_space or min_cluster_area)
                 if (kwargs.contains("min_cluster_area"))
                     c->min_cluster_area = kwargs["min_cluster_area"].cast<int>();
                 if (kwargs.contains("min_thickness"))
                     c->min_thickness = kwargs["min_thickness"].cast<int>();
                 if (kwargs.contains("color_space"))
                     c->color_space = kwargs["color_space"].cast<uint8_t>();
+                if (kwargs.contains("synthetic"))
+                    c->synthetic = kwargs["synthetic"].cast<uint8_t>();
 
                 return c;
             }),
             pybind11::arg("bilateral_filter") = pybind11::dict(), // Defaults to empty dict
-            pybind11::arg("kmeans") = pybind11::dict()            // Defaults to empty dict
+            pybind11::arg("kmeans") = pybind11::dict(),           // Defaults to empty dict
+            pybind11::arg("quantize") = pybind11::dict()          // Defaults to empty dict
         )
         .def_readwrite("bilateral_filter", &img2num::ImageToSvgConfig::bilateral_filter)
         .def_readwrite("min_cluster_area", &img2num::ImageToSvgConfig::min_cluster_area)
         .def_readwrite("min_thickness", &img2num::ImageToSvgConfig::min_thickness)
         .def_readwrite("color_space", &img2num::ImageToSvgConfig::color_space)
         .def_readwrite("kmeans", &img2num::ImageToSvgConfig::kmeans)
+        .def_readwrite("quantize", &img2num::ImageToSvgConfig::quantize)
+        .def_readwrite("synthetic", &img2num::ImageToSvgConfig::synthetic)
         .def("__repr__", [](const img2num::ImageToSvgConfig& c) {
             // We use pybind11::repr() to trigger the __repr__ of the nested objects
             std::stringstream ss;
@@ -365,8 +440,10 @@ PYBIND11_MODULE(_img2num, m) {
                << "min_cluster_area: " << c.min_cluster_area << ", "
                << "min_thickness: " << c.min_thickness << ", "
                << "color_space: " << (int)c.color_space << ", "
-               << "kmeans: " << pybind11::repr(pybind11::cast(c.kmeans)).cast<std::string>()
-               << "}>";
+               << "kmeans: " << pybind11::repr(pybind11::cast(c.kmeans)).cast<std::string>() << ", "
+               << "synthetic: " << int(c.synthetic) << ", "
+               << "color quantize: "
+               << pybind11::repr(pybind11::cast(c.quantize)).cast<std::string>() << "}>";
             return ss.str();
         });
 

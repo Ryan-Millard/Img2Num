@@ -38,6 +38,17 @@ struct ImageToSvgConfig {
         int32_t max_iter = 100;
     } kmeans;
 
+    struct QuantizeConfig {
+        /// Number of dominant colors to find in the image.
+        /// If 0 (default) use `coverage` to threshold based on area.
+        int32_t k = 0;
+        /// Area ratio to consider when determining dominant colors.
+        /// Top dominant colors must cover at least `coverage` * `width` * `height` number of
+        /// pixels. Example: 0.38 means that the top dominant colors must cover at least 38% of the
+        /// image's pixels
+        float coverage = 0.9f;
+    } quantize;
+
     /// Minimum area (in pixels) for a region to be included in the SVG.
     int min_cluster_area = 100;
 
@@ -50,6 +61,11 @@ struct ImageToSvgConfig {
     /// - 0 = CIE LAB (more perceptually accurate)
     /// - 1 = sRGB (faster).
     uint8_t color_space = 0;
+
+    /// Synthetic flag.
+    /// - 0 = Natural image (default)
+    /// - 1 = Synthetic image
+    uint8_t synthetic = 0;
 };
 
 /// @copydoc IMG2NUM_H_GAUSSIAN_BLUR_DOC
@@ -70,6 +86,11 @@ void black_threshold_image(
 void kmeans(
     const uint8_t* data, uint8_t* out_data, int32_t* out_labels, const int32_t width,
     const int32_t height, const int32_t k, const int32_t max_iter, const uint8_t color_space
+);
+
+void color_quantize(
+    const uint8_t* data, uint8_t* out_data, int32_t* out_labels, const int32_t width,
+    const int32_t height, const int32_t k, const float coverage, const uint8_t color_space
 );
 
 /// @copydoc IMG2NUM_H_BILATERAL_FILTER_DOC

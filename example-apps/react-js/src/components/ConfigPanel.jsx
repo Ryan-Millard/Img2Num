@@ -1,6 +1,6 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
-import { RotateCcw, X, ChevronDown, ChevronUp } from "lucide-react";
+import { RotateCcw, X } from "lucide-react";
+import GlassSwitch from "./GlassSwitch";
 import styles from "./ConfigPanel.module.css";
 
 const ConfigPanel = ({
@@ -14,6 +14,8 @@ const ConfigPanel = ({
   setSigmaSpatial,
   sigmaRange,
   setSigmaRange,
+  synthetic = false,
+  setSyntheticFlag,
   isOpen = false,
   onReset,
   onAction,
@@ -22,8 +24,6 @@ const ConfigPanel = ({
   isProcessing = false,
   className = "",
 }) => {
-  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
-
   return (
     <div className={`${styles.settingsPanel} ${isOpen ? styles.settingsOpen : ""} ${className}`} onClick={(e) => e.stopPropagation()}>
       <div className={styles.settingsHeaderWrapper}>
@@ -37,7 +37,17 @@ const ConfigPanel = ({
         </div>
       </div>
 
-      {/* K-Means Parameters (Color Settings) */}
+      {/* Synthetic Mode: color_quantize -> findContours instead of bilateralFilter -> kmeans -> findContours */}
+      {setSyntheticFlag && (
+        <div className={styles.settingGroup}>
+          <div className={styles.settingLabelWrapper}>
+            <label>Synthetic Mode</label>
+            <GlassSwitch isOn={synthetic} onChange={() => setSyntheticFlag(!synthetic)} ariaLabel="toggle synthetic mode" disabled={isProcessing} tooltipPosition="top" />
+          </div>
+        </div>
+      )}
+
+      {/* K-Means Parameters (Color Settings) - unused in Synthetic Mode */}
       <div className={styles.sectionHeader}>K-Means Segmentation</div>
 
       <div className={styles.settingGroup}>
@@ -54,10 +64,19 @@ const ConfigPanel = ({
               setNumColors(val);
             }}
             className={styles.numberInput}
-            disabled={isProcessing}
+            disabled={isProcessing || synthetic}
           />
         </div>
-        <input id="k-colors" type="range" min="2" max="64" value={numColors} onChange={(e) => setNumColors(parseInt(e.target.value, 10))} className={styles.rangeInput} disabled={isProcessing} />
+        <input
+          id="k-colors"
+          type="range"
+          min="2"
+          max="64"
+          value={numColors}
+          onChange={(e) => setNumColors(parseInt(e.target.value, 10))}
+          className={styles.rangeInput}
+          disabled={isProcessing || synthetic}
+        />
       </div>
 
       {/* Contours Parameters (Outline Details) */}
@@ -123,78 +142,76 @@ const ConfigPanel = ({
         />
       </div>
 
-      {/* Advanced Settings Collapsible Toggle */}
-      <button type="button" className={styles.advancedToggle} onClick={() => setIsAdvancedOpen((prev) => !prev)} aria-expanded={isAdvancedOpen}>
-        <span>Advanced Settings</span>
-        {isAdvancedOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-      </button>
+      {!synthetic && (
+        <details className={styles.advancedToggle}>
+          <summary>Advanced Settings</summary>
 
-      {isAdvancedOpen && (
-        <div className={styles.advancedContent}>
-          <div className={styles.sectionHeader}>Bilateral Filter</div>
+          <div className={styles.advancedContent}>
+            <div className={styles.sectionHeader}>Bilateral Filter</div>
 
-          <div className={styles.settingGroup}>
-            <div className={styles.settingLabelWrapper}>
-              <label htmlFor="sigma-spatial">
-                Spatial Sigma (σ<sub>s</sub>)
-              </label>
+            <div className={styles.settingGroup}>
+              <div className={styles.settingLabelWrapper}>
+                <label htmlFor="sigma-spatial">
+                  Spatial Sigma (σ<sub>s</sub>)
+                </label>
+                <input
+                  id="sigma-spatial-num"
+                  type="number"
+                  min="1"
+                  max="20"
+                  value={sigmaSpatial}
+                  onChange={(e) => {
+                    const val = Math.max(1, Math.min(20, parseInt(e.target.value, 10) || 1));
+                    setSigmaSpatial(val);
+                  }}
+                  className={styles.numberInput}
+                  disabled={isProcessing}
+                />
+              </div>
               <input
-                id="sigma-spatial-num"
-                type="number"
+                id="sigma-spatial"
+                type="range"
                 min="1"
                 max="20"
                 value={sigmaSpatial}
-                onChange={(e) => {
-                  const val = Math.max(1, Math.min(20, parseInt(e.target.value, 10) || 1));
-                  setSigmaSpatial(val);
-                }}
-                className={styles.numberInput}
+                onChange={(e) => setSigmaSpatial(parseInt(e.target.value, 10))}
+                className={styles.rangeInput}
                 disabled={isProcessing}
               />
             </div>
-            <input
-              id="sigma-spatial"
-              type="range"
-              min="1"
-              max="20"
-              value={sigmaSpatial}
-              onChange={(e) => setSigmaSpatial(parseInt(e.target.value, 10))}
-              className={styles.rangeInput}
-              disabled={isProcessing}
-            />
-          </div>
 
-          <div className={styles.settingGroup}>
-            <div className={styles.settingLabelWrapper}>
-              <label htmlFor="sigma-range">
-                Range Sigma (σ<sub>range</sub>)
-              </label>
+            <div className={styles.settingGroup}>
+              <div className={styles.settingLabelWrapper}>
+                <label htmlFor="sigma-range">
+                  Range Sigma (σ<sub>range</sub>)
+                </label>
+                <input
+                  id="sigma-range-num"
+                  type="number"
+                  min="1"
+                  max="200"
+                  value={sigmaRange}
+                  onChange={(e) => {
+                    const val = Math.max(1, Math.min(200, parseInt(e.target.value, 10) || 1));
+                    setSigmaRange(val);
+                  }}
+                  className={styles.numberInput}
+                  disabled={isProcessing}
+                />
+              </div>
               <input
-                id="sigma-range-num"
-                type="number"
+                id="sigma-range"
+                type="range"
                 min="1"
                 max="200"
                 value={sigmaRange}
-                onChange={(e) => {
-                  const val = Math.max(1, Math.min(200, parseInt(e.target.value, 10) || 1));
-                  setSigmaRange(val);
-                }}
-                className={styles.numberInput}
+                onChange={(e) => setSigmaRange(parseInt(e.target.value, 10))}
+                className={styles.rangeInput}
                 disabled={isProcessing}
               />
             </div>
-            <input
-              id="sigma-range"
-              type="range"
-              min="1"
-              max="200"
-              value={sigmaRange}
-              onChange={(e) => setSigmaRange(parseInt(e.target.value, 10))}
-              className={styles.rangeInput}
-              disabled={isProcessing}
-            />
           </div>
-        </div>
+        </details>
       )}
 
       <div className="flex-center gap-sm" style={{ marginTop: "var(--spacing-md)", width: "100%" }}>
@@ -241,6 +258,8 @@ ConfigPanel.propTypes = {
   setSigmaRange: PropTypes.func.isRequired,
   colorSpace: PropTypes.number,
   setColorSpace: PropTypes.func,
+  synthetic: PropTypes.bool,
+  setSyntheticFlag: PropTypes.func,
   isOpen: PropTypes.bool,
   onReset: PropTypes.func.isRequired,
   onAction: PropTypes.func.isRequired,
