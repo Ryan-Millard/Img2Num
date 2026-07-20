@@ -2,6 +2,7 @@ packages:
   - packages/js
   - example-apps/react-js
   - example-apps/console-js
+  - example-apps/html-js
   - docs
   - scripts/img2num-dev-scripts
 

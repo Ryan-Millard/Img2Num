@@ -1,0 +1,17 @@
+{
+  "name": "html-js",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "vite",
+    "dev": "vite",
+    "preview": "vite preview",
+    "build": "vite build --emptyOutDir"
+  },
+  "dependencies": {
+    "img2num": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "^8.1.0"
+  }
+}

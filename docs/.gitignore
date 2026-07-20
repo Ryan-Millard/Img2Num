@@ -10,6 +10,8 @@ node_modules
 !/static/docs/c/api/.gitkeep
 /static/example-apps/react-js/*
 !/static/example-apps/react-js/.gitkeep
+/static/example-apps/html-js/*
+!/static/example-apps/html-js/.gitkeep
 
 # Production
 /build
