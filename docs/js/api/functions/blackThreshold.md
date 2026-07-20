@@ -4,7 +4,7 @@ URL: https://img2num.dev/docs/js/api/functions/blackThreshold
 
 > **blackThreshold** ( `options` ): `Promise` < `Uint8ClampedArray` < `ArrayBufferLike` >>
 
-Defined in: safeWasmWrappers.js:114
+Defined in: safeWasmWrappers.js:111
 
 ## Parameters
 

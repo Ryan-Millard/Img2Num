@@ -5,6 +5,25 @@
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
+	"comment": {
+		"summary": [
+			{
+				"kind": "text",
+				"text": "Public entry point for the Img2Num JavaScript package.\n\nRe-exports convenience utilities, high-level image-processing\nfunctions, and helpers."
+			}
+		],
+		"blockTags": [
+			{
+				"tag": "@since",
+				"content": [
+					{
+						"kind": "text",
+						"text": "0.0.0"
+					}
+				]
+			}
+		]
+	},
 	"children": [
 		{
 			"id": 16,
@@ -15,7 +34,7 @@
 			"sources": [
 				{
 					"fileName": "safeWasmWrappers.js",
-					"line": 82,
+					"line": 79,
 					"character": 13
 				}
 			],
@@ -138,7 +157,7 @@
 					"sources": [
 						{
 							"fileName": "safeWasmWrappers.js",
-							"line": 82,
+							"line": 79,
 							"character": 31
 						}
 					],
@@ -185,7 +204,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 74,
+													"line": 71,
 													"character": 3
 												}
 											],
@@ -212,7 +231,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 71,
+													"line": 68,
 													"character": 3
 												}
 											],
@@ -238,7 +257,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 69,
+													"line": 66,
 													"character": 3
 												}
 											],
@@ -284,7 +303,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 73,
+													"line": 70,
 													"character": 3
 												}
 											],
@@ -313,7 +332,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 72,
+													"line": 69,
 													"character": 3
 												}
 											],
@@ -340,7 +359,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 70,
+													"line": 67,
 													"character": 3
 												}
 											],
@@ -413,7 +432,7 @@
 			"sources": [
 				{
 					"fileName": "safeWasmWrappers.js",
-					"line": 114,
+					"line": 111,
 					"character": 13
 				}
 			],
@@ -532,7 +551,7 @@
 					"sources": [
 						{
 							"fileName": "safeWasmWrappers.js",
-							"line": 114,
+							"line": 111,
 							"character": 30
 						}
 					],
@@ -577,7 +596,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 103,
+													"line": 100,
 													"character": 3
 												}
 											],
@@ -603,7 +622,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 104,
+													"line": 101,
 													"character": 3
 												}
 											],
@@ -629,7 +648,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 101,
+													"line": 98,
 													"character": 3
 												}
 											],
@@ -673,7 +692,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 102,
+													"line": 99,
 													"character": 3
 												}
 											],
@@ -744,7 +763,7 @@
 			"sources": [
 				{
 					"fileName": "safeWasmWrappers.js",
-					"line": 195,
+					"line": 192,
 					"character": 13
 				}
 			],
@@ -835,7 +854,7 @@
 					"sources": [
 						{
 							"fileName": "safeWasmWrappers.js",
-							"line": 195,
+							"line": 192,
 							"character": 28
 						}
 					],
@@ -880,7 +899,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 185,
+													"line": 182,
 													"character": 3
 												}
 											],
@@ -906,7 +925,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 183,
+													"line": 180,
 													"character": 3
 												}
 											],
@@ -952,7 +971,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 186,
+													"line": 183,
 													"character": 3
 												}
 											],
@@ -981,7 +1000,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 187,
+													"line": 184,
 													"character": 3
 												}
 											],
@@ -1008,7 +1027,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 182,
+													"line": 179,
 													"character": 3
 												}
 											],
@@ -1052,7 +1071,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 184,
+													"line": 181,
 													"character": 3
 												}
 											],
@@ -1105,7 +1124,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 188,
+													"line": 185,
 													"character": 22
 												}
 											],
@@ -1141,7 +1160,7 @@
 			"sources": [
 				{
 					"fileName": "safeWasmWrappers.js",
-					"line": 47,
+					"line": 44,
 					"character": 13
 				}
 			],
@@ -1249,7 +1268,7 @@
 					"sources": [
 						{
 							"fileName": "safeWasmWrappers.js",
-							"line": 47,
+							"line": 44,
 							"character": 28
 						}
 					],
@@ -1294,7 +1313,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 37,
+													"line": 34,
 													"character": 3
 												}
 											],
@@ -1320,7 +1339,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 35,
+													"line": 32,
 													"character": 3
 												}
 											],
@@ -1366,7 +1385,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 38,
+													"line": 35,
 													"character": 3
 												}
 											],
@@ -1393,7 +1412,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 36,
+													"line": 33,
 													"character": 3
 												}
 											],
@@ -1464,7 +1483,7 @@
 			"sources": [
 				{
 					"fileName": "safeWasmWrappers.js",
-					"line": 234,
+					"line": 231,
 					"character": 13
 				}
 			],
@@ -1579,7 +1598,7 @@
 					"sources": [
 						{
 							"fileName": "safeWasmWrappers.js",
-							"line": 234,
+							"line": 231,
 							"character": 26
 						}
 					],
@@ -1626,7 +1645,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 226,
+													"line": 223,
 													"character": 3
 												}
 											],
@@ -1653,7 +1672,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 219,
+													"line": 216,
 													"character": 3
 												}
 											],
@@ -1681,7 +1700,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 223,
+													"line": 220,
 													"character": 3
 												}
 											],
@@ -1710,7 +1729,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 224,
+													"line": 221,
 													"character": 3
 												}
 											],
@@ -1739,7 +1758,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 225,
+													"line": 222,
 													"character": 3
 												}
 											],
@@ -1768,7 +1787,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 222,
+													"line": 219,
 													"character": 3
 												}
 											],
@@ -1795,7 +1814,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 217,
+													"line": 214,
 													"character": 3
 												}
 											],
@@ -1841,7 +1860,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 221,
+													"line": 218,
 													"character": 3
 												}
 											],
@@ -1870,7 +1889,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 220,
+													"line": 217,
 													"character": 3
 												}
 											],
@@ -1897,7 +1916,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 218,
+													"line": 215,
 													"character": 3
 												}
 											],
@@ -1954,7 +1973,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 227,
+													"line": 224,
 													"character": 22
 												}
 											],
@@ -2281,7 +2300,7 @@
 			"sources": [
 				{
 					"fileName": "safeWasmWrappers.js",
-					"line": 151,
+					"line": 148,
 					"character": 13
 				}
 			],
@@ -2396,7 +2415,7 @@
 					"sources": [
 						{
 							"fileName": "safeWasmWrappers.js",
-							"line": 151,
+							"line": 148,
 							"character": 22
 						}
 					],
@@ -2443,7 +2462,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 143,
+													"line": 140,
 													"character": 3
 												}
 											],
@@ -2470,7 +2489,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 140,
+													"line": 137,
 													"character": 3
 												}
 											],
@@ -2498,7 +2517,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 142,
+													"line": 139,
 													"character": 3
 												}
 											],
@@ -2525,7 +2544,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 141,
+													"line": 138,
 													"character": 3
 												}
 											],
@@ -2553,7 +2572,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 138,
+													"line": 135,
 													"character": 3
 												}
 											],
@@ -2600,7 +2619,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 137,
+													"line": 134,
 													"character": 3
 												}
 											],
@@ -2645,7 +2664,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 136,
+													"line": 133,
 													"character": 3
 												}
 											],
@@ -2689,7 +2708,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 139,
+													"line": 136,
 													"character": 3
 												}
 											],
@@ -2744,7 +2763,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 144,
+													"line": 141,
 													"character": 49
 												}
 											],
@@ -2768,7 +2787,7 @@
 											"sources": [
 												{
 													"fileName": "safeWasmWrappers.js",
-													"line": 144,
+													"line": 141,
 													"character": 22
 												}
 											],
@@ -2801,6 +2820,105 @@
 					}
 				}
 			]
+		},
+		{
+			"id": 77,
+			"name": "terminateWasmModule",
+			"variant": "declaration",
+			"kind": 64,
+			"flags": {},
+			"sources": [
+				{
+					"fileName": "wasmModule.js",
+					"line": 70,
+					"character": 22
+				}
+			],
+			"signatures": [
+				{
+					"id": 78,
+					"name": "terminateWasmModule",
+					"variant": "signature",
+					"kind": 4096,
+					"flags": {},
+					"comment": {
+						"summary": [],
+						"blockTags": [
+							{
+								"tag": "@summary",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Release resources held by the WebAssembly module."
+									}
+								]
+							},
+							{
+								"tag": "@description",
+								"content": [
+									{
+										"kind": "text",
+										"text": "This function is optional. In most applications, there is no need to call\nit explicitly, as resources are released when the process exits. It is\nprovided for applications that need to reclaim resources—such as a WebGPU\ndevice—before program termination so they can be used elsewhere."
+									}
+								]
+							},
+							{
+								"tag": "@async",
+								"content": [
+									{
+										"kind": "text",
+										"text": "terminateWasmModule"
+									}
+								]
+							},
+							{
+								"tag": "@returns",
+								"content": [
+									{
+										"kind": "text",
+										"text": "A promise that resolves once all resources have\nbeen released and the module has been reset to an uninitialized state."
+									}
+								]
+							},
+							{
+								"tag": "@since",
+								"content": [
+									{
+										"kind": "text",
+										"text": "0.3.0"
+									}
+								]
+							}
+						],
+						"modifierTags": [
+							"@function"
+						]
+					},
+					"sources": [
+						{
+							"fileName": "wasmModule.js",
+							"line": 70,
+							"character": 22
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": {
+							"packageName": "typescript",
+							"packagePath": "lib/lib.es5.d.ts",
+							"qualifiedName": "Promise"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "void"
+							}
+						],
+						"name": "Promise",
+						"package": "typescript"
+					}
+				}
+			]
 		}
 	],
 	"groups": [
@@ -2813,7 +2931,8 @@
 				8,
 				61,
 				1,
-				34
+				34,
+				77
 			]
 		}
 	],
@@ -3203,6 +3322,16 @@
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
 			"qualifiedName": "__type.svg"
+		},
+		"77": {
+			"packageName": "img2num",
+			"packagePath": "src/wasmModule.js",
+			"qualifiedName": "terminateWasmModule"
+		},
+		"78": {
+			"packageName": "img2num",
+			"packagePath": "src/wasmModule.js",
+			"qualifiedName": "terminateWasmModule"
 		}
 	},
 	"files": {

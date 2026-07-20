@@ -4,7 +4,7 @@ URL: https://img2num.dev/docs/js/api/functions/bilateralFilter
 
 > **bilateralFilter** ( `options` ): `Promise` < `Uint8ClampedArray` < `ArrayBufferLike` >>
 
-Defined in: safeWasmWrappers.js:82
+Defined in: safeWasmWrappers.js:79
 
 ## Parameters
 

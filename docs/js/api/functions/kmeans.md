@@ -4,7 +4,7 @@ URL: https://img2num.dev/docs/js/api/functions/kmeans
 
 > **kmeans** ( `options` ): `Promise` <{ `labels` : `Int32Array` ; `pixels` : `Uint8ClampedArray` ; }>
 
-Defined in: safeWasmWrappers.js:151
+Defined in: safeWasmWrappers.js:148
 
 ## Parameters
 
