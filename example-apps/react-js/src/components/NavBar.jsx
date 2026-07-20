@@ -58,7 +58,7 @@ export default function NavBar() {
             <li key={path} role="none">
               <Tooltip content={tooltip}>
                 <Link to={path} role="menuitem" className={`${styles.navLink} ${pathname === path ? styles.active : ""}`} onClick={closeMenu}>
-                  {/* Supress eslint "no-unused-vars" rule */}
+                  {/* Suppress eslint "no-unused-vars" rule */}
                   {React.createElement(icon, { size: 16 })}
                   <span>{label}</span>
                 </Link>
