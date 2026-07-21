@@ -9,7 +9,8 @@
     "build": "vite build --emptyOutDir"
   },
   "dependencies": {
-    "img2num": "workspace:*"
+    "img2num": "workspace:*",
+    "imagetracerjs": "^1.2.6"
   },
   "devDependencies": {
     "vite": "^8.1.0"
