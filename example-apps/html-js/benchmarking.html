@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Image Vectorization Benchmark</title>
+  <!--script src="imagetracer_v1.2.6.js"></script-->
+  <!--script src="https://cdn.jsdelivr.net/npm/img2num@0.2.1/dist/browser/img2num.js"></script-->
+  <!--script type="module">
+    import * as rawModule from 'https://cdn.jsdelivr.net/npm/img2num@0.2.1/+esm';
+  
+    // Fall back to the raw module if .default isn't defined
+    const img2num = rawModule.default ?? rawModule;
+    
+    window.img2num = img2num;
+  </script-->
+  <script type="module">
+    import * as img2num from "img2num";
+    import ImageTracer from "imagetracerjs";
+    window.img2num = img2num;
+    window.ImageTracer = ImageTracer;
+  </script>
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      background: #f8f9fa;
+      color: #212529;
+    }
+    .control-panel {
+      background: #ffffff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+    .control-panel-left,
+    .control-panel-right {
+      flex: 1;
+      min-width: 220px;
+    }
+    @media (max-width: 700px) {
+      .control-panel {
+        flex-direction: column;
+      }
+    }
+    .button-group {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+    }
+    .sync-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button {
+      padding: 0.6rem 1.2rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      background: #0066cc;
+      color: white;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    button:hover { background: #0052a3; }
+    button:disabled { background: #ccc; cursor: not-allowed; }
+    
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .card {
+      background: #ffffff;
+      padding: 1.25rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .metric {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #0066cc;
+      margin: 0.5rem 0;
+    }
+    .zoom-viewer {
+      position: relative;
+      width: 100%;
+      height: 350px;
+      overflow: hidden;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-top: 1rem;
+      background: #fff;
+      cursor: grab;
+      touch-action: none;
+    }
+    .zoom-viewer.dragging {
+      cursor: grabbing;
+    }
+    .zoom-viewer-stage {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: 0 0;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .zoom-viewer-stage img {
+      -webkit-user-drag: none;
+    }
+    .zoom-viewer-controls {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      display: flex;
+      gap: 0.25rem;
+      z-index: 10;
+    }
+    .zoom-viewer-controls button {
+      padding: 0.25rem 0.6rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🖼️ Image Vectorization Library Comparison</h1>
+  
+  <div class="control-panel">
+    <div class="control-panel-left">
+      <label for="imageInput"><strong>1. Upload Test Image:</strong></label><br><br>
+      <input type="file" id="imageInput" accept="image/*" />
+
+      <div class="button-group">
+        <!--button id="runParallelBtn" disabled>Run Parallel</button-->
+        <button id="runSequentialBtn" disabled>Process</button>
+      </div>
+
+      <label class="sync-toggle">
+        <input type="checkbox" id="syncViewersCheckbox" />
+        Sync viewers
+      </label>
+    </div>
+
+    <div class="control-panel-right">
+      <div id="sourceImagePreview"></div>
+    </div>
+  </div>
+
+  <div class="results-grid">
+    <div class="card">
+      <h2>Img2Num</h2>
+      <div id="statusA">Select an image to begin</div>
+      <div id="timeA" class="metric">-- ms</div>
+      <div id="outputA"></div>
+    </div>
+
+    <div class="card">
+      <h2>imagetracerjs</h2>
+      <div id="statusB">Select an image to begin</div>
+      <div id="timeB" class="metric">-- ms</div>
+      <div id="outputB"></div>
+    </div>
+  </div>
+  <script type="module">
+    // import img2num from 'https://cdn.jsdelivr.net/npm/img2num@0.2.1/+esm';
+    // import { imageToSvg, terminateWasmModule } from "img2num";
+
+    const imageInput = document.getElementById('imageInput');
+    // const runParallelBtn = document.getElementById('runParallelBtn');
+    const runSequentialBtn = document.getElementById('runSequentialBtn');
+    
+    let loadedImage = null; // Stores the HTMLImageElement
+
+    // Handle file upload
+    imageInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        loadedImage = img;
+        // runParallelBtn.disabled = false;
+        runSequentialBtn.disabled = false;
+        document.getElementById('statusA').textContent = 'Ready to process';
+        document.getElementById('statusB').textContent = 'Ready to process';
+
+        const previewContainer = document.getElementById('sourceImagePreview');
+        previewContainer.innerHTML = '';
+        previewContainer.appendChild(createZoomableViewer(img));
+      };
+    });
+
+    // -------------------------------------------------------------
+    // VIEWER SYNC
+    // When enabled, any pan/zoom transform applied in one viewer is
+    // mirrored onto every other registered viewer.
+    // -------------------------------------------------------------
+    const syncViewersCheckbox = document.getElementById('syncViewersCheckbox');
+    let syncViewersEnabled = false;
+    let registeredViewers = [];
+
+    function liveViewers() {
+      registeredViewers = registeredViewers.filter((v) => v.viewer.isConnected);
+      return registeredViewers;
+    }
+
+    function broadcastTransform(source) {
+      if (!syncViewersEnabled) return;
+      const state = source.getTransform();
+      for (const v of liveViewers()) {
+        if (v !== source) v.applyExternalTransform(state);
+      }
+    }
+
+    function resetAllViewersToDefault() {
+      for (const v of liveViewers()) v.resetToDefault();
+    }
+
+    syncViewersCheckbox.addEventListener('change', () => {
+      syncViewersEnabled = syncViewersCheckbox.checked;
+      if (syncViewersEnabled) resetAllViewersToDefault();
+    });
+
+    // -------------------------------------------------------------
+    // ZOOMABLE VIEWER
+    // Wraps an SVG or <img> element in a fixed-size viewport that fits
+    // the content on load, and lets the user zoom (buttons/wheel) and
+    // pan (drag).
+    // -------------------------------------------------------------
+    function getElementIntrinsicSize(el) {
+      if (!el) return { width: 0, height: 0 };
+      if (el.tagName === "svg") {
+        const viewBox = el.viewBox && el.viewBox.baseVal;
+        if (viewBox && viewBox.width && viewBox.height) {
+          return { width: viewBox.width, height: viewBox.height };
+        }
+        const widthAttr = parseFloat(el.getAttribute("width"));
+        const heightAttr = parseFloat(el.getAttribute("height"));
+        if (widthAttr && heightAttr) {
+          return { width: widthAttr, height: heightAttr };
+        }
+      }
+      if (el.tagName === "IMG" && el.naturalWidth && el.naturalHeight) {
+        return { width: el.naturalWidth, height: el.naturalHeight };
+      }
+      const bbox = el.getBoundingClientRect();
+      return { width: bbox.width, height: bbox.height };
+    }
+
+    function createZoomableViewer(contentEl) {
+      const MIN_ZOOM_FACTOR = 0.2;
+      const MAX_ZOOM_FACTOR = 10;
+
+      const viewer = document.createElement("div");
+      viewer.className = "zoom-viewer";
+
+      const stage = document.createElement("div");
+      stage.className = "zoom-viewer-stage";
+      // Native image drag-to-save would otherwise hijack the pointer gesture
+      // before our custom pan logic below ever sees it.
+      contentEl.draggable = false;
+      contentEl.addEventListener("dragstart", (e) => e.preventDefault());
+      stage.appendChild(contentEl);
+      viewer.appendChild(stage);
+
+      const controls = document.createElement("div");
+      controls.className = "zoom-viewer-controls";
+      const zoomInBtn = document.createElement("button");
+      zoomInBtn.type = "button";
+      zoomInBtn.textContent = "+";
+      const zoomOutBtn = document.createElement("button");
+      zoomOutBtn.type = "button";
+      zoomOutBtn.textContent = "−";
+      const resetBtn = document.createElement("button");
+      resetBtn.type = "button";
+      resetBtn.textContent = "Reset";
+      controls.append(zoomInBtn, zoomOutBtn, resetBtn);
+      viewer.appendChild(controls);
+
+      let baseScale = 1;
+      let scale = 1;
+      let panX = 0;
+      let panY = 0;
+
+      function applyTransform() {
+        stage.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+      }
+
+      function notifySync() {
+        broadcastTransform(handle);
+      }
+
+      function fitToView({ notify = true } = {}) {
+        const { width, height } = getElementIntrinsicSize(contentEl);
+        if (!width || !height) return;
+        contentEl.style.display = "block";
+        contentEl.style.width = `${width}px`;
+        contentEl.style.height = `${height}px`;
+
+        const viewerRect = viewer.getBoundingClientRect();
+        const fitScale = Math.min(viewerRect.width / width, viewerRect.height / height);
+        baseScale = fitScale > 0 && isFinite(fitScale) ? fitScale : 1;
+        scale = baseScale;
+        panX = (viewerRect.width - width * scale) / 2;
+        panY = (viewerRect.height - height * scale) / 2;
+        applyTransform();
+        if (notify) notifySync();
+      }
+
+      function zoomBy(factor, centerX, centerY) {
+        const viewerRect = viewer.getBoundingClientRect();
+        const cx = centerX ?? viewerRect.width / 2;
+        const cy = centerY ?? viewerRect.height / 2;
+
+        const newScale = Math.min(
+          Math.max(scale * factor, baseScale * MIN_ZOOM_FACTOR),
+          baseScale * MAX_ZOOM_FACTOR
+        );
+        const actualFactor = newScale / scale;
+
+        panX = cx - (cx - panX) * actualFactor;
+        panY = cy - (cy - panY) * actualFactor;
+        scale = newScale;
+        applyTransform();
+        notifySync();
+      }
+
+      const handle = {
+        viewer,
+        getTransform() {
+          return { scale, panX, panY };
+        },
+        applyExternalTransform(state) {
+          scale = state.scale;
+          panX = state.panX;
+          panY = state.panY;
+          applyTransform();
+        },
+        resetToDefault() {
+          fitToView({ notify: false });
+        },
+      };
+      registeredViewers.push(handle);
+
+      zoomInBtn.addEventListener("click", () => zoomBy(1.25));
+      zoomOutBtn.addEventListener("click", () => zoomBy(0.8));
+      resetBtn.addEventListener("click", () => fitToView());
+
+      viewer.addEventListener(
+        "wheel",
+        (e) => {
+          e.preventDefault();
+          const rect = viewer.getBoundingClientRect();
+          const factor = e.deltaY < 0 ? 1.1 : 0.9;
+          zoomBy(factor, e.clientX - rect.left, e.clientY - rect.top);
+        },
+        { passive: false }
+      );
+
+      let isDragging = false;
+      let lastX = 0;
+      let lastY = 0;
+
+      viewer.addEventListener("pointerdown", (e) => {
+        if (e.target.closest(".zoom-viewer-controls")) return;
+        isDragging = true;
+        lastX = e.clientX;
+        lastY = e.clientY;
+        viewer.classList.add("dragging");
+        viewer.setPointerCapture(e.pointerId);
+      });
+
+      viewer.addEventListener("pointermove", (e) => {
+        if (!isDragging) return;
+        panX += e.clientX - lastX;
+        panY += e.clientY - lastY;
+        lastX = e.clientX;
+        lastY = e.clientY;
+        applyTransform();
+        notifySync();
+      });
+
+      function endDrag() {
+        isDragging = false;
+        viewer.classList.remove("dragging");
+      }
+      viewer.addEventListener("pointerup", endDrag);
+      viewer.addEventListener("pointercancel", endDrag);
+      viewer.addEventListener("pointerleave", endDrag);
+
+      // Defer until the viewer is attached to the DOM so its rendered size is known.
+      requestAnimationFrame(() => fitToView({ notify: false }));
+
+      return viewer;
+    }
+
+    function makeZoomableSvgViewer(svgMarkup) {
+      const temp = document.createElement("div");
+      temp.innerHTML = svgMarkup;
+      const svgEl = temp.querySelector("svg");
+      return createZoomableViewer(svgEl || temp);
+    }
+
+    // -------------------------------------------------------------
+    // REPLACE THESE MOCK FUNCTIONS WITH YOUR ACTUAL LIBRARIES
+    // -------------------------------------------------------------
+
+    async function processWithLibraryA(file) {
+        if (!file) return;
+
+        try {
+          const bitmap = await createImageBitmap(file);
+
+          const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
+          const ctx = canvas.getContext("2d");
+
+          ctx.drawImage(bitmap, 0, 0);
+
+          const { data } = ctx.getImageData(0, 0, bitmap.width, bitmap.height);
+
+          const { svg } = await window.img2num.imageToSvg({
+            pixels: new Uint8ClampedArray(data),
+            width: bitmap.width,
+            height: bitmap.height,
+          });
+
+          return makeZoomableSvgViewer(svg); // Always returns a valid HTML element on success
+
+        } catch (error) {
+          console.error("Failed to convert image:", error);
+        }/* finally {
+          await window.img2num.terminateWasmModule();
+        }*/
+    }
+
+
+    async function processWithLibraryB(imgElement) {
+    return new Promise((resolve, reject) => {
+        try {
+        // Pass image URL or imgElement to ImageTracer
+        const imageSource = imgElement.src || imgElement;
+
+        window.ImageTracer.imageToSVG(
+            imageSource,
+            function (svgstr) {
+            // Fulfill the promise with the finished, zoomable container node
+            resolve(makeZoomableSvgViewer(svgstr));
+            },
+            "default" // Preset option: 'default', 'posterized1', etc.
+        );
+        } catch (error) {
+        reject(error);
+        }
+    });
+    }
+
+    // -------------------------------------------------------------
+    // TIMING & EXECUTION HELPERS
+    // -------------------------------------------------------------
+    async function runLibA() {
+      document.getElementById('statusA').textContent = 'Processing...';
+      
+      const start = performance.now();
+      const resultElement = await processWithLibraryA(loadedImage);
+      const end = performance.now();
+      
+      const duration = (end - start).toFixed(2);
+      document.getElementById('timeA').textContent = `${duration} ms`;
+      document.getElementById('statusA').textContent = 'Complete';
+      
+      const container = document.getElementById('outputA');
+      container.innerHTML = '';
+      container.appendChild(resultElement);
+    }
+
+    async function runLibB() {
+      document.getElementById('statusB').textContent = 'Processing...';
+      
+      const start = performance.now();
+      const resultElement = await processWithLibraryB(loadedImage);
+      const end = performance.now();
+      
+      const duration = (end - start).toFixed(2);
+      document.getElementById('timeB').textContent = `${duration} ms`;
+      document.getElementById('statusB').textContent = 'Complete';
+      
+      const container = document.getElementById('outputB');
+      container.innerHTML = '';
+      container.appendChild(resultElement);
+    }
+
+    // Parallel execution via Promise.all
+    /*runParallelBtn.addEventListener('click', async () => {
+      toggleButtons(false);
+      await Promise.all([runLibA(), runLibB()]);
+      toggleButtons(true);
+    });*/
+
+    // Sequential execution via standard await flow
+    runSequentialBtn.addEventListener('click', async () => {
+      toggleButtons(false);
+      await runLibA();
+      await runLibB();
+      toggleButtons(true);
+    });
+
+    function toggleButtons(enabled) {
+      // runParallelBtn.disabled = !enabled;
+      runSequentialBtn.disabled = !enabled;
+    }
+  </script>
+</body>
+</html>
