@@ -27,12 +27,23 @@ export default defineConfig(() => {
 
       lib: {
         entry: "src/index.js",
-        formats: ["es"],
+        name: "Img2Num",
+        formats: isNode ? ["es", "cjs"] : ["es", "cjs", "umd", "iife"],
+
+        fileName: (format) => {
+          const names = {
+            es: "img2num.es.js",
+            cjs: "img2num.cjs",
+            umd: "img2num.umd.js",
+            iife: "img2num.iife.js",
+          };
+
+          return names[format];
+        },
       },
 
       rollupOptions: {
         external: isNode ? ["node:webgpu", "webgpu", "node:module", "module"] : [],
-        output: isNode ? { entryFileNames: "img2num.js" } : {},
       },
     },
 
