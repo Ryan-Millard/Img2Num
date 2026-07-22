@@ -23,7 +23,7 @@
   "license": "MIT",
   "author": "Ryan-Millard",
   "type": "module",
-  "main": "./dist/browser/img2num.js",
+  "main": "./dist/node/index.cjs",
   "scripts": {
     "build:browser": "cross-env TARGET=browser vite build",
     "build:node": "cross-env TARGET=node vite build",
@@ -34,10 +34,10 @@
   },
   "exports": {
     ".": {
-      "node": "./dist/node/img2num.js",
-      "browser": "./dist/browser/img2num.js",
-      "import": "./dist/browser/img2num.js",
-      "default": "./dist/browser/img2num.js"
+      "require": "./dist/node/index.cjs",
+      "import": "./dist/node/index.js",
+      "browser": "./dist/browser/img2num.es.js",
+      "default": "./dist/node/index.js"
     }
   },
   "optionalDependencies": {
