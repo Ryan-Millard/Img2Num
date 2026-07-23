@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef IMG2NUM_ENABLE_DEBUG_LOGGING
+#ifndef EMSCRIPTEN
 #include <spdlog/spdlog.h>
 #define IMG2NUM_LOG_INFO(...) spdlog::info(__VA_ARGS__)
 #define IMG2NUM_LOG_WARN(...) spdlog::warn(__VA_ARGS__)

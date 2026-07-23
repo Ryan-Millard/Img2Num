@@ -1,0 +1,11 @@
+Checks: >
+  -*,
+  readability-*,
+  cppcoreguidelines-avoid-non-const-global-variables
+WarningsAsErrors: ''
+HeaderFilterRegex: '(core|bindings)/.*\.(h|hpp)$'
+CheckOptions:
+  - key: readability-identifier-naming.FunctionCase
+    value: camelCase
+
+Checks: 'cppcoreguidelines-avoid-non-const-global-variables'

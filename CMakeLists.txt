@@ -20,7 +20,6 @@ option(IMG2NUM_BUILD_C "Build C bindings (required for WASM builds)" ON)
 option(IMG2NUM_BUILD_PYTHON "Build Python bindings" OFF)
 option(IMG2NUM_BUILD_EXAMPLES "Build example applications" ON)
 option(IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP "Dump CMake environment variables in Debug mode" ON)
-option(IMG2NUM_ENABLE_DEBUG_LOGGING "Compile with debug logs allowed to show in the console" ON)
 
 # Force a safe default to avoid the weirdness of CMake's `None`
 if(NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
