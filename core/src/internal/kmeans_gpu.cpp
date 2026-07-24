@@ -20,9 +20,9 @@
 #include <limits>
 #include <numeric>
 #include <random>
+#include <spdlog/spdlog.h>
 #include <type_traits> // Required for std::is_same_v
 #include <vector>
-#include <spdlog/spdlog.h>
 
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB {0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB {1};
