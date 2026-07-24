@@ -38,6 +38,19 @@ add_custom_target(Img2Num_shaders ALL
 
 add_library(Img2Num ${CORE_SRC})
 
+# spdlog (debug logging)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../third_party/spdlog"
+                  "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/spdlog/build/"
+                  EXCLUDE_FROM_ALL)
+target_link_libraries(Img2Num PRIVATE spdlog::spdlog_header_only)
+
+add_compile_definitions(
+  $<$<CONFIG:Release>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_OFF>
+  $<$<NOT:$<CONFIG:Release>>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_INFO>
+)
+
+install(TARGETS spdlog_header_only EXPORT Img2NumTargets)
+
 target_compile_options(Img2Num PRIVATE ${IMG2NUM_STRICT_CXX_FLAGS})
 
 set_target_properties(Img2Num PROPERTIES

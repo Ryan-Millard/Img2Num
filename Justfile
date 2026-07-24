@@ -39,9 +39,9 @@ format:
     @echo "Format all files"
     pnpm format
 
-build-c-cpp:
-    @echo "Build C++ core and C bindings"
-    cmake -DCMAKE_BUILD_TYPE=Release -B build-c-cpp/ .
+build-c-cpp build_type="Release":
+    @echo "Build C++ core and C bindings with CMAKE_BUILD_TYPE {{ build_type}}"
+    cmake -DCMAKE_BUILD_TYPE={{ build_type }} -B build-c-cpp/ .
     cmake --build build-c-cpp/ --parallel
 
 build-wasm:
