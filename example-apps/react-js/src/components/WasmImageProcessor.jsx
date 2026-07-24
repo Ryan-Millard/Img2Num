@@ -1,6 +1,6 @@
 import { useEffect, useState, useId, useRef, useCallback, useMemo } from "react";
 import { Upload, Settings, ChevronDown, ChevronUp } from "lucide-react";
-import { imageToUint8ClampedArray, bilateralFilter, kmeans, findContours } from "img2num";
+import { imageToUint8ClampedArray, bilateralFilter, kmeans, findContours, terminateWasmModule } from "img2num";
 import GlassCard from "@components/GlassCard";
 import styles from "./WasmImageProcessor.module.css";
 import { useNavigate } from "react-router-dom";
@@ -136,9 +136,10 @@ const WasmImageProcessor = () => {
     } catch (err) {
       console.error(err);
     } finally {
-      setTimeout(() => {
+      setTimeout(async () => {
         setIsProcessing(false);
         step(0);
+        await terminateWasmModule();
       }, 800);
     }
   }, [fileData, navigate, step, numColors, minArea, minThickness, sigmaSpatial, sigmaRange, colorSpace]);

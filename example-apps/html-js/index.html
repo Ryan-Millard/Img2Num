@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Img2Num demo</title>
+    <!--Import built Docusaurus styles-->
+    <link rel="stylesheet" href="https://img2num.dev/assets/css/styles.06d9bdca.css" />
+    <style>
+      .spinner {
+        width: 24px;
+        height: 24px;
+        border: 3px solid var(--border);
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        display: none;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .mouse-hover:hover {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="theme-layout-navbar navbar navbar--fixed-top">
+      <div class="navbar__inner">
+        <div class="navbar__items">
+          <a class="navbar__brand" href="https://img2num.dev">
+            <img src="https://img2num.dev/img/favicon.svg" alt="Logo" class="navbar__logo" />
+            <b class="navbar__title">Img2Num</b>
+          </a>
+          <a class="navbar__item navbar__link" href="https://img2num.dev/docs/">Docs</a>
+          <a class="navbar__item navbar__link" href="https://img2num.dev/changelog/">Changelog</a>
+        </div>
+        <div class="navbar__items navbar__items--right">
+          <a class="navbar__item navbar__link" href="https://github.com/Ryan-Millard/Img2Num">GitHub</a>
+          <a class="navbar__item navbar__link" href="https://www.npmjs.com/package/img2num">npm</a>
+          <button id="themeToggle" class="button button--outline button--sm navbar__item" type="button"></button>
+          <div style="display: none"></div>
+          <!-- Absorb intrusive Docusaurus style without major refactor -->
+        </div>
+      </div>
+    </nav>
+
+    <main class="container margin-vert--lg">
+      <h1>Img2Num html-js Example Application</h1>
+      <p>A simple demo app to show how to use <a href="https://img2num.dev/docs/js/">Img2Num's JavaScript library</a>.</p>
+      <p>Upload an image to convert it to an SVG</p>
+
+      <label
+        id="dropZone"
+        class="hero shadow--md padding--lg margin-top--md mouse-hover"
+        style="text-align: center; border: 2px dashed var(--border); border-radius: 12px"
+        for="fileInput"
+        tabindex="0"
+      >
+        <span id="uploadHelp">Drag &amp; drop an image here, paste one (Ctrl+V), or&nbsp;</span>
+        <input
+          type="file"
+          id="fileInput"
+          aria-describedby="uploadHelp"
+          accept=".png,.jpg,.jpeg,.gif,.bmp,.webp,.avif,.tif,.tiff,image/png,image/jpeg,image/gif,image/bmp,image/webp,image/avif,image/tiff"
+        />
+      </label>
+
+      <section class="margin-top--md">
+        <h4>Original</h4>
+        <img id="originalImg" />
+      </section>
+
+      <section class="margin-top--md">
+        <h4>Result</h4>
+        <div id="spinner" class="spinner"></div>
+        <img id="previewImg" />
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="text--center">
+        <img src="https://img2num.dev/img/favicon.svg" alt="Logo" class="footer__logo" height="150" />
+        <p>Copyright &copy; 2026 Img2Num.</p>
+        <p>Img2Num example app - see the <a href="https://img2num.dev">docs</a> for more.</p>
+      </div>
+    </footer>
+
+    <script>
+      // Apply saved theme (or default to light) before the toggle button runs
+      const themeToggle = document.getElementById("themeToggle");
+      const savedTheme = localStorage.getItem("theme") || "light";
+      document.documentElement.setAttribute("data-theme", savedTheme);
+      themeToggle.textContent = savedTheme === "dark" ? "Dark Mode" : "Light Mode";
+
+      themeToggle.addEventListener("click", () => {
+        const current = document.documentElement.getAttribute("data-theme");
+        const next = current === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+        themeToggle.textContent = next === "dark" ? "Dark Mode" : "Light Mode";
+      });
+    </script>
+
+    <script type="module">
+      import { imageToSvg, terminateWasmModule } from "img2num";
+
+      async function processImage(file) {
+        if (!file) return;
+
+        if (originalImg.src && originalImg.src.startsWith("blob:")) {
+          URL.revokeObjectURL(originalImg.src);
+        }
+        originalImg.src = URL.createObjectURL(file);
+        previewImg.src = "";
+        spinner.style.display = "block";
+
+        try {
+          const bitmap = await createImageBitmap(file);
+
+          const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
+          const ctx = canvas.getContext("2d");
+
+          ctx.drawImage(bitmap, 0, 0);
+
+          const { data } = ctx.getImageData(0, 0, bitmap.width, bitmap.height);
+
+          const { svg } = await imageToSvg({
+            pixels: new Uint8ClampedArray(data),
+            width: bitmap.width,
+            height: bitmap.height,
+          });
+
+          previewImg.src = "data:image/svg+xml;base64," + btoa(svg);
+        } catch (error) {
+          console.error("Failed to convert image:", error);
+        } finally {
+          spinner.style.display = "none";
+          await terminateWasmModule();
+        }
+      }
+
+      // File picker
+      fileInput.addEventListener("change", (e) => {
+        processImage(e.target.files[0]);
+      });
+
+      // Paste (Ctrl+V)
+      document.addEventListener("paste", (e) => {
+        for (const item of e.clipboardData.items) {
+          if (item.type.startsWith("image/")) {
+            processImage(item.getAsFile());
+            break;
+          }
+        }
+      });
+
+      // Drag & drop
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("hero--primary");
+      });
+
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.classList.remove("hero--primary");
+      });
+
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("hero--primary");
+
+        const file = [...e.dataTransfer.files].find((f) => f.type.startsWith("image/"));
+
+        if (file) {
+          processImage(file);
+        }
+      });
+
+      // Tab & Enter/Space
+      dropZone.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          fileInput.click();
+        }
+      });
+    </script>
+  </body>
+</html>

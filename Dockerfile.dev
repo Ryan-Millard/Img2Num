@@ -152,7 +152,8 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh -o setu
 ENV CHOKIDAR_USEPOLLING=true
 ENV CHOKIDAR_INTERVAL=100
 
-EXPOSE 5173 3000
+# See docker-compose.yml ports
+EXPOSE 5173 4173 3000 5174 4174
 
 # --------------------------------------------------------------------------------------------------------------
 # Healthcheck (Basic if container works)

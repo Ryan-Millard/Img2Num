@@ -348,12 +348,6 @@ hr {
   fill: var(--primary);
 }
 
-table {
-  display: table;
-  width: 100%;
-  max-width: 100%;
-  border-collapse: collapse;
-}
 table thead {
   background-color: var(--secondary);
   color: var(--text);
