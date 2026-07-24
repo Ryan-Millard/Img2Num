@@ -3,7 +3,6 @@
 
 #include "img2num.h"
 #include "internal/cielab.h"
-#include "internal/debug.h"
 #include "internal/gpu.h"
 #include "internal/Image.h"
 #include "internal/LABAPixel.h"
@@ -23,6 +22,7 @@
 #include <random>
 #include <type_traits> // Required for std::is_same_v
 #include <vector>
+#include <spdlog/spdlog.h>
 
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB {0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB {1};
@@ -487,7 +487,7 @@ void kmeans_gpu(
         }
     }
 
-    IMG2NUM_LOG_DEBUG("starting");
+    SPDLOG_INFO("starting");
     // Step 2: Initialize centroids
 
     switch (color_space) {
@@ -501,7 +501,7 @@ void kmeans_gpu(
     }
     }
 
-    IMG2NUM_LOG_DEBUG("kmeans++ init done");
+    SPDLOG_INFO("kmeans++ init done");
     // Step 3: Run k-means iterations
 
     int bytesPerPixel {16}; // float pixels
@@ -548,7 +548,7 @@ void kmeans_gpu(
         GPU::getClassInstance().get_device().CreateBuffer(&readCentroidsDesc);
 
     // This is the actual KMeans loop
-    IMG2NUM_LOG_DEBUG("start iterations");
+    SPDLOG_INFO("start iterations");
     wgpu::CommandEncoder encoder = GPU::getClassInstance().get_device().CreateCommandEncoder();
     for (int32_t iter {0}; iter < max_iter; ++iter) {
         wgpu::ComputePassEncoder pass1 = encoder.BeginComputePass();
@@ -586,7 +586,7 @@ void kmeans_gpu(
 
     wgpu::CommandBuffer commands = encoder.Finish();
     GPU::getClassInstance().get_queue().Submit(1, &commands);
-    IMG2NUM_LOG_DEBUG("done iterations");
+    SPDLOG_INFO("done iterations");
 
     // 4. Map Async & Wait
     bool* done1 = new bool(false);
@@ -606,7 +606,7 @@ void kmeans_gpu(
         (void*)done1
     );
 
-    IMG2NUM_LOG_DEBUG("read out");
+    SPDLOG_INFO("read out");
 
     while (!*done1) {
         GPU::getClassInstance().get_instance().ProcessEvents();
@@ -615,7 +615,7 @@ void kmeans_gpu(
 #endif
     }
 
-    IMG2NUM_LOG_DEBUG("mapping labels");
+    SPDLOG_INFO("mapping labels");
     const uint8_t* mappedData = (const uint8_t*)readLabelsBuffer.GetConstMappedRange();
     // ... Copy data to your C++ vector ...
     // Copy row by row to remove padding and put data into 'result'
@@ -654,7 +654,7 @@ void kmeans_gpu(
 #endif
     }
 
-    IMG2NUM_LOG_DEBUG("mapping centroids");
+    SPDLOG_INFO("mapping centroids");
     const float* mappedDataFloat = (const float*)readCentroidsBuffer.GetConstMappedRange();
     // ... Copy data to your C++ vector ...
 
@@ -697,7 +697,7 @@ void kmeans_gpu(
     }
 
     // Write labels to out_labels
-    IMG2NUM_LOG_DEBUG("copying labels out");
+    SPDLOG_INFO("copying labels out");
     std::memcpy(out_labels, labels.data(), labels.size() * sizeof(int32_t));
 
     if (inputTexture)
