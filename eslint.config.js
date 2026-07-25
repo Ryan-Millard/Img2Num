@@ -5,8 +5,7 @@ import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([
   globalIgnores([
-    "example-apps/react-js/dist",
-    "example-apps/react-js/node_modules",
+    "docs/static/example-apps/",
 
     "docs/node_modules",
     "docs/build",

@@ -149,7 +149,7 @@ function BindingsSection() {
         </>
       ),
       code: `import img2num\n\n` + `cfg = img2num.ImageToSvgConfig(kmeans = {"k": 16})\n` + `svg = img2num.image_to_svg(img, config=cfg)`,
-      docLinks: [{ href: "./docs/py", text: "Docs" }],
+      docLinks: [{ href: "./docs/py", text: "Python Docs" }],
     },
     {
       lang: "JS",
@@ -159,10 +159,11 @@ function BindingsSection() {
       title: "npm i img2num",
       desc: "Browser / Node. Same C++ core compiled to WebAssembly.",
       code:
-        `import { imageToUint8ClampedArray, imageToSvg } from "img2num"\n\n` +
+        `import { imageToUint8ClampedArray, imageToSvg } from "img2num"\n` +
         `const { pixels, width, height } = await imageToUint8ClampedArray(file);\n` +
-        `const svg = await imageToSvg({ pixels, width, height });`,
-      docLinks: [{ href: "./docs/js", text: "Docs" }],
+        `const svg = await imageToSvg({ pixels, width, height });\n` +
+        `await terminateWasmModule();`,
+      docLinks: [{ href: "./docs/js", text: "JavaScript Docs" }],
     },
   ];
 
