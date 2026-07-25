@@ -1,8 +1,11 @@
 packages:
   - packages/js
   - example-apps/react-js
-  - example-apps/console-js
+  - example-apps/console-js-cjs
+  - example-apps/console-js-esm
   - example-apps/html-js
+  - example-apps/html-js-iife
+  - example-apps/html-js-umd
   - docs
   - scripts/img2num-dev-scripts
 

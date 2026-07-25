@@ -1,0 +1,16 @@
+{
+  "name": "html-js-umd",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare-lib": "node scripts/copy-lib.mjs",
+    "start": "npm run prepare-lib && npx --yes serve -l 5176 .",
+    "build": "npm run prepare-lib"
+  },
+  "dependencies": {
+    "img2num": "workspace:*"
+  },
+  "devDependencies": {
+    "requirejs": "^2.3.7"
+  }
+}

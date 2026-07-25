@@ -1,9 +1,10 @@
 {
-  "name": "console-js",
+  "name": "console-js-esm",
   "version": "1.0.0",
+  "private": true,
   "type": "module",
   "scripts": {
-    "start": "node index.js"
+    "start": "echo 'Use `just console-js-esm <image-path>` instead.'"
   },
   "dependencies": {
     "img2num": "workspace:*",

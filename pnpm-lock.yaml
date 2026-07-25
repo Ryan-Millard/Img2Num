@@ -128,7 +128,16 @@ importers:
         specifier: ^6.0.3
         version: 6.0.3
 
-  example-apps/console-js:
+  example-apps/console-js-cjs:
+    dependencies:
+      img2num:
+        specifier: workspace:*
+        version: link:../../packages/js
+      sharp:
+        specifier: ^0.35.2
+        version: 0.35.2
+
+  example-apps/console-js-esm:
     dependencies:
       img2num:
         specifier: workspace:*
@@ -146,6 +155,22 @@ importers:
       vite:
         specifier: ^8.1.0
         version: 8.1.0(@types/node@26.0.1)(jiti@1.21.7)(terser@5.48.0)(yaml@2.9.0)
+
+  example-apps/html-js-iife:
+    dependencies:
+      img2num:
+        specifier: workspace:*
+        version: link:../../packages/js
+
+  example-apps/html-js-umd:
+    dependencies:
+      img2num:
+        specifier: workspace:*
+        version: link:../../packages/js
+    devDependencies:
+      requirejs:
+        specifier: ^2.3.7
+        version: 2.3.8
 
   example-apps/react-js:
     dependencies:
@@ -6854,6 +6879,11 @@ packages:
 
   require-like@0.1.2:
     resolution: {integrity: sha512-oyrU88skkMtDdauHDuKVrgR+zuItqr6/c//FXzvmxRGMexSDc6hNvJInGW3LL46n+8b50RykrvwSUIIQH2LQ5A==}
+
+  requirejs@2.3.8:
+    resolution: {integrity: sha512-7/cTSLOdYkNBNJcDMWf+luFvMriVm7eYxp4BcFCsAX0wF421Vyce5SXP17c+Jd5otXKGNehIonFlyQXSowL6Mw==}
+    engines: {node: '>=0.4.0'}
+    hasBin: true
 
   requires-port@1.0.0:
     resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
@@ -16339,6 +16369,8 @@ snapshots:
   require-from-string@2.0.2: {}
 
   require-like@0.1.2: {}
+
+  requirejs@2.3.8: {}
 
   requires-port@1.0.0: {}
 

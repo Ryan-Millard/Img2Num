@@ -1,0 +1,13 @@
+{
+  "name": "html-js-iife",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare-lib": "node scripts/copy-lib.mjs",
+    "start": "npm run prepare-lib && npx --yes serve -l 5175 .",
+    "build": "npm run prepare-lib"
+  },
+  "dependencies": {
+    "img2num": "workspace:*"
+  }
+}
