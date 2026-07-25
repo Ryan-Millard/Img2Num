@@ -1,173 +1,92 @@
 /**
  * @packageDocumentation
- * Advanced low-level interface for communicating with the WASM worker.
- * Provides granular control over calling WASM functions asynchronously,
- * handling memory transfers, and managing worker lifecycle.
+ * Low-level interface for calling into the WASM (Img2Num) module directly.
  *
- * @file Manages function call requests to the WASM worker.
  * @internal
- *
- * @module wasm-client
- * @license MIT
- * @copyright Ryan Millard 2026
- * @author Ryan Millard
- * @since 0.0.0
- * @description This module provides low-level image processing functions using WASM.
- *              You must specify exact C++ function signatures and manage the input data carefully.
- *              This allows more granular control.
  */
 
-import { createWorker } from "@__TARGET__/worker.js";
+import { WASM_TYPES } from "./wasmTypes.js";
+import { getWasmModule, initWasmModule } from "./wasmModule.js";
+import { ccallAsync } from "./ccall.js";
 
 /**
- * Worker instance that handles communication with the WASM module.
- * @type {Worker | null}
- * @private
- */
-let worker;
-/**
- * Incremental ID counter for correlating requests and responses.
- * @type {number}
- * @private
- */
-let idCounter = 0;
-/**
- * Maps request IDs to their corresponding promise callbacks.
- * @type {Map<number, {resolve: Function, reject: Function}>}
- * @private
- */
-const callbacks = new Map();
-/**
- * Flag to ensure the WASM worker is initialized only once.
- * @type {boolean}
- * @private
- */
-let initialized = false;
-
-/**
- * Handle response messages from the WASM worker.
- * @param {{ id: number, output?: any, returnValue?: any, error?: string }} data
- */
-function handleMessage(data) {
-  const cb = callbacks.get(data.id);
-  if (!cb) return;
-  callbacks.delete(data.id);
-
-  if (data.error) {
-    cb.reject(new Error(data.error));
-  } else {
-    cb.resolve({ output: data.output, returnValue: data.returnValue });
-  }
-}
-
-/**
- * @summary Initialize the WASM worker.
+ * @internal
+ * @summary Invoke a WASM function with automatic memory management.
  *
  * @description
- * Sets up message and error handlers. Safe to call multiple times;
- * subsequent calls are no-ops. After initialization, functions can be called
- * via {@link callWasm}.
- *
- * @function initWasmWorker
- *
- * @example
- * import { initWasmWorker } from "./wasmClient.js";
- *
- * initWasmWorker();
- *
- * @since 0.0.0
- */
-
-export async function initWasmWorker() {
-  if (initialized) return;
-
-  worker = await createWorker();
-
-  worker.onMessage(handleMessage);
-  worker.onError((event) => {
-    const output = event.message || "WASM worker error";
-    const err = new Error(`[Img2Num wasmClient] Error: ${output}`);
-    for (const [_id, cb] of callbacks) {
-      cb.reject(err);
-    }
-    callbacks.clear();
-  });
-
-  initialized = true;
-}
-
-/**
- * @summary Call a function in the WASM worker.
- *
- * @description
- * Directly send a request to the WASM worker to call the specified function,
- * passing specific buffers and and arguments.
+ * Allocates input buffers, marshals JavaScript values into WASM memory,
+ * invokes the requested exported function, reads modified buffers and return
+ * values back into JavaScript, and finally releases all temporary WASM
+ * allocations.
  *
  * @async
  * @function callWasm
- * @param {Object} __named_parameters - Options for the WASM call.
- * @property {string} __named_parameters.funcName - The name of the WASM function to invoke.
- * @property {Object} [__named_parameters.args={}] - Named arguments to pass to the WASM function.
- * @property {string[]} [__named_parameters.bufferKeys=[]] - Keys of arguments that should be transferred as ArrayBuffers.
- * @property {string} [__named_parameters.returnType="void"] - Expected return type.
- *
- * @returns {Promise<{output: any, returnValue: any}>} Resolves with the result of the WASM function call.
- *
- * @throws {Error} If the worker has not been initialized.
- *
- * @example
- * import { callWasm, initWasmWorker } from "./wasmClient.js";
- *
- * initWasmWorker();
- *
- * const result = await callWasm({
- *   funcName: "gaussian_blur_fft",
- *   args: { pixels, width, height, sigma_pixels: 5 },
- *   bufferKeys: ["pixels"],
- *   returnType: "Uint8ClampedArray"
- * });
- * console.log(result.output);
- *
+ * @param {Object} options
+ * @param {string} options.funcName - Name of the exported WASM function.
+ * @param {Object} [options.args={}] - Function arguments.
+ * @param {Array<{key:string,type:string}>} [options.bufferKeys=[]] - Buffer arguments requiring allocation.
+ * @param {string} [options.returnType="void"] - Expected return type.
+ * @returns {Promise<{output:Object, returnValue:any}>}
+ * @throws {Error} If allocation or the WASM call fails.
  * @since 0.0.0
  */
 export async function callWasm({ funcName, args = {}, bufferKeys = [], returnType = "void" }) {
-  if (!initialized) throw new Error("WASM worker not initialized. Call initWasmWorker() first.");
+  await initWasmModule();
 
-  const id = idCounter++;
+  const wasmModule = getWasmModule();
 
-  return new Promise((resolve, reject) => {
-    callbacks.set(id, { resolve, reject });
+  const pointers = new Map();
+  const argsMap = new Map(Object.entries(args));
 
-    worker.postMessage({ id, funcName, args, bufferKeys, returnType });
-  });
-}
+  try {
+    for (const { key, type } of bufferKeys) {
+      const handler = WASM_TYPES[type];
 
-/**
- * @summary Terminate the WASM worker.
- *
- * @description
- * Terminate the WASM worker used to call WASM functions.
- * Rejects any pending calls before termination and resets internal state
- * so the worker can be reinitialized later.
- * The worker **must be reinitialized** if it is to be used again.
- *
- * @function terminateWasmWorker
- *
- * @example
- * import { terminateWasmWorker } from "./wasmClient.js";
- *
- * terminateWasmWorker();
- *
- * @since 0.0.0
- */
-export function terminateWasmWorker() {
-  if (!worker) return;
-  worker.terminate();
-  // Reject any pending calls before clearing
-  for (const [_id, cb] of callbacks) {
-    cb.reject(new Error("WASM worker terminated"));
+      if (!handler) {
+        throw new Error(`Unsupported type: ${type}`);
+      }
+
+      const value = argsMap.get(key);
+      const ptr = handler.alloc(value);
+
+      pointers.set(key, {
+        ptr,
+        type,
+        length: value?.length,
+      });
+
+      argsMap.set(key, ptr);
+    }
+
+    const result = await ccallAsync(funcName, argsMap, returnType);
+
+    const output = Object.create(null);
+
+    for (const { key, type } of bufferKeys) {
+      const { ptr, length } = pointers.get(key);
+
+      output[key] = WASM_TYPES[type].read(ptr, length);
+    }
+
+    let returnValue = result;
+
+    if (returnType !== "void") {
+      returnValue = WASM_TYPES[returnType].read(result);
+    }
+
+    if (returnType === "string" && result) {
+      wasmModule._free(result);
+    }
+
+    return {
+      output,
+      returnValue,
+    };
+  } catch (error) {
+    throw new Error(`[Img2Num wasmClient] Error: ${error?.message ?? error}`, { cause: error });
+  } finally {
+    for (const { ptr } of pointers.values()) {
+      wasmModule._free(ptr);
+    }
   }
-  worker = null;
-  callbacks.clear();
-  initialized = false;
 }

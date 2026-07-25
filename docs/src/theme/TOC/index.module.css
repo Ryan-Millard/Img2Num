@@ -1,59 +1,58 @@
 .tocContainer {
-  border-left: 1px solid var(--ifm-toc-border-color);
-  padding: 8px;
-  top: calc(var(--ifm-navbar-height) + 1rem);
   position: sticky;
+  top: calc(var(--ifm-navbar-height) + 1rem);
+
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  max-height: 90vh;
-}
-.tocContainer ul {
-  list-style: none;
-  padding-left: 0;
-}
-.tocContainer > * {
-  overflow: visible; /* or overflow: unset */
+
+  max-height: calc(100vh - (var(--ifm-navbar-height) + 2rem));
+
+  padding: 8px;
+  border-left: 1px solid var(--ifm-toc-border-color);
 }
 
 .tableOfContents {
-  max-height: calc(100vh - (var(--ifm-navbar-height) + 2rem));
   overflow-y: auto;
-  position: sticky;
+  flex: 1;
+
+  padding-right: 8px;
+}
+
+.tableOfContents ul {
+  list-style: none;
+  margin: 0 0 0 8px;
+  padding: 0;
 }
 
 .tableOfContents li a {
   margin: 0;
-  padding: 6px 12px;
-}
-
-@media (max-width: 996px) {
-  .tableOfContents {
-    display: none;
-  }
-
-  .docItemContainer {
-    padding: 0 0.3rem;
-  }
+  padding: 4px 8px;
 }
 
 .tocHeader {
+  margin: 0 0 8px;
+
   font-size: var(--ifm-h3-font-size);
-  color: var(--ifm-heading-color);
   font-family: var(--ifm-heading-font-family);
   font-weight: var(--ifm-heading-font-weight);
   line-height: var(--ifm-heading-line-height);
+  color: var(--ifm-heading-color);
 }
 
-[data-copy-page-button-container] button {
+.copyContainer button {
   border: none;
-  background: none !important;
+  background: transparent;
 }
 
 .copyContainer button:hover,
 .copyContainer button:hover * {
   color: var(--ifm-link-hover-color);
 }
+
+.copyContainer {
+  margin-top: 8px;
+}
+
 .copyContainer * {
   border: none !important;
   background: var(--ifm-background-color) !important;
@@ -65,14 +64,25 @@
 }
 
 .reportIssueLink {
-  padding: 8px;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+
+  padding: 8px;
 }
 
 .githubIcon {
   width: 1rem;
   height: 1rem;
   flex-shrink: 0;
+}
+
+@media (max-width: 996px) {
+  .tocContainer {
+    display: none;
+  }
+
+  .docItemContainer {
+    padding: 0 0.3rem;
+  }
 }

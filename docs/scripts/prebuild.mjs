@@ -21,3 +21,4 @@ async function run(command, args) {
 
 await run("pnpm", ["-F", "docs", "run", "doxygen"]);
 await run("pnpm", ["-F", "react-example", "run", "build"]);
+await run("pnpm", ["-F", "html-js", "run", "build"]);

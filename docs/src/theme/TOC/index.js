@@ -14,6 +14,7 @@ export default function TOCWrapper(props) {
     <aside className={styles.tocContainer}>
       <div className={clsx(styles.tableOfContents, "thin-scrollbar", props.className)}>
         <p className={styles.tocHeader}>Contents</p>
+
         <TOCItems {...props} linkClassName={LINK_CLASS_NAME} linkActiveClassName={LINK_ACTIVE_CLASS_NAME} />
       </div>
 

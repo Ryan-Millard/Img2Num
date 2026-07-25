@@ -11,6 +11,10 @@ export default defineConfig({
     host: "0.0.0.0", // Allow connections from outside Docker
     port: 5173, // Match docker-compose port
   },
+  preview: {
+    host: "0.0.0.0",
+    port: 4173,
+  },
 
   resolve: {
     alias: {
