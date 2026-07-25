@@ -6,16 +6,19 @@ URL: https://img2num.dev/changelog/py
 
 ## Latest Release
 
-**v0.2.1** - 2026-07-01 *(latest)*
-> The previous version [v0.2.0](https://github.com/Ryan-Millard/Img2Num/releases/tag/packages-py-v0.2.0) was erroneously published as [v0.0.0](https://pypi.org/manage/project/img2num/release/0.0.0/) on PyPI.
+**v0.2.2** - 2026-07-20 *(latest)*
+### 🐛 Bug Fixes
+
+- **readme:** update links to use img2num.dev domain ( [#508](https://github.com/Ryan-Millard/Img2Num/issues/508) ) ( [177b894](https://github.com/Ryan-Millard/Img2Num/commit/177b894f21bf7dcfca565734bba7e4603217f8c6) )
 
 ### 📚 Documentation
 
-- refresh docs, add Python guides, and remove outdated versioning ( [#446](https://github.com/Ryan-Millard/Img2Num/issues/446) ) ( [8edaadd](https://github.com/Ryan-Millard/Img2Num/commit/8edaadddf18ca20407b7f480cd88c72b11c99000) )
+- **README.md:** add README specific to python package ( [#488](https://github.com/Ryan-Millard/Img2Num/issues/488) ) ( [d211d98](https://github.com/Ryan-Millard/Img2Num/commit/d211d988a8f5389c27d520b02a28f7731a76a48a) )
 View full release page
 
 ## All Releases
 
+- v0.2.2 - 2026-07-20
 - v0.2.1 - 2026-07-01
 - v0.2.0 - 2026-06-27
 - v0.1.0 - 2026-05-29
