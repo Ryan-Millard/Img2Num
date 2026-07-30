@@ -4,6 +4,16 @@ on:
   push:
     branches: [main, dev]
   workflow_dispatch:
+    inputs:
+      force_publish_component:
+        description: 'Re-publish an existing release for one component (recovery mode)'
+        type: choice
+        options: [none, cpp, c, js, py]
+        default: none
+      force_publish_tag:
+        description: 'Existing tag to re-publish (e.g. packages-py-v0.2.2). Required if component != none.'
+        type: string
+        default: ''
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -16,22 +26,25 @@ jobs:
       contents: write
       pull-requests: write
     outputs:
-      cpp_created: ${{ steps.rp.outputs['core--release_created'] }}
-      cpp_tag:     ${{ steps.rp.outputs['core--tag_name'] }}
-      cpp_version: ${{ steps.rp.outputs['core--version'] }}
-      c_created:   ${{ steps.rp.outputs['bindings/c--release_created'] }}
-      c_tag:       ${{ steps.rp.outputs['bindings/c--tag_name'] }}
-      c_version:   ${{ steps.rp.outputs['bindings/c--version'] }}
-      js_created:  ${{ steps.rp.outputs['packages/js--release_created'] }}
-      js_tag:      ${{ steps.rp.outputs['packages/js--tag_name'] }}
-      js_version:  ${{ steps.rp.outputs['packages/js--version'] }}
-      py_created:  ${{ steps.rp.outputs['packages/py--release_created'] }}
-      py_tag:      ${{ steps.rp.outputs['packages/py--tag_name'] }}
-      py_version:  ${{ steps.rp.outputs['packages/py--version'] }}
+      cpp_created: ${{ steps.resolve.outputs.cpp_created }}
+      cpp_tag:     ${{ steps.resolve.outputs.cpp_tag }}
+      cpp_version: ${{ steps.resolve.outputs.cpp_version }}
+      c_created:   ${{ steps.resolve.outputs.c_created }}
+      c_tag:       ${{ steps.resolve.outputs.c_tag }}
+      c_version:   ${{ steps.resolve.outputs.c_version }}
+      js_created:  ${{ steps.resolve.outputs.js_created }}
+      js_tag:      ${{ steps.resolve.outputs.js_tag }}
+      js_version:  ${{ steps.resolve.outputs.js_version }}
+      py_created:  ${{ steps.resolve.outputs.py_created }}
+      py_tag:      ${{ steps.resolve.outputs.py_tag }}
+      py_version:  ${{ steps.resolve.outputs.py_version }}
       fallback_version: ${{ steps.fallback_version.outputs.fallback_version }}
     steps:
+      # Skipped entirely in force-publish (recovery) mode: we must not let
+      # release-please act on an already-bumped manifest.
       - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7
         id: rp
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.force_publish_component == 'none' }}
         with:
           token:         ${{ secrets.GITHUB_TOKEN }}
           config-file:   release-please-config.json
@@ -45,9 +58,73 @@ jobs:
           SAFE_REF="${GITHUB_REF_NAME//\//_}"
           echo "fallback_version=${SAFE_REF:+${SAFE_REF}@}${GITHUB_SHA}" >> $GITHUB_OUTPUT
 
-      - name: Debug release-please outputs
+      # Single source of truth for downstream jobs: release-please outputs on
+      # normal runs, or the forced tag in recovery mode.
+      - name: Resolve effective release outputs
+        id: resolve
+        env:
+          FORCE_COMPONENT: ${{ github.event_name == 'workflow_dispatch' && inputs.force_publish_component || 'none' }}
+          FORCE_TAG:       ${{ github.event_name == 'workflow_dispatch' && inputs.force_publish_tag || '' }}
+          RP_CPP_CREATED:  ${{ steps.rp.outputs['core--release_created'] }}
+          RP_CPP_TAG:      ${{ steps.rp.outputs['core--tag_name'] }}
+          RP_CPP_VERSION:  ${{ steps.rp.outputs['core--version'] }}
+          RP_C_CREATED:    ${{ steps.rp.outputs['bindings/c--release_created'] }}
+          RP_C_TAG:        ${{ steps.rp.outputs['bindings/c--tag_name'] }}
+          RP_C_VERSION:    ${{ steps.rp.outputs['bindings/c--version'] }}
+          RP_JS_CREATED:   ${{ steps.rp.outputs['packages/js--release_created'] }}
+          RP_JS_TAG:       ${{ steps.rp.outputs['packages/js--tag_name'] }}
+          RP_JS_VERSION:   ${{ steps.rp.outputs['packages/js--version'] }}
+          RP_PY_CREATED:   ${{ steps.rp.outputs['packages/py--release_created'] }}
+          RP_PY_TAG:       ${{ steps.rp.outputs['packages/py--tag_name'] }}
+          RP_PY_VERSION:   ${{ steps.rp.outputs['packages/py--version'] }}
         run: |
-          echo '${{ toJSON(steps.rp.outputs) }}'
+          set -euo pipefail
+          for comp in cpp c js py; do
+            comp_upper=$(echo "$comp" | tr '[:lower:]' '[:upper:]')
+            created_var="RP_${comp_upper}_CREATED"
+            tag_var="RP_${comp_upper}_TAG"
+            version_var="RP_${comp_upper}_VERSION"
+
+            created="${!created_var:-}"
+            tag="${!tag_var:-}"
+            version="${!version_var:-}"
+
+            if [[ "$FORCE_COMPONENT" == "$comp" ]]; then
+              if [[ -z "$FORCE_TAG" ]]; then
+                echo "::error::force_publish_component=$comp requires force_publish_tag"
+                exit 1
+              fi
+              case "$comp" in
+                cpp) expected_prefix="cpp-v" ;;
+                c)   expected_prefix="bindings-c-v" ;;
+                js)  expected_prefix="packages-js-v" ;;
+                py)  expected_prefix="packages-py-v" ;;
+              esac
+              if [[ ! "$FORCE_TAG" =~ ^${expected_prefix}[0-9]+\.[0-9]+\.[0-9]+([-.][0-9A-Za-z.-]+)?$ ]]; then
+                echo "::error::force_publish_tag='$FORCE_TAG' is not a valid ${comp} tag (expected '${expected_prefix}X.Y.Z')"
+                exit 1
+              fi
+              created="true"
+              tag="$FORCE_TAG"
+              version="${FORCE_TAG##*-v}"   # py-v0.2.2 -> 0.2.2 ; also handles v0.2.2
+              version="${version#v}"
+            fi
+
+            {
+              echo "${comp}_created=${created}"
+              echo "${comp}_tag=${tag}"
+              echo "${comp}_version=${version}"
+            } >> "$GITHUB_OUTPUT"
+          done
+
+      - name: Debug resolved outputs
+        env:
+          OUTPUTS: ${{ toJSON(steps.resolve.outputs) }}
+          FALLBACK_VERSION: ${{ steps.fallback_version.outputs.fallback_version }}
+        run: |
+          echo "=== Resolved Release Outputs ==="
+          echo "$OUTPUTS" | jq -r 'to_entries[] | "\(.key): \(.value)"'
+          echo "Fallback version: $FALLBACK_VERSION"
 
   # C/C++ native artifacts
   build-c-cpp-native:
@@ -74,17 +151,26 @@ jobs:
       - name: Set component metadata
         id: component
         shell: bash
+        env:
+          COMPONENT:        ${{ matrix.component }}
+          C_CREATED:        ${{ needs.release-please.outputs.c_created }}
+          C_TAG:            ${{ needs.release-please.outputs.c_tag }}
+          C_VERSION:        ${{ needs.release-please.outputs.c_version }}
+          CPP_CREATED:      ${{ needs.release-please.outputs.cpp_created }}
+          CPP_TAG:          ${{ needs.release-please.outputs.cpp_tag }}
+          CPP_VERSION:      ${{ needs.release-please.outputs.cpp_version }}
+          FALLBACK_VERSION: ${{ needs.release-please.outputs.fallback_version }}
         run: |
-          if [[ "${{ matrix.component }}" == "c" ]]; then
-            echo "IMG2NUM_BUILD_C_VAL=ON"                                               >> $GITHUB_OUTPUT
-            echo "created=${{ needs.release-please.outputs.c_created }}"                >> $GITHUB_OUTPUT
-            echo "tag=${{ needs.release-please.outputs.c_tag }}"                        >> $GITHUB_OUTPUT
-            echo "version=${{ needs.release-please.outputs.c_version || needs.release-please.outputs.fallback_version }}" >> $GITHUB_OUTPUT
+          if [[ "$COMPONENT" == "c" ]]; then
+            echo "IMG2NUM_BUILD_C_VAL=ON"                          >> $GITHUB_OUTPUT
+            echo "created=${C_CREATED}"                            >> $GITHUB_OUTPUT
+            echo "tag=${C_TAG}"                                    >> $GITHUB_OUTPUT
+            echo "version=${C_VERSION:-$FALLBACK_VERSION}"         >> $GITHUB_OUTPUT
           else
-            echo "IMG2NUM_BUILD_C_VAL=OFF"                                                >> $GITHUB_OUTPUT
-            echo "created=${{ needs.release-please.outputs.cpp_created }}"                >> $GITHUB_OUTPUT
-            echo "tag=${{ needs.release-please.outputs.cpp_tag }}"                        >> $GITHUB_OUTPUT
-            echo "version=${{ needs.release-please.outputs.cpp_version || needs.release-please.outputs.fallback_version }}" >> $GITHUB_OUTPUT
+            echo "IMG2NUM_BUILD_C_VAL=OFF"                         >> $GITHUB_OUTPUT
+            echo "created=${CPP_CREATED}"                          >> $GITHUB_OUTPUT
+            echo "tag=${CPP_TAG}"                                  >> $GITHUB_OUTPUT
+            echo "version=${CPP_VERSION:-$FALLBACK_VERSION}"       >> $GITHUB_OUTPUT
           fi
 
       - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
@@ -112,21 +198,30 @@ jobs:
 
       - name: Package (Linux/macOS)
         if: runner.os != 'Windows'
+        env:
+          VERSION: ${{ steps.component.outputs.version }}
+          COMPONENT: ${{ matrix.component }}
+          PLAT: ${{ matrix.plat }}
         run: |
-          ARCHIVE="img2num-${{ matrix.component }}-v${{ steps.component.outputs.version }}-${{ matrix.plat }}.tar.gz"
+          ARCHIVE="img2num-${COMPONENT}-v${VERSION}-${PLAT}.tar.gz"
           tar -czf "$ARCHIVE" -C install .
           echo "ARCHIVE=$ARCHIVE" >> $GITHUB_ENV
 
       - name: Package (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
+        env:
+          VERSION: ${{ steps.component.outputs.version }}
+          COMPONENT: ${{ matrix.component }}
+          PLAT: ${{ matrix.plat }}
         run: |
-          $archive = "img2num-${{ matrix.component }}-v${{ steps.component.outputs.version }}-${{ matrix.plat }}.zip"
+          $archive = "img2num-$env:COMPONENT-v$env:VERSION-$env:PLAT.zip"
           Compress-Archive -Path "${{ github.workspace }}\install\*" -DestinationPath $archive
           "ARCHIVE=$archive" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       # Real release when release-please created one for this component; otherwise a
       # (deletable, non-public) draft that still exercises the full release path.
+      # Drafts are garbage-collected by the cleanup-drafts job
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
         with:
           tag_name: ${{ steps.component.outputs.created == 'true' && steps.component.outputs.tag || format('{0}@{1}-{2}', github.ref_name, github.sha, matrix.component) }}
@@ -145,6 +240,7 @@ jobs:
         with:
           ref: ${{ needs.release-please.outputs.js_created == 'true' && needs.release-please.outputs.js_tag || github.sha }}
           submodules: true
+          persist-credentials: false
 
       - uses: mymindstorm/setup-emsdk@1f4f5866c1f8745a10fcb64c4d7a0eb7a8daed9d
 
@@ -177,10 +273,11 @@ jobs:
         working-directory: packages/js
 
       - name: Package
+        env:
+          RELEASE_VERSION: ${{ needs.release-please.outputs.js_version || needs.release-please.outputs.fallback_version }}
         run: |
-          release_version=${{ needs.release-please.outputs.js_version || needs.release-please.outputs.fallback_version }}
-          tar -czf           /tmp/img2num-js-v${release_version}.tar.gz packages/js/dist
-          tar -czf /tmp/img2num-js-wasm-only-v${release_version}.tar.gz packages/js/build-wasm
+          tar -czf           /tmp/img2num-js-v${RELEASE_VERSION}.tar.gz packages/js/dist
+          tar -czf /tmp/img2num-js-wasm-only-v${RELEASE_VERSION}.tar.gz packages/js/build-wasm
 
       # Real release when release-please created one; otherwise a draft.
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
@@ -191,21 +288,27 @@ jobs:
             /tmp/img2num-js-wasm-only-v${{ needs.release-please.outputs.js_version || needs.release-please.outputs.fallback_version }}.tar.gz
           draft: ${{ needs.release-please.outputs.js_created != 'true' }}
 
-      # Real publish when release-please created a release; otherwise --dry-run,
+      # Real publish when a release was created; otherwise --dry-run,
       # which still exercises auth, package validation, and tarball construction.
+      # NOTE: npm publish runs LAST in this job so a failure here can be retried
+      # with "Re-run failed jobs" without re-doing anything destructive.
       - name: Publish to npm
+        working-directory: packages/js
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          JS_CREATED: ${{ needs.release-please.outputs.js_created }}
         run: |
-          DRY_RUN_FLAG=${{ needs.release-please.outputs.js_created != 'true' && '--dry-run' || '' }}
+          DRY_RUN_FLAG=""
+          [[ "$JS_CREATED" != "true" ]] && DRY_RUN_FLAG="--dry-run"
           pnpm publish \
             --access public \
             --provenance \
             --no-git-checks \
             $DRY_RUN_FLAG
-        working-directory: packages/js
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   # Wheels + PyPI (Python)
+  # Full 3-OS x 4-Python matrix only on main or when an actual Python release
+  # was created; dev pushes build a single smoke wheel to save CI minutes.
   build-py:
     needs: release-please
     runs-on: ${{ matrix.os }}
@@ -214,23 +317,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: ${{ fromJSON((needs.release-please.outputs.py_created == 'true' || github.ref_name == 'main') && '["ubuntu-latest","macos-latest","windows-latest"]' || '["ubuntu-latest"]') }}
 
     steps:
       - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
         with:
           ref: ${{ needs.release-please.outputs.py_created == 'true' && needs.release-please.outputs.py_tag || github.sha }}
           submodules: true
+          persist-credentials: false
 
       - uses: pypa/cibuildwheel@a78478edc4b83cce46f23e49e649d3e4b6437df3
         with:
           package-dir: .
           output-dir: wheelhouse
         env:
-          CIBW_BUILD: "cp310-* cp311-* cp312-* cp313-*"
+          CIBW_BUILD: ${{ (needs.release-please.outputs.py_created == 'true' || github.ref_name == 'main') && 'cp310-* cp311-* cp312-* cp313-*' || 'cp312-*' }}
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
         with:
           name: wheels-${{ matrix.os }}
           path: wheelhouse/*.whl
@@ -246,8 +350,9 @@ jobs:
         with:
           ref: ${{ needs.release-please.outputs.py_created == 'true' && needs.release-please.outputs.py_tag || github.sha }}
           submodules: true
+          persist-credentials: false
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
         with:
           python-version: "3.12"
 
@@ -256,11 +361,12 @@ jobs:
           pip install build
           python -m build --sdist --outdir wheelhouse
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
         with:
           name: sdist
           path: wheelhouse/*.tar.gz
 
+  # Real publish: only when release-please created a Python release.
   publish-py:
     needs: [release-please, build-py, build-py-sdist]
     runs-on: ubuntu-latest
@@ -269,33 +375,40 @@ jobs:
       id-token: write
 
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4.3.0
         with:
           pattern: wheels-*
           path: wheelhouse
           merge-multiple: true
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4.3.0
         with:
           name: sdist
           path: wheelhouse
 
-      # Real release when release-please created one; otherwise a draft.
+      # === Real Release ===
+      # GitHub release assets first: this step is idempotent (re-uploading
+      # overwrites), so if the PyPI step below fails, "Re-run failed jobs"
+      # safely repeats both. (PyPI uploads are NOT idempotent - no
+      # skip-existing here on purpose, so a duplicate upload fails loudly.)
       - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
+        if: ${{ needs.release-please.outputs.py_created == 'true' }}
         with:
-          tag_name: ${{ needs.release-please.outputs.py_created == 'true' && needs.release-please.outputs.py_tag || format('{0}@{1}-py', github.ref_name, github.sha) }}
+          tag_name: ${{ needs.release-please.outputs.py_tag }}
           files: wheelhouse/*
-          draft: ${{ needs.release-please.outputs.py_created != 'true' }}
-
-      # Real publish to PyPI only when release-please created a release.
       - uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247
         if: ${{ needs.release-please.outputs.py_created == 'true' }}
         with:
           packages-dir: wheelhouse/
+          skip-existing: ${{ github.event_name == 'workflow_dispatch' && inputs.force_publish_component == 'py' }}
 
-      # Otherwise publish to TestPyPI, exercising the same auth/metadata/upload path
-      # against a real registry. Requires a TEST_PYPI_API_TOKEN secret and a
-      # TestPyPI project configured for trusted publishing or token auth.
+      # === Test/Draft Release ===
+      - uses: softprops/action-gh-release@403a5240f3837fa857f642062e05aad6bb3391ca
+        if: ${{ needs.release-please.outputs.py_created != 'true' }}
+        with:
+          tag_name: ${{ format('{0}@{1}-py', github.ref_name, github.sha) }}
+          files: wheelhouse/*
+          draft: true
       - uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247
         if: ${{ needs.release-please.outputs.py_created != 'true' }}
         with:
@@ -303,9 +416,16 @@ jobs:
           repository-url: https://test.pypi.org/legacy/
           skip-existing: true   # version may already exist on TestPyPI from previous runs
 
-  propagate-cpp:
+  # Dependency propagation. Instead of an empty commit (which release-please
+  # can't attribute to a component - it maps commits to components by the FILES
+  # they touch), we stamp a version file inside the target path so the commit
+  # is actually picked up.
+  #
+  # Longer-term alternative: release-please's `linked-versions` plugin keeps
+  # component versions in lockstep without these PRs at all - worth evaluating.
+  propagate:
     needs: release-please
-    if: ${{ needs.release-please.outputs.cpp_created == 'true' }}
+    if: ${{ needs.release-please.outputs.cpp_created == 'true' || needs.release-please.outputs.c_created == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -313,75 +433,123 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target:
-          - path: bindings/c
-            scope: bindings/c
-          - path: packages/py
-            scope: py
+        include:
+          # core (C++) -> bindings/c
+          - created:     ${{ needs.release-please.outputs.cpp_created }}
+            version:     ${{ needs.release-please.outputs.cpp_version }}
+            source_slug: core
+            source_name: core
+            target_path: bindings/c
+            scope:       bindings/c
+            marker:      .core-version
+          # core (C++) -> packages/py
+          - created:     ${{ needs.release-please.outputs.cpp_created }}
+            version:     ${{ needs.release-please.outputs.cpp_version }}
+            source_slug: core
+            source_name: core
+            target_path: packages/py
+            scope:       py
+            marker:      .core-version
+          # bindings/c -> packages/js
+          - created:     ${{ needs.release-please.outputs.c_created }}
+            version:     ${{ needs.release-please.outputs.c_version }}
+            source_slug: c
+            source_name: bindings/c
+            target_path: packages/js
+            scope:       packages/js
+            marker:      .bindings-c-version
+
     steps:
       - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
+        if: ${{ matrix.created == 'true' }}
         with:
+          ref: main
           token: ${{ secrets.RELEASE_PROPAGATION_TOKEN }}
 
       - name: Configure git identity
+        if: ${{ matrix.created == 'true' }}
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Create propagation PR - ${{ matrix.target.path }}
+      - name: Create propagation PR - ${{ matrix.source_name }} -> ${{ matrix.target_path }}
+        if: ${{ matrix.created == 'true' }}
         env:
-          GH_TOKEN: ${{ secrets.RELEASE_PROPAGATION_TOKEN }}
-          VERSION:  ${{ needs.release-please.outputs.cpp_version }}
-          TARGET_PATH: ${{ matrix.target.path }}
-          SCOPE:    ${{ matrix.target.scope }}
+          GH_TOKEN:    ${{ secrets.RELEASE_PROPAGATION_TOKEN }}
+          VERSION:     ${{ matrix.version }}
+          SOURCE_SLUG: ${{ matrix.source_slug }}
+          SOURCE_NAME: ${{ matrix.source_name }}
+          TARGET_PATH: ${{ matrix.target_path }}
+          SCOPE:       ${{ matrix.scope }}
+          MARKER:      ${{ matrix.marker }}
         run: |
+          set -euo pipefail
           SLUG="$(echo "$TARGET_PATH" | tr '/' '-')"
-          BRANCH="release-propagation/core-v${VERSION}-to-${SLUG}"
+          BRANCH="release-propagation/${SOURCE_SLUG}-v${VERSION}-to-${SLUG}"
 
           git checkout -b "$BRANCH"
 
-          git commit --allow-empty \
-            -m "fix(${SCOPE}): propagate core v${VERSION} release"
+          # Touch a real file inside the component path so release-please
+          # attributes this commit to the component.
+          echo "$VERSION" > "${TARGET_PATH}/${MARKER}"
+          git add "${TARGET_PATH}/${MARKER}"
 
-          git push origin "$BRANCH"
+          # Guard 1: marker already at this version on main means a previous
+          # propagation PR was merged (e.g. force-publish recovery). Done.
+          if git diff --cached --quiet; then
+            echo "Marker ${TARGET_PATH}/${MARKER} already at v${VERSION} - propagation previously merged. Nothing to do."
+            exit 0
+          fi
+
+          git commit -m "fix(${SCOPE}): propagate ${SOURCE_NAME} v${VERSION} release"
+
+          # Deterministic branch name, sole writer to this namespace: plain
+          # --force. (--force-with-lease fails on fresh CI clones - no
+          # remote-tracking ref to lease against.)
+          git push --force origin "$BRANCH"
+
+          # Guard 2: an open PR already tracks this branch; the force-push
+          # above refreshed it. Creating again would fail.
+          if [[ -n "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[].number')" ]]; then
+            echo "Open PR for ${BRANCH} already exists - refreshed via force-push."
+            exit 0
+          fi
 
           gh pr create \
-            --title "fix(${SCOPE}): propagate core v${VERSION} release" \
-            --body "Automated patch bump for \`${TARGET_PATH}\` following the **\`core/\` (C++) v${VERSION}** release.\n\n> Merging this PR will allow release-please to open a patch release PR for \`${TARGET_PATH}\`.\n\n**Dependency:** \`core\` -> \`${TARGET_PATH}\`" \
+            --title "fix(${SCOPE}): propagate ${SOURCE_NAME} v${VERSION} release" \
             --base main \
-            --head "$BRANCH"
+            --head "$BRANCH" \
+            --body-file - <<EOF
+          Automated patch bump for \`${TARGET_PATH}\` following the **\`${SOURCE_NAME}\` v${VERSION}** release.
 
-  propagate-c:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.c_created == 'true' }}
+          > Merging this PR will allow release-please to open a patch release PR for \`${TARGET_PATH}\`.
+
+          **Dependency:** \`${SOURCE_NAME}\` -> \`${TARGET_PATH}\`
+          EOF
+
+  # Garbage-collect the draft releases created by the dry-run paths.
+  # Only drafts whose tag matches the fallback format (contains '@') are
+  # touched - real releases and manually created drafts are never deleted.
+  cleanup-drafts:
+    needs: [build-c-cpp-native, build-js, publish-py]
+    if: ${{ always() }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
     steps:
-      - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
-        with:
-          token: ${{ secrets.RELEASE_PROPAGATION_TOKEN }}
-
-      - name: Configure git identity
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Create propagation PR - packages/js
+      - name: Delete stale dry-run draft releases (>7 days old)
         env:
-          GH_TOKEN: ${{ secrets.RELEASE_PROPAGATION_TOKEN }}
-          VERSION:  ${{ needs.release-please.outputs.c_version }}
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
         run: |
-          BRANCH="release-propagation/c-v${VERSION}-to-packages-js"
-
-          git checkout -b "$BRANCH"
-          git commit --allow-empty \
-            -m "fix(packages/js): propagate bindings/c v${VERSION} release"
-          git push origin "$BRANCH"
-
-          gh pr create \
-            --title "fix(packages/js): propagate bindings/c v${VERSION} release" \
-            --body "Automated patch bump for \`packages/js\` following the **bindings/c v${VERSION}** release.\n\n > Merging this PR will allow release-please to open a patch release PR for \`packages/js\`.\n\n**Dependency:** \`bindings/c\` -> \`packages/js\`" \
-            --base main \
-            --head "$BRANCH"
+          set -euo pipefail
+          CUTOFF=$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ)
+          gh api "repos/${REPO}/releases" --paginate \
+            --jq ".[] | select(.draft == true)
+                      | select(.tag_name | contains(\"@\"))
+                      | select(.created_at < \"${CUTOFF}\")
+                      | .id" |
+          while read -r id; do
+            echo "Deleting stale draft release id=$id"
+            gh api -X DELETE "repos/${REPO}/releases/${id}"
+          done
