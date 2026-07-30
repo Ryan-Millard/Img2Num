@@ -94,6 +94,16 @@ jobs:
                 echo "::error::force_publish_component=$comp requires force_publish_tag"
                 exit 1
               fi
+              case "$comp" in
+                cpp) expected_prefix="cpp-v" ;;
+                c)   expected_prefix="bindings-c-v" ;;
+                js)  expected_prefix="packages-js-v" ;;
+                py)  expected_prefix="packages-py-v" ;;
+              esac
+              if [[ "$FORCE_TAG" != "$expected_prefix"* ]]; then
+                echo "::error::force_publish_tag='$FORCE_TAG' does not match component '$comp' (expected prefix '$expected_prefix')"
+                exit 1
+              fi
               created="true"
               tag="$FORCE_TAG"
               version="${FORCE_TAG##*-v}"   # py-v0.2.2 -> 0.2.2 ; also handles v0.2.2
