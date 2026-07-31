@@ -94,6 +94,21 @@ void img2num_kmeans(
     const int32_t height, const int32_t k, const int32_t max_iter, const uint8_t color_space
 );
 
+/// @brief Apply a Gaussian blur to an image using FFT.
+/// @ingroup IMG2NUM_H
+/// @param data Pointer to the image buffer (RGBA).
+/// @param out_data Pointer to output buffer where quantized pixel values are stored (RGBA).
+/// @param out_labels Pointer to output buffer for quantized labels per pixel (unique integer values per dominant color
+/// region).
+/// @param width Width of the image in pixels.
+/// @param height Height of the image in pixels.
+/// @param k Number of dominant colors to compute.
+/// @param coverage Area ratio to consider when determining dominant colors. Top dominant colors must cover at least
+/// `coverage` * `width` * `height` number of pixels. Example: 0.38 means that the top dominant colors must cover
+/// at least 38% of the image's pixels
+/// @param color_space Color space flag (0 = CIE LAB, 1 = RGB).
+/// @note The function does not modify the input buffer.
+/// @return void
 void img2num_color_quantize(
     const uint8_t* data, uint8_t* out_data, int32_t* out_labels, const int32_t width,
     const int32_t height, const int32_t k, const float coverage, const uint8_t color_space
