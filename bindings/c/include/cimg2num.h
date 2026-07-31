@@ -39,6 +39,9 @@ typedef struct img2num_ImageToSvgConfig {
         int32_t max_iter;
     } kmeans;
 
+    /// Quantization configuration struct for synthetic image
+    /// - .k: number of dominant colors
+    /// - .coverage: spatial area ratio for determining color dominance
     struct QuantizeConfig {
         /// Number of dominant colors to find in the image.
         /// If 0 (default) use `coverage` to threshold based on area.
@@ -65,6 +68,8 @@ typedef struct img2num_ImageToSvgConfig {
     uint8_t synthetic;
 } img2num_ImageToSvgConfig;
 
+/// ImageToSvgConfig struct with default values for convenience
+/// Recommended even if you plan to override them
 img2num_ImageToSvgConfig img2num_ImageToSvgConfig_default(void);
 
 /// @copydoc ::IMG2NUM_H_GAUSSIAN_BLUR_DOC

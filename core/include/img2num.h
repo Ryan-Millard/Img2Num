@@ -38,17 +38,6 @@ struct ImageToSvgConfig {
         int32_t max_iter = 100;
     } kmeans;
 
-    struct QuantizeConfig {
-        /// Number of dominant colors to find in the image.
-        /// If 0 (default) use `coverage` to threshold based on area.
-        int32_t k = 0;
-        /// Area ratio to consider when determining dominant colors.
-        /// Top dominant colors must cover at least `coverage` * `width` * `height` number of
-        /// pixels. Example: 0.38 means that the top dominant colors must cover at least 38% of the
-        /// image's pixels
-        float coverage = 0.9f;
-    } quantize;
-
     /// Minimum area (in pixels) for a region to be included in the SVG.
     int min_cluster_area = 100;
 
@@ -66,6 +55,20 @@ struct ImageToSvgConfig {
     /// - 0 = Natural image (default)
     /// - 1 = Synthetic image
     uint8_t synthetic = 0;
+
+    /// Quantization configuration struct for synthetic image
+    /// - .k: number of dominant colors
+    /// - .coverage: spatial area ratio for determining color dominance
+    struct QuantizeConfig {
+        /// Number of dominant colors to find in the image.
+        /// If 0 (default) use `coverage` to threshold based on area.
+        int32_t k = 0;
+        /// Area ratio to consider when determining dominant colors.
+        /// Top dominant colors must cover at least `coverage` * `width` * `height` number of
+        /// pixels. Example: 0.38 means that the top dominant colors must cover at least 38% of the
+        /// image's pixels
+        float coverage = 0.9f;
+    } quantize;
 };
 
 /// @copydoc IMG2NUM_H_GAUSSIAN_BLUR_DOC
