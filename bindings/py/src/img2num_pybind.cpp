@@ -442,7 +442,7 @@ PYBIND11_MODULE(_img2num, m) {
                << "color_space: " << (int)c.color_space << ", "
                << "kmeans: " << pybind11::repr(pybind11::cast(c.kmeans)).cast<std::string>() << ", "
                << "synthetic: " << int(c.synthetic) << ", "
-               << "color quantize: "
+               << "quantize: "
                << pybind11::repr(pybind11::cast(c.quantize)).cast<std::string>() << "}>";
             return ss.str();
         });
