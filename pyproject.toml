@@ -24,7 +24,8 @@ classifiers = [
 Homepage      = "https://img2num.dev"
 Repository    = "https://github.com/Ryan-Millard/Img2Num"
 Documentation = "https://img2num.dev/docs/"
-Changelog     = "https://github.com/Ryan-Millard/Img2Num/blob/main/CHANGELOG.md"
+Changelog     = "https://img2num.dev/changelog/py/"
+"Changelog (GitHub)" = "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/py/CHANGELOG.md"
 "Bug Tracker" = "https://github.com/Ryan-Millard/Img2Num/issues"
 
 [build-system]
