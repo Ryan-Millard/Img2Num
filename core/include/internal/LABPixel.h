@@ -50,6 +50,16 @@ template <typename NumberT> struct LABPixel : public Pixel<NumberT> {
         );
     }
 
+    [[nodiscard]] inline bool operator<(const LABPixel<NumberT>& rhs) const {
+        auto this_tuple = std::make_tuple(this->l, this->a, this->b);
+        auto rhs_tuple = std::make_tuple(rhs.l, rhs.a, rhs.b);
+        return this_tuple < rhs_tuple;
+    };
+
+    [[nodiscard]] inline bool operator>(const LABPixel<NumberT>& rhs) const {
+        return rhs < *this;
+    };
+
 }
 #ifndef _MSC_VER
 __attribute__((packed))

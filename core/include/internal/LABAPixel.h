@@ -26,6 +26,16 @@ template <typename NumberT> struct LABAPixel : public ImageLib::LABPixel<NumberT
         return !(*this == other);
     }
 
+    [[nodiscard]] inline bool operator<(const LABAPixel<NumberT>& rhs) const {
+        auto this_tuple = std::make_tuple(this->l, this->a, this->b, this->alpha);
+        auto rhs_tuple = std::make_tuple(rhs.l, rhs.a, rhs.b, rhs.alpha);
+        return this_tuple < rhs_tuple;
+    };
+
+    [[nodiscard]] inline bool operator>(const LABAPixel<NumberT>& rhs) const {
+        return rhs < *this;
+    };
+
     // ----- Utilities -----
     inline void setGray(NumberT gray, NumberT alpha = 255) {
         LABPixel<NumberT>::setGray(gray);

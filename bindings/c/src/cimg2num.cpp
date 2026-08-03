@@ -16,9 +16,13 @@ static img2num::ImageToSvgConfig to_cpp(const img2num_ImageToSvgConfig& c) {
     cfg.kmeans.k = c.kmeans.k;
     cfg.kmeans.max_iter = c.kmeans.max_iter;
 
+    cfg.quantize.k = c.quantize.k;
+    cfg.quantize.coverage = c.quantize.coverage;
+
     cfg.min_cluster_area = c.min_cluster_area;
     cfg.min_thickness = c.min_thickness;
     cfg.color_space = c.color_space;
+    cfg.synthetic = c.synthetic;
 
     return cfg;
 }
@@ -32,9 +36,13 @@ static img2num_ImageToSvgConfig to_c(const img2num::ImageToSvgConfig& cpp) {
     cfg.kmeans.k = cpp.kmeans.k;
     cfg.kmeans.max_iter = cpp.kmeans.max_iter;
 
+    cfg.quantize.k = cpp.quantize.k;
+    cfg.quantize.coverage = cpp.quantize.coverage;
+
     cfg.min_cluster_area = cpp.min_cluster_area;
     cfg.min_thickness = cpp.min_thickness;
     cfg.color_space = cpp.color_space;
+    cfg.synthetic = cpp.synthetic;
 
     return cfg;
 }
@@ -74,6 +82,15 @@ void img2num_kmeans(
 ) {
     img2num::clear_last_error_and_catch(
         img2num::kmeans, data, out_data, out_labels, width, height, k, max_iter, color_space
+    );
+}
+
+void img2num_color_quantize(
+    const uint8_t* data, uint8_t* out_data, int32_t* out_labels, const int32_t width,
+    const int32_t height, const int32_t k, const float coverage, const uint8_t color_space
+) {
+    img2num::clear_last_error_and_catch(
+        img2num::color_quantize, data, out_data, out_labels, width, height, k, coverage, color_space
     );
 }
 

@@ -45,6 +45,16 @@ template <typename NumberT> struct RGBPixel : public Pixel<NumberT> {
         );
     }
 
+    [[nodiscard]] inline bool operator<(const RGBPixel<NumberT>& rhs) const {
+        auto this_tuple = std::make_tuple(this->red, this->green, this->blue);
+        auto rhs_tuple = std::make_tuple(rhs.red, rhs.green, rhs.blue);
+        return this_tuple < rhs_tuple;
+    };
+
+    [[nodiscard]] inline bool operator>(const RGBPixel<NumberT>& rhs) const {
+        return rhs < *this;
+    };
+
 }
 #ifndef _MSC_VER
 __attribute__((packed))
