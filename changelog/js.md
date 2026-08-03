@@ -6,18 +6,30 @@ URL: https://img2num.dev/changelog/js
 
 ## Latest Release
 
-**v0.2.1** - 2026-07-05 *(latest)*
-### 🐛 Bug Fixes
+**v0.3.0** - 2026-07-31 *(latest)*
+### ⚠ BREAKING CHANGES
 
-- **ImageToUint8Array:** memory leak and silent failure ( [#487](https://github.com/Ryan-Millard/Img2Num/issues/487) ) ( [0eb0598](https://github.com/Ryan-Millard/Img2Num/commit/0eb0598ec64ce6859946f79b89a554da87717f9c) )
+- **js:** img2num no longer offloads WASM execution to a background thread automatically. Heavy operations (gaussianBlur, bilateralFilter, kmeans, imageToSvg) now run on whichever thread calls them. This can block the calling thread (browser main thread/UI or the Node event loop during processing. Consumers who need non-blocking behavior must now wrap calls in their own Worker or worker_thread.
+
+### ✨ Features
+
+- **example app:** add html-js example app to demo basic library usage ( [72c4669](https://github.com/Ryan-Millard/Img2Num/commit/72c466913d2ea0d33f910eeffb5e87ab0b463beb) )
 
 ### 📚 Documentation
 
-- **packages/js:** add README for npm package ( [#466](https://github.com/Ryan-Millard/Img2Num/issues/466) ) ( [f193a54](https://github.com/Ryan-Millard/Img2Num/commit/f193a543f872b60a735706c1b5c1d6671c31563b) )
+- **CSS:** fix table of contents styling and layout ( [72c4669](https://github.com/Ryan-Millard/Img2Num/commit/72c466913d2ea0d33f910eeffb5e87ab0b463beb) )
+- **README.md:** add alt attributes to language icons and badges ( [#498](https://github.com/Ryan-Millard/Img2Num/issues/498) ) ( [21cf395](https://github.com/Ryan-Millard/Img2Num/commit/21cf39517785890cb7970e6e351b095558f85d87) ), closes [#492](https://github.com/Ryan-Millard/Img2Num/issues/492)
+- update JSDoc comments and break up website docs ( [72c4669](https://github.com/Ryan-Millard/Img2Num/commit/72c466913d2ea0d33f910eeffb5e87ab0b463beb) )
+- **website:** update documentation based on refactor in [#510](https://github.com/Ryan-Millard/Img2Num/issues/510) ( [72c4669](https://github.com/Ryan-Millard/Img2Num/commit/72c466913d2ea0d33f910eeffb5e87ab0b463beb) )
+
+### ♻️ Refactoring
+
+- **js:** run WASM calls on the caller's thread instead of a Worker ( [#510](https://github.com/Ryan-Millard/Img2Num/issues/510) ) ( [72c4669](https://github.com/Ryan-Millard/Img2Num/commit/72c466913d2ea0d33f910eeffb5e87ab0b463beb) )
 View full release page
 
 ## All Releases
 
+- v0.3.0 - 2026-07-31
 - v0.2.1 - 2026-07-05
 - v0.2.0 - 2026-06-27
 - v0.1.0 - 2026-05-29
