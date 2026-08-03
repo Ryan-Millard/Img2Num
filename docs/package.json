@@ -102,10 +102,8 @@
   "scripts": {
     "help": "node scripts/help.js",
     "docusaurus": "docusaurus",
-    "prestart": "just docs gen-py",
-    "preserve": "just docs gen-py",
     "start": "docusaurus start --host 0.0.0.0 --poll 1000",
-    "prebuild": "just docs gen-py && node scripts/prebuild.mjs",
+    "prebuild": "node scripts/prebuild.mjs",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
@@ -113,7 +111,8 @@
     "serve": "node scripts/serve.js --host 0.0.0.0",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "doxygen": "node scripts/doxygen.js"
+    "doxygen": "node scripts/doxygen.js",
+    "pydoc-markdown": "node scripts/pydoc-markdown/index.js"
   },
   "dependencies": {
     "@docusaurus/faster": "^3.10.1",

@@ -20,7 +20,6 @@ help:
     docs <action>: \n \
     \t build: build docusaurus server \n \
     \t start: start docusaurus server on port 3000 \n \
-    \t gen-py: generate python API documentation \n \
     react-js <action>: \n \
     \t build: build example browser app \n \
     \t start: start example browser app on port 5173 \n \
@@ -82,8 +81,7 @@ docs action:
     @echo "Docusaurus server"
     case "{{ action }}" in \
         build) pnpm -F docs run build ;; \
-        start) just docs gen-py && cd docs/ && pnpm run serve ;; \
-        gen-py) mkdir -p docs/docs/py && printf '%s\n' '---' 'id: api-reference' 'title: Python API Reference' 'sidebar_position: 1' '---' '' > docs/docs/py/api-reference.tmp.md && uv run pydoc-markdown -I packages/py -m img2num.__init__ -m img2num.api >> docs/docs/py/api-reference.tmp.md && mv docs/docs/py/api-reference.tmp.md docs/docs/py/api-reference.md ;; \
+        start) cd docs/ && pnpm run serve ;; \
     esac
 
 react-js action: build-packages-js
