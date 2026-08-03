@@ -4,202 +4,220 @@ title: Python API Reference
 sidebar_position: 1
 ---
 
-import { MoveRight } from "lucide-react";
+<a id="img2num.__init__"></a>
 
-# Python API Reference
+# img2num.\_\_init\_\_
 
-:::danger[This Page Was Not Auto-Generated]
+<a id="img2num.api"></a>
 
-These docs have not been automatically generated from doc strings, so they are likely
-to drift slightly from the actual API.
+# img2num.api
 
-[#477](https://github.com/Ryan-Millard/Img2Num/issues/477) tracks this issue.
+<a id="img2num.api.gaussian_blur_fft"></a>
 
-:::
-
-All functions are exposed via the `img2num` Python package. They accept NumPy
-arrays and **automatically inject `width`/`height` from the array shape** — you
-do not pass these yourself.
-
-:::important[Input images must be RGBA]
-
-The core library operates on 4-channel RGBA buffers. Convert your image before
-calling any function, e.g. with OpenCV:
+#### gaussian\_blur\_fft
 
 ```python
-import cv2
-
-img = cv2.imread("input.png")
-img = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)  # VERY IMPORTANT
+@_inject_dimensions("image")
+def gaussian_blur_fft(image: npt.NDArray[np.uint8], sigma: float, *,
+                      width: int, height: int) -> npt.NDArray[np.uint8]
 ```
 
-:::
+Apply a Gaussian blur to the image using Fast Fourier Transform (FFT) for performance.
 
-## `image_to_svg(image, *, config=None)`
+Parameters
+----------
+image : numpy.ndarray
+    Input image as a uint8 numpy array.
+sigma : float
+    Standard deviation for the Gaussian kernel.
 
-Full raster <MoveRight size={15} /> SVG pipeline (bilateral filter <MoveRight size={15} /> k-means <MoveRight size={15} /> contour tracing).
+Returns
+-------
+numpy.ndarray
+    Blurred image as a uint8 numpy array.
 
-**Parameters:**
+<a id="img2num.api.invert_image"></a>
 
-| Name     | Type                | Description                                           |
-| :------- | :------------------ | :---------------------------------------------------- |
-| `image`  | `NDArray[np.uint8]` | Input image of shape `(H, W, 4)` (RGBA).              |
-| `config` | `ImageToSvgConfig`  | Optional configuration. Defaults are used if omitted. |
-
-**Returns:** `str` — SVG markup.
+#### invert\_image
 
 ```python
-from img2num import image_to_svg, ImageToSvgConfig
-
-svg = image_to_svg(img)
-
-# Or with an explicit config:
-cfg = ImageToSvgConfig(kmeans={"k": 16})
-svg = image_to_svg(img, config=cfg)
+@_inject_dimensions("image")
+def invert_image(image: npt.NDArray[np.uint8], *, width: int,
+                 height: int) -> npt.NDArray[np.uint8]
 ```
 
-## `bilateral_filter(image, sigma_spatial, sigma_range, color_space)`
+Invert the pixel values of an image.
 
-Edge-preserving smoothing.
+Parameters
+----------
+image : numpy.ndarray
+    Input image as a uint8 numpy array.
 
-**Parameters:**
+Returns
+-------
+numpy.ndarray
+    Inverted image as a uint8 numpy array.
 
-| Name            | Type                | Description                                           |
-| :-------------- | :------------------ | :---------------------------------------------------- |
-| `image`         | `NDArray[np.uint8]` | Input RGBA image.                                     |
-| `sigma_spatial` | `float`             | Spatial Gaussian standard deviation (proximity).      |
-| `sigma_range`   | `float`             | Range Gaussian standard deviation (color similarity). |
-| `color_space`   | `int`               | `0` = CIE LAB, `1` = sRGB.                            |
+<a id="img2num.api.threshold_image"></a>
 
-**Returns:** `NDArray[np.uint8]` — Filtered image.
+#### threshold\_image
 
 ```python
-from img2num import bilateral_filter
-
-filtered = bilateral_filter(img, 3, 50, 0)
+@_inject_dimensions("image")
+def threshold_image(image: npt.NDArray[np.uint8], num_thresholds: int, *,
+                    width: int, height: int) -> npt.NDArray[np.uint8]
 ```
 
-## `kmeans(data, k, max_iter, color_space)`
+Apply thresholding to the image.
 
-K-means color clustering.
+Parameters
+----------
+image : numpy.ndarray
+    Input image as a uint8 numpy array.
+num_thresholds : int
+    Number of threshold levels to apply.
 
-**Parameters:**
+Returns
+-------
+numpy.ndarray
+    Thresholded image as a uint8 numpy array.
 
-| Name          | Type                | Description                  |
-| :------------ | :------------------ | :--------------------------- |
-| `data`        | `NDArray[np.uint8]` | Input RGBA image.            |
-| `k`           | `int`               | Number of clusters (colors). |
-| `max_iter`    | `int`               | Maximum k-means iterations.  |
-| `color_space` | `int`               | `0` = CIE LAB, `1` = sRGB.   |
+<a id="img2num.api.black_threshold_image"></a>
 
-**Returns:** `tuple[NDArray[np.uint8], NDArray[np.int32]]` — `(clustered_data, labels)`.
+#### black\_threshold\_image
 
 ```python
-from img2num import kmeans
-
-clustered, labels = kmeans(img, 16, 100, 0)
+@_inject_dimensions("image")
+def black_threshold_image(image: npt.NDArray[np.uint8], num_thresholds: int, *,
+                          width: int, height: int) -> npt.NDArray[np.uint8]
 ```
 
-## `labels_to_svg(data, labels, min_area, min_thickness)`
+Apply thresholding with a bias in favor of black to the image.
 
-Convert a label map into vector paths.
+Parameters
+----------
+image : numpy.ndarray
+    Input image as a uint8 numpy array.
+num_thresholds : int
+    Number of threshold levels to apply.
 
-**Parameters:**
+Returns
+-------
+numpy.ndarray
+    Thresholded image as a uint8 numpy array.
 
-| Name            | Type                | Description                                                              |
-| :-------------- | :------------------ | :----------------------------------------------------------------------- |
-| `data`          | `NDArray[np.uint8]` | Input RGBA image.                                                        |
-| `labels`        | `NDArray[np.int32]` | Per-pixel cluster labels (from `kmeans`).                                |
-| `min_area`      | `int`               | Minimum region area (px) to include.                                     |
-| `min_thickness` | `int`               | Minimum region thickness (px); thinner regions are merged. `0` disables. |
+<a id="img2num.api.bilateral_filter"></a>
 
-**Returns:** `str` — SVG markup.
+#### bilateral\_filter
 
 ```python
-from img2num import kmeans, labels_to_svg
-
-_, labels = kmeans(img, 16, 100, 0)
-svg = labels_to_svg(img, labels, 100, 0)
+@_inject_dimensions("image")
+def bilateral_filter(image: npt.NDArray[np.uint8], sigma_spatial: float,
+                     sigma_range: float, color_space: int, *, width: int,
+                     height: int) -> npt.NDArray[np.uint8]
 ```
 
-## `gaussian_blur_fft(image, sigma)`
+Apply a bilateral filter to the image.
 
-Apply a Gaussian blur via FFT.
+Parameters
+----------
+image : numpy.ndarray
+    Input image as a uint8 numpy array.
+sigma_spatial : float
+    Standard deviation for the spatial Gaussian (proximity weight).
+sigma_range : float
+    Standard deviation for the range Gaussian (intensity similarity weight).
+color_space : int
+    Color space identifier (e.g., 0 for LAB, 1 for sRGB).
 
-**Parameters:**
+Returns
+-------
+numpy.ndarray
+    Filtered image as a uint8 numpy array.
 
-| Name    | Type                | Description                         |
-| :------ | :------------------ | :---------------------------------- |
-| `image` | `NDArray[np.uint8]` | Input RGBA image.                   |
-| `sigma` | `float`             | Standard deviation of the Gaussian. |
+<a id="img2num.api.kmeans"></a>
 
-**Returns:** `NDArray[np.uint8]` — Blurred image.
-
-## `invert_image(image)`
-
-Invert pixel values.
-
-**Parameters:**
-
-| Name    | Type                | Description       |
-| :------ | :------------------ | :---------------- |
-| `image` | `NDArray[np.uint8]` | Input RGBA image. |
-
-**Returns:** `NDArray[np.uint8]` — Inverted image.
-
-## `threshold_image(image, num_thresholds)`
-
-Reduce the image to `num_thresholds` discrete intensity levels.
-
-**Parameters:**
-
-| Name             | Type                | Description                 |
-| :--------------- | :------------------ | :-------------------------- |
-| `image`          | `NDArray[np.uint8]` | Input RGBA image.           |
-| `num_thresholds` | `int`               | Number of threshold levels. |
-
-**Returns:** `NDArray[np.uint8]` — Thresholded image.
-
-## `black_threshold_image(image, num_thresholds)`
-
-Like `threshold_image`, but biased toward darker output.
-
-**Parameters:**
-
-| Name             | Type                | Description                 |
-| :--------------- | :------------------ | :-------------------------- |
-| `image`          | `NDArray[np.uint8]` | Input RGBA image.           |
-| `num_thresholds` | `int`               | Number of threshold levels. |
-
-**Returns:** `NDArray[np.uint8]` — Thresholded image.
-
-## `ImageToSvgConfig`
-
-Configuration object passed to `image_to_svg`. All parameters have sensible
-defaults and can be set via constructor or attribute assignment.
-
-| Attribute                        | Type    | Default | Description                                  |
-| :------------------------------- | :------ | :------ | :------------------------------------------- |
-| `bilateral_filter.sigma_spatial` | `float` | `3.0`   | Bilateral spatial sigma.                     |
-| `bilateral_filter.sigma_range`   | `float` | `50.0`  | Bilateral range sigma.                       |
-| `kmeans.k`                       | `int`   | `16`    | Number of clusters.                          |
-| `kmeans.max_iter`                | `int`   | `100`   | Maximum k-means iterations.                  |
-| `min_cluster_area`               | `int`   | `100`   | Minimum region area (px).                    |
-| `min_thickness`                  | `int`   | `0`     | Minimum region thickness (px); `0` disables. |
-| `color_space`                    | `int`   | `0`     | `0` = CIE LAB, `1` = sRGB.                   |
+#### kmeans
 
 ```python
-from img2num import ImageToSvgConfig
-
-# Construct with nested dicts...
-cfg = ImageToSvgConfig(
-    bilateral_filter={"sigma_spatial": 3.0, "sigma_range": 50.0},
-    kmeans={"k": 32},
-    min_cluster_area=50,
-    color_space=0,
-)
-
-# ...or set attributes directly:
-cfg.kmeans.k = 32
-cfg.min_cluster_area = 50
+@_inject_dimensions("data")
+def kmeans(data: npt.NDArray[np.uint8], k: int, max_iter: int,
+           color_space: int, *, width: int,
+           height: int) -> Tuple[npt.NDArray[np.uint8], npt.NDArray[int]]
 ```
+
+Perform K-means clustering on the image data.
+
+Parameters
+----------
+data : numpy.ndarray
+    Input image data as a uint8 numpy array.
+k : int
+    Number of clusters to compute.
+max_iter : int
+    Maximum number of iterations for the K-means algorithm.
+color_space : int
+    Color space identifier (e.g., 0 for LAB, 1 for sRGB).
+
+Returns
+-------
+tuple
+    A tuple containing two NumPy arrays: (clustered_data, labels).
+
+<a id="img2num.api.labels_to_svg"></a>
+
+#### labels\_to\_svg
+
+```python
+@_inject_dimensions("data")
+def labels_to_svg(data: npt.NDArray[np.uint8], labels: npt.NDArray[int],
+                  min_area: int, min_thickness: int, *, width: int,
+                  height: int) -> str
+```
+
+Convert labels to an SVG string.
+
+Parameters
+----------
+data : numpy.ndarray
+    Input image data as a uint8 numpy array.
+labels : numpy.ndarray
+    Label map as an int32 numpy array.
+min_area : int
+    Minimum cluster area to include in the SVG.
+min_thickness : int
+    Minimum thickness a region must have to include in the SVG.
+
+Returns
+-------
+str
+    An SVG string containing data roughly approximate to the input image.
+
+<a id="img2num.api.image_to_svg"></a>
+
+#### image\_to\_svg
+
+```python
+@_inject_dimensions("image")
+def image_to_svg(image: npt.NDArray[np.uint8],
+                 *,
+                 width: int,
+                 height: int,
+                 config=None) -> str
+```
+
+Convert Image to SVG string.
+
+Parameters
+----------
+image : numpy.ndarray
+    Input image buffer.
+config : ImageToSvgConfig, optional
+    Configuration object containing filter and clustering parameters.
+    Defaults to ``ImageToSvgConfig()`` if not provided.
+
+Returns
+-------
+str
+    SVG string representation of the image.
+

@@ -94,3 +94,8 @@ dev = [
 
 [tool.cibuildwheel]
 build-verbosity = 1
+
+[dependency-groups]
+dev = [
+    "pydoc-markdown>=4.8.2",
+]
