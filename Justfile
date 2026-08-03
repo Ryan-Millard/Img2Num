@@ -82,8 +82,8 @@ docs action:
     @echo "Docusaurus server"
     case "{{ action }}" in \
         build) pnpm -F docs run build ;; \
-        start) cd docs/ && pnpm run serve ;; \
-        gen-py) mkdir -p docs/docs/py && printf '%s\n' '---' 'id: api-reference' 'title: Python API Reference' 'sidebar_position: 1' '---' '' > docs/docs/py/api-reference.md && uv run pydoc-markdown -I packages/py -m img2num.__init__ -m img2num.api >> docs/docs/py/api-reference.md ;; \
+        start) just docs gen-py && cd docs/ && pnpm run serve ;; \
+        gen-py) mkdir -p docs/docs/py && printf '%s\n' '---' 'id: api-reference' 'title: Python API Reference' 'sidebar_position: 1' '---' '' > docs/docs/py/api-reference.tmp.md && uv run pydoc-markdown -I packages/py -m img2num.__init__ -m img2num.api -m img2num._img2num >> docs/docs/py/api-reference.tmp.md && mv docs/docs/py/api-reference.tmp.md docs/docs/py/api-reference.md ;; \
     esac
 
 react-js action: build-packages-js

@@ -103,6 +103,7 @@
     "help": "node scripts/help.js",
     "docusaurus": "docusaurus",
     "prestart": "just docs gen-py",
+    "preserve": "just docs gen-py",
     "start": "docusaurus start --host 0.0.0.0 --poll 1000",
     "prebuild": "just docs gen-py && node scripts/prebuild.mjs",
     "build": "docusaurus build",
