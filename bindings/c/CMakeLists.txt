@@ -4,7 +4,7 @@
 project(CImg2Num
   LANGUAGES CXX
   # Don't change the inline comment below - release-please needs it
-  VERSION 0.2.0 # x-release-please-version
+  VERSION 0.2.1 # x-release-please-version
 )
 
 include(CMakePackageConfigHelpers)
