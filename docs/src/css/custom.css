@@ -372,7 +372,6 @@ table td {
 code {
   background-color: var(--ifm-code-background);
   border-radius: var(--radius-sm);
-  color: var(--text);
 }
 
 [data-theme="dark"] code {
