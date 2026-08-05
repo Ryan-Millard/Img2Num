@@ -165,10 +165,7 @@ char* svg = img2num_image_to_svg(image_data, width, height, &cfg);`,
 
 export default function ExampleApps() {
   return (
-    <Layout
-      title="Example Apps"
-      description="Runnable example applications showing how to use Img2Num in the browser (React, ESM, IIFE, UMD) and from the command line (C, C++, Python, Node.js)."
-    >
+    <Layout title="Example Apps" description="Runnable example applications showing how to use Img2Num in the browser (React, ESM, IIFE, UMD) and from the command line (C, C++, Python, Node.js).">
       <main>
         <section className={styles.section}>
           <div className={styles.eyebrow}>
@@ -195,7 +192,7 @@ export default function ExampleApps() {
             {apps.map((app) => (
               <div key={app.title} id={app.slug} className={styles.bindingCard}>
                 <span className={styles.bindingLang}>{app.lang}</span>
-                <div style={{ display: 'flex', alignItems: "center", gap: "1em" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "1em" }}>
                   <div className={styles.bindingIcon} style={{ background: `var(${app.accentVar})` }}>
                     {app.icon}
                   </div>

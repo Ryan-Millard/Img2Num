@@ -9,7 +9,5 @@
   "libUrl": "./lib/img2num.js",
   "libUrlCdn": "https://cdn.jsdelivr.net/npm/img2num@{{VERSION}}/dist/browser/img2num.js",
   "appCodeIndentLevel": 1,
-  "libs": [
-    { "package": "img2num", "from": "dist/browser", "to": "lib" }
-  ]
+  "libs": [{ "package": "img2num", "from": "dist/browser", "to": "lib" }]
 }

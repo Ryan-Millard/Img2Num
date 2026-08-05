@@ -2,10 +2,21 @@
   "name": "img2num",
   "version": "0.3.0",
   "description": "Img2Num is a raster vectorization library - it converts images to SVGs",
-  "publishConfig": { "access": "public" },
-  "keywords": ["img2num", "computer-vision", "vectorization", "image-to-svg", "wasm", "webgpu"],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "img2num",
+    "computer-vision",
+    "vectorization",
+    "image-to-svg",
+    "wasm",
+    "webgpu"
+  ],
   "homepage": "https://github.com/Ryan-Millard/Img2Num#readme",
-  "bugs": { "url": "https://github.com/Ryan-Millard/Img2Num/issues" },
+  "bugs": {
+    "url": "https://github.com/Ryan-Millard/Img2Num/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Ryan-Millard/Img2Num.git",
@@ -14,13 +25,11 @@
   "license": "MIT",
   "author": "Ryan-Millard",
   "type": "module",
-
   "main": "./dist/node/img2num.cjs",
   "module": "./dist/browser/img2num.js",
   "browser": "./dist/browser/img2num.js",
   "unpkg": "./dist/standalone/img2num.iife.js",
   "jsdelivr": "./dist/standalone/img2num.iife.js",
-
   "exports": {
     ".": {
       "browser": "./dist/browser/img2num.js",
@@ -33,10 +42,13 @@
     "./wasm": "./dist/browser/img2num.wasm",
     "./package.json": "./package.json"
   },
-
-  "files": ["dist"],
-  "sideEffects": ["**/*.wasm", "**/build-wasm/**"],
-
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "**/*.wasm",
+    "**/build-wasm/**"
+  ],
   "scripts": {
     "prebuild": "just build js",
     "build:browser": "cross-env TARGET=browser vite build",
@@ -47,11 +59,12 @@
     "build": "pnpm build:browser && pnpm build:standalone && pnpm build:node",
     "check:package": "publint"
   },
-
-  "engines": { "node": ">=18" },
-
-  "optionalDependencies": { "webgpu": "^0.4.0" },
-
+  "engines": {
+    "node": ">=18"
+  },
+  "optionalDependencies": {
+    "webgpu": "^0.4.0"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.0",
     "cross-env": "^10.1.0",

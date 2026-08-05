@@ -28,8 +28,12 @@ const TARGETS = {
   },
 
   "node-esm": {
-    glue: "node", formats: ["es"], isNode: true, copyWasm: "required",
-    outDir: "dist/node", emptyOutDir: true,
+    glue: "node",
+    formats: ["es"],
+    isNode: true,
+    copyWasm: "required",
+    outDir: "dist/node",
+    emptyOutDir: true,
     // Emscripten's CJS-shaped node glue reads __dirname/__filename. ESM has
     // neither, and platform:'node' only shims require().
     banner: [
@@ -40,17 +44,19 @@ const TARGETS = {
     ].join("\n"),
   },
   "node-cjs": {
-    glue: "node", formats: ["cjs"], isNode: true, copyWasm: "required",
-    outDir: "dist/node", emptyOutDir: false,   // must not wipe the ESM output
+    glue: "node",
+    formats: ["cjs"],
+    isNode: true,
+    copyWasm: "required",
+    outDir: "dist/node",
+    emptyOutDir: false, // must not wipe the ESM output
     banner: undefined,
   },
 };
 
 const T = TARGETS[TARGET];
 if (!T) {
-  throw new Error(
-    `Unknown TARGET "${TARGET}". Expected one of: ${Object.keys(TARGETS).join(", ")}`,
-  );
+  throw new Error(`Unknown TARGET "${TARGET}". Expected one of: ${Object.keys(TARGETS).join(", ")}`);
 }
 
 /** Vite inlines `new URL('x.wasm', import.meta.url)` as a data URL in lib mode
@@ -64,10 +70,7 @@ function preventWasmInlining() {
       if (!id.includes("build-wasm") || !T.copyWasm) return null;
       if (!code.includes("import.meta.url")) return null;
 
-      const patched = code.replace(
-        /new URL\((["'])(img2num\.wasm)\1,\s*import\.meta\.url\)/g,
-        'new URL(globalThis.__IMG2NUM_WASM_NAME__ ??= "$2", import.meta.url)',
-      );
+      const patched = code.replace(/new URL\((["'])(img2num\.wasm)\1,\s*import\.meta\.url\)/g, 'new URL(globalThis.__IMG2NUM_WASM_NAME__ ??= "$2", import.meta.url)');
       return patched === code ? null : { code: patched, map: null };
     },
   };
@@ -85,9 +88,7 @@ function copyWasmPlugin() {
 
       if (!existsSync(src)) {
         if (T.copyWasm === "optional") return; // SINGLE_FILE=1 emits no .wasm
-        throw new Error(
-          `[img2num] Missing ${src}. Run the CMake wasm build first (pnpm build:wasm).`,
-        );
+        throw new Error(`[img2num] Missing ${src}. Run the CMake wasm build first (pnpm build:wasm).`);
       }
 
       mkdirSync(destDir, { recursive: true });
@@ -127,9 +128,7 @@ export default defineConfig({
 
     rollupOptions: {
       platform: T.isNode ? "node" : "browser",
-      external: T.isNode
-        ? [/^node:/, "webgpu", "fs", "path", "url", "module", "crypto", "worker_threads"]
-        : [],
+      external: T.isNode ? [/^node:/, "webgpu", "fs", "path", "url", "module", "crypto", "worker_threads"] : [],
       output: { exports: "named", ...(T.banner ? { banner: T.banner } : {}) },
     },
   },

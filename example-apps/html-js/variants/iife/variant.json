@@ -9,7 +9,5 @@
   "libUrl": "./lib/img2num.iife.js",
   "libUrlCdn": "https://cdn.jsdelivr.net/npm/img2num@{{VERSION}}/dist/standalone/img2num.iife.js",
   "appCodeIndentLevel": 1,
-  "libs": [
-    { "package": "img2num", "from": "dist/standalone/img2num.iife.js", "to": "lib/img2num.iife.js" }
-  ]
+  "libs": [{ "package": "img2num", "from": "dist/standalone/img2num.iife.js", "to": "lib/img2num.iife.js" }]
 }
