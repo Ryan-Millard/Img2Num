@@ -152,24 +152,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/js
     devDependencies:
-      vite:
-        specifier: ^8.1.0
-        version: 8.1.0(@types/node@26.0.1)(jiti@1.21.7)(terser@5.48.0)(yaml@2.9.0)
-
-  example-apps/html-js-iife:
-    dependencies:
-      img2num:
-        specifier: workspace:*
-        version: link:../../packages/js
-
-  example-apps/html-js-umd:
-    dependencies:
-      img2num:
-        specifier: workspace:*
-        version: link:../../packages/js
-    devDependencies:
       requirejs:
-        specifier: ^2.3.7
+        specifier: ^2.3.8
         version: 2.3.8
 
   example-apps/react-js:

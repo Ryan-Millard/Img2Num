@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Img2Num — HTML + IIFE Example</title>
+  <meta name="description" content="Minimal example of converting a raster image to SVG in the browser with Img2Num, using a plain script tag (IIFE bundle) — no bundler required." />
+  <link rel="canonical" href="https://img2num.dev/example-apps/html-js-iife/" />
+  <link rel="icon" type="image/svg+xml" href="https://img2num.dev/img/favicon.svg" />
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:title" content="Img2Num — HTML + IIFE Example" />
+  <meta property="og:description" content="Convert raster images to SVG in the browser with a single script tag." />
+  <meta property="og:url" content="https://img2num.dev/example-apps/html-js-iife/" />
+  <meta property="og:image" content="https://img2num.dev/img/favicon.png" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 0 auto; padding: 0 1rem 2rem; }
+    nav { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid #ddd; }
+    nav img { width: 28px; height: 28px; }
+    nav a { color: inherit; text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
+    nav .brand { font-weight: 600; margin-right: auto; display: flex; align-items: center; gap: 0.5rem; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="https://img2num.dev/">
+      <img src="https://img2num.dev/img/favicon.svg" alt="Img2Num logo" />
+      Img2Num
+    </a>
+    <a href="https://img2num.dev/docs/js/">Docs</a>
+    <a href="https://github.com/Ryan-Millard/Img2Num">GitHub</a>
+    <a href="https://www.npmjs.com/package/img2num">npm</a>
+  </nav>
+
+  <h1>HTML + IIFE example</h1>
+
+  <input type="file" id="file"
+    accept=".png,.jpg,.jpeg,.gif,.bmp,.webp,.avif,image/png,image/jpeg,image/gif,image/bmp,image/webp,image/avif" />
+  <p id="status"></p>
+  <div id="output"></div>
+
+  <script src="./lib/img2num.iife.js"></script>
+  <script>
+    const { imageToUint8ClampedArray, imageToSvg } = Img2Num;
+
+    const status = document.getElementById('status');
+    const output = document.getElementById('output');
+
+    document.getElementById('file').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      status.textContent = 'Processing…';
+      output.innerHTML = '';
+      try {
+        const { pixels, width, height } = await imageToUint8ClampedArray(file);
+        const { svg } = await imageToSvg({ pixels, width, height });
+        output.innerHTML = svg;
+        status.textContent = 'Done.';
+      } catch (err) {
+        status.textContent = 'Error: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>

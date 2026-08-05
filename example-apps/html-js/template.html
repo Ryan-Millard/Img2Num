@@ -1,0 +1,116 @@
+<!doctype html>
+<!-- Generated from example-apps/html-js/template.html — do not edit the built copy directly. -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{{TITLE}}</title>
+    <meta name="description" content="{{DESCRIPTION}}" />
+    <link rel="canonical" href="{{CANONICAL}}" />
+    <link rel="icon" type="image/svg+xml" href="https://img2num.dev/img/favicon.svg" />
+
+    <meta property="og:title" content="{{TITLE}}" />
+    <meta property="og:description" content="{{DESCRIPTION}}" />
+    <meta property="og:url" content="{{CANONICAL}}" />
+    <meta property="og:image" content="https://img2num.dev/img/favicon.png" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+
+    <link rel="stylesheet" href="./shared/styles.css" />
+    <script>
+      document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    </script>
+  </head>
+  <body>
+    <nav class="navbar">
+      <a class="navbar__brand" href="https://img2num.dev/">
+        <img src="https://img2num.dev/img/favicon.svg" alt="Img2Num logo" />
+        <b>Img2Num</b>
+      </a>
+      <a class="navbar__link" href="https://img2num.dev/docs/js/">Docs</a>
+      <a class="navbar__link" href="https://img2num.dev/changelog/">Changelog</a>
+      <span class="navbar__spacer"></span>
+      <a class="navbar__link" href="https://github.com/Ryan-Millard/Img2Num">GitHub</a>
+      <a class="navbar__link" href="https://www.npmjs.com/package/img2num">npm</a>
+      <button id="themeToggle" class="button" type="button"></button>
+    </nav>
+
+    <main class="container">
+      <h1>{{HEADING}}</h1>
+      <p>{{INTRO}}</p>
+      <p>Upload an image to convert it to an SVG.</p>
+
+      <label id="dropZone" class="dropzone" for="fileInput" tabindex="0">
+        <span id="uploadHelp">Drag &amp; drop an image here, paste one (Ctrl+V), or&nbsp;</span>
+        <input
+          type="file"
+          id="fileInput"
+          aria-describedby="uploadHelp"
+          accept=".png,.jpg,.jpeg,.gif,.bmp,.webp,.avif,image/png,image/jpeg,image/gif,image/bmp,image/webp,image/avif"
+        />
+      </label>
+
+      <section>
+        <h4>Original</h4>
+        <img id="originalImg" alt="" />
+      </section>
+
+      <section>
+        <h4>Result</h4>
+        <div id="spinner" class="spinner"></div>
+        <img id="previewImg" alt="" />
+      </section>
+    </main>
+
+    <section class="container">
+      <h2>How this page works</h2>
+
+      <p>Load the library from a CDN ({{TITLE}} style) — this page ships its own copy in <code>lib/</code> so it also works offline:</p>
+      <div class="codeblock">
+        <button class="codeblock__copy" type="button" aria-label="Copy code">Copy</button>
+        <pre><code>{{LOADER_DISPLAY}}</code></pre>
+      </div>
+      <p>Or install it locally: <code>npm install img2num</code> — see the <a href="https://img2num.dev/docs/js/installation/">installation guide</a>.</p>
+
+      <p>
+        Full page source is viewable with your browser's <i>View Source</i> — it's a
+        complete, standalone app. See the
+        <a href="https://img2num.dev/docs/js/usage/">usage guide</a> for options like
+        <code>num_colors</code> and the bilateral filter parameters.
+      </p>
+    </section>
+
+    <footer class="footer">
+      <img src="https://img2num.dev/img/favicon.svg" alt="Img2Num logo" height="100" />
+      <p>Copyright &copy; 2026 Img2Num.</p>
+      <p>Img2Num example app — see the <a href="https://img2num.dev">docs</a> for more.</p>
+    </footer>
+
+    <!-- Themes -->
+    <script>
+      const themeToggle = document.getElementById("themeToggle");
+      const label = (t) => (t === "dark" ? "Dark Mode" : "Light Mode");
+      themeToggle.textContent = label(document.documentElement.dataset.theme);
+      themeToggle.addEventListener("click", () => {
+        const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+        document.documentElement.dataset.theme = next;
+        localStorage.setItem("theme", next);
+        themeToggle.textContent = label(next);
+      });
+    </script>
+
+    <!-- Code Block Copy -->
+    <script>
+      for (const btn of document.querySelectorAll(".codeblock__copy")) {
+        btn.addEventListener("click", async () => {
+          await navigator.clipboard.writeText(btn.nextElementSibling.textContent);
+          btn.textContent = "Copied";
+          setTimeout(() => (btn.textContent = "Copy"), 2000);
+        });
+      }
+    </script>
+
+    {{LOADER_EXECUTABLE}}
+  </body>
+</html>

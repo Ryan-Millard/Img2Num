@@ -1,0 +1,242 @@
+/* Shared styles for all Img2Num example apps.
+   Tokens mirror the main site's custom.css (img2num.dev) so the demos feel
+   like part of the site, without depending on the Docusaurus build's
+   hash-named stylesheet. If the site palette changes, update these values. */
+
+:root {
+  --font-sans: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+
+  --accent: #e8899a;
+
+  --bg: #fff8eb;
+  --surface: #f5f3ee;
+  --primary: #6a3817;
+  --primary-dark: #532e1a;
+  --secondary: #d7a47d;
+  --text: #2c1a1a;
+  --text-light: #69432e;
+  --border: #eecea4;
+  --code-bg: #f1e3c6;
+  --pre-bg: #fdf6e8;
+  --glass-bg: rgba(248, 234, 205, 0.25);
+  --glass-border: rgba(106, 56, 23, 0.15);
+  --glass-shadow: rgba(83, 46, 26, 0.1);
+}
+
+[data-theme="dark"] {
+  --bg: #1a0f1f;
+  --surface: #120a15;
+  --primary: #e0ad7d;
+  --primary-dark: #d7a47d;
+  --secondary: #7a4a2e;
+  --text: #f8eacd;
+  --text-light: #eecea4;
+  --border: #3d2a3d;
+  --code-bg: #2a1a2a;
+  --pre-bg: #120a15;
+  --glass-bg: rgba(61, 42, 61, 0.4);
+  --glass-border: rgba(215, 164, 125, 0.2);
+  --glass-shadow: rgba(248, 234, 205, 0.05);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+h1,
+h2,
+h4 {
+  color: var(--text);
+  line-height: 1.25;
+}
+
+a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--text-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--bg);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: 0 2px 10px var(--glass-shadow);
+}
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar__brand img {
+  height: 2rem;
+}
+
+.navbar__brand,
+.navbar__link {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.navbar__brand:hover,
+.navbar__link:hover {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.navbar__spacer {
+  margin-left: auto;
+}
+
+/* Buttons (site's outline style) */
+.button {
+  font: inherit;
+  font-weight: 600;
+  padding: 0.375rem 1rem;
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: var(--primary);
+  color: var(--bg);
+}
+
+/* Layout */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+section {
+  margin-top: 1.5rem;
+}
+
+section img {
+  max-width: 100%;
+}
+
+/* Drop zone */
+.dropzone {
+  display: block;
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--glass-bg);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 6px var(--glass-shadow);
+  cursor: pointer;
+}
+
+.dropzone:hover,
+.dropzone:focus-visible,
+.dropzone.dropzone--active {
+  border-color: var(--primary);
+}
+
+/* Spinner */
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 2s;
+  }
+}
+
+/* Code */
+pre {
+  background-color: var(--pre-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 6px var(--glass-shadow);
+  padding: 1rem;
+  overflow-x: auto;
+  font: 90%/1.45 var(--font-mono);
+}
+
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+code {
+  background-color: var(--code-bg);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font-mono);
+  padding: 0.1rem 0.2rem;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  margin-top: 2rem;
+  background-color: var(--surface);
+  border-top: 1px solid var(--border);
+  color: var(--text-light);
+}
+
+.codeblock {
+  position: relative;
+}
+
+.codeblock__copy {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font: 600 0.75rem var(--font-sans);
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--glass-bg);
+  color: var(--text-light);
+  cursor: pointer;
+}
+
+.codeblock__copy:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
