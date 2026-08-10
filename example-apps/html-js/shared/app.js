@@ -4,8 +4,11 @@ const originalImg = document.getElementById("originalImg");
 const previewImg = document.getElementById("previewImg");
 const spinner = document.getElementById("spinner");
 
+let latestRequest = 0;
+
 async function processImage(file) {
   if (!file || !file.type.startsWith("image/")) return;
+  const request = ++latestRequest;
 
   if (originalImg.src.startsWith("blob:")) {
     URL.revokeObjectURL(originalImg.src);
@@ -17,12 +20,15 @@ async function processImage(file) {
   try {
     const { pixels, width, height } = await imageToUint8ClampedArray(file);
     const { svg } = await imageToSvg({ pixels, width, height });
+    if (request !== latestRequest) return;
     previewImg.src = "data:image/svg+xml;base64," + btoa(svg);
   } catch (error) {
     console.error("Failed to convert image:", error);
-    alert("An error occurred.\nCheck the developer console for details.");
+    if (request === latestRequest) {
+      alert("An error occurred.\nCheck the developer console for details.");
+    }
   } finally {
-    spinner.style.display = "none";
+    if (request === latestRequest) spinner.style.display = "none";
     // Note: terminateWasmModule() is deliberately NOT called here. It frees
     // the WASM resources, which would force a full re-initialization on the
     // next conversion. Cleanup happens automatically on page teardown.

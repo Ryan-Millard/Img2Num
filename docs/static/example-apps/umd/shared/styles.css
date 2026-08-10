@@ -4,8 +4,8 @@
    hash-named stylesheet. If the site palette changes, update these values. */
 
 :root {
-  --font-sans: "Segoe UI", tahoma, geneva, verdana, sans-serif;
-  --font-mono: "SFMono-Regular", consolas, "Liberation Mono", menlo, monospace;
+  --font-sans: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   --radius-sm: 4px;
   --radius-md: 8px;
 

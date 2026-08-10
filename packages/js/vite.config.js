@@ -8,22 +8,24 @@ const TARGET = process.env.TARGET ?? "browser";
 
 const TARGETS = {
   browser: {
+    // ES6 glue is already ESM; imports cleanly, no interop involved.
     glue: "web",
     formats: ["es"],
     isNode: false,
-    // ES6 glue is already ESM — no interop needed.
-    needsCommonjs: false,
     // Copy the external .wasm next to the bundle.
     copyWasm: "required",
   },
 
   standalone: {
+    // Non-ES6 glue is CJS-shaped (module.exports), but
+    // Rolldown-Vite's native CJS interop handles the
+    // import, so no plugin is needed.
+    // If this package ever moves back to Rollup-based Vite (<=5), add
+    // build.commonjsOptions.include = [/node_modules/, /build-wasm/].
     glue: "standalone",
     formats: ["umd", "iife"],
     isNode: false,
-    // Non-ES6 glue is CJS/UMD-shaped; Rollup needs help importing it.
-    needsCommonjs: true,
-    // Absent when SINGLE_FILE=1, present when it's 0.
+    // Absent when SINGLE_FILE=1, present when SINGLE_FILE=0
     copyWasm: "optional",
   },
 
@@ -59,9 +61,11 @@ if (!T) {
   throw new Error(`Unknown TARGET "${TARGET}". Expected one of: ${Object.keys(TARGETS).join(", ")}`);
 }
 
-/** Vite inlines `new URL('x.wasm', import.meta.url)` as a data URL in lib mode
+/**
+ * Vite inlines `new URL('x.wasm', import.meta.url)` as a data URL in lib mode
  *  and ignores assetsInlineLimit. Hoisting the literal defeats the static
- *  analysis, leaving a real runtime URL resolution against the sibling file. */
+ *  analysis, leaving a real runtime URL resolution against the sibling file.
+ */
 function preventWasmInlining() {
   return {
     name: "img2num:prevent-wasm-inlining",
@@ -76,7 +80,9 @@ function preventWasmInlining() {
   };
 }
 
-/** Copies the emitted .wasm into dist/<target>/ after the bundle is written. */
+/**
+ * Copies the emitted .wasm into dist/<target>/ after the bundle is written.
+ */
 function copyWasmPlugin() {
   return {
     name: "img2num:copy-wasm",
@@ -107,7 +113,6 @@ const FILE_NAMES = {
 export default defineConfig({
   plugins: [
     preventWasmInlining(),
-    // Scope the interop transform to the glue so it never touches src/.
     copyWasmPlugin(),
   ],
 

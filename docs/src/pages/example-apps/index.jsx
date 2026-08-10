@@ -23,7 +23,7 @@ const apps = [
     codeLang: "javascript",
     icon: <Atom size={22} color="var(--blue)" />,
     accentVar: "--blue-light",
-    title: "React live demo",
+    title: "React color-by-number demo",
     desc: "Full interactive demo, bundled with Vite - the setup most web apps use.",
     code: `import { imageToUint8ClampedArray, imageToSvg } from "img2num";
 

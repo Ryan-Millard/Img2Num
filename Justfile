@@ -28,6 +28,7 @@ help:
     console-py <input_image>: run example python app on input image \n \
     console-js-cjs <input_image>: run example node app on input image \n \
     console-js-esm <input_image>: run example node app on input image \n \
+    html-js <script>: target npm script in example-apps/html-js/package.json \
     "
 
 init:
@@ -113,9 +114,5 @@ console-js-esm input:
     @echo "node example-apps/console-js-esm/index.mjs {{ input }}"
     node example-apps/console-js-esm/index.mjs "{{ input }}"
 
-html-js-iife script:
+html-js script:
     pnpm -F html-js-iife "{{script}}"
-
-html-js-umd script:
-    pnpm -F html-js-umd "{{script}}"
-

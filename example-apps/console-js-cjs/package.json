@@ -4,7 +4,7 @@
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "start": "echo 'Use `just console-js-esm <image-path>` instead.'"
+    "start": "echo 'Use `just console-js-cjs <image-path>` instead.'"
   },
   "dependencies": {
     "img2num": "workspace:*",

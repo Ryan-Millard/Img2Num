@@ -75,7 +75,7 @@ export async function terminateWasmModule() {
       const { destroyWebGPU } = await import("./target/node/webgpu.js");
       await destroyWebGPU();
     } catch (err) {
-      console.error(`[Img2Num wasmModule] WebGPU init error: ${err}\n\nImg2Num should fall back to CPU.`);
+      console.error(`[Img2Num wasmModule] WebGPU cleanup error: ${err}`);
     }
   }
 

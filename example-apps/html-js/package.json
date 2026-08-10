@@ -4,7 +4,6 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "postbuild": "rm -rf ../../docs/static/example-apps/html-js && mkdir ../../docs/static/example-apps/html-js && cp -r dist/* ../../docs/static/example-apps/html-js",
     "build:deploy": "node scripts/build.mjs --deploy",
     "start:esm": "node scripts/build.mjs esm && npx --yes serve -l 5173 dist/esm",
     "start:iife": "node scripts/build.mjs iife && npx --yes serve -l 5175 dist/iife",
