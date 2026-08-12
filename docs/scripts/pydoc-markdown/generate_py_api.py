@@ -7,8 +7,9 @@
 - Converts numpy-style docstring sections (Parameters/Returns/...) into
   proper markdown lists.
 
-Usage (from repo root):  uv run python docs/generate_py_api.py
-Output:                  docs/docs/py/api-reference/
+Usage:      ./img2num sh
+            uv run python docs/scripts/pydoc-markdown/generate_py_api.py
+Output:     docs/docs/py/api-reference/
 """
 from __future__ import annotations
 
@@ -100,54 +101,70 @@ def main() -> None:
 
     functions = [m for m in api.members if isinstance(m, docspec.Function)]
 
-    if OUT_DIR.exists():
-        shutil.rmtree(OUT_DIR)
-    OUT_DIR.mkdir(parents=True)
+    STAGING_DIR = OUT_DIR.with_name(OUT_DIR.name + "_staging")
+    
+    # Ensure a clean staging directory
+    if STAGING_DIR.exists():
+        shutil.rmtree(STAGING_DIR)
+    STAGING_DIR.mkdir(parents=True)
 
-    summaries = {fn.name: summary(fn) for fn in functions}
+    try:
+        summaries = {fn.name: summary(fn) for fn in functions}
 
-    for position, fn in enumerate(functions, start=2):  # index.md is position 1
-        # Strip injected-only kwargs from the rendered signature
-        fn.args = [a for a in fn.args if a.name not in HIDDEN_ARGS]
-        if fn.docstring:
-            fn.docstring.content = numpy_docstring_to_markdown(fn.docstring.content)
+        for position, fn in enumerate(functions, start=2):  # index.md is position 1
+            # Strip injected-only kwargs from the rendered signature
+            fn.args = [a for a in fn.args if a.name not in HIDDEN_ARGS]
+            if fn.docstring:
+                fn.docstring.content = numpy_docstring_to_markdown(fn.docstring.content)
 
-        shell = copy.copy(api)
-        shell.members = [fn]
-        body = renderer.render_to_string([shell]).strip()
+            shell = copy.copy(api)
+            shell.members = [fn]
+            body = renderer.render_to_string([shell]).strip()
 
-        # Drop the "#### function_name" heading; frontmatter title is the H1
-        if body.startswith("#"):
-            body = body.split("\n", 1)[1].lstrip()
+            # Drop the "#### function_name" heading; frontmatter title is the H1
+            if body.startswith("#"):
+                body = body.split("\n", 1)[1].lstrip()
 
-        page = (
-            "---\n"
-            f"title: {fn.name}\n"
-            f"sidebar_position: {position}\n"
-            "---\n\n"
-            f"{body}\n"
+            page = (
+                "---\n"
+                f"title: {fn.name}\n"
+                f"sidebar_position: {position}\n"
+                "---\n\n"
+                f"{body}\n"
+            )
+            (STAGING_DIR / f"{fn.name}.md").write_text(page)
+
+        rows = "\n".join(
+            f"| [`{fn.name}`](./{fn.name}) | {summaries[fn.name]} |" for fn in functions
         )
-        (OUT_DIR / f"{fn.name}.md").write_text(page)
+        index = (
+            "---\n"
+            "title: Python API Reference\n"
+            "sidebar_position: 1\n"
+            "---\n\n"
+            "# Python API Reference\n\n"
+            "Auto-generated from the docstrings in `packages/py/img2num/api.py`\n"
+            "by `docs/generate_py_api.py` — do not edit these pages by hand.\n\n"
+            "| Function | Description |\n"
+            "| :--- | :--- |\n"
+            f"{rows}\n"
+        )
+        (STAGING_DIR / "index.md").write_text(index)
 
-    rows = "\n".join(
-        f"| [`{fn.name}`](./{fn.name}) | {summaries[fn.name]} |" for fn in functions
-    )
-    index = (
-        "---\n"
-        "title: Python API Reference\n"
-        "sidebar_position: 1\n"
-        "---\n\n"
-        "# Python API Reference\n\n"
-        "Auto-generated from the docstrings in `packages/py/img2num/api.py`\n"
-        "by `docs/generate_py_api.py` — do not edit these pages by hand.\n\n"
-        "| Function | Description |\n"
-        "| :--- | :--- |\n"
-        f"{rows}\n"
-    )
-    (OUT_DIR / "index.md").write_text(index)
+        # If all writes succeed, replace the original directory with the completed staging directory
+        if OUT_DIR.exists():
+            shutil.rmtree(OUT_DIR)
+        STAGING_DIR.rename(OUT_DIR)
+
+    except Exception as e:
+        # If anything fails, clean up the staging directory and preserve the existing OUT_DIR
+        if STAGING_DIR.exists():
+            shutil.rmtree(STAGING_DIR)
+        raise e
 
     print(f"Wrote {len(functions)} function pages + index to {OUT_DIR}")
 
 
 if __name__ == "__main__":
     main()
+    
