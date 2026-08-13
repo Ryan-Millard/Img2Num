@@ -32,7 +32,8 @@ Changelog     = "https://img2num.dev/changelog/py/"
 requires = [
   "scikit-build-core>=0.10",
   "pybind11>=2.10",
-  "numpy>=2.0"
+  "numpy>=2.0",
+  "pybind11-stubgen>=2.5.5,<3",
 ]
 build-backend = "scikit_build_core.build"
 
@@ -94,7 +95,6 @@ build-verbosity = 1
 dev = [
     "docspec>=2.2.1,<3",
     "docspec-python>=2.2.1,<3",
-    "pybind11-stubgen>=2.5.5,<3",
     "pydoc-markdown>=4.8.2,<5",
     "ruff>=0.15,<0.16",
 ]
