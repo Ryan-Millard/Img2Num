@@ -35,6 +35,7 @@ yarn-error.log*
 # Auto-generated API docs
 /docs/js/api/
 /static/js/api.json
+/docs/py/api-reference/
 
 # Auto-generated Changelogs
 /changelog/*
