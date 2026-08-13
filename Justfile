@@ -51,7 +51,7 @@ build-wasm:
 
 build-py:
     @echo "Build python bindings and py package"
-    uv sync --reinstall --all-groups
+    uv sync --reinstall
     uv build --wheel
 
 build-packages-js:

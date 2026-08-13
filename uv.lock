@@ -276,6 +276,7 @@ dependencies = [
 dev = [
     { name = "docspec" },
     { name = "docspec-python" },
+    { name = "pybind11-stubgen" },
     { name = "pydoc-markdown" },
     { name = "ruff" },
 ]
@@ -287,6 +288,7 @@ requires-dist = [{ name = "numpy", specifier = ">=1.23.5" }]
 dev = [
     { name = "docspec", specifier = ">=2.2.1,<3" },
     { name = "docspec-python", specifier = ">=2.2.1,<3" },
+    { name = "pybind11-stubgen", specifier = ">=2.5.5,<3" },
     { name = "pydoc-markdown", specifier = ">=4.8.2,<5" },
     { name = "ruff", specifier = ">=0.15,<0.16" },
 ]
@@ -533,6 +535,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/78/9b/560e4be8e26f6fd133a03630a8df0c663b9e8d61b4ade152b72005aec83b/platformdirs-4.11.0.tar.gz", hash = "sha256:0555d18370482847566ffabcaa53ad7c6c1c29f195989ae1ed634a05f76ea1e0", size = 31953 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/7d/68/d8d58938dfb1370b266a1a729e6d77a985be23689a0496498ee17b2cbf90/platformdirs-4.11.0-py3-none-any.whl", hash = "sha256:360ccded2b7fce0af0ff80cc8f5942a1c5d99b0e856033acb030bfc634709e74", size = 23247 },
+]
+
+[[package]]
+name = "pybind11-stubgen"
+version = "2.5.5"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/81/81/81900180501a51056572dd01aa852cc2d162478d4676ecebbfaad5cc20d1/pybind11_stubgen-2.5.5.tar.gz", hash = "sha256:758d6d6bbeefc62ad7f78d5e5bbf357ccf6af83cd4504f5f549403f452942708", size = 25031 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/4f/e4/4f2d41881fae547f06ffa4c9748fa8ed13c4db5c830ff268b84175546b3c/pybind11_stubgen-2.5.5-py3-none-any.whl", hash = "sha256:10824cd2fc5cbbee032b8fb39e6f6c08de232deb309bc66d786a6c6e8a4601bd", size = 30210 },
 ]
 
 [[package]]
