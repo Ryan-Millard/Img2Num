@@ -29,7 +29,9 @@ target_include_directories(_img2num PRIVATE
 
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/packages/py/img2num/
     DESTINATION img2num
-    FILES_MATCHING PATTERN "*.py"
+    FILES_MATCHING
+      PATTERN "*.py"
+      PATTERN "py.typed"
 )
 
 install(TARGETS _img2num
