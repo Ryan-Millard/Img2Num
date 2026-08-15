@@ -34,7 +34,7 @@ strictly required.
 
 ### Choosing a build
 
-The package ships four artifacts; the right one is normally selected
+The package ships separate browser, standalone, and Node artifacts; the right one is normally selected
 automatically via the `exports` map:
 
 | Environment                                     | Artifact                                                     | Selected by                                                                                                                |
