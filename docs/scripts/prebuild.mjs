@@ -19,6 +19,9 @@ async function run(command, args) {
   });
 }
 
+// Run before anything to guarantee it exists and there are no failures
+await run("pnpm", ["-F", "img2num", "run", "build"]);
+
 await run("pnpm", ["-F", "docs", "run", "doxygen"]);
 await run("pnpm", ["-F", "react-example", "run", "build"]);
 await run("pnpm", ["-F", "html-js", "run", "build:deploy"]);
