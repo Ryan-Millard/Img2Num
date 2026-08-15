@@ -11,7 +11,7 @@ sidebar_position: 2
 - **WebAssembly** support (all evergreen browsers).
 - **ES2020** JavaScript features. In practice, any browser from 2020 onward works.
 - For the ESM build, **native ES module** support (`<script type="module">`).
-  The [IIFE and UMD builds](./installation#script-tag) have no module-system
+  The [IIFE and UMD builds](../installation#using-a-cdn) have no module-system
   requirement - a plain `<script>` tag is enough.
 - **Not supported:** Internet Explorer 11 or older browsers without WebAssembly.
 
