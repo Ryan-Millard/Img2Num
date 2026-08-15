@@ -198,7 +198,7 @@ export default function ExampleApps() {
                   </div>
                   <div>
                     <h3 className={styles.bindingTitle}>{app.title}</h3>
-                    <Link to={`https://github.com/Ryan-Millard/Img2Num/tree/main/${app.dir}`}>
+                    <Link to={`https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps/${app.dir}`}>
                       <code>example-apps/{app.dir}</code>
                     </Link>
                   </div>
