@@ -182,7 +182,7 @@ export default function ExampleApps() {
 
           <p>
             One conversion pipeline - filter, segment, trace - run from every binding. The browser apps are live: upload a raster image, get an SVG back, and see the exact code that did it. The
-            console apps run the same pipeline from the command line in <Link to="/docs/c">C</Link>, <Link to="/docs/cpp">C++</Link>, <Link to="/docs/py">Python</Link>, and Node.js. Pick whichever
+            console apps run the same pipeline from the command line in <Link to="/docs/c">C</Link>, <Link to="/docs/cpp">C++</Link>, <Link to="/docs/py">Python</Link>, and <Link to="/docs/js">JavaScript</Link>. Pick whichever
             matches your stack and copy it as a starting point.
           </p>
         </section>
