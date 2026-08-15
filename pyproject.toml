@@ -1,6 +1,6 @@
 [project]
 name = "img2num"
-dynamic = ["version"] # see tool.scikit-buil
+dynamic = ["version"] # see tool.dynamic-metadata below
 description = "A fast and accurate raster image to SVG conversion library"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -27,6 +27,7 @@ Documentation = "https://img2num.dev/docs/"
 Changelog     = "https://img2num.dev/changelog/py/"
 "Changelog (GitHub)" = "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/py/CHANGELOG.md"
 "Bug Tracker" = "https://github.com/Ryan-Millard/Img2Num/issues"
+Funding       = "https://github.com/sponsors/Ryan-Millard"
 
 [build-system]
 requires = [
