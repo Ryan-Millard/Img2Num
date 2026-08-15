@@ -4,6 +4,16 @@ URL: https://img2num.dev/changelog/py/changelog
 
 [`img2num-py`](https://github.com/Ryan-Millard/Img2Num/releases)
 
+## [v0.3.0 - 2026-08-13](https://github.com/Ryan-Millard/Img2Num/releases/tag/packages-py-v0.3.0)
+
+### ✨ Features
+
+- **py:** ship type information (stub + py.typed) in wheels ( [#540](https://github.com/Ryan-Millard/Img2Num/issues/540) ) ( [a858cb4](https://github.com/Ryan-Millard/Img2Num/commit/a858cb4c7ab8d107b3ff772269bffaf7a5bcf997) )
+
+### 📚 Documentation
+
+- **py:** auto-generate the Python API reference from docstrings ( [a858cb4](https://github.com/Ryan-Millard/Img2Num/commit/a858cb4c7ab8d107b3ff772269bffaf7a5bcf997) )
+
 ## [v0.2.2 - 2026-07-30](https://github.com/Ryan-Millard/Img2Num/releases/tag/packages-py-v0.2.2)
 
 ### 🐛 Bug Fixes
