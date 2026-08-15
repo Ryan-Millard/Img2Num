@@ -53,8 +53,21 @@ automatically via the `exports` map:
 - The **standalone IIFE/UMD builds have the WASM inlined**, so they are a
   single file with nothing extra to serve. This is what makes them work from
   a bare `<script>` tag and CDNs.
-- If your bundler or server needs to handle the `.wasm` asset explicitly, it
-  is also exposed as a subpath: `import wasmUrl from "img2num/wasm"`.
+- The raw `.wasm` binary is also exposed as a package subpath for tooling
+  that needs to reference it directly. In Vite, use the `?url` suffix:
+
+  ```js title="Vite example"
+  import wasmUrl from "img2num/wasm?url";
+  ```
+
+  - The file is copied into your build output and `wasmUrl` resolves to its
+    final path. Don't omit the suffix — a bare `import ... from "img2num/wasm"`
+    makes Vite treat the file as a WebAssembly _module_ and fails with a
+    misleading `"default" is not exported` error.
+
+  - In plain Node, `require.resolve("img2num/wasm")` gives the absolute path
+    on disk.
+
 - The package declares `sideEffects` so unused code can be tree-shaken safely.
 - No runtime JS dependencies are required — the package is pure JS + WASM.
   (`webgpu` for Node is optional, as above.)
