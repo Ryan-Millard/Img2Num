@@ -1,7 +1,9 @@
-/* Shared styles for all Img2Num example apps.
-   Tokens mirror the main site's custom.css (img2num.dev) so the demos feel
-   like part of the site, without depending on the Docusaurus build's
-   hash-named stylesheet. If the site palette changes, update these values. */
+/*
+ * Shared styles for all Img2Num example apps.
+ * Tokens mirror the main site's custom.css (img2num.dev) so the demos feel
+ * like part of the site, without depending on the Docusaurus build's
+ * hash-named stylesheet. If the site palette changes, update these values.
+ */
 
 :root {
   --font-sans: "Segoe UI", tahoma, geneva, verdana, sans-serif;
