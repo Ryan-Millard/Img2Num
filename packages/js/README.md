@@ -10,18 +10,14 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 
 <sub>_Img2Num_ is **optimized for natural images**.</sub>
 
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE)
 ![Status](https://img.shields.io/badge/status-active_development-brightgreen?logo=github)
 
-[![Deploy to GitHub Pages](https://github.com/Ryan-Millard/Img2Num/actions/workflows/deploy.yml/badge.svg)](https://github.com/Ryan-Millard/Img2Num/actions/workflows/deploy.yml)
-[![Multi-Language Release Generation](https://github.com/Ryan-Millard/Img2Num/actions/workflows/release.yml/badge.svg)](https://github.com/Ryan-Millard/Img2Num/actions/workflows/release.yml)
-
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE)
-[![Contributors](https://img.shields.io/github/contributors/Ryan-Millard/Img2Num)](https://github.com/Ryan-Millard/Img2Num/graphs/contributors)
-[![Stars](https://img.shields.io/github/stars/Ryan-Millard/Img2Num?style=social)](https://github.com/Ryan-Millard/Img2Num)
-[![Docker Pulls](https://img.shields.io/docker/pulls/ryanmillard/img2num-dev)](https://hub.docker.com/repository/docker/ryanmillard/img2num-dev/general)
-[![Open in Codespaces](https://img.shields.io/badge/-Open%20in%20Codespaces-black?logo=github)](https://codespaces.new/Ryan-Millard/Img2Num)
 [![Docs](https://img.shields.io/badge/docs-full-blue?logo=gitbook&logoColor=white)](https://img2num.dev/docs/)
 [![Changelog](https://img.shields.io/badge/changelog-full-orange?logo=git&logoColor=white)](https://img2num.dev/changelog/)
+
+[![Contributors](https://img.shields.io/github/contributors/Ryan-Millard/Img2Num)](https://github.com/Ryan-Millard/Img2Num/graphs/contributors)
+[![Stars](https://img.shields.io/github/stars/Ryan-Millard/Img2Num?style=social)](https://github.com/Ryan-Millard/Img2Num)
 
 ## Contents
 
@@ -64,7 +60,6 @@ Try our [image to color-by-number demo](https://img2num.dev/example-apps/react-j
 <br />
 </div>
 
-> [!IMPORTANT]
 > ### Why Img2Num?
 >
 > Most raster-to-SVG vectorizers were designed for clean, synthetic input images such as logos, icons, diagrams, and flat illustrations.
@@ -116,11 +111,10 @@ Try our [image to color-by-number demo](https://img2num.dev/example-apps/react-j
 
 ## Supported Runtimes
 
-![Browsers](https://img.shields.io/badge/Browsers-Modern_Browsers-4CAF50?logo=googlechrome&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-%3E%3D14-339933?logo=nodedotjs&logoColor=white)
+[![Browsers](https://img.shields.io/badge/Browsers-Modern_(ES2020)-4CAF50?logo=googlechrome&logoColor=white)](https://img2num.dev/docs/js/requirements/)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18-339933?logo=nodedotjs&logoColor=white)](https://img2num.dev/docs/js/requirements/)
 
-> [!CAUTION]
->  This package currently supports **ESM only.** [#483](https://github.com/Ryan-Millard/Img2Num/issues/483) tracks this fix.
+For more information, please see our [Requirements Page](https://img2num.dev/docs/js/requirements/).
 
 ## Installation
 
@@ -142,27 +136,46 @@ bun add img2num
 
 ## Browser Usage (CDN)
 
-> [!IMPORTANT]
->  This approach only works in Browsers.
+**This approach only works in Browsers.**
 
 ### jsDelivr CDN
+
 [![jsDelivr](https://img.shields.io/badge/CDN-jsDelivr-ff5627?logo=jsdelivr&logoColor=white)](https://www.jsdelivr.com/package/npm/img2num)
 
 ```html
 <!-- IMPORTANT: this is browser-only -->
 <script src="https://cdn.jsdelivr.net/npm/img2num@0.2.0/dist/browser/img2num.js"></script>
 ```
+
+> We strongly recommend pinning the version. For example:
+> 
+> ```html
+> <!-- IMPORTANT: this is browser-only -->
+> <script src="https://cdn.jsdelivr.net/npm/img2num@0.4.0/dist/browser/img2num.js"></script>
+> ```
+
 ### unpkg CDN
+
 [![unpkg](https://img.shields.io/badge/CDN-unpkg-red?logo=npm&logoColor=white)](https://app.unpkg.com/img2num@0.2.0)
 
 ```html
 <!-- IMPORTANT: this is browser-only -->
-<script src="https://unpkg.com/img2num@0.2.0/dist/browser/img2num.js"></script>
+<script src="https://unpkg.com/img2num/dist/browser/img2num.js"></script>
 ```
+
+> We strongly recommend pinning the version. For example:
+> 
+> ```html
+> <!-- IMPORTANT: this is browser-only -->
+> <script src="https://unpkg.com/img2num@0.4.0/dist/browser/img2num.js"></script>
+> ```
 
 ## Quick Start
 
 ### All-in-one (recommended)
+
+Follow the [Usage Guide](https://img2num.dev/docs/js/usage/) for more up-to-date information on how to use Img2Num.
+
 ```js
 import { imageToUint8ClampedArray, imageToSvg, terminateWasmModule } from "img2num";
 // Browsers:
@@ -174,7 +187,6 @@ const { svg } = await imageToSvg({ pixels, width, height });
 await terminateWasmModule(); // WebAssembly and GPU cleanup
 ```
 
-> [!NOTE]
 > `imageToUint8ClampedArray` uses browser APIs (`Image`, `canvas`) and is only available in browser environments. In Node.js, use a library like [`sharp`](https://www.npmjs.com/package/sharp) to decode images to a `Uint8ClampedArray` in RGBA format before passing to the WASM functions.
 
 ## API Reference
@@ -201,11 +213,12 @@ We actively welcome contributions to this section — if you've configured a bun
 - **Node.js** console app: [`example-apps/console-js`](https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps/console-js)
 Try the [live demo (`React example`)](https://img2num.dev/example-apps/react-js/).
 > **Have a cool idea or want to showcase a new environment?💡**
+> 
 > We welcome new [example apps](https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps).
 
 ## License
 
-[MIT](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE) © Ryan Millard
+[MIT](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE) © Img2Num
 
 ---
 
