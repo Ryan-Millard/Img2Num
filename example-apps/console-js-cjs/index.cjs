@@ -12,16 +12,9 @@ async function main() {
 
   console.log(`Processing image: ${imagePath}`);
 
-  const { data, info } = await sharp(imagePath)
-    .ensureAlpha()
-    .raw()
-    .toBuffer({ resolveWithObject: true });
+  const { data, info } = await sharp(imagePath).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
 
-  const pixels = new Uint8ClampedArray(
-    data.buffer,
-    data.byteOffset,
-    data.byteLength,
-  );
+  const pixels = new Uint8ClampedArray(data.buffer, data.byteOffset, data.byteLength);
   const { width, height } = info;
 
   console.log(`Image size: ${width}x${height}`);

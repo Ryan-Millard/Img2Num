@@ -111,10 +111,7 @@ const FILE_NAMES = {
 };
 
 export default defineConfig({
-  plugins: [
-    preventWasmInlining(),
-    copyWasmPlugin(),
-  ],
+  plugins: [preventWasmInlining(), copyWasmPlugin()],
 
   build: {
     outDir: T.outDir ?? `dist/${TARGET}`,
