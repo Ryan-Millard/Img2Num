@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.4.0](https://github.com/Ryan-Millard/Img2Num/compare/packages-py-v0.3.0...packages-py-v0.4.0) (2026-08-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **js:** dist layout and filenames have changed. Artifacts now live at dist/browser/img2num.js, dist/standalone/img2num.umd.js, dist/standalone/img2num.iife.js, and dist/node/img2num.{js,cjs}; deep imports into dist/ must be updated. Export conditions are reordered so bundlers targeting the browser resolve the browser build (they previously matched "import" first and received the node build). Minimum supported Node is now 18.
+
+### ✨ Features
+
+* **js:** ship multi-format artifacts (browser ESM, standalone UMD/IIFE, node ESM/CJS) ([#530](https://github.com/Ryan-Millard/Img2Num/issues/530)) ([f5b1ef9](https://github.com/Ryan-Millard/Img2Num/commit/f5b1ef907e43b68c32bdc15238daae6f28edf40f))
+
+
+### 📚 Documentation
+
+* **website:** add example apps index page and rebuild HTML demos from a shared template ([f5b1ef9](https://github.com/Ryan-Millard/Img2Num/commit/f5b1ef907e43b68c32bdc15238daae6f28edf40f))
+
 ## [0.3.0](https://github.com/Ryan-Millard/Img2Num/compare/packages-py-v0.2.2...packages-py-v0.3.0) (2026-08-13)
 
 
