@@ -375,7 +375,7 @@ code {
 }
 
 [data-theme="dark"] code {
-  color: var(--text);
+  color: inherit;
 }
 
 div[class^="codeBlockContainer"] {
