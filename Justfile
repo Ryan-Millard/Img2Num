@@ -26,7 +26,9 @@ help:
     console-cpp <input_image>: run example C++ app on input image \n \
     console-c <input_image>: run example C app on input image \n \
     console-py <input_image>: run example python app on input image \n \
-    console-js <input_image>: run example node app on input image \n \
+    console-js-cjs <input_image>: run example node app on input image \n \
+    console-js-esm <input_image>: run example node app on input image \n \
+    html-js <script>: target npm script in example-apps/html-js/package.json \
     "
 
 init:
@@ -104,7 +106,13 @@ console-c input:
     @echo "./build-c-cpp/example-apps/console-c/console_c_app {{ input }}"
     ./build-c-cpp/example-apps/console-c/CImg2NumExample_console_c "{{ input }}"
 
-console-js input:
-    @echo "node example-apps/console-js/index.js {{ input }}"
-    node example-apps/console-js/index.js "{{ input }}"
+console-js-cjs input:
+    @echo "node example-apps/console-js-cjs/index.cjs {{ input }}"
+    node example-apps/console-js-cjs/index.cjs "{{ input }}"
 
+console-js-esm input:
+    @echo "node example-apps/console-js-esm/index.mjs {{ input }}"
+    node example-apps/console-js-esm/index.mjs "{{ input }}"
+
+html-js script:
+    pnpm -F html-js-iife "{{script}}"

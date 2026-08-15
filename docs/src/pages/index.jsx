@@ -113,8 +113,8 @@ function HeroSection() {
 
         <div className={styles.heroRight}>
           <RasterToSvgDemo />
-          <Link className={styles.btnPrimary} to="https://img2num.dev/example-apps/react-js/">
-            Try Live Demo <MoveRight size={15} />
+          <Link className={styles.btnPrimary} to="/example-apps/">
+            View Example Apps <MoveRight size={15} />
           </Link>
         </div>
       </div>
