@@ -46,7 +46,7 @@ const { svg } = await imageToSvg({ pixels, width, height });`,
     from "https://cdn.jsdelivr.net/npm/img2num/dist/browser/img2num.js";
   // ...
 </script>`,
-    href: "/example-apps/html-js/esm/",
+    href: "/example-apps/esm/",
     cta: "Open live demo",
   },
   {
@@ -63,7 +63,7 @@ const { svg } = await imageToSvg({ pixels, width, height });`,
   const { imageToUint8ClampedArray, imageToSvg } = Img2Num;
   // ...
 </script>`,
-    href: "/example-apps/html-js/iife/",
+    href: "/example-apps/iife/",
     cta: "Open live demo",
   },
   {
@@ -79,7 +79,7 @@ const { svg } = await imageToSvg({ pixels, width, height });`,
 requirejs(["img2num"], ({ imageToUint8ClampedArray, imageToSvg }) => {
   // ...
 });`,
-    href: "/example-apps/html-js/umd/",
+    href: "/example-apps/umd/",
     cta: "Open live demo",
   },
   {

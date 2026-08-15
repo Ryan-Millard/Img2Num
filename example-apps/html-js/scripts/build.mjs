@@ -113,6 +113,7 @@ function buildVariant(name) {
   const canonical = `https://img2num.dev/example-apps/${variant.outputName}/`;
   const html = template
     .replaceAll("{{TITLE}}", variant.title)
+    .replaceAll("{{OUTPUT_NAME}}", variant.outputName.toUpperCase())
     .replaceAll("{{DESCRIPTION}}", variant.description)
     .replaceAll("{{CANONICAL}}", canonical)
     .replaceAll("{{HEADING}}", variant.heading)
