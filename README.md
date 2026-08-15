@@ -4,7 +4,7 @@
 
 # Img2Num
 
-_Img2Num_ is a fast and accurate raster vectorizer. 
+_Img2Num_ is a fast and accurate raster vectorizer.
 
 It converts raster images (like PNGs and JPGs) into clean SVGs with _high accuracy and performance_.
 
@@ -23,23 +23,28 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 [![Docs](https://img.shields.io/badge/docs-full-blue?logo=gitbook&logoColor=white)](https://img2num.dev/docs/)
 [![Changelog](https://img.shields.io/badge/changelog-full-orange?logo=git&logoColor=white)](https://img2num.dev/changelog/)
 
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/Ryan-Millard)
+[![Security Policy](https://img.shields.io/badge/Security-Policy-red?logo=github)](SECURITY.md)
+
 ## Contents
 
 <table>
 <tr>
-<td valign="center">
+<td valign="middle">
 
 - [Before vs After](#before-vs-after)
 - [Why Img2Num?](#why-img2num)
 - [Features](#features)
 - [Multi-Language Support](#multi-language-support)
 - [Community Links](#community-links)
+- [Quick Start](#quick-start)
 
 </td>
-<td valign="center">
+<td valign="middle">
 
-- [Quick Start](#quick-start)
 - [License](#license)
+- [Security](#security)
+- [Supporting Us](#supporting-us)
 - [Can't find something?](#cant-find-something)
 - [Maintainers](#maintainers)
 - [Contributors & Credits](#contributors--credits)
@@ -89,6 +94,7 @@ Try our [image to color-by-number demo](https://img2num.dev/example-apps/react-j
   - **C** - lightweight C API (add as a submodule)
   - **Python** (`pip install img2num`) - NumPy arrays in, SVG strings out
   - **JavaScript** (`npm i img2num`) - same C++ core compiled to WebAssembly, works in browser and Node
+- **WebAssembly-powered** - The native C++ core is compiled to WebAssembly (WASM) for high-performance execution in browsers (JavaScript-only).
 - **Zero-copy bindings** - Direct memory access via NumPy in Python and TypedArrays in JS, avoiding unnecessary data copying.
 - **Minimal dependencies** - Core library built for speed with only one external runtime dependency (Google's [Dawn](https://dawn.googlesource.com/dawn)).
 - **Cross-platform CI** - Tested on Linux, macOS, Windows, and WASM.
@@ -106,7 +112,10 @@ Try our [image to color-by-number demo](https://img2num.dev/example-apps/react-j
 
 ## Community Links
 [![Changelog](https://img.shields.io/badge/Changelog-Full-orange?logo=git&logoColor=white)](https://img2num.dev/changelog/)
-[![Contributing](https://img.shields.io/badge/Contributing-Guide-blue?logo=github)](https://github.com/Ryan-Millard/Img2Num/blob/main/CONTRIBUTING.md)
+[![Contributing](https://img.shields.io/badge/Contributing-Guide-blue?logo=github)](CONTRIBUTING.md)
+[![Security Policy](https://img.shields.io/badge/Security-Policy-red?logo=github)](SECURITY.md)
+[![License](https://img.shields.io/badge/License-MIT-blue?logo=open-source-initiative&logoColor=white)](LICENSE)
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/Ryan-Millard)
 [![Issues](https://img.shields.io/badge/Issues-Available-brightgreen?logo=github)](https://github.com/Ryan-Millard/Img2Num/issues/views/1151)
 [![Good First Issues](https://img.shields.io/badge/Good%20First%20Issues-Welcome-6cc644?logo=github)](https://github.com/Ryan-Millard/Img2Num/issues/views/1155)
 [![Blog](https://img.shields.io/badge/Blog-Updates-ff6f00?logo=githubpages)](https://img2num.dev/blog/)
@@ -125,7 +134,7 @@ This process is too detailed to put in a `README.md` file, so please see our doc
 
 > [!TIP]
 > You can install the library from our GitHub releases:
-> 
+>
 > - [C](https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c&expanded=true)
 > - [C++](https://github.com/Ryan-Millard/Img2Num/releases?q=cpp&expanded=true)
 
@@ -143,7 +152,7 @@ For more detailed information on installing this package, please refer to [our d
 
 ```html
 <!-- IMPORTANT: this is browser-only -->
-<script src="https://cdn.jsdelivr.net/npm/img2num@0.2.0/dist/browser/img2num.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/img2num@0.3.0/dist/browser/img2num.js"></script>
 ```
 
 #### Package Manager
@@ -196,6 +205,25 @@ Subdirectories retain their own licenses:
 - [`docs/` ![AGPLv3](https://img.shields.io/badge/license-AGPLv3-red.svg?logo=docusaurus)](docs/LICENSE)
 - [`example-apps/react-js/` ![AGPLv3](https://img.shields.io/badge/license-AGPLv3-red.svg?logo=react)](example-apps/react-js/LICENSE)
 - [`.github/` ![AGPLv3](https://img.shields.io/badge/license-AGPLv3-red.svg?logo=github)](.github/LICENSE)
+
+## Security
+
+[![Security Policy](https://img.shields.io/badge/Security-Policy-red?logo=github)](SECURITY.md)
+
+Found a vulnerability? Please **do not** open a public issue.
+
+Report it privately by following our [Security Policy](SECURITY.md).
+
+## Supporting Us
+
+[![GitHub Sponsors](https://img.shields.io/badge/GitHub_Sponsors-%E2%9D%A4-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/Ryan-Millard)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Support-FF5E5B?logo=kofi&logoColor=white)](https://ko-fi.com/ryan_millard)
+
+Img2Num is free and open source. If it saves you time or you'd like to support its continued development:
+
+- ⭐ [Star the repository](https://github.com/Ryan-Millard/Img2Num) - it helps others discover the project
+- ❤️ Sponsor us via [GitHub Sponsors](https://github.com/sponsors/Ryan-Millard) or [Ko-fi](https://ko-fi.com/ryan_millard) (it'll help us keep the [img2num.dev](https://img2num.dev/) domain)
+- 🛠️ Contribute - see our [Contributing Guide](CONTRIBUTING.md) and [good first issues](https://github.com/Ryan-Millard/Img2Num/issues/views/1155)
 
 ## Can't find something?
 
