@@ -1,6 +1,6 @@
 {
   "name": "img2num",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Img2Num is a raster vectorization library - it converts images to SVGs",
   "publishConfig": {
     "access": "public"
@@ -53,7 +53,8 @@
     "./package.json": "./package.json"
   },
   "files": [
-    "dist"
+    "dist",
+    "CHANGELOG.md"
   ],
   "sideEffects": [
     "**/*.wasm",
