@@ -218,9 +218,8 @@ var createImg2NumModule = (() => {
 		}
 		var wasmBinaryFile;
 		function findWasmBinary() {
-			var _globalThis;
 			if (Module["locateFile"]) return locateFile("img2num.wasm");
-			return new URL((_globalThis = globalThis).__IMG2NUM_WASM_NAME__ ?? (_globalThis.__IMG2NUM_WASM_NAME__ = "img2num.wasm"), import.meta.url).href;
+			return (globalThis.__IMG2NUM_WASM_NAME__ ? new URL(globalThis.__IMG2NUM_WASM_NAME__, import.meta.url) : new URL("img2num.wasm", import.meta.url)).href;
 		}
 		function getBinarySync(file) {
 			if (file == wasmBinaryFile && wasmBinary) return new Uint8Array(wasmBinary);
