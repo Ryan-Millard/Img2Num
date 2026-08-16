@@ -10,9 +10,8 @@ let gpuInitPromise;
  * instance is cached so repeated calls return the same promise.
  *
  * The `webgpu` package is ESM-only and MUST be loaded via dynamic `import()`.
- * A static `import { create } from "webgpu"` compiles to a top-level
- * `require("webgpu")` in the CJS build, which throws ERR_REQUIRE_ESM on
- * Node < 22.12.
+ * A static import compiles to a top-level CommonJS require of the package
+ * in the CJS build, which throws ERR_REQUIRE_ESM on Node < 22.12.
  *
  * @async
  * @function initWebGPU
