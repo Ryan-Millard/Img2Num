@@ -9,6 +9,7 @@ export default function sanitizeMdxBody(body) {
     .map((seg, i) => {
       if (i % 2 === 1) return seg; // inside code — MDX already ignores these
       return seg
+        .replace(/\\/g, "\\\\")
         .replace(/([{}])/g, "\\$1")
         .replace(/</g, "\\<");
     })
