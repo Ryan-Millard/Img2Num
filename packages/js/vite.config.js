@@ -62,25 +62,6 @@ if (!T) {
 }
 
 /**
- * Vite inlines `new URL('x.wasm', import.meta.url)` as a data URL in lib mode
- *  and ignores assetsInlineLimit. Hoisting the literal defeats the static
- *  analysis, leaving a real runtime URL resolution against the sibling file.
- */
-function preventWasmInlining() {
-  return {
-    name: "img2num:prevent-wasm-inlining",
-    enforce: "pre",
-    transform(code, id) {
-      if (!id.includes("build-wasm") || !T.copyWasm) return null;
-      if (!code.includes("import.meta.url")) return null;
-
-      const patched = code.replace(/new URL\((["'])(img2num\.wasm)\1,\s*import\.meta\.url\)/g, 'new URL(globalThis.__IMG2NUM_WASM_NAME__ ??= "$2", import.meta.url)');
-      return patched === code ? null : { code: patched, map: null };
-    },
-  };
-}
-
-/**
  * Copies the emitted .wasm into dist/<target>/ after the bundle is written.
  */
 function copyWasmPlugin() {
@@ -103,6 +84,65 @@ function copyWasmPlugin() {
   };
 }
 
+/**
+ * Ships a bundler-detectable wasm URL in the published output.
+ *
+ * Problem: Vite's lib mode inlines `new URL("x.wasm", import.meta.url)` as a
+ * data URL and ignores assetsInlineLimit. But downstream bundlers (Vite,
+ * webpack 5, Rollup, Parcel) rely on that exact literal form to detect,
+ * emit, and rewrite the wasm asset in *consumer* builds.
+ *
+ * Solution, in two phases:
+ *   1. transform: mangle the literal into a non-static expression so
+ *      lib-mode asset analysis can't inline it.
+ *   2. generateBundle: after analysis is done, restore the literal in the
+ *      emitted chunk so consumers' bundlers can see it.
+ *
+ * LOAD-BEARING CONSTRAINT: the mangled sentinel must be valid syntax at
+ * build.target (es2020). Do NOT use `??=` or other ES2021+ operators here —
+ * they get transpiled before generateBundle runs, the restore match fails
+ * silently, and the published chunk ships a non-static URL (the 0.4.0 bug).
+ * `||` is safe and keeps `globalThis.__IMG2NUM_WASM_NAME__` working as a
+ * manual override for exotic setups.
+ */
+function wasmUrlPlugin() {
+  const LITERAL = 'new URL("img2num.wasm", import.meta.url)';
+  const MANGLED = 'new URL(globalThis.__IMG2NUM_WASM_NAME__ || "img2num.wasm", import.meta.url)';
+
+  return {
+    name: "img2num:wasm-url",
+    enforce: "pre",
+    transform(code, id) {
+      if (!id.includes("build-wasm") || !T.copyWasm) return null;
+      if (!code.includes("import.meta.url")) return null;
+
+      const patched = code.replace(/new URL\((["'])(img2num\.wasm)\1,\s*import\.meta\.url\)/g, MANGLED);
+      return patched === code ? null : { code: patched, map: null };
+    },
+    generateBundle(_, bundle) {
+      if (!T.copyWasm) return;
+
+      // Tolerant match: quote style and whitespace may be normalized by the
+      // bundler even when the expression itself survives.
+      const mangledRe = /new URL\(\s*globalThis\.__IMG2NUM_WASM_NAME__\s*\|\|\s*(["'])img2num\.wasm\1\s*,\s*import\.meta\.url\s*\)/g;
+
+      for (const chunk of Object.values(bundle)) {
+        if (chunk.type !== "chunk") continue;
+        chunk.code = chunk.code.replace(mangledRe, LITERAL);
+      }
+
+      // Guard: the browser ES build must ship the bundler-detectable literal.
+      // Fails the build loudly instead of shipping a consumer-breaking chunk.
+      if (TARGET === "browser") {
+        const hasLiteral = Object.values(bundle).some((c) => c.type === "chunk" && c.code.includes(LITERAL));
+        if (!hasLiteral) {
+          throw new Error("[img2num] wasm URL literal missing from browser bundle — consumers' bundlers won't detect the asset.");
+        }
+      }
+    },
+  };
+}
+
 const FILE_NAMES = {
   es: "img2num.js",
   cjs: "img2num.cjs",
@@ -111,7 +151,7 @@ const FILE_NAMES = {
 };
 
 export default defineConfig({
-  plugins: [preventWasmInlining(), copyWasmPlugin()],
+  plugins: [wasmUrlPlugin(), copyWasmPlugin()],
 
   build: {
     outDir: T.outDir ?? `dist/${TARGET}`,
