@@ -18,6 +18,12 @@ URL: https://img2num.dev/changelog/js/changelog
 
 - **website:** add example apps index page and rebuild HTML demos from a shared template ( [f5b1ef9](https://github.com/Ryan-Millard/Img2Num/commit/f5b1ef907e43b68c32bdc15238daae6f28edf40f) )
 
+## [v0.4.1 - 2026-08-16](https://github.com/Ryan-Millard/Img2Num/releases/tag/packages-js-v0.4.1)
+
+### 🐛 Bug Fixes
+
+- restore static wasm URL for bundler asset detection ( [#559](https://github.com/Ryan-Millard/Img2Num/issues/559) ) ( [1a27346](https://github.com/Ryan-Millard/Img2Num/commit/1a2734629701a702d7e7d5294fe8a8199187412b) )
+
 ## [v0.3.0 - 2026-07-31](https://github.com/Ryan-Millard/Img2Num/releases/tag/packages-js-v0.3.0)
 
 ### ⚠ BREAKING CHANGES
