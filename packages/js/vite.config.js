@@ -84,6 +84,28 @@ function copyWasmPlugin() {
   };
 }
 
+function cjsWebgpuGuard() {
+  // Only the CJS node build can regress into require("webgpu"); the other
+  // targets either keep real import() (node-esm) or exclude webgpu entirely.
+  if (TARGET !== "node-cjs") return { name: "img2num:cjs-webgpu-guard" };
+  return {
+    name: "img2num:cjs-webgpu-guard",
+    generateBundle(_, bundle) {
+      for (const chunk of Object.values(bundle)) {
+        if (chunk.type !== "chunk") continue;
+        // Strip comments before matching; the source JSDoc mentions
+        // require("webgpu") when documenting this very bug.
+        const code = chunk.code.replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, "");
+        if (/require\(\s*["']webgpu["']\s*\)/.test(code)) {
+          throw new Error(
+            `[img2num] ${chunk.fileName} contains require("webgpu") -- throws ERR_REQUIRE_ESM on Node < 22.12. The dynamic import() was lowered; see src/target/node/webgpu.js.`
+          );
+        }
+      }
+    },
+  };
+}
+
 /**
  * Ships a bundler-detectable wasm URL in the published output.
  *
@@ -162,7 +184,7 @@ const FILE_NAMES = {
 };
 
 export default defineConfig({
-  plugins: [wasmUrlPlugin(), copyWasmPlugin()],
+  plugins: [wasmUrlPlugin(), copyWasmPlugin(), cjsWebgpuGuard()],
 
   build: {
     outDir: T.outDir ?? `dist/${TARGET}`,

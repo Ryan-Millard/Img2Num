@@ -1,5 +1,3 @@
-import { create } from "webgpu";
-
 let gpuInitPromise;
 
 /**
@@ -11,6 +9,11 @@ let gpuInitPromise;
  * one does not already exist on `globalThis.navigator.gpu`. The initialized
  * instance is cached so repeated calls return the same promise.
  *
+ * The `webgpu` package is ESM-only and MUST be loaded via dynamic `import()`.
+ * A static `import { create } from "webgpu"` compiles to a top-level
+ * `require("webgpu")` in the CJS build, which throws ERR_REQUIRE_ESM on
+ * Node < 22.12.
+ *
  * @async
  * @function initWebGPU
  * @returns {Promise<GPU>} The initialized WebGPU implementation.
@@ -19,12 +22,13 @@ let gpuInitPromise;
 export async function initWebGPU() {
   if (globalThis.navigator?.gpu) return globalThis.navigator.gpu;
   if (!gpuInitPromise) {
-    gpuInitPromise = Promise.resolve().then(() => {
+    gpuInitPromise = (async () => {
+      const { create } = await import("webgpu");
       const nativeGpu = create(["backend=vulkan"]);
       globalThis.navigator ??= {};
       globalThis.navigator.gpu = nativeGpu;
       return nativeGpu;
-    });
+    })();
   }
   return gpuInitPromise;
 }
