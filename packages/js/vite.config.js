@@ -95,49 +95,60 @@ function copyWasmPlugin() {
  * Solution, in two phases:
  *   1. transform: mangle the literal into a non-static expression so
  *      lib-mode asset analysis can't inline it.
- *   2. generateBundle: after analysis is done, restore the literal in the
- *      emitted chunk so consumers' bundlers can see it.
+ *   2. generateBundle: after analysis is done, restore a bundler-detectable
+ *      form in the emitted chunk. The restored form is a TERNARY, not the
+ *      bare literal: the false branch is the exact literal (which consumer
+ *      bundlers detect and rewrite), while the true branch preserves
+ *      `globalThis.__IMG2NUM_WASM_NAME__` as a runtime override for exotic
+ *      setups (e.g. CDN-hosted wasm). Do not "simplify" the ternary away --
+ *      collapsing it to the literal silently kills the override.
  *
  * LOAD-BEARING CONSTRAINT: the mangled sentinel must be valid syntax at
- * build.target (es2020). Do NOT use `??=` or other ES2021+ operators here —
+ * build.target (es2020). Do NOT use `??=` or other ES2021+ operators here --
  * they get transpiled before generateBundle runs, the restore match fails
  * silently, and the published chunk ships a non-static URL (the 0.4.0 bug).
- * `||` is safe and keeps `globalThis.__IMG2NUM_WASM_NAME__` working as a
- * manual override for exotic setups.
+ * `||` is safe at es2020.
  */
 function wasmUrlPlugin() {
   const LITERAL = 'new URL("img2num.wasm", import.meta.url)';
   const MANGLED = 'new URL(globalThis.__IMG2NUM_WASM_NAME__ || "img2num.wasm", import.meta.url)';
+  const WASM_NAME = "globalThis.__IMG2NUM_WASM_NAME__";
+  // Override wins when set; otherwise the literal branch is what consumer
+  // bundlers statically detect. Bundlers match the expression node, so the
+  // literal being inside a ternary branch does not defeat detection.
+  const RESTORED = `(${WASM_NAME} ? new URL(${WASM_NAME}, import.meta.url) : ${LITERAL})`;
+
+  // The pattern only exists in the ES6 web glue; node glue resolves via
+  // __dirname and standalone glue via document.currentScript. Restricting to
+  // the browser target makes that a structural guarantee instead of a
+  // coincidence of glue contents.
+  if (TARGET !== "browser") return { name: "img2num:wasm-url" };
 
   return {
     name: "img2num:wasm-url",
     enforce: "pre",
     transform(code, id) {
-      if (!id.includes("build-wasm") || !T.copyWasm) return null;
+      if (!id.includes("build-wasm")) return null;
       if (!code.includes("import.meta.url")) return null;
 
       const patched = code.replace(/new URL\((["'])(img2num\.wasm)\1,\s*import\.meta\.url\)/g, MANGLED);
       return patched === code ? null : { code: patched, map: null };
     },
     generateBundle(_, bundle) {
-      if (!T.copyWasm) return;
-
       // Tolerant match: quote style and whitespace may be normalized by the
       // bundler even when the expression itself survives.
       const mangledRe = /new URL\(\s*globalThis\.__IMG2NUM_WASM_NAME__\s*\|\|\s*(["'])img2num\.wasm\1\s*,\s*import\.meta\.url\s*\)/g;
 
       for (const chunk of Object.values(bundle)) {
         if (chunk.type !== "chunk") continue;
-        chunk.code = chunk.code.replace(mangledRe, LITERAL);
+        chunk.code = chunk.code.replace(mangledRe, RESTORED);
       }
 
       // Guard: the browser ES build must ship the bundler-detectable literal.
       // Fails the build loudly instead of shipping a consumer-breaking chunk.
-      if (TARGET === "browser") {
-        const hasLiteral = Object.values(bundle).some((c) => c.type === "chunk" && c.code.includes(LITERAL));
-        if (!hasLiteral) {
-          throw new Error("[img2num] wasm URL literal missing from browser bundle — consumers' bundlers won't detect the asset.");
-        }
+      const hasLiteral = Object.values(bundle).some((c) => c.type === "chunk" && c.code.includes(LITERAL));
+      if (!hasLiteral) {
+        throw new Error("[img2num] wasm URL literal missing from browser bundle -- consumers' bundlers won't detect the asset.");
       }
     },
   };
