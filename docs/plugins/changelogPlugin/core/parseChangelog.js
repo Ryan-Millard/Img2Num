@@ -1,3 +1,6 @@
+import compareSemver from "./compareSemver";
+import sanitizeMdxBody from "./sanitizeMdxBody";
+
 export default function parseChangelog(raw) {
   const RELEASE_HEADING =
     /^## (?:\[)?(\d+\.\d+\.\d+[^)\] ]*)(?:\][^)]*\))?(?: \((\d{4}-\d{2}-\d{2})\))?/;
@@ -26,5 +29,5 @@ export default function parseChangelog(raw) {
     return compareSemver(b.version, a.version);
   });
 
-  return releases;
+  return releases.map((r) => ({ ...r, body: sanitizeMdxBody(r.body) }));
 }
