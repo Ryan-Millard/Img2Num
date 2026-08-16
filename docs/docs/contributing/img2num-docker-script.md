@@ -32,9 +32,9 @@ The image selection flags below are only useful if you want to override this beh
 <Tabs
 defaultValue="bash"
 values={[
-  { label: "Linux / macOS", value: "bash" },
-  { label: "Windows CMD", value: "cmd" },
-  { label: "PowerShell", value: "powershell" },
+{ label: "Linux / macOS", value: "bash" },
+{ label: "Windows CMD", value: "cmd" },
+{ label: "PowerShell", value: "powershell" },
 ]}>
 
 <TabItem value="bash">
@@ -70,9 +70,9 @@ Starts (if necessary) and opens an interactive Bash shell inside the Docker deve
 <Tabs
 defaultValue="bash"
 values={[
-  { label: "Linux / macOS", value: "bash" },
-  { label: "Windows CMD", value: "cmd" },
-  { label: "PowerShell", value: "powershell" },
+{ label: "Linux / macOS", value: "bash" },
+{ label: "Windows CMD", value: "cmd" },
+{ label: "PowerShell", value: "powershell" },
 ]}>
 
 <TabItem value="bash">
@@ -116,9 +116,9 @@ Example:
 <Tabs
 defaultValue="bash"
 values={[
-  { label: "Linux / macOS", value: "bash" },
-  { label: "Windows CMD", value: "cmd" },
-  { label: "PowerShell", value: "powershell" },
+{ label: "Linux / macOS", value: "bash" },
+{ label: "Windows CMD", value: "cmd" },
+{ label: "PowerShell", value: "powershell" },
 ]}>
 
 <TabItem value="bash">
@@ -208,9 +208,9 @@ For the complete command reference, run:
 <Tabs
 defaultValue="bash"
 values={[
-  { label: "Linux / macOS", value: "bash" },
-  { label: "Windows CMD", value: "cmd" },
-  { label: "PowerShell", value: "powershell" },
+{ label: "Linux / macOS", value: "bash" },
+{ label: "Windows CMD", value: "cmd" },
+{ label: "PowerShell", value: "powershell" },
 ]}>
 
 <TabItem value="bash">

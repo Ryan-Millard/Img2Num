@@ -1,5 +1,5 @@
-{/* DO NOT CHANGE THE PAGE TITLE CHECK WITHOUT VERIFYING THAT THE PAGES THAT DEPEND ON THIS AREN'T BROKEN */}
-{/* This partial is only compatible with a few pages. It is not recommended that you use it */}
+{/* DO NOT CHANGE THE PAGE TITLE CHECK WITHOUT VERIFYING THAT THE PAGES THAT DEPEND ON THIS AREN'T BROKEN _/}
+{/_ This partial is only compatible with a few pages. It is not recommended that you use it */}
 
 import CodeBlock from "@theme/CodeBlock";
 import { useDoc } from "@docusaurus/plugin-content-docs/client";
@@ -35,12 +35,14 @@ target_link_libraries(<your-project-name> PRIVATE ${useDoc().metadata.title.incl
 #### Include an Img2Num Header
 
 <Tabs
-  defaultValue="normal-include"
-  values={[
-    { label: "Normal", value: "normal-include" },
-    { label: "Namespaced", value: "namespaced-include" },
-  ]}
+defaultValue="normal-include"
+values={[
+{ label: "Normal", value: "normal-include" },
+{ label: "Namespaced", value: "namespaced-include" },
+]}
+
 >
+
   <TabItem value="normal-include">
     <CodeBlock language="cpp" title="Include any public header">
       {`#include <${useDoc().metadata.title.includes("C++") ? "img2num" : "cimg2num"}.h>`}
@@ -107,12 +109,14 @@ target_link_libraries(my_app PRIVATE Img2Num::Img2Num)`}
 #### Include an Img2Num Header
 
 <Tabs
-  defaultValue="normal-include"
-  values={[
-    { label: "Normal", value: "normal-include" },
-    { label: "Namespaced", value: "namespaced-include" },
-  ]}
+defaultValue="normal-include"
+values={[
+{ label: "Normal", value: "normal-include" },
+{ label: "Namespaced", value: "namespaced-include" },
+]}
+
 >
+
   <TabItem value="normal-include">
     <CodeBlock language="cpp" title="Include any public header">
       {`#include <${useDoc().metadata.title.includes("C++") ? "img2num" : "cimg2num"}.h>`}
