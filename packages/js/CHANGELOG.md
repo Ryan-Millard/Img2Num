@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.4.0...packages-js-v0.4.1) (2026-08-16)
+
+
+### 🐛 Bug Fixes
+
+* restore static wasm URL for bundler asset detection ([#559](https://github.com/Ryan-Millard/Img2Num/issues/559)) ([1a27346](https://github.com/Ryan-Millard/Img2Num/commit/1a2734629701a702d7e7d5294fe8a8199187412b))
+
 ## [0.4.0](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.3.0...packages-js-v0.4.0) (2026-08-16)
 
 
