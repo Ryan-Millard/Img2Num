@@ -4,7 +4,7 @@ URL: https://img2num.dev/docs/js/api/functions/terminateWasmModule
 
 > **terminateWasmModule** (): `Promise` < `void` >
 
-Defined in: wasmModule.js:70
+Defined in: wasmModule.js:74
 
 **`Function`**
 
