@@ -7,6 +7,12 @@ import HomeHelmet from "./HomeHelmet";
 
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
+import { useEffect } from "react";
+
+const TOUR_KEY = "img2num-onboarding-tour";
+
+const tour = createTour();
+tour.drive();
 
 const Home = () => (
   <>
@@ -39,14 +45,38 @@ const Home = () => (
   </>
 );
 
-const driverObj = driver({
-  showProgress: true,
-  steps: [
-    { popover: { title: 'Welcome to the tutorial!', description: 'Click next to continue or X to skip.'}},
-    { element: '#step-one', popover: { title: 'Uploading an Image', description: 'Drag and drop an image or click the page to upload a file. <br>Supported image formats: .jpg, .png, .bmp <br>Processing works entirely in the browser.' }}
-  ]
-});
+export function createTour() {
+  let isNavigating = false;
 
-driverObj.drive();
+  const driverObj = driver({
+    advanceOnClick: true,
+    showProgress: true,
+    steps: [
+      { popover: { 
+          title: 'Welcome to the tutorial!', 
+          description: 'Click next to continue or X to skip.'
+        },
+      },
+
+      { element: '#step-one', 
+        popover: { 
+          title: 'Uploading an Image', 
+          description: 'Drag and drop an image or click the page to upload a file. <br>Supported image formats: .jpg, .png, .bmp <br>Processing works entirely in the browser.', 
+          showButtons: ["next", "close"]
+        }
+      },
+
+      { element: "#okButton", 
+        popover: { 
+          title: 'Confirm Upload', 
+          description: "Click here to submit your image."
+        }, 
+          waitForElement: 10000
+      },
+    ],
+  });
+
+  return driverObj;
+};
 
 export default Home;

@@ -223,6 +223,7 @@ const WasmImageProcessor = () => {
               <button
                 type="button"
                 className={`button ${styles.okButton}`}
+                id="okButton"
                 onClick={(e) => {
                   e.stopPropagation();
                   processImage();
