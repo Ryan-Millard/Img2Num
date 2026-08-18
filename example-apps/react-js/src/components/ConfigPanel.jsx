@@ -25,7 +25,7 @@ const ConfigPanel = ({
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
 
   return (
-    <div className={`${styles.settingsPanel} ${isOpen ? styles.settingsOpen : ""} ${className}`} onClick={(e) => e.stopPropagation()}>
+    <div id="configNotes" className={`${styles.settingsPanel} ${isOpen ? styles.settingsOpen : ""} ${className}`} onClick={(e) => e.stopPropagation()}>
       <div className={styles.settingsHeaderWrapper}>
         <h3 className={styles.settingsHeading}>Configuration</h3>
         <div className={styles.headerButtons}>
@@ -40,7 +40,7 @@ const ConfigPanel = ({
       {/* K-Means Parameters (Color Settings) */}
       <div className={styles.sectionHeader}>K-Means Segmentation</div>
 
-      <div className={styles.settingGroup} id="kMeans">
+      <div className={styles.settingGroup}>
         <div className={styles.settingLabelWrapper}>
           <label htmlFor="k-colors">Number of Colors (k)</label>
           <input
@@ -63,7 +63,7 @@ const ConfigPanel = ({
       {/* Contours Parameters (Outline Details) */}
       <div className={styles.sectionHeader}>Outline Details</div>
 
-      <div className={styles.settingGroup} id="outlineDetails">
+      <div className={styles.settingGroup}>
         <div className={styles.settingLabelWrapper}>
           <label htmlFor="min-area">Minimum Region Area</label>
           <input
@@ -124,7 +124,7 @@ const ConfigPanel = ({
       </div>
 
       {/* Advanced Settings Collapsible Toggle */}
-      <button type="button" className={styles.advancedToggle} onClick={() => setIsAdvancedOpen((prev) => !prev)} aria-expanded={isAdvancedOpen}>
+      <button id="advancedToggle" type="button" className={styles.advancedToggle} onClick={() => setIsAdvancedOpen((prev) => !prev)} aria-expanded={isAdvancedOpen}>
         <span>Advanced Settings</span>
         {isAdvancedOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
       </button>
@@ -214,6 +214,7 @@ const ConfigPanel = ({
         <button
           type="button"
           className="button"
+          id="okButton"
           onClick={(e) => {
             e.stopPropagation();
             onAction();

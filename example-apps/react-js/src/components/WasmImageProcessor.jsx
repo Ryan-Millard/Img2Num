@@ -216,6 +216,7 @@ const WasmImageProcessor = () => {
                 }}
                 aria-expanded={isSettingsOpen}
                 aria-label="Toggle settings"
+                id="settingsToggleButton"
               >
                 <Settings size={18} />
               </button>
@@ -223,7 +224,6 @@ const WasmImageProcessor = () => {
               <button
                 type="button"
                 className={`button ${styles.okButton}`}
-                id="okButton"
                 onClick={(e) => {
                   e.stopPropagation();
                   processImage();
