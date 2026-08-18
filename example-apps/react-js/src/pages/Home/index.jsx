@@ -5,6 +5,9 @@ import Tooltip from "@components/Tooltip";
 import styles from "./Home.module.css";
 import HomeHelmet from "./HomeHelmet";
 
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
+
 const Home = () => (
   <>
     <HomeHelmet />
@@ -12,7 +15,10 @@ const Home = () => (
     <div className="flex-column gap-md">
       <Hero header="Img2Num" description="Upload an image to convert it into a color-by-number template to color in directly in your browser!" />
 
-      <WasmImageProcessor />
+      <div id="step-one">
+        <WasmImageProcessor />
+      </div>
+      
 
       <div className={styles.featureContainer}>
         <GlassCard>
@@ -32,5 +38,15 @@ const Home = () => (
     </div>
   </>
 );
+
+const driverObj = driver({
+  showProgress: true,
+  steps: [
+    { popover: { title: 'Welcome to the tutorial!', description: 'Click next to continue or X to skip.'}},
+    { element: '#step-one', popover: { title: 'Uploading an Image', description: 'Drag and drop an image or click the page to upload a file. <br>Supported image formats: .jpg, .png, .bmp <br>Processing works entirely in the browser.' }}
+  ]
+});
+
+driverObj.drive();
 
 export default Home;
