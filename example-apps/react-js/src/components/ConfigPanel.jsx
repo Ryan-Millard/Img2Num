@@ -40,7 +40,7 @@ const ConfigPanel = ({
       {/* K-Means Parameters (Color Settings) */}
       <div className={styles.sectionHeader}>K-Means Segmentation</div>
 
-      <div className={styles.settingGroup}>
+      <div className={styles.settingGroup} id="kMeans">
         <div className={styles.settingLabelWrapper}>
           <label htmlFor="k-colors">Number of Colors (k)</label>
           <input
@@ -63,7 +63,7 @@ const ConfigPanel = ({
       {/* Contours Parameters (Outline Details) */}
       <div className={styles.sectionHeader}>Outline Details</div>
 
-      <div className={styles.settingGroup}>
+      <div className={styles.settingGroup} id="outlineDetails">
         <div className={styles.settingLabelWrapper}>
           <label htmlFor="min-area">Minimum Region Area</label>
           <input

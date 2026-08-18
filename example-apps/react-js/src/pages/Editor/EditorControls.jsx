@@ -269,6 +269,7 @@ const EditorControls = ({
             <Tooltip position="top" content="Adjust settings">
               <button
                 type="button"
+                id="settingsToggleButton"
                 className={`button ${styles.settingsToggleBtn} ${isSettingsOpen ? styles.settingsActive : ""}`}
                 onClick={onToggleSettings}
                 aria-label="Adjust image settings"

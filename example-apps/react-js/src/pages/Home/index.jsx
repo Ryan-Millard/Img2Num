@@ -62,17 +62,39 @@ export function createTour() {
         popover: { 
           title: 'Uploading an Image', 
           description: 'Drag and drop an image or click the page to upload a file. <br>Supported image formats: .jpg, .png, .bmp <br>Processing works entirely in the browser.', 
-          showButtons: ["next", "close"]
-        }
+          showButtons: ["close"]
+        },
       },
 
-      { element: "#okButton", 
+      { element: '#okButton', 
         popover: { 
           title: 'Confirm Upload', 
-          description: "Click here to submit your image."
-        }, 
-          waitForElement: 10000
+          description: 'Click here to submit your image.'
+        },
+        waitForElement: 10000,
       },
+
+      { element: '#settingsToggleButton',
+        popover: {
+          title: 'Image Processing Configuration',
+          description: 'Click here to adjust output quality, complexity, and performance of the output.'
+        },
+        waitForElement: 10000,
+      },
+
+      { element: '#kMeans',
+        popover: {
+          title: 'Adjust K-means',
+          description: 'K-means groups pixels into k clusters based on color distance in the chosen color space.<br>Adjust k to determine how many colors the output should contain.<br>Note: k cannot force new colors and will max out at the amount of colors it has.<br>Tip: Larger images benefit from more colors but too many will produce noisy contours.'
+        },
+      },
+
+      { element: '#outlineDetails',
+        popover: {
+          title: 'Adjust the outline of your image',
+          description: 'Hre, you can change the region area and thickness'
+        }
+      }
     ],
   });
 
