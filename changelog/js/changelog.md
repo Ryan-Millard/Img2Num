@@ -4,6 +4,12 @@ URL: https://img2num.dev/changelog/js/changelog
 
 [`img2num-js`](https://github.com/Ryan-Millard/Img2Num/releases)
 
+## [v0.4.2 - 2026-08-18](https://github.com/Ryan-Millard/Img2Num/releases/tag/packages-js-v0.4.2)
+
+### 🐛 Bug Fixes
+
+- **commonjs:** load webgpu via dynamic import, fall back to CPU, and guard the CJS build ( [#562](https://github.com/Ryan-Millard/Img2Num/issues/562) ) ( [e44480d](https://github.com/Ryan-Millard/Img2Num/commit/e44480d9c4736c1ae67094a121731ae9adc4365b) )
+
 ## [v0.4.0 - 2026-08-16](https://github.com/Ryan-Millard/Img2Num/releases/tag/packages-js-v0.4.0)
 
 ### ⚠ BREAKING CHANGES

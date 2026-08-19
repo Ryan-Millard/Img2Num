@@ -16,7 +16,7 @@ Changelog:[`cimg2num`](/changelog/c) Latest:[v0.2.0 - 2026-06-27](/changelog/c/2
 
 ## [JavaScript](/changelog/js)
 
-Changelog:[`img2num-js`](/changelog/js) Latest:[v0.4.0 - 2026-08-16](/changelog/js/2026-08-16_0-4-0)
+Changelog:[`img2num-js`](/changelog/js) Latest:[v0.4.2 - 2026-08-18](/changelog/js/2026-08-18_0-4-2)
 
 [![JavaScript](https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg)](/changelog/js)
 
