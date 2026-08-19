@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.4.1...packages-js-v0.4.2) (2026-08-18)
+
+
+### 🐛 Bug Fixes
+
+* **commonjs:** load webgpu via dynamic import, fall back to CPU, and guard the CJS build ([#562](https://github.com/Ryan-Millard/Img2Num/issues/562)) ([e44480d](https://github.com/Ryan-Millard/Img2Num/commit/e44480d9c4736c1ae67094a121731ae9adc4365b))
+
 ## [0.4.1](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.4.0...packages-js-v0.4.1) (2026-08-16)
 
 
