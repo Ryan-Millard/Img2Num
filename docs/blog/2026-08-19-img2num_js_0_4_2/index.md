@@ -1,5 +1,8 @@
 ---
-title: "Img2Num JS 0.4.2: One Package, Five Purpose-Built Bundles"
+title: "Img2Num JS 0.4.2: One npm Package, Five Purpose-Built WebAssembly Bundles"
+description: "Img2Num 0.4.2 ships five purpose-built WASM bundles on npm - browser ESM, IIFE, UMD, and Node ESM/CJS - fixing CommonJS require() crashes and bundler .wasm resolution for image-to-SVG conversion in JavaScript."
+keywords: [img2num, image to svg, raster to svg, javascript svg converter, webassembly, wasm, npm, commonjs, esm, vectorization]
+image: ./img/social.png
 slug: img2num_js_0_4_2
 authors: [ryan-millard]
 tags: [release, javascript, wasm]
@@ -8,6 +11,8 @@ tags: [release, javascript, wasm]
 import Link from "@docusaurus/Link";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+
+![Hero](./img/social.png)
 
 Img2Num's [JavaScript package v0.4.2](https://www.npmjs.com/package/img2num) is out on npm, and it's the biggest change to
 the npm distribution since we first shipped WebAssembly builds.
@@ -97,7 +102,7 @@ compiled-in `require()` (see the warning above); [0.4.2](https://www.npmjs.com/p
 `navigator is not defined`. A matching build guard scans the emitted CJS chunk and fails
 the build if any executable `require("webgpu")` ever sneaks back in.
 
-## Using the new bundles
+## How to use Img2Num in the browser and Node.js
 
 The same two calls - decode to pixels, convert to SVG - work in every environment.
 Here's the shortest working version of each target, with a live sandbox to poke at:
@@ -319,7 +324,7 @@ npm install img2num
 <script src="https://cdn.jsdelivr.net/npm/img2num@0.4.2/dist/standalone/img2num.iife.js"></script>
 ```
 
-(Pin the version - your future self will thank you. Ours certainly did this week. Twice.)
+(Pin the version - your future self will thank you.)
 
 ## What's next
 
