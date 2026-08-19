@@ -38,8 +38,7 @@ const algoliaHeadTag = {
   content: "DB4B5FEC1545D32B",
 };
 
-const GitHubNavbarLink = `
-  <a
+const GitHubNavbarLink = `<a
     href="https://github.com/Ryan-Millard/Img2Num"
     class="navbar__item navbar__link navbar__link--container"
     target="_blank"
@@ -66,26 +65,28 @@ const GitHubNavbarLink = `
 `;
 const SponsorLink = `<a
     href="https://github.com/sponsors/Ryan-Millard"
-    class="navbar__item navbar__link navbar__link--container"
+    class="navbar__sponsor"
     target="_blank"
     rel="noopener noreferrer"
-    aria-label="Sponsor this project"
+    aria-label="Sponsor this project on GitHub"
   >
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    class="lucide lucide-heart-icon lucide-heart"
-  >
-    <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" />
-  </svg>
-</a>`;
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="navbar__sponsor-heart"
+      aria-hidden="true"
+    >
+      <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" />
+    </svg>
+    <span>Sponsor</span>
+  </a>`;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -267,15 +268,16 @@ const config = {
           },
           { to: "/changelog", label: "Changelog", position: "left" },
           { to: "/blog", label: "Blog", position: "left" },
-          {
-            type: "html",
-            position: "right",
-            value: GitHubNavbarLink,
-          },
+          { type: "search", position: "right" },
           {
             type: "html",
             position: "right",
             value: SponsorLink,
+          },
+          {
+            type: "html",
+            position: "right",
+            value: GitHubNavbarLink,
           },
         ],
         hideOnScroll: false,
