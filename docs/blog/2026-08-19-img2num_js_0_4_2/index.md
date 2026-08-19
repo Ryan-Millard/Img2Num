@@ -317,7 +317,7 @@ Talking about build targets is abstract, so the examples got a matching overhaul
 - The docs site now has an [example apps index](https://img2num.dev/example-apps/) with a card and representative snippet for every binding:
   React, browser ESM, IIFE, UMD, Node ESM/CJS - and Python, C++, and C, because Img2Num was never just a JavaScript library.
 - Every JS target is also runnable in your browser right now - the CodeSandbox links in the
-  [tabs above](#using-the-new-bundles) are one click from "processed image" with nothing installed.
+  [tabs above](#how-to-use-img2num-in-the-browser-and-nodejs) are one click from "processed image" with nothing installed.
 
 Each example is intentionally minimal: the shortest path from "empty directory" to "processed image" in your environment of choice.
 They're also our first line of defense - and this release proved it twice.
