@@ -84,6 +84,29 @@ function copyWasmPlugin() {
   };
 }
 
+function cjsWebgpuGuard() {
+  // Only the CJS node build can regress into a require of webgpu; the other
+  // targets either keep real import() (node-esm) or exclude webgpu entirely.
+  if (TARGET !== "node-cjs") return { name: "img2num:cjs-webgpu-guard" };
+  return {
+    name: "img2num:cjs-webgpu-guard",
+    generateBundle(_, bundle) {
+      for (const chunk of Object.values(bundle)) {
+        if (chunk.type !== "chunk") continue;
+        // Matched against raw chunk code, no comment stripping: stripping
+        // comments with a regex mis-lexes // inside string literals (URLs)
+        // and can hide a real call. Instead, the source is kept free of the
+        // literal in comments (see src/target/node/webgpu.js JSDoc), so any
+        // match here is executable code. A future comment reintroducing the
+        // literal fails the build loudly, which is the safe direction.
+        if (/require\(\s*["']webgpu["']\s*\)/.test(chunk.code)) {
+          throw new Error(`[img2num] ${chunk.fileName} contains a require of "webgpu" -- throws ERR_REQUIRE_ESM on Node < 22.12. The dynamic import() was lowered; see src/target/node/webgpu.js.`);
+        }
+      }
+    },
+  };
+}
+
 /**
  * Ships a bundler-detectable wasm URL in the published output.
  *
@@ -162,7 +185,7 @@ const FILE_NAMES = {
 };
 
 export default defineConfig({
-  plugins: [wasmUrlPlugin(), copyWasmPlugin()],
+  plugins: [wasmUrlPlugin(), copyWasmPlugin(), cjsWebgpuGuard()],
 
   build: {
     outDir: T.outDir ?? `dist/${TARGET}`,
