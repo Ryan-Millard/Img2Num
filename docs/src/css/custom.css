@@ -244,8 +244,10 @@ hr {
   }
 }
 
-/* Narrow desktops: collapse to icon-only so the centered search
-   never crowds the nav links or the sponsor button */
+/*
+ * Narrow desktops: collapse to icon-only so the centered search
+ * never crowds the nav links or the sponsor button
+ */
 @media screen and (min-width: 997px) and (max-width: 1200px) {
   .DocSearch-Button {
     width: auto;
