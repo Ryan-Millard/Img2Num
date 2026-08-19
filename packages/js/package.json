@@ -22,6 +22,16 @@
     "url": "git+https://github.com/Ryan-Millard/Img2Num.git",
     "directory": "packages/js"
   },
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/Ryan-Millard"
+    },
+    {
+      "type": "ko-fi",
+      "url": "https://ko-fi.com/ryan_millard"
+    }
+  ],
   "license": "MIT",
   "author": "Ryan-Millard",
   "type": "module",

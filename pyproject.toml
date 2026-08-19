@@ -27,6 +27,7 @@ Documentation = "https://img2num.dev/docs/"
 Changelog     = "https://img2num.dev/changelog/py/"
 "Changelog (GitHub)" = "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/py/CHANGELOG.md"
 "Bug Tracker" = "https://github.com/Ryan-Millard/Img2Num/issues"
+Funding       = "https://github.com/sponsors/Ryan-Millard"
 
 [build-system]
 requires = [
