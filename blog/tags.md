@@ -2,6 +2,6 @@
 
 URL: https://img2num.dev/blog/tags
 
-## L
+## J
 
-- Launch 1
+- JavaScript 1

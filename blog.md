@@ -2,21 +2,21 @@
 
 URL: https://img2num.dev/blog
 
-## We're Expanding the Maintainer Team
+## Img2Num JS 0.4.2: One npm Package, Five Purpose-Built WebAssembly Bundles
 
-May 2, 2026 · 3 min read
+August 19, 2026 · 12 min read
 ![Ryan Millard](https://avatars.githubusercontent.com/u/142347829?v=4) Ryan Millard
 Img2Num Author
 
-![Img2Num maintainer expansion](/assets/images/2026-05-02-maintainers-expansion-a0919b4870176cdd32db75246f79fc50.png)
+![Hero](/assets/images/social-9580fa15e2a6c4708fca1760c765ffc5.png)
 
-Img2Num has grown well past the point where one or two people can own it responsibly.
+Img2Num's [JavaScript package v0.4.2](https://www.npmjs.com/package/img2num) is out on npm, and it's the biggest change to the npm distribution since we first shipped WebAssembly builds.
 
-The codebase now spans a performance-critical C++ core, cross-language bindings (Python, JavaScript, C), a WebAssembly build pipeline, CI/CD automation, and a Docusaurus docs site. Keeping all of that high-quality and sustainable requires real ownership — not just occasional PRs.
+In short, instead of one compromise bundle, the package now ships five purpose-built bundles, each backed by its own Emscripten glue variant, and getting started no longer requires knowing anything about Emscripten - regardless of whether you're in a bundled web app, a plain `<script>` tag, or Node.js.
 
-We're looking for experienced contributors ready to take on scoped, ongoing responsibility.
+**If you're new here:** Img2Num is a C++-based library for converting raster images into clean SVGs, with bindings for C, Python, and JavaScript. This release is about the [JavaScript](https://www.npmjs.com/package/img2num) and WebAssembly side of the library - the [C++ core](https://github.com/Ryan-Millard/Img2Num/releases?q=cpp) , [C API](https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c) , and [Python package](https://pypi.org/project/img2num/) are unchanged.
 
 **Tags:**
-- Maintainers
+- Release - JavaScript - WebAssembly
 
 **Read more**
