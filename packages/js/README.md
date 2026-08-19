@@ -38,12 +38,10 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 
 </td>
 <td valign="top">
-
-- [Installation](#installation)
-- [Browser Usage (CDN)](#browser-usage-cdn)
-- [Quick Start](#quick-start)
+  
+- [Node.js Usage](#nodejs-usage)
+- [Browser Usage](#browser-usage)
 - [API Reference](#api-reference)
-- [Navigating WebAssembly](#navigating-webassembly)
 - [Examples](#examples)
 - [License](#license)
 - [Supporting Us](#supporting-us)
@@ -125,105 +123,135 @@ Try one of our [example-apps](https://img2num.dev/example-apps/)!
 
 For more information, please see our [Requirements Page](https://img2num.dev/docs/js/requirements/).
 
-## Installation
+## Node.js Usage
 
-```bash
+> We recommend using [sharp](https://www.npmjs.com/package/sharp) to decode images in Node.js, however you
+> are free to use whichever library you like as long as you use a `Uint8ClampedArray` in RGBA format as the
+> input image (`pixels`) to the functions.
+
+### Node.js ESM
+
+```sh
+npm install img2num sharp
+```
+
+> or `pnpm add img2num sharp` / `yarn add img2num sharp` / `bun add img2num sharp`
+
+```js
+import { writeFileSync } from "fs";
+import { imageToSvg, terminateWasmModule } from "img2num";
+import sharp from "sharp";
+
+const { data, info } = await sharp("input.png").ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+
+const pixels = new Uint8ClampedArray(data.buffer, data.byteOffset, data.byteLength);
+
+try {
+  const { svg } = await imageToSvg({ pixels, width: info.width, height: info.height });
+  writeFileSync("output.svg", svg);
+} finally {
+  await terminateWasmModule();
+}
+```
+[Try it on CodeSandbox](https://codesandbox.io/p/devbox/node-esm-jmn444)
+
+### Node.js CommonJS
+
+```sh
+npm install img2num sharp
+```
+
+> or `pnpm add img2num sharp` / `yarn add img2num sharp` / `bun add img2num sharp`
+
+```js
+const { writeFileSync } = require("fs");
+const { imageToSvg, terminateWasmModule } = require("img2num");
+const sharp = require("sharp");
+
+async function main() {
+  const { data, info } = await sharp("input.png").ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+
+  const pixels = new Uint8ClampedArray(data.buffer, data.byteOffset, data.byteLength);
+
+  try {
+    const { svg } = await imageToSvg({ pixels, width: info.width, height: info.height });
+    writeFileSync("output.svg", svg);
+  } finally {
+    await terminateWasmModule();
+  }
+}
+
+main().catch(console.error);
+```
+[Try it on CodeSandbox](https://codesandbox.io/p/devbox/node-cjs-dp5ltr)
+
+## Browser Usage
+
+### Browser ESM
+
+```sh
 npm install img2num
 ```
 
-```bash
-pnpm add img2num
+> or `pnpm add img2num` / `yarn add img2num` / `bun add img2num`
+
+```js
+import { imageToUint8ClampedArray, imageToSvg } from "img2num";
+
+const fileInput = document.querySelector("#fileInput");
+
+fileInput.addEventListener("change", async (e) => {
+  const { pixels, width, height } = await imageToUint8ClampedArray(e.target.files[0]);
+  const { svg } = await imageToSvg({ pixels, width, height });
+
+  document.querySelector("#preview").src = "data:image/svg+xml;base64," + btoa(svg);
+});
 ```
-
-```bash
-yarn add img2num
-```
-
-```bash
-bun add img2num
-```
-
-## Browser Usage (CDN)
-
-**This approach only works in Browsers.**
+[Try it on CodeSandbox](https://codesandbox.io/p/sandbox/delicate-bird-3kprj2)
 
 ### jsDelivr CDN
 
 [![jsDelivr](https://img.shields.io/badge/CDN-jsDelivr-ff5627?logo=jsdelivr&logoColor=white)](https://www.jsdelivr.com/package/npm/img2num)
 
+**IIFE:**
 ```html
-<!-- IMPORTANT: this is browser-only -->
-<script src="https://cdn.jsdelivr.net/npm/img2num/dist/browser/img2num.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/img2num@0.4.2/dist/standalone/img2num.iife.js"></script>
+<script>
+  const { imageToUint8ClampedArray, imageToSvg } = Img2Num;
+
+  fileInput.addEventListener("change", async (e) => {
+    const { pixels, width, height } = await imageToUint8ClampedArray(e.target.files[0]);
+    const { svg } = await imageToSvg({ pixels, width, height });
+    preview.src = "data:image/svg+xml;base64," + btoa(svg);
+  });
+</script>
 ```
+[Try it on CodeSandbox](https://codesandbox.io/p/sandbox/iife-fh25gg)
 
-> We strongly recommend pinning the version. For example:
->
-> ```html
-> <!-- IMPORTANT: this is browser-only -->
-> <script src="https://cdn.jsdelivr.net/npm/img2num@0.3.0/dist/browser/img2num.js"></script>
-> ```
-
-### unpkg CDN
-
-[![unpkg](https://img.shields.io/badge/CDN-unpkg-red?logo=npm&logoColor=white)](https://app.unpkg.com/img2num)
-
+**UMD (RequireJS):**
 ```html
-<!-- IMPORTANT: this is browser-only -->
-<script src="https://unpkg.com/img2num/dist/browser/img2num.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.8/require.js"></script>
+<script>
+  requirejs.config({
+    paths: { img2num: "https://cdn.jsdelivr.net/npm/img2num@0.4.2/dist/standalone/img2num.umd" },
+  });
+
+  requirejs(["img2num"], ({ imageToUint8ClampedArray, imageToSvg }) => {
+    fileInput.addEventListener("change", async (e) => {
+      const { pixels, width, height } = await imageToUint8ClampedArray(e.target.files[0]);
+      const { svg } = await imageToSvg({ pixels, width, height });
+      preview.src = "data:image/svg+xml;base64," + btoa(svg);
+    });
+  });
+</script>
 ```
-
-> We strongly recommend pinning the version. For example:
->
-> ```html
-> <!-- IMPORTANT: this is browser-only -->
-> <script src="https://unpkg.com/img2num@0.3.0/dist/browser/img2num.js"></script>
-> ```
-
-## Quick Start
-
-### All-in-one (recommended)
-
-Follow the [Usage Guide](https://img2num.dev/docs/js/usage/) for more up-to-date information on how to use Img2Num.
-
-```js
-import { imageToUint8ClampedArray, imageToSvg, terminateWasmModule } from "img2num";
-// Browsers:
-const { pixels, width, height } = await imageToUint8ClampedArray(file);
-// Node.js equivalent:
-// const { data, info } = await sharp(imagePath).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
-// const { width, height } = info;
-const { svg } = await imageToSvg({ pixels, width, height });
-await terminateWasmModule(); // WebAssembly and GPU cleanup
-```
-
-> `imageToUint8ClampedArray` uses browser APIs (`Image`, `canvas`) and is only available in browser environments. In Node.js, use a library like [`sharp`](https://www.npmjs.com/package/sharp) to decode images to a `Uint8ClampedArray` in RGBA format before passing to the WASM functions.
-
-### CommonJS
-
-The package ships both ESM and CJS builds, so `require` works too — everything after the import is identical:
-
-```js
-const { imageToSvg, terminateWasmModule } = require("img2num");
-```
+[Try it on CodeSandbox](https://codesandbox.io/p/sandbox/competent-shape-2drsrz)
 
 ## API Reference
 
 All WebAssembly-backed functions are `async` and return Promises. For full details see the [JavaScript API reference](https://img2num.dev/docs/js/api/).
 
 ---
-
-## Navigating WebAssembly
-
-This package ships a `.wasm` binary and a worker file. The library automatically selects the correct worker implementation for your runtime — browser Web Workers or Node.js `worker_threads`. Some bundlers need extra configuration to handle `.wasm` assets correctly:
-
-- **Vite** — add to `vite.config.js`:
-```js
-  assetsInclude: ["**/*.wasm"]
-```
-- **Webpack 5** — enable `asyncWebAssembly: true` in `experiments`.
-- **Other bundlers** — if you run into issues, please [open an issue](https://github.com/Ryan-Millard/Img2Num/issues) so we can document the solution and help others facing the same problem.
-
-We actively welcome contributions to this section — if you've configured a bundler not listed here, please open a PR to add it to our [documentation](https://img2num.dev/docs/).
 
 ## Examples
 
@@ -261,7 +289,7 @@ Img2Num is free and open source. If it saves you time or you'd like to support i
 <p>
   <a href="https://github.com/Ryan-Millard/Img2Num">GitHub</a>
   &middot;
-  <a href="https://img2num.dev/docs/">Documentation</a>
+  <a href="https://img2num.dev/docs/js/">Documentation</a>
   &middot;
   <a href="https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/CHANGELOG.md">Changelog</a>
   &middot;
