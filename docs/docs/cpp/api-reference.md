@@ -9,19 +9,15 @@ description: >
 import FullscreenIframe from "@site/src/components/FullscreenIframe";
 
 export const DocsLink = () => (
-<a
-href="/docs/cpp/api/"
-onClick={(e) => {
-e.preventDefault();
-window.location.href = "/docs/cpp/api/";
-}}
-
->
-
+  <a
+    href="/docs/cpp/api/"
+    onClick={(e) => {
+      e.preventDefault();
+      window.location.href = "/docs/cpp/api/";
+    }}
+  >
     {" "}
-
     Doxygen documentation{" "}
-
   </a>
 );
 

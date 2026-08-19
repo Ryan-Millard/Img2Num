@@ -302,7 +302,18 @@ Talking about build targets is abstract, so the examples got a matching overhaul
 - `console-js` is now split into <a href="/example-apps/#node-esm"><code>console-js-esm</code></a> and <a href="/example-apps/#node-cjs"><code>console-js-cjs</code></a>,
   so the `import` and `require` export conditions are each exercised by a real consumer (and we fixed a byte-offset bug in the pixel-buffer construction while we were in there).
 - The `html-js` example was rebuilt as a single shared template compiled into three self-contained variants -
-  <Link to="/example-apps/esm/" target="_blank">ESM</Link>, <Link to="/example-apps/iife/" target="_blank">IIFE</Link>, and <Link to="/example-apps/umd/" target="_blank">UMD</Link> - each deployable as plain static files with no build tooling at runtime.
+  <Link to="/example-apps/esm/" target="_blank">
+    ESM
+  </Link>
+  &comma;&nbsp;
+  <Link to="/example-apps/iife/" target="_blank">
+    IIFE
+  </Link>
+  &comma; and&nbsp;
+  <Link to="/example-apps/umd/" target="_blank">
+    UMD
+  </Link>
+  &nbsp;- each deployable as plain static files with no build tooling at runtime.
 - The docs site now has an [example apps index](https://img2num.dev/example-apps/) with a card and representative snippet for every binding:
   React, browser ESM, IIFE, UMD, Node ESM/CJS - and Python, C++, and C, because Img2Num was never just a JavaScript library.
 - Every JS target is also runnable in your browser right now - the CodeSandbox links in the

@@ -1,9 +1,9 @@
 {
   "overrides": [
     {
-      "files": ["docs/**/*.md", "docs/blog/2026-08-15-img2num_js_0_4_1.md"],
+      "files": ["docs/**/*.md"],
       "options": {
-        "parser": "markdown"
+        "parser": "mdx"
       }
     }
   ]
