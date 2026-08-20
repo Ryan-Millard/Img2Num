@@ -45,9 +45,12 @@ if(IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP)
   foreach(_var ${_vars})
     string(TOUPPER "${_var}" _var_upper)
 
-    if(_var MATCHES "^IMG2NUM")
+    # Exact upper case matches (User flags like IMG2NUM_BUILD_C)
+    if(_var MATCHES "^(C)?IMG2NUM")
       message(STATUS "[User-Defined] ${COLOR_MAGENTA}${_var}=${${_var}}${COLOR_RESET}")
-    elseif(_var_upper MATCHES "^IMG2NUM")
+
+    # Case-insensitive matches via _var_upper (Auto variables like CImg2Num_BINARY_DIR)
+    elseif(_var_upper MATCHES "^(C)?IMG2NUM")
       message(STATUS "[Auto] ${COLOR_CYAN}${_var}=${${_var}}${COLOR_RESET}")
     endif()
   endforeach()
@@ -55,7 +58,8 @@ if(IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP)
   foreach(_var ${_vars})
     string(TOUPPER "${_var}" _var_upper)
 
-    if(NOT _var_upper MATCHES "^IMG2NUM")
+    # Adding (C)? here stops CImg2Num variables from sneaking into the third-party list
+    if(NOT _var_upper MATCHES "^(C)?IMG2NUM")
       message(STATUS "${_var}=${${_var}}")
     endif()
   endforeach()
@@ -63,6 +67,7 @@ if(IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP)
   message(STATUS "===============================================================\n\n")
 endif()
 endblock()
+
 
 # ================================================
 # Library setup

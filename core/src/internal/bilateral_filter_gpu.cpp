@@ -12,7 +12,7 @@
 #include <cstring>
 #include <vector>
 // for debug printing
-#include <spdlog/spdlog.h>
+#include "internal/log.h"
 
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB {0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB {1};
@@ -53,7 +53,7 @@ void bilateral_filter_gpu(
     std::memcpy(result.data(), image, width * height * 4);
     // CIELAB conversion will run as shader
 
-    SPDLOG_INFO("begin wgpu portion");
+    IMG2NUM_LOG_INFO("begin wgpu portion");
     // 1. Create Input Texture
     wgpu::TextureDescriptor texDesc = {};
     texDesc.size = {static_cast<uint32_t>(width), static_cast<uint32_t>(height), 1};
@@ -62,7 +62,7 @@ void bilateral_filter_gpu(
     texDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst;
     wgpu::Texture inputTexture = GPU::getClassInstance().get_device().CreateTexture(&texDesc);
 
-    SPDLOG_INFO("upload texture");
+    IMG2NUM_LOG_INFO("upload texture");
     // Upload data to Input Texture
     wgpu::TexelCopyTextureInfo dst = {};
     dst.texture = inputTexture;
@@ -75,7 +75,7 @@ void bilateral_filter_gpu(
         &dst, image, bytesPerPixel * width * height, &layout, &texDesc.size
     );
 
-    SPDLOG_INFO("create output texture");
+    IMG2NUM_LOG_INFO("create output texture");
     // 2. Create Output Texture (Storage)
     wgpu::TextureDescriptor outDesc = texDesc;
     outDesc.usage = wgpu::TextureUsage::StorageBinding | wgpu::TextureUsage::CopySrc;
@@ -90,7 +90,7 @@ void bilateral_filter_gpu(
     // filtered lab
     wgpu::Texture texLabFiltered = GPU::getClassInstance().get_device().CreateTexture(&descLab);
 
-    SPDLOG_INFO("create buffer");
+    IMG2NUM_LOG_INFO("create buffer");
     // 3. Create Uniform Buffer
     float sr = static_cast<float>(sigma_range);
     FilterParams params = {static_cast<float>(sigma_spatial), sr, 0.0f, 0.0f};
@@ -231,7 +231,7 @@ void bilateral_filter_gpu(
 
     wgpu::CommandBuffer commands = encoder.Finish();
     GPU::getClassInstance().get_queue().Submit(1, &commands);
-    SPDLOG_INFO("queue submit");
+    IMG2NUM_LOG_INFO("queue submit");
 
     // static volatile bool waiting = true;
 
@@ -251,7 +251,7 @@ void bilateral_filter_gpu(
     readBuffer.MapAsync(
         wgpu::MapMode::Read, 0, bufferSize, wgpu::CallbackMode::AllowProcessEvents,
         [](wgpu::MapAsyncStatus status, wgpu::StringView message, void* userdata) {
-            SPDLOG_INFO("In callback");
+            IMG2NUM_LOG_INFO("In callback");
             bool* flag = static_cast<bool*>(userdata);
             bool success = false;
             if (status == wgpu::MapAsyncStatus::Success) {
@@ -265,7 +265,7 @@ void bilateral_filter_gpu(
         (void*)waiting
     );
 
-    SPDLOG_INFO("waiting {}", *waiting);
+    IMG2NUM_LOG_INFO("waiting {}", *waiting);
 
     while (*waiting) {
         GPU::getClassInstance().get_instance().ProcessEvents();
@@ -273,7 +273,7 @@ void bilateral_filter_gpu(
         emscripten_sleep(10);
 #endif
     }
-    SPDLOG_INFO("done wgpu");
+    IMG2NUM_LOG_INFO("done wgpu");
     const uint8_t* mappedData = (const uint8_t*)readBuffer.GetConstMappedRange(0, bufferSize);
     // copy to cpu buffer
     for (size_t y = 0; y < height; ++y) {
@@ -290,7 +290,7 @@ void bilateral_filter_gpu(
     }
     readBuffer.Unmap();
     std::memcpy(image, result.data(), result.size());
-    SPDLOG_INFO("done memcpy");
+    IMG2NUM_LOG_INFO("done memcpy");
 
     // explicit clean up
 
