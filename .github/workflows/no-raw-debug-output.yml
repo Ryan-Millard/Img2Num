@@ -19,26 +19,25 @@ jobs:
 
       - name: Check for iostream usage
         run: |
-          streams=(
-            cin
-            cout
-            cerr
-            clog
-            wcin
-            wcout
-            wcerr
-            wclog
-          )
-          
+          streams=(cin cout cerr clog wcin wcout wcerr wclog)
+
           patterns=('#include\s*<iostream>')
-          
           for stream in "${streams[@]}"; do
             patterns+=("std::$stream")
           done
-          
+
           regex=$(IFS='|'; echo "${patterns[*]}")
-          
+
+          set +e
           rg -e "$regex" \
             --type cpp \
             -g '!third_party/**' \
             -g '!example-apps/**'
+          status=$?
+          set -e
+
+          case $status in
+            0) echo "::error::Raw debug output found (see matches above). Use IMG2NUM_LOG_* macros instead."; exit 1 ;;
+            1) echo "No raw debug output found."; exit 0 ;;
+            *) echo "::error::ripgrep failed with exit code $status"; exit "$status" ;;
+          esac
