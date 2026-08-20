@@ -1,5 +1,4 @@
 packages/js/build-wasm
-example-apps/react-js/dist/
 .clang-format
 .devcontainer
 .dockerignore
@@ -26,15 +25,11 @@ node_modules/
 scripts/
 pnpm-lock.yaml
 .pnpm-store/
-example-apps/react-js/src/data/contributor-credits.json
 third_party/
 .venv
 .img2num-state
 .npmrc
 LICENSE*
-example-apps/*-py/
-example-apps/*-cpp/
-example-apps/*-c/
 bindings/py/
 bindings/c/
 packages/py
@@ -44,3 +39,12 @@ docs/.docusaurus
 docs/build/
 docs/static/*
 docs/docs/js/api/
+docs/changelog/
+
+example-apps/react-js/src/data/contributor-credits.json
+example-apps/react-js/dist/
+example-apps/*-py/
+example-apps/*-cpp/
+example-apps/*-c/
+example-apps/html-js/dist/
+packages/js/dist

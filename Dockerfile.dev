@@ -153,7 +153,7 @@ ENV CHOKIDAR_USEPOLLING=true
 ENV CHOKIDAR_INTERVAL=100
 
 # See docker-compose.yml ports
-EXPOSE 5173 4173 3000 5174 4174
+EXPOSE 3000 5173 4173 5174 4174 5175 5176
 
 # --------------------------------------------------------------------------------------------------------------
 # Healthcheck (Basic if container works)

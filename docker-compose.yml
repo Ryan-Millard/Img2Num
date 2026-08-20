@@ -10,11 +10,17 @@ services:
       - /usr/src/app/.venv      # PROTECTS the container's .venv from being overwritten
       - pnpm-store:/pnpm
     ports:
-      - "5173:5173" # example-apps/react-js dev
-      - "4173:4173" # example-apps/react-js preview
       - "3000:3000" # docs/ start
-      - "5174:5174" # example-apps/html-js start and dev
-      - "4174:4174" # example-apps/html-js preview
+
+      - "5173:5173" # example-apps/react-js dev script
+      - "4173:4173" # example-apps/react-js preview script
+
+      - "5174:5174" # example-apps/html-js start and dev scripts
+      - "4174:4174" # example-apps/html-js preview script
+
+      - "5175:5175" # example-apps/html-js-iife start script
+
+      - "5176:5176" # example-apps/html-js-umd start script
     stdin_open: true
     tty: true
 

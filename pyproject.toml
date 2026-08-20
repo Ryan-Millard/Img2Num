@@ -1,6 +1,6 @@
 [project]
 name = "img2num"
-dynamic = ["version"] # see tool.scikit-buil
+dynamic = ["version"] # derived via [[tool.dynamic-metadata]] below
 description = "A fast and accurate raster image to SVG conversion library"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -27,12 +27,14 @@ Documentation = "https://img2num.dev/docs/"
 Changelog     = "https://img2num.dev/changelog/py/"
 "Changelog (GitHub)" = "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/py/CHANGELOG.md"
 "Bug Tracker" = "https://github.com/Ryan-Millard/Img2Num/issues"
+Funding       = "https://github.com/sponsors/Ryan-Millard"
 
 [build-system]
 requires = [
-  "scikit-build-core>=0.10",
+  "scikit-build-core>=1.0",
   "pybind11>=2.10",
-  "numpy>=2.0"
+  "numpy>=2.0",
+  "pybind11-stubgen>=2.5.5,<3",
 ]
 build-backend = "scikit_build_core.build"
 
@@ -43,20 +45,43 @@ cmake.args = [
   "-DIMG2NUM_BUILD_PYTHON=ON",
   "-DIMG2NUM_BUILD_EXAMPLES=OFF",
 ]
-# Derive version from version definition in packages/py/pyproject.toml
-metadata.version.provider = "scikit_build_core.metadata.regex"
-metadata.version.input = "packages/py/pyproject.toml"
-metadata.version.regex = '^version = "(?P<value>[^"]+)"'
-
 wheel.packages = ["img2num"]
-
+sdist.inclusion-mode = "explicit"
 sdist.include = [
+  "pyproject.toml",
+  "LICENSE",
   "CMakeLists.txt",
   "core/**",
   "bindings/py/**",
   "packages/py/**",
-  "third_party/**"
+  "third_party/dawn/**",
 ]
+sdist.exclude = [
+  # Local build output; explicit mode does not read .gitignore, so these
+  # must be excluded here.
+  "packages/py/build/",
+  "packages/py/build-py/",
+  "third_party/dawn/build/",
+  # Dawn test corpora: never consumed by any build; the vk-gl-cts tree makes
+  # tar extraction fragile (deterministic CI unpack failure, PR #562).
+  "third_party/dawn/test/",
+  "third_party/dawn/testing/",
+  "third_party/dawn/webgpu-cts/",
+  # WebGPU CTS GN metadata: 43 MB test_list.txt + 8 MB cache tarball.
+  "third_party/dawn/third_party/gn/",
+  # Opt-in macOS toolchain dir (per its README); contains the tree's only
+  # dangling symlink (ranlib -> libtool).
+  "third_party/dawn/src/cmake/HermeticXcode/",
+  # Dangling submodule gitlink; VCS metadata does not belong in an sdist.
+  "third_party/dawn/.git",
+]
+
+# Derive version from version definition in packages/py/pyproject.toml
+[[tool.dynamic-metadata]]
+provider = "scikit_build_core.metadata.regex"
+field = "version"
+input = "packages/py/pyproject.toml"
+regex = '^version = "(?P<value>[^"]+)"'
 
 [tool.uv]
 package = true
@@ -87,10 +112,14 @@ ignore = []
 [tool.ruff.lint.per-file-ignores]
 "**/__init__.py" = ["F401"] # Allow re-exports in __init__.py
 
-[project.optional-dependencies]
-dev = [
-  "ruff>=0.4.0",
-]
-
 [tool.cibuildwheel]
 build-verbosity = 1
+
+[dependency-groups]
+dev = [
+    "docspec>=2.2.1,<3",
+    "docspec-python>=2.2.1,<3",
+    "pybind11-stubgen>=2.5.5,<3",
+    "pydoc-markdown>=4.8.2,<5",
+    "ruff>=0.15,<0.16",
+]
