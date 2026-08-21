@@ -8,6 +8,10 @@ import { setEditorHandoff } from "@utils/editorHandoff";
 import LoadingHedgehog from "@components/LoadingHedgehog";
 import Tooltip from "@components/Tooltip";
 import ConfigPanel from "@components/ConfigPanel";
+import { createTour } from "@utils/onboardingTour";
+import { TOUR_KEY } from "@utils/onboardingTour";
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
 
 const WasmImageProcessor = () => {
   const navigate = useNavigate();
@@ -35,6 +39,20 @@ const WasmImageProcessor = () => {
       if (originalSrc) URL.revokeObjectURL(originalSrc);
     };
   }, [originalSrc]);
+
+  {/* Continued onboarding tour set up */}
+  useEffect(() => {
+    const savedStep = localStorage.getItem(TOUR_KEY);
+
+    if (savedStep === null) return;
+
+    const tour = createTour();
+    tour.drive(Number(savedStep));
+
+    return () => {
+      tour.destroy();
+    };
+  }, []);
 
   /* Stable loader for images */
   const loadOriginal = useCallback(async (file) => {
