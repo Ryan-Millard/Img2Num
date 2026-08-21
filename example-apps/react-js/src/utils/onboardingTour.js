@@ -71,6 +71,38 @@ export function createTour() {
           description: 'Add tips here'
         },
       },
+
+      {
+        element: '#resetButton',
+        popover: {
+          title: 'Reset',
+          description: 'This button will reset all colored regions.'
+        }
+      },
+
+      {
+        element: '#undoButton',
+        popover: {
+          title: 'Undo',
+          description: 'Click here to undo your last change.<br>Shortcut: Ctrl + Z'
+        }
+      },
+
+      {
+        element: '#redoButton',
+        popover: {
+          title: 'Redo',
+          description: 'Click here to redo your last change.<br>Shortcut: Ctrl + Y'
+        }
+      },
+
+      {
+        element: '#fullscreenButton',
+        popover: {
+          title: 'Fullscreen',
+          description: 'Click here to enter fullscreen mode.'
+        }
+      },
       
       {
         popover: { 

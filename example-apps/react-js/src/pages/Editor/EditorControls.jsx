@@ -246,17 +246,17 @@ const EditorControls = ({
 
         <div className="flex-center gap-sm" role="group" aria-label="History">
           <Tooltip position="top" content="Reset all coloured shapes">
-            <button className="button" onClick={onReset} aria-label="Reset all coloured shapes">
+            <button className="button" onClick={onReset} aria-label="Reset all coloured shapes" id="resetButton">
               <RotateCcw size={18} aria-hidden="true" />
             </button>
           </Tooltip>
           <Tooltip position="top" content="Undo · Ctrl Z">
-            <button className="button" onClick={onUndo} aria-label="Undo last change">
+            <button className="button" onClick={onUndo} aria-label="Undo last change" id='undoButton'>
               <Undo size={18} aria-hidden="true" />
             </button>
           </Tooltip>
           <Tooltip position="top" content="Redo · Ctrl Y">
-            <button className="button" onClick={onRedo} aria-label="Redo last change">
+            <button className="button" onClick={onRedo} aria-label="Redo last change" id='redoButton'>
               <Redo size={18} aria-hidden="true" />
             </button>
           </Tooltip>

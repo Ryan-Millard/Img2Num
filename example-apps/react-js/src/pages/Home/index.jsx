@@ -16,7 +16,7 @@ const Home = () => (
     <HomeHelmet />
 
     <div className="flex-column gap-md">
-      <Hero header="Img2Num" description="Upload an image to convert it into a color-by-number template to color in directly in your browser!" />
+      <Hero header="Img2Num" description="Upload an image to convert it into a color-by-number template to color in directly in your browser!" button="Need Help? Click to Start Tutorial"/>
 
       <div id="step-one">
         <WasmImageProcessor />
