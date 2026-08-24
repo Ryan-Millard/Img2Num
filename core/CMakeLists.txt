@@ -38,12 +38,8 @@ add_custom_target(Img2Num_shaders ALL
 
 add_library(Img2Num ${CORE_SRC})
 
-# spdlog (debug logging)
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../third_party/spdlog"
-                  "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/spdlog/build/"
-                  EXCLUDE_FROM_ALL)
-target_link_libraries(Img2Num PRIVATE spdlog::spdlog_header_only)
 # =================================================================
+# spdlog (debug logging)
 # Logging level (compile-time stripping via SPDLOG_ACTIVE_LEVEL)
 #
 #   AUTO (default): pick a level from the build type:
@@ -52,36 +48,43 @@ target_link_libraries(Img2Num PRIVATE spdlog::spdlog_header_only)
 #     RelWithDebInfo/etc -> INFO
 #   Or force a level: -DIMG2NUM_LOG_LEVEL=TRACE|DEBUG|INFO|WARN|ERROR|CRITICAL|OFF
 # =================================================================
-set(IMG2NUM_LOG_LEVEL "AUTO" CACHE STRING "Compile-time spdlog level for Img2Num")
-set_property(CACHE IMG2NUM_LOG_LEVEL PROPERTY STRINGS
-    AUTO TRACE DEBUG INFO WARN ERROR CRITICAL OFF)
+block()
+  set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
+  add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../third_party/spdlog"
+                    "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/spdlog/build/"
+                    EXCLUDE_FROM_ALL)
+  target_link_libraries(Img2Num PRIVATE spdlog::spdlog_header_only)
+  set(IMG2NUM_LOG_LEVEL "AUTO" CACHE STRING "Compile-time spdlog level for Img2Num")
+  set_property(CACHE IMG2NUM_LOG_LEVEL PROPERTY STRINGS
+      AUTO TRACE DEBUG INFO WARN ERROR CRITICAL OFF)
 
-string(TOUPPER "${IMG2NUM_LOG_LEVEL}" _IMG2NUM_LOG_LEVEL)
+  string(TOUPPER "${IMG2NUM_LOG_LEVEL}" _IMG2NUM_LOG_LEVEL)
 
-if(_IMG2NUM_LOG_LEVEL STREQUAL "AUTO")
-  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(_IMG2NUM_LOG_LEVEL "TRACE")
-  elseif(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
-    set(_IMG2NUM_LOG_LEVEL "OFF")
-  else()
-    set(_IMG2NUM_LOG_LEVEL "INFO")
+  if(_IMG2NUM_LOG_LEVEL STREQUAL "AUTO")
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+      set(_IMG2NUM_LOG_LEVEL "TRACE")
+    elseif(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+      set(_IMG2NUM_LOG_LEVEL "OFF")
+    else()
+      set(_IMG2NUM_LOG_LEVEL "INFO")
+    endif()
   endif()
-endif()
 
-# Map to spdlog's numeric level macros — these names are spdlog's, keep them.
-if(_IMG2NUM_LOG_LEVEL MATCHES "^(TRACE|DEBUG|INFO|WARN|ERROR|CRITICAL|OFF)$")
-  set(_IMG2NUM_SPDLOG_LEVEL "SPDLOG_LEVEL_${_IMG2NUM_LOG_LEVEL}")
-else()
-  message(FATAL_ERROR "IMG2NUM_LOG_LEVEL='${IMG2NUM_LOG_LEVEL}' is not one of AUTO/TRACE/DEBUG/INFO/WARN/ERROR/CRITICAL/OFF")
-endif()
+  # Map to spdlog's numeric level macros — these names are spdlog's, keep them.
+  if(_IMG2NUM_LOG_LEVEL MATCHES "^(TRACE|DEBUG|INFO|WARN|ERROR|CRITICAL|OFF)$")
+    set(_IMG2NUM_SPDLOG_LEVEL "SPDLOG_LEVEL_${_IMG2NUM_LOG_LEVEL}")
+  else()
+    message(FATAL_ERROR "IMG2NUM_LOG_LEVEL='${IMG2NUM_LOG_LEVEL}' is not one of AUTO/TRACE/DEBUG/INFO/WARN/ERROR/CRITICAL/OFF")
+  endif()
 
-message(STATUS "Img2Num log level: ${_IMG2NUM_LOG_LEVEL} (${_IMG2NUM_SPDLOG_LEVEL})")
+  message(STATUS "Img2Num log level: ${_IMG2NUM_LOG_LEVEL} (${_IMG2NUM_SPDLOG_LEVEL})")
 
-target_compile_definitions(Img2Num PRIVATE
-  SPDLOG_ACTIVE_LEVEL=${_IMG2NUM_SPDLOG_LEVEL}
-)
+  target_compile_definitions(Img2Num PRIVATE
+    SPDLOG_ACTIVE_LEVEL=${_IMG2NUM_SPDLOG_LEVEL}
+  )
 
-install(TARGETS spdlog_header_only EXPORT Img2NumTargets)
+  install(TARGETS spdlog_header_only EXPORT Img2NumTargets)
+endblock()
 
 target_compile_options(Img2Num PRIVATE ${IMG2NUM_STRICT_CXX_FLAGS})
 
@@ -111,24 +114,29 @@ if (EMSCRIPTEN)
   target_link_options(Img2Num PRIVATE "--use-port=emdawnwebgpu" "SHELL:-s ASYNCIFY=1")
 else()
 
-  find_package(Dawn QUIET)
-  if (Dawn_FOUND)
-    message("Found system Dawn")
-  else()
-    message("Building Dawn from third_party")
-    set(DAWN_SUPPORTS_GLFW_FOR_WINDOWING OFF CACHE BOOL "Disable GLFW support for windowing" FORCE)
-    set(DAWN_USE_X11 OFF CACHE BOOL "Disable X11 support" FORCE)
-    set(DAWN_FETCH_DEPENDENCIES ON)
-    add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../third_party/dawn" "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/dawn/build/" EXCLUDE_FROM_ALL)
-  endif()
+  # Dawn WebGPU (prefer installed Dawn over building it — baked into Dockerfile.dev)
+  block(PROPAGATE Dawn_FOUND DAWN_INCLUDE_DIR)
+    find_package(Dawn QUIET)
+    if(Dawn_FOUND)
+      message("Found system Dawn")
+    else()
+      message("Building Dawn from third_party")
+      set(DAWN_SUPPORTS_GLFW_FOR_WINDOWING OFF CACHE BOOL "Disable GLFW support for windowing" FORCE)
+      set(DAWN_USE_X11 OFF CACHE BOOL "Disable X11 support" FORCE)
+      set(DAWN_FETCH_DEPENDENCIES ON)
+      # Keep Dawn's TUs out of compile_commands.json
+      set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
+      add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../third_party/dawn" "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/dawn/build/" EXCLUDE_FROM_ALL)
+    endif()
+  endblock()
 
   # PUBLIC: only expose the directory that contains img2num.h
-  # PRIVATE: internal headers
+  # PRIVATE: internal headers and Dawn
   target_include_directories(Img2Num
     PUBLIC
       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-      $<BUILD_INTERFACE:${DAWN_INCLUDE_DIR}>
     PRIVATE
+      $<BUILD_INTERFACE:${DAWN_INCLUDE_DIR}>
       ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
   )
 

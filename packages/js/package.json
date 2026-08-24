@@ -54,7 +54,8 @@
   },
   "files": [
     "dist",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "THIRD_PARTY_LICENSES.md"
   ],
   "sideEffects": [
     "**/*.wasm",

@@ -1,7 +1,7 @@
 # =================================================================
 # Img2Num Top-Level (Manages all libs and apps)
 # =================================================================
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.25)
 project(Img2NumRootManager LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -9,6 +9,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Ensure we strictly conform to the C++17 standard
 # This is important for inter-OS reproducibility
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Reusable flags to ensure good quality code
 set(IMG2NUM_STRICT_CXX_FLAGS
