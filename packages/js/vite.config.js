@@ -3,8 +3,6 @@ import { fileURLToPath } from "node:url";
 import { copyFileSync, existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 
-import { thirdPartyLicensesPlugin } from "./licenses.plugin.mjs";
-
 const here = fileURLToPath(new URL(".", import.meta.url));
 const TARGET = process.env.TARGET ?? "browser";
 
@@ -187,13 +185,7 @@ const FILE_NAMES = {
 };
 
 export default defineConfig({
-  plugins: [
-    wasmUrlPlugin(),
-    copyWasmPlugin(),
-    cjsWebgpuGuard(),
-    // Generate once per full build; browser is the first target `pnpm build` runs.
-    thirdPartyLicensesPlugin({ enabled: TARGET === "browser" }),
-  ],
+  plugins: [wasmUrlPlugin(), copyWasmPlugin(), cjsWebgpuGuard()],
 
   build: {
     outDir: T.outDir ?? `dist/${TARGET}`,

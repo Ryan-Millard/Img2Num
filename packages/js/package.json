@@ -54,14 +54,14 @@
   },
   "files": [
     "dist",
-    "CHANGELOG.md",
-    "THIRD_PARTY_LICENSES.md"
+    "CHANGELOG.md"
   ],
   "sideEffects": [
     "**/*.wasm",
     "**/build-wasm/**"
   ],
   "scripts": {
+    "prebuild": "just build js",
     "build:browser": "cross-env TARGET=browser vite build",
     "build:standalone": "cross-env TARGET=standalone vite build",
     "build:node-esm": "cross-env TARGET=node-esm vite build",
