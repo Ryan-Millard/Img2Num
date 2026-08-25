@@ -41,6 +41,7 @@ build-backend = "scikit_build_core.build"
 [tool.scikit-build]
 cmake.source-dir = "."
 cmake.build-type = "Release"
+build-dir = "build-py/{wheel_tag}"
 cmake.args = [
   "-DIMG2NUM_BUILD_PYTHON=ON",
   "-DIMG2NUM_BUILD_EXAMPLES=OFF",
