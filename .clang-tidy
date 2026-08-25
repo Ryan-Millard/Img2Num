@@ -9,7 +9,11 @@ WarningsAsErrors: >
   bugprone-unsafe-functions
 HeaderFilterRegex: '(core|bindings)/.*\.(h|hpp)$'
 CheckOptions:
-  readability-identifier-naming.FunctionCase: camelCase
+  readability-identifier-length.IgnoredVariableNames: "^([a-zA-Z][a-zA-Z0-9]?)$"
+  readability-identifier-length.IgnoredParameterNames: "^([a-zA-Z][a-zA-Z0-9]?_?)$"
+  readability-identifier-length.IgnoredLoopCounterNames: "^[a-z]$"
+  readability-identifier-naming.FunctionCase: lower_case # free functions stay snake_case
+  readability-identifier-naming.MethodCase: camelBack # class methods stay camelCase
   portability-restrict-system-includes.Includes: >-
     *,-iostream,-ostream,-istream,-cstdio,-stdio.h,-print,-syncstream
   bugprone-unsafe-functions.CustomFunctions: >-

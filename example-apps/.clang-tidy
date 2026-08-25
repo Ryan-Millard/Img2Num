@@ -1,4 +1,4 @@
 InheritParentConfig: true
-Checks: '-portability-restrict-system-includes'
+Checks: "-portability-restrict-system-includes"
 CheckOptions:
-  bugprone-unsafe-functions.CustomFunctions: ''
+  bugprone-unsafe-functions.CustomFunctions: ""

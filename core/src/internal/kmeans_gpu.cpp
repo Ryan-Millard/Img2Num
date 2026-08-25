@@ -6,6 +6,7 @@
 #include "internal/gpu.h"
 #include "internal/Image.h"
 #include "internal/LABAPixel.h"
+#include "internal/log.h"
 #include "internal/PixelConverters.h"
 #include "internal/RGBAPixel.h"
 
@@ -20,7 +21,6 @@
 #include <limits>
 #include <numeric>
 #include <random>
-#include "internal/log.h"
 #include <type_traits> // Required for std::is_same_v
 #include <vector>
 
@@ -197,11 +197,13 @@ void kMeansPlusPlusInitGpu(
         CentroidParams params;
         if constexpr (std::is_same_v<PixelT, ImageLib::LABAPixel<float>>) {
             params = CentroidParams {
-                c.l / 255.0f, c.a / 255.0f, c.b / 255.0f, 1.0f, static_cast<uint32_t>(width)};
+                c.l / 255.0f, c.a / 255.0f, c.b / 255.0f, 1.0f, static_cast<uint32_t>(width)
+            };
         } else {
             params = CentroidParams {
                 c.red / 255.0f, c.green / 255.0f, c.blue / 255.0f, 1.0f,
-                static_cast<uint32_t>(width)};
+                static_cast<uint32_t>(width)
+            };
         }
 
         GPU::getClassInstance().get_queue().WriteBuffer(

@@ -15,7 +15,8 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+from img2num_root import IMG2NUM_ROOT as ROOT
+
 SEARCH_DIRS = ("core", "bindings", "example-apps")
 SUFFIXES = {".hpp", ".cpp", ".h", ".c"}
 MAX_PARALLEL = os.cpu_count() or 4
