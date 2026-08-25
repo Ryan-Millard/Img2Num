@@ -86,7 +86,11 @@ jobs:
         run: pnpm install
 
       - name: Run ESLint
-        run: pnpm run eslint
+        run: pnpm run lint:js
+
+      # Commented out until the C and C++ files are formatted and committed to the repo
+      #- name: Run clang-tidy
+        #run: pnpm run lint:cpp
 
       - name: Validate format
         run: pnpm run format:check
