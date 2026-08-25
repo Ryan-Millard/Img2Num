@@ -75,12 +75,12 @@ build target build_type="Release" log_level="AUTO":
         js) just build-wasm {{ build_type }} {{ log_level }} ;; \
         py) just build-py {{ build_type }} {{ log_level }} ;; \
         packages-js) just build-packages-js {{ build_type }} {{ log_level }} ;; \
-        all) just build-c-cpp {{ build_type }} {{ log_level }} && \
-             just build-wasm {{ build_type }} {{ log_level }} && \
-             just build-py {{ build_type }} {{ log_level }} && \
-             just build-packages-js {{ build_type }} {{ log_level }} && \
-             just react-js build && \
-             just docs build ;; \
+        all)  just build-c-cpp {{ build_type }} {{ log_level }} && \
+              just build-wasm {{ build_type }} {{ log_level }} && \
+              just build-py {{ build_type }} {{ log_level }} && \
+              just build-packages-js {{ build_type }} {{ log_level }} && \
+              just react-js build && \
+              just docs build ;; \
     esac
 
 clean target:
