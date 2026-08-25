@@ -7,12 +7,17 @@ is always exported):
 
     just build cpp   -> build-c-cpp/
     just build py    -> build-py/<wheel_tag>/  (scikit-build-core build-dir)
-    just build js    -> build-wasm/            (not linted by default:
-                                                Emscripten flags in its
-                                                database break clang-tidy)
+    just build js    -> build-wasm/            (linted when the Emscripten
+                                                sysroot can be located via
+                                                $EMSDK or em-config)
 
-By default, every database found under build-c-cpp/ (or legacy build/) and
-build-py/*/ is used. Files present in no database are skipped with a warning.
+By default, every usable database found under build-c-cpp/ (or legacy
+build/), build-py/*/, and build-wasm/ is used. Emscripten records its
+sysroot include paths internally rather than in the compile command, so
+wasm TUs are linted with an explicit -isystem pointing at the sysroot;
+if no sysroot can be found, build-wasm/ is excluded and its files are
+skipped with a warning. Files present in no database are skipped with a
+warning.
 
 Usage:
     uv run lint_cpp                          # auto-discover databases
@@ -25,9 +30,11 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor
+from functools import lru_cache
 from pathlib import Path
 
 from img2num_root import IMG2NUM_ROOT as ROOT
@@ -35,6 +42,7 @@ from img2num_root import IMG2NUM_ROOT as ROOT
 SEARCH_DIRS = ("core", "bindings")
 SUFFIXES = {".cpp", ".c"}  # translation units only; headers surface via HeaderFilterRegex
 MAX_PARALLEL = os.cpu_count() or 4
+WASM_BUILD_DIR_NAME = "build-wasm"
 
 
 class Colors:
@@ -54,12 +62,77 @@ def has_database(build_dir: Path) -> bool:
     return (build_dir / "compile_commands.json").is_file()
 
 
+@lru_cache(maxsize=1)
+def emscripten_sysroot_include() -> Path | None:
+    """Locate the Emscripten sysroot include dir, or None if unavailable.
+
+    emcc injects its sysroot include paths inside the compiler driver, so
+    they never appear in compile_commands.json; clang-tidy therefore needs
+    the path supplied explicitly or every wasm TU fails on the first
+    standard-library include.
+    """
+    emsdk = os.environ.get("EMSDK")
+    if emsdk:
+        inc = Path(emsdk) / "upstream" / "emscripten" / "cache" / "sysroot" / "include"
+        if inc.is_dir():
+            return inc
+    em_config = shutil.which("em-config")
+    if em_config:
+        result = subprocess.run(
+            [em_config, "CACHE"], capture_output=True, text=True
+        )
+        if result.returncode == 0:
+            inc = Path(result.stdout.strip()) / "sysroot" / "include"
+            if inc.is_dir():
+                return inc
+    return None
+
+
+def is_wasm_build_dir(build_dir: Path) -> bool:
+    return build_dir.name == WASM_BUILD_DIR_NAME
+
+
+def extra_args(build_dir: Path) -> list[str]:
+    """Per-database flags clang-tidy needs beyond the recorded command."""
+    if not is_wasm_build_dir(build_dir):
+        return []
+    inc = emscripten_sysroot_include()
+    assert inc is not None  # wasm dirs are filtered out earlier when None
+    return [f"--extra-arg=-isystem{inc}"]
+
+
+def usable_build_dirs(candidates: list[Path], *, explicit: bool) -> list[Path]:
+    """Filter to databases the script can actually lint against.
+
+    A wasm database without a locatable Emscripten sysroot is unusable:
+    dropped with a warning during discovery, treated as an error when the
+    user requested it explicitly with -p.
+    """
+    usable: list[Path] = []
+    for build_dir in candidates:
+        if is_wasm_build_dir(build_dir) and emscripten_sysroot_include() is None:
+            level = Colors.RED if explicit else Colors.YELLOW
+            log_color(
+                f"Excluding {build_dir.name}: Emscripten sysroot not found "
+                "(set $EMSDK or put em-config on PATH); its TUs cannot be "
+                "parsed without the sysroot headers.",
+                level,
+                err=True,
+            )
+            if explicit:
+                return []
+            continue
+        usable.append(build_dir)
+    return usable
+
+
 def default_build_dirs() -> list[Path]:
     """Discover databases produced by the project's build flows."""
     candidates = [ROOT / "build-c-cpp", ROOT / "build"]
     py_root = ROOT / "build-py"
     if py_root.is_dir():
         candidates += sorted(p for p in py_root.iterdir() if p.is_dir())
+    candidates.append(ROOT / WASM_BUILD_DIR_NAME)
     return [d for d in candidates if has_database(d)]
 
 
@@ -104,8 +177,9 @@ def find_files(file_to_build_dir: dict[Path, Path]) -> list[tuple[Path, Path]]:
     skipped = [p for p in candidates if p.resolve() not in file_to_build_dir]
     if skipped:
         log_color(
-            f"Skipping {len(skipped)} file(s) not present in any compile database "
-            "(not built under the provided CMake configurations):",
+            f"Skipping {len(skipped)} file(s) not present in any usable compile "
+            "database (not built under the provided CMake configurations, or "
+            "only present in an excluded database):",
             Colors.YELLOW,
             err=True,
         )
@@ -115,7 +189,7 @@ def find_files(file_to_build_dir: dict[Path, Path]) -> list[tuple[Path, Path]]:
 
 
 def run_clang_tidy(file: Path, *, build_dir: Path, fix: bool) -> bool:
-    cmd = ["clang-tidy", "-p", str(build_dir), "--quiet"]
+    cmd = ["clang-tidy", "-p", str(build_dir), "--quiet", *extra_args(build_dir)]
     if fix:
         cmd.append("--fix")
     cmd.append(str(file))
@@ -146,8 +220,8 @@ def main() -> int:
         help=(
             "Build directory containing compile_commands.json. "
             "Repeatable; files are linted against the first database "
-            "that contains them (default: auto-discover build-c-cpp "
-            "and build-py/*)"
+            "that contains them (default: auto-discover build-c-cpp, "
+            "build-py/*, and build-wasm)"
         ),
     )
     parser.add_argument(
@@ -158,8 +232,7 @@ def main() -> int:
     args = parser.parse_args()
 
     if args.build_dirs:
-        build_dirs = args.build_dirs
-        missing = [d for d in build_dirs if not has_database(d)]
+        missing = [d for d in args.build_dirs if not has_database(d)]
         if missing:
             for d in missing:
                 log_color(
@@ -168,15 +241,19 @@ def main() -> int:
                     err=True,
                 )
             return 2
+        build_dirs = usable_build_dirs(args.build_dirs, explicit=True)
+        if not build_dirs:
+            return 2
     else:
-        build_dirs = default_build_dirs()
+        build_dirs = usable_build_dirs(default_build_dirs(), explicit=False)
         if not build_dirs:
             log_color(
-                "No compile databases found.\n"
+                "No usable compile databases found.\n"
                 "Build the project first (databases are exported "
                 "automatically):\n"
                 "  just build cpp    # -> build-c-cpp/\n"
-                "  just build py     # -> build-py/<wheel_tag>/",
+                "  just build py     # -> build-py/<wheel_tag>/\n"
+                "  just build js     # -> build-wasm/ (needs $EMSDK to lint)",
                 Colors.RED,
                 err=True,
             )
