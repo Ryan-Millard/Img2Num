@@ -187,7 +187,9 @@ jobs:
             -DIMG2NUM_BUILD_C=${{ steps.component.outputs.IMG2NUM_BUILD_C_VAL }} \
             -DIMG2NUM_BUILD_PYTHON=OFF \
             -DIMG2NUM_BUILD_EXAMPLES=OFF \
-            -DIMG2NUM_DEBUG_CACHE_VARIABLES_DUMP=ON
+            -DIMG2NUM_DEBUG_CACHE_VARIABLES_DUMP=ON \
+            -DIMG2NUM_LOG_LEVEL=OFF \
+            .
 
       - name: Build
         run: cmake --build build --config Release
@@ -254,14 +256,10 @@ jobs:
         with:
           version: 11.4.0
 
-      - uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4.0.0
-        with:
-          just-version: '1.46.0'
-
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build WASM
+      - name: Configure
         run: |
           emcmake cmake -B build-wasm \
             -DCMAKE_BUILD_TYPE=Release \
@@ -269,8 +267,10 @@ jobs:
             -DIMG2NUM_BUILD_PYTHON=OFF \
             -DIMG2NUM_BUILD_EXAMPLES=OFF \
             -DIMG2NUM_DEBUG_CACHE_VARIABLES_DUMP=ON \
+            -DIMG2NUM_LOG_LEVEL=OFF \
             .
-          cmake --build build-wasm
+      - name: Build
+        run: cmake --build build-wasm --config Release
 
       - name: Build JS
         run: pnpm build

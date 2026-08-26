@@ -7,7 +7,7 @@ services:
     working_dir: /usr/src/app
     volumes:
       - .:/usr/src/app:cached
-      - /usr/src/app/.venv      # PROTECTS the container's .venv from being overwritten
+      - uv-venv:/usr/src/app/.venv
       - pnpm-store:/pnpm
     ports:
       - "3000:3000" # docs/ start
@@ -26,3 +26,4 @@ services:
 
 volumes:
   pnpm-store:
+  uv-venv:

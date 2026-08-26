@@ -38,13 +38,25 @@
       }
     },
     "Linting": {
-      "eslint": {
+      "lint": {
+        "desc": "Run all linters (C++ and JavaScript/TypeScript)"
+      },
+      "lint:fix": {
+        "desc": "Run all linters and automatically fix issues"
+      },
+      "lint:cpp": {
+        "desc": "Run clang-tidy on C++ code"
+      },
+      "lint:cpp:fix": {
+        "desc": "Run clang-tidy and apply fixes"
+      },
+      "lint:js": {
         "desc": "Run ESLint on example apps, scripts, and docs",
         "args": [
           "--fix   Automatically fix fixable issues"
         ]
       },
-      "eslint:fix": {
+      "lint:js:fix": {
         "desc": "Run ESLint and automatically fix issues"
       }
     },
@@ -67,15 +79,19 @@
   },
   "scripts": {
     "help": "node scripts/help.js",
-    "format": "node scripts/format.js",
-    "format:check": "node scripts/format.js --check",
-    "format:cpp": "node scripts/format-cpp.js",
-    "format:cpp:check": "node scripts/format-cpp.js",
+    "format": "pnpm run --filter=. --parallel \"/^format:(cpp|js)$/\"",
+    "format:check": "pnpm run --filter=. --parallel \"/^format:(cpp|js):check$/\"",
+    "format:cpp": "uv run format_cpp",
+    "format:cpp:check": "uv run format_cpp",
     "format:js": "pnpm prettier --write . --ignore-path .prettierignore --config .prettierrc",
     "format:js:check": "pnpm prettier --check . --ignore-path .prettierignore --config .prettierrc",
     "validate-scripts": "node scripts/validate-scripts.js",
-    "eslint": "eslint packages/js example-apps/react-js scripts/img2num-dev-scripts docs",
-    "eslint:fix": "eslint packages/js example-apps/react-js scripts/img2num-dev-scripts docs --fix",
+    "lint": "pnpm run --filter=. --parallel \"/^lint:(cpp|js)$/\"",
+    "lint:fix": "pnpm run --filter=. --parallel \"/^lint:(cpp|js):fix$/\"",
+    "lint:cpp": "uv run lint_cpp",
+    "lint:cpp:fix": "uv run lint_cpp --fix",
+    "lint:js": "eslint packages/js example-apps/react-js scripts/img2num-dev-scripts docs",
+    "lint:js:fix": "eslint packages/js example-apps/react-js scripts/img2num-dev-scripts docs --fix",
     "editorconfig:check": "editorconfig-checker"
   },
   "devDependencies": {
