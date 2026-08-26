@@ -123,3 +123,6 @@ dev = [
     "pydoc-markdown>=4.8.2,<5",
     "ruff>=0.15,<0.16",
 ]
+licensing = [
+  "reuse>=6.2.0,<7"
+]
