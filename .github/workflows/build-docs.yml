@@ -47,7 +47,6 @@ jobs:
 
       - name: Build Docusaurus
         env:
-          IMG2NUM__CI_YML__PACKAGES_JS__SKIP_PREBUILD: "1"
           ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
           ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
           ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME }}

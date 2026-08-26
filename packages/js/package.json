@@ -61,7 +61,7 @@
     "**/build-wasm/**"
   ],
   "scripts": {
-    "prebuild": "test \"$IMG2NUM__CI_YML__PACKAGES_JS__SKIP_PREBUILD\" = 1 || just build js",
+    "prebuild": "just build js",
     "build:browser": "cross-env TARGET=browser vite build",
     "build:standalone": "cross-env TARGET=standalone vite build",
     "build:node-esm": "cross-env TARGET=node-esm vite build",
