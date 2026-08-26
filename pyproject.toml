@@ -41,6 +41,7 @@ build-backend = "scikit_build_core.build"
 [tool.scikit-build]
 cmake.source-dir = "."
 cmake.build-type = "Release"
+build-dir = "build-py/{wheel_tag}"
 cmake.args = [
   "-DIMG2NUM_BUILD_PYTHON=ON",
   "-DIMG2NUM_BUILD_EXAMPLES=OFF",
@@ -55,25 +56,34 @@ sdist.include = [
   "bindings/py/**",
   "packages/py/**",
   "third_party/dawn/**",
+  "third_party/spdlog/**",
 ]
 sdist.exclude = [
   # Local build output; explicit mode does not read .gitignore, so these
   # must be excluded here.
   "packages/py/build/",
   "packages/py/build-py/",
-  "third_party/dawn/build/",
-  # Dawn test corpora: never consumed by any build; the vk-gl-cts tree makes
-  # tar extraction fragile (deterministic CI unpack failure, PR #562).
-  "third_party/dawn/test/",
-  "third_party/dawn/testing/",
   "third_party/dawn/webgpu-cts/",
   # WebGPU CTS GN metadata: 43 MB test_list.txt + 8 MB cache tarball.
   "third_party/dawn/third_party/gn/",
   # Opt-in macOS toolchain dir (per its README); contains the tree's only
   # dangling symlink (ranlib -> libtool).
   "third_party/dawn/src/cmake/HermeticXcode/",
-  # Dangling submodule gitlink; VCS metadata does not belong in an sdist.
-  "third_party/dawn/.git",
+  "third_party/**/.git",
+  "third_party/**/.github/",
+  "third_party/**/build/",
+  "third_party/**/test/",
+  "third_party/**/tests/",
+  "third_party/**/testing/",
+  "third_party/**/bench/",
+  "third_party/**/example/",
+  "third_party/**/scripts/",
+  "third_party/**/logos/",
+]
+wheel.license-files = [
+  "LICENSE",
+  "third_party/spdlog/LICENSE",
+  "third_party/dawn/**/*LICENSE*",
 ]
 
 # Derive version from version definition in packages/py/pyproject.toml
@@ -88,9 +98,13 @@ package = true
 
 [tool.uv.workspace]
 members = [
+  "scripts/py",
   # All example apps with "-py" suffix
   "example-apps/*-py"
 ]
+
+[tool.uv.sources]
+img2num-dev-scripts = { workspace = true }
 
 [tool.ruff]
 target-version = "py310"
@@ -117,9 +131,15 @@ build-verbosity = 1
 
 [dependency-groups]
 dev = [
+    "img2num_dev_scripts",
     "docspec>=2.2.1,<3",
     "docspec-python>=2.2.1,<3",
     "pybind11-stubgen>=2.5.5,<3",
     "pydoc-markdown>=4.8.2,<5",
+]
+lint = [
     "ruff>=0.15,<0.16",
+]
+licensing = [
+  "reuse>=6.2.0,<7"
 ]
