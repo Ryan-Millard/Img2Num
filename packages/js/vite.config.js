@@ -58,11 +58,28 @@ const TARGETS = {
 
 const T = TARGETS[TARGET];
 if (!T) {
-  throw new Error(`Unknown TARGET "${TARGET}". Expected one of: ${Object.keys(TARGETS).join(", ")}`);
+  throw new Error(`[img2num] Unknown TARGET "${TARGET}". Expected one of: ${Object.keys(TARGETS).join(", ")}`);
+}
+
+// Single sources of truth for the paths that used to be re-derived in each
+// plugin: glue input dir, output dir, and the remediation hint shown by
+// every "wasm build missing" error.
+const glueDir = path.join(here, "build-wasm", T.glue);
+const outDir = T.outDir ?? `dist/${TARGET}`;
+const WASM_BUILD_HINT =
+  "Run the CMake wasm build first (just build js, or emcmake cmake -B build-wasm && cmake --build build-wasm).";
+
+// Config-time guard: a missing build-wasm/ otherwise dies later as a cryptic
+// "@wasm" alias resolution error, and closeBundle-time checks never run on a
+// failed build.
+if (!existsSync(glueDir)) {
+  throw new Error(`[img2num] Missing ${glueDir}. ${WASM_BUILD_HINT}`);
 }
 
 /**
- * Copies the emitted .wasm into dist/<target>/ after the bundle is written.
+ * Copies the emitted .wasm into the output dir after the bundle is written.
+ * Narrower job than the config-time guard above: catches glue that is
+ * present without its sibling .wasm (mixed SINGLE_FILE states).
  */
 function copyWasmPlugin() {
   return {
@@ -70,12 +87,12 @@ function copyWasmPlugin() {
     closeBundle() {
       if (!T.copyWasm) return;
 
-      const src = path.join(here, "build-wasm", T.glue, "img2num.wasm");
-      const destDir = path.join(here, T.outDir ?? `dist/${TARGET}`);
+      const src = path.join(glueDir, "img2num.wasm");
+      const destDir = path.join(here, outDir);
 
       if (!existsSync(src)) {
         if (T.copyWasm === "optional") return; // SINGLE_FILE=1 emits no .wasm
-        throw new Error(`[img2num] Missing ${src}. Run the CMake wasm build first (pnpm build:wasm).`);
+        throw new Error(`[img2num] Missing ${src}. ${WASM_BUILD_HINT}`);
       }
 
       mkdirSync(destDir, { recursive: true });
@@ -84,10 +101,12 @@ function copyWasmPlugin() {
   };
 }
 
+/**
+ * Only the CJS node build can regress into a require of webgpu; the other
+ * targets either keep real import() (node-esm) or exclude webgpu entirely.
+ * Gated at the plugins array: included only when TARGET === "node-cjs".
+ */
 function cjsWebgpuGuard() {
-  // Only the CJS node build can regress into a require of webgpu; the other
-  // targets either keep real import() (node-esm) or exclude webgpu entirely.
-  if (TARGET !== "node-cjs") return { name: "img2num:cjs-webgpu-guard" };
   return {
     name: "img2num:cjs-webgpu-guard",
     generateBundle(_, bundle) {
@@ -131,6 +150,16 @@ function cjsWebgpuGuard() {
  * they get transpiled before generateBundle runs, the restore match fails
  * silently, and the published chunk ships a non-static URL (the 0.4.0 bug).
  * `||` is safe at es2020.
+ *
+ * NOTE: LITERAL/MANGLED/mangledRe are intentionally NOT derived from one
+ * another. The regex must tolerate bundler-normalized output (quote style,
+ * whitespace), which the exact strings must not -- generating one from the
+ * other loses that asymmetry.
+ *
+ * The pattern only exists in the ES6 web glue; node glue resolves via
+ * __dirname and standalone glue via document.currentScript. Gated at the
+ * plugins array: included only when TARGET === "browser", making that a
+ * structural guarantee instead of a coincidence of glue contents.
  */
 function wasmUrlPlugin() {
   const LITERAL = 'new URL("img2num.wasm", import.meta.url)';
@@ -140,12 +169,6 @@ function wasmUrlPlugin() {
   // bundlers statically detect. Bundlers match the expression node, so the
   // literal being inside a ternary branch does not defeat detection.
   const RESTORED = `(${WASM_NAME} ? new URL(${WASM_NAME}, import.meta.url) : ${LITERAL})`;
-
-  // The pattern only exists in the ES6 web glue; node glue resolves via
-  // __dirname and standalone glue via document.currentScript. Restricting to
-  // the browser target makes that a structural guarantee instead of a
-  // coincidence of glue contents.
-  if (TARGET !== "browser") return { name: "img2num:wasm-url" };
 
   return {
     name: "img2num:wasm-url",
@@ -185,10 +208,16 @@ const FILE_NAMES = {
 };
 
 export default defineConfig({
-  plugins: [wasmUrlPlugin(), copyWasmPlugin(), cjsWebgpuGuard()],
+  // Falsy entries are skipped by Vite, so target gating lives here where the
+  // composition is visible, not inside each plugin factory.
+  plugins: [
+    TARGET === "browser" && wasmUrlPlugin(),
+    copyWasmPlugin(),
+    TARGET === "node-cjs" && cjsWebgpuGuard(),
+  ],
 
   build: {
-    outDir: T.outDir ?? `dist/${TARGET}`,
+    outDir,
     emptyOutDir: T.emptyOutDir ?? true,
     sourcemap: true,
     // Consumers of es/cjs minify themselves; the <script>-tag build can't.
@@ -216,7 +245,7 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      "@wasm": path.resolve(here, `./build-wasm/${T.glue}`),
+      "@wasm": glueDir,
     },
   },
 });
