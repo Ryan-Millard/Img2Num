@@ -6,6 +6,7 @@ help:
     "List of commands: \n \
     init: pull submodules \n \
     format: format all files \n \
+    reuse-check: check REUSE/SPDX license compliance \n \
     build <target>: \n \
     \t cpp: build c++ core and c bindings \n \
     \t js: build js/wasm bindings \n \
@@ -40,6 +41,10 @@ init:
 format:
     @echo "Format all files"
     pnpm format
+
+reuse-check:
+    @echo "Check REUSE/SPDX license compliance"
+    reuse lint
 
 build-c-cpp:
     @echo "Build C++ core and C bindings"

@@ -4,34 +4,24 @@ Thank you for helping keep Img2Num and its users secure. We take security issues
 
 ## Supported Versions
 
-Security updates are provided for the latest **v0.2.x** release series of each component. The `main` branch is actively maintained for development, but it is not a supported release channel.
+Security updates are provided for the latest release of each component (C++ library, C bindings, JavaScript package, and Python package).
+See the [Releases page](https://github.com/Ryan-Millard/Img2Num/releases) for the current version of each component.
 
-| Component                           | Supported Versions |     Supported      |
-| ----------------------------------- | ------------------ | :----------------: |
-| C++ Library                         | `v0.2.x`           | :white_check_mark: |
-| C Bindings                          | `v0.2.x`           | :white_check_mark: |
-| JavaScript Package                  | `v0.2.x`           | :white_check_mark: |
-| Python Package                      | `v0.2.x`           | :white_check_mark: |
-| Development (`main`)                | `Latest`           |  Development Only  |
-| Older releases (v0.1.x and earlier) | -                  |        :x:         |
+The `main` branch is actively maintained for development and treated as a _stable development branch_, but it is not a supported release channel.
+Releases prior to the current minor version of each component do not receive backported fixes — please upgrade to the latest release.
 
-## Release History
-
-| Component          | Releases               |
-| ------------------ | ---------------------- |
-| C++ Library        | v0.2.0, v0.1.0         |
-| C Bindings         | v0.2.0, v0.1.0         |
-| JavaScript Package | v0.2.1, v0.2.0, v0.1.0 |
-| Python Package     | v0.2.1, v0.2.0, v0.1.0 |
+> [!NOTE]
+> v0.2.x of the JavaScript package is no longer supported due to incompatibilities with several environments. Please upgrade to v0.3.0 or later.
 
 ## Reporting a Vulnerability
 
-**Please do not report security vulnerabilities through public GitHub issues or discussions.**
-
-Instead, report vulnerabilities privately using one of the following methods:
-
-- **GitHub Security Advisories** (preferred): Use the repository's **Report a vulnerability** feature under the **Security** tab.
-- **Email:** [security@img2num.dev](mailto:security@img2num.dev)
+> [!CAUTION]
+> Please do not report security vulnerabilities through public GitHub issues or discussions.
+>
+> Instead, report vulnerabilities privately using one of the following methods:
+>
+> - **GitHub Security Advisories** (preferred): Use the repository's **Report a vulnerability** feature under the **Security** tab.
+> - **Email:** [security@img2num.dev](mailto:security@img2num.dev) or [ryan@img2num.dev](mailto:ryan@img2num.dev)
 
 Please include as much information as possible:
 

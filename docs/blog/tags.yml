@@ -12,3 +12,18 @@ maintainers:
   label: Maintainers
   permalink: /maintainers
   description: Updates from maintainers and openings
+
+release:
+  label: Release
+  permalink: /release
+  description: New version releases and changelogs
+
+javascript:
+  label: JavaScript
+  permalink: /javascript
+  description: Posts about the JavaScript/npm package
+
+wasm:
+  label: WebAssembly
+  permalink: /wasm
+  description: WebAssembly builds and browser usage
