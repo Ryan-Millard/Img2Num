@@ -31,7 +31,8 @@ int main(int argc, char** argv) {
     int width {0}, height {0}, channels {0};
     // Force load as grayscale
     uint8_t* image_data_original {
-        stbi_load(image_path.c_str(), &width, &height, &channels, NUM_CHANNELS)};
+        stbi_load(image_path.c_str(), &width, &height, &channels, NUM_CHANNELS)
+    };
     if (!image_data_original) {
         std::cerr << "Failed to load image: " << stbi_failure_reason() << std::endl;
         return 1;
@@ -83,13 +84,15 @@ int main(int argc, char** argv) {
             out_path.c_str(), width, height, NUM_CHANNELS, img_data, width * NUM_CHANNELS
         ) == 1
             ? true
-            : false};
+            : false
+    };
     const bool kmeans_save_success {
         stbi_write_png(
             kmeans_path.c_str(), width, height, NUM_CHANNELS, out_data, width * NUM_CHANNELS
         ) == 1
             ? true
-            : false};
+            : false
+    };
 
     std::ofstream svgFile(svg_path);
     if (!svgFile.is_open()) {

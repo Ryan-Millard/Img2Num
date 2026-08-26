@@ -35,7 +35,8 @@ int flood_fill(
 
     RGBXY pix = RGBXY {
         color_array[4 * size_t(index(x, y))], color_array[4 * size_t(index(x, y)) + 1],
-        color_array[4 * size_t(index(x, y)) + 2], x, y};
+        color_array[4 * size_t(index(x, y)) + 2], x, y
+    };
 
     queue.push({x, y});
 
@@ -58,7 +59,8 @@ int flood_fill(
                 RGBXY pix1 = RGBXY {
                     color_array[4 * size_t(index(x1, y1))],
                     color_array[4 * size_t(index(x1, y1)) + 1],
-                    color_array[4 * size_t(index(x1, y1)) + 2], x1, y1};
+                    color_array[4 * size_t(index(x1, y1)) + 2], x1, y1
+                };
                 region_array[size_t(index(x1, y1))] = label_value;
                 out_pixels->push_back(pix1);
                 count++;
@@ -115,7 +117,8 @@ void visualize_contours(
     for (const auto& c : contours) {
         ImageLib::RGBAPixel<uint8_t> rand_color {
             static_cast<uint8_t>(dist(rng)), static_cast<uint8_t>(dist(rng)),
-            static_cast<uint8_t>(dist(rng)), 255};
+            static_cast<uint8_t>(dist(rng)), 255
+        };
 
         for (const auto& p : c) {
             int32_t _x {static_cast<int32_t>(p.x) + xmin};

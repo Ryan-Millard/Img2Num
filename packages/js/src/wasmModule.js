@@ -2,7 +2,7 @@
  * @internal
  */
 
-import createImg2NumModule from "@wasm/index.js";
+import createImg2NumModule from "@wasm/img2num.js";
 
 let wasmModule;
 let initialized = false;
@@ -35,12 +35,16 @@ export async function initWasmModule() {
   if (!readyPromise) {
     readyPromise = (async () => {
       if (__TARGET__ === "node") {
-        const { initWebGPU } = await import("./target/node/webgpu.js");
-
         try {
+          // `webgpu` is an optionalDependency, so the import itself can reject when it isn't installed.
+          const { initWebGPU } = await import("./target/node/webgpu.js");
           await initWebGPU();
         } catch (err) {
-          console.error(`[Img2Num wasmClient] WebGPU init error: ${err}`);
+          console.error(`[Img2Num wasmModule] WebGPU init error: ${err}\n\nFalling back to CPU.`);
+          // The Emscripten glue dereferences `navigator` unconditionally; a
+          // stub that fails the adapter request cleanly routes to the CPU path.
+          globalThis.navigator ??= {};
+          globalThis.navigator.gpu ??= { requestAdapter: async () => null };
         }
       }
 
@@ -69,8 +73,14 @@ export async function initWasmModule() {
  */
 export async function terminateWasmModule() {
   if (__TARGET__ === "node") {
-    const { destroyWebGPU } = await import("./target/node/webgpu.js");
-    await destroyWebGPU();
+    try {
+      // `webgpu` is an optionalDependency, so the import itself can reject when it isn't installed.
+      // See initWasmModule above
+      const { destroyWebGPU } = await import("./target/node/webgpu.js");
+      await destroyWebGPU();
+    } catch (err) {
+      console.error(`[Img2Num wasmModule] WebGPU cleanup error: ${err}`);
+    }
   }
 
   wasmModule = undefined;

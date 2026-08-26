@@ -2,16 +2,17 @@
 node_modules
 
 # Static files
+# --- Doxygen (requires folder to exist, hence .gitkeep) ---
 /static/docs/internal/**/api/*
 !/static/docs/internal/**/api/.gitkeep
+# C++ Doxygen
 /static/docs/cpp/api/*
 !/static/docs/cpp/api/.gitkeep
+# C Doxygen
 /static/docs/c/api/*
 !/static/docs/c/api/.gitkeep
-/static/example-apps/react-js/*
-!/static/example-apps/react-js/.gitkeep
-/static/example-apps/html-js/*
-!/static/example-apps/html-js/.gitkeep
+# --- Example/demo apps ---
+/static/example-apps/*
 
 # Production
 /build
@@ -35,6 +36,7 @@ yarn-error.log*
 # Auto-generated API docs
 /docs/js/api/
 /static/js/api.json
+/docs/py/api-reference/
 
 # Auto-generated Changelogs
 /changelog/*

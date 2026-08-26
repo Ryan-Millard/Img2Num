@@ -91,6 +91,12 @@
           "-v or --verbose    Show Doxygen output during generation"
         ]
       },
+      "pydoc-markdown": {
+        "desc": "Generate Python API documentation from docstrings and the pybind11 stub for internal docs",
+        "args": [
+          "-v or --verbose    Show pydoc-markdown and stubgen output during generation"
+        ]
+      },
       "help": {
         "desc": "Show this help message",
         "args": [
@@ -111,7 +117,8 @@
     "serve": "node scripts/serve.js --host 0.0.0.0",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "doxygen": "node scripts/doxygen.js"
+    "doxygen": "node scripts/doxygen.js",
+    "pydoc-markdown": "node scripts/pydoc-markdown/index.js"
   },
   "dependencies": {
     "@docusaurus/faster": "^3.10.2",

@@ -122,8 +122,10 @@ RUN uv venv /usr/src/app/.venv
 ENV VIRTUAL_ENV=/usr/src/app/.venv
 ENV PATH="/usr/src/app/.venv/bin:$PATH"
 
+COPY pyproject.toml uv.lock ./
+COPY example-apps/console-py/pyproject.toml example-apps/console-py/pyproject.toml
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install scikit_build_core numpy
+    uv sync --locked --no-install-workspace --group dev --group lint --group build
 
 # --------------------------------------------------------------------------------------------------------------
 # Node / pnpm setup
@@ -153,7 +155,7 @@ ENV CHOKIDAR_USEPOLLING=true
 ENV CHOKIDAR_INTERVAL=100
 
 # See docker-compose.yml ports
-EXPOSE 5173 4173 3000 5174 4174
+EXPOSE 3000 5173 4173 5174 4174 5175 5176
 
 # --------------------------------------------------------------------------------------------------------------
 # Healthcheck (Basic if container works)

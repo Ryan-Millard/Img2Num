@@ -1,5 +1,59 @@
 # Changelog
 
+## [0.4.2](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.4.1...packages-js-v0.4.2) (2026-08-18)
+
+
+### 🐛 Bug Fixes
+
+* **commonjs:** load webgpu via dynamic import, fall back to CPU, and guard the CJS build ([#562](https://github.com/Ryan-Millard/Img2Num/issues/562)) ([e44480d](https://github.com/Ryan-Millard/Img2Num/commit/e44480d9c4736c1ae67094a121731ae9adc4365b))
+
+## [0.4.1](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.4.0...packages-js-v0.4.1) (2026-08-16)
+
+
+### 🐛 Bug Fixes
+
+* restore static wasm URL for bundler asset detection ([#559](https://github.com/Ryan-Millard/Img2Num/issues/559)) ([1a27346](https://github.com/Ryan-Millard/Img2Num/commit/1a2734629701a702d7e7d5294fe8a8199187412b))
+
+## [0.4.0](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.3.0...packages-js-v0.4.0) (2026-08-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* **js:** dist layout and filenames have changed. Artifacts now live at dist/browser/img2num.js, dist/standalone/img2num.umd.js, dist/standalone/img2num.iife.js, and dist/node/img2num.{js,cjs}; deep imports into dist/ must be updated. Export conditions are reordered so bundlers targeting the browser resolve the browser build (they previously matched "import" first and received the node build). Minimum supported Node is now 18.
+
+### ✨ Features
+
+* **js:** ship multi-format artifacts (browser ESM, standalone UMD/IIFE, node ESM/CJS) ([#530](https://github.com/Ryan-Millard/Img2Num/issues/530)) ([f5b1ef9](https://github.com/Ryan-Millard/Img2Num/commit/f5b1ef907e43b68c32bdc15238daae6f28edf40f))
+
+
+### 📚 Documentation
+
+* **website:** add example apps index page and rebuild HTML demos from a shared template ([f5b1ef9](https://github.com/Ryan-Millard/Img2Num/commit/f5b1ef907e43b68c32bdc15238daae6f28edf40f))
+
+## [0.3.0](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.2.1...packages-js-v0.3.0) (2026-07-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* **js:** img2num no longer offloads WASM execution to a background thread automatically. Heavy operations (gaussianBlur, bilateralFilter, kmeans, imageToSvg) now run on whichever thread calls them. This can block the calling thread (browser main thread/UI or the Node event loop during processing. Consumers who need non-blocking behavior must now wrap calls in their own Worker or worker_thread.
+
+### ✨ Features
+
+* **example app:** add html-js example app to demo basic library usage ([72c4669](https://github.com/Ryan-Millard/Img2Num/commit/72c466913d2ea0d33f910eeffb5e87ab0b463beb))
+
+
+### 📚 Documentation
+
+* **CSS:** fix table of contents styling and layout ([72c4669](https://github.com/Ryan-Millard/Img2Num/commit/72c466913d2ea0d33f910eeffb5e87ab0b463beb))
+* **README.md:** add alt attributes to language icons and badges ([#498](https://github.com/Ryan-Millard/Img2Num/issues/498)) ([21cf395](https://github.com/Ryan-Millard/Img2Num/commit/21cf39517785890cb7970e6e351b095558f85d87)), closes [#492](https://github.com/Ryan-Millard/Img2Num/issues/492)
+* update JSDoc comments and break up website docs ([72c4669](https://github.com/Ryan-Millard/Img2Num/commit/72c466913d2ea0d33f910eeffb5e87ab0b463beb))
+* **website:** update documentation based on refactor in [#510](https://github.com/Ryan-Millard/Img2Num/issues/510) ([72c4669](https://github.com/Ryan-Millard/Img2Num/commit/72c466913d2ea0d33f910eeffb5e87ab0b463beb))
+
+
+### ♻️ Refactoring
+
+* **js:** run WASM calls on the caller's thread instead of a Worker ([#510](https://github.com/Ryan-Millard/Img2Num/issues/510)) ([72c4669](https://github.com/Ryan-Millard/Img2Num/commit/72c466913d2ea0d33f910eeffb5e87ab0b463beb))
+
 ## [0.2.1](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.2.0...packages-js-v0.2.1) (2026-07-05)
 
 

@@ -1,0 +1,21 @@
+version = 1
+
+[[annotations]]
+path = "**"
+SPDX-FileCopyrightText = "2026 Ryan Millard"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = "docs/**"
+SPDX-FileCopyrightText = "2026 Ryan Millard"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = "example-apps/react-js/**"
+SPDX-FileCopyrightText = "2026 Ryan Millard"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = ".github/**"
+SPDX-FileCopyrightText = "2026 Ryan Millard"
+SPDX-License-Identifier = "AGPL-3.0-or-later"

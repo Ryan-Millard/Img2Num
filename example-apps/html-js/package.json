@@ -3,15 +3,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "vite",
-    "dev": "vite",
-    "preview": "vite preview",
-    "build": "vite build --emptyOutDir"
+    "build": "node scripts/build.mjs",
+    "build:deploy": "node scripts/build.mjs --deploy",
+    "start:esm": "node scripts/build.mjs esm && npx --yes serve -l 5173 dist/esm",
+    "start:iife": "node scripts/build.mjs iife && npx --yes serve -l 5175 dist/iife",
+    "start:umd": "node scripts/build.mjs umd && npx --yes serve -l 5176 dist/umd",
+    "start": "pnpm run \"/^start:.*/\""
   },
   "dependencies": {
     "img2num": "workspace:*"
   },
   "devDependencies": {
-    "vite": "^8.1.0"
+    "requirejs": "^2.3.8"
   }
 }

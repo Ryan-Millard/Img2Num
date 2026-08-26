@@ -1,4 +1,6 @@
 :root {
+  --ifm-color-primary: var(--primary);
+
   --font-sans: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   --spacing-xs: 4px;
   --spacing-sm: 8px;
@@ -234,6 +236,26 @@ hr {
   .navbar__inner {
     justify-content: space-evenly;
   }
+
+  .DocSearch-Button {
+    margin: 0;
+    width: min(28vw, 300px);
+    justify-content: space-between;
+  }
+}
+
+/*
+ * Narrow desktops: collapse to icon-only so the centered search
+ * never crowds the nav links or the sponsor button
+ */
+@media screen and (min-width: 997px) and (max-width: 1200px) {
+  .DocSearch-Button {
+    width: auto;
+  }
+  .DocSearch-Button-Placeholder,
+  .DocSearch-Button-Keys {
+    display: none;
+  }
 }
 
 .navbar__title,
@@ -372,11 +394,10 @@ table td {
 code {
   background-color: var(--ifm-code-background);
   border-radius: var(--radius-sm);
-  color: var(--text);
 }
 
 [data-theme="dark"] code {
-  color: var(--text);
+  color: inherit;
 }
 
 div[class^="codeBlockContainer"] {
@@ -512,8 +533,11 @@ div[class^="buttonGroup"] button {
 .DocSearch-Modal {
   border: 1px solid var(--glass-border);
 }
+.DocSearch-Hit a {
+  background-color: var(--glass-bg);
+}
 .DocSearch-Hit[aria-selected="true"] a {
-  background-color: var(--primary);
+  background-color: var(--white);
 }
 .DocSearch-Hit-source {
   color: var(--primary);
@@ -521,4 +545,113 @@ div[class^="buttonGroup"] button {
 }
 .DocSearch-Cancel {
   color: var(--text-light);
+}
+
+/* ---- Sponsor button ---- */
+:root {
+  --sponsor-shine: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="dark"] {
+  --sponsor-shine: rgba(255, 255, 255, 0.45);
+}
+
+.navbar__sponsor {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 6px;
+  padding: 5px 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  background-color: var(--glass-bg);
+  color: var(--text);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.navbar__sponsor-heart {
+  flex: none;
+  color: var(--accent);
+}
+
+.navbar__sponsor:hover,
+.navbar__sponsor:focus-visible {
+  background-color: var(--accent-light);
+  border-color: var(--accent);
+  color: var(--text);
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px var(--glass-shadow);
+}
+
+.navbar__sponsor:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.navbar__sponsor:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.navbar__sponsor::before {
+  content: "";
+  position: absolute;
+  top: -25%;
+  bottom: -25%;
+  left: 0;
+  width: 45%;
+  background: linear-gradient(105deg, transparent, var(--sponsor-shine), transparent);
+  transform: translateX(-130%) skewX(-18deg);
+  pointer-events: none;
+}
+
+.navbar__sponsor:hover::before {
+  animation: sponsor-shine 0.7s ease;
+}
+
+@keyframes sponsor-shine {
+  to {
+    transform: translateX(330%) skewX(-18deg);
+  }
+}
+
+.navbar__sponsor:hover .navbar__sponsor-heart {
+  animation: sponsor-heartbeat 0.8s ease-in-out;
+  transform-origin: center;
+}
+
+@keyframes sponsor-heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(1.25);
+  }
+  45% {
+    transform: scale(1);
+  }
+  65% {
+    transform: scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar__sponsor::before {
+    display: none;
+  }
+  .navbar__sponsor,
+  .navbar__sponsor:hover,
+  .navbar__sponsor:active {
+    transform: none;
+  }
+  .navbar__sponsor:hover .navbar__sponsor-heart {
+    animation: none;
+  }
 }

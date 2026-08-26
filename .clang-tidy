@@ -1,0 +1,25 @@
+Checks: >
+  -*,
+  readability-*,
+  cppcoreguidelines-avoid-non-const-global-variables,
+  portability-restrict-system-includes,
+  bugprone-unsafe-functions
+WarningsAsErrors: >
+  portability-restrict-system-includes,
+  bugprone-unsafe-functions
+HeaderFilterRegex: '(core|bindings)/.*\.(h|hpp)$'
+CheckOptions:
+  readability-identifier-length.IgnoredVariableNames: "^([a-zA-Z][a-zA-Z0-9]?)$"
+  readability-identifier-length.IgnoredParameterNames: "^([a-zA-Z][a-zA-Z0-9]?_?)$"
+  readability-identifier-length.IgnoredLoopCounterNames: "^[a-z]$"
+  readability-identifier-naming.FunctionCase: lower_case # free functions stay snake_case
+  readability-identifier-naming.MethodCase: camelBack # class methods stay camelCase
+  portability-restrict-system-includes.Includes: >-
+    *,-iostream,-ostream,-istream,-cstdio,-stdio.h,-print,-syncstream
+  bugprone-unsafe-functions.CustomFunctions: >-
+    ::printf, the logging macros in core/include/internal/log.h, direct stdout output is banned;
+    ::fprintf, the logging macros in core/include/internal/log.h, direct stream output is banned;
+    ::puts, the logging macros in core/include/internal/log.h,;
+    ::putchar, the logging macros in core/include/internal/log.h,;
+    ::vprintf, the logging macros in core/include/internal/log.h,;
+    ::perror, the logging macros in core/include/internal/log.h,

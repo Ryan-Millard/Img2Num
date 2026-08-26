@@ -18,9 +18,11 @@
 static inline float
 colorDistance(const ImageLib::RGBPixel<uint8_t>& a, const ImageLib::RGBPixel<uint8_t>& b) {
     ImageLib::RGBPixel<float> af {
-        static_cast<float>(a.red), static_cast<float>(a.green), static_cast<float>(a.blue)};
+        static_cast<float>(a.red), static_cast<float>(a.green), static_cast<float>(a.blue)
+    };
     ImageLib::RGBPixel<float> bf {
-        static_cast<float>(b.red), static_cast<float>(b.green), static_cast<float>(b.blue)};
+        static_cast<float>(b.red), static_cast<float>(b.green), static_cast<float>(b.blue)
+    };
     return std::sqrt(
         (af.red - bf.red) * (af.red - bf.red) + (af.green - bf.green) * (af.green - bf.green) +
         (af.blue - bf.blue) * (af.blue - bf.blue)
@@ -145,7 +147,7 @@ void Graph::discover_edges(
 
 void Graph::process_overlapping_edges() {
     // 1. Build the Global Label Map ONCE (0 = background, else = node->id())
-    std::vector<int32_t> label_map(m_width * m_height, 0);
+    std::vector<int32_t> label_map(static_cast<size_t>(m_width) * static_cast<size_t>(m_height), 0);
 
     for (const Node_ptr& n : get_nodes()) {
         if (n->area() == 0)

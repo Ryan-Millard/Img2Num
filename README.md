@@ -4,7 +4,7 @@
 
 # Img2Num
 
-_Img2Num_ is a fast and accurate raster vectorizer. 
+_Img2Num_ is a fast and accurate raster vectorizer.
 
 It converts raster images (like PNGs and JPGs) into clean SVGs with _high accuracy and performance_.
 
@@ -23,23 +23,28 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 [![Docs](https://img.shields.io/badge/docs-full-blue?logo=gitbook&logoColor=white)](https://img2num.dev/docs/)
 [![Changelog](https://img.shields.io/badge/changelog-full-orange?logo=git&logoColor=white)](https://img2num.dev/changelog/)
 
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/Ryan-Millard)
+[![Security Policy](https://img.shields.io/badge/Security-Policy-red?logo=github)](SECURITY.md)
+
 ## Contents
 
 <table>
 <tr>
-<td valign="center">
+<td valign="middle">
 
 - [Before vs After](#before-vs-after)
 - [Why Img2Num?](#why-img2num)
 - [Features](#features)
 - [Multi-Language Support](#multi-language-support)
 - [Community Links](#community-links)
+- [Quick Start](#quick-start)
 
 </td>
-<td valign="center">
+<td valign="middle">
 
-- [Quick Start](#quick-start)
 - [License](#license)
+- [Security](#security)
+- [Supporting Us](#supporting-us)
 - [Can't find something?](#cant-find-something)
 - [Maintainers](#maintainers)
 - [Contributors & Credits](#contributors--credits)
@@ -89,6 +94,7 @@ Try our [image to color-by-number demo](https://img2num.dev/example-apps/react-j
   - **C** - lightweight C API (add as a submodule)
   - **Python** (`pip install img2num`) - NumPy arrays in, SVG strings out
   - **JavaScript** (`npm i img2num`) - same C++ core compiled to WebAssembly, works in browser and Node
+- **WebAssembly-powered** - The native C++ core is compiled to WebAssembly (WASM) for high-performance execution in browsers (JavaScript-only).
 - **Zero-copy bindings** - Direct memory access via NumPy in Python and TypedArrays in JS, avoiding unnecessary data copying.
 - **Minimal dependencies** - Core library built for speed with only one external runtime dependency (Google's [Dawn](https://dawn.googlesource.com/dawn)).
 - **Cross-platform CI** - Tested on Linux, macOS, Windows, and WASM.
@@ -101,12 +107,15 @@ Try our [image to color-by-number demo](https://img2num.dev/example-apps/react-j
 |-----------:|:------------|
 | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" width="30" alt="C logo" /></a> | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c"><img src="https://img.shields.io/badge/GitHub_Releases-C_Bindings-A8B9CC?logo=github" alt="C package releases"  /></a> [![Docs](https://img.shields.io/badge/docs-C-A8B9CC?logo=gitbook&logoColor=white)](https://img2num.dev/docs/c/) [![C Changelog](https://img.shields.io/badge/changelog-C-A8B9CC?logo=c)](https://img2num.dev/changelog/c/) |
 | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=cpp"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" width="30" alt="C++ logo" /></a> | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=cpp"><img src="https://img.shields.io/badge/GitHub_Releases-C++-00599C?logo=github" alt="C++ package releases" /></a> [![Docs](https://img.shields.io/badge/docs-C++-00599C?logo=gitbook&logoColor=white)](https://img2num.dev/docs/cpp/) [![C++ Changelog](https://img.shields.io/badge/changelog-C%2B%2B-00599C?logo=c%2B%2B&logoColor=white)](https://img2num.dev/changelog/cpp/) |
-| <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-js"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="30" alt="JavaScript logo" /></a> | [![npm](https://img.shields.io/npm/v/img2num?logo=npm)](https://www.npmjs.com/package/img2num) ![Downloads](https://img.shields.io/npm/dm/img2num?logo=npm) <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-js"><img src="https://img.shields.io/badge/GitHub_Releases-JavaScript_Package-F7DF1E?logo=github" alt="JavaScript package releases" /></a>  [![Docs](https://img.shields.io/badge/docs-JavaScript-F7DF1E?logo=gitbook&logoColor=white)](https://img2num.dev/docs/js/) [![JavaScript Changelog](https://img.shields.io/badge/changelog-JavaScript-F7DF1E?logo=javascript)](https://img2num.dev/changelog/js/) |
-| <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" width="30" alt="Python logo" /></a> | ![PyPI](https://img.shields.io/pypi/v/img2num?logo=pypi) [![PyPI Downloads](https://img.shields.io/pypi/dm/img2num?logo=pypi)](https://pypi.org/project/img2num/) [![Supported Versions](https://img.shields.io/pypi/pyversions/img2num?logo=python)](https://pypi.org/project/img2num/) <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py"><img src="https://img.shields.io/badge/GitHub_Releases-Python_Package-3776AB?logo=github" alt="Python package releases" /></a> [![Docs](https://img.shields.io/badge/docs-Python-3776AB?logo=gitbook&logoColor=white)](https://img2num.dev/docs/py/) [![Python Changelog](https://img.shields.io/badge/changelog-Python-3776AB?logo=python)](https://img2num.dev/changelog/py/) |
+| <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-js"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="30" alt="JavaScript logo" /></a> | [![npm](https://img.shields.io/npm/v/img2num?logo=npm)](https://www.npmjs.com/package/img2num) [![jsDelivr CDN](https://img.shields.io/badge/CDN-jsDelivr-%23f7df1e?logo=jsdelivr&amp;logoColor=black)](https://www.jsdelivr.com/package/npm/img2num) [![unpkg CDN](https://img.shields.io/badge/CDN-unpkg-%23cb3837?logo=npm&amp;logoColor=white)](https://app.unpkg.com/img2num) [![Downloads](https://img.shields.io/npm/dm/img2num?logo=npm)](https://www.npmjs.com/package/img2num) <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-js"><img src="https://img.shields.io/badge/GitHub_Releases-JavaScript_Package-F7DF1E?logo=github" alt="JavaScript package releases" /></a>  [![Docs](https://img.shields.io/badge/docs-JavaScript-F7DF1E?logo=gitbook&logoColor=white)](https://img2num.dev/docs/js/) [![JavaScript Changelog](https://img.shields.io/badge/changelog-JavaScript-F7DF1E?logo=javascript)](https://img2num.dev/changelog/js/) |
+| <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" width="30" alt="Python logo" /></a> | [![PyPI](https://img.shields.io/pypi/v/img2num?logo=pypi)](https://pypi.org/project/img2num/) [![PyPI Downloads](https://img.shields.io/pypi/dm/img2num?logo=pypi)](https://pypi.org/project/img2num/) [![Supported Versions](https://img.shields.io/pypi/pyversions/img2num?logo=python)](https://pypi.org/project/img2num/) <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py"><img src="https://img.shields.io/badge/GitHub_Releases-Python_Package-3776AB?logo=github" alt="Python package releases" /></a> [![Docs](https://img.shields.io/badge/docs-Python-3776AB?logo=gitbook&logoColor=white)](https://img2num.dev/docs/py/) [![Python Changelog](https://img.shields.io/badge/changelog-Python-3776AB?logo=python)](https://img2num.dev/changelog/py/) |
 
 ## Community Links
 [![Changelog](https://img.shields.io/badge/Changelog-Full-orange?logo=git&logoColor=white)](https://img2num.dev/changelog/)
-[![Contributing](https://img.shields.io/badge/Contributing-Guide-blue?logo=github)](https://github.com/Ryan-Millard/Img2Num/blob/main/CONTRIBUTING.md)
+[![Contributing](https://img.shields.io/badge/Contributing-Guide-blue?logo=github)](CONTRIBUTING.md)
+[![Security Policy](https://img.shields.io/badge/Security-Policy-red?logo=github)](SECURITY.md)
+[![License](https://img.shields.io/badge/License-MIT-blue?logo=open-source-initiative&logoColor=white)](LICENSE)
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/Ryan-Millard)
 [![Issues](https://img.shields.io/badge/Issues-Available-brightgreen?logo=github)](https://github.com/Ryan-Millard/Img2Num/issues/views/1151)
 [![Good First Issues](https://img.shields.io/badge/Good%20First%20Issues-Welcome-6cc644?logo=github)](https://github.com/Ryan-Millard/Img2Num/issues/views/1155)
 [![Blog](https://img.shields.io/badge/Blog-Updates-ff6f00?logo=githubpages)](https://img2num.dev/blog/)
@@ -125,7 +134,7 @@ This process is too detailed to put in a `README.md` file, so please see our doc
 
 > [!TIP]
 > You can install the library from our GitHub releases:
-> 
+>
 > - [C](https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c&expanded=true)
 > - [C++](https://github.com/Ryan-Millard/Img2Num/releases?q=cpp&expanded=true)
 
@@ -143,7 +152,7 @@ For more detailed information on installing this package, please refer to [our d
 
 ```html
 <!-- IMPORTANT: this is browser-only -->
-<script src="https://cdn.jsdelivr.net/npm/img2num@0.2.0/dist/browser/img2num.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/img2num@0.3.0/dist/browser/img2num.js"></script>
 ```
 
 #### Package Manager
@@ -196,6 +205,25 @@ Subdirectories retain their own licenses:
 - [`docs/` ![AGPLv3](https://img.shields.io/badge/license-AGPLv3-red.svg?logo=docusaurus)](docs/LICENSE)
 - [`example-apps/react-js/` ![AGPLv3](https://img.shields.io/badge/license-AGPLv3-red.svg?logo=react)](example-apps/react-js/LICENSE)
 - [`.github/` ![AGPLv3](https://img.shields.io/badge/license-AGPLv3-red.svg?logo=github)](.github/LICENSE)
+
+## Security
+
+[![Security Policy](https://img.shields.io/badge/Security-Policy-red?logo=github)](SECURITY.md)
+
+Found a vulnerability? Please **do not** open a public issue.
+
+Report it privately by following our [Security Policy](SECURITY.md).
+
+## Supporting Us
+
+[![GitHub Sponsors](https://img.shields.io/badge/GitHub_Sponsors-%E2%9D%A4-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/Ryan-Millard)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Support-FF5E5B?logo=kofi&logoColor=white)](https://ko-fi.com/ryan_millard)
+
+Img2Num is free and open source. If it saves you time or you'd like to support its continued development:
+
+- ⭐ [Star the repository](https://github.com/Ryan-Millard/Img2Num) - it helps others discover the project
+- ❤️ Sponsor us via [GitHub Sponsors](https://github.com/sponsors/Ryan-Millard) or [Ko-fi](https://ko-fi.com/ryan_millard) (it'll help us keep the [img2num.dev](https://img2num.dev/) domain)
+- 🛠️ Contribute - see our [Contributing Guide](CONTRIBUTING.md) and [good first issues](https://github.com/Ryan-Millard/Img2Num/issues/views/1155)
 
 ## Can't find something?
 
