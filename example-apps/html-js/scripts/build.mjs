@@ -88,7 +88,8 @@ function buildVariant(name) {
   rmSync(outDir, { recursive: true, force: true });
   mkdirSync(outDir, { recursive: true });
 
-  const appCode = readFileSync(path.join(rootDir, "shared", "app.js"), "utf8").trim().split("\n").map(line => "  ".repeat(variant.appCodeIndentLevel) + line).join("\n");
+  const appJs = readFileSync(path.join(rootDir, "shared", "app.js"), "utf8");
+  const appCode = appJs.trim().split("\n").map(line => "  ".repeat(variant.appCodeIndentLevel) + line).join("\n");
   const loaderExecutable = renderLoader(variant, { cdn: false }).replaceAll("{{APP_CODE}}", appCode);
   const temp =
 `<label id="dropZone" class="dropzone" for="fileInput" tabindex="0">
@@ -108,6 +109,8 @@ function buildVariant(name) {
   const loaderDisplay = escapeHtml(
     temp + renderLoader(variant, { cdn: true }).replaceAll("{{APP_CODE}}", appCode)
   );
+  const generatedComment = "<!-- Generated from example-apps/html-js/template.html " +
+    "— do not edit the built copy directly. -->";
 
   // 1. index.html from template
   const canonical = `https://img2num.dev/example-apps/${variant.outputName}/`;
@@ -120,7 +123,7 @@ function buildVariant(name) {
     .replaceAll("{{INTRO}}", variant.intro)
     .replaceAll("{{LOADER_EXECUTABLE}}", loaderExecutable)
     .replaceAll("{{LOADER_DISPLAY}}", loaderDisplay)
-    .replaceAll("<!-- Generated from example-apps/html-js/template.html — do not edit the built copy directly. -->", "");
+    .replaceAll(generatedComment, "");
 
   const leftover = html.match(/\{\{[A-Z_]+\}\}/);
   if (leftover) {
