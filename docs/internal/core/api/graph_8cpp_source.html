@@ -245,7 +245,7 @@ $(document).ready(function(){initNavTree('graph_8cpp_source.html',''); initResiz
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="keywordtype">void</span> Graph::process_overlapping_edges() {</div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="comment">// 1. Build the Global Label Map ONCE (0 = background, else = node-&gt;id())</span></div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    std::vector&lt;int32_t&gt; label_map(m_width * m_height, 0);</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    std::vector&lt;int32_t&gt; label_map(<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(m_width) * <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(m_height), 0);</div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr&amp; n : get_nodes()) {</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0)</div>

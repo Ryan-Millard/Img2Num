@@ -553,7 +553,7 @@ Definition at line \mbox{\hyperlink{graph_8cpp_source_l00146}{146}} of file \mbo
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
 \DoxyCodeLine{00147\ \ \ \ \ \textcolor{comment}{//\ 1.\ Build\ the\ Global\ Label\ Map\ ONCE\ (0\ =\ background,\ else\ =\ node-\/>id())}}
-\DoxyCodeLine{00148\ \ \ \ \ std::vector<int32\_t>\ label\_map(m\_width\ *\ m\_height,\ 0);}
+\DoxyCodeLine{00148\ \ \ \ \ std::vector<int32\_t>\ label\_map(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(m\_width)\ *\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(m\_height),\ 0);}
 \DoxyCodeLine{00149\ }
 \DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ Node\_ptr\&\ n\ :\ get\_nodes())\ \{}
 \DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)}

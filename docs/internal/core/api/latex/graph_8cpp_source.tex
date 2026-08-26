@@ -149,7 +149,7 @@
 \DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00145}00145\ }
 \DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00146}00146\ \textcolor{keywordtype}{void}\ Graph::process\_overlapping\_edges()\ \{}
 \DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00147}00147\ \ \ \ \ \textcolor{comment}{//\ 1.\ Build\ the\ Global\ Label\ Map\ ONCE\ (0\ =\ background,\ else\ =\ node-\/>id())}}
-\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00148}00148\ \ \ \ \ std::vector<int32\_t>\ label\_map(m\_width\ *\ m\_height,\ 0);}
+\DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00148}00148\ \ \ \ \ std::vector<int32\_t>\ label\_map(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(m\_width)\ *\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(m\_height),\ 0);}
 \DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00149}00149\ }
 \DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00150}00150\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ Node\_ptr\&\ n\ :\ get\_nodes())\ \{}
 \DoxyCodeLine{\Hypertarget{graph_8cpp_source_l00151}00151\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)}
