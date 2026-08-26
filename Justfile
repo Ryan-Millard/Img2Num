@@ -6,6 +6,7 @@ help:
     "List of commands: \n \
     init: pull submodules \n \
     format: format all files \n \
+    reuse-check: check REUSE/SPDX license compliance \n \
     build <target>: \n \
     \t cpp: build c++ core and c bindings \n \
     \t js: build js/wasm bindings \n \
@@ -47,6 +48,10 @@ build-c-cpp build_type="Release" log_level="AUTO":
         -DIMG2NUM_LOG_LEVEL={{ log_level }} \
         -B build-c-cpp/ .
     cmake --build build-c-cpp/ --parallel
+
+reuse-check:
+    @echo "Check REUSE/SPDX license compliance"
+    reuse lint
 
 build-wasm build_type="Release" log_level="AUTO":
     @echo "Build JS bindings ({{ build_type }}, log={{ log_level }})"

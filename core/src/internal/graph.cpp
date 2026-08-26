@@ -147,7 +147,7 @@ void Graph::discover_edges(
 
 void Graph::process_overlapping_edges() {
     // 1. Build the Global Label Map ONCE (0 = background, else = node->id())
-    std::vector<int32_t> label_map(m_width * m_height, 0);
+    std::vector<int32_t> label_map(static_cast<size_t>(m_width) * static_cast<size_t>(m_height), 0);
 
     for (const Node_ptr& n : get_nodes()) {
         if (n->area() == 0)

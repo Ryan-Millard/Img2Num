@@ -140,3 +140,6 @@ dev = [
 lint = [
     "ruff>=0.15,<0.16",
 ]
+licensing = [
+  "reuse>=6.2.0,<7"
+]
