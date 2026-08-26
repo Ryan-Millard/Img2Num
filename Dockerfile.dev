@@ -122,8 +122,10 @@ RUN uv venv /usr/src/app/.venv
 ENV VIRTUAL_ENV=/usr/src/app/.venv
 ENV PATH="/usr/src/app/.venv/bin:$PATH"
 
+COPY pyproject.toml uv.lock ./
+COPY example-apps/console-py/pyproject.toml example-apps/console-py/pyproject.toml
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install scikit_build_core numpy
+    uv sync --locked --no-install-workspace --group dev --group lint --group build
 
 # --------------------------------------------------------------------------------------------------------------
 # Node / pnpm setup
