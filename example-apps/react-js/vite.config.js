@@ -5,10 +5,7 @@ import { imagetools } from "vite-imagetools";
 import generateContributorCreditsPlugin from "./scripts/generate-contributor-credits-json.js";
 import svgr from "vite-plugin-svgr";
 
-const alias = Object.fromEntries(
-  ["pages", "assets", "components", "utils", "hooks", "global-styles", "data"]
-    .map((d) => [`@${d}`, path.resolve(import.meta.dirname, `src/${d}`)])
-);
+const alias = Object.fromEntries(["pages", "assets", "components", "utils", "hooks", "global-styles", "data"].map((d) => [`@${d}`, path.resolve(import.meta.dirname, `src/${d}`)]));
 
 export default defineConfig({
   base: "/example-apps/react-js/", // important for GitHub Pages
@@ -22,7 +19,7 @@ export default defineConfig({
   },
 
   resolve: {
-    alias
+    alias,
   },
   plugins: [react(), imagetools(), generateContributorCreditsPlugin(), svgr()],
   worker: {
