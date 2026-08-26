@@ -51,10 +51,14 @@ int main(int argc, char** argv) {
 
     printf("Image loaded: %dx%d with %d channel(s).\n", width, height, NUM_CHANNELS);
 
-    size_t img_size = (size_t)width * (size_t)height * NUM_CHANNELS;
+    // Cast each factor to size_t before multiplying so the product is not
+    // evaluated in int space (CodeQL cpp/integer-multiplication-cast-to-long).
+    size_t img_size = (size_t)width * (size_t)height * (size_t)NUM_CHANNELS;
+    size_t labels_size = (size_t)width * (size_t)height * sizeof(int32_t);
+    size_t row_stride = (size_t)width * (size_t)NUM_CHANNELS;
     uint8_t* img_data = (uint8_t*)malloc(img_size);
     uint8_t* out_data = (uint8_t*)malloc(img_size);
-    int32_t* out_labels = (int32_t*)malloc(width * height * sizeof(int32_t));
+    int32_t* out_labels = (int32_t*)malloc(labels_size);
     if (!img_data || !out_data || !out_labels) {
         fprintf(stderr, "Failed to allocate memory\n");
         stbi_image_free(image_data_original);
@@ -105,9 +109,9 @@ int main(int argc, char** argv) {
 
     int exit_code = 0;
     const bool blur_save_success =
-        stbi_write_png(out_path, width, height, NUM_CHANNELS, img_data, width * NUM_CHANNELS);
+        stbi_write_png(out_path, width, height, NUM_CHANNELS, img_data, (int)row_stride);
     const bool kmeans_save_success =
-        stbi_write_png(kmeans_path, width, height, NUM_CHANNELS, out_data, width * NUM_CHANNELS);
+        stbi_write_png(kmeans_path, width, height, NUM_CHANNELS, out_data, (int)row_stride);
 
     FILE* file = fopen(svg_path, "w");
     if (file == NULL) {
