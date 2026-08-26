@@ -30,6 +30,11 @@ jobs:
       - name: Checkout code
         # No need for submodules since docs uses NPM
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          submodules: false
+
+      - name: Checkout spdlog submodule
+        run: git -c submodule.recurse=false submodule update --init third_party/spdlog
 
       - name: Install Dependendencies
         run: pnpm install
