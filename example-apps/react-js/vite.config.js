@@ -5,7 +5,6 @@ import { imagetools } from "vite-imagetools";
 import generateContributorCreditsPlugin from "./scripts/generate-contributor-credits-json.js";
 import svgr from "vite-plugin-svgr";
 
-const dirname = import.meta.dirname;
 const alias = Object.fromEntries(
   ["pages", "assets", "components", "utils", "hooks", "global-styles", "data"]
     .map((d) => [`@${d}`, path.resolve(import.meta.dirname, `src/${d}`)])
