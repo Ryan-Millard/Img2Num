@@ -66,8 +66,7 @@ if (!T) {
 // every "wasm build missing" error.
 const glueDir = path.join(here, "build-wasm", T.glue);
 const outDir = T.outDir ?? `dist/${TARGET}`;
-const WASM_BUILD_HINT =
-  "Run the CMake wasm build first (just build js, or emcmake cmake -B build-wasm && cmake --build build-wasm).";
+const WASM_BUILD_HINT = "Run the CMake wasm build first (just build js, or emcmake cmake -B build-wasm && cmake --build build-wasm).";
 
 // Config-time guard: a missing build-wasm/ otherwise dies later as a cryptic
 // "@wasm" alias resolution error, and closeBundle-time checks never run on a
@@ -210,11 +209,7 @@ const FILE_NAMES = {
 export default defineConfig({
   // Falsy entries are skipped by Vite, so target gating lives here where the
   // composition is visible, not inside each plugin factory.
-  plugins: [
-    TARGET === "browser" && wasmUrlPlugin(),
-    copyWasmPlugin(),
-    TARGET === "node-cjs" && cjsWebgpuGuard(),
-  ],
+  plugins: [TARGET === "browser" && wasmUrlPlugin(), copyWasmPlugin(), TARGET === "node-cjs" && cjsWebgpuGuard()],
 
   build: {
     outDir,
