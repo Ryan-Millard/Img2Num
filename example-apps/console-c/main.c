@@ -51,8 +51,6 @@ int main(int argc, char** argv) {
 
     printf("Image loaded: %dx%d with %d channel(s).\n", width, height, NUM_CHANNELS);
 
-    // Cast each factor to size_t before multiplying so the product is not
-    // evaluated in int space (CodeQL cpp/integer-multiplication-cast-to-long).
     size_t img_size = (size_t)width * (size_t)height * (size_t)NUM_CHANNELS;
     size_t labels_size = (size_t)width * (size_t)height * sizeof(int32_t);
     size_t row_stride = (size_t)width * (size_t)NUM_CHANNELS;
