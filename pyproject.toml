@@ -130,12 +130,6 @@ ignore = []
 build-verbosity = 1
 
 [dependency-groups]
-build = [
-  "scikit-build-core>=1.0",
-  "pybind11>=2.10",
-  "numpy>=2.0",
-  "pybind11-stubgen>=2.5.5,<3",
-]
 dev = [
     "img2num_dev_scripts",
     "docspec>=2.2.1,<3",

@@ -129,7 +129,6 @@ COPY example-apps/console-py/pyproject.toml example-apps/console-py/pyproject.to
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-install-workspace \
       # Change these flags to `--all-groups` when uv gets bumped
-      --group build \
       --group dev \
       --group lint \
       --group licensing
