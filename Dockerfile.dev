@@ -129,11 +129,9 @@ COPY packages/py/pyproject.toml packages/py/pyproject.toml
 COPY scripts/py/pyproject.toml scripts/py/pyproject.toml
 COPY example-apps/console-py/pyproject.toml example-apps/console-py/pyproject.toml
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-install-workspace \
+    uv sync --locked --no-install-project --no-install-workspace \
       # Change these flags to `--all-groups` when uv gets bumped
-      --group dev \
-      --group lint \
-      --group licensing
+      --group dev --group lint --group licensing
 
 # --------------------------------------------------------------------------------------------------------------
 # Node / pnpm setup
