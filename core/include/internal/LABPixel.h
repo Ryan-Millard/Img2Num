@@ -8,7 +8,7 @@
 
 /*
 can support signed data types
-preferrably float or double
+preferably float or double
 */
 
 namespace ImageLib {
