@@ -14,6 +14,7 @@ var dir_97b8b42c5472403f572af6b4015a68b0 =
     [ "kmeans_gpu.h", "kmeans__gpu_8h_source.html", null ],
     [ "LABAPixel.h", "LABAPixel_8h_source.html", null ],
     [ "LABPixel.h", "LABPixel_8h_source.html", null ],
+    [ "log.h", "log_8h_source.html", null ],
     [ "node.h", "node_8h_source.html", null ],
     [ "Pixel.h", "Pixel_8h_source.html", null ],
     [ "PixelConverter.h", "PixelConverter_8h_source.html", null ],

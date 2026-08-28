@@ -246,9 +246,9 @@
 \DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00242}00242\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t*\ data\_ptr\ \{\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }uint8\_t*\textcolor{keyword}{>}(data.request().ptr)\};}
 \DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00243}00243\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t*\ labels\_ptr\ \{\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }int32\_t*\textcolor{keyword}{>}(labels.request().ptr)\};}
 \DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00244}00244\ }
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00245}00245\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ svg\ \{img2num::labels\_to\_svg(}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00246}00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ data\_ptr,\ labels\_ptr,\ width,\ height,\ min\_area,\ min\_thickness}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00247}00247\ \ \ \ \ \ \ \ \ \ \ \ \ )\};}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00245}00245\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ svg\ \{}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00246}00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ img2num::labels\_to\_svg(data\_ptr,\ labels\_ptr,\ width,\ height,\ min\_area,\ min\_thickness)}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00247}00247\ \ \ \ \ \ \ \ \ \ \ \ \ \};}
 \DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00248}00248\ \ \ \ \ \ \ \ \ \ \ \ \ pybind11::str\ svg\_py\_str(std::move(svg));}
 \DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00249}00249\ }
 \DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00250}00250\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pybind11::str(std::move(svg));}

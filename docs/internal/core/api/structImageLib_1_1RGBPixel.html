@@ -239,14 +239,16 @@ template&lt;typename NumberT &gt; </div>
 <p class="definition">Definition at line <a class="el" href="RGBPixel_8h_source.html#l00037">37</a> of file <a class="el" href="RGBPixel_8h_source.html">RGBPixel.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   37</span>                                                                                              {</div>
 <div class="line"><span class="lineno">   38</span>        RGBPixel&lt;float&gt; af {</div>
-<div class="line"><span class="lineno">   39</span>            <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(a.red), <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(a.green), <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(a.blue)};</div>
-<div class="line"><span class="lineno">   40</span>        RGBPixel&lt;float&gt; bf {</div>
-<div class="line"><span class="lineno">   41</span>            <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(b.red), <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(b.green), <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(b.blue)};</div>
-<div class="line"><span class="lineno">   42</span>        <span class="keywordflow">return</span> std::sqrt(</div>
-<div class="line"><span class="lineno">   43</span>            (af.red - bf.red) * (af.red - bf.red) + (af.green - bf.green) * (af.green - bf.green) +</div>
-<div class="line"><span class="lineno">   44</span>            (af.blue - bf.blue) * (af.blue - bf.blue)</div>
-<div class="line"><span class="lineno">   45</span>        );</div>
-<div class="line"><span class="lineno">   46</span>    }</div>
+<div class="line"><span class="lineno">   39</span>            <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(a.red), <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(a.green), <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(a.blue)</div>
+<div class="line"><span class="lineno">   40</span>        };</div>
+<div class="line"><span class="lineno">   41</span>        RGBPixel&lt;float&gt; bf {</div>
+<div class="line"><span class="lineno">   42</span>            <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(b.red), <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(b.green), <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(b.blue)</div>
+<div class="line"><span class="lineno">   43</span>        };</div>
+<div class="line"><span class="lineno">   44</span>        <span class="keywordflow">return</span> std::sqrt(</div>
+<div class="line"><span class="lineno">   45</span>            (af.red - bf.red) * (af.red - bf.red) + (af.green - bf.green) * (af.green - bf.green) +</div>
+<div class="line"><span class="lineno">   46</span>            (af.blue - bf.blue) * (af.blue - bf.blue)</div>
+<div class="line"><span class="lineno">   47</span>        );</div>
+<div class="line"><span class="lineno">   48</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>

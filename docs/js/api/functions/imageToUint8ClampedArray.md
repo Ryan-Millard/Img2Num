@@ -4,7 +4,7 @@ URL: https://img2num.dev/docs/js/api/functions/imageToUint8ClampedArray
 
 > **imageToUint8ClampedArray** ( `file` ): `Promise` <{ `height` : `number` ; `pixels` : `Uint8ClampedArray` ; `width` : `number` ; }>
 
-Defined in: imageToUint8ClampedArray.js:50
+Defined in: [imageToUint8ClampedArray.js:50](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/imageToUint8ClampedArray.js#L50)
 
 **`Function`**
 

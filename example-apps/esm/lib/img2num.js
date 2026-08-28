@@ -147,7 +147,7 @@ var createImg2NumModule = (() => {
 				throw new Error(response.status + " : " + response.url);
 			};
 		}
-		var out = console.log.bind(console);
+		console.log.bind(console);
 		var err = console.error.bind(console);
 		var wasmBinary;
 		var ABORT = false;
@@ -180,7 +180,7 @@ var createImg2NumModule = (() => {
 		}
 		function initRuntime() {
 			runtimeInitialized = true;
-			wasmExports["sa"]();
+			wasmExports["na"]();
 		}
 		function postRun() {
 			if (Module["postRun"]) {
@@ -260,9 +260,9 @@ var createImg2NumModule = (() => {
 				wasmExports = instance.exports;
 				wasmExports = Asyncify.instrumentWasmExports(wasmExports);
 				wasmExports = applySignatureConversions(wasmExports);
-				wasmMemory = wasmExports["ra"];
+				wasmMemory = wasmExports["ma"];
 				updateMemoryViews();
-				wasmTable = wasmExports["Ba"];
+				wasmTable = wasmExports["wa"];
 				assignWasmExports(wasmExports);
 				removeRunDependency("wasm-instantiate");
 				return wasmExports;
@@ -1792,45 +1792,6 @@ var createImg2NumModule = (() => {
 			HEAPU32[penviron_buf_size >>> 2 >>> 0] = bufSize;
 			return 0;
 		}
-		var _fd_close = (fd) => 52;
-		function _fd_read(fd, iov, iovcnt, pnum) {
-			iov >>>= 0;
-			iovcnt >>>= 0;
-			pnum >>>= 0;
-			return 52;
-		}
-		function _fd_seek(fd, offset, whence, newOffset) {
-			offset = bigintToI53Checked(offset);
-			newOffset >>>= 0;
-			return 70;
-		}
-		var printCharBuffers = [
-			null,
-			[],
-			[]
-		];
-		var printChar = (stream, curr) => {
-			var buffer = printCharBuffers[stream];
-			if (curr === 0 || curr === 10) {
-				(stream === 1 ? out : err)(UTF8ArrayToString(buffer));
-				buffer.length = 0;
-			} else buffer.push(curr);
-		};
-		function _fd_write(fd, iov, iovcnt, pnum) {
-			iov >>>= 0;
-			iovcnt >>>= 0;
-			pnum >>>= 0;
-			var num = 0;
-			for (var i = 0; i < iovcnt; i++) {
-				var ptr = HEAPU32[iov >>> 2 >>> 0];
-				var len = HEAPU32[iov + 4 >>> 2 >>> 0];
-				iov += 8;
-				for (var j = 0; j < len; j++) printChar(fd, HEAPU8[ptr + j >>> 0]);
-				num += len;
-			}
-			HEAPU32[pnum >>> 2 >>> 0] = num;
-			return 0;
-		}
 		var initRandomFill = () => (view) => crypto.getRandomValues(view);
 		var randomFill = (view) => {
 			(randomFill = initRandomFill())(view);
@@ -2275,7 +2236,7 @@ var createImg2NumModule = (() => {
 			return (...args) => ccall(ident, returnType, argTypes, args, opts);
 		};
 		if (Module["noExitRuntime"]) noExitRuntime = Module["noExitRuntime"];
-		if (Module["print"]) out = Module["print"];
+		if (Module["print"]) Module["print"];
 		if (Module["printErr"]) err = Module["printErr"];
 		if (Module["wasmBinary"]) wasmBinary = Module["wasmBinary"];
 		if (Module["arguments"]) Module["arguments"];
@@ -2287,164 +2248,158 @@ var createImg2NumModule = (() => {
 		Module["UTF8ToString"] = UTF8ToString;
 		Module["stringToUTF8"] = stringToUTF8;
 		Module["lengthBytesUTF8"] = lengthBytesUTF8;
-		var _malloc, _emwgpuCreateBindGroup, _emwgpuCreateBindGroupLayout, _emwgpuCreateCommandBuffer, _emwgpuCreateCommandEncoder, _emwgpuCreateComputePassEncoder, _emwgpuCreateComputePipeline, _emwgpuCreatePipelineLayout, _emwgpuCreateQuerySet, _emwgpuCreateRenderBundle, _emwgpuCreateRenderBundleEncoder, _emwgpuCreateRenderPassEncoder, _emwgpuCreateRenderPipeline, _emwgpuCreateSampler, _emwgpuCreateSurface, _emwgpuCreateTexture, _emwgpuCreateTextureView, _emwgpuCreateAdapter, _emwgpuCreateBuffer, _emwgpuCreateDevice, _emwgpuCreateQueue, _emwgpuCreateShaderModule, _emwgpuOnDeviceLostCompleted, _emwgpuOnMapAsyncCompleted, _emwgpuOnRequestAdapterCompleted, _emwgpuOnRequestDeviceCompleted, _emwgpuOnUncapturedError, _free, _memalign, _setThrew, __emscripten_tempret_set, __emscripten_stack_restore, __emscripten_stack_alloc, _emscripten_stack_get_current, ___cxa_decrement_exception_refcount, ___cxa_increment_exception_refcount, ___cxa_can_catch, ___cxa_get_exception_ptr, dynCall_vi, dynCall_viii, dynCall_ii, dynCall_viiii, dynCall_vii, dynCall_iii, dynCall_v, dynCall_iiiiii, dynCall_iiiiij, dynCall_iiiiid, dynCall_iiii, dynCall_iiiiiiii, dynCall_iiiii, dynCall_jiiii, dynCall_fiii, dynCall_diii, dynCall_i, dynCall_viiiiiii, dynCall_iiiiiii, dynCall_iiiiiiiiiiii, dynCall_viiiiiiiiii, dynCall_viiiiiiiiiiiiiii, _asyncify_start_unwind, _asyncify_stop_unwind, _asyncify_start_rewind, _asyncify_stop_rewind;
+		var _malloc, _emwgpuCreateBindGroup, _emwgpuCreateBindGroupLayout, _emwgpuCreateCommandBuffer, _emwgpuCreateCommandEncoder, _emwgpuCreateComputePassEncoder, _emwgpuCreateComputePipeline, _emwgpuCreatePipelineLayout, _emwgpuCreateQuerySet, _emwgpuCreateRenderBundle, _emwgpuCreateRenderBundleEncoder, _emwgpuCreateRenderPassEncoder, _emwgpuCreateRenderPipeline, _emwgpuCreateSampler, _emwgpuCreateSurface, _emwgpuCreateTexture, _emwgpuCreateTextureView, _emwgpuCreateAdapter, _emwgpuCreateBuffer, _emwgpuCreateDevice, _emwgpuCreateQueue, _emwgpuCreateShaderModule, _emwgpuOnDeviceLostCompleted, _emwgpuOnMapAsyncCompleted, _emwgpuOnRequestAdapterCompleted, _emwgpuOnRequestDeviceCompleted, _emwgpuOnUncapturedError, _free, _memalign, _setThrew, __emscripten_tempret_set, __emscripten_stack_restore, __emscripten_stack_alloc, _emscripten_stack_get_current, ___cxa_decrement_exception_refcount, ___cxa_increment_exception_refcount, ___cxa_can_catch, ___cxa_get_exception_ptr, dynCall_vi, dynCall_viii, dynCall_ii, dynCall_viiii, dynCall_vii, dynCall_iii, dynCall_v, dynCall_iiiiii, dynCall_iiiiid, dynCall_iiii, dynCall_iiiiiiii, dynCall_iiiii, dynCall_jiiii, dynCall_fiii, dynCall_diii, dynCall_i, dynCall_viiiiiii, dynCall_iiiiiii, dynCall_iiiiiiiiiiii, dynCall_viiiiiiiiii, dynCall_viiiiiiiiiiiiiii, _asyncify_start_unwind, _asyncify_stop_unwind, _asyncify_start_rewind, _asyncify_stop_rewind;
 		function assignWasmExports(wasmExports) {
-			Module["_gaussian_blur_fft"] = wasmExports["ta"];
-			Module["_invert_image"] = wasmExports["ua"];
-			Module["_threshold_image"] = wasmExports["va"];
-			Module["_black_threshold_image"] = wasmExports["wa"];
-			Module["_kmeans"] = wasmExports["xa"];
-			Module["_bilateral_filter"] = wasmExports["ya"];
-			Module["_labels_to_svg"] = wasmExports["za"];
-			Module["_image_to_svg"] = wasmExports["Aa"];
-			Module["_malloc"] = _malloc = wasmExports["Ca"];
-			_emwgpuCreateBindGroup = wasmExports["Da"];
-			_emwgpuCreateBindGroupLayout = wasmExports["Ea"];
-			_emwgpuCreateCommandBuffer = wasmExports["Fa"];
-			_emwgpuCreateCommandEncoder = wasmExports["Ga"];
-			_emwgpuCreateComputePassEncoder = wasmExports["Ha"];
-			_emwgpuCreateComputePipeline = wasmExports["Ia"];
-			_emwgpuCreatePipelineLayout = wasmExports["Ja"];
-			_emwgpuCreateQuerySet = wasmExports["Ka"];
-			_emwgpuCreateRenderBundle = wasmExports["La"];
-			_emwgpuCreateRenderBundleEncoder = wasmExports["Ma"];
-			_emwgpuCreateRenderPassEncoder = wasmExports["Na"];
-			_emwgpuCreateRenderPipeline = wasmExports["Oa"];
-			_emwgpuCreateSampler = wasmExports["Pa"];
-			_emwgpuCreateSurface = wasmExports["Qa"];
-			_emwgpuCreateTexture = wasmExports["Ra"];
-			_emwgpuCreateTextureView = wasmExports["Sa"];
-			_emwgpuCreateAdapter = wasmExports["Ta"];
-			_emwgpuCreateBuffer = wasmExports["Ua"];
-			_emwgpuCreateDevice = wasmExports["Va"];
-			_emwgpuCreateQueue = wasmExports["Wa"];
-			_emwgpuCreateShaderModule = wasmExports["Xa"];
-			_emwgpuOnDeviceLostCompleted = wasmExports["Ya"];
-			_emwgpuOnMapAsyncCompleted = wasmExports["Za"];
-			_emwgpuOnRequestAdapterCompleted = wasmExports["_a"];
-			_emwgpuOnRequestDeviceCompleted = wasmExports["$a"];
-			_emwgpuOnUncapturedError = wasmExports["ab"];
-			Module["_free"] = _free = wasmExports["bb"];
-			_memalign = wasmExports["cb"];
-			_setThrew = wasmExports["db"];
-			__emscripten_tempret_set = wasmExports["eb"];
-			__emscripten_stack_restore = wasmExports["fb"];
-			__emscripten_stack_alloc = wasmExports["gb"];
-			_emscripten_stack_get_current = wasmExports["hb"];
-			___cxa_decrement_exception_refcount = wasmExports["ib"];
-			___cxa_increment_exception_refcount = wasmExports["jb"];
-			___cxa_can_catch = wasmExports["kb"];
-			___cxa_get_exception_ptr = wasmExports["lb"];
-			dynCalls["vi"] = dynCall_vi = wasmExports["mb"];
-			dynCalls["viiiii"] = wasmExports["nb"];
-			dynCalls["viii"] = dynCall_viii = wasmExports["ob"];
-			dynCalls["ii"] = dynCall_ii = wasmExports["pb"];
-			dynCalls["viiii"] = dynCall_viiii = wasmExports["qb"];
-			dynCalls["vii"] = dynCall_vii = wasmExports["rb"];
-			dynCalls["iii"] = dynCall_iii = wasmExports["sb"];
-			dynCalls["viji"] = wasmExports["tb"];
-			dynCalls["v"] = dynCall_v = wasmExports["ub"];
-			dynCalls["iiiiii"] = dynCall_iiiiii = wasmExports["vb"];
-			dynCalls["iiiiij"] = dynCall_iiiiij = wasmExports["wb"];
-			dynCalls["iiiiid"] = dynCall_iiiiid = wasmExports["xb"];
-			dynCalls["iiii"] = dynCall_iiii = wasmExports["yb"];
-			dynCalls["viijii"] = wasmExports["zb"];
-			dynCalls["jiji"] = wasmExports["Ab"];
-			dynCalls["iidiiii"] = wasmExports["Bb"];
-			dynCalls["iiiiiiii"] = dynCall_iiiiiiii = wasmExports["Cb"];
-			dynCalls["iiiiiiiiiii"] = wasmExports["Db"];
-			dynCalls["iiiii"] = dynCall_iiiii = wasmExports["Eb"];
-			dynCalls["jiiii"] = dynCall_jiiii = wasmExports["Fb"];
-			dynCalls["iiiiiiiiiiiii"] = wasmExports["Gb"];
-			dynCalls["fiii"] = dynCall_fiii = wasmExports["Hb"];
-			dynCalls["diii"] = dynCall_diii = wasmExports["Ib"];
-			dynCalls["i"] = dynCall_i = wasmExports["Jb"];
-			dynCalls["viiiiiii"] = dynCall_viiiiiii = wasmExports["Kb"];
-			dynCalls["iiiiiii"] = dynCall_iiiiiii = wasmExports["Lb"];
-			dynCalls["iiiiiiiiiiii"] = dynCall_iiiiiiiiiiii = wasmExports["Mb"];
-			dynCalls["viiiiiiiiii"] = dynCall_viiiiiiiiii = wasmExports["Nb"];
-			dynCalls["viiiiiiiiiiiiiii"] = dynCall_viiiiiiiiiiiiiii = wasmExports["Ob"];
-			dynCalls["iiiiiiiii"] = wasmExports["Pb"];
-			dynCalls["iiiiijj"] = wasmExports["Qb"];
-			dynCalls["iiiiiijj"] = wasmExports["Rb"];
-			dynCalls["viiiiii"] = wasmExports["Sb"];
-			_asyncify_start_unwind = wasmExports["Tb"];
-			_asyncify_stop_unwind = wasmExports["Ub"];
-			_asyncify_start_rewind = wasmExports["Vb"];
-			_asyncify_stop_rewind = wasmExports["Wb"];
+			Module["_gaussian_blur_fft"] = wasmExports["oa"];
+			Module["_invert_image"] = wasmExports["pa"];
+			Module["_threshold_image"] = wasmExports["qa"];
+			Module["_black_threshold_image"] = wasmExports["ra"];
+			Module["_kmeans"] = wasmExports["sa"];
+			Module["_bilateral_filter"] = wasmExports["ta"];
+			Module["_labels_to_svg"] = wasmExports["ua"];
+			Module["_image_to_svg"] = wasmExports["va"];
+			Module["_malloc"] = _malloc = wasmExports["xa"];
+			_emwgpuCreateBindGroup = wasmExports["ya"];
+			_emwgpuCreateBindGroupLayout = wasmExports["za"];
+			_emwgpuCreateCommandBuffer = wasmExports["Aa"];
+			_emwgpuCreateCommandEncoder = wasmExports["Ba"];
+			_emwgpuCreateComputePassEncoder = wasmExports["Ca"];
+			_emwgpuCreateComputePipeline = wasmExports["Da"];
+			_emwgpuCreatePipelineLayout = wasmExports["Ea"];
+			_emwgpuCreateQuerySet = wasmExports["Fa"];
+			_emwgpuCreateRenderBundle = wasmExports["Ga"];
+			_emwgpuCreateRenderBundleEncoder = wasmExports["Ha"];
+			_emwgpuCreateRenderPassEncoder = wasmExports["Ia"];
+			_emwgpuCreateRenderPipeline = wasmExports["Ja"];
+			_emwgpuCreateSampler = wasmExports["Ka"];
+			_emwgpuCreateSurface = wasmExports["La"];
+			_emwgpuCreateTexture = wasmExports["Ma"];
+			_emwgpuCreateTextureView = wasmExports["Na"];
+			_emwgpuCreateAdapter = wasmExports["Oa"];
+			_emwgpuCreateBuffer = wasmExports["Pa"];
+			_emwgpuCreateDevice = wasmExports["Qa"];
+			_emwgpuCreateQueue = wasmExports["Ra"];
+			_emwgpuCreateShaderModule = wasmExports["Sa"];
+			_emwgpuOnDeviceLostCompleted = wasmExports["Ta"];
+			_emwgpuOnMapAsyncCompleted = wasmExports["Ua"];
+			_emwgpuOnRequestAdapterCompleted = wasmExports["Va"];
+			_emwgpuOnRequestDeviceCompleted = wasmExports["Wa"];
+			_emwgpuOnUncapturedError = wasmExports["Xa"];
+			Module["_free"] = _free = wasmExports["Ya"];
+			_memalign = wasmExports["Za"];
+			_setThrew = wasmExports["_a"];
+			__emscripten_tempret_set = wasmExports["$a"];
+			__emscripten_stack_restore = wasmExports["ab"];
+			__emscripten_stack_alloc = wasmExports["bb"];
+			_emscripten_stack_get_current = wasmExports["cb"];
+			___cxa_decrement_exception_refcount = wasmExports["db"];
+			___cxa_increment_exception_refcount = wasmExports["eb"];
+			___cxa_can_catch = wasmExports["fb"];
+			___cxa_get_exception_ptr = wasmExports["gb"];
+			dynCalls["vi"] = dynCall_vi = wasmExports["hb"];
+			dynCalls["viiiii"] = wasmExports["ib"];
+			dynCalls["viii"] = dynCall_viii = wasmExports["jb"];
+			dynCalls["ii"] = dynCall_ii = wasmExports["kb"];
+			dynCalls["viiii"] = dynCall_viiii = wasmExports["lb"];
+			dynCalls["vii"] = dynCall_vii = wasmExports["mb"];
+			dynCalls["iii"] = dynCall_iii = wasmExports["nb"];
+			dynCalls["viji"] = wasmExports["ob"];
+			dynCalls["v"] = dynCall_v = wasmExports["pb"];
+			dynCalls["iiiiii"] = dynCall_iiiiii = wasmExports["qb"];
+			dynCalls["iiiiid"] = dynCall_iiiiid = wasmExports["rb"];
+			dynCalls["iiii"] = dynCall_iiii = wasmExports["sb"];
+			dynCalls["viijii"] = wasmExports["tb"];
+			dynCalls["iidiiii"] = wasmExports["ub"];
+			dynCalls["iiiiiiii"] = dynCall_iiiiiiii = wasmExports["vb"];
+			dynCalls["iiiiiiiiiii"] = wasmExports["wb"];
+			dynCalls["iiiii"] = dynCall_iiiii = wasmExports["xb"];
+			dynCalls["jiiii"] = dynCall_jiiii = wasmExports["yb"];
+			dynCalls["iiiiiiiiiiiii"] = wasmExports["zb"];
+			dynCalls["fiii"] = dynCall_fiii = wasmExports["Ab"];
+			dynCalls["diii"] = dynCall_diii = wasmExports["Bb"];
+			dynCalls["i"] = dynCall_i = wasmExports["Cb"];
+			dynCalls["viiiiiii"] = dynCall_viiiiiii = wasmExports["Db"];
+			dynCalls["iiiiiii"] = dynCall_iiiiiii = wasmExports["Eb"];
+			dynCalls["iiiiiiiiiiii"] = dynCall_iiiiiiiiiiii = wasmExports["Fb"];
+			dynCalls["viiiiiiiiii"] = dynCall_viiiiiiiiii = wasmExports["Gb"];
+			dynCalls["viiiiiiiiiiiiiii"] = dynCall_viiiiiiiiiiiiiii = wasmExports["Hb"];
+			dynCalls["iiiiiiiii"] = wasmExports["Ib"];
+			dynCalls["iiiiij"] = wasmExports["Jb"];
+			dynCalls["iiiiijj"] = wasmExports["Kb"];
+			dynCalls["iiiiiijj"] = wasmExports["Lb"];
+			dynCalls["viiiiii"] = wasmExports["Mb"];
+			_asyncify_start_unwind = wasmExports["Nb"];
+			_asyncify_stop_unwind = wasmExports["Ob"];
+			_asyncify_start_rewind = wasmExports["Pb"];
+			_asyncify_stop_rewind = wasmExports["Qb"];
 		}
 		var wasmImports = {
-			p: ___cxa_begin_catch,
-			r: ___cxa_end_catch,
+			x: ___cxa_begin_catch,
+			G: ___cxa_end_catch,
 			a: ___cxa_find_matching_catch_2,
 			f: ___cxa_find_matching_catch_3,
-			ca: ___cxa_rethrow,
-			s: ___cxa_throw,
-			S: ___cxa_uncaught_exceptions,
+			Z: ___cxa_rethrow,
+			p: ___cxa_throw,
+			Y: ___cxa_uncaught_exceptions,
 			d: ___resumeException,
-			ea: __abort_js,
-			W: __tzset_js,
-			ja: _emscripten_has_asyncify,
-			da: _emscripten_resize_heap,
-			q: _emscripten_sleep,
-			ia: _emwgpuAdapterRequestDevice,
-			oa: _emwgpuBufferDestroy,
-			na: _emwgpuBufferGetConstMappedRange,
-			ma: _emwgpuBufferMapAsync,
-			la: _emwgpuBufferUnmap,
+			$: __abort_js,
+			U: __tzset_js,
+			ea: _emscripten_has_asyncify,
+			_: _emscripten_resize_heap,
+			o: _emscripten_sleep,
+			da: _emwgpuAdapterRequestDevice,
+			ja: _emwgpuBufferDestroy,
+			ia: _emwgpuBufferGetConstMappedRange,
+			ha: _emwgpuBufferMapAsync,
+			ga: _emwgpuBufferUnmap,
 			i: _emwgpuDelete,
-			ha: _emwgpuDeviceCreateBuffer,
-			ga: _emwgpuDeviceCreateShaderModule,
-			ka: _emwgpuDeviceDestroy,
-			fa: _emwgpuInstanceRequestAdapter,
-			X: _environ_get,
-			Y: _environ_sizes_get,
-			Z: _fd_close,
-			_: _fd_read,
-			$: _fd_seek,
-			R: _fd_write,
+			ca: _emwgpuDeviceCreateBuffer,
+			ba: _emwgpuDeviceCreateShaderModule,
+			fa: _emwgpuDeviceDestroy,
+			aa: _emwgpuInstanceRequestAdapter,
+			V: _environ_get,
+			W: _environ_sizes_get,
 			O: invoke_diii,
 			P: invoke_fiii,
 			j: invoke_i,
 			b: invoke_ii,
 			e: invoke_iii,
 			n: invoke_iiii,
-			h: invoke_iiiii,
-			aa: invoke_iiiiid,
-			v: invoke_iiiiii,
-			w: invoke_iiiiiii,
+			g: invoke_iiiii,
+			X: invoke_iiiiid,
+			E: invoke_iiiiii,
+			s: invoke_iiiiiii,
 			Q: invoke_iiiiiiii,
 			J: invoke_iiiiiiiiiiii,
-			ba: invoke_iiiiij,
 			K: invoke_jiiii,
-			g: invoke_v,
-			o: invoke_vi,
+			h: invoke_v,
+			t: invoke_vi,
 			c: invoke_vii,
 			k: invoke_viii,
-			T: invoke_viiii,
+			R: invoke_viiii,
 			m: invoke_viiiiiii,
-			F: invoke_viiiiiiiiii,
+			D: invoke_viiiiiiiiii,
 			I: invoke_viiiiiiiiiiiiiii,
-			V: _random_get,
-			qa: _wgpuAdapterGetLimits,
-			E: _wgpuCommandEncoderBeginComputePass,
-			U: _wgpuCommandEncoderCopyBufferToBuffer,
+			T: _random_get,
+			la: _wgpuAdapterGetLimits,
+			C: _wgpuCommandEncoderBeginComputePass,
+			S: _wgpuCommandEncoderCopyBufferToBuffer,
 			N: _wgpuCommandEncoderCopyTextureToBuffer,
 			M: _wgpuCommandEncoderFinish,
-			B: _wgpuComputePassEncoderDispatchWorkgroups,
-			A: _wgpuComputePassEncoderEnd,
-			C: _wgpuComputePassEncoderSetBindGroup,
-			D: _wgpuComputePassEncoderSetPipeline,
-			y: _wgpuComputePipelineGetBindGroupLayout,
-			x: _wgpuDeviceCreateBindGroup,
-			G: _wgpuDeviceCreateCommandEncoder,
-			pa: _wgpuDeviceCreateComputePipeline,
-			t: _wgpuDeviceCreateTexture,
+			z: _wgpuComputePassEncoderDispatchWorkgroups,
+			y: _wgpuComputePassEncoderEnd,
+			A: _wgpuComputePassEncoderSetBindGroup,
+			B: _wgpuComputePassEncoderSetPipeline,
+			v: _wgpuComputePipelineGetBindGroupLayout,
+			u: _wgpuDeviceCreateBindGroup,
+			F: _wgpuDeviceCreateCommandEncoder,
+			ka: _wgpuDeviceCreateComputePipeline,
+			q: _wgpuDeviceCreateTexture,
 			L: _wgpuQueueSubmit,
-			z: _wgpuQueueWriteBuffer,
+			w: _wgpuQueueWriteBuffer,
 			H: _wgpuQueueWriteTexture,
 			l: _wgpuTextureCreateView,
-			u: _wgpuTextureDestroy
+			r: _wgpuTextureDestroy
 		};
 		var wasmExports = await createWasm();
 		function invoke_iii(index, a1, a2) {
@@ -2531,16 +2486,6 @@ var createImg2NumModule = (() => {
 			var sp = stackSave();
 			try {
 				return dynCall_iiiiii(index, a1, a2, a3, a4, a5);
-			} catch (e) {
-				stackRestore(sp);
-				if (e !== e + 0) throw e;
-				_setThrew(1, 0);
-			}
-		}
-		function invoke_iiiiij(index, a1, a2, a3, a4, a5) {
-			var sp = stackSave();
-			try {
-				return dynCall_iiiiij(index, a1, a2, a3, a4, a5);
 			} catch (e) {
 				stackRestore(sp);
 				if (e !== e + 0) throw e;
@@ -2673,11 +2618,11 @@ var createImg2NumModule = (() => {
 			var makeWrapper_pp = (f) => (a0) => f(a0) >>> 0;
 			var makeWrapper_ppp = (f) => (a0, a1) => f(a0, a1) >>> 0;
 			var makeWrapper_p = (f) => () => f() >>> 0;
-			wasmExports["Ca"] = makeWrapper_pp(wasmExports["Ca"]);
-			wasmExports["cb"] = makeWrapper_ppp(wasmExports["cb"]);
+			wasmExports["xa"] = makeWrapper_pp(wasmExports["xa"]);
+			wasmExports["Za"] = makeWrapper_ppp(wasmExports["Za"]);
+			wasmExports["bb"] = makeWrapper_pp(wasmExports["bb"]);
+			wasmExports["cb"] = makeWrapper_p(wasmExports["cb"]);
 			wasmExports["gb"] = makeWrapper_pp(wasmExports["gb"]);
-			wasmExports["hb"] = makeWrapper_p(wasmExports["hb"]);
-			wasmExports["lb"] = makeWrapper_pp(wasmExports["lb"]);
 			return wasmExports;
 		}
 		function run() {

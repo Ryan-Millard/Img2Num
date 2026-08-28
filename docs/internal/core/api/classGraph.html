@@ -264,23 +264,23 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00053">53</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span>                                                       {</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keyword">auto</span> end_node_ids {m_node_ids.end()};</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keyword">auto</span> node1_it {m_node_ids.find(node_id1)};</div>
-<div class="line"><span class="lineno">   56</span>    <span class="keyword">auto</span> node2_it {m_node_ids.find(node_id2)};</div>
-<div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">if</span> (node1_it == end_node_ids || node2_it == end_node_ids) {</div>
-<div class="line"><span class="lineno">   59</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   60</span>    }</div>
-<div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>    <span class="keyword">const</span> int32_t idx1 {node1_it-&gt;second};</div>
-<div class="line"><span class="lineno">   63</span>    <span class="keyword">const</span> int32_t idx2 {node2_it-&gt;second};</div>
-<div class="line"><span class="lineno">   64</span> </div>
-<div class="line"><span class="lineno">   65</span>    m_nodes-&gt;at(idx1)-&gt;add_edge(m_nodes-&gt;at(idx2));</div>
-<div class="line"><span class="lineno">   66</span>    m_nodes-&gt;at(idx2)-&gt;add_edge(m_nodes-&gt;at(idx1));</div>
-<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   68</span>}</div>
+<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00055">55</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>                                                       {</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keyword">auto</span> end_node_ids {m_node_ids.end()};</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keyword">auto</span> node1_it {m_node_ids.find(node_id1)};</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keyword">auto</span> node2_it {m_node_ids.find(node_id2)};</div>
+<div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">if</span> (node1_it == end_node_ids || node2_it == end_node_ids) {</div>
+<div class="line"><span class="lineno">   61</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   62</span>    }</div>
+<div class="line"><span class="lineno">   63</span> </div>
+<div class="line"><span class="lineno">   64</span>    <span class="keyword">const</span> int32_t idx1 {node1_it-&gt;second};</div>
+<div class="line"><span class="lineno">   65</span>    <span class="keyword">const</span> int32_t idx2 {node2_it-&gt;second};</div>
+<div class="line"><span class="lineno">   66</span> </div>
+<div class="line"><span class="lineno">   67</span>    m_nodes-&gt;at(idx1)-&gt;add_edge(m_nodes-&gt;at(idx2));</div>
+<div class="line"><span class="lineno">   68</span>    m_nodes-&gt;at(idx2)-&gt;add_edge(m_nodes-&gt;at(idx1));</div>
+<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   70</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -300,16 +300,16 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00043">43</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>                                                  {</div>
-<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; n : *m_nodes) {</div>
-<div class="line"><span class="lineno">   45</span>        <span class="keywordflow">if</span> (n-&gt;area() &lt; min_area) {</div>
-<div class="line"><span class="lineno">   46</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   47</span>        }</div>
-<div class="line"><span class="lineno">   48</span>    }</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   51</span>}</div>
+<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00045">45</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>                                                  {</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; n : *m_nodes) {</div>
+<div class="line"><span class="lineno">   47</span>        <span class="keywordflow">if</span> (n-&gt;area() &lt; min_area) {</div>
+<div class="line"><span class="lineno">   48</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   49</span>        }</div>
+<div class="line"><span class="lineno">   50</span>    }</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   53</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -356,49 +356,49 @@ Protected Attributes</h2></td></tr>
 <p>Scans the skeleton image and marks pixels as junctions where three or more branches meet, using the crossing-number method (counts 0→1 transitions in the 8-neighbor ring).</p>
 <p><code>@param</code> skel Binary skeleton image (nonzero = skeleton pixel) <code>@param</code> w Image width <code>@param</code> h Image height <code>@return</code> Junction mask with nonzero entries marking junction pixels </p>
 
-<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00221">221</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  221</span>                                                                                       {</div>
-<div class="line"><span class="lineno">  222</span>    std::vector&lt;uint8_t&gt; junction_map(w * h, 0);</div>
-<div class="line"><span class="lineno">  223</span> </div>
-<div class="line"><span class="lineno">  224</span>    <span class="comment">// 8-Neighbor Order (Clockwise)</span></div>
-<div class="line"><span class="lineno">  225</span>    <span class="comment">// P9 P2 P3</span></div>
-<div class="line"><span class="lineno">  226</span>    <span class="comment">// P8 P1 P4</span></div>
-<div class="line"><span class="lineno">  227</span>    <span class="comment">// P7 P6 P5</span></div>
-<div class="line"><span class="lineno">  228</span>    <span class="keywordtype">int</span> dx[] = {0, 1, 1, 1, 0, -1, -1, -1};</div>
-<div class="line"><span class="lineno">  229</span>    <span class="keywordtype">int</span> dy[] = {-1, -1, 0, 1, 1, 1, 0, -1};</div>
-<div class="line"><span class="lineno">  230</span> </div>
-<div class="line"><span class="lineno">  231</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; h; ++y) {</div>
-<div class="line"><span class="lineno">  232</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; w; ++x) {</div>
-<div class="line"><span class="lineno">  233</span>            <span class="keywordflow">if</span> (<a class="code hl_function" href="classGraph.html#a0c88d5759816a622560c8d18da2b7902">getPixel</a>(skel, w, h, x, y) == 0)</div>
-<div class="line"><span class="lineno">  234</span>                <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  235</span> </div>
-<div class="line"><span class="lineno">  236</span>            <span class="comment">// 1. Get Neighbors in Circular Order</span></div>
-<div class="line"><span class="lineno">  237</span>            <span class="keywordtype">int</span> p[8];</div>
-<div class="line"><span class="lineno">  238</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; 8; ++k) {</div>
-<div class="line"><span class="lineno">  239</span>                p[k] = <a class="code hl_function" href="classGraph.html#a0c88d5759816a622560c8d18da2b7902">getPixel</a>(skel, w, h, x + dx[k], y + dy[k]) ? 1 : 0;</div>
-<div class="line"><span class="lineno">  240</span>            }</div>
-<div class="line"><span class="lineno">  241</span> </div>
-<div class="line"><span class="lineno">  242</span>            <span class="comment">// 2. Count Transitions (0 -&gt; 1)</span></div>
-<div class="line"><span class="lineno">  243</span>            <span class="comment">// This is the Crossing Number / 2</span></div>
-<div class="line"><span class="lineno">  244</span>            <span class="keywordtype">int</span> transitions = 0;</div>
-<div class="line"><span class="lineno">  245</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; 8; ++k) {</div>
-<div class="line"><span class="lineno">  246</span>                <span class="keywordflow">if</span> (p[k] == 0 &amp;&amp; p[(k + 1) % 8] == 1)</div>
-<div class="line"><span class="lineno">  247</span>                    transitions++;</div>
-<div class="line"><span class="lineno">  248</span>            }</div>
-<div class="line"><span class="lineno">  249</span> </div>
-<div class="line"><span class="lineno">  250</span>            <span class="comment">// 3. Count Total Neighbors (for Endpoint check)</span></div>
-<div class="line"><span class="lineno">  251</span>            <span class="keywordtype">int</span> neighbors = 0;</div>
-<div class="line"><span class="lineno">  252</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; 8; ++k)</div>
-<div class="line"><span class="lineno">  253</span>                neighbors += p[k];</div>
-<div class="line"><span class="lineno">  254</span> </div>
-<div class="line"><span class="lineno">  255</span>            <span class="comment">// 4. Classify</span></div>
-<div class="line"><span class="lineno">  256</span>            <span class="keywordflow">if</span> (transitions &gt;= 3) {</div>
-<div class="line"><span class="lineno">  257</span>                junction_map[y * w + x] = 1;</div>
-<div class="line"><span class="lineno">  258</span>            }</div>
-<div class="line"><span class="lineno">  259</span>        }</div>
-<div class="line"><span class="lineno">  260</span>    }</div>
-<div class="line"><span class="lineno">  261</span>    <span class="keywordflow">return</span> junction_map;</div>
-<div class="line"><span class="lineno">  262</span>}</div>
+<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00223">223</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  223</span>                                                                                       {</div>
+<div class="line"><span class="lineno">  224</span>    std::vector&lt;uint8_t&gt; junction_map(w * h, 0);</div>
+<div class="line"><span class="lineno">  225</span> </div>
+<div class="line"><span class="lineno">  226</span>    <span class="comment">// 8-Neighbor Order (Clockwise)</span></div>
+<div class="line"><span class="lineno">  227</span>    <span class="comment">// P9 P2 P3</span></div>
+<div class="line"><span class="lineno">  228</span>    <span class="comment">// P8 P1 P4</span></div>
+<div class="line"><span class="lineno">  229</span>    <span class="comment">// P7 P6 P5</span></div>
+<div class="line"><span class="lineno">  230</span>    <span class="keywordtype">int</span> dx[] = {0, 1, 1, 1, 0, -1, -1, -1};</div>
+<div class="line"><span class="lineno">  231</span>    <span class="keywordtype">int</span> dy[] = {-1, -1, 0, 1, 1, 1, 0, -1};</div>
+<div class="line"><span class="lineno">  232</span> </div>
+<div class="line"><span class="lineno">  233</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; h; ++y) {</div>
+<div class="line"><span class="lineno">  234</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; w; ++x) {</div>
+<div class="line"><span class="lineno">  235</span>            <span class="keywordflow">if</span> (<a class="code hl_function" href="classGraph.html#a0c88d5759816a622560c8d18da2b7902">getPixel</a>(skel, w, h, x, y) == 0)</div>
+<div class="line"><span class="lineno">  236</span>                <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  237</span> </div>
+<div class="line"><span class="lineno">  238</span>            <span class="comment">// 1. Get Neighbors in Circular Order</span></div>
+<div class="line"><span class="lineno">  239</span>            <span class="keywordtype">int</span> p[8];</div>
+<div class="line"><span class="lineno">  240</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; 8; ++k) {</div>
+<div class="line"><span class="lineno">  241</span>                p[k] = <a class="code hl_function" href="classGraph.html#a0c88d5759816a622560c8d18da2b7902">getPixel</a>(skel, w, h, x + dx[k], y + dy[k]) ? 1 : 0;</div>
+<div class="line"><span class="lineno">  242</span>            }</div>
+<div class="line"><span class="lineno">  243</span> </div>
+<div class="line"><span class="lineno">  244</span>            <span class="comment">// 2. Count Transitions (0 -&gt; 1)</span></div>
+<div class="line"><span class="lineno">  245</span>            <span class="comment">// This is the Crossing Number / 2</span></div>
+<div class="line"><span class="lineno">  246</span>            <span class="keywordtype">int</span> transitions = 0;</div>
+<div class="line"><span class="lineno">  247</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; 8; ++k) {</div>
+<div class="line"><span class="lineno">  248</span>                <span class="keywordflow">if</span> (p[k] == 0 &amp;&amp; p[(k + 1) % 8] == 1)</div>
+<div class="line"><span class="lineno">  249</span>                    transitions++;</div>
+<div class="line"><span class="lineno">  250</span>            }</div>
+<div class="line"><span class="lineno">  251</span> </div>
+<div class="line"><span class="lineno">  252</span>            <span class="comment">// 3. Count Total Neighbors (for Endpoint check)</span></div>
+<div class="line"><span class="lineno">  253</span>            <span class="keywordtype">int</span> neighbors = 0;</div>
+<div class="line"><span class="lineno">  254</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; 8; ++k)</div>
+<div class="line"><span class="lineno">  255</span>                neighbors += p[k];</div>
+<div class="line"><span class="lineno">  256</span> </div>
+<div class="line"><span class="lineno">  257</span>            <span class="comment">// 4. Classify</span></div>
+<div class="line"><span class="lineno">  258</span>            <span class="keywordflow">if</span> (transitions &gt;= 3) {</div>
+<div class="line"><span class="lineno">  259</span>                junction_map[y * w + x] = 1;</div>
+<div class="line"><span class="lineno">  260</span>            }</div>
+<div class="line"><span class="lineno">  261</span>        }</div>
+<div class="line"><span class="lineno">  262</span>    }</div>
+<div class="line"><span class="lineno">  263</span>    <span class="keywordflow">return</span> junction_map;</div>
+<div class="line"><span class="lineno">  264</span>}</div>
 <div class="ttc" id="aclassGraph_html_a0c88d5759816a622560c8d18da2b7902"><div class="ttname"><a href="classGraph.html#a0c88d5759816a622560c8d18da2b7902">Graph::getPixel</a></div><div class="ttdeci">uint8_t getPixel(const std::vector&lt; uint8_t &gt; &amp;img, int w, int h, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="graph_8h_source.html#l00052">graph.h:52</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="graph_8h_source.html#l00052">getPixel()</a>.</p>
@@ -427,19 +427,19 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00099">99</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   99</span>                                    {</div>
-<div class="line"><span class="lineno">  100</span>    std::vector&lt;Node_ptr&gt;&amp; nodes {*m_nodes};</div>
-<div class="line"><span class="lineno">  101</span> </div>
-<div class="line"><span class="lineno">  102</span>    nodes.erase(</div>
-<div class="line"><span class="lineno">  103</span>        std::remove_if(</div>
-<div class="line"><span class="lineno">  104</span>            nodes.begin(), nodes.end(), [](<span class="keyword">const</span> Node_ptr&amp; n) { return n-&gt;area() == 0; }</div>
-<div class="line"><span class="lineno">  105</span>        ),</div>
-<div class="line"><span class="lineno">  106</span>        nodes.end()</div>
-<div class="line"><span class="lineno">  107</span>    );</div>
-<div class="line"><span class="lineno">  108</span> </div>
-<div class="line"><span class="lineno">  109</span>    hash_node_ids();</div>
-<div class="line"><span class="lineno">  110</span>}</div>
+<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00101">101</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  101</span>                                    {</div>
+<div class="line"><span class="lineno">  102</span>    std::vector&lt;Node_ptr&gt;&amp; nodes {*m_nodes};</div>
+<div class="line"><span class="lineno">  103</span> </div>
+<div class="line"><span class="lineno">  104</span>    nodes.erase(</div>
+<div class="line"><span class="lineno">  105</span>        std::remove_if(</div>
+<div class="line"><span class="lineno">  106</span>            nodes.begin(), nodes.end(), [](<span class="keyword">const</span> Node_ptr&amp; n) { return n-&gt;area() == 0; }</div>
+<div class="line"><span class="lineno">  107</span>        ),</div>
+<div class="line"><span class="lineno">  108</span>        nodes.end()</div>
+<div class="line"><span class="lineno">  109</span>    );</div>
+<div class="line"><span class="lineno">  110</span> </div>
+<div class="line"><span class="lineno">  111</span>    hash_node_ids();</div>
+<div class="line"><span class="lineno">  112</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -458,51 +458,51 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00264">264</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  264</span>                             {</div>
-<div class="line"><span class="lineno">  265</span> </div>
-<div class="line"><span class="lineno">  266</span>    <span class="comment">/*</span></div>
-<div class="line"><span class="lineno">  267</span><span class="comment">    Shared-edge mode: build region boundaries on the crack grid so</span></div>
-<div class="line"><span class="lineno">  268</span><span class="comment">    neighbouring contours are exactly coincident along shared edges -- no</span></div>
-<div class="line"><span class="lineno">  269</span><span class="comment">    overlap band, no gaps</span></div>
-<div class="line"><span class="lineno">  270</span><span class="comment">    */</span></div>
-<div class="line"><span class="lineno">  271</span> </div>
-<div class="line"><span class="lineno">  272</span>    <span class="keywordtype">float</span> eps = 0.25f;</div>
+<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00266">266</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  266</span>                             {</div>
+<div class="line"><span class="lineno">  267</span> </div>
+<div class="line"><span class="lineno">  268</span>    <span class="comment">/*</span></div>
+<div class="line"><span class="lineno">  269</span><span class="comment">    Shared-edge mode: build region boundaries on the crack grid so</span></div>
+<div class="line"><span class="lineno">  270</span><span class="comment">    neighbouring contours are exactly coincident along shared edges -- no</span></div>
+<div class="line"><span class="lineno">  271</span><span class="comment">    overlap band, no gaps</span></div>
+<div class="line"><span class="lineno">  272</span><span class="comment">    */</span></div>
 <div class="line"><span class="lineno">  273</span> </div>
-<div class="line"><span class="lineno">  274</span>    std::vector&lt;int32_t&gt; labels(<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(m_width) * m_height, -1);</div>
-<div class="line"><span class="lineno">  275</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr&amp; n : get_nodes()) {</div>
-<div class="line"><span class="lineno">  276</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0)</div>
-<div class="line"><span class="lineno">  277</span>            <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  278</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; p : n-&gt;get_pixels())</div>
-<div class="line"><span class="lineno">  279</span>            labels[static_cast&lt;size_t&gt;(p.position.y) * m_width + p.position.x] = n-&gt;id();</div>
-<div class="line"><span class="lineno">  280</span>    }</div>
-<div class="line"><span class="lineno">  281</span> </div>
-<div class="line"><span class="lineno">  282</span>    <span class="keyword">auto</span> loops = build_shared_loops(labels, m_width, m_height, eps);</div>
+<div class="line"><span class="lineno">  274</span>    <span class="keywordtype">float</span> eps = 0.25f;</div>
+<div class="line"><span class="lineno">  275</span> </div>
+<div class="line"><span class="lineno">  276</span>    std::vector&lt;int32_t&gt; labels(<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(m_width) * m_height, -1);</div>
+<div class="line"><span class="lineno">  277</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr&amp; n : get_nodes()) {</div>
+<div class="line"><span class="lineno">  278</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0)</div>
+<div class="line"><span class="lineno">  279</span>            <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  280</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; p : n-&gt;get_pixels())</div>
+<div class="line"><span class="lineno">  281</span>            labels[static_cast&lt;size_t&gt;(p.position.y) * m_width + p.position.x] = n-&gt;id();</div>
+<div class="line"><span class="lineno">  282</span>    }</div>
 <div class="line"><span class="lineno">  283</span> </div>
-<div class="line"><span class="lineno">  284</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr&amp; n : get_nodes()) {</div>
-<div class="line"><span class="lineno">  285</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0)</div>
-<div class="line"><span class="lineno">  286</span>            <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  287</span>        n-&gt;clear_contour();</div>
-<div class="line"><span class="lineno">  288</span>        <span class="keyword">auto</span> it = loops.find(n-&gt;id());</div>
-<div class="line"><span class="lineno">  289</span>        <span class="keywordflow">if</span> (it == loops.end())</div>
-<div class="line"><span class="lineno">  290</span>            <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  291</span>        <a class="code hl_struct" href="structImageLib_1_1RGBPixel.html">ImageLib::RGBPixel&lt;uint8_t&gt;</a> c = n-&gt;color();</div>
-<div class="line"><span class="lineno">  292</span>        <a class="code hl_struct" href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel&lt;uint8_t&gt;</a> col {c.red, c.green, c.blue, 255};</div>
-<div class="line"><span class="lineno">  293</span>        <span class="keywordflow">for</span> (std::vector&lt;QuadBezier&gt;&amp; curve : it-&gt;second) {</div>
-<div class="line"><span class="lineno">  294</span>            std::vector&lt;Point&gt; anchors; <span class="comment">// keep contours[] parallel to curves[]</span></div>
-<div class="line"><span class="lineno">  295</span>            anchors.reserve(curve.size() + 1);</div>
-<div class="line"><span class="lineno">  296</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <a class="code hl_struct" href="structQuadBezier.html">QuadBezier</a>&amp; q : curve)</div>
-<div class="line"><span class="lineno">  297</span>                anchors.push_back(q.p0);</div>
-<div class="line"><span class="lineno">  298</span>            <span class="keywordflow">if</span> (!curve.empty())</div>
-<div class="line"><span class="lineno">  299</span>                anchors.push_back(curve.back().p2);</div>
-<div class="line"><span class="lineno">  300</span>            n-&gt;m_contours.contours.push_back(std::move(anchors));</div>
-<div class="line"><span class="lineno">  301</span>            n-&gt;m_contours.curves.push_back(std::move(curve));</div>
-<div class="line"><span class="lineno">  302</span>            n-&gt;m_contours.colors.push_back(col);</div>
-<div class="line"><span class="lineno">  303</span>            n-&gt;m_contours.hierarchy.push_back({-1, -1, -1, -1});</div>
-<div class="line"><span class="lineno">  304</span>            n-&gt;m_contours.is_hole.push_back(<span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">  305</span>        }</div>
-<div class="line"><span class="lineno">  306</span>    }</div>
-<div class="line"><span class="lineno">  307</span>}</div>
+<div class="line"><span class="lineno">  284</span>    <span class="keyword">auto</span> loops = build_shared_loops(labels, m_width, m_height, eps);</div>
+<div class="line"><span class="lineno">  285</span> </div>
+<div class="line"><span class="lineno">  286</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr&amp; n : get_nodes()) {</div>
+<div class="line"><span class="lineno">  287</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0)</div>
+<div class="line"><span class="lineno">  288</span>            <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  289</span>        n-&gt;clear_contour();</div>
+<div class="line"><span class="lineno">  290</span>        <span class="keyword">auto</span> it = loops.find(n-&gt;id());</div>
+<div class="line"><span class="lineno">  291</span>        <span class="keywordflow">if</span> (it == loops.end())</div>
+<div class="line"><span class="lineno">  292</span>            <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  293</span>        <a class="code hl_struct" href="structImageLib_1_1RGBPixel.html">ImageLib::RGBPixel&lt;uint8_t&gt;</a> c = n-&gt;color();</div>
+<div class="line"><span class="lineno">  294</span>        <a class="code hl_struct" href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel&lt;uint8_t&gt;</a> col {c.red, c.green, c.blue, 255};</div>
+<div class="line"><span class="lineno">  295</span>        <span class="keywordflow">for</span> (std::vector&lt;QuadBezier&gt;&amp; curve : it-&gt;second) {</div>
+<div class="line"><span class="lineno">  296</span>            std::vector&lt;Point&gt; anchors; <span class="comment">// keep contours[] parallel to curves[]</span></div>
+<div class="line"><span class="lineno">  297</span>            anchors.reserve(curve.size() + 1);</div>
+<div class="line"><span class="lineno">  298</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <a class="code hl_struct" href="structQuadBezier.html">QuadBezier</a>&amp; q : curve)</div>
+<div class="line"><span class="lineno">  299</span>                anchors.push_back(q.p0);</div>
+<div class="line"><span class="lineno">  300</span>            <span class="keywordflow">if</span> (!curve.empty())</div>
+<div class="line"><span class="lineno">  301</span>                anchors.push_back(curve.back().p2);</div>
+<div class="line"><span class="lineno">  302</span>            n-&gt;m_contours.contours.push_back(std::move(anchors));</div>
+<div class="line"><span class="lineno">  303</span>            n-&gt;m_contours.curves.push_back(std::move(curve));</div>
+<div class="line"><span class="lineno">  304</span>            n-&gt;m_contours.colors.push_back(col);</div>
+<div class="line"><span class="lineno">  305</span>            n-&gt;m_contours.hierarchy.push_back({-1, -1, -1, -1});</div>
+<div class="line"><span class="lineno">  306</span>            n-&gt;m_contours.is_hole.push_back(<span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">  307</span>        }</div>
+<div class="line"><span class="lineno">  308</span>    }</div>
+<div class="line"><span class="lineno">  309</span>}</div>
 <div class="ttc" id="astructImageLib_1_1RGBAPixel_html"><div class="ttname"><a href="structImageLib_1_1RGBAPixel.html">ImageLib::RGBAPixel</a></div><div class="ttdef"><b>Definition</b> <a href="RGBAPixel_8h_source.html#l00011">RGBAPixel.h:11</a></div></div>
 <div class="ttc" id="astructImageLib_1_1RGBPixel_html"><div class="ttname"><a href="structImageLib_1_1RGBPixel.html">ImageLib::RGBPixel</a></div><div class="ttdef"><b>Definition</b> <a href="RGBPixel_8h_source.html#l00014">RGBPixel.h:14</a></div></div>
 <div class="ttc" id="astructQuadBezier_html"><div class="ttname"><a href="structQuadBezier.html">QuadBezier</a></div><div class="ttdef"><b>Definition</b> <a href="contours_8h_source.html#l00016">contours.h:16</a></div></div>
@@ -541,38 +541,38 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00112">112</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  114</span>  {</div>
-<div class="line"><span class="lineno">  115</span>    <span class="comment">// Moore 8-connected neighbourhood</span></div>
-<div class="line"><span class="lineno">  116</span>    <span class="keyword">constexpr</span> int8_t dirs[8][2] {{1, 0}, {-1, 0},  {0, 1},  {0, -1},</div>
-<div class="line"><span class="lineno">  117</span>                                 {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};</div>
-<div class="line"><span class="lineno">  118</span> </div>
-<div class="line"><span class="lineno">  119</span>    int32_t rneigh[8];</div>
+<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00114">114</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  116</span>  {</div>
+<div class="line"><span class="lineno">  117</span>    <span class="comment">// Moore 8-connected neighbourhood</span></div>
+<div class="line"><span class="lineno">  118</span>    <span class="keyword">constexpr</span> int8_t dirs[8][2] {{1, 0}, {-1, 0},  {0, 1},  {0, -1},</div>
+<div class="line"><span class="lineno">  119</span>                                 {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};</div>
 <div class="line"><span class="lineno">  120</span> </div>
-<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">for</span> (int32_t y {0}; y &lt; height; ++y) {</div>
-<div class="line"><span class="lineno">  122</span>        <span class="keywordflow">for</span> (int32_t x {0}; x &lt; width; ++x) {</div>
-<div class="line"><span class="lineno">  123</span>            <span class="keyword">const</span> int32_t idx {y * width + x};</div>
-<div class="line"><span class="lineno">  124</span>            <span class="keyword">const</span> int32_t rid {region_labels[idx]};</div>
-<div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span>            <span class="keywordflow">for</span> (int32_t k {0}; k &lt; 8; ++k) {</div>
-<div class="line"><span class="lineno">  127</span>                <span class="keyword">const</span> int32_t nx {x + dirs[k][0]};</div>
-<div class="line"><span class="lineno">  128</span>                <span class="keyword">const</span> int32_t ny {y + dirs[k][1]};</div>
-<div class="line"><span class="lineno">  129</span> </div>
-<div class="line"><span class="lineno">  130</span>                <span class="keywordflow">if</span> (nx &gt;= 0 &amp;&amp; nx &lt; width &amp;&amp; ny &gt;= 0 &amp;&amp; ny &lt; height) {</div>
-<div class="line"><span class="lineno">  131</span>                    rneigh[k] = region_labels[ny * width + nx];</div>
-<div class="line"><span class="lineno">  132</span>                } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  133</span>                    rneigh[k] = rid; <span class="comment">// ignore out-of-bounds</span></div>
-<div class="line"><span class="lineno">  134</span>                }</div>
-<div class="line"><span class="lineno">  135</span>            }</div>
-<div class="line"><span class="lineno">  136</span> </div>
-<div class="line"><span class="lineno">  137</span>            <span class="keywordflow">for</span> (int32_t r : rneigh) {</div>
-<div class="line"><span class="lineno">  138</span>                <span class="keywordflow">if</span> (r != rid) {</div>
-<div class="line"><span class="lineno">  139</span>                    add_edge(rid, r);</div>
-<div class="line"><span class="lineno">  140</span>                }</div>
-<div class="line"><span class="lineno">  141</span>            }</div>
-<div class="line"><span class="lineno">  142</span>        }</div>
-<div class="line"><span class="lineno">  143</span>    }</div>
-<div class="line"><span class="lineno">  144</span>}</div>
+<div class="line"><span class="lineno">  121</span>    int32_t rneigh[8];</div>
+<div class="line"><span class="lineno">  122</span> </div>
+<div class="line"><span class="lineno">  123</span>    <span class="keywordflow">for</span> (int32_t y {0}; y &lt; height; ++y) {</div>
+<div class="line"><span class="lineno">  124</span>        <span class="keywordflow">for</span> (int32_t x {0}; x &lt; width; ++x) {</div>
+<div class="line"><span class="lineno">  125</span>            <span class="keyword">const</span> int32_t idx {y * width + x};</div>
+<div class="line"><span class="lineno">  126</span>            <span class="keyword">const</span> int32_t rid {region_labels[idx]};</div>
+<div class="line"><span class="lineno">  127</span> </div>
+<div class="line"><span class="lineno">  128</span>            <span class="keywordflow">for</span> (int32_t k {0}; k &lt; 8; ++k) {</div>
+<div class="line"><span class="lineno">  129</span>                <span class="keyword">const</span> int32_t nx {x + dirs[k][0]};</div>
+<div class="line"><span class="lineno">  130</span>                <span class="keyword">const</span> int32_t ny {y + dirs[k][1]};</div>
+<div class="line"><span class="lineno">  131</span> </div>
+<div class="line"><span class="lineno">  132</span>                <span class="keywordflow">if</span> (nx &gt;= 0 &amp;&amp; nx &lt; width &amp;&amp; ny &gt;= 0 &amp;&amp; ny &lt; height) {</div>
+<div class="line"><span class="lineno">  133</span>                    rneigh[k] = region_labels[ny * width + nx];</div>
+<div class="line"><span class="lineno">  134</span>                } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  135</span>                    rneigh[k] = rid; <span class="comment">// ignore out-of-bounds</span></div>
+<div class="line"><span class="lineno">  136</span>                }</div>
+<div class="line"><span class="lineno">  137</span>            }</div>
+<div class="line"><span class="lineno">  138</span> </div>
+<div class="line"><span class="lineno">  139</span>            <span class="keywordflow">for</span> (int32_t r : rneigh) {</div>
+<div class="line"><span class="lineno">  140</span>                <span class="keywordflow">if</span> (r != rid) {</div>
+<div class="line"><span class="lineno">  141</span>                    add_edge(rid, r);</div>
+<div class="line"><span class="lineno">  142</span>                }</div>
+<div class="line"><span class="lineno">  143</span>            }</div>
+<div class="line"><span class="lineno">  144</span>        }</div>
+<div class="line"><span class="lineno">  145</span>    }</div>
+<div class="line"><span class="lineno">  146</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -667,7 +667,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   55</span>        <span class="keywordflow">return</span> img[y * w + x];</div>
 <div class="line"><span class="lineno">   56</span>    }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="graph_8cpp_source.html#l00221">analyzeJunctions()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="graph_8cpp_source.html#l00223">analyzeJunctions()</a>.</p>
 <div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
@@ -702,13 +702,13 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00036">36</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>                          {</div>
-<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">for</span> (int32_t i {0}; i &lt; m_nodes-&gt;size(); i++) {</div>
-<div class="line"><span class="lineno">   38</span>        <span class="keyword">const</span> int32_t key {m_nodes-&gt;at(i)-&gt;id()};</div>
-<div class="line"><span class="lineno">   39</span>        m_node_ids[key] = i;</div>
-<div class="line"><span class="lineno">   40</span>    }</div>
-<div class="line"><span class="lineno">   41</span>}</div>
+<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00038">38</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   38</span>                          {</div>
+<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">for</span> (int32_t i {0}; i &lt; m_nodes-&gt;size(); i++) {</div>
+<div class="line"><span class="lineno">   40</span>        <span class="keyword">const</span> int32_t key {m_nodes-&gt;at(i)-&gt;id()};</div>
+<div class="line"><span class="lineno">   41</span>        m_node_ids[key] = i;</div>
+<div class="line"><span class="lineno">   42</span>    }</div>
+<div class="line"><span class="lineno">   43</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -738,35 +738,35 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00070">70</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span>                                                                                    {</div>
-<div class="line"><span class="lineno">   71</span>    <span class="keyword">auto</span> end_node_ids {m_node_ids.end()};</div>
-<div class="line"><span class="lineno">   72</span>    <span class="keyword">auto</span> node1_it {m_node_ids.find(node_to_keep-&gt;id())};</div>
-<div class="line"><span class="lineno">   73</span>    <span class="keyword">auto</span> node2_it {m_node_ids.find(node_to_remove-&gt;id())};</div>
-<div class="line"><span class="lineno">   74</span> </div>
-<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">if</span> (node1_it == end_node_ids || node2_it == end_node_ids) {</div>
-<div class="line"><span class="lineno">   76</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   77</span>    }</div>
-<div class="line"><span class="lineno">   78</span> </div>
-<div class="line"><span class="lineno">   79</span>    <span class="keyword">const</span> int32_t idx_k {node1_it-&gt;second};</div>
-<div class="line"><span class="lineno">   80</span>    <span class="keyword">const</span> int32_t idx_r {node2_it-&gt;second};</div>
-<div class="line"><span class="lineno">   81</span> </div>
-<div class="line"><span class="lineno">   82</span>    <span class="comment">// transfer edges from node_to_remove to node_to_keep</span></div>
-<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">for</span> (Node_ptr n : m_nodes-&gt;at(idx_r)-&gt;edges()) {</div>
-<div class="line"><span class="lineno">   84</span>        <span class="keywordflow">if</span> (n-&gt;id() != node_to_keep-&gt;id()) {</div>
-<div class="line"><span class="lineno">   85</span>            <span class="comment">// prevents self referencing</span></div>
-<div class="line"><span class="lineno">   86</span>            n-&gt;remove_edge(node_to_remove);</div>
-<div class="line"><span class="lineno">   87</span>            n-&gt;add_edge(node_to_keep);</div>
-<div class="line"><span class="lineno">   88</span>            node_to_keep-&gt;add_edge(n);</div>
-<div class="line"><span class="lineno">   89</span>        }</div>
-<div class="line"><span class="lineno">   90</span>    }</div>
-<div class="line"><span class="lineno">   91</span> </div>
-<div class="line"><span class="lineno">   92</span>    node_to_keep-&gt;add_pixels(node_to_remove-&gt;get_pixels());</div>
+<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00072">72</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   72</span>                                                                                    {</div>
+<div class="line"><span class="lineno">   73</span>    <span class="keyword">auto</span> end_node_ids {m_node_ids.end()};</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keyword">auto</span> node1_it {m_node_ids.find(node_to_keep-&gt;id())};</div>
+<div class="line"><span class="lineno">   75</span>    <span class="keyword">auto</span> node2_it {m_node_ids.find(node_to_remove-&gt;id())};</div>
+<div class="line"><span class="lineno">   76</span> </div>
+<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">if</span> (node1_it == end_node_ids || node2_it == end_node_ids) {</div>
+<div class="line"><span class="lineno">   78</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   79</span>    }</div>
+<div class="line"><span class="lineno">   80</span> </div>
+<div class="line"><span class="lineno">   81</span>    <span class="keyword">const</span> int32_t idx_k {node1_it-&gt;second};</div>
+<div class="line"><span class="lineno">   82</span>    <span class="keyword">const</span> int32_t idx_r {node2_it-&gt;second};</div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>    <span class="comment">// transfer edges from node_to_remove to node_to_keep</span></div>
+<div class="line"><span class="lineno">   85</span>    <span class="keywordflow">for</span> (Node_ptr n : m_nodes-&gt;at(idx_r)-&gt;edges()) {</div>
+<div class="line"><span class="lineno">   86</span>        <span class="keywordflow">if</span> (n-&gt;id() != node_to_keep-&gt;id()) {</div>
+<div class="line"><span class="lineno">   87</span>            <span class="comment">// prevents self referencing</span></div>
+<div class="line"><span class="lineno">   88</span>            n-&gt;remove_edge(node_to_remove);</div>
+<div class="line"><span class="lineno">   89</span>            n-&gt;add_edge(node_to_keep);</div>
+<div class="line"><span class="lineno">   90</span>            node_to_keep-&gt;add_edge(n);</div>
+<div class="line"><span class="lineno">   91</span>        }</div>
+<div class="line"><span class="lineno">   92</span>    }</div>
 <div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>    node_to_remove-&gt;clear_all();</div>
+<div class="line"><span class="lineno">   94</span>    node_to_keep-&gt;add_pixels(node_to_remove-&gt;get_pixels());</div>
 <div class="line"><span class="lineno">   95</span> </div>
-<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   97</span>}</div>
+<div class="line"><span class="lineno">   96</span>    node_to_remove-&gt;clear_all();</div>
+<div class="line"><span class="lineno">   97</span> </div>
+<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   99</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -796,59 +796,59 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00399">399</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  399</span>                                                                                      {</div>
-<div class="line"><span class="lineno">  400</span>    <span class="comment">// Keep merging while any pass still makes progress. Using &quot;did this pass</span></div>
-<div class="line"><span class="lineno">  401</span>    <span class="comment">// merge anything?&quot; as the loop guard (instead of re-testing every node)</span></div>
-<div class="line"><span class="lineno">  402</span>    <span class="comment">// also avoids spinning forever on a node that is too small/thin but has no</span></div>
-<div class="line"><span class="lineno">  403</span>    <span class="comment">// valid neighbour to merge into.</span></div>
-<div class="line"><span class="lineno">  404</span>    <span class="keywordtype">bool</span> merged_any = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  405</span>    <span class="keywordflow">while</span> (merged_any) {</div>
-<div class="line"><span class="lineno">  406</span>        merged_any = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  407</span> </div>
-<div class="line"><span class="lineno">  408</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr&amp; n : get_nodes()) {</div>
-<div class="line"><span class="lineno">  409</span>            <span class="keywordflow">if</span> (n-&gt;area() == 0)</div>
-<div class="line"><span class="lineno">  410</span>                <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  411</span> </div>
-<div class="line"><span class="lineno">  412</span>            <span class="keywordtype">bool</span> needs_merge = n-&gt;area() &lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(min_area);</div>
-<div class="line"><span class="lineno">  413</span>            <span class="keywordflow">if</span> (!needs_merge &amp;&amp; min_thickness &gt; 0) {</div>
-<div class="line"><span class="lineno">  414</span>                <span class="comment">// too thin == no inscribed disk of radius min_thickness/2 fits.</span></div>
-<div class="line"><span class="lineno">  415</span>                needs_merge = 2.0f * max_inscribed_radius(n) &lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(min_thickness);</div>
-<div class="line"><span class="lineno">  416</span>            }</div>
-<div class="line"><span class="lineno">  417</span>            <span class="keywordflow">if</span> (!needs_merge)</div>
-<div class="line"><span class="lineno">  418</span>                <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  419</span> </div>
-<div class="line"><span class="lineno">  420</span>            <a class="code hl_struct" href="structImageLib_1_1RGBPixel.html">ImageLib::RGBPixel&lt;uint8_t&gt;</a> col = n-&gt;color();</div>
+<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00401">401</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  401</span>                                                                                      {</div>
+<div class="line"><span class="lineno">  402</span>    <span class="comment">// Keep merging while any pass still makes progress. Using &quot;did this pass</span></div>
+<div class="line"><span class="lineno">  403</span>    <span class="comment">// merge anything?&quot; as the loop guard (instead of re-testing every node)</span></div>
+<div class="line"><span class="lineno">  404</span>    <span class="comment">// also avoids spinning forever on a node that is too small/thin but has no</span></div>
+<div class="line"><span class="lineno">  405</span>    <span class="comment">// valid neighbour to merge into.</span></div>
+<div class="line"><span class="lineno">  406</span>    <span class="keywordtype">bool</span> merged_any = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  407</span>    <span class="keywordflow">while</span> (merged_any) {</div>
+<div class="line"><span class="lineno">  408</span>        merged_any = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  409</span> </div>
+<div class="line"><span class="lineno">  410</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr&amp; n : get_nodes()) {</div>
+<div class="line"><span class="lineno">  411</span>            <span class="keywordflow">if</span> (n-&gt;area() == 0)</div>
+<div class="line"><span class="lineno">  412</span>                <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  413</span> </div>
+<div class="line"><span class="lineno">  414</span>            <span class="keywordtype">bool</span> needs_merge = n-&gt;area() &lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(min_area);</div>
+<div class="line"><span class="lineno">  415</span>            <span class="keywordflow">if</span> (!needs_merge &amp;&amp; min_thickness &gt; 0) {</div>
+<div class="line"><span class="lineno">  416</span>                <span class="comment">// too thin == no inscribed disk of radius min_thickness/2 fits.</span></div>
+<div class="line"><span class="lineno">  417</span>                needs_merge = 2.0f * max_inscribed_radius(n) &lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(min_thickness);</div>
+<div class="line"><span class="lineno">  418</span>            }</div>
+<div class="line"><span class="lineno">  419</span>            <span class="keywordflow">if</span> (!needs_merge)</div>
+<div class="line"><span class="lineno">  420</span>                <span class="keywordflow">continue</span>;</div>
 <div class="line"><span class="lineno">  421</span> </div>
-<div class="line"><span class="lineno">  422</span>            Node_ptr best_neighbor = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  423</span>            <span class="keywordtype">float</span> best_score = std::numeric_limits&lt;float&gt;::max();</div>
-<div class="line"><span class="lineno">  424</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr&amp; ne : n-&gt;edges()) {</div>
-<div class="line"><span class="lineno">  425</span>                <span class="keywordflow">if</span> (ne-&gt;area() &gt; 0) {</div>
-<div class="line"><span class="lineno">  426</span>                    <span class="keywordtype">float</span> cdist = <a class="code hl_struct" href="structImageLib_1_1RGBPixel.html">ImageLib::RGBPixel&lt;uint8_t&gt;::colorDistance</a>(ne-&gt;color(), col);</div>
-<div class="line"><span class="lineno">  427</span>                    <span class="keywordtype">float</span> score = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(ne-&gt;area()) + 10.f * cdist;</div>
-<div class="line"><span class="lineno">  428</span>                    <span class="keywordflow">if</span> (score &lt; best_score) {</div>
-<div class="line"><span class="lineno">  429</span>                        best_score = score;</div>
-<div class="line"><span class="lineno">  430</span>                        best_neighbor = ne;</div>
-<div class="line"><span class="lineno">  431</span>                    }</div>
-<div class="line"><span class="lineno">  432</span>                }</div>
-<div class="line"><span class="lineno">  433</span>            }</div>
-<div class="line"><span class="lineno">  434</span> </div>
-<div class="line"><span class="lineno">  435</span>            <span class="comment">// no valid neighbor found, skip this node</span></div>
-<div class="line"><span class="lineno">  436</span>            <span class="keywordflow">if</span> (!best_neighbor) {</div>
-<div class="line"><span class="lineno">  437</span>                <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  438</span>            }</div>
-<div class="line"><span class="lineno">  439</span> </div>
-<div class="line"><span class="lineno">  440</span>            <span class="keywordflow">if</span> (best_neighbor-&gt;area() &gt;= n-&gt;area()) {</div>
-<div class="line"><span class="lineno">  441</span>                merge_nodes(best_neighbor, n);</div>
-<div class="line"><span class="lineno">  442</span>            } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  443</span>                merge_nodes(n, best_neighbor);</div>
-<div class="line"><span class="lineno">  444</span>            }</div>
-<div class="line"><span class="lineno">  445</span>            merged_any = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  446</span>        }</div>
-<div class="line"><span class="lineno">  447</span> </div>
-<div class="line"><span class="lineno">  448</span>        clear_unconnected_nodes();</div>
-<div class="line"><span class="lineno">  449</span>    }</div>
-<div class="line"><span class="lineno">  450</span>}</div>
+<div class="line"><span class="lineno">  422</span>            <a class="code hl_struct" href="structImageLib_1_1RGBPixel.html">ImageLib::RGBPixel&lt;uint8_t&gt;</a> col = n-&gt;color();</div>
+<div class="line"><span class="lineno">  423</span> </div>
+<div class="line"><span class="lineno">  424</span>            Node_ptr best_neighbor = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  425</span>            <span class="keywordtype">float</span> best_score = std::numeric_limits&lt;float&gt;::max();</div>
+<div class="line"><span class="lineno">  426</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr&amp; ne : n-&gt;edges()) {</div>
+<div class="line"><span class="lineno">  427</span>                <span class="keywordflow">if</span> (ne-&gt;area() &gt; 0) {</div>
+<div class="line"><span class="lineno">  428</span>                    <span class="keywordtype">float</span> cdist = <a class="code hl_struct" href="structImageLib_1_1RGBPixel.html">ImageLib::RGBPixel&lt;uint8_t&gt;::colorDistance</a>(ne-&gt;color(), col);</div>
+<div class="line"><span class="lineno">  429</span>                    <span class="keywordtype">float</span> score = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(ne-&gt;area()) + 10.f * cdist;</div>
+<div class="line"><span class="lineno">  430</span>                    <span class="keywordflow">if</span> (score &lt; best_score) {</div>
+<div class="line"><span class="lineno">  431</span>                        best_score = score;</div>
+<div class="line"><span class="lineno">  432</span>                        best_neighbor = ne;</div>
+<div class="line"><span class="lineno">  433</span>                    }</div>
+<div class="line"><span class="lineno">  434</span>                }</div>
+<div class="line"><span class="lineno">  435</span>            }</div>
+<div class="line"><span class="lineno">  436</span> </div>
+<div class="line"><span class="lineno">  437</span>            <span class="comment">// no valid neighbor found, skip this node</span></div>
+<div class="line"><span class="lineno">  438</span>            <span class="keywordflow">if</span> (!best_neighbor) {</div>
+<div class="line"><span class="lineno">  439</span>                <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  440</span>            }</div>
+<div class="line"><span class="lineno">  441</span> </div>
+<div class="line"><span class="lineno">  442</span>            <span class="keywordflow">if</span> (best_neighbor-&gt;area() &gt;= n-&gt;area()) {</div>
+<div class="line"><span class="lineno">  443</span>                merge_nodes(best_neighbor, n);</div>
+<div class="line"><span class="lineno">  444</span>            } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  445</span>                merge_nodes(n, best_neighbor);</div>
+<div class="line"><span class="lineno">  446</span>            }</div>
+<div class="line"><span class="lineno">  447</span>            merged_any = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  448</span>        }</div>
+<div class="line"><span class="lineno">  449</span> </div>
+<div class="line"><span class="lineno">  450</span>        clear_unconnected_nodes();</div>
+<div class="line"><span class="lineno">  451</span>    }</div>
+<div class="line"><span class="lineno">  452</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -875,81 +875,81 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00146">146</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  146</span>                                      {</div>
-<div class="line"><span class="lineno">  147</span>    <span class="comment">// 1. Build the Global Label Map ONCE (0 = background, else = node-&gt;id())</span></div>
-<div class="line"><span class="lineno">  148</span>    std::vector&lt;int32_t&gt; label_map(<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(m_width) * <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(m_height), 0);</div>
-<div class="line"><span class="lineno">  149</span> </div>
-<div class="line"><span class="lineno">  150</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr&amp; n : get_nodes()) {</div>
-<div class="line"><span class="lineno">  151</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0)</div>
-<div class="line"><span class="lineno">  152</span>            <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  153</span> </div>
-<div class="line"><span class="lineno">  154</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; [_, p] : n-&gt;get_pixels()) {</div>
-<div class="line"><span class="lineno">  155</span>            label_map[p.y * m_width + p.x] = n-&gt;id();</div>
-<div class="line"><span class="lineno">  156</span>        }</div>
-<div class="line"><span class="lineno">  157</span>    }</div>
-<div class="line"><span class="lineno">  158</span> </div>
-<div class="line"><span class="lineno">  159</span>    <span class="keyword">constexpr</span> int8_t dirs[8][2] {{1, 0}, {-1, 0},  {0, 1},  {0, -1},</div>
-<div class="line"><span class="lineno">  160</span>                                 {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};</div>
-<div class="line"><span class="lineno">  161</span> </div>
-<div class="line"><span class="lineno">  162</span>    <span class="comment">// 2. Iterate directly over the pixels of each node</span></div>
-<div class="line"><span class="lineno">  163</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr&amp; n : get_nodes()) {</div>
-<div class="line"><span class="lineno">  164</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0)</div>
-<div class="line"><span class="lineno">  165</span>            <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  166</span>        int32_t val = n-&gt;id();</div>
-<div class="line"><span class="lineno">  167</span> </div>
-<div class="line"><span class="lineno">  168</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; [_, p] : n-&gt;get_pixels()) {</div>
-<div class="line"><span class="lineno">  169</span>            <span class="keywordtype">int</span> x = p.x;</div>
-<div class="line"><span class="lineno">  170</span>            <span class="keywordtype">int</span> y = p.y;</div>
-<div class="line"><span class="lineno">  171</span> </div>
-<div class="line"><span class="lineno">  172</span>            <span class="comment">// Check 8 neighbors in the global map</span></div>
-<div class="line"><span class="lineno">  173</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; 8; ++k) {</div>
-<div class="line"><span class="lineno">  174</span>                <span class="keywordtype">int</span> nx = x + dirs[k][0];</div>
-<div class="line"><span class="lineno">  175</span>                <span class="keywordtype">int</span> ny = y + dirs[k][1];</div>
-<div class="line"><span class="lineno">  176</span> </div>
-<div class="line"><span class="lineno">  177</span>                <span class="comment">// Fast boundary check (replaces std::clamp)</span></div>
-<div class="line"><span class="lineno">  178</span>                <span class="keywordflow">if</span> (nx &lt; 0 || nx &gt;= m_width || ny &lt; 0 || ny &gt;= m_height)</div>
-<div class="line"><span class="lineno">  179</span>                    <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  180</span> </div>
-<div class="line"><span class="lineno">  181</span>                int32_t n_val = label_map[ny * m_width + nx];</div>
+<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00148">148</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  148</span>                                      {</div>
+<div class="line"><span class="lineno">  149</span>    <span class="comment">// 1. Build the Global Label Map ONCE (0 = background, else = node-&gt;id())</span></div>
+<div class="line"><span class="lineno">  150</span>    std::vector&lt;int32_t&gt; label_map(<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(m_width) * <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(m_height), 0);</div>
+<div class="line"><span class="lineno">  151</span> </div>
+<div class="line"><span class="lineno">  152</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr&amp; n : get_nodes()) {</div>
+<div class="line"><span class="lineno">  153</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0)</div>
+<div class="line"><span class="lineno">  154</span>            <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  155</span> </div>
+<div class="line"><span class="lineno">  156</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; [_, p] : n-&gt;get_pixels()) {</div>
+<div class="line"><span class="lineno">  157</span>            label_map[p.y * m_width + p.x] = n-&gt;id();</div>
+<div class="line"><span class="lineno">  158</span>        }</div>
+<div class="line"><span class="lineno">  159</span>    }</div>
+<div class="line"><span class="lineno">  160</span> </div>
+<div class="line"><span class="lineno">  161</span>    <span class="keyword">constexpr</span> int8_t dirs[8][2] {{1, 0}, {-1, 0},  {0, 1},  {0, -1},</div>
+<div class="line"><span class="lineno">  162</span>                                 {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};</div>
+<div class="line"><span class="lineno">  163</span> </div>
+<div class="line"><span class="lineno">  164</span>    <span class="comment">// 2. Iterate directly over the pixels of each node</span></div>
+<div class="line"><span class="lineno">  165</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> Node_ptr&amp; n : get_nodes()) {</div>
+<div class="line"><span class="lineno">  166</span>        <span class="keywordflow">if</span> (n-&gt;area() == 0)</div>
+<div class="line"><span class="lineno">  167</span>            <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  168</span>        int32_t val = n-&gt;id();</div>
+<div class="line"><span class="lineno">  169</span> </div>
+<div class="line"><span class="lineno">  170</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; [_, p] : n-&gt;get_pixels()) {</div>
+<div class="line"><span class="lineno">  171</span>            <span class="keywordtype">int</span> x = p.x;</div>
+<div class="line"><span class="lineno">  172</span>            <span class="keywordtype">int</span> y = p.y;</div>
+<div class="line"><span class="lineno">  173</span> </div>
+<div class="line"><span class="lineno">  174</span>            <span class="comment">// Check 8 neighbors in the global map</span></div>
+<div class="line"><span class="lineno">  175</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; 8; ++k) {</div>
+<div class="line"><span class="lineno">  176</span>                <span class="keywordtype">int</span> nx = x + dirs[k][0];</div>
+<div class="line"><span class="lineno">  177</span>                <span class="keywordtype">int</span> ny = y + dirs[k][1];</div>
+<div class="line"><span class="lineno">  178</span> </div>
+<div class="line"><span class="lineno">  179</span>                <span class="comment">// Fast boundary check (replaces std::clamp)</span></div>
+<div class="line"><span class="lineno">  180</span>                <span class="keywordflow">if</span> (nx &lt; 0 || nx &gt;= m_width || ny &lt; 0 || ny &gt;= m_height)</div>
+<div class="line"><span class="lineno">  181</span>                    <span class="keywordflow">continue</span>;</div>
 <div class="line"><span class="lineno">  182</span> </div>
-<div class="line"><span class="lineno">  183</span>                <span class="comment">// Is it a neighbor? AND have we not processed this pairing yet?</span></div>
-<div class="line"><span class="lineno">  184</span>                <span class="keywordflow">if</span> (n_val != 0 &amp;&amp; n_val != val &amp;&amp; val &lt; n_val) {</div>
-<div class="line"><span class="lineno">  185</span>                    <span class="keywordtype">bool</span> is_too_thin = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  186</span> </div>
-<div class="line"><span class="lineno">  187</span>                    <span class="comment">// Check around the neighbor pixel for a 3rd region (pinching)</span></div>
-<div class="line"><span class="lineno">  188</span>                    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> mk = 0; mk &lt; 8; ++mk) {</div>
-<div class="line"><span class="lineno">  189</span>                        <span class="keywordtype">int</span> mx = nx + dirs[mk][0];</div>
-<div class="line"><span class="lineno">  190</span>                        <span class="keywordtype">int</span> my = ny + dirs[mk][1];</div>
-<div class="line"><span class="lineno">  191</span> </div>
-<div class="line"><span class="lineno">  192</span>                        <span class="keywordflow">if</span> (mx &lt; 0 || mx &gt;= m_width || my &lt; 0 || my &gt;= m_height)</div>
-<div class="line"><span class="lineno">  193</span>                            <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  194</span> </div>
-<div class="line"><span class="lineno">  195</span>                        int32_t m_val = label_map[my * m_width + mx];</div>
+<div class="line"><span class="lineno">  183</span>                int32_t n_val = label_map[ny * m_width + nx];</div>
+<div class="line"><span class="lineno">  184</span> </div>
+<div class="line"><span class="lineno">  185</span>                <span class="comment">// Is it a neighbor? AND have we not processed this pairing yet?</span></div>
+<div class="line"><span class="lineno">  186</span>                <span class="keywordflow">if</span> (n_val != 0 &amp;&amp; n_val != val &amp;&amp; val &lt; n_val) {</div>
+<div class="line"><span class="lineno">  187</span>                    <span class="keywordtype">bool</span> is_too_thin = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  188</span> </div>
+<div class="line"><span class="lineno">  189</span>                    <span class="comment">// Check around the neighbor pixel for a 3rd region (pinching)</span></div>
+<div class="line"><span class="lineno">  190</span>                    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> mk = 0; mk &lt; 8; ++mk) {</div>
+<div class="line"><span class="lineno">  191</span>                        <span class="keywordtype">int</span> mx = nx + dirs[mk][0];</div>
+<div class="line"><span class="lineno">  192</span>                        <span class="keywordtype">int</span> my = ny + dirs[mk][1];</div>
+<div class="line"><span class="lineno">  193</span> </div>
+<div class="line"><span class="lineno">  194</span>                        <span class="keywordflow">if</span> (mx &lt; 0 || mx &gt;= m_width || my &lt; 0 || my &gt;= m_height)</div>
+<div class="line"><span class="lineno">  195</span>                            <span class="keywordflow">continue</span>;</div>
 <div class="line"><span class="lineno">  196</span> </div>
-<div class="line"><span class="lineno">  197</span>                        <span class="keywordflow">if</span> (m_val != 0 &amp;&amp; m_val != val &amp;&amp; m_val != n_val) {</div>
-<div class="line"><span class="lineno">  198</span>                            is_too_thin = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  199</span>                            <span class="keywordflow">break</span>; <span class="comment">// CRITICAL: Stop checking immediately once proven thin!</span></div>
-<div class="line"><span class="lineno">  200</span>                        }</div>
-<div class="line"><span class="lineno">  201</span>                    }</div>
-<div class="line"><span class="lineno">  202</span> </div>
-<div class="line"><span class="lineno">  203</span>                    <span class="keywordflow">if</span> (is_too_thin) {</div>
-<div class="line"><span class="lineno">  204</span>                        <span class="comment">// Give our pixel to the neighbor</span></div>
-<div class="line"><span class="lineno">  205</span>                        Node_ptr neighbor_node =</div>
-<div class="line"><span class="lineno">  206</span>                            m_nodes-&gt;at(m_node_ids[n_val]); <span class="comment">// get_node_by_id(n_val); // Assuming</span></div>
-<div class="line"><span class="lineno">  207</span>                                                            <span class="comment">// you have this lookup</span></div>
-<div class="line"><span class="lineno">  208</span>                        <span class="keywordflow">if</span> (neighbor_node) {</div>
-<div class="line"><span class="lineno">  209</span>                            neighbor_node-&gt;add_edge_pixel(<a class="code hl_struct" href="structXY.html">XY</a> {x, y});</div>
-<div class="line"><span class="lineno">  210</span>                        }</div>
-<div class="line"><span class="lineno">  211</span>                    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  212</span>                        <span class="comment">// Take the neighbor&#39;s pixel</span></div>
-<div class="line"><span class="lineno">  213</span>                        n-&gt;add_edge_pixel(<a class="code hl_struct" href="structXY.html">XY</a> {nx, ny});</div>
-<div class="line"><span class="lineno">  214</span>                    }</div>
-<div class="line"><span class="lineno">  215</span>                }</div>
-<div class="line"><span class="lineno">  216</span>            }</div>
-<div class="line"><span class="lineno">  217</span>        }</div>
-<div class="line"><span class="lineno">  218</span>    }</div>
-<div class="line"><span class="lineno">  219</span>}</div>
+<div class="line"><span class="lineno">  197</span>                        int32_t m_val = label_map[my * m_width + mx];</div>
+<div class="line"><span class="lineno">  198</span> </div>
+<div class="line"><span class="lineno">  199</span>                        <span class="keywordflow">if</span> (m_val != 0 &amp;&amp; m_val != val &amp;&amp; m_val != n_val) {</div>
+<div class="line"><span class="lineno">  200</span>                            is_too_thin = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  201</span>                            <span class="keywordflow">break</span>; <span class="comment">// CRITICAL: Stop checking immediately once proven thin!</span></div>
+<div class="line"><span class="lineno">  202</span>                        }</div>
+<div class="line"><span class="lineno">  203</span>                    }</div>
+<div class="line"><span class="lineno">  204</span> </div>
+<div class="line"><span class="lineno">  205</span>                    <span class="keywordflow">if</span> (is_too_thin) {</div>
+<div class="line"><span class="lineno">  206</span>                        <span class="comment">// Give our pixel to the neighbor</span></div>
+<div class="line"><span class="lineno">  207</span>                        Node_ptr neighbor_node =</div>
+<div class="line"><span class="lineno">  208</span>                            m_nodes-&gt;at(m_node_ids[n_val]); <span class="comment">// get_node_by_id(n_val); // Assuming</span></div>
+<div class="line"><span class="lineno">  209</span>                                                            <span class="comment">// you have this lookup</span></div>
+<div class="line"><span class="lineno">  210</span>                        <span class="keywordflow">if</span> (neighbor_node) {</div>
+<div class="line"><span class="lineno">  211</span>                            neighbor_node-&gt;add_edge_pixel(<a class="code hl_struct" href="structXY.html">XY</a> {x, y});</div>
+<div class="line"><span class="lineno">  212</span>                        }</div>
+<div class="line"><span class="lineno">  213</span>                    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  214</span>                        <span class="comment">// Take the neighbor&#39;s pixel</span></div>
+<div class="line"><span class="lineno">  215</span>                        n-&gt;add_edge_pixel(<a class="code hl_struct" href="structXY.html">XY</a> {nx, ny});</div>
+<div class="line"><span class="lineno">  216</span>                    }</div>
+<div class="line"><span class="lineno">  217</span>                }</div>
+<div class="line"><span class="lineno">  218</span>            }</div>
+<div class="line"><span class="lineno">  219</span>        }</div>
+<div class="line"><span class="lineno">  220</span>    }</div>
+<div class="line"><span class="lineno">  221</span>}</div>
 <div class="ttc" id="astructXY_html"><div class="ttname"><a href="structXY.html">XY</a></div><div class="ttdef"><b>Definition</b> <a href="node_8h_source.html#l00038">node.h:38</a></div></div>
 </div><!-- fragment -->
 </div>

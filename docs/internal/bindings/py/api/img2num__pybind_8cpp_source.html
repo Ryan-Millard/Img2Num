@@ -342,9 +342,9 @@ $(document).ready(function(){initNavTree('img2num__pybind_8cpp_source.html','');
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>            <span class="keyword">const</span> uint8_t* data_ptr {<span class="keyword">static_cast&lt;</span><span class="keyword">const </span>uint8_t*<span class="keyword">&gt;</span>(data.request().ptr)};</div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>            <span class="keyword">const</span> int32_t* labels_ptr {<span class="keyword">static_cast&lt;</span><span class="keyword">const </span>int32_t*<span class="keyword">&gt;</span>(labels.request().ptr)};</div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>            std::string svg {img2num::labels_to_svg(</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>                data_ptr, labels_ptr, width, height, min_area, min_thickness</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>            )};</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>            std::string svg {</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>                img2num::labels_to_svg(data_ptr, labels_ptr, width, height, min_area, min_thickness)</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>            };</div>
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>            pybind11::str svg_py_str(std::move(svg));</div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>            <span class="keywordflow">return</span> pybind11::str(std::move(svg));</div>

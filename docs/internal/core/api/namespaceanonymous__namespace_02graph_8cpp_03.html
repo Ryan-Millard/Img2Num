@@ -136,39 +136,39 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00313">313</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  313</span>                                                                  {</div>
-<div class="line"><span class="lineno">  314</span>    <span class="keyword">constexpr</span> <span class="keywordtype">float</span> INF = 1e20f;</div>
-<div class="line"><span class="lineno">  315</span>    std::vector&lt;int&gt; v(n);</div>
-<div class="line"><span class="lineno">  316</span>    std::vector&lt;float&gt; z(n + 1);</div>
-<div class="line"><span class="lineno">  317</span>    <span class="keywordtype">int</span> k = 0;</div>
-<div class="line"><span class="lineno">  318</span>    v[0] = 0;</div>
-<div class="line"><span class="lineno">  319</span>    z[0] = -INF;</div>
-<div class="line"><span class="lineno">  320</span>    z[1] = INF;</div>
-<div class="line"><span class="lineno">  321</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> q = 1; q &lt; n; ++q) {</div>
-<div class="line"><span class="lineno">  322</span>        <span class="keywordtype">float</span> s;</div>
-<div class="line"><span class="lineno">  323</span>        <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
-<div class="line"><span class="lineno">  324</span>            s = ((f[q] + <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(q) * q) - (f[v[k]] + <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(v[k]) * v[k])) /</div>
-<div class="line"><span class="lineno">  325</span>                (2.0f * <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(q - v[k]));</div>
-<div class="line"><span class="lineno">  326</span>            <span class="keywordflow">if</span> (s &lt;= z[k] &amp;&amp; k &gt; 0) {</div>
-<div class="line"><span class="lineno">  327</span>                --k;</div>
-<div class="line"><span class="lineno">  328</span>            } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  329</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  330</span>            }</div>
-<div class="line"><span class="lineno">  331</span>        }</div>
-<div class="line"><span class="lineno">  332</span>        ++k;</div>
-<div class="line"><span class="lineno">  333</span>        v[k] = q;</div>
-<div class="line"><span class="lineno">  334</span>        z[k] = s;</div>
-<div class="line"><span class="lineno">  335</span>        z[k + 1] = INF;</div>
-<div class="line"><span class="lineno">  336</span>    }</div>
-<div class="line"><span class="lineno">  337</span>    k = 0;</div>
-<div class="line"><span class="lineno">  338</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> q = 0; q &lt; n; ++q) {</div>
-<div class="line"><span class="lineno">  339</span>        <span class="keywordflow">while</span> (z[k + 1] &lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(q))</div>
-<div class="line"><span class="lineno">  340</span>            ++k;</div>
-<div class="line"><span class="lineno">  341</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> dq = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(q - v[k]);</div>
-<div class="line"><span class="lineno">  342</span>        d[q] = dq * dq + f[v[k]];</div>
-<div class="line"><span class="lineno">  343</span>    }</div>
-<div class="line"><span class="lineno">  344</span>}</div>
+<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00315">315</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  315</span>                                                                  {</div>
+<div class="line"><span class="lineno">  316</span>    <span class="keyword">constexpr</span> <span class="keywordtype">float</span> INF = 1e20f;</div>
+<div class="line"><span class="lineno">  317</span>    std::vector&lt;int&gt; v(n);</div>
+<div class="line"><span class="lineno">  318</span>    std::vector&lt;float&gt; z(n + 1);</div>
+<div class="line"><span class="lineno">  319</span>    <span class="keywordtype">int</span> k = 0;</div>
+<div class="line"><span class="lineno">  320</span>    v[0] = 0;</div>
+<div class="line"><span class="lineno">  321</span>    z[0] = -INF;</div>
+<div class="line"><span class="lineno">  322</span>    z[1] = INF;</div>
+<div class="line"><span class="lineno">  323</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> q = 1; q &lt; n; ++q) {</div>
+<div class="line"><span class="lineno">  324</span>        <span class="keywordtype">float</span> s;</div>
+<div class="line"><span class="lineno">  325</span>        <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line"><span class="lineno">  326</span>            s = ((f[q] + <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(q) * q) - (f[v[k]] + <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(v[k]) * v[k])) /</div>
+<div class="line"><span class="lineno">  327</span>                (2.0f * <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(q - v[k]));</div>
+<div class="line"><span class="lineno">  328</span>            <span class="keywordflow">if</span> (s &lt;= z[k] &amp;&amp; k &gt; 0) {</div>
+<div class="line"><span class="lineno">  329</span>                --k;</div>
+<div class="line"><span class="lineno">  330</span>            } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  331</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  332</span>            }</div>
+<div class="line"><span class="lineno">  333</span>        }</div>
+<div class="line"><span class="lineno">  334</span>        ++k;</div>
+<div class="line"><span class="lineno">  335</span>        v[k] = q;</div>
+<div class="line"><span class="lineno">  336</span>        z[k] = s;</div>
+<div class="line"><span class="lineno">  337</span>        z[k + 1] = INF;</div>
+<div class="line"><span class="lineno">  338</span>    }</div>
+<div class="line"><span class="lineno">  339</span>    k = 0;</div>
+<div class="line"><span class="lineno">  340</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> q = 0; q &lt; n; ++q) {</div>
+<div class="line"><span class="lineno">  341</span>        <span class="keywordflow">while</span> (z[k + 1] &lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(q))</div>
+<div class="line"><span class="lineno">  342</span>            ++k;</div>
+<div class="line"><span class="lineno">  343</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> dq = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(q - v[k]);</div>
+<div class="line"><span class="lineno">  344</span>        d[q] = dq * dq + f[v[k]];</div>
+<div class="line"><span class="lineno">  345</span>    }</div>
+<div class="line"><span class="lineno">  346</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -188,52 +188,52 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00351">351</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  351</span>                                              {</div>
-<div class="line"><span class="lineno">  352</span>    std::vector&lt;uint8_t&gt; mask;</div>
-<div class="line"><span class="lineno">  353</span>    <span class="keyword">const</span> std::array&lt;int, 4&gt; xywh = n-&gt;create_binary_image(mask); <span class="comment">// tight bbox</span></div>
-<div class="line"><span class="lineno">  354</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> w = xywh[2];</div>
-<div class="line"><span class="lineno">  355</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> h = xywh[3];</div>
-<div class="line"><span class="lineno">  356</span>    <span class="keywordflow">if</span> (w &lt;= 0 || h &lt;= 0)</div>
-<div class="line"><span class="lineno">  357</span>        <span class="keywordflow">return</span> 0.0f;</div>
-<div class="line"><span class="lineno">  358</span> </div>
-<div class="line"><span class="lineno">  359</span>    <span class="comment">// Pad by one pixel so the region&#39;s boundary against the exterior is treated</span></div>
-<div class="line"><span class="lineno">  360</span>    <span class="comment">// as background by the distance transform.</span></div>
-<div class="line"><span class="lineno">  361</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> pw = w + 2;</div>
-<div class="line"><span class="lineno">  362</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> ph = h + 2;</div>
-<div class="line"><span class="lineno">  363</span>    <span class="keyword">constexpr</span> <span class="keywordtype">float</span> INF = 1e20f;</div>
-<div class="line"><span class="lineno">  364</span> </div>
-<div class="line"><span class="lineno">  365</span>    std::vector&lt;float&gt; grid(<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(pw) * ph);</div>
-<div class="line"><span class="lineno">  366</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; ph; ++y) {</div>
-<div class="line"><span class="lineno">  367</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; pw; ++x) {</div>
-<div class="line"><span class="lineno">  368</span>            <span class="keyword">const</span> <span class="keywordtype">bool</span> inside = x &gt;= 1 &amp;&amp; x &lt;= w &amp;&amp; y &gt;= 1 &amp;&amp; y &lt;= h &amp;&amp;</div>
-<div class="line"><span class="lineno">  369</span>                                mask[<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(y - 1) * w + (x - 1)];</div>
-<div class="line"><span class="lineno">  370</span>            grid[<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(y) * pw + x] = inside ? INF : 0.0f;</div>
-<div class="line"><span class="lineno">  371</span>        }</div>
-<div class="line"><span class="lineno">  372</span>    }</div>
-<div class="line"><span class="lineno">  373</span> </div>
-<div class="line"><span class="lineno">  374</span>    <span class="comment">// Separable two-pass transform: columns first, then rows.</span></div>
-<div class="line"><span class="lineno">  375</span>    std::vector&lt;float&gt; in, out(std::max(pw, ph));</div>
-<div class="line"><span class="lineno">  376</span>    in.resize(ph);</div>
-<div class="line"><span class="lineno">  377</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; pw; ++x) {</div>
-<div class="line"><span class="lineno">  378</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; ph; ++y)</div>
-<div class="line"><span class="lineno">  379</span>            in[y] = grid[<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(y) * pw + x];</div>
-<div class="line"><span class="lineno">  380</span>        dt_1d(in, out, ph);</div>
-<div class="line"><span class="lineno">  381</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; ph; ++y)</div>
-<div class="line"><span class="lineno">  382</span>            grid[<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(y) * pw + x] = out[y];</div>
-<div class="line"><span class="lineno">  383</span>    }</div>
-<div class="line"><span class="lineno">  384</span>    in.resize(pw);</div>
-<div class="line"><span class="lineno">  385</span>    <span class="keywordtype">float</span> max_d2 = 0.0f;</div>
-<div class="line"><span class="lineno">  386</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; ph; ++y) {</div>
-<div class="line"><span class="lineno">  387</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; pw; ++x)</div>
-<div class="line"><span class="lineno">  388</span>            in[x] = grid[<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(y) * pw + x];</div>
-<div class="line"><span class="lineno">  389</span>        dt_1d(in, out, pw);</div>
-<div class="line"><span class="lineno">  390</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; pw; ++x)</div>
-<div class="line"><span class="lineno">  391</span>            <span class="keywordflow">if</span> (out[x] &gt; max_d2)</div>
-<div class="line"><span class="lineno">  392</span>                max_d2 = out[x];</div>
-<div class="line"><span class="lineno">  393</span>    }</div>
-<div class="line"><span class="lineno">  394</span>    <span class="keywordflow">return</span> std::sqrt(max_d2);</div>
-<div class="line"><span class="lineno">  395</span>}</div>
+<p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00353">353</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  353</span>                                              {</div>
+<div class="line"><span class="lineno">  354</span>    std::vector&lt;uint8_t&gt; mask;</div>
+<div class="line"><span class="lineno">  355</span>    <span class="keyword">const</span> std::array&lt;int, 4&gt; xywh = n-&gt;create_binary_image(mask); <span class="comment">// tight bbox</span></div>
+<div class="line"><span class="lineno">  356</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> w = xywh[2];</div>
+<div class="line"><span class="lineno">  357</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> h = xywh[3];</div>
+<div class="line"><span class="lineno">  358</span>    <span class="keywordflow">if</span> (w &lt;= 0 || h &lt;= 0)</div>
+<div class="line"><span class="lineno">  359</span>        <span class="keywordflow">return</span> 0.0f;</div>
+<div class="line"><span class="lineno">  360</span> </div>
+<div class="line"><span class="lineno">  361</span>    <span class="comment">// Pad by one pixel so the region&#39;s boundary against the exterior is treated</span></div>
+<div class="line"><span class="lineno">  362</span>    <span class="comment">// as background by the distance transform.</span></div>
+<div class="line"><span class="lineno">  363</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> pw = w + 2;</div>
+<div class="line"><span class="lineno">  364</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> ph = h + 2;</div>
+<div class="line"><span class="lineno">  365</span>    <span class="keyword">constexpr</span> <span class="keywordtype">float</span> INF = 1e20f;</div>
+<div class="line"><span class="lineno">  366</span> </div>
+<div class="line"><span class="lineno">  367</span>    std::vector&lt;float&gt; grid(<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(pw) * ph);</div>
+<div class="line"><span class="lineno">  368</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; ph; ++y) {</div>
+<div class="line"><span class="lineno">  369</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; pw; ++x) {</div>
+<div class="line"><span class="lineno">  370</span>            <span class="keyword">const</span> <span class="keywordtype">bool</span> inside = x &gt;= 1 &amp;&amp; x &lt;= w &amp;&amp; y &gt;= 1 &amp;&amp; y &lt;= h &amp;&amp;</div>
+<div class="line"><span class="lineno">  371</span>                                mask[<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(y - 1) * w + (x - 1)];</div>
+<div class="line"><span class="lineno">  372</span>            grid[<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(y) * pw + x] = inside ? INF : 0.0f;</div>
+<div class="line"><span class="lineno">  373</span>        }</div>
+<div class="line"><span class="lineno">  374</span>    }</div>
+<div class="line"><span class="lineno">  375</span> </div>
+<div class="line"><span class="lineno">  376</span>    <span class="comment">// Separable two-pass transform: columns first, then rows.</span></div>
+<div class="line"><span class="lineno">  377</span>    std::vector&lt;float&gt; in, out(std::max(pw, ph));</div>
+<div class="line"><span class="lineno">  378</span>    in.resize(ph);</div>
+<div class="line"><span class="lineno">  379</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; pw; ++x) {</div>
+<div class="line"><span class="lineno">  380</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; ph; ++y)</div>
+<div class="line"><span class="lineno">  381</span>            in[y] = grid[<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(y) * pw + x];</div>
+<div class="line"><span class="lineno">  382</span>        dt_1d(in, out, ph);</div>
+<div class="line"><span class="lineno">  383</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; ph; ++y)</div>
+<div class="line"><span class="lineno">  384</span>            grid[<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(y) * pw + x] = out[y];</div>
+<div class="line"><span class="lineno">  385</span>    }</div>
+<div class="line"><span class="lineno">  386</span>    in.resize(pw);</div>
+<div class="line"><span class="lineno">  387</span>    <span class="keywordtype">float</span> max_d2 = 0.0f;</div>
+<div class="line"><span class="lineno">  388</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; ph; ++y) {</div>
+<div class="line"><span class="lineno">  389</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; pw; ++x)</div>
+<div class="line"><span class="lineno">  390</span>            in[x] = grid[<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(y) * pw + x];</div>
+<div class="line"><span class="lineno">  391</span>        dt_1d(in, out, pw);</div>
+<div class="line"><span class="lineno">  392</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; pw; ++x)</div>
+<div class="line"><span class="lineno">  393</span>            <span class="keywordflow">if</span> (out[x] &gt; max_d2)</div>
+<div class="line"><span class="lineno">  394</span>                max_d2 = out[x];</div>
+<div class="line"><span class="lineno">  395</span>    }</div>
+<div class="line"><span class="lineno">  396</span>    <span class="keywordflow">return</span> std::sqrt(max_d2);</div>
+<div class="line"><span class="lineno">  397</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -4,7 +4,7 @@ URL: https://img2num.dev/docs/js/api/functions/gaussianBlur
 
 > **gaussianBlur** ( `options` ): `Promise` < `Uint8ClampedArray` < `ArrayBufferLike` >>
 
-Defined in: safeWasmWrappers.js:44
+Defined in: [safeWasmWrappers.js:44](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L44)
 
 ## Parameters
 

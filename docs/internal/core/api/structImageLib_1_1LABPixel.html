@@ -239,13 +239,15 @@ template&lt;typename NumberT &gt; </div>
 <p class="definition">Definition at line <a class="el" href="LABPixel_8h_source.html#l00043">43</a> of file <a class="el" href="LABPixel_8h_source.html">LABPixel.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   43</span>                                                                                              {</div>
 <div class="line"><span class="lineno">   44</span>        LABPixel&lt;float&gt; af {</div>
-<div class="line"><span class="lineno">   45</span>            <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(a.l), <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(a.a), <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(a.b)};</div>
-<div class="line"><span class="lineno">   46</span>        LABPixel&lt;float&gt; bf {</div>
-<div class="line"><span class="lineno">   47</span>            <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(b.l), <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(b.a), <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(b.b)};</div>
-<div class="line"><span class="lineno">   48</span>        <span class="keywordflow">return</span> std::sqrt(</div>
-<div class="line"><span class="lineno">   49</span>            (a.l - b.l) * (a.l - b.l) + (a.a - b.a) * (a.a - b.a) + (a.b - b.b) * (a.b - b.b)</div>
-<div class="line"><span class="lineno">   50</span>        );</div>
-<div class="line"><span class="lineno">   51</span>    }</div>
+<div class="line"><span class="lineno">   45</span>            <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(a.l), <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(a.a), <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(a.b)</div>
+<div class="line"><span class="lineno">   46</span>        };</div>
+<div class="line"><span class="lineno">   47</span>        LABPixel&lt;float&gt; bf {</div>
+<div class="line"><span class="lineno">   48</span>            <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(b.l), <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(b.a), <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(b.b)</div>
+<div class="line"><span class="lineno">   49</span>        };</div>
+<div class="line"><span class="lineno">   50</span>        <span class="keywordflow">return</span> std::sqrt(</div>
+<div class="line"><span class="lineno">   51</span>            (a.l - b.l) * (a.l - b.l) + (a.a - b.a) * (a.a - b.a) + (a.b - b.b) * (a.b - b.b)</div>
+<div class="line"><span class="lineno">   52</span>        );</div>
+<div class="line"><span class="lineno">   53</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>

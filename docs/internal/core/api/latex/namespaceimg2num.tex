@@ -427,7 +427,7 @@ Definition at line \mbox{\hyperlink{image__to__svg_8cpp_source_l00007}{7}} of fi
 \end{DoxyCode}
 
 
-References \mbox{\hyperlink{bilateral__filter_8cpp_source_l00230}{bilateral\+\_\+filter()}}, \mbox{\hyperlink{img2num_8h_source_l00052}{img2num\+::\+Image\+To\+Svg\+Config\+::color\+\_\+space}}, \mbox{\hyperlink{img2num_8h_source_l00035}{img2num\+::\+Image\+To\+Svg\+Config\+::\+KMeans\+Config\+::k}}, \mbox{\hyperlink{kmeans_8cpp_source_l00241}{kmeans()}}, \mbox{\hyperlink{labels__to__svg_8cpp_source_l00203}{labels\+\_\+to\+\_\+svg()}}, \mbox{\hyperlink{img2num_8h_source_l00038}{img2num\+::\+Image\+To\+Svg\+Config\+::\+KMeans\+Config\+::max\+\_\+iter}}, \mbox{\hyperlink{img2num_8h_source_l00042}{img2num\+::\+Image\+To\+Svg\+Config\+::min\+\_\+cluster\+\_\+area}}, \mbox{\hyperlink{img2num_8h_source_l00047}{img2num\+::\+Image\+To\+Svg\+Config\+::min\+\_\+thickness}}, \mbox{\hyperlink{img2num_8h_source_l00028}{img2num\+::\+Image\+To\+Svg\+Config\+::\+Bilateral\+Filter\+Config\+::sigma\+\_\+range}}, and \mbox{\hyperlink{img2num_8h_source_l00025}{img2num\+::\+Image\+To\+Svg\+Config\+::\+Bilateral\+Filter\+Config\+::sigma\+\_\+spatial}}.
+References \mbox{\hyperlink{bilateral__filter_8cpp_source_l00230}{bilateral\+\_\+filter()}}, \mbox{\hyperlink{img2num_8h_source_l00052}{img2num\+::\+Image\+To\+Svg\+Config\+::color\+\_\+space}}, \mbox{\hyperlink{img2num_8h_source_l00035}{img2num\+::\+Image\+To\+Svg\+Config\+::\+KMeans\+Config\+::k}}, \mbox{\hyperlink{kmeans_8cpp_source_l00241}{kmeans()}}, \mbox{\hyperlink{labels__to__svg_8cpp_source_l00206}{labels\+\_\+to\+\_\+svg()}}, \mbox{\hyperlink{img2num_8h_source_l00038}{img2num\+::\+Image\+To\+Svg\+Config\+::\+KMeans\+Config\+::max\+\_\+iter}}, \mbox{\hyperlink{img2num_8h_source_l00042}{img2num\+::\+Image\+To\+Svg\+Config\+::min\+\_\+cluster\+\_\+area}}, \mbox{\hyperlink{img2num_8h_source_l00047}{img2num\+::\+Image\+To\+Svg\+Config\+::min\+\_\+thickness}}, \mbox{\hyperlink{img2num_8h_source_l00028}{img2num\+::\+Image\+To\+Svg\+Config\+::\+Bilateral\+Filter\+Config\+::sigma\+\_\+range}}, and \mbox{\hyperlink{img2num_8h_source_l00025}{img2num\+::\+Image\+To\+Svg\+Config\+::\+Bilateral\+Filter\+Config\+::sigma\+\_\+spatial}}.
 
 Here is the call graph for this function\+:
 \nopagebreak
@@ -576,72 +576,72 @@ Dox File\+: {\ttfamily doxygen/img2num.\+h.\+dox}
 \end{DoxyNote}
 
 
-Definition at line \mbox{\hyperlink{labels__to__svg_8cpp_source_l00203}{203}} of file \mbox{\hyperlink{labels__to__svg_8cpp_source}{labels\+\_\+to\+\_\+svg.\+cpp}}.
+Definition at line \mbox{\hyperlink{labels__to__svg_8cpp_source_l00206}{206}} of file \mbox{\hyperlink{labels__to__svg_8cpp_source}{labels\+\_\+to\+\_\+svg.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00206\ \ \ \{}
-\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ num\_pixels\ \{width\ *\ height\};}
-\DoxyCodeLine{00208\ \ \ \ \ std::vector<int32\_t>\ labels\_vector\ \{labels,\ labels\ +\ num\_pixels\};}
-\DoxyCodeLine{00209\ \ \ \ \ std::vector<int32\_t>\ region\_labels;}
-\DoxyCodeLine{00210\ }
-\DoxyCodeLine{00211\ \ \ \ \ \textcolor{comment}{//\ 1.\ enumerate\ regions\ and\ convert\ to\ Nodes}}
-\DoxyCodeLine{00212\ \ \ \ \ std::vector<Node\_ptr>\ nodes;}
-\DoxyCodeLine{00213\ \ \ \ \ region\_labeling(data,\ labels\_vector,\ region\_labels,\ width,\ height,\ nodes);}
-\DoxyCodeLine{00214\ }
-\DoxyCodeLine{00215\ \ \ \ \ \textcolor{comment}{//\ 2.\ initialize\ Graph\ from\ all\ Nodes}}
-\DoxyCodeLine{00216\ \ \ \ \ std::unique\_ptr<std::vector<Node\_ptr>>\ node\_ptr\ =}
-\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ std::make\_unique<std::vector<Node\_ptr>>(std::move(nodes));}
-\DoxyCodeLine{00218\ \ \ \ \ \mbox{\hyperlink{classGraph}{Graph}}\ G(node\_ptr,\ width,\ height);}
-\DoxyCodeLine{00219\ }
-\DoxyCodeLine{00220\ \ \ \ \ \textcolor{comment}{//\ 3.\ Discover\ node\ adjacencies\ -\/\ add\ edges\ to\ Graph}}
-\DoxyCodeLine{00221\ \ \ \ \ G.discover\_edges(region\_labels,\ width,\ height);}
+\DoxyCodeLine{00209\ \ \ \{}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ num\_pixels\ \{width\ *\ height\};}
+\DoxyCodeLine{00211\ \ \ \ \ std::vector<int32\_t>\ labels\_vector\ \{labels,\ labels\ +\ num\_pixels\};}
+\DoxyCodeLine{00212\ \ \ \ \ std::vector<int32\_t>\ region\_labels;}
+\DoxyCodeLine{00213\ }
+\DoxyCodeLine{00214\ \ \ \ \ \textcolor{comment}{//\ 1.\ enumerate\ regions\ and\ convert\ to\ Nodes}}
+\DoxyCodeLine{00215\ \ \ \ \ std::vector<Node\_ptr>\ nodes;}
+\DoxyCodeLine{00216\ \ \ \ \ region\_labeling(data,\ labels\_vector,\ region\_labels,\ width,\ height,\ nodes);}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{comment}{//\ 2.\ initialize\ Graph\ from\ all\ Nodes}}
+\DoxyCodeLine{00219\ \ \ \ \ std::unique\_ptr<std::vector<Node\_ptr>>\ node\_ptr\ =}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ std::make\_unique<std::vector<Node\_ptr>>(std::move(nodes));}
+\DoxyCodeLine{00221\ \ \ \ \ \mbox{\hyperlink{classGraph}{Graph}}\ G(node\_ptr,\ width,\ height);}
 \DoxyCodeLine{00222\ }
-\DoxyCodeLine{00223\ \ \ \ \ \textcolor{comment}{//\ 4.\ Merge\ small\ area\ nodes\ until\ all\ nodes\ are\ minArea\ or\ larger}}
-\DoxyCodeLine{00224\ \ \ \ \ G.merge\_small\_area\_nodes(min\_area,\ min\_thickness);}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{comment}{//\ 3.\ Discover\ node\ adjacencies\ -\/\ add\ edges\ to\ Graph}}
+\DoxyCodeLine{00224\ \ \ \ \ G.discover\_edges(region\_labels,\ width,\ height);}
 \DoxyCodeLine{00225\ }
-\DoxyCodeLine{00226\ \ \ \ \ \textcolor{comment}{//\ 5.\ recolor\ image\ on\ new\ regions}}
-\DoxyCodeLine{00227\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ results\ \{width,\ height\};}
-\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ n\ :\ G.get\_nodes())\ \{}
-\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)}
-\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{00231\ }
-\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ [r,\ g,\ b]\ =\ n-\/>color();}
-\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ [\_,\ p]\ :\ n-\/>get\_pixels())\ \{}
-\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ results(p.x,\ p.y)\ =\ \{r,\ g,\ b\};}
-\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00236\ \ \ \ \ \}}
-\DoxyCodeLine{00237\ }
-\DoxyCodeLine{00238\ \ \ \ \ \textcolor{comment}{//\ 6.\ Contours}}
-\DoxyCodeLine{00239\ \ \ \ \ \textcolor{comment}{//\ graph\ will\ manage\ computing\ contours}}
-\DoxyCodeLine{00240\ \ \ \ \ G.compute\_contours();}
-\DoxyCodeLine{00241\ }
-\DoxyCodeLine{00242\ \ \ \ \ \textcolor{comment}{//\ accumulate\ all\ contours\ for\ svg\ export}}
-\DoxyCodeLine{00243\ \ \ \ \ \mbox{\hyperlink{structColoredContours}{ColoredContours}}\ all\_contours;}
-\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ n\ :\ G.get\_nodes())\ \{}
-\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)}
-\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structColoredContours}{ColoredContours}}\ node\_contours\ =\ n-\/>get\_contours();}
-\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ c\ :\ node\_contours.contours)\ \{}
-\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.contours.push\_back(c);}
-\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ c\ :\ node\_contours.hierarchy)\ \{}
-\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.hierarchy.push\_back(c);}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{comment}{//\ 4.\ Merge\ small\ area\ nodes\ until\ all\ nodes\ are\ minArea\ or\ larger}}
+\DoxyCodeLine{00227\ \ \ \ \ G.merge\_small\_area\_nodes(min\_area,\ min\_thickness);}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{comment}{//\ 5.\ recolor\ image\ on\ new\ regions}}
+\DoxyCodeLine{00230\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ results\ \{width,\ height\};}
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ n\ :\ G.get\_nodes())\ \{}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ [r,\ g,\ b]\ =\ n-\/>color();}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ [\_,\ p]\ :\ n-\/>get\_pixels())\ \{}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ results(p.x,\ p.y)\ =\ \{r,\ g,\ b\};}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00239\ \ \ \ \ \}}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{comment}{//\ 6.\ Contours}}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{comment}{//\ graph\ will\ manage\ computing\ contours}}
+\DoxyCodeLine{00243\ \ \ \ \ G.compute\_contours();}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{comment}{//\ accumulate\ all\ contours\ for\ svg\ export}}
+\DoxyCodeLine{00246\ \ \ \ \ \mbox{\hyperlink{structColoredContours}{ColoredContours}}\ all\_contours;}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ n\ :\ G.get\_nodes())\ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structColoredContours}{ColoredContours}}\ node\_contours\ =\ n-\/>get\_contours();}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ c\ :\ node\_contours.contours)\ \{}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.contours.push\_back(c);}
 \DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{bool}\ b\ :\ node\_contours.is\_hole)\ \{}
-\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.is\_hole.push\_back(b);}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ c\ :\ node\_contours.hierarchy)\ \{}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.hierarchy.push\_back(c);}
 \DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ c\ :\ node\_contours.colors)\ \{}
-\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.colors.push\_back(c);}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{bool}\ b\ :\ node\_contours.is\_hole)\ \{}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.is\_hole.push\_back(b);}
 \DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ c\ :\ node\_contours.curves)\ \{}
-\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.curves.push\_back(c);}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ c\ :\ node\_contours.colors)\ \{}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.colors.push\_back(c);}
 \DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00263\ \ \ \ \ \}}
-\DoxyCodeLine{00264\ }
-\DoxyCodeLine{00265\ \ \ \ \ \textcolor{comment}{//\ 7.\ Return\ SVG}}
-\DoxyCodeLine{00266\ \ \ \ \ \textcolor{keywordflow}{return}\ contoursResultToSVG(all\_contours,\ width,\ height);}
-\DoxyCodeLine{00267\ \}}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ c\ :\ node\_contours.curves)\ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \ \ \ \ all\_contours.curves.push\_back(c);}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00266\ \ \ \ \ \}}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{comment}{//\ 7.\ Return\ SVG}}
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{keywordflow}{return}\ contoursResultToSVG(all\_contours,\ width,\ height);}
+\DoxyCodeLine{00270\ \}}
 
 \end{DoxyCode}
 

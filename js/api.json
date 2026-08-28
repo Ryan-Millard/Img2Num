@@ -35,7 +35,8 @@
 				{
 					"fileName": "safeWasmWrappers.js",
 					"line": 79,
-					"character": 13
+					"character": 13,
+					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L79"
 				}
 			],
 			"signatures": [
@@ -158,7 +159,8 @@
 						{
 							"fileName": "safeWasmWrappers.js",
 							"line": 79,
-							"character": 31
+							"character": 31,
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L79"
 						}
 					],
 					"parameters": [
@@ -205,7 +207,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 71,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L71"
 												}
 											],
 											"type": {
@@ -232,7 +235,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 68,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L68"
 												}
 											],
 											"type": {
@@ -258,7 +262,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 66,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L66"
 												}
 											],
 											"type": {
@@ -304,7 +309,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 70,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L70"
 												}
 											],
 											"type": {
@@ -333,7 +339,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 69,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L69"
 												}
 											],
 											"type": {
@@ -360,7 +367,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 67,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L67"
 												}
 											],
 											"type": {
@@ -433,7 +441,8 @@
 				{
 					"fileName": "safeWasmWrappers.js",
 					"line": 111,
-					"character": 13
+					"character": 13,
+					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L111"
 				}
 			],
 			"signatures": [
@@ -552,7 +561,8 @@
 						{
 							"fileName": "safeWasmWrappers.js",
 							"line": 111,
-							"character": 30
+							"character": 30,
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L111"
 						}
 					],
 					"parameters": [
@@ -597,7 +607,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 100,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L100"
 												}
 											],
 											"type": {
@@ -623,7 +634,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 101,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L101"
 												}
 											],
 											"type": {
@@ -649,7 +661,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 98,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L98"
 												}
 											],
 											"type": {
@@ -693,7 +706,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 99,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L99"
 												}
 											],
 											"type": {
@@ -764,7 +778,8 @@
 				{
 					"fileName": "safeWasmWrappers.js",
 					"line": 192,
-					"character": 13
+					"character": 13,
+					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L192"
 				}
 			],
 			"signatures": [
@@ -855,7 +870,8 @@
 						{
 							"fileName": "safeWasmWrappers.js",
 							"line": 192,
-							"character": 28
+							"character": 28,
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L192"
 						}
 					],
 					"parameters": [
@@ -900,7 +916,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 182,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L182"
 												}
 											],
 											"type": {
@@ -926,7 +943,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 180,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L180"
 												}
 											],
 											"type": {
@@ -972,7 +990,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 183,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L183"
 												}
 											],
 											"type": {
@@ -1001,7 +1020,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 184,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L184"
 												}
 											],
 											"type": {
@@ -1028,7 +1048,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 179,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L179"
 												}
 											],
 											"type": {
@@ -1072,7 +1093,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 181,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L181"
 												}
 											],
 											"type": {
@@ -1125,7 +1147,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 185,
-													"character": 22
+													"character": 22,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L185"
 												}
 											],
 											"type": {
@@ -1161,7 +1184,8 @@
 				{
 					"fileName": "safeWasmWrappers.js",
 					"line": 44,
-					"character": 13
+					"character": 13,
+					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L44"
 				}
 			],
 			"signatures": [
@@ -1269,7 +1293,8 @@
 						{
 							"fileName": "safeWasmWrappers.js",
 							"line": 44,
-							"character": 28
+							"character": 28,
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L44"
 						}
 					],
 					"parameters": [
@@ -1314,7 +1339,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 34,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L34"
 												}
 											],
 											"type": {
@@ -1340,7 +1366,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 32,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L32"
 												}
 											],
 											"type": {
@@ -1386,7 +1413,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 35,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L35"
 												}
 											],
 											"type": {
@@ -1413,7 +1441,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 33,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L33"
 												}
 											],
 											"type": {
@@ -1484,7 +1513,8 @@
 				{
 					"fileName": "safeWasmWrappers.js",
 					"line": 231,
-					"character": 13
+					"character": 13,
+					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L231"
 				}
 			],
 			"signatures": [
@@ -1599,7 +1629,8 @@
 						{
 							"fileName": "safeWasmWrappers.js",
 							"line": 231,
-							"character": 26
+							"character": 26,
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L231"
 						}
 					],
 					"parameters": [
@@ -1646,7 +1677,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 223,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L223"
 												}
 											],
 											"type": {
@@ -1673,7 +1705,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 216,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L216"
 												}
 											],
 											"type": {
@@ -1701,7 +1734,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 220,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L220"
 												}
 											],
 											"type": {
@@ -1730,7 +1764,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 221,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L221"
 												}
 											],
 											"type": {
@@ -1759,7 +1794,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 222,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L222"
 												}
 											],
 											"type": {
@@ -1788,7 +1824,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 219,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L219"
 												}
 											],
 											"type": {
@@ -1815,7 +1852,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 214,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L214"
 												}
 											],
 											"type": {
@@ -1861,7 +1899,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 218,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L218"
 												}
 											],
 											"type": {
@@ -1890,7 +1929,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 217,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L217"
 												}
 											],
 											"type": {
@@ -1917,7 +1957,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 215,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L215"
 												}
 											],
 											"type": {
@@ -1974,7 +2015,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 224,
-													"character": 22
+													"character": 22,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L224"
 												}
 											],
 											"type": {
@@ -2010,7 +2052,8 @@
 				{
 					"fileName": "imageToUint8ClampedArray.js",
 					"line": 50,
-					"character": 16
+					"character": 16,
+					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/imageToUint8ClampedArray.js#L50"
 				}
 			],
 			"signatures": [
@@ -2147,7 +2190,8 @@
 						{
 							"fileName": "imageToUint8ClampedArray.js",
 							"line": 50,
-							"character": 16
+							"character": 16,
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/imageToUint8ClampedArray.js#L50"
 						}
 					],
 					"parameters": [
@@ -2221,7 +2265,8 @@
 												{
 													"fileName": "imageToUint8ClampedArray.js",
 													"line": 30,
-													"character": 64
+													"character": 64,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/imageToUint8ClampedArray.js#L30"
 												}
 											],
 											"type": {
@@ -2239,7 +2284,8 @@
 												{
 													"fileName": "imageToUint8ClampedArray.js",
 													"line": 30,
-													"character": 22
+													"character": 22,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/imageToUint8ClampedArray.js#L30"
 												}
 											],
 											"type": {
@@ -2263,7 +2309,8 @@
 												{
 													"fileName": "imageToUint8ClampedArray.js",
 													"line": 30,
-													"character": 49
+													"character": 49,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/imageToUint8ClampedArray.js#L30"
 												}
 											],
 											"type": {
@@ -2301,7 +2348,8 @@
 				{
 					"fileName": "safeWasmWrappers.js",
 					"line": 148,
-					"character": 13
+					"character": 13,
+					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L148"
 				}
 			],
 			"signatures": [
@@ -2416,7 +2464,8 @@
 						{
 							"fileName": "safeWasmWrappers.js",
 							"line": 148,
-							"character": 22
+							"character": 22,
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L148"
 						}
 					],
 					"parameters": [
@@ -2463,7 +2512,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 140,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L140"
 												}
 											],
 											"type": {
@@ -2490,7 +2540,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 137,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L137"
 												}
 											],
 											"type": {
@@ -2518,7 +2569,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 139,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L139"
 												}
 											],
 											"type": {
@@ -2545,7 +2597,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 138,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L138"
 												}
 											],
 											"type": {
@@ -2573,7 +2626,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 135,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L135"
 												}
 											],
 											"type": {
@@ -2620,7 +2674,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 134,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L134"
 												}
 											],
 											"type": {
@@ -2665,7 +2720,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 133,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L133"
 												}
 											],
 											"type": {
@@ -2709,7 +2765,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 136,
-													"character": 3
+													"character": 3,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L136"
 												}
 											],
 											"type": {
@@ -2764,7 +2821,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 141,
-													"character": 49
+													"character": 49,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L141"
 												}
 											],
 											"type": {
@@ -2788,7 +2846,8 @@
 												{
 													"fileName": "safeWasmWrappers.js",
 													"line": 141,
-													"character": 22
+													"character": 22,
+													"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L141"
 												}
 											],
 											"type": {
@@ -2831,7 +2890,8 @@
 				{
 					"fileName": "wasmModule.js",
 					"line": 74,
-					"character": 22
+					"character": 22,
+					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/wasmModule.js#L74"
 				}
 			],
 			"signatures": [
@@ -2898,7 +2958,8 @@
 						{
 							"fileName": "wasmModule.js",
 							"line": 74,
-							"character": 22
+							"character": 22,
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/wasmModule.js#L74"
 						}
 					],
 					"type": {
