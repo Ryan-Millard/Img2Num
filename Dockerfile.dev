@@ -125,6 +125,7 @@ ENV VIRTUAL_ENV=/usr/src/app/.venv
 ENV PATH="/usr/src/app/.venv/bin:$PATH"
 
 COPY pyproject.toml uv.lock ./
+COPY packages/py/pyproject.toml packages/py/pyproject.toml
 COPY scripts/py/pyproject.toml scripts/py/pyproject.toml
 COPY example-apps/console-py/pyproject.toml example-apps/console-py/pyproject.toml
 RUN --mount=type=cache,target=/root/.cache/uv \
