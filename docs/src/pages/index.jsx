@@ -88,6 +88,9 @@ function HeroSection() {
               <Link className={styles.btnGhost} to="/changelog">
                 Changelog
               </Link>
+              <Link className={styles.btnGhost} to="/faq">
+                FAQ
+              </Link>
               <Link className={styles.btnGhost} to="https://github.com/Ryan-Millard/Img2Num">
                 GitHub <MoveRight size={15} />
               </Link>

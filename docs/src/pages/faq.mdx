@@ -1,0 +1,257 @@
+---
+title: FAQ
+description: Frequently asked questions about Img2Num
+---
+
+# Frequently Asked Questions (FAQ)
+
+Find answers to common questions about installing, using, troubleshooting,
+and contributing to **Img2Num**.
+
+---
+
+## General
+
+
+### What is Img2Num?
+
+Img2Num is an open-source raster-to-SVG vectorization library. What distinguishes it is its first-class support for natural images (obtained from a physical source capture by a camera) - most other similar libraries only support synthetic images (images which were created by a computer).
+
+Give it a bitmap image (PNG, JPEG, etc.) and it produces a clean, scalable SVG made of flat color regions. The core is written in C++, with official bindings for C, Python, and JavaScript/WebAssembly, so you can use it from native applications, scripts, servers, or directly in the browser.
+
+
+### What does "raster-to-SVG vectorization" actually mean?
+
+A raster image is a grid of pixels; an SVG is a set of mathematical shapes (paths). Vectorization converts the former into the latter. Img2Num does this by quantizing the image's colors into a small palette (k-means clustering), tracing the boundary of each color region into contours (Suzuki–Abe contour tracing), and smoothing those contours into clean paths (Savitzky–Golay filtering). The result scales to any size without pixelation and is often dramatically smaller than the source image.
+
+
+### Is Img2Num free and open source? What license is it under?
+
+Yes, Img2Num is free and open source. 
+
+:::info[Licensing]
+The libraries are all licensed under the [MIT license](https://github.com/Ryan-Millard/Img2Num?tab=MIT-1-ov-file) (some files in the repository are licensed under the AGPLv3 - such as the documentation - however, this is to comply with an older license we previously followed). The full license texts are in [the repository](https://github.com/Ryan-Millard/Img2Num/tree/main/LICENSES), and the project is [REUSE](https://reuse.software/)-compliant.
+:::
+
+
+### What happened to the color-by-number app? (project history)
+
+Img2Num started life as a browser-based color-by-number app. Early on it became clear the interesting, reusable part was the image-processing engine underneath, so the project pivoted to a general-purpose vectorization library that anyone can embed. Some older docs, blog posts, and screenshots reference the app era - if you spot one that's misleading, please [open an issue](https://github.com/Ryan-Millard/Img2Num/issues/new).
+
+The color-by-number app still exists, but as an example application to showcase the utility of the library. You can find it at [https://img2num.dev/example-apps/react-js/](https://img2num.dev/example-apps/react-js/) and other similar example applications at [https://img2num.dev/example-apps/](https://img2num.dev/example-apps/).
+
+
+### Who maintains Img2Num, and how can I support the project?
+
+Img2Num is maintained by [Ryan Millard](https://github.com/Ryan-Millard) with co-maintainers [Alex Krasner](https://github.com/krasner) and [Prachi Gupta](https://github.com/Prachi-Gupta2808). You can support the project by starring the repo, reporting bugs, contributing PRs, or [sponsoring on GitHub](https://github.com/sponsors/Ryan-Millard).
+
+
+---
+
+## Installation & Package Selection
+
+
+### Which languages and platforms are supported?
+
+![Languages](https://skillicons.dev/icons?i=c,cpp,py,js)
+
+- **C**: a stable C ABI wrapper around the core
+- **C++**: the core library, consumable via CMake
+- **Python**: `pip install img2num`, with prebuilt wheels for major platforms and full type stubs (`.pyi` + `py.typed`)
+- **JavaScript/TypeScript**: `npm install img2num`, a WebAssembly build that runs in browsers and Node.js
+
+
+### Which package should I use for my project?
+
+:::tip[Choosing the right package]
+- Building a website or web app: use the **npm package** (runs entirely client-side, no server needed)
+- Writing scripts, data pipelines, or research code: use the **Python package**
+- Embedding in a native application: use the **C++ core** (or the **C bindings** if you need a stable ABI or are binding from another language)
+:::
+
+
+### How do I install the Python package? Which Python versions are supported?
+
+```bash
+pip install img2num
+```
+
+Prebuilt wheels are published for the following platforms:
+
+| Platform | Architecture | Python versions |
+| --- | --- | --- |
+| Linux (manylinux, glibc ≥ 2.28) | x86_64 | CPython 3.10–3.13 |
+| macOS (Apple Silicon) | arm64 | CPython 3.10–3.13 |
+| Windows | x64 | CPython 3.10–3.13 |
+
+:::tip[Prebuilt wheels]
+If a wheel exists for your platform, `pip install img2num` requires no compiler.
+:::
+
+:::warning[Building from source]
+The source distribution is available as a fallback but requires a C++17
+toolchain and CMake — we recommend building from our Docker development
+image for simplicity.
+:::
+
+
+### How do I install the npm package? Which Node versions are supported?
+
+```bash
+npm install img2num
+```
+
+The package ships multiple build formats and the correct one is selected automatically via the package's exports map:
+
+- **Browser ESM**: for bundlers (Vite, webpack, etc.) and `<script type="module">`
+- **IIFE / UMD**: for `<script>` tags
+- **Node ESM and CJS**: both `import` and `require()` work in Node
+
+:::note[Node.js version]
+Node >= 18 is required for the Node builds.
+:::
+
+
+### Are prebuilt binaries available, or do I need to build from source?
+Prebuilt artifacts are published for every release: Python wheels on [PyPI](https://pypi.org/project/img2num/), the JavaScript bundle on [npm](https://www.npmjs.com/), and C and C++ archives on [GitHub Releases](https://github.com/Ryan-Millard/Img2Num/releases). Building from source is only needed for development or unsupported platforms.
+
+
+---
+
+## Usage
+
+
+### What's the minimal "convert an image to SVG" example?
+
+Please see the source code for the [example app](https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps) that is most relevant to your needs.
+
+Some JavaScript sandboxes:
+
+- [Node CommonJS](https://codesandbox.io/p/devbox/node-cjs-dp5ltr)
+- [Node ESM](https://codesandbox.io/p/devbox/node-esm-jmn444)
+- [IIFE](https://codesandbox.io/p/sandbox/iife-fh25gg)
+- [UMD](https://codesandbox.io/p/sandbox/competent-shape-2drsrz)
+- [Browser ESM](https://codesandbox.io/p/sandbox/delicate-bird-3kprj2)
+
+
+### What input image formats are supported?
+
+We support raster images conforming to the RGBA format in the range [0,255] (normal pixel values). 
+
+For information on ensuring your inputs to Img2Num's functions are correct, please consult the guides in the [documentation](https://img2num.dev/docs/).
+
+
+### In JavaScript, which build should I import?
+
+:::tip[You usually don't need to choose a build manually]
+ The exports map picks the right build for your environment automatically when you `import`/`require` `"img2num"`. You only need a specific build when loading via a plain `<script>` tag (use the IIFE/UMD bundle) — see the [JS docs](https://img2num.dev/docs/js) for the CDN snippet.
+:::
+
+
+### Is the JS API synchronous or asynchronous?
+
+:::warning[Browser performance]
+The processing API is technically **asynchronous** (due to WebAssembly calls), but will block the main thread as it waits - no workers or promise juggling around the actual vectorization call.
+For very large images in a browser UI, consider calling it inside your own Web Worker to keep the main thread responsive.
+:::
+
+To understand why, see our blog explaining the [v0.3-4 changes](https://img2num.dev/blog/img2num_js_0_4_2/).
+
+
+### How do I enable or silence logging?
+
+The native builds use a named [spdlog](https://github.com/gabime/spdlog) logger. When building from source, set the CMake cache variable:
+
+```bash
+cmake -DIMG2NUM_LOG_LEVEL=OFF
+```
+
+You can set it to any one of these:
+
+- `TRACE`
+- `DEBUG`
+- `INFO`
+- `WARN`
+- `ERROR`
+- `CRITICAL`
+- `OFF`
+
+
+---
+
+## Troubleshooting
+
+
+### I get `ERR_REQUIRE_ESM` or a CommonJS import error - how do I fix it?
+
+:::warning[Version 0.4.0]
+Upgrade to the latest release. Version 0.4.0 had a regression where the CJS build pulled in an ESM-only dependency, breaking `require("img2num")` in Node; it was fixed in the following release (v0.4.0 is deprecated on npm for this reason). If you're pinned to 0.4.0, unpin it.
+:::
+
+
+### `pip install img2num` fails or tries to compile from source - what's wrong?
+
+It usually means no prebuilt wheel matches your platform/Python combination, so pip fell back to the source distribution.
+:::tip[Check the wheel first]
+Check that your Python version is supported and that pip is up to date (`pip install -U pip` - old pips sometimes ignore valid wheels). If your platform genuinely has no wheel, either install a C++ toolchain and CMake, or open an issue asking for your platform to be added to the build matrix.
+:::
+
+
+### My output SVG looks wrong (noisy regions, missing shapes) - what can I tune?
+
+- **Speckled/noisy regions:** increase bilateral filtering, or try the CIELAB filter variant; reduce the color count.
+- **Missing details or merged shapes:** increase the color count; reduce filtering strength.
+- **Jagged edges:** increase contour smoothing.
+- **Tiny image inputs** (icons, thumbnails) have too few pixels for stable clustering — upscale first or reduce colors.
+
+If a result still looks broken, file a bug **with the input image and the exact parameters** so it can be reproduced.
+
+
+### How do I report a bug, and what should I include?
+
+:::tip[Raise the issue]
+Open a [GitHub issue](https://github.com/Ryan-Millard/Img2Num/issues) with: the package and version (`pip show img2num` / `npm ls img2num`), your OS/browser, the input image (or a shareable equivalent that reproduces it), the parameters used, and the full error output. A minimal reproduction gets bugs fixed much faster.
+:::
+
+
+---
+## Contributing
+
+
+### How do I build the project locally, and what toolchain do I need?
+
+See our [contributing guide](https://img2num.dev/docs/contributing/).
+
+
+### What commit message convention does the project use, and why does it matter?
+
+[Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `docs:`, …) with component scopes. This isn't just style: releases are fully automated with [release-please](https://github.com/googleapis/release-please), which reads commit messages to decide version bumps and generate the changelogs for each of the four release components (core, C bindings, JS, Python). A mislabeled commit means a wrong changelog entry or version bump.
+
+We usually catch this before the pull request is merged, so don't worry if you haven't mastered it.
+
+
+### Where do I find good first issues?
+
+The [good first issues board](https://github.com/Ryan-Millard/Img2Num/issues/views/1155). Comment on an issue before starting so we can confirm it's still relevant and not already taken.
+
+
+### How do I contribute to the docs site?
+
+The docs site ([img2num.dev](https://img2num.dev/)) is a [Docusaurus](https://docusaurus.io/) app in the `docs/` folder. Standard Markdown/MDX knowledge is all you need for content changes; every docs page has an "edit this page" link that takes you straight to the right file on GitHub.
+
+
+### Can I add a binding for another language?
+
+Yes - that's exactly what the C bindings exist for: a stable C ABI designed as the foundation for further language bindings (Rust, Go, Ruby, …). Open an issue first to discuss the approach so your work fits the release and CI setup.
+
+We do plan to support other languages in the future, but would like the core library to stabilize first (at v1.x) to avoid tedious and frequent refactors.
+
+
+---
+
+## Project
+
+
+### Why is the mascot a hedgehog? 🦔
+
+The mascot is Joan, an African pygmy hedgehog and the project's original quality-assurance department. She belonged to the maintainer and lives on as the face of Img2Num.
