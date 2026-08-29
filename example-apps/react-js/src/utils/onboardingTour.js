@@ -1,36 +1,71 @@
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
+import "@global-styles/driverjs-theme.css";
 
 export const TOUR_KEY = "img2num-onboarding-tour";
 
 export function createTour() {
   let isNavigating = false;
 
+  const tips = [
+    "Img2Num is primarily written in C++.",
+    "The browser version runs through WebAssembly.",
+    "GPU acceleration is provided through WebGPU when available.",
+    "CPU fallback implementations are available for unsupported devices.",
+    "Processing occurs locally on the user's device.",
+    "No images are uploaded to external servers.",
+    "The project is open source.",
+    "SVG output can be edited after generation."
+  ];
+
+  function getRandomTip() {
+    return tips[Math.floor(Math.random() * tips.length)];
+  }
+
   const driverObj = driver({
-    showProgress: true,
+    popoverClass: 'driverjs-theme',
     steps: [
       { popover: { 
           title: 'Welcome to Img2Num!', 
-          description: 'Click \"Next\" to follow the tutorial or \"x\" to skip.'
+          description: `
+          <p>Click \"Next\" to follow the tutorial or \"x\" to skip.<p>
+          `
         },
       },
 
+      /* Uploading an Image */
       { element: '#step-one',
         advanceOnClick: true,
         popover: { 
           title: 'Uploading an Image', 
-          description: 'Drag and drop an image or click the page to upload a file. <br>Supported image formats: .jpg, .png, .bmp <br>Processing works entirely in the browser.', 
+          description: `
+          Drag and drop an image here or click the page to upload a file.
+          <br>Note: Processing works entirely in the browser.
+          <br><b>Upload an image to proceed to the next step.</b>
+          `,
+          side: "left",
+          align: "start",
+          showButtons: ["previous"],
         },
-        showButtons: ["close"],
       },
 
+      /* Image Processing Configuration */
       { element: '#settingsToggleButton',
         popover: {
           title: 'Image Processing Configuration',
-          description: 'Click here to adjust output quality, complexity, and performance of the output.',
-          showButtons: ["close"],
+          description: `
+          This settings button opens the menu to adjust the output's:
+          <ul>
+            <li>output quality</li>
+            <li>complexity</li>
+            <li>performance</li>
+          </ul>
+          <br><b>Click on the settings button to proceed to the next step.</b>
+          `,
+          showButtons: ["previous"],
         },
-        waitForElement: 5000,
+        
+        waitForElement: 50000,
         onHighlighted: (element) => {
           element.addEventListener('click', () => {
             driverObj.moveNext();
@@ -41,66 +76,192 @@ export function createTour() {
       { element: '#configNotes',
         popover: {
           title: 'Image Processing Configuration',
-          description: 'K-means groups pixels into k clusters based on color distance in the chosen color space.<br>Adjust k to determine how many colors the output should contain.<br>Note: k cannot force new colors and will max out at the amount of colors it has.<br>Tip: Larger images benefit from more colors but too many will produce noisy contours.'
+          description: `
+
+          K-means groups pixels into k clusters based on color distance in the chosen color space.
+          <ul>
+            <li>Adjust k to determine how many colors the output should contain.</li>
+            <li>Note: k cannot force new colors and will max out at the amount of colors it has.</li>
+            <li>Tip: Larger images benefit from more colors but too many will produce noisy contours.'</li>
+          </ul>
+          <br><b>Click "Next" to proceed.</b>
+          `,
         },
       },
 
       { element: '#advancedToggle',
         popover: {
           title: 'Advanced Settings',
-          description: 'For more experienced users, adjust advanced settings here.'
+          description: `
+          For more experienced users, adjust advanced settings here.
+          <br>For this tutorial, the settings are already set.
+          <br><b>Click "Next" to proceed.</b>
+          `,
         },
       },      
       
+      /* Start Processing */
       { element: '#okButton',
         popover: { 
           title: 'Confirm Upload', 
-          description: 'Click here to submit your image.<br> Processing depends on image size, selected settings, device performance, and browser capabilities.'
+          description:`
+          'Click here to submit your image and start converting. Processing time depends on:
+          <ul>
+            <li>image size</li>
+            <li>selected settings</li>
+            <li>device performance</li>
+            <li>browser capabilities</li>
+          </ul>
+          <br><b>Click the "OK" button to proceed to the next step.</b>
+          `,
+          showButtons: ["previous"],
         },
         onHighlighted: (element) => {
           element.addEventListener('click', () => {
             driverObj.moveNext();
           }, { once:true });
         },
+        
       },
 
-      // TO-DO: Figure out rotating tip popup during loading screen
+      /* Processing Information */
       {
         popover: {
           title: 'Tip',
-          description: 'Add tips here'
+          description: getRandomTip()
         },
       },
 
+      /* Editor Tour */
+
+      /* Coloring Areas */
       {
-        element: '#resetButton',
+        element: '#svgCanvas',
         popover: {
-          title: 'Reset',
-          description: 'This button will reset all colored regions.'
+          title: 'Coloring Canvas',
+          description:`
+          Now, you can color your SVG!
+          <ul>
+            <li>The original colors of your image will be filled into corresponding shapes.</li>
+            <li>To fill a region, simply click on it.</li>
+            <li>To zoom in or out for a better coloring experience, use the scroll of your mouse.</li>
+            <li>To move around the canvas, hold left click and drag.</li>
+          </ul>
+          <br><b>Click "Next" to proceed to the next step.</b>
+          `
         }
+      },
+
+      /* Navigation Controls */
+
+      /* Reprocessing the Image */
+      {
+        element: '#adjustSettingsButton',
+        popover: {
+          title: 'Adjust and Reprocess Image',
+          description: `
+          Settings for the output can be adjusted after processing inclduing:
+          <ul>
+            <li>K-means</li>
+            <li>outline details</li>
+            <li>advanced settings</li>
+          </ul>
+          Intermediate pipeline stages are cached where possible meaing reprocessing may be significantly faster.
+          <br><b>Click "Next" to proceed.</b>
+          `,
+        }
+      },
+
+      /* Fullscreen Mode */
+      {
+        element: '#fullscreenButton',
+        popover: {
+          title: 'Fullscreen',
+          description:`
+          Click here to enter fullscreen mode.
+          <ul>
+            <li>Coloring may be easier with a larger view.</li>
+            <li>Press [Esc] to exit fullscreen</li>
+          </ul>
+          <b>Click "Next" to proceed.</b>
+          `,
+        }
+      },
+
+      /* Exporting Results */
+      {
+        element: '#exportButton',
+        advanceOnClick: true,
+        popover: {
+          title: 'Save and Export',
+          description: `
+          Here you can view the save settings to download your generated SVG in various formats.
+          <br><b>Click the "Save" button to proceed to the next step.</b>
+          `,
+          showButtons: ["previous"],
+        },
+        
+      },
+
+      {
+        element: '#exportViewer',
+        popover: {
+          title: 'Save and Export',
+          description:`
+          Select any format to save your output
+          <br>Tip: Saving as SVG allows for infinite scaling, vector editing, printing, and use in design software.
+          <br><b>Click "Next" to proceed.</b>
+          `,
+        },
+        waitForElement: 5000,
+      },
+
+      {
+        element: '#save-image-close',
+        advanceOnClick: true,
+        popover: {
+          title: 'Exit the Export window',
+          description: `
+          <b>Click X to return to the editor.</b>`,
+          showButtons: ["previous"],
+        },
+        
+      },
+      
+      /* Additonal Editor Features */
+      {
+        element: '#redoButton',
+        popover: {
+          title: 'Redo',
+          description: `
+          This button will redo your last change.
+          <br>Shortcut: Ctrl + Y
+          <br><b>Click "Next" to proceed.</b>
+          `,
+        },
+        waitForElement: 5000,
       },
 
       {
         element: '#undoButton',
         popover: {
           title: 'Undo',
-          description: 'Click here to undo your last change.<br>Shortcut: Ctrl + Z'
+          description: `
+          The button will undo your last change.
+          <br>Shortcut: Ctrl + Z
+          <br><b>Click "Next" to proceed.</b>
+          `,
         }
       },
 
       {
-        element: '#redoButton',
+        element: '#resetButton',
         popover: {
-          title: 'Redo',
-          description: 'Click here to redo your last change.<br>Shortcut: Ctrl + Y'
-        }
-      },
-
-      {
-        element: '#fullscreenButton',
-        popover: {
-          title: 'Fullscreen',
-          description: 'Click here to enter fullscreen mode.'
+          title: 'Reset',
+          description: `
+          This button resets all colored regions.
+          <br><b>Click "Next" to proceed.</b>
+          `,
         }
       },
       
@@ -109,7 +270,6 @@ export function createTour() {
           title: 'Tutorial Complete!',
           description: 'You have now completed the Img2Num raster to SVG tutorial. Happy coloring!'
         },
-        waitForElement: 10000,
       }
     ],
     onDestroyed: () => {

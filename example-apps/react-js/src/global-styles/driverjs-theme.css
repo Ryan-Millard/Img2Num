@@ -1,0 +1,39 @@
+/* onboarding tour styling */
+
+.driver-popover.driverjs-theme {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.driver-popover.driverjs-theme .driver-popover-title {
+  font-size: 20px;
+}
+
+.driver-popover.driverjs-theme .driver-popover-title,
+.driver-popover.driverjs-theme .driver-popover-description,
+.driver-popover.driverjs-theme {
+  color: var(--color-text);
+}
+
+
+.driver-popover.driverjs-theme button {
+  flex: 1;
+  text-align: center;
+  background-color: var(--color-primary-dark);
+  color: #ffffff;
+  border: 2px solid var(--color-bg);
+  text-shadow: none;
+  font-size: 14px;
+  padding: 5px 8px;
+  border-radius: 6px;
+}
+
+.driver-popover.driverjs-theme button:hover {
+  background-color: #6a3817;
+  color: #ffffff;
+}
+
+.driver-popover.driverjs-theme .driver-popover-navigation-btns {
+  justify-content: space-between;
+  gap: 3px;
+}
