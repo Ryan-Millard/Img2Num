@@ -14,7 +14,15 @@ on:
 jobs:
   warn-main-pr:
     name: Warn PR targeting main
-    if: github.base_ref == 'main'
+    # Allow release-please PRs targeting main since they must open against main to tag releases properly.
+    # Only trust GitHub-set fields to prevent spoofing by outside contributors.
+    if: >-
+      github.base_ref == 'main' &&
+      !(
+        startsWith(github.head_ref, 'release-please--') &&
+        github.event.pull_request.head.repo.full_name == github.repository &&
+        github.event.pull_request.user.login == 'github-actions[bot]'
+      )
     runs-on: ubuntu-latest
     permissions:
       # Required to post warning comment
