@@ -2,8 +2,8 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { RotateCcw, X, ChevronDown, ChevronUp } from "lucide-react";
 import styles from "./ConfigPanel.module.css";
-import { createTour } from "@utils/onboardingTour";
-import { TOUR_KEY } from "@utils/onboardingTour";
+import { createTour } from "@components/OnboardingTour";
+import { TOUR_KEY } from "@components/OnboardingTour";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 

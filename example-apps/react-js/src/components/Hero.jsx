@@ -1,7 +1,7 @@
 import styles from "./Hero.module.css";
 import GlassCard from "@components/GlassCard";
 import { useEffect } from "react";
-import { createTour } from "@utils/onboardingTour"
+import { createTour } from "@components/OnboardingTour"
 
 {/* Onboarding tour initialized */}
 

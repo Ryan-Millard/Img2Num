@@ -8,8 +8,8 @@ import { setEditorHandoff } from "@utils/editorHandoff";
 import LoadingHedgehog from "@components/LoadingHedgehog";
 import Tooltip from "@components/Tooltip";
 import ConfigPanel from "@components/ConfigPanel";
-import { createTour } from "@utils/onboardingTour";
-import { TOUR_KEY } from "@utils/onboardingTour";
+import { createTour } from "@components/OnboardingTour";
+import { TOUR_KEY } from "@components/OnboardingTour";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 

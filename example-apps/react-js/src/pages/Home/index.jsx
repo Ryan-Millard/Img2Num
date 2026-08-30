@@ -5,7 +5,7 @@ import Tooltip from "@components/Tooltip";
 import styles from "./Home.module.css";
 import HomeHelmet from "./HomeHelmet";
 import { useEffect } from "react";
-import { createTour } from "@utils/onboardingTour"
+import { createTour } from "@components/OnboardingTour"
 
 {/* Onboarding tour initialized */}
 const tour = createTour();

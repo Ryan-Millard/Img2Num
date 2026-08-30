@@ -45,7 +45,6 @@ export function createTour() {
           `,
           side: "left",
           align: "start",
-          showButtons: ["previous"],
         },
       },
 
