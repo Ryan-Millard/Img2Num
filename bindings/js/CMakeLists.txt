@@ -1,4 +1,3 @@
-cmake_minimum_required(VERSION 3.16)
 project(JSBindings LANGUAGES C)
 
 set(CMAKE_C_STANDARD 17)
@@ -61,9 +60,9 @@ function(img2num_add_wasm_variant TARGET_NAME)
 
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         target_compile_options(${TARGET_NAME} PRIVATE
-            -O0 -gsource-map -fsanitize=alignment)
+            -O0 -g -fsanitize=alignment)
         target_link_options(${TARGET_NAME} PRIVATE
-            -gsource-map -fsanitize=alignment
+            -g -fsanitize=alignment
             "SHELL:-sASSERTIONS=2"
             "SHELL:-sSTACK_OVERFLOW_CHECK=1")
     else()

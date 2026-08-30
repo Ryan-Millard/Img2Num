@@ -111,6 +111,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 # --------------------------------------------------------------------------------------------------------------
 # UV + Python environment
+# When updating uv, see the lines below about uv sync - you will need to update those lines to use `--all-groups`
+# instead
 RUN curl -LsSf https://astral.sh/uv/0.5.1/install.sh | sh
 
 ENV PATH="/root/.local/bin:${PATH}"
@@ -122,8 +124,13 @@ RUN uv venv /usr/src/app/.venv
 ENV VIRTUAL_ENV=/usr/src/app/.venv
 ENV PATH="/usr/src/app/.venv/bin:$PATH"
 
+COPY pyproject.toml uv.lock CMakeLists.txt ./
+COPY packages/py/pyproject.toml packages/py/pyproject.toml
+COPY scripts/py/pyproject.toml scripts/py/pyproject.toml
+COPY example-apps/console-py/pyproject.toml example-apps/console-py/pyproject.toml
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install scikit_build_core numpy
+    uv sync --frozen --no-install-project --no-install-workspace \
+      --group dev --group lint --group licensing
 
 # --------------------------------------------------------------------------------------------------------------
 # Node / pnpm setup
