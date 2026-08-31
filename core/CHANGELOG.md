@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.3.0](https://github.com/Ryan-Millard/Img2Num/compare/cpp-v0.2.0...cpp-v0.3.0) (2026-08-31)
+
+
+### ✨ Features
+
+* **Debug Logging:** route logging through spdlog with compile-time level control ([#524](https://github.com/Ryan-Millard/Img2Num/issues/524)) ([47c8dd9](https://github.com/Ryan-Millard/Img2Num/commit/47c8dd91a8325a1f7f34838b978a8830f5f839b6))
+
+
+### 🐛 Bug Fixes
+
+* prevent integer overflow in Graph::process_overlapping_edges ([#574](https://github.com/Ryan-Millard/Img2Num/issues/574)) ([#574](https://github.com/Ryan-Millard/Img2Num/issues/574)) ([73fbd66](https://github.com/Ryan-Millard/Img2Num/commit/73fbd668b6cf64b34ba00b9079dc35595ed13153)), closes [#572](https://github.com/Ryan-Millard/Img2Num/issues/572)
+
+
+### 📚 Documentation
+
+* refresh docs, add Python guides, and remove outdated versioning ([#446](https://github.com/Ryan-Millard/Img2Num/issues/446)) ([8edaadd](https://github.com/Ryan-Millard/Img2Num/commit/8edaadddf18ca20407b7f480cd88c72b11c99000))
+
 ## [0.2.0](https://github.com/Ryan-Millard/Img2Num/compare/cpp-v0.1.0...cpp-v0.2.0) (2026-06-27)
 
 
