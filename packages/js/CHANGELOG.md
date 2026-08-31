@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.4.2...packages-js-v0.5.0) (2026-08-31)
+
+
+### ✨ Features
+
+* **Debug Logging:** route logging through spdlog with compile-time level control ([#524](https://github.com/Ryan-Millard/Img2Num/issues/524)) ([47c8dd9](https://github.com/Ryan-Millard/Img2Num/commit/47c8dd91a8325a1f7f34838b978a8830f5f839b6))
+
+
+### 📚 Documentation
+
+* add JS 0.4.2 blog post, overhaul READMEs and security policy, redesign navbar ([#558](https://github.com/Ryan-Millard/Img2Num/issues/558)) ([e1a2a8a](https://github.com/Ryan-Millard/Img2Num/commit/e1a2a8aa332dc0a3e826a80e2ac9581964f747f5))
+
 ## [0.4.2](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.4.1...packages-js-v0.4.2) (2026-08-18)
 
 
