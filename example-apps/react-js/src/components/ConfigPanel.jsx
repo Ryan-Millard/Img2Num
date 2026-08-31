@@ -2,9 +2,6 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { RotateCcw, X, ChevronDown, ChevronUp } from "lucide-react";
 import styles from "./ConfigPanel.module.css";
-import { createTour } from "@components/OnboardingTour";
-import { TOUR_KEY } from "@components/OnboardingTour";
-import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 
 const ConfigPanel = ({
@@ -26,11 +23,6 @@ const ConfigPanel = ({
   isProcessing = false,
   className = "",
 }) => {
-  {/* Continued onboarding tour set up */}
-  const savedStep = localStorage.getItem(TOUR_KEY);
-  if (savedStep !== null) {
-    createTour().drive(Number(savedStep));
-  }
 
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
 

@@ -1,19 +1,12 @@
 import styles from "./Hero.module.css";
 import GlassCard from "@components/GlassCard";
-import { useEffect } from "react";
-import { createTour } from "@components/OnboardingTour"
-
-{/* Onboarding tour initialized */}
+import { TourButton } from "./onboardingTour";
 
 const Hero = ({ header, description, button }) => (
   <GlassCard className="text-center">
     <h1>{header}</h1>
     <p className={styles.heroParagraph}>{description}</p>
-    <button className={`button`} onClick={(e) => {
-      const tour = createTour();
-      tour.drive();}}>
-      {button}
-    </button>
+    <TourButton className="button" label={button} />
   </GlassCard>
 );
 

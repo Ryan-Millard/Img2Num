@@ -1,5 +1,4 @@
 /* onboarding tour styling */
-
 .driver-popover.driverjs-theme {
   background-color: var(--color-bg);
   color: var(--color-text);
@@ -14,7 +13,6 @@
 .driver-popover.driverjs-theme {
   color: var(--color-text);
 }
-
 
 .driver-popover.driverjs-theme button {
   flex: 1;

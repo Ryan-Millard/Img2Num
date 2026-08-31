@@ -4,19 +4,18 @@ import GlassCard from "@components/GlassCard";
 import Tooltip from "@components/Tooltip";
 import styles from "./Home.module.css";
 import HomeHelmet from "./HomeHelmet";
-import { useEffect } from "react";
 import { createTour } from "@components/OnboardingTour"
+import { useEffect } from "react";
+import { hasCompletedTour } from "../../components/onboardingTour";
 
 {/* Onboarding tour initialized */}
-const tour = createTour();
-tour.drive();
 
 const Home = () => (
   <>
     <HomeHelmet />
 
     <div className="flex-column gap-md">
-      <Hero header="Img2Num" description="Upload an image to convert it into a color-by-number template to color in directly in your browser!" button="Need Help? Click to Start Tutorial"/>
+      <Hero header="Img2Num" description="Upload an image to convert it into a color-by-number template to color in directly in your browser!" button="Start Interactive Tour"/>
 
       <div id="step-one">
         <WasmImageProcessor />

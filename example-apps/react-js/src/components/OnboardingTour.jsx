@@ -1,11 +1,15 @@
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import "@global-styles/driverjs-theme.css";
+import { useState, useEffect } from "react";
 
 export const TOUR_KEY = "img2num-onboarding-tour";
 
+export function hasCompletedTour() {
+  return localStorage.getItem(TOUR_KEY) === 'true';
+}
+
 export function createTour() {
-  let isNavigating = false;
 
   const tips = [
     "Img2Num is primarily written in C++.",
@@ -267,16 +271,47 @@ export function createTour() {
       {
         popover: { 
           title: 'Tutorial Complete!',
-          description: 'You have now completed the Img2Num raster to SVG tutorial. Happy coloring!'
+          description: `
+          You have now completed the Img2Num raster to SVG tutorial. Happy coloring!
+          <br>Tip: If you want to run the tutorial again, click "Start Interactive Tour" on the Home page.
+          `,
         },
       }
     ],
     onDestroyed: () => {
-      if (!isNavigating) {
-        localStorage.removeItem(TOUR_KEY);
-      }
+      localStorage.setItem(TOUR_KEY, "true");
     },
   });
 
   return driverObj;
 };
+
+export function TourButton({label, className}) {
+  const [showHint, setShowHint] = useState(false);
+
+  useEffect(() => {
+    if (!hasCompletedTour()) {
+      setShowHint(true);
+    }
+  }, []);
+
+  const handleClick = () => {
+    setShowHint(false);
+    createTour().drive();
+  };
+
+  return (
+    <div>
+      <button className="button" onClick={handleClick}>
+        {label}
+      </button>
+      {showHint && (
+        // TO-DO: fix popup css
+        <div className="tour-hint-popup">
+          Need help? Start here.
+        </div>
+      )}
+      
+    </div>
+  )
+}
