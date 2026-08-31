@@ -159,13 +159,13 @@ export function createTour() {
         popover: {
           title: 'Adjust and Reprocess Image',
           description: `
-          Settings for the output can be adjusted after processing inclduing:
+          Settings for the output can be adjusted after processing including:
           <ul>
             <li>K-means</li>
             <li>outline details</li>
             <li>advanced settings</li>
           </ul>
-          Intermediate pipeline stages are cached where possible meaing reprocessing may be significantly faster.
+          Intermediate pipeline stages are cached where possible meaning reprocessing may be significantly faster.
           <br><b>Click "Next" to proceed.</b>
           `,
         }
