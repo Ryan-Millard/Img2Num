@@ -2,6 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { RotateCcw, X, ChevronDown, ChevronUp } from "lucide-react";
 import styles from "./ConfigPanel.module.css";
+import "driver.js/dist/driver.css";
 
 const ConfigPanel = ({
   numColors,
@@ -22,10 +23,11 @@ const ConfigPanel = ({
   isProcessing = false,
   className = "",
 }) => {
+
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
 
   return (
-    <div className={`${styles.settingsPanel} ${isOpen ? styles.settingsOpen : ""} ${className}`} onClick={(e) => e.stopPropagation()}>
+    <div id="configNotes" className={`${styles.settingsPanel} ${isOpen ? styles.settingsOpen : ""} ${className}`} onClick={(e) => e.stopPropagation()}>
       <div className={styles.settingsHeaderWrapper}>
         <h3 className={styles.settingsHeading}>Configuration</h3>
         <div className={styles.headerButtons}>
@@ -124,7 +126,7 @@ const ConfigPanel = ({
       </div>
 
       {/* Advanced Settings Collapsible Toggle */}
-      <button type="button" className={styles.advancedToggle} onClick={() => setIsAdvancedOpen((prev) => !prev)} aria-expanded={isAdvancedOpen}>
+      <button id="advancedToggle" type="button" className={styles.advancedToggle} onClick={() => setIsAdvancedOpen((prev) => !prev)} aria-expanded={isAdvancedOpen}>
         <span>Advanced Settings</span>
         {isAdvancedOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
       </button>
@@ -214,6 +216,7 @@ const ConfigPanel = ({
         <button
           type="button"
           className="button"
+          id="okButton"
           onClick={(e) => {
             e.stopPropagation();
             onAction();

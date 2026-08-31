@@ -529,7 +529,7 @@ const SvgCanvas = forwardRef(function SvgCanvas({ svg, isColorMode, onHistoryCha
 
   const canvasClass = [styles.canvas, !isColorMode && styles.grabCursor].filter(Boolean).join(" ");
 
-  return <canvas ref={canvasRef} className={canvasClass} onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={onPointerCancel} data-testid="svg-canvas" />;
+  return <canvas ref={canvasRef} className={canvasClass} onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={onPointerCancel} data-testid="svg-canvas" id="svgCanvas"/>;
 });
 
 export default SvgCanvas;

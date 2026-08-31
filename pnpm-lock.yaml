@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      driver.js:
+        specifier: ^1.8.0
+        version: 1.8.0
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
@@ -4180,6 +4183,9 @@ packages:
   dotgitignore@2.1.0:
     resolution: {integrity: sha512-sCm11ak2oY6DglEPpCB8TixLjWAxd3kJTs6UIcSasNYxXdFPV+YKlye92c8H4kKFqV5qYMIh7d+cYecEg0dIkA==}
     engines: {node: '>=6'}
+
+  driver.js@1.8.0:
+    resolution: {integrity: sha512-+8/IO7h1v14IzWh2GP60N7T3PFZweXwdn5e5POuxRSBoCYUojsBxzqawPeXh3YZIibRy7EehYNEyxe7slwwtdg==}
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -13170,6 +13176,8 @@ snapshots:
     dependencies:
       find-up: 3.0.0
       minimatch: 3.1.5
+
+  driver.js@1.8.0: {}
 
   dunder-proto@1.0.1:
     dependencies:

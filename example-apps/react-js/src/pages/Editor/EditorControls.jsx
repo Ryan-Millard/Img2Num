@@ -116,8 +116,8 @@ const EditorControls = ({
         {copied ? "SVG copied to clipboard." : ""}
       </div>
 
-      <GlassModal isOpen={modalOpen} className="flex-column gap-md" onClose={() => setModalOpen(false)} title="Save image">
-        <GlassCard className={styles.modalGroupContainer}>
+      <GlassModal isOpen={modalOpen} className="flex-column gap-md" onClose={() => setModalOpen(false)} title="Save image" tourId="save-image">
+        <GlassCard className={styles.modalGroupContainer} id="exportViewer">
           <h4>Export</h4>
           <ul className={styles.actionList} role="list">
             <li>
@@ -231,7 +231,7 @@ const EditorControls = ({
 
         <div className="flex-center gap-sm">
           <Tooltip position="top" content="Save or export the image">
-            <button className={`button flex-center gap-xs`} onClick={() => setModalOpen(true)} aria-haspopup="dialog">
+            <button className={`button flex-center gap-xs`} onClick={() => setModalOpen(true)} aria-haspopup="dialog" id="exportButton">
               <Save size={20} aria-hidden="true" />
               Save
             </button>
@@ -246,22 +246,22 @@ const EditorControls = ({
 
         <div className="flex-center gap-sm" role="group" aria-label="History">
           <Tooltip position="top" content="Reset all coloured shapes">
-            <button className="button" onClick={onReset} aria-label="Reset all coloured shapes">
+            <button className="button" onClick={onReset} aria-label="Reset all coloured shapes" id="resetButton">
               <RotateCcw size={18} aria-hidden="true" />
             </button>
           </Tooltip>
           <Tooltip position="top" content="Undo · Ctrl Z">
-            <button className="button" onClick={onUndo} aria-label="Undo last change">
+            <button className="button" onClick={onUndo} aria-label="Undo last change" id="undoButton">
               <Undo size={18} aria-hidden="true" />
             </button>
           </Tooltip>
           <Tooltip position="top" content="Redo · Ctrl Y">
-            <button className="button" onClick={onRedo} aria-label="Redo last change">
+            <button className="button" onClick={onRedo} aria-label="Redo last change" id="redoButton">
               <Redo size={18} aria-hidden="true" />
             </button>
           </Tooltip>
           <Tooltip position="top" content="Enter fullscreen">
-            <button className="button" onClick={onFullscreen} aria-label="Enter fullscreen mode">
+            <button className="button" onClick={onFullscreen} aria-label="Enter fullscreen mode" id="fullscreenButton">
               <Expand size={18} aria-hidden="true" />
             </button>
           </Tooltip>
@@ -273,6 +273,7 @@ const EditorControls = ({
                 onClick={onToggleSettings}
                 aria-label="Adjust image settings"
                 aria-expanded={isSettingsOpen}
+                id="adjustSettingsButton"
               >
                 <Settings size={18} aria-hidden="true" />
               </button>
