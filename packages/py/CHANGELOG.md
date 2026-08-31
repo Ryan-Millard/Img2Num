@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/Ryan-Millard/Img2Num/compare/packages-py-v0.3.0...packages-py-v0.3.1) (2026-08-31)
+
+
+### 📚 Documentation
+
+* add JS 0.4.2 blog post, overhaul READMEs and security policy, redesign navbar ([#558](https://github.com/Ryan-Millard/Img2Num/issues/558)) ([e1a2a8a](https://github.com/Ryan-Millard/Img2Num/commit/e1a2a8aa332dc0a3e826a80e2ac9581964f747f5))
+
 ## [0.3.0](https://github.com/Ryan-Millard/Img2Num/compare/packages-py-v0.2.2...packages-py-v0.3.0) (2026-08-13)
 
 
