@@ -1,4 +1,14 @@
 /* onboarding tour styling */
+.tour-hint-popup {
+  color: var(--color-primary);
+  padding: var(--spacing-sm) var(--spacing-md);
+  cursor: pointer;
+  font-weight: 600;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}
+
 .driver-popover.driverjs-theme {
   background-color: var(--color-bg);
   color: var(--color-text);

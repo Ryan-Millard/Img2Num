@@ -4,11 +4,6 @@ import GlassCard from "@components/GlassCard";
 import Tooltip from "@components/Tooltip";
 import styles from "./Home.module.css";
 import HomeHelmet from "./HomeHelmet";
-import { createTour } from "@components/OnboardingTour"
-import { useEffect } from "react";
-import { hasCompletedTour } from "../../components/onboardingTour";
-
-{/* Onboarding tour initialized */}
 
 const Home = () => (
   <>
