@@ -267,6 +267,7 @@ const config = {
             to: "/docs",
           },
           { to: "/changelog", label: "Changelog", position: "left" },
+          { to: "/faq", label: "FAQ", position: "left" },
           { to: "/blog", label: "Blog", position: "left" },
           { type: "search", position: "right" },
           {
@@ -332,6 +333,10 @@ const config = {
                 label: "Blog",
                 to: "/blog",
               },
+              { 
+                label: "FAQ",
+                to: "/faq", 
+              },
             ],
           },
           {
@@ -370,6 +375,9 @@ const config = {
           {
             title: "Changelogs",
             items: [
+              { label: "All Changelogs", 
+                to: "/changelog",
+              },
               {
                 label: "C",
                 href: "/changelog/c",
