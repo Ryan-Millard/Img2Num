@@ -145,7 +145,15 @@ function buildVariant(name) {
     }
     const dest = path.join(outDir, lib.to);
     mkdirSync(path.dirname(dest), { recursive: true });
-    cpSync(src, dest, { recursive: true });
+    if (statSync(src).isDirectory()) {
+      mkdirSync(dest, { recursive: true})
+      for (const entry of readdirSync(src)) {
+        cpSync(path.join(src, entry), path.join(dest, entry), { recursive: true });
+      }
+    } else {
+      mkdirSync(path.dirname(dest), { recursive: true})
+      cpSync(src, dest);
+    }
   }
 
   console.log(`Built ${name} -> ${path.relative(process.cwd(), outDir)}`);
