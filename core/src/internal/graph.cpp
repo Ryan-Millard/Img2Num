@@ -221,7 +221,7 @@ void Graph::process_overlapping_edges() {
 }
 
 std::vector<uint8_t> Graph::analyzeJunctions(const std::vector<uint8_t>& skel, int w, int h) {
-    std::vector<uint8_t> junction_map(w * h, 0);
+    std::vector<uint8_t> junction_map(static_cast<size_t>(w) * h, 0);
 
     // 8-Neighbor Order (Clockwise)
     // P9 P2 P3
