@@ -333,9 +333,9 @@ const config = {
                 label: "Blog",
                 to: "/blog",
               },
-              { 
+              {
                 label: "FAQ",
-                to: "/faq", 
+                to: "/faq",
               },
             ],
           },
@@ -375,9 +375,7 @@ const config = {
           {
             title: "Changelogs",
             items: [
-              { label: "All Changelogs", 
-                to: "/changelog",
-              },
+              { label: "All Changelogs", to: "/changelog" },
               {
                 label: "C",
                 href: "/changelog/c",
