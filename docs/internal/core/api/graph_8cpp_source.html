@@ -322,7 +322,7 @@ $(document).ready(function(){initNavTree('graph_8cpp_source.html',''); initResiz
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span> </div>
 <div class="foldopen" id="foldopen00223" data-start="{" data-end="}">
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno"><a class="line" href="classGraph.html#a1982ce64f98221e8055578fe5c93f5e1">  223</a></span>std::vector&lt;uint8_t&gt; <a class="code hl_function" href="classGraph.html#a1982ce64f98221e8055578fe5c93f5e1">Graph::analyzeJunctions</a>(<span class="keyword">const</span> std::vector&lt;uint8_t&gt;&amp; skel, <span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h) {</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    std::vector&lt;uint8_t&gt; junction_map(w * h, 0);</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    std::vector&lt;uint8_t&gt; junction_map(<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(w) * h, 0);</div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span> </div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    <span class="comment">// 8-Neighbor Order (Clockwise)</span></div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    <span class="comment">// P9 P2 P3</span></div>

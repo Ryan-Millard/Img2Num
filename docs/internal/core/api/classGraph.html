@@ -358,7 +358,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="graph_8cpp_source.html#l00223">223</a> of file <a class="el" href="graph_8cpp_source.html">graph.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  223</span>                                                                                       {</div>
-<div class="line"><span class="lineno">  224</span>    std::vector&lt;uint8_t&gt; junction_map(w * h, 0);</div>
+<div class="line"><span class="lineno">  224</span>    std::vector&lt;uint8_t&gt; junction_map(<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(w) * h, 0);</div>
 <div class="line"><span class="lineno">  225</span> </div>
 <div class="line"><span class="lineno">  226</span>    <span class="comment">// 8-Neighbor Order (Clockwise)</span></div>
 <div class="line"><span class="lineno">  227</span>    <span class="comment">// P9 P2 P3</span></div>
