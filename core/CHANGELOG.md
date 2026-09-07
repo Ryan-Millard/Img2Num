@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.3.0](https://github.com/Ryan-Millard/Img2Num/compare/cpp-v0.2.0...cpp-v0.3.0) (2026-09-07)
+
+
+### ✨ Features
+
+* **Debug Logging:** route logging through spdlog with compile-time level control ([#524](https://github.com/Ryan-Millard/Img2Num/issues/524)) ([47c8dd9](https://github.com/Ryan-Millard/Img2Num/commit/47c8dd91a8325a1f7f34838b978a8830f5f839b6))
+
+
+### 🐛 Bug Fixes
+
+* **CodeQL warning:** prevent integer overflow in `Graph::analyzeJunctions` ([#589](https://github.com/Ryan-Millard/Img2Num/issues/589)) ([79e6ffe](https://github.com/Ryan-Millard/Img2Num/commit/79e6ffe18ea3eb2655fbb7505a90f82bf84b36da))
+* prevent integer overflow in Graph::process_overlapping_edges ([#574](https://github.com/Ryan-Millard/Img2Num/issues/574)) ([#574](https://github.com/Ryan-Millard/Img2Num/issues/574)) ([73fbd66](https://github.com/Ryan-Millard/Img2Num/commit/73fbd668b6cf64b34ba00b9079dc35595ed13153)), closes [#572](https://github.com/Ryan-Millard/Img2Num/issues/572)
+
+
+### 📚 Documentation
+
+* refresh docs, add Python guides, and remove outdated versioning ([#446](https://github.com/Ryan-Millard/Img2Num/issues/446)) ([8edaadd](https://github.com/Ryan-Millard/Img2Num/commit/8edaadddf18ca20407b7f480cd88c72b11c99000))
+
 ## [0.2.0](https://github.com/Ryan-Millard/Img2Num/compare/cpp-v0.1.0...cpp-v0.2.0) (2026-06-27)
 
 

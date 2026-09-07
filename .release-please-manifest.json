@@ -1,5 +1,5 @@
 {
-  "core": "0.2.0",
+  "core": "0.3.0",
   "bindings/c": "0.2.0",
   "packages/js": "0.4.2",
   "packages/py": "0.3.0"
