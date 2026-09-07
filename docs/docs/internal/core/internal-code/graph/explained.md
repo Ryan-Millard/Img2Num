@@ -13,7 +13,7 @@ Assume a region partition image as shown. Each partition (and the pixels contain
 ![slide1](./diagrams/Slide1.svg)
 _Figure 1: Partitioned Image_
 
-Below is a visualization of the Graph with its connections forming a undirected graph (a). In reality each `Node` contains a list of pointers to their neighbors, represented as edges (b). Note that adjacent nodes point to each other. Edge management is handled by the Graph.
+Below is a visualization of the Graph with its connections forming an undirected graph (a). In reality each `Node` contains a list of pointers to their neighbors, represented as edges (b). Note that adjacent nodes point to each other. Edge management is handled by the Graph.
 ![slide2](./diagrams/Slide2.svg)
 _Figure 2: Visualizing a Graph. Note in (b) only 3 nodes are displayed 0,1,3. The remaining nodes have a similar structure_
 
