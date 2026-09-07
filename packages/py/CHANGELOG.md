@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://github.com/Ryan-Millard/Img2Num/compare/packages-py-v0.2.2...packages-py-v0.3.0) (2026-08-13)
+
+
+### ✨ Features
+
+* **py:** ship type information (stub + py.typed) in wheels ([#540](https://github.com/Ryan-Millard/Img2Num/issues/540)) ([a858cb4](https://github.com/Ryan-Millard/Img2Num/commit/a858cb4c7ab8d107b3ff772269bffaf7a5bcf997))
+
+
+### 📚 Documentation
+
+* **py:** auto-generate the Python API reference from docstrings ([a858cb4](https://github.com/Ryan-Millard/Img2Num/commit/a858cb4c7ab8d107b3ff772269bffaf7a5bcf997))
+
 ## [0.2.2](https://github.com/Ryan-Millard/Img2Num/compare/packages-py-v0.2.1...packages-py-v0.2.2) (2026-07-30)
 
 

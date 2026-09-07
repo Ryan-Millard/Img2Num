@@ -6,6 +6,7 @@ help:
     "List of commands: \n \
     init: pull submodules \n \
     format: format all files \n \
+    reuse-check: check REUSE/SPDX license compliance \n \
     build <target>: \n \
     \t cpp: build c++ core and c bindings \n \
     \t js: build js/wasm bindings \n \
@@ -26,7 +27,9 @@ help:
     console-cpp <input_image>: run example C++ app on input image \n \
     console-c <input_image>: run example C app on input image \n \
     console-py <input_image>: run example python app on input image \n \
-    console-js <input_image>: run example node app on input image \n \
+    console-js-cjs <input_image>: run example node app on input image \n \
+    console-js-esm <input_image>: run example node app on input image \n \
+    html-js <script>: target npm script in example-apps/html-js/package.json \
     "
 
 init:
@@ -39,33 +42,50 @@ format:
     @echo "Format all files"
     pnpm format
 
-build-c-cpp:
-    @echo "Build C++ core and C bindings"
-    cmake -DCMAKE_BUILD_TYPE=Release -B build-c-cpp/ .
+build-c-cpp build_type="Release" log_level="AUTO":
+    @echo "Build C++ core and C bindings ({{ build_type }}, log={{ log_level }})"
+    cmake -DCMAKE_BUILD_TYPE={{ build_type }} \
+        -DIMG2NUM_LOG_LEVEL={{ log_level }} \
+        -B build-c-cpp/ .
     cmake --build build-c-cpp/ --parallel
 
-build-wasm:
-    @echo "Build JS bindings"
-    emcmake cmake -DCMAKE_BUILD_TYPE=Release -B build-wasm/ .
+reuse-check:
+    @echo "Check REUSE/SPDX license compliance"
+    reuse lint
+
+build-wasm build_type="Release" log_level="AUTO":
+    @echo "Build JS bindings ({{ build_type }}, log={{ log_level }})"
+    emcmake cmake -DCMAKE_BUILD_TYPE={{ build_type }} \
+        -DIMG2NUM_LOG_LEVEL={{ log_level }} \
+        -B build-wasm/ .
     cmake --build build-wasm/ --parallel
 
-build-py:
-    @echo "Build python bindings and py package"
-    uv sync --reinstall
+build-py build_type="Release" log_level="AUTO":
+    @echo "Build python bindings and py package ({{ build_type }}, log={{ log_level }})"
+    SKBUILD_CMAKE_BUILD_TYPE={{ build_type }} \
+    SKBUILD_CMAKE_DEFINE="IMG2NUM_LOG_LEVEL={{ log_level }}" \
+    uv sync --reinstall-package img2num
+    SKBUILD_CMAKE_BUILD_TYPE={{ build_type }} \
+    SKBUILD_CMAKE_DEFINE="IMG2NUM_LOG_LEVEL={{ log_level }}" \
     uv build --wheel
 
-build-packages-js:
+build-packages-js build_type="Release" log_level="AUTO":
     @echo "Build js packages"
-    just build-wasm
+    just build-wasm {{ build_type }} {{ log_level }}
     pnpm -F img2num build
 
-build target:
+build target build_type="Release" log_level="AUTO":
     case "{{ target }}" in \
-        cpp) just build-c-cpp ;; \
-        js) just build-wasm ;; \
-        py) just build-py ;; \
-        packages-js) just build-packages-js ;; \
-        all) just build-c-cpp build-wasm build-py build-packages-js react-js build docs build ;; \
+        cpp) just build-c-cpp {{ build_type }} {{ log_level }} ;; \
+        js) just build-wasm {{ build_type }} {{ log_level }} ;; \
+        py) just build-py {{ build_type }} {{ log_level }} ;; \
+        packages-js) just build-packages-js {{ build_type }} {{ log_level }} ;; \
+        all)  just build-c-cpp {{ build_type }} {{ log_level }} && \
+              just build-wasm {{ build_type }} {{ log_level }} && \
+              just build-py {{ build_type }} {{ log_level }} && \
+              just build-packages-js {{ build_type }} {{ log_level }} && \
+              just react-js build && \
+              just docs build ;; \
     esac
 
 clean target:
@@ -84,7 +104,7 @@ docs action:
         start) cd docs/ && pnpm run serve ;; \
     esac
 
-react-js action: build-packages-js
+react-js action:
     @echo "Run react sample app"
     case "{{ action }}" in \
         build) pnpm -F react-example run build ;; \
@@ -104,7 +124,13 @@ console-c input:
     @echo "./build-c-cpp/example-apps/console-c/console_c_app {{ input }}"
     ./build-c-cpp/example-apps/console-c/CImg2NumExample_console_c "{{ input }}"
 
-console-js input:
-    @echo "node example-apps/console-js/index.js {{ input }}"
-    node example-apps/console-js/index.js "{{ input }}"
+console-js-cjs input:
+    @echo "node example-apps/console-js-cjs/index.cjs {{ input }}"
+    node example-apps/console-js-cjs/index.cjs "{{ input }}"
 
+console-js-esm input:
+    @echo "node example-apps/console-js-esm/index.mjs {{ input }}"
+    node example-apps/console-js-esm/index.mjs "{{ input }}"
+
+html-js script:
+    pnpm -F html-js "{{script}}"

@@ -1,0 +1,13 @@
+{
+  "outputName": "iife",
+  "port": 5175,
+  "title": "Img2Num — HTML + IIFE Example",
+  "description": "Convert a raster image to SVG in the browser with Img2Num, using a plain script tag (IIFE bundle) — no bundler, no module system.",
+  "heading": "Img2Num IIFE Example Application",
+  "intro": "A simple demo app showing how to use <a href=\"https://img2num.dev/docs/js/\">Img2Num's JavaScript library</a> from a plain <code>&lt;script&gt;</code> tag. The IIFE bundle exposes a global <code>Img2Num</code> object.",
+  "loader": "<script src=\"{{LIB_URL}}\"></script>\n<script>\n  const { imageToUint8ClampedArray, imageToSvg } = Img2Num;\n\n{{APP_CODE}}\n</script>",
+  "libUrl": "./lib/img2num.iife.js",
+  "libUrlCdn": "https://cdn.jsdelivr.net/npm/img2num@{{VERSION}}/dist/standalone/img2num.iife.js",
+  "appCodeIndentLevel": 1,
+  "libs": [{ "package": "img2num", "from": "dist/standalone/img2num.iife.js", "to": "lib/img2num.iife.js" }]
+}
