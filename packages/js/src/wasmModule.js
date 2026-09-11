@@ -40,7 +40,11 @@ export async function initWasmModule() {
           const { initWebGPU } = await import("./target/node/webgpu.js");
           await initWebGPU();
         } catch (err) {
-          console.error(`[Img2Num wasmModule] WebGPU init error: ${err}\n\nImg2Num should fall back to CPU.`);
+          console.error(`[Img2Num wasmModule] WebGPU init error: ${err}\n\nFalling back to CPU.`);
+          // The Emscripten glue dereferences `navigator` unconditionally; a
+          // stub that fails the adapter request cleanly routes to the CPU path.
+          globalThis.navigator ??= {};
+          globalThis.navigator.gpu ??= { requestAdapter: async () => null };
         }
       }
 

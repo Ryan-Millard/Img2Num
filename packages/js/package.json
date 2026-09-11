@@ -1,6 +1,6 @@
 {
   "name": "img2num",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Img2Num is a raster vectorization library - it converts images to SVGs",
   "publishConfig": {
     "access": "public"
@@ -22,6 +22,16 @@
     "url": "git+https://github.com/Ryan-Millard/Img2Num.git",
     "directory": "packages/js"
   },
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/Ryan-Millard"
+    },
+    {
+      "type": "ko-fi",
+      "url": "https://ko-fi.com/ryan_millard"
+    }
+  ],
   "license": "MIT",
   "author": "Ryan-Millard",
   "type": "module",
@@ -51,7 +61,6 @@
     "**/build-wasm/**"
   ],
   "scripts": {
-    "prebuild": "just build js",
     "build:browser": "cross-env TARGET=browser vite build",
     "build:standalone": "cross-env TARGET=standalone vite build",
     "build:node-esm": "cross-env TARGET=node-esm vite build",
@@ -67,9 +76,9 @@
     "webgpu": "^0.4.0"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.0",
+    "@rollup/plugin-commonjs": "^29.0.3",
     "cross-env": "^10.1.0",
-    "publint": "^0.3.0",
-    "vite": "^8.1.0"
+    "publint": "^0.3.24",
+    "vite": "^8.2.2"
   }
 }

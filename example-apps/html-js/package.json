@@ -7,7 +7,8 @@
     "build:deploy": "node scripts/build.mjs --deploy",
     "start:esm": "node scripts/build.mjs esm && npx --yes serve -l 5173 dist/esm",
     "start:iife": "node scripts/build.mjs iife && npx --yes serve -l 5175 dist/iife",
-    "start:umd": "node scripts/build.mjs umd && npx --yes serve -l 5176 dist/umd"
+    "start:umd": "node scripts/build.mjs umd && npx --yes serve -l 5176 dist/umd",
+    "start": "pnpm run \"/^start:.*/\""
   },
   "dependencies": {
     "img2num": "workspace:*"

@@ -5,6 +5,8 @@ import { imagetools } from "vite-imagetools";
 import generateContributorCreditsPlugin from "./scripts/generate-contributor-credits-json.js";
 import svgr from "vite-plugin-svgr";
 
+const alias = Object.fromEntries(["pages", "assets", "components", "utils", "hooks", "global-styles", "data"].map((d) => [`@${d}`, path.resolve(import.meta.dirname, `src/${d}`)]));
+
 export default defineConfig({
   base: "/example-apps/react-js/", // important for GitHub Pages
   server: {
@@ -17,15 +19,7 @@ export default defineConfig({
   },
 
   resolve: {
-    alias: {
-      "@pages": path.resolve(__dirname, "src/pages"),
-      "@assets": path.resolve(__dirname, "src/assets"),
-      "@components": path.resolve(__dirname, "src/components"),
-      "@utils": path.resolve(__dirname, "src/utils"),
-      "@hooks": path.resolve(__dirname, "src/hooks"),
-      "@global-styles": path.resolve(__dirname, "src/global-styles"),
-      "@data": path.resolve(__dirname, "src/data"),
-    },
+    alias,
   },
   plugins: [react(), imagetools(), generateContributorCreditsPlugin(), svgr()],
   worker: {
@@ -34,8 +28,15 @@ export default defineConfig({
   build: {
     target: "esnext",
     rollupOptions: {
-      // Tells the bundler to ignore these when building for the web browser
-      external: ["webgpu", "worker_threads", "url", "path", "fs"],
+      output: {
+        // Split libraries into chunks separate from index
+        codeSplitting: {
+          groups: [
+            { name: "react-vendor", test: /node_modules[\\/](react|react-dom|react-router)/ },
+            { name: "img2num", test: /packages[\\/]js[\\/]dist|node_modules[\\/]img2num/ },
+          ],
+        },
+      },
     },
     outDir: "../../docs/static/example-apps/react-js",
   },
