@@ -14,6 +14,7 @@ export default function GlassModal({
   closeOnBackdropClick = true,
   className = "",
   style = {},
+  tourId,
 }) {
   useEffect(() => {
     const handleKey = (e) => {
@@ -34,7 +35,7 @@ export default function GlassModal({
   const width = size === "sm" ? "300px" : size === "md" ? "500px" : size === "lg" ? "800px" : size;
 
   const modal = (
-    <div className={styles.backdrop} onClick={handleBackdropClick} role="dialog">
+    <div className={styles.backdrop} onClick={handleBackdropClick} role="dialog" data-tour-id={tourId}>
       <GlassCard
         as="div"
         className={`${styles.modal} ${className}`}
@@ -53,6 +54,7 @@ export default function GlassModal({
             }}
             className={`${styles.closeButton}`}
             aria-label="Close modal"
+            id={tourId ? `${tourId}-close` : undefined}
           >
             <X size={20} />
           </a>

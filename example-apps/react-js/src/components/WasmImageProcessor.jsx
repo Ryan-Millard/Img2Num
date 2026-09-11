@@ -8,6 +8,9 @@ import { setEditorHandoff } from "@utils/editorHandoff";
 import LoadingHedgehog from "@components/LoadingHedgehog";
 import Tooltip from "@components/Tooltip";
 import ConfigPanel from "@components/ConfigPanel";
+import { createTour } from "@components/OnboardingTour";
+import { TOUR_KEY } from "@components/OnboardingTour";
+import "driver.js/dist/driver.css";
 
 const WasmImageProcessor = () => {
   const navigate = useNavigate();
@@ -216,6 +219,7 @@ const WasmImageProcessor = () => {
                 }}
                 aria-expanded={isSettingsOpen}
                 aria-label="Toggle settings"
+                id="settingsToggleButton"
               >
                 <Settings size={18} />
               </button>
