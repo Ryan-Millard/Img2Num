@@ -14,6 +14,7 @@ const TARGETS = {
     isNode: false,
     // Copy the external .wasm next to the bundle.
     copyWasm: "required",
+    outDir: "dist/browser",
   },
 
   standalone: {
@@ -27,6 +28,7 @@ const TARGETS = {
     isNode: false,
     // Absent when SINGLE_FILE=1, present when SINGLE_FILE=0
     copyWasm: "optional",
+    outDir: "dist/standalone",
   },
 
   "node-esm": {
@@ -56,16 +58,16 @@ const TARGETS = {
   },
 };
 
-const T = TARGETS[TARGET];
-if (!T) {
+if (!Object.hasOwn(TARGETS, TARGET)) {
   throw new Error(`[img2num] Unknown TARGET "${TARGET}". Expected one of: ${Object.keys(TARGETS).join(", ")}`);
 }
+const T = TARGETS[TARGET];
 
 // Single sources of truth for the paths that used to be re-derived in each
 // plugin: glue input dir, output dir, and the remediation hint shown by
 // every "wasm build missing" error.
 const glueDir = path.join(here, "build-wasm", T.glue);
-const outDir = T.outDir ?? `dist/${TARGET}`;
+const outDir = T.outDir;
 const WASM_BUILD_HINT = "Run the CMake wasm build first (just build js, or emcmake cmake -B build-wasm && cmake --build build-wasm).";
 
 // Config-time guard: a missing build-wasm/ otherwise dies later as a cryptic
