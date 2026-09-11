@@ -171,7 +171,7 @@ void bilateral_filter_cpu(
 
     std::vector<uint8_t> result(width * height * 4);
 
-    std::vector<double> spatial_weights(kernel_diameter * kernel_diameter);
+    std::vector<double> spatial_weights(static_cast<size_t>(kernel_diameter) * kernel_diameter);
 
     // Precompute Spatial Weights (Gaussian Kernel)
     for (int ky {-radius}; ky <= radius; ++ky) {
