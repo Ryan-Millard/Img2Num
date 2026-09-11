@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import Hedgehog from "../components/Hedgehog";
 import styles from "./index.module.css";
 import CodeBlock from "@theme/CodeBlock";
+import { fetchContributorCount } from "../../lib/githubStats";
 
 function RasterToSvgDemo() {
   return (
@@ -42,6 +43,7 @@ function HeroSection() {
   const [stats, setStats] = useState({
     stars: null,
     forks: null,
+    contributors: null,
   });
 
   useEffect(() => {
@@ -49,13 +51,20 @@ function HeroSection() {
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data) {
-          setStats({
+          setStats((prev) => ({
+            ...prev,
             stars: data.stargazers_count,
             forks: data.forks_count,
-          });
+          }));
         }
       })
       .catch(() => {});
+
+    fetchContributorCount().then((count) => {
+      if (count !== null) {
+        setStats((prev) => ({ ...prev, contributors: count }));
+      }
+    });
   }, []);
 
   return (
@@ -106,6 +115,10 @@ function HeroSection() {
             <div className={styles.stat}>
               <span className={styles.statNum}>⑂ {stats.forks !== null ? stats.forks : "—"}</span>
               <span className={styles.statLabel}>forks</span>
+            </div>
+            <div className={styles.stat}>
+              <span className={styles.statNum}>◉ {stats.contributors !== null ? stats.contributors : "—"}</span>
+              <span className={styles.statLabel}>contributors</span>
             </div>
             <div className={styles.stat}>
               <span className={styles.statNum}>C++/C/Py/JS</span>
