@@ -10,6 +10,7 @@ from ._img2num import (
     black_threshold_image   as _black_threshold_image,
     bilateral_filter        as _bilateral_filter,
     kmeans                  as _kmeans,
+    color_quantize          as _color_quantize,
     labels_to_svg           as _labels_to_svg,
     image_to_svg            as _image_to_svg,
     ImageToSvgConfig
@@ -185,6 +186,31 @@ def kmeans(
         A tuple containing two NumPy arrays: (clustered_data, labels).
     """
     return _kmeans(data, width, height, k, max_iter, color_space)
+
+@_inject_dimensions("data")
+def color_quantize(
+    data: npt.NDArray[np.uint8], k: int, coverage: float, color_space: int, *, width: int, height: int
+) -> Tuple[npt.NDArray[np.uint8], npt.NDArray[int]]:
+    """
+    Perform K-means clustering on the image data.
+
+    Parameters
+    ----------
+    data : numpy.ndarray
+        Input image data as a uint8 numpy array.
+    k : int
+        Number of dominant colors to select. If k=0 set coverage.
+    coverage : float
+        Area ratio to consider when determining dominant colors.
+    color_space : int
+        Color space identifier (e.g., 0 for LAB, 1 for sRGB).
+
+    Returns
+    -------
+    tuple
+        A tuple containing two NumPy arrays: (clustered_data, labels).
+    """
+    return _color_quantize(data, width, height, k, coverage, color_space)
 
 
 @_inject_dimensions("data")

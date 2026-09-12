@@ -167,6 +167,28 @@ export const kmeans = async ({
   return { pixels: result.output.out_pixels, labels: result.output.out_labels };
 };
 
+export const color_quantize = async ({
+  pixels,
+  out_pixels = new Uint8ClampedArray(pixels.length),
+  out_labels = new Int32Array(pixels.length / 4),
+  width,
+  height,
+  num_colors = 0,
+  coverage = 0.9,
+  color_space = 0,
+}) => {
+  const result = await callWasm({
+    funcName: "color_quantize",
+    args: { pixels, out_pixels, out_labels, width, height, num_colors, coverage, color_space },
+    bufferKeys: [
+      { key: "pixels", type: "Uint8ClampedArray" },
+      { key: "out_pixels", type: "Uint8ClampedArray" },
+      { key: "out_labels", type: "Int32Array" },
+    ],
+  });
+  return { pixels: result.output.out_pixels, labels: result.output.out_labels };
+};
+
 /**
  * @summary Convert labeled regions to SVG contours.
  *
