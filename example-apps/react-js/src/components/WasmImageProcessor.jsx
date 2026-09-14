@@ -1,5 +1,5 @@
 import { useEffect, useState, useId, useRef, useCallback, useMemo } from "react";
-import { Upload, Settings, ChevronDown, ChevronUp } from "lucide-react";
+import { Upload, Settings } from "lucide-react";
 import { imageToUint8ClampedArray, bilateralFilter, kmeans, findContours, terminateWasmModule } from "img2num";
 import GlassCard from "@components/GlassCard";
 import styles from "./WasmImageProcessor.module.css";
@@ -8,6 +8,7 @@ import { setEditorHandoff } from "@utils/editorHandoff";
 import LoadingHedgehog from "@components/LoadingHedgehog";
 import Tooltip from "@components/Tooltip";
 import ConfigPanel from "@components/ConfigPanel";
+import { TOUR_EVENTS } from "@components/OnboardingTour";
 
 const WasmImageProcessor = () => {
   const navigate = useNavigate();
@@ -46,7 +47,27 @@ const WasmImageProcessor = () => {
 
     const { pixels, width, height } = await imageToUint8ClampedArray(file);
     setFileData({ pixels, width, height });
+
+    // Single source of truth for "an image is now loaded": fires for drop,
+    // file picker, AND paste, and only once the pixels are actually decoded
+    // (so the tour never advances to a state that isn't ready yet).
+    window.dispatchEvent(new Event(TOUR_EVENTS.imageLoaded));
   }, []);
+
+  /* Clear the current image (used by the tour's reset request) */
+  const clearImage = useCallback(() => {
+    setOriginalSrc(null); // the effect above revokes the old object URL
+    setFileData(null);
+    setIsSettingsOpen(false);
+    if (inputRef.current) inputRef.current.value = "";
+    window.dispatchEvent(new Event(TOUR_EVENTS.imageCleared));
+  }, []);
+
+  /* Let the tour ask for a reset so it can restart from the upload step */
+  useEffect(() => {
+    window.addEventListener(TOUR_EVENTS.requestReset, clearImage);
+    return () => window.removeEventListener(TOUR_EVENTS.requestReset, clearImage);
+  }, [clearImage]);
 
   /* Paste support */
   useEffect(() => {
@@ -72,7 +93,14 @@ const WasmImageProcessor = () => {
     [loadOriginal],
   );
 
-  const handleSelect = useCallback((e) => loadOriginal(e.target.files[0]), [loadOriginal]);
+  const handleSelect = useCallback(
+    (e) => {
+      loadOriginal(e.target.files[0]);
+      // Allow re-selecting the same file later (change wouldn't fire otherwise)
+      e.target.value = "";
+    },
+    [loadOriginal],
+  );
 
   /* Hashed steps to keep pipeline aligned */
   const step = useCallback((p) => setProgress(p), []);
@@ -132,6 +160,10 @@ const WasmImageProcessor = () => {
         },
       });
 
+      // NOTE: TOUR_EVENTS.processingComplete is intentionally NOT dispatched
+      // here. At this point /editor hasn't rendered, so #svgCanvas doesn't
+      // exist yet and the tour would highlight nothing. The Editor page
+      // dispatches it from a mount effect instead.
       navigate("/editor");
     } catch (err) {
       console.error(err);
@@ -216,6 +248,7 @@ const WasmImageProcessor = () => {
                 }}
                 aria-expanded={isSettingsOpen}
                 aria-label="Toggle settings"
+                id="settingsToggleButton"
               >
                 <Settings size={18} />
               </button>
@@ -223,6 +256,7 @@ const WasmImageProcessor = () => {
               <button
                 type="button"
                 className={`button ${styles.okButton}`}
+                id="okButton"
                 onClick={(e) => {
                   e.stopPropagation();
                   processImage();
@@ -236,7 +270,7 @@ const WasmImageProcessor = () => {
 
           {isProcessing && (
             <div className={styles.controlsWrapper}>
-              <LoadingHedgehog progress={progress} text={`Processing — ${Math.round(progress)}%`} />
+              <LoadingHedgehog progress={progress} text={`Processing - ${Math.round(progress)}%`} />
             </div>
           )}
         </GlassCard>
