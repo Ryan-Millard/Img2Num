@@ -271,7 +271,7 @@ $(document).ready(function(){initNavTree('bilateral__filter_8cpp_source.html',''
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    std::vector&lt;uint8_t&gt; result(width * height * 4);</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    std::vector&lt;double&gt; spatial_weights(kernel_diameter * kernel_diameter);</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    std::vector&lt;double&gt; spatial_weights(<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(kernel_diameter) * kernel_diameter);</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="comment">// Precompute Spatial Weights (Gaussian Kernel)</span></div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> ky {-radius}; ky &lt;= radius; ++ky) {</div>

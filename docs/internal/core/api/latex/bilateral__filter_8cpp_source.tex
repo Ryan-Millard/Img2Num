@@ -175,7 +175,7 @@
 \DoxyCodeLine{\Hypertarget{bilateral__filter_8cpp_source_l00171}00171\ }
 \DoxyCodeLine{\Hypertarget{bilateral__filter_8cpp_source_l00172}00172\ \ \ \ \ std::vector<uint8\_t>\ result(width\ *\ height\ *\ 4);}
 \DoxyCodeLine{\Hypertarget{bilateral__filter_8cpp_source_l00173}00173\ }
-\DoxyCodeLine{\Hypertarget{bilateral__filter_8cpp_source_l00174}00174\ \ \ \ \ std::vector<double>\ spatial\_weights(kernel\_diameter\ *\ kernel\_diameter);}
+\DoxyCodeLine{\Hypertarget{bilateral__filter_8cpp_source_l00174}00174\ \ \ \ \ std::vector<double>\ spatial\_weights(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(kernel\_diameter)\ *\ kernel\_diameter);}
 \DoxyCodeLine{\Hypertarget{bilateral__filter_8cpp_source_l00175}00175\ }
 \DoxyCodeLine{\Hypertarget{bilateral__filter_8cpp_source_l00176}00176\ \ \ \ \ \textcolor{comment}{//\ Precompute\ Spatial\ Weights\ (Gaussian\ Kernel)}}
 \DoxyCodeLine{\Hypertarget{bilateral__filter_8cpp_source_l00177}00177\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ ky\ \{-\/radius\};\ ky\ <=\ radius;\ ++ky)\ \{}
