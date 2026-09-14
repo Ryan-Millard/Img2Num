@@ -32,7 +32,7 @@ const ConfigPanel = ({
         <h3 className={styles.settingsHeading}>Configuration</h3>
         <div className={styles.headerButtons}>
           {onClose && (
-            <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Close settings">
+            <button type="button" id="configPanel_closeButton" className={styles.closeButton} onClick={onClose} aria-label="Close settings">
               <X size={20} />
             </button>
           )}

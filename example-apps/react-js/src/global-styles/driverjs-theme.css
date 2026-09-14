@@ -34,6 +34,7 @@
   font-size: 14px;
   padding: 5px 8px;
   border-radius: 6px;
+  border: none;
 }
 
 .driver-popover.driverjs-theme button:hover {
@@ -44,4 +45,11 @@
 .driver-popover.driverjs-theme .driver-popover-navigation-btns {
   justify-content: space-between;
   gap: 3px;
+}
+
+/*Override default close button styles*/
+.driver-popover-close-btn {
+  background-color: unset !important;
+  width: 16px;
+  height: unset;
 }

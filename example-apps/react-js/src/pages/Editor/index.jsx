@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import EditorControls from "./EditorControls";
 import EditorHelmet from "./EditorHelmet";
 import SvgCanvas from "./SvgCanvas";
+import { TOUR_EVENTS } from "@components/OnboardingTour";
 
 import styles from "./Editor.module.css";
 
@@ -16,7 +17,10 @@ export default function Editor() {
   const { svg: initialSvg, fileData, imgBilateralFiltered, initialSettings } = handoff || {};
 
   useEffect(() => {
-    return () => clearEditorHandoff();
+    return () => {
+      clearEditorHandoff();
+      window.dispatchEvent(new Event(TOUR_EVENTS.processingComplete));
+    }
   }, []);
 
   const [svg, setSvg] = useState(initialSvg);

@@ -214,7 +214,7 @@ const EditorControls = ({
       </GlassModal>
 
       <div className={`container flex-center flex-wrap-wrap gap-md ${styles.wrapper}`} role="toolbar" aria-label="Editor actions">
-        <div className={`flex-center gap-sm ${styles.switchWrapper}`}>
+        <div id="editorControls_colorPreviewModeSwitch" className={`flex-center gap-sm ${styles.switchWrapper}`}>
           <GlassSwitch
             id={switchId}
             isOn={isColorMode}
