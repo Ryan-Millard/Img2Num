@@ -23,3 +23,20 @@ export async function fetchContributorCount({ token } = {}) {
     return null;
   }
 }
+
+export async function fetchRepoStats({ token } = {}) {
+  try {
+    const res = await fetch(`https://api.github.com/repos/${REPO}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    return {
+      stars: data.stargazers_count,
+      forks: data.forks_count,
+    };
+  } catch {
+    return null;
+  }
+}

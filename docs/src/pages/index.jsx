@@ -6,7 +6,8 @@ import React, { useEffect, useState } from "react";
 import Hedgehog from "../components/Hedgehog";
 import styles from "./index.module.css";
 import CodeBlock from "@theme/CodeBlock";
-import { fetchContributorCount } from "../../lib/githubStats";
+import { usePluginData } from "@docusaurus/useGlobalData";
+import { fetchContributorCount, fetchRepoStats } from "../../lib/githubStats";
 
 function RasterToSvgDemo() {
   return (
@@ -40,30 +41,19 @@ function RasterToSvgDemo() {
 
 //core hero section
 function HeroSection() {
-  const [stats, setStats] = useState({
-    stars: null,
-    forks: null,
-    contributors: null,
-  });
+  // Build-time numbers, baked into the static HTML.
+  const buildTimeStats = usePluginData("github-stats");
 
+  const [stats, setStats] = useState(buildTimeStats);
+
+  // Client-side refresh, so numbers stay current between deploys.
   useEffect(() => {
-    fetch("https://api.github.com/repos/Ryan-Millard/Img2Num")
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (data) {
-          setStats((prev) => ({
-            ...prev,
-            stars: data.stargazers_count,
-            forks: data.forks_count,
-          }));
-        }
-      })
-      .catch(() => {});
-
-    fetchContributorCount().then((count) => {
-      if (count !== null) {
-        setStats((prev) => ({ ...prev, contributors: count }));
-      }
+    Promise.all([fetchRepoStats(), fetchContributorCount()]).then(([repo, contributors]) => {
+      setStats((prev) => ({
+        stars: repo?.stars ?? prev.stars,
+        forks: repo?.forks ?? prev.forks,
+        contributors: contributors ?? prev.contributors,
+      }));
     });
   }, []);
 
