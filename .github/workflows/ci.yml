@@ -79,8 +79,9 @@ jobs:
       image: ${{ needs.set-image.outputs.image }}
     steps:
       - name: Checkout code
-        # No need for submodules since we are not running code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          submodules: true
 
       - name: Install PNPM dependencies
         run: pnpm install
