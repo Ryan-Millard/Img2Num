@@ -58,6 +58,8 @@ RUN git config --global --add safe.directory /usr/src/app
 
 # --------------------------------------------------------------------------------------------------------------
 # Emscripten setup (Slightly Expensive)
+# TODO: solve version drift possibility: Dockerfile.dev also hard-codes 6.0.9 as the version, which could be shared.
+#         See https://github.com/Ryan-Millard/Img2Num/issues/611
 ENV EMSDK_VERSION=6.0.9
 ENV EMSDK_DIR=/opt/emsdk
 
