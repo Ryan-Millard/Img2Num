@@ -145,6 +145,7 @@ const config = {
         redirects: [{ from: "/docs/faq", to: "/faq" }],
       },
     ],
+    "./plugins/github-stats/index.js",
     [
       "docusaurus-plugin-copy-page-button",
       {
