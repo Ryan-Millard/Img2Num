@@ -166,7 +166,7 @@ EXPOSE 3000 5173 4173 5174 4174 5175 5176
 # Healthcheck (Basic if container works)
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
   CMD bash -lc '\
-    for tool in node pnpm emcc cmake; do \
+    for tool in node pnpm emcc cmake uv; do \
       command -v "$tool" >/dev/null && "$tool" --version >/dev/null || exit 1; \
     done'
 
