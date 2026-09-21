@@ -19,9 +19,9 @@ updates:
       - "root"
     open-pull-requests-limit: 3
     commit-message:
-      prefix: "chore"
+      prefix: "chore(deps)"
 
-  # Core JS package
+  # JS package
   - package-ecosystem: "npm"
     directory: "/packages/js"
     schedule:
@@ -39,11 +39,11 @@ updates:
       - "package:js"
     open-pull-requests-limit: 3
     commit-message:
-      prefix: "chore(packages/js)"
+      prefix: "chore(deps)"
 
-  # React example app
+  # Example apps
   - package-ecosystem: "npm"
-    directory: "/example-apps/react-js"
+    directory: "/example-apps"
     schedule:
       interval: "weekly"
       day: "monday"
@@ -56,10 +56,11 @@ updates:
     labels:
       - "dependencies"
       - "npm"
+      - "javascript"
       - "example-app"
     open-pull-requests-limit: 3
     commit-message:
-      prefix: "chore(example-apps/react-js)"
+      prefix: "chore(deps)"
 
   # Docs (Docusaurus)
   - package-ecosystem: "npm"
@@ -73,13 +74,79 @@ updates:
       all-deps:
         patterns:
           - "*"
+    ignore:
+      - dependency-name: "typescript"
+        versions:
+          - ">=7.0.0" # typedoc-plugin-markdown doesn't support v7
     labels:
       - "dependencies"
       - "npm"
       - "docs"
     open-pull-requests-limit: 3
     commit-message:
-      prefix: "chore(docs)"
+      prefix: "chore(deps)"
+
+  # ======================================================================
+  # Root workspace
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    target-branch: "dev"
+    groups:
+      all-deps:
+        patterns:
+          - "*"
+    labels:
+      - "dependencies"
+      - "python"
+      - "uv"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "chore(deps)"
+
+    # Python tooling
+  - package-ecosystem: "uv"
+    directory: "/scripts/py"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    target-branch: "dev"
+    groups:
+      all-deps:
+        patterns:
+          - "*"
+    labels:
+      - "dependencies"
+      - "python"
+      - "uv"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "chore(deps)"
+
+  # Example apps
+  - package-ecosystem: "uv"
+    directory: "/example-apps"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    target-branch: "dev"
+    groups:
+      all-deps:
+        patterns:
+          - "*"
+    labels:
+      - "dependencies"
+      - "python"
+      - "uv"
+      - "example-app"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "chore(deps)"
 
   # ======================================================================
   # GitHub Actions
@@ -100,4 +167,22 @@ updates:
     open-pull-requests-limit: 3
     commit-message:
       prefix: "ci(deps)"
+
+  # ======================================================================
+  # Git Submodules
+  - package-ecosystem: "gitsubmodule"
+    directory: "/third_party"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    target-branch: "dev"
+    labels:
+      - "dependencies"
+      - "git-submodule"
+      - "c/cpp"
+      - "core"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "chore(submodules)"
 
