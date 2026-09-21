@@ -23,7 +23,6 @@ const ConfigPanel = ({
   isProcessing = false,
   className = "",
 }) => {
-
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
 
   return (

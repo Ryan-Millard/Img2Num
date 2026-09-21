@@ -27,9 +27,7 @@ export const TOUR_EVENTS = {
 // Read the truth from the DOM instead of tracking it in a module variable:
 // WasmImageProcessor already exposes data-image-loaded on its root card, so
 // this can never go stale across remounts, route changes, or paste-uploads.
-export const isImageLoaded = () =>
-  typeof document !== "undefined" &&
-  !!document.querySelector('[data-image-loaded="true"]');
+export const isImageLoaded = () => typeof document !== "undefined" && !!document.querySelector('[data-image-loaded="true"]');
 
 // localStorage can throw (private browsing, blocked storage) -- never let the
 // tour crash the page over it.
@@ -289,7 +287,7 @@ export function createTour({ hasImage = false } = {}) {
             <li>advanced settings</li>
           </ul>
           Intermediate pipeline stages are cached where possible, meaning reprocessing may be significantly faster.`,
-          showButtons: ["previous", "close"],
+        showButtons: ["previous", "close"],
       },
       ...advanceOnTargetClick(),
     },
@@ -316,7 +314,7 @@ export function createTour({ hasImage = false } = {}) {
       element: "#fullscreenButton",
       popover: {
         title: "Fullscreen",
-        description: "Click here to enter fullscreen mode."
+        description: "Click here to enter fullscreen mode.",
       },
     },
 
@@ -401,9 +399,7 @@ export function createTour({ hasImage = false } = {}) {
   // processing. The hasImage variant only skips what can't happen (the
   // upload) -- it does NOT jump to editor steps, because on the Home page
   // none of the editor elements exist yet.
-  const steps = hasImage
-    ? [hasImageIntro, ...configSteps, ...editorSteps]
-    : [welcomeStep, uploadStep, ...configSteps, ...editorSteps];
+  const steps = hasImage ? [hasImageIntro, ...configSteps, ...editorSteps] : [welcomeStep, uploadStep, ...configSteps, ...editorSteps];
 
   driverObj = driver({
     popoverClass: "driverjs-theme",
@@ -446,9 +442,7 @@ export function TourButton() {
 
   return (
     <Tooltip content="Start tutorial">
-      {showHint && (
-        <div className="tour-hint-popup">Need help? Start here:</div>
-      )}
+      {showHint && <div className="tour-hint-popup">Need help? Start here:</div>}
       <button className="button" onClick={handleClick}>
         Run Interactive Tour
       </button>

@@ -34,13 +34,7 @@ export function ImageProcessorProvider({ children }) {
     setImageLoaded(false);
   }, []);
 
-  return (
-    <ImageProcessorContext.Provider
-      value={{ isImageLoaded, setImageLoaded, registerReset, resetImage }}
-    >
-      {children}
-    </ImageProcessorContext.Provider>
-  );
+  return <ImageProcessorContext.Provider value={{ isImageLoaded, setImageLoaded, registerReset, resetImage }}>{children}</ImageProcessorContext.Provider>;
 }
 
 export function useImageProcessor() {
