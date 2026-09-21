@@ -4,7 +4,8 @@
 # Be careful of how you update this file. Updating layer 2 forces the layers below it to rebuild, too!
 # --------------------------------------------------------------------------------------------------------------
 
-FROM node:22-trixie
+# Node 26 = Active LTS in Oct 2026 (>= 24.14 required by editorconfig-checker 7.x: see package.json).
+FROM node:26-trixie
 
 # --------------------------------------------------------------------------------------------------------------
 # Build metadata
@@ -57,7 +58,9 @@ RUN git config --global --add safe.directory /usr/src/app
 
 # --------------------------------------------------------------------------------------------------------------
 # Emscripten setup (Slightly Expensive)
-ENV EMSDK_VERSION=4.0.10
+# TODO: solve version drift possibility: Dockerfile.dev also hard-codes 6.0.9 as the version, which could be shared.
+#         See https://github.com/Ryan-Millard/Img2Num/issues/611
+ENV EMSDK_VERSION=6.0.9
 ENV EMSDK_DIR=/opt/emsdk
 
 RUN git clone --depth 1 https://github.com/emscripten-core/emsdk.git $EMSDK_DIR \
@@ -111,9 +114,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 # --------------------------------------------------------------------------------------------------------------
 # UV + Python environment
-# When updating uv, see the lines below about uv sync - you will need to update those lines to use `--all-groups`
-# instead
-RUN curl -LsSf https://astral.sh/uv/0.5.1/install.sh | sh
+RUN curl -LsSf https://astral.sh/uv/0.12.13/install.sh | sh
 
 ENV PATH="/root/.local/bin:${PATH}"
 ENV UV_LINK_MODE=copy
@@ -130,12 +131,11 @@ COPY scripts/py/pyproject.toml scripts/py/pyproject.toml
 COPY example-apps/console-py/pyproject.toml example-apps/console-py/pyproject.toml
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-install-project --no-install-workspace \
-      --group dev --group lint --group licensing
+      --all-groups
 
 # --------------------------------------------------------------------------------------------------------------
 # Node / pnpm setup
-RUN corepack enable \
-  && corepack prepare pnpm@11.4.0 --activate
+RUN npm install -g pnpm@12.4.1
 
 ENV PNPM_STORE_DIR=/pnpm/store
 ENV PATH=/root/.local/share/pnpm:$PATH
@@ -165,10 +165,9 @@ EXPOSE 3000 5173 4173 5174 4174 5175 5176
 # --------------------------------------------------------------------------------------------------------------
 # Healthcheck (Basic if container works)
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
-  CMD bash -lc "\
-    node --version >/dev/null && \
-    corepack pnpm --version >/dev/null && \
-    emcc --version >/dev/null && \
-    cmake --version >/dev/null"
+  CMD bash -lc '\
+    for tool in node pnpm emcc cmake uv; do \
+      command -v "$tool" >/dev/null && "$tool" --version >/dev/null || exit 1; \
+    done'
 
 CMD ["bash"]

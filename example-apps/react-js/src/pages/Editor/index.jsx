@@ -20,7 +20,7 @@ export default function Editor() {
     return () => {
       clearEditorHandoff();
       window.dispatchEvent(new Event(TOUR_EVENTS.processingComplete));
-    }
+    };
   }, []);
 
   const [svg, setSvg] = useState(initialSvg);
