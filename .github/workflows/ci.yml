@@ -77,8 +77,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ${{ needs.set-image.outputs.image }}
-    env:
-      UV_NO_SYNC: "1" # every later `uv run` uses the env as-is
     steps:
       - name: Checkout code
         # No need for submodules since we are not running code
@@ -87,16 +85,19 @@ jobs:
       - name: Install PNPM dependencies
         run: pnpm install
 
-      - name: Sync Python tooling (skip building img2num)
-        run: uv sync --no-install-project
-        env:
-          UV_NO_SYNC: "" # let this one step actually sync
+      # TODO: uncomment the below when #606 is fixed
+      #- name: Sync Python tooling (skip building img2num)
+        #run: uv sync --group lint
 
-      - name: Run ESLint
+      # TODO: uncomment the below when #606 is fixed (https://github.com/Ryan-Millard/Img2Num/issues/606)
+      #- name: Lint Py (ruff)
+        #run: uv run ruff check .
+
+      - name: Lint JS (ESLint)
         run: pnpm run lint:js
 
-      # Commented out until the C and C++ files are formatted and committed to the repo
-      #- name: Run clang-tidy
+      # TODO: uncomment the below when #607 is fixed (https://github.com/Ryan-Millard/Img2Num/issues/607)
+      #- name: Lint C and C++ (clang-tidy)
         #run: pnpm run lint:cpp
 
       - name: Validate format
