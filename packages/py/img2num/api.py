@@ -1,18 +1,17 @@
-from typing import Tuple
 import numpy as np
 import numpy.typing as npt
 import inspect
 import functools
 from ._img2num import (
-    gaussian_blur_fft       as _gaussian_blur_fft,
-    invert_image            as _invert_image,
-    threshold_image         as _threshold_image,
-    black_threshold_image   as _black_threshold_image,
-    bilateral_filter        as _bilateral_filter,
-    kmeans                  as _kmeans,
-    labels_to_svg           as _labels_to_svg,
-    image_to_svg            as _image_to_svg,
-    ImageToSvgConfig
+    gaussian_blur_fft as _gaussian_blur_fft,
+    invert_image as _invert_image,
+    threshold_image as _threshold_image,
+    black_threshold_image as _black_threshold_image,
+    bilateral_filter as _bilateral_filter,
+    kmeans as _kmeans,
+    labels_to_svg as _labels_to_svg,
+    image_to_svg as _image_to_svg,
+    ImageToSvgConfig,
 )
 
 
@@ -24,10 +23,7 @@ def _inject_dimensions(image_arg="image"):
 
         @functools.wraps(fn)
         def wrapper(*args, **kwargs):
-            if image_arg in kwargs:
-                image = kwargs[image_arg]
-            else:
-                image = args[idx]
+            image = kwargs[image_arg] if image_arg in kwargs else args[idx]
             if image.ndim < 2:
                 raise ValueError("Expected (H, W) or (H, W, C)")
             height, width = image.shape[:2]
@@ -50,7 +46,7 @@ def gaussian_blur_fft(
     image: npt.NDArray[np.uint8], sigma: float, *, width: int, height: int
 ) -> npt.NDArray[np.uint8]:
     """
-    Apply a Gaussian blur to the image using Fast Fourier Transform (FFT) for performance.
+    Apply Gaussian blur to the image using Fast Fourier Transform (FFT) for performance.
 
     Parameters
     ----------
@@ -68,7 +64,9 @@ def gaussian_blur_fft(
 
 
 @_inject_dimensions("image")
-def invert_image(image: npt.NDArray[np.uint8], *, width: int, height: int) -> npt.NDArray[np.uint8]:
+def invert_image(
+    image: npt.NDArray[np.uint8], *, width: int, height: int
+) -> npt.NDArray[np.uint8]:
     """
     Invert the pixel values of an image.
 
@@ -158,13 +156,21 @@ def bilateral_filter(
     numpy.ndarray
         Filtered image as a uint8 numpy array.
     """
-    return _bilateral_filter(image, width, height, sigma_spatial, sigma_range, color_space)
+    return _bilateral_filter(
+        image, width, height, sigma_spatial, sigma_range, color_space
+    )
 
 
 @_inject_dimensions("data")
 def kmeans(
-    data: npt.NDArray[np.uint8], k: int, max_iter: int, color_space: int, *, width: int, height: int
-) -> Tuple[npt.NDArray[np.uint8], npt.NDArray[int]]:
+    data: npt.NDArray[np.uint8],
+    k: int,
+    max_iter: int,
+    color_space: int,
+    *,
+    width: int,
+    height: int,
+) -> tuple[npt.NDArray[np.uint8], npt.NDArray[int]]:
     """
     Perform K-means clustering on the image data.
 
@@ -220,7 +226,9 @@ def labels_to_svg(
 
 
 @_inject_dimensions("image")
-def image_to_svg(image: npt.NDArray[np.uint8], *, width: int, height: int, config=None) -> str:
+def image_to_svg(
+    image: npt.NDArray[np.uint8], *, width: int, height: int, config=None
+) -> str:
     """
     Convert Image to SVG string.
 
