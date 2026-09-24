@@ -227,7 +227,11 @@ def labels_to_svg(
 
 @_inject_dimensions("image")
 def image_to_svg(
-    image: npt.NDArray[np.uint8], *, width: int, height: int, config=None
+    image: npt.NDArray[np.uint8],
+    *,
+    width: int,
+    height: int,
+    config: ImageToSvgConfig | None = None,
 ) -> str:
     """
     Convert Image to SVG string.
