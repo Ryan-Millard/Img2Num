@@ -244,11 +244,13 @@ jobs:
           submodules: true
           persist-credentials: false
 
+      - name: Read Emscripten version
+        id: emscripten-version
+        run: echo "version=$(node scripts/read-version.js .versions/.emscripten.json)" >> "$GITHUB_OUTPUT"
+
       - uses: mymindstorm/setup-emsdk@1f4f5866c1f8745a10fcb64c4d7a0eb7a8daed9d
         with:
-          # TODO: solve version drift possibility: Dockerfile.dev also hard-codes 6.0.9 as the version, which could be
-          # shared.
-          version: 6.0.9
+          version: ${{ steps.emscripten-version.outputs.version }}
 
       - uses: actions/setup-node@670825a89dc0abd596e7a3abd0f5e3f6e5faf37c
         with:
