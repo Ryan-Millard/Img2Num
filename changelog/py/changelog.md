@@ -4,6 +4,12 @@ URL: https://img2num.dev/changelog/py/changelog
 
 [`img2num-py`](https://github.com/Ryan-Millard/Img2Num/releases)
 
+## [v0.3.1 - 2026-09-24](https://github.com/Ryan-Millard/Img2Num/releases/tag/packages-py-v0.3.1)
+
+### 📚 Documentation
+
+- add JS 0.4.2 blog post, overhaul READMEs and security policy, redesign navbar ( [#558](https://github.com/Ryan-Millard/Img2Num/issues/558) ) ( [e1a2a8a](https://github.com/Ryan-Millard/Img2Num/commit/e1a2a8aa332dc0a3e826a80e2ac9581964f747f5) )
+
 ## [v0.3.0 - 2026-08-13](https://github.com/Ryan-Millard/Img2Num/releases/tag/packages-py-v0.3.0)
 
 ### ✨ Features

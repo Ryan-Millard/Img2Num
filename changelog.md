@@ -22,6 +22,6 @@ Changelog:[`img2num-js`](/changelog/js) Latest:[v0.4.2 - 2026-08-18](/changelog/
 
 ## [Python](/changelog/py)
 
-Changelog:[`img2num-py`](/changelog/py) Latest:[v0.3.0 - 2026-08-13](/changelog/py/2026-08-13_0-3-0)
+Changelog:[`img2num-py`](/changelog/py) Latest:[v0.3.1 - 2026-09-24](/changelog/py/2026-09-24_0-3-1)
 
 [![Python](https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg)](/changelog/py)
