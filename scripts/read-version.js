@@ -16,3 +16,4 @@ if (typeof value !== "string" || value.length === 0) {
 }
 
 console.log(value);
+
