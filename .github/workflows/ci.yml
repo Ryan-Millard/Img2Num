@@ -87,10 +87,10 @@ jobs:
         run: pnpm install
 
       - name: Sync Python tooling (skip building img2num)
-        run: uv sync --group lint
+        run: uv sync --only-group lint
 
       - name: Lint Py (ruff)
-        run: uv run ruff check .
+        run: uv run --no-sync ruff check .
 
       - name: Lint JS (ESLint)
         run: pnpm run lint:js
