@@ -86,13 +86,11 @@ jobs:
       - name: Install PNPM dependencies
         run: pnpm install
 
-      # TODO: uncomment the below when #606 is fixed
-      #- name: Sync Python tooling (skip building img2num)
-        #run: uv sync --group lint
+      - name: Sync Python tooling (skip building img2num)
+        run: uv sync --only-group lint
 
-      # TODO: uncomment the below when #606 is fixed (https://github.com/Ryan-Millard/Img2Num/issues/606)
-      #- name: Lint Py (ruff)
-        #run: uv run ruff check .
+      - name: Lint Py (ruff)
+        run: uv run --no-sync ruff check .
 
       - name: Lint JS (ESLint)
         run: pnpm run lint:js
