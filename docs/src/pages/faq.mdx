@@ -16,15 +16,110 @@ keywords:
 image: /img/social-card.png
 ---
 
+<style>{`
+.minimal-faq-container {
+  color: var(--ifm-color-emphasis-900, rgba(255, 255, 255, 0.92));
+}
+
+.minimal-faq-container details {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  margin-bottom: 1rem;
+  padding: 0;
+  transition: background 0.2s ease, padding 0.2s ease;
+}
+
+.minimal-faq-container details[open] {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: none;
+  box-shadow: none;
+}
+
+.minimal-faq-container summary {
+  list-style: none !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 1rem;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 510;
+  padding: 0.35rem 0;
+  user-select: none;
+}
+
+/* optional subtle hover effect to make it feel responsive */
+.minimal-faq-container summary:hover {
+  color: #ffffff;
+}
+
+/* hide native browser WebKit & standard markers */
+.minimal-faq-container summary::-webkit-details-marker,
+.minimal-faq-container summary::marker {
+  display: none !important;
+  content: "" !important;
+}
+
+/* hide Docusaurus-injected pseudo-element arrows */
+.minimal-faq-container summary::before,
+.minimal-faq-container details > summary::before {
+  display: none !important;
+  content: "" !important;
+  background: none !important;
+}
+
+.minimal-faq-container summary::marker {
+  content: "";
+  display: none;
+}
+
+.minimal-faq-container summary::after {
+  content: "+";
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--ifm-color-emphasis-700, rgba(255, 255, 255, 0.7));
+}
+
+.minimal-faq-container details[open] > summary::after {
+  content: "−";
+}
+
+.minimal-faq-container details[open] > summary {
+  margin-bottom: 0.5rem;
+}
+
+.minimal-faq-container a {
+  color: var(--ifm-link-color, var(--ifm-color-primary));
+}
+
+.minimal-faq-container table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+`}</style>
+
 # Img2Num FAQ
 
 Find answers to common questions about **Img2Num**, including what it is, raster-to-SVG image vectorization, installation, supported languages, usage, troubleshooting, and contributing.
 
 ---
 
+<div className="minimal-faq-container">
+
 ## General
 
-### What is Img2Num?
+<details open>
+<summary><b>What is Img2Num?</b></summary>
+<br />
 
 Img2Num is an **open-source raster-to-SVG vectorization library**. It converts raster images such as PNG and JPEG files into clean, scalable SVG graphics made from flat color regions.
 
@@ -32,28 +127,46 @@ Unlike many image vectorization libraries that primarily target synthetic or com
 
 The core library is written in **C++** and provides official bindings for **C**, **Python**, and **JavaScript/WebAssembly**, allowing Img2Num to be used in native applications, scripts, servers, Node.js, and web browsers.
 
-### What is raster-to-SVG vectorization?
+</details>
+
+<details>
+<summary><b>What is raster-to-SVG vectorization?</b></summary>
+<br />
 
 Raster-to-SVG vectorization is the process of converting a pixel-based raster image into a vector image made from scalable mathematical shapes called paths.
 
-### How does Img2Num vectorize an image?
+</details>
+
+<details>
+<summary><b>How does Img2Num vectorize an image?</b></summary>
+<br />
 
 A raster image consists of pixels, while an SVG consists of scalable vector paths.
 
+:::info[Architecture]
 Img2Num converts raster images by:
 
 1. Quantizing image colors into a smaller palette using **k-means clustering**.
 2. Tracing the boundaries of color regions using **Suzuki–Abe contour tracing**.
 3. Smoothing the resulting contours using **Savitzky–Golay filtering**.
 4. Generating clean SVG paths from the processed regions.
+:::
 
 The resulting SVG can scale to different sizes without pixelation and can often be significantly smaller than the original raster image.
 
-### Is Img2Num free and open source?
+</details>
+
+<details>
+<summary><b>Is Img2Num free and open source?</b></summary>
+<br />
 
 Yes, Img2Num is free and open source.
 
-### What license is Img2Num under?
+</details>
+
+<details>
+<summary><b>What license is Img2Num under?</b></summary>
+<br />
 
 :::info[Licensing]
 The Img2Num libraries are licensed under the [MIT license](https://github.com/Ryan-Millard/Img2Num?tab=MIT-1-ov-file).
@@ -65,7 +178,11 @@ The complete license texts are available in the [Img2Num LICENSES directory](htt
 The project is also [REUSE](https://reuse.software/)-compliant.
 :::
 
-### What happened to the color-by-number app?
+</details>
+
+<details>
+<summary><b>What happened to the color-by-number app?</b></summary>
+<br />
 
 Img2Num originally started as a browser-based color-by-number application. Early in development, it became clear that the underlying image-processing engine was the more reusable part of the project. The project therefore evolved into a general-purpose image vectorization library that can be embedded into other applications.
 
@@ -73,29 +190,47 @@ Some older documentation, blog posts, and screenshots still reference the origin
 
 The color-by-number app still exists as an example application demonstrating the library. You can find it in the [Img2Num React.js example app](https://img2num.dev/example-apps/react-js/) along with other [Img2Num example applications](https://img2num.dev/example-apps/).
 
-### Who maintains Img2Num, and how can I support the project?
+</details>
+
+<details>
+<summary><b>Who maintains Img2Num, and how can I support the project?</b></summary>
+<br />
 
 Img2Num is maintained by [Ryan Millard](https://github.com/Ryan-Millard) with co-maintainers [Alex Krasner](https://github.com/krasner) and [Prachi Gupta](https://github.com/Prachi-Gupta2808).
 You can support the project by starring the repository, reporting bugs, contributing pull requests, or [sponsoring on GitHub](https://github.com/sponsors/Ryan-Millard).
+
+</details>
 
 ---
 
 ## Installation & Package Selection
 
-### Which languages and platforms does Img2Num support?
+<details>
+<summary><b>Which languages and platforms does Img2Num support?</b></summary>
+<br />
 
 - **C**: A stable C ABI wrapper around the core library.
 - **C++**: The core library, consumable via CMake.
 - **Python**: Installable with `pip install img2num`, with prebuilt wheels for major platforms and full type stubs (`.pyi` + `py.typed`).
 - **JavaScript/TypeScript**: Installable with `npm install img2num`; the package uses WebAssembly and can run in browsers and Node.js.
 
-### Which package should I use for my project?
+</details>
 
+<details>
+<summary><b>Which package should I use for my project?</b></summary>
+<br />
+
+:::tip[Package Selection]
 - **Websites or Web Apps:** Use the **npm package** which runs entirely client-side and does not require a server.
 - **Scripts, Data Pipelines or Research:** Use the **Python package**.
 - **Native Applications:** Use the **C++ core** or **C bindings** for ABI stability or binding Img2Num from another language.
+:::
 
-### How do I install the Python package? Which Python versions and platforms are supported?
+</details>
+
+<details>
+<summary><b>How do I install the Python package? Which Python versions and platforms are supported?</b></summary>
+<br />
 
 ```bash
 pip install img2num
@@ -122,7 +257,11 @@ If a wheel exists for your platform, `pip install img2num` requires no compiler.
 The source distribution is available as a fallback, but building from source requires a **C++17 toolchain and CMake**. Custom builds can get complex, so we recommend that you reach out to the community or maintainers for assistance if you would like a custom build — we may even start supporting it.
 :::
 
-### How do I install the npm package? Which Node versions are supported?
+</details>
+
+<details>
+<summary><b>How do I install the npm package? Which Node versions are supported?</b></summary>
+<br />
 
 ```bash
 npm install img2num
@@ -138,7 +277,11 @@ The package ships multiple build formats and the correct one is selected automat
 Node >= 18 is required for the Node builds.
 :::
 
-### Are prebuilt binaries available?
+</details>
+
+<details>
+<summary><b>Are prebuilt binaries available?</b></summary>
+<br />
 
 Prebuilt artifacts are published for every release:
 
@@ -146,13 +289,19 @@ Prebuilt artifacts are published for every release:
 - **JavaScript**: The package is published on [npm](https://www.npmjs.com/).
 - **C/C++**: Archives are available through [GitHub Releases](https://github.com/Ryan-Millard/Img2Num/releases).
 
+:::note
 You only need to build Img2Num from source for development or when using an unsupported platform.
+:::
+
+</details>
 
 ---
 
 ## Usage
 
-### How do I convert an image to SVG with Img2Num?
+<details>
+<summary><b>How do I convert an image to SVG with Img2Num?</b></summary>
+<br />
 
 For a minimal working example, see the [example apps](https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps) and choose the one most relevant to your language or environment.
 
@@ -164,12 +313,20 @@ For JavaScript, there are also ready-to-run sandboxes:
 - [UMD Browser](https://codesandbox.io/p/sandbox/competent-shape-2drsrz)
 - [Browser ESM](https://codesandbox.io/p/sandbox/delicate-bird-3kprj2)
 
-### What image formats does Img2Num support?
+</details>
+
+<details>
+<summary><b>What image formats does Img2Num support?</b></summary>
+<br />
 
 Img2Num supports raster images conforming to the **RGBA format**, with channel values in the range **[0,255]**.
 For guidance on preparing and validating image inputs for Img2Num functions, see the [Img2Num documentation](https://img2num.dev/docs/).
 
-### Which JavaScript build should I import?
+</details>
+
+<details>
+<summary><b>Which JavaScript build should I import?</b></summary>
+<br />
 
 The npm package's **exports map** automatically selects the appropriate build when you `import` or `require("img2num")`.
 
@@ -178,7 +335,11 @@ In that case, use the **IIFE** or **UMD** bundle.
 
 See the [Img2Num JavaScript documentation](https://img2num.dev/docs/js) for the CDN snippet and more details.
 
-### Is the Img2Num JavaScript API synchronous or asynchronous?
+</details>
+
+<details>
+<summary><b>Is the Img2Num JavaScript API synchronous or asynchronous?</b></summary>
+<br />
 
 The processing API is technically **asynchronous** because of its WebAssembly calls, but it blocks the main thread while waiting for the actual vectorization call to complete. You therefore do not need to manage workers or promises around the vectorization call itself.
 
@@ -188,7 +349,11 @@ For very large images in a browser UI, consider running Img2Num inside your own 
 
 For more background on this behavior, see the [Img2Num v0.3–0.4 changes blog post](https://img2num.dev/blog/img2num_js_0_4_2/).
 
-### How do I enable or disable Img2Num logging?
+</details>
+
+<details>
+<summary><b>How do I enable or disable Img2Num logging?</b></summary>
+<br />
 
 The native builds use a named **spdlog** logger.
 
@@ -208,11 +373,15 @@ The available log levels are:
 - CRITICAL
 - OFF
 
+</details>
+
 ---
 
 ## Troubleshooting
 
-### How do I fix WASM loading errors in Node.js?
+<details>
+<summary><b>How do I fix WASM loading errors in Node.js?</b></summary>
+<br />
 
 **Symptom:** You may encounter an error such as `Error: Could not load WASM module`.
 
@@ -231,7 +400,11 @@ npm uninstall img2num
 npm install img2num
 ```
 
-### What if the WASM file exists but still does not load?
+</details>
+
+<details>
+<summary><b>What if the WASM file exists but still does not load?</b></summary>
+<br />
 
 If the `.wasm` file exists but loading still fails, your bundler may need explicit `*.wasm` asset handling.
 
@@ -248,7 +421,11 @@ export default defineConfig({
 
 If you encounter any problems, please [open an issue](https://github.com/Ryan-Millard/Img2Num/issues/new) so we can document the solution.
 
-### How do I fix `ERR_REQUIRE_ESM` or a CommonJS import error?
+</details>
+
+<details>
+<summary><b>How do I fix `ERR_REQUIRE_ESM` or a CommonJS import error?</b></summary>
+<br />
 
 :::tip
 Upgrade to the latest release.
@@ -259,7 +436,11 @@ Version **0.4.0** contained a regression in which the CJS build pulled in an ESM
 The issue was fixed in the following release, and **v0.4.0 is deprecated on npm** for this reason.  
 If your project is pinned to 0.4.0, remove the pin and upgrade.
 
-### Why does `pip install img2num` fail or try to compile from source?
+</details>
+
+<details>
+<summary><b>Why does `pip install img2num` fail or try to compile from source?</b></summary>
+<br />
 
 This usually means that pip could not find a prebuilt wheel matching your platform and Python version, so it fell back to the source distribution.
 
@@ -274,7 +455,11 @@ Older versions of pip can sometimes fail to recognize valid wheels.
 :::
 If your platform genuinely does not have a compatible prebuilt wheel, you can either install the required **C++17 toolchain and CMake** and build Img2Num from source, or open an issue on GitHub requesting support for your platform.
 
-### How can I improve noisy, missing, or inaccurate SVG output?
+</details>
+
+<details>
+<summary><b>How can I improve noisy, missing, or inaccurate SVG output?</b></summary>
+<br />
 
 The quality of the generated SVG depends heavily on the image‑processing parameters, and different problems require different adjustments:
 
@@ -301,7 +486,11 @@ The default Img2Num bilateral filter parameters are tuned for general natural im
 
 If the output still looks incorrect after tuning these parameters, file a bug on GitHub and include the input image and the exact parameters used so the problem can be reproduced.
 
-### K-Means run slow in the browser, how can I speed it up?
+</details>
+
+<details>
+<summary><b>K-Means run slow in the browser, how can I speed it up?</b></summary>
+<br />
 
 K-means can take seconds on large images. Try:
 
@@ -309,18 +498,30 @@ K-means can take seconds on large images. Try:
 - Lowering `max_iter`
 - Using a smaller source image for development
 
-### How can I fix Memory Errors (Out of Memory) when using Img2Num?
+</details>
+
+<details>
+<summary><b>How can I fix Memory Errors (Out of Memory) when using Img2Num?</b></summary>
+<br />
 
 The WASM heap is fixed at compile time. Very large images may exceed it. Consider:
 
 - Downscaling the input image
 - Splitting the image into tiles
 
-### How do I fix missing CIE LAB output in Img2Num?
+</details>
+
+<details>
+<summary><b>How do I fix missing CIE LAB output in Img2Num?</b></summary>
+<br />
 
 Make sure `color_space = 0` (default). `color_space = 1` uses sRGB which may produce different cluster boundaries.
 
-### How do I report an Img2Num bug?
+</details>
+
+<details>
+<summary><b>How do I report an Img2Num bug?</b></summary>
+<br />
 
 Open a [GitHub issue](https://github.com/Ryan-Millard/Img2Num/issues) and include:
 
@@ -335,15 +536,23 @@ Open a [GitHub issue](https://github.com/Ryan-Millard/Img2Num/issues) and includ
 Providing a minimal reproduction makes it much easier to investigate and fix the issue.
 :::
 
+</details>
+
 ---
 
 ## Contributing to Img2Num
 
-### How do I build the project locally, and what toolchain do I need?
+<details>
+<summary><b>How do I build the project locally, and what toolchain do I need?</b></summary>
+<br />
 
 See the [Img2Num contributing guide](https://img2num.dev/docs/contributing/) for instructions on building the project locally and setting up the required development environment.
 
-### What commit message convention does Img2Num use?
+</details>
+
+<details>
+<summary><b>What commit message convention does Img2Num use?</b></summary>
+<br />
 
 Img2Num uses **Conventional Commits** such as `feat:`, `fix:`, and `docs:`, together with component scopes. This convention is important because releases are fully automated using [release‑please](https://github.com/googleapis/release-please). Release automation reads commit messages to determine version bumps and generate changelogs for the project's four release components:
 
@@ -352,22 +561,36 @@ Img2Num uses **Conventional Commits** such as `feat:`, `fix:`, and `docs:`, toge
 - JavaScript
 - Python
 
+:::note
 A mislabeled commit can therefore result in an incorrect changelog entry or version bump.
+:::
 
 The project usually catches these issues before a pull request is merged, so contributors do not need to master the convention immediately.  
 For more details, see [Conventional Commits](https://www.conventionalcommits.org/).
 
-### Where can I find good first issues for Img2Num?
+</details>
+
+<details>
+<summary><b>Where can I find good first issues for Img2Num?</b></summary>
+<br />
 
 You can browse the [Img2Num good first issues board](https://github.com/Ryan-Millard/Img2Num/issues/views/1155).
 Before starting work on an issue, leave a comment to confirm that it is still relevant and has not already been taken.
 
-### How do I contribute to the docs site?
+</details>
+
+<details>
+<summary><b>How do I contribute to the docs site?</b></summary>
+<br />
 
 The Img2Num documentation site [img2num.dev](https://img2num.dev/) is a [Docusaurus](https://docusaurus.io/) application located in the `docs/` folder.
 For most documentation changes, standard Markdown and MDX knowledge is enough. Every documentation page also has an **"Edit this page"** link that takes you directly to the corresponding file on GitHub.
 
-### Can I add a binding for another language?
+</details>
+
+<details>
+<summary><b>Can I add a binding for another language?</b></summary>
+<br />
 
 Yes. This is one of the purposes of the C bindings: they provide a stable C ABI that can serve as a foundation for additional language bindings such as Rust, Go, or Ruby.
 
@@ -375,10 +598,18 @@ If you want to add another language binding, open an issue first to discuss the 
 
 The project does plan to support additional languages in the future, but would like the core library to stabilize first at v1.x to avoid frequent and costly refactors.
 
+</details>
+
 ---
 
 ## Img2Num Project
 
-### Why is the mascot a hedgehog? 🦔
+<details>
+<summary><b>Why is the mascot a hedgehog? 🦔</b></summary>
+<br />
 
 The mascot is Joan, an African pygmy hedgehog and the project's original quality-assurance department. She belonged to the maintainer and lives on as the face of Img2Num.
+
+</details>
+
+</div>
