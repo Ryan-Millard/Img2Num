@@ -64,7 +64,7 @@ A merged PR in a real project is worth more than most personal projects.
 :::warning[Mentorship]
 We actively mentor newcomers. You will not be left alone to figure things out. We review PRs carefully and explain our feedback.
 
-We're also around if you get stuck along the way - just give someone a shout.
+If you get stuck along the way, give us a shout on [Discord](https://discord.gg/BHjxcCqAnU) - someone's usually around.
 :::
 
 :::danger[Long-term community]
@@ -153,5 +153,6 @@ Every contribution to any open source project makes the ecosystem better for eve
 
 We're excited to meet you. Whether you fix a typo or implement a feature, your contribution matters.
 
-Come say hello in [our Discussions](https://github.com/Ryan-Millard/Img2Num/discussions), pick up an issue, and let's build
-something great together.
+Come say hello on [our Discord server](https://discord.gg/BHjxcCqAnU) for quick questions and chat, or open a thread in
+[our Discussions](https://github.com/Ryan-Millard/Img2Num/discussions) for ideas, proposals, and anything worth keeping
+searchable. Then pick up an issue, and let's build something great together.
