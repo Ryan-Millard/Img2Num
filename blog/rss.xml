@@ -4,10 +4,115 @@
         <title>Img2Num Blog</title>
         <link>https://img2num.dev/blog/</link>
         <description>Img2Num Blog</description>
-        <lastBuildDate>Wed, 19 Aug 2026 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 30 Sep 2026 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[Contribute to Img2Num this October 🦔]]></title>
+            <link>https://img2num.dev/blog/hacktoberfest-2026/</link>
+            <guid>https://img2num.dev/blog/hacktoberfest-2026/</guid>
+            <pubDate>Wed, 30 Sep 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[It's [Hacktoberfest](https://hacktoberfest.com/) season! Here's how to make your first (or next) open source contribution to Img2Num, and where to start.]]></description>
+            <content:encoded><![CDATA[<p><img decoding="async" loading="lazy" alt="Hero" src="https://img2num.dev/assets/images/social-739456765b8bf4d0f927127168afbb20.png" width="1200" height="630" class="img_eFta"></p>
+<p style="font-size:2em">October is <a href="https://hacktoberfest.com/" target="_blank" rel="noopener noreferrer" class="">Hacktoberfest</a> season, and we'd love for this to be the month you contribute to <strong>Img2Num</strong>!</p>
+<blockquote>
+<p>Whether you're a seasoned open source contributor or someone making their very first pull request, we'd love to have you
+join us.</p>
+</blockquote>
+<!-- -->
+<h2 class="anchor anchorTargetStickyNavbar_w0Nu" id="what-is-hacktoberfest">What is <a href="https://hacktoberfest.com/" target="_blank" rel="noopener noreferrer" class="">Hacktoberfest</a>?<a href="https://img2num.dev/blog/hacktoberfest-2026/#what-is-hacktoberfest" class="hash-link" aria-label="Direct link to what-is-hacktoberfest" title="Direct link to what-is-hacktoberfest" translate="no">​</a></h2>
+<div class="theme-admonition theme-admonition-tip admonition_exeB alert alert--success"><div class="admonitionHeading_nAl3"><span class="admonitionIcon_YHQ9"><svg viewBox="0 0 12 16"><path fill-rule="evenodd" d="M6.5 0C3.48 0 1 2.19 1 5c0 .92.55 2.25 1 3 1.34 2.25 1.78 2.78 2 4v1h5v-1c.22-1.22.66-1.75 2-4 .45-.75 1-2.08 1-3 0-2.81-2.48-5-5.5-5zm3.64 7.48c-.25.44-.47.8-.67 1.11-.86 1.41-1.25 2.06-1.45 3.23-.02.05-.02.11-.02.17H5c0-.06 0-.13-.02-.17-.2-1.17-.59-1.83-1.45-3.23-.2-.31-.42-.67-.67-1.11C2.44 6.78 2 5.65 2 5c0-2.2 2.02-4 4.5-4 1.22 0 2.36.42 3.22 1.19C10.55 2.94 11 3.94 11 5c0 .66-.44 1.78-.86 2.48zM4 14h5c-.23 1.14-1.3 2-2.5 2s-2.27-.86-2.5-2z"></path></svg></span>Summary</div><div class="admonitionContent__Clk"><p><a href="https://hacktoberfest.com/" target="_blank" rel="noopener noreferrer" class="">Hacktoberfest</a> is a month-long celebration of open source software that runs every October. It started in 2014 as a pull-request
+challenge, and for over a decade it introduced thousands of developers to open source.</p></div></div>
+<p><strong>This year is a bit different.</strong> <a href="https://hacktoberfest.com/" target="_blank" rel="noopener noreferrer" class="">Hacktoberfest</a> 2026, run by Major League Hacking (MLH) and DEV with DigitalOcean, has moved
+away from counting pull requests and toward in-person and online events focused on building with open source AI. The
+reason is one every maintainer will recognise:</p>
+<blockquote>
+<p>low-effort, AI-generated PRs were flooding projects with noise</p>
+</blockquote>
+<p>So to be clear: <strong>contributions to Img2Num won't count toward anything official this year.</strong> No PR counter, no t-shirt.
+But October is still a great month to start contributing to open source, and we're still here to help you do it.</p>
+<p>We agree with the spirit of the change, too. One well-thought-out and meaningful contribution is worth far more than ten low-effort AI-generated ones.</p>
+<h2 class="anchor anchorTargetStickyNavbar_w0Nu" id="where-img2num-fits-in">Where Img2Num fits in<a href="https://img2num.dev/blog/hacktoberfest-2026/#where-img2num-fits-in" class="hash-link" aria-label="Direct link to Where Img2Num fits in" title="Direct link to Where Img2Num fits in" translate="no">​</a></h2>
+<p>This year's <a href="https://hacktoberfest.com/" target="_blank" rel="noopener noreferrer" class="">Hacktoberfest</a> theme is <strong>AI belongs to everyone</strong>. Img2Num isn't an LLM or agent project, but it lives in
+the same world: it's built on classical computer vision and machine learning, including k-means clustering for colour
+quantization, plus contour tracing and skeletonization.</p>
+<p>If you're curious about how machines actually make sense of images, before any neural network gets involved, this is a
+great place to learn.</p>
+<h2 class="anchor anchorTargetStickyNavbar_w0Nu" id="why-contribute-to-img2num">Why contribute to Img2Num?<a href="https://img2num.dev/blog/hacktoberfest-2026/#why-contribute-to-img2num" class="hash-link" aria-label="Direct link to Why contribute to Img2Num?" title="Direct link to Why contribute to Img2Num?" translate="no">​</a></h2>
+<p>Img2Num is a fast, accurate raster-to-SVG vectorization library built in C++ with library support for C++, C, Python, and JavaScript. It is
+actively used, actively maintained, and actively growing - all thanks to our users and contributors.</p>
+<p>Here's what makes contributing to Img2Num worthwhile for <strong>you</strong>:</p>
+<div class="theme-admonition theme-admonition-note admonition_exeB alert alert--secondary"><div class="admonitionHeading_nAl3"><span class="admonitionIcon_YHQ9"><svg viewBox="0 0 14 16"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 0 1-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 0 1-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg></span>Real experience</div><div class="admonitionContent__Clk"><p>You'll work with C and C++, JavaScript and WebAssembly, Python, React, and Docusaurus. These are technologies used in production systems.</p></div></div>
+<div class="theme-admonition theme-admonition-info admonition_exeB alert alert--info"><div class="admonitionHeading_nAl3"><span class="admonitionIcon_YHQ9"><svg viewBox="0 0 14 16"><path fill-rule="evenodd" d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg></span>CV/resume material</div><div class="admonitionContent__Clk"><p>Open source contributions are one of the best ways to demonstrate your skills to future employers.
+A merged PR in a real project is worth more than most personal projects.</p></div></div>
+<div class="theme-admonition theme-admonition-warning admonition_exeB alert alert--warning"><div class="admonitionHeading_nAl3"><span class="admonitionIcon_YHQ9"><svg viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg></span>Mentorship</div><div class="admonitionContent__Clk"><p>We actively mentor newcomers. You will not be left alone to figure things out. We review PRs carefully and explain our feedback.</p><p>If you get stuck along the way, give us a shout on <a href="https://discord.gg/BHjxcCqAnU" target="_blank" rel="noopener noreferrer" class="">Discord</a> - someone's usually around.</p></div></div>
+<div class="theme-admonition theme-admonition-danger admonition_exeB alert alert--danger"><div class="admonitionHeading_nAl3"><span class="admonitionIcon_YHQ9"><svg viewBox="0 0 12 16"><path fill-rule="evenodd" d="M5.05.31c.81 2.17.41 3.38-.52 4.31C3.55 5.67 1.98 6.45.9 7.98c-1.45 2.05-1.7 6.53 3.53 7.7-2.2-1.16-2.67-4.52-.3-6.61-.61 2.03.53 3.33 1.94 2.86 1.39-.47 2.3.53 2.27 1.67-.02.78-.31 1.44-1.13 1.81 3.42-.59 4.78-3.42 4.78-5.56 0-2.84-2.53-3.22-1.25-5.61-1.52.13-2.03 1.13-1.89 2.75.09 1.08-1.02 1.8-1.86 1.33-.67-.41-.66-1.19-.06-1.78C8.18 5.31 8.68 2.45 5.05.32L5.03.3l.02.01z"></path></svg></span>Long-term community</div><div class="admonitionContent__Clk"><p>October is just the start. Some of our maintainers started with a single small PR.</p></div></div>
+<p>And here's what your contributions give <strong>us</strong>:</p>
+<ul>
+<li class="">More work done. The project moves faster with more hands - there's always something that needs to be done.</li>
+<li class="">Fresh perspectives. Newcomers often spot things that long-time contributors overlook.</li>
+<li class="">Long-term contributors. Some of the best team members started as first-timers.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_w0Nu" id="new-to-open-source-weve-got-you-covered">New to open source? We've got you covered.<a href="https://img2num.dev/blog/hacktoberfest-2026/#new-to-open-source-weve-got-you-covered" class="hash-link" aria-label="Direct link to New to open source? We've got you covered." title="Direct link to New to open source? We've got you covered." translate="no">​</a></h2>
+<blockquote>
+<p>First of all: <strong>THANK YOU!</strong></p>
+<p>Even the smallest contributions can be enormously helpful and the fact that you're
+considering contributing to an open source project is amazing.</p>
+</blockquote>
+<p>If this is your first time exploring open source, you might be wondering where to even begin.</p>
+<p>We know exactly how difficult and confusing it can feel when you start contributing to open source. There are unfamiliar
+repositories, contribution guidelines, issues, pull requests, branches, reviews, and a lot of new terminology to figure
+out. Your first contribution can feel much more complicated than it actually is.</p>
+<p>That's why we've created a bunch of
+<a href="https://github.com/Ryan-Millard/Img2Num/issues/views/MDI0OlJlcG9zaXRvcnlTZWFyY2hTaG9ydGN1dDExNTU%3D" target="_blank" rel="noopener noreferrer" class=""><strong>Good First Issues specifically for newcomers</strong></a>.
+You don't need to be an open source expert to get started,
+and you don't need to know everything before making your first contribution.</p>
+<div class="theme-admonition theme-admonition-note admonition_exeB alert alert--secondary"><div class="admonitionHeading_nAl3"><span class="admonitionIcon_YHQ9"><svg viewBox="0 0 14 16"><path fill-rule="evenodd" d="M6.3 5.69a.942.942 0 0 1-.28-.7c0-.28.09-.52.28-.7.19-.18.42-.28.7-.28.28 0 .52.09.7.28.18.19.28.42.28.7 0 .28-.09.52-.28.7a1 1 0 0 1-.7.3c-.28 0-.52-.11-.7-.3zM8 7.99c-.02-.25-.11-.48-.31-.69-.2-.19-.42-.3-.69-.31H6c-.27.02-.48.13-.69.31-.2.2-.3.44-.31.69h1v3c.02.27.11.5.31.69.2.2.42.31.69.31h1c.27 0 .48-.11.69-.31.2-.19.3-.42.31-.69H8V7.98v.01zM7 2.3c-3.14 0-5.7 2.54-5.7 5.68 0 3.14 2.56 5.7 5.7 5.7s5.7-2.55 5.7-5.7c0-3.15-2.56-5.69-5.7-5.69v.01zM7 .98c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.12-7-7 3.14-7 7-7z"></path></svg></span>Good First Issues</div><div class="admonitionContent__Clk"><p>Find small bugs, documentation updates, and isolated features curated for new contributors.</p><a href="https://github.com/Ryan-Millard/Img2Num/issues/views/MDI0OlJlcG9zaXRvcnlTZWFyY2hTaG9ydGN1dDExNTU%3D" target="_blank" rel="noopener noreferrer" style="display:flex;justify-content:center"><p>View Issues on GitHub →</p></a></div></div>
+<p>Start with an issue that interests you, read the contributing guide, and ask questions whenever you're stuck. We'll help
+you understand the project and the contribution process along the way.</p>
+<p>And don't worry if your first contribution is something small. Fixing documentation, improving an example, adding a
+test, fixing a typo, or making a small improvement is still a real contribution that we need!</p>
+<p><strong>If you're new to open source, we've got you covered. 🦔</strong></p>
+<p>Check out our
+<a href="https://github.com/Ryan-Millard/Img2Num/issues/views/MDI0OlJlcG9zaXRvcnlTZWFyY2hTaG9ydGN1dDExNTU%3D" target="_blank" rel="noopener noreferrer" class="">Good First Issues</a>
+and find something that feels approachable.</p>
+<h2 class="anchor anchorTargetStickyNavbar_w0Nu" id="beyond-img2num">Beyond Img2Num<a href="https://img2num.dev/blog/hacktoberfest-2026/#beyond-img2num" class="hash-link" aria-label="Direct link to Beyond Img2Num" title="Direct link to Beyond Img2Num" translate="no">​</a></h2>
+<p>While you're in the open source spirit, we'd also encourage you to look beyond Img2Num.</p>
+<p>Img2Num is built on top of and alongside several amazing open source projects. These projects provide important building
+blocks and baseline functionality that help make Img2Num possible.</p>
+<p>If you enjoy working on Img2Num, you might also find something interesting to contribute to in the projects we depend
+on:</p>
+<ul>
+<li class=""><a href="https://dawn.googlesource.com/dawn" target="_blank" rel="noopener noreferrer" class=""><strong>Dawn</strong></a>. Google's WebGPU implementation, which powers our GPU acceleration.</li>
+<li class=""><a href="https://github.com/gabime/spdlog" target="_blank" rel="noopener noreferrer" class=""><strong>spdlog</strong></a>. The fast C++ logging library we use.</li>
+<li class=""><a href="https://github.com/nothings/stb" target="_blank" rel="noopener noreferrer" class=""><strong>STB</strong></a>. Single-file C libraries used in our example apps.</li>
+<li class=""><a href="http://github.com/pybind/pybind11" target="_blank" rel="noopener noreferrer" class=""><strong>Pybind11</strong></a>. The library that allows us to make our Python library possible.</li>
+<li class=""><a href="https://emscripten.org/" target="_blank" rel="noopener noreferrer" class=""><strong>Emscripten</strong></a>. The compiler toolchain that converts our C++ code into WebAssembly, which
+powers our JavaScript library.</li>
+<li class=""><a href="https://github.com/facebook/docusaurus" target="_blank" rel="noopener noreferrer" class=""><strong>Docusaurus</strong></a>. The framework that powers our documentation site.</li>
+<li class=""><a href="https://github.com/opencv/opencv" target="_blank" rel="noopener noreferrer" class=""><strong>OpenCV</strong></a>. Used in our Python example app.</li>
+</ul>
+<p>These projects are a small part of the open source ecosystem that Img2Num is built with and around. They have their own issues,
+documentation, tests, features, and communities that can benefit from new contributors too.</p>
+<blockquote>
+<p>There are many more open source projects that have made Img2Num possible. If you contribute towards improving one of
+them, you're basically improving Img2Num.</p>
+</blockquote>
+<p>So if you find yourself thinking, "I want to contribute to open source, but maybe Img2Num isn't the right project for
+me," that's completely fine.</p>
+<p>Explore these projects, find something that interests you, and make your first contribution there.</p>
+<p>Every contribution to any open source project makes the ecosystem better for everyone.</p>
+<h2 class="anchor anchorTargetStickyNavbar_w0Nu" id="see-you-in-october-">See you in October 🦔<a href="https://img2num.dev/blog/hacktoberfest-2026/#see-you-in-october-" class="hash-link" aria-label="Direct link to See you in October 🦔" title="Direct link to See you in October 🦔" translate="no">​</a></h2>
+<p>We're excited to meet you. Whether you fix a typo or implement a feature, your contribution matters.</p>
+<p>Come say hello on <a href="https://discord.gg/BHjxcCqAnU" target="_blank" rel="noopener noreferrer" class="">our Discord server</a> for quick questions and chat, or open a thread in
+<a href="https://github.com/Ryan-Millard/Img2Num/discussions" target="_blank" rel="noopener noreferrer" class="">our Discussions</a> for ideas, proposals, and anything worth keeping
+searchable. Then pick up an issue, and let's build something great together.</p>]]></content:encoded>
+            <category>Hacktoberfest</category>
+            <category>Open Source</category>
+            <category>Community</category>
+            <category>Contributing</category>
+        </item>
         <item>
             <title><![CDATA[Img2Num JS 0.4.2: One npm Package, Five Purpose-Built WebAssembly Bundles]]></title>
             <link>https://img2num.dev/blog/img2num_js_0_4_2/</link>

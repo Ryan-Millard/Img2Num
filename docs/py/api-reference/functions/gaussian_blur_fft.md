@@ -11,7 +11,7 @@ def gaussian_blur_fft(
 ) -> npt.NDArray[np.uint8]
 ```
 
-Apply a Gaussian blur to the image using Fast Fourier Transform (FFT) for performance.
+Apply Gaussian blur to the image using Fast Fourier Transform (FFT) for performance.
 
 ## Parameters
 

@@ -12,7 +12,7 @@ Apply thresholding with a bias in favor of black to the image.
 
 ## 📄️ gaussian_blur_fft
 
-Apply a Gaussian blur to the image using Fast Fourier Transform (FFT) for performance.
+Apply Gaussian blur to the image using Fast Fourier Transform (FFT) for performance.
 
 ## 📄️ image_to_svg
 

@@ -2,6 +2,6 @@
 
 URL: https://img2num.dev/blog/tags
 
-## J
+## C
 
-- JavaScript 1
+- Community 1 - Contributing 1

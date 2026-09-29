@@ -10,7 +10,7 @@ def kmeans(
     k: int,
     max_iter: int,
     color_space: int,
-) -> Tuple[npt.NDArray[np.uint8], npt.NDArray[int]]
+) -> tuple[npt.NDArray[np.uint8], npt.NDArray[int]]
 ```
 
 Perform K-means clustering on the image data.
