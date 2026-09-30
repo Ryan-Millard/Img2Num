@@ -10,6 +10,10 @@
 **/CMakeLists.txt       @Ryan-Millard @Krasner
 *.wgsl                  @Ryan-Millard @Krasner
 
+# Documentation & scripts
+/docs/                  @Ryan-Millard @Prachi-Gupta2808
+/scripts/               @Ryan-Millard
+
 # Python
 /bindings/py/           @Ryan-Millard @Krasner @Prachi-Gupta2808 
 /packages/py/           @Ryan-Millard @Prachi-Gupta2808
@@ -18,7 +22,7 @@
 
 # JavaScript / WebAssembly
 /bindings/js/           @Ryan-Millard @Krasner
-/packages/js/           @Ryan-Millard @Krasner
+/packages/js/           @Ryan-Millard @Krasner @Prachi-Gupta2808
 /example-apps/*-js*/    @Ryan-Millard @Krasner
 
 # CI and repo tooling
