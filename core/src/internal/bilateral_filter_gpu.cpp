@@ -257,8 +257,8 @@ void bilateral_filter_gpu(
             if (status == wgpu::MapAsyncStatus::Success) {
                 success = true;
             } else {
-                // Handle error
-                success = false;
+                std::string err_msg = message.data ? std::string(message.data, message.length) : "Unknown error";
+                throw std::runtime_error("WebGPU MapAsync failed during bilateral filter: " + err_msg);
             }
             *flag = false;
         },

@@ -43,7 +43,7 @@ export async function callWasm({ funcName, args = {}, bufferKeys = [], returnTyp
       const handler = WASM_TYPES[type];
 
       if (!handler) {
-        throw new Error(`Unsupported type: ${type}`);
+        throw new Error(`[Img2Num wasmClient] Unsupported buffer type: '${type}'. Expected one of: ${Object.keys(WASM_TYPES).join(", ")}`);
       }
 
       const value = argsMap.get(key);
@@ -83,7 +83,7 @@ export async function callWasm({ funcName, args = {}, bufferKeys = [], returnTyp
       returnValue,
     };
   } catch (error) {
-    throw new Error(`[Img2Num wasmClient] Error: ${error?.message ?? error}`, { cause: error });
+    throw new Error(`[Img2Num wasmClient] Execution failed during '${funcName}': ${error?.message ?? error}`, { cause: error });
   } finally {
     for (const { ptr } of pointers.values()) {
       wasmModule._free(ptr);

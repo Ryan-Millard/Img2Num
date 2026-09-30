@@ -82,7 +82,7 @@ std::vector<std::vector<float>> SavitzkyGolay::invert_matrix(std::vector<std::ve
         float pivot = A[i][i];
         // (Simple pivot check, typically you'd swap rows for stability)
         if (std::abs(pivot) < 1e-10)
-            throw std::runtime_error("Matrix singular, cannot invert.");
+            throw std::runtime_error("Savitzky-Golay filter failed: The calculation matrix is singular and cannot be inverted. This usually happens when there are not enough data points or the points are collinear.");
 
         // Normalize row
         for (int j = 0; j < n; ++j) {

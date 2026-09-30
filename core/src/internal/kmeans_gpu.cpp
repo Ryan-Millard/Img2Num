@@ -233,8 +233,8 @@ void kMeansPlusPlusInitGpu(
                 if (status == wgpu::MapAsyncStatus::Success) {
                     success = true;
                 } else {
-                    // Handle error
-                    success = false;
+                    std::string err_msg = msg.data ? std::string(msg.data, msg.length) : "Unknown error";
+                    throw std::runtime_error("WebGPU MapAsync failed during K-Means initialization: " + err_msg);
                 }
                 *flag = true;
             },
@@ -602,6 +602,9 @@ void kmeans_gpu(
             bool success = false;
             if (status == wgpu::MapAsyncStatus::Success) {
                 success = true;
+            } else {
+                std::string err_msg = msg.data ? std::string(msg.data, msg.length) : "Unknown error";
+                throw std::runtime_error("WebGPU MapAsync failed reading K-Means labels: " + err_msg);
             }
             *flag = true;
         },
@@ -643,6 +646,9 @@ void kmeans_gpu(
             bool success = false;
             if (status == wgpu::MapAsyncStatus::Success) {
                 success = true;
+            } else {
+                std::string err_msg = msg.data ? std::string(msg.data, msg.length) : "Unknown error";
+                throw std::runtime_error("WebGPU MapAsync failed reading K-Means centroids: " + err_msg);
             }
             *flag = true; // Signal completion
         },

@@ -67,7 +67,7 @@ export function imageToUint8ClampedArray(file) {
 
     img.onerror = () => {
       URL.revokeObjectURL(objectUrl);
-      reject(new Error("Failed to load image"));
+      reject(new Error(`Failed to load image '${file.name || "unknown"}'. The file may be corrupt or unsupported.`));
     };
 
     img.src = objectUrl;
