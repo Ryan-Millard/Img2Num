@@ -1,0 +1,130 @@
+.faqContainer {
+    color: var(--ifm-color-emphasis-900);
+  }
+  
+  .faqContainer details {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--ifm-color-emphasis-200);
+    border-radius: 14px;
+    box-shadow: none;
+    outline: none;
+    margin-bottom: 0.5rem;
+    padding: 0.25rem 1rem;
+    transition: background 0.25s ease, border-color 0.25s ease,
+                box-shadow 0.25s ease;
+  }
+  
+  .faqContainer details:hover {
+    background: color-mix(in srgb, var(--ifm-color-primary) 4%, transparent);
+  }
+  
+  .faqContainer details[open] {
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--ifm-color-primary) 9%, transparent),
+      color-mix(in srgb, var(--ifm-color-primary) 2%, transparent)
+    );
+    border: 1px solid color-mix(in srgb, var(--ifm-color-primary) 22%, transparent);
+    border-left: 3px solid var(--ifm-color-primary);
+    box-shadow: 0 8px 24px -12px
+      color-mix(in srgb, var(--ifm-color-primary) 35%, transparent);
+    padding: 0.75rem 1.5rem 1.25rem;
+  }
+  
+  .faqContainer summary {
+    list-style: none !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 1rem;
+    cursor: pointer;
+    color: var(--ifm-font-color-base);
+    font-weight: 500;
+    padding: 0.6rem 0;
+    user-select: none;
+    border-bottom: none !important;
+    transition: color 0.2s ease;
+  }
+  
+  .faqContainer summary:hover,
+  .faqContainer summary:hover h3 {
+    color: var(--ifm-color-primary);
+  }
+  
+  .faqContainer summary::-webkit-details-marker {
+    display: none !important;
+  }
+  
+  .faqContainer summary::before,
+  .faqContainer details > summary::before {
+    display: none !important;
+  }
+  
+  .faqContainer summary h3 {
+    color: inherit;
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  
+  .faqContainer summary::after {
+    content: "+" / "";
+    flex-shrink: 0;
+    width: 1.9rem;
+    height: 1.9rem;
+    display: grid;
+    place-items: center;
+    font-size: 1.2rem;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--ifm-color-primary);
+    background: color-mix(in srgb, var(--ifm-color-primary) 10%, transparent);
+    border-radius: 50%;
+    transition: transform 0.3s ease, background 0.2s ease, color 0.2s ease;
+  }
+  
+  .faqContainer summary:hover::after {
+    background: color-mix(in srgb, var(--ifm-color-primary) 18%, transparent);
+  }
+  
+  .faqContainer details[open] > summary::after {
+    content: "+" / "";
+    transform: rotate(135deg);
+    background: var(--ifm-color-primary);
+    color: #fff;
+  }
+  
+  .faqContainer details[open] > summary {
+    margin-bottom: 0.25rem;
+  }
+  
+  .faqContainer details[open] > *:not(summary) {
+    animation: faqFade 0.35s ease both;
+  }
+  
+  .faqContainer details p {
+    line-height: 1.75;
+    color: var(--ifm-color-emphasis-800);
+  }
+  
+  .faqContainer details p:last-child {
+    margin-bottom: 0;
+  }
+  
+  .faqContainer details strong {
+    color: var(--ifm-font-color-base);
+  }
+  
+  .faqContainer a {
+    color: var(--ifm-link-color);
+  }
+  
+  @keyframes faqFade {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .faqContainer details[open] > *:not(summary) { animation: none; }
+    .faqContainer summary::after { transition: none; }
+  }
