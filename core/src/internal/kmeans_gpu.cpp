@@ -27,6 +27,12 @@
 static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB {0};
 static constexpr uint8_t COLOR_SPACE_OPTION_RGB {1};
 
+struct MapContext {
+    bool done = false;
+    bool success = false;
+    std::string error_msg;
+};
+
 #ifdef _MSC_VER
 #pragma pack(push, 1)
 #endif
@@ -188,10 +194,10 @@ void kMeansPlusPlusInitGpu(
 
     // --- Step 2 & 3: Repeat until we have k centroids ---
     // static volatile bool done = false;
-    bool* done = new bool(false);
+    MapContext ctxInit;
 
     for (int i = 1; i < k; ++i) {
-        *done = false;
+        ctxInit.done = false;
         // A. Upload Current Centroid to GPU
         PixelT c = centroids.back();
         CentroidParams params;
@@ -228,25 +234,30 @@ void kMeansPlusPlusInitGpu(
         readBuffer.MapAsync(
             wgpu::MapMode::Read, 0, readDesc.size, wgpu::CallbackMode::AllowProcessEvents,
             [](wgpu::MapAsyncStatus status, wgpu::StringView msg, void* userdata) {
-                bool* flag = static_cast<bool*>(userdata);
-                bool success = false;
+                MapContext* ctx = static_cast<MapContext*>(userdata);
                 if (status == wgpu::MapAsyncStatus::Success) {
-                    success = true;
+                    ctx->success = true;
                 } else {
-                    std::string err_msg = msg.data ? std::string(msg.data, msg.length) : "Unknown error";
-                    throw std::runtime_error("WebGPU MapAsync failed during K-Means initialization: " + err_msg);
+                    ctx->success = false;
+                    ctx->error_msg = msg.data ? std::string(msg.data, msg.length) : "Unknown error";
                 }
-                *flag = true;
+                ctx->done = true;
             },
-            (void*)done
+            &ctxInit
         );
 
         // E. Wait for GPU
-        while (!*done) {
+        while (!ctxInit.done) {
             GPU::getClassInstance().get_instance().ProcessEvents();
 #if defined(__EMSCRIPTEN__)
             emscripten_sleep(10);
 #endif
+        }
+
+        if (!ctxInit.success) {
+            throw std::runtime_error(
+                "WebGPU MapAsync failed during K-Means initialization: " + ctxInit.error_msg
+            );
         }
 
         const float* dists = (const float*)readBuffer.GetConstMappedRange();
@@ -591,33 +602,38 @@ void kmeans_gpu(
     IMG2NUM_LOG_INFO("done iterations");
 
     // 4. Map Async & Wait
-    bool* done1 = new bool(false);
-    bool* done2 = new bool(false);
+    MapContext ctx1;
+    MapContext ctx2;
 
     // Map Labels
     readLabelsBuffer.MapAsync(
         wgpu::MapMode::Read, 0, readLabelsDesc.size, wgpu::CallbackMode::AllowProcessEvents,
         [](wgpu::MapAsyncStatus status, wgpu::StringView msg, void* userdata) {
-            bool* flag = static_cast<bool*>(userdata);
-            bool success = false;
+            MapContext* ctx = static_cast<MapContext*>(userdata);
             if (status == wgpu::MapAsyncStatus::Success) {
-                success = true;
+                ctx->success = true;
             } else {
-                std::string err_msg = msg.data ? std::string(msg.data, msg.length) : "Unknown error";
-                throw std::runtime_error("WebGPU MapAsync failed reading K-Means labels: " + err_msg);
+                ctx->success = false;
+                ctx->error_msg = msg.data ? std::string(msg.data, msg.length) : "Unknown error";
             }
-            *flag = true;
+            ctx->done = true;
         },
-        (void*)done1
+        &ctx1
     );
 
     IMG2NUM_LOG_INFO("read out");
 
-    while (!*done1) {
+    while (!ctx1.done) {
         GPU::getClassInstance().get_instance().ProcessEvents();
 #if defined(__EMSCRIPTEN__)
         emscripten_sleep(10);
 #endif
+    }
+
+    if (!ctx1.success) {
+        throw std::runtime_error(
+            "WebGPU MapAsync failed reading K-Means labels: " + ctx1.error_msg
+        );
     }
 
     IMG2NUM_LOG_INFO("mapping labels");
@@ -638,28 +654,33 @@ void kmeans_gpu(
 
     readLabelsBuffer.Unmap();
 
-    // Map Centroids
+    MapContext ctx2;
     readCentroidsBuffer.MapAsync(
         wgpu::MapMode::Read, 0, readCentroidsDesc.size, wgpu::CallbackMode::AllowProcessEvents,
         [](wgpu::MapAsyncStatus status, wgpu::StringView msg, void* userdata) {
-            bool* flag = static_cast<bool*>(userdata);
-            bool success = false;
+            MapContext* ctx = static_cast<MapContext*>(userdata);
             if (status == wgpu::MapAsyncStatus::Success) {
-                success = true;
+                ctx->success = true;
             } else {
-                std::string err_msg = msg.data ? std::string(msg.data, msg.length) : "Unknown error";
-                throw std::runtime_error("WebGPU MapAsync failed reading K-Means centroids: " + err_msg);
+                ctx->success = false;
+                ctx->error_msg = msg.data ? std::string(msg.data, msg.length) : "Unknown error";
             }
-            *flag = true; // Signal completion
+            ctx->done = true; // Signal completion
         },
-        (void*)done2
+        &ctx2
     );
 
-    while (!*done2) {
+    while (!ctx2.done) {
         GPU::getClassInstance().get_instance().ProcessEvents();
 #if defined(__EMSCRIPTEN__)
         emscripten_sleep(10);
 #endif
+    }
+
+    if (!ctx2.success) {
+        throw std::runtime_error(
+            "WebGPU MapAsync failed reading K-Means centroids: " + ctx2.error_msg
+        );
     }
 
     IMG2NUM_LOG_INFO("mapping centroids");

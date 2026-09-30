@@ -66,7 +66,10 @@ traceBorder(std::vector<int>& f, int paddedW, int sy, int sx, int py, int px, in
     // (py,px)
     const int dStart = dirIndexFromTo(sy, sx, py, px);
     if (dStart < 0) {
-        throw std::runtime_error("traceBorder failed: The specified previous neighbor pixel is not adjacent to the start pixel. This indicates a malformed or corrupted contour trace.");
+        throw std::runtime_error(
+            "traceBorder failed: The specified previous neighbor pixel is not adjacent to "
+            "the start pixel. This indicates a malformed or corrupted contour trace."
+        );
     }
 
     int y1 = 0, x1 = 0;
@@ -99,7 +102,11 @@ traceBorder(std::vector<int>& f, int paddedW, int sy, int sx, int py, int px, in
         // order"
         const int dPrev = dirIndexFromTo(y3, x3, y2, x2);
         if (dPrev < 0) {
-            throw std::runtime_error("traceBorder failed: The neighbor chain is broken. This occurs when no adjacent contour pixel could be found, likely due to an invalid image state or corrupted memory.");
+            throw std::runtime_error(
+                "traceBorder failed: The neighbor chain is broken. This occurs when no "
+                "adjacent contour pixel could be found, likely due to an invalid image "
+                "state or corrupted memory."
+            );
         }
 
         const int d0 = (dPrev + 7) & 7; // one step CCW from dPrev
@@ -155,7 +162,10 @@ ContoursResult find_contours(const std::vector<uint8_t>& binary, int width, int 
         return {};
     }
     if ((int)binary.size() != width * height) {
-        throw std::invalid_argument("Invalid binary image size: Expected size to equal width * height, but got a mismatch. Please check the image dimensions.");
+        throw std::invalid_argument(
+            "Invalid binary image size: Expected size to equal width * height, "
+            "but got a mismatch. Please check the image dimensions."
+        );
     }
 
     // Pad image with a 1-pixel 0-frame
