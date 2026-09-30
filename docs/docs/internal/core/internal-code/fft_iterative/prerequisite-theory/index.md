@@ -28,7 +28,7 @@ The list of prerequisites and helpful resources can be found below.
 | [Basic calculus (integrals / limits)](#basic-calculus--prerequisite-math)     | 4-8                                |
 | [Linear Algebra (vectors, basis)](#linear-algebra-optional-but-helpful)       | 4-8                                |
 | [Signals & sampling (Nyquist, aliasing)](#signals--systems--sampling-theory)  | 6-10                               |
-| [Practical DFT/FFT & coding (NumPy/Scipy)](#dft--fft-practicals-and-coding)   | 4-8                                |
+| [Practical DFT/FFT & coding (NumPy/Scipy)](#dft--fft-practical-examples-and-coding)   | 4-8                                |
 
 **Total**: = 23-43 hours
 
@@ -84,7 +84,7 @@ The list of prerequisites and helpful resources can be found below.
     - Chapter 4: Analog and Digital Signals
     - Chapter 7: Data Transmission and Encoding
 
-### DFT / FFT practicals and coding
+### DFT / FFT practical examples and coding
 
 - **NumPy / SciPy docs — `numpy.fft` and `scipy.fft`**
   - Practical examples for computing FFTs, `fftshift`, real-input symmetry, and inverse transforms.
