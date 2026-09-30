@@ -175,6 +175,16 @@
   accent-color: var(--accent);
 }
 
+.formError {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--coral);
+  border-radius: var(--radius);
+  color: var(--coral);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 .actions {
   display: flex;
   gap: 20px;

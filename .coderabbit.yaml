@@ -77,6 +77,11 @@ reviews:
         plugin usage, and valid imports. Review docusaurus.config.js changes carefully
         for broken routing or plugin config regressions.
 
+    - path: "docs/**/*.css"
+      instructions: |
+        This is Docusaurus site styling. Check theme compatibility, responsive behavior,
+        and consistency with the existing CSS conventions.
+
     - path: ".github/workflows/**"
       instructions: |
         GitHub Actions workflows. Review for:

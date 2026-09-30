@@ -1,16 +1,22 @@
 import Layout from "@theme/Layout";
 import { CheckCircle2, MoveRight } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import styles from "../index.module.css";
 import submitStyles from "./submit.module.css";
 
 const issueUrl = "https://github.com/Ryan-Millard/Img2Num/issues/new";
+const maxIssueUrlLength = 8000;
 
 const criteria = ["The project actually uses Img2Num.", "It is publicly reachable.", "It is not unlawful, NSFW, or spammy.", "Maintainers may decline or remove entries at their discretion."];
 
+/** Render the community showcase submission form. */
 export default function ShowcaseSubmit() {
+  const [submitError, setSubmitError] = useState("");
+
+  /** Handle the form submission and open a pre-filled GitHub issue. */
   function handleSubmit(event) {
     event.preventDefault();
+    setSubmitError("");
 
     const formData = new FormData(event.currentTarget);
     const params = new URLSearchParams({
@@ -27,7 +33,14 @@ export default function ShowcaseSubmit() {
       params.set("screenshot", screenshot);
     }
 
-    window.location.href = `${issueUrl}?${params.toString()}`;
+    const targetUrl = `${issueUrl}?${params.toString()}`;
+
+    if (targetUrl.length > maxIssueUrlLength) {
+      setSubmitError("This submission is too long to open as a pre-filled GitHub issue. Shorten the description or URLs and try again.");
+      return;
+    }
+
+    window.location.href = targetUrl;
   }
 
   return (
@@ -109,6 +122,12 @@ export default function ShowcaseSubmit() {
                 <input name="criteria" type="checkbox" required />
                 <span>I confirm that this project meets the listing criteria.</span>
               </label>
+
+              {submitError ? (
+                <p className={submitStyles.formError} role="alert">
+                  {submitError}
+                </p>
+              ) : null}
 
               <div className={submitStyles.actions}>
                 <p>You'll review the pre-filled issue on GitHub before submitting it.</p>

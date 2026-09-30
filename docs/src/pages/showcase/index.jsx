@@ -164,6 +164,7 @@ char* svg = img2num_image_to_svg(image_data, width, height, &cfg);`,
   },
 ];
 
+/** Render the official examples and accepted community projects. */
 export default function Showcase() {
   return (
     <Layout title="Showcase" description="Runnable example applications showing how to use Img2Num in the browser (React, ESM, IIFE, UMD) and from the command line (C, C++, Python, Node.js).">

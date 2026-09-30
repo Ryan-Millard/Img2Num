@@ -40,6 +40,7 @@ function RasterToSvgDemo() {
 }
 
 //core hero section
+/** Render the homepage hero with repository stats and showcase navigation. */
 function HeroSection() {
   // Build-time numbers, baked into the static HTML.
   const buildTimeStats = usePluginData("github-stats");
