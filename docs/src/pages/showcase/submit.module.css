@@ -1,0 +1,228 @@
+.header {
+  max-width: 720px;
+  margin-bottom: 36px;
+}
+
+.lead {
+  margin: -8px 0 0;
+  color: var(--ink-2);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.72fr) minmax(0, 1.7fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.criteriaCard,
+.formCard {
+  background: var(--white);
+  border: 1.5px solid var(--surface-3);
+  border-radius: var(--radius-lg);
+}
+
+.criteriaCard {
+  padding: 28px 24px;
+  position: sticky;
+  top: 88px;
+}
+
+.cardEyebrow {
+  display: block;
+  margin-bottom: 8px;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.cardTitle {
+  margin: 0 0 10px;
+  color: var(--ink);
+  font-family: "DM Serif Display", serif;
+  font-size: 28px;
+  font-weight: 400;
+}
+
+.cardDescription {
+  margin: 0 0 24px;
+  color: var(--ink-3);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.criteriaList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.criteriaList li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  color: var(--ink-2);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.criteriaList svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: var(--accent);
+}
+
+.formCard {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 32px;
+}
+
+.twoColumn {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field label {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.field label span {
+  color: var(--ink-3);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  border: 1.5px solid var(--surface-3);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    background 0.15s;
+}
+
+.field input,
+.field select {
+  min-height: 46px;
+  padding: 0 13px;
+}
+
+.field textarea {
+  min-height: 132px;
+  padding: 12px 13px;
+  resize: vertical;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--ink-4);
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.confirmation {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border: 1px solid var(--surface-3);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.confirmation input {
+  width: 16px;
+  height: 16px;
+  margin: 2px 0 0;
+  flex: 0 0 auto;
+  accent-color: var(--accent);
+}
+
+.actions {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
+.actions p {
+  max-width: 420px;
+  margin: 0;
+  color: var(--ink-3);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.submitButton {
+  flex: 0 0 auto;
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .criteriaCard {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .formCard {
+    padding: 24px 18px;
+  }
+
+  .twoColumn {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .submitButton {
+    justify-content: center;
+  }
+}

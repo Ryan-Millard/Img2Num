@@ -3,6 +3,7 @@ import Layout from "@theme/Layout";
 import CodeBlock from "@theme/CodeBlock";
 import { Atom, Box, Braces, Code2, Cpu, Hexagon, Layers, MoveRight, Terminal, Zap } from "lucide-react";
 import React from "react";
+import { showcaseProjects } from "../../data/showcase";
 import styles from "../index.module.css";
 
 /**
@@ -163,9 +164,9 @@ char* svg = img2num_image_to_svg(image_data, width, height, &cfg);`,
   },
 ];
 
-export default function ExampleApps() {
+export default function Showcase() {
   return (
-    <Layout title="Example Apps" description="Runnable example applications showing how to use Img2Num in the browser (React, ESM, IIFE, UMD) and from the command line (C, C++, Python, Node.js).">
+    <Layout title="Showcase" description="Runnable example applications showing how to use Img2Num in the browser (React, ESM, IIFE, UMD) and from the command line (C, C++, Python, Node.js).">
       <main>
         <section className={styles.section}>
           <div className={styles.eyebrow}>
@@ -174,7 +175,7 @@ export default function ExampleApps() {
           </div>
 
           <div className={styles.sectionHeader} style={{ marginBottom: "auto" }}>
-            <h1 className={styles.heroTitle}>Example Apps</h1>
+            <h1 className={styles.heroTitle}>Showcase</h1>
             <Link className={styles.sectionLink} to="/docs">
               All Docs <MoveRight size={15} />
             </Link>
@@ -188,6 +189,12 @@ export default function ExampleApps() {
         </section>
 
         <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2>Official Examples</h2>
+          </div>
+
+          <p>Officially supported and recommended ways to use Img2Num across its available bindings.</p>
+
           <div className={styles.bindingsGrid}>
             {apps.map((app) => (
               <div key={app.title} id={app.slug} className={styles.bindingCard}>
@@ -225,6 +232,45 @@ export default function ExampleApps() {
               <code>example-apps/</code> on GitHub
             </Link>
             .
+          </p>
+        </section>
+
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2>Built with Img2Num</h2>
+          </div>
+
+          <p>Community projects created by people outside the Img2Num project. These are third-party implementations, separate from the official examples above.</p>
+
+          {showcaseProjects.length === 0 ? (
+            <p>No community projects have been listed yet. Built something with Img2Num? You can submit your project for consideration.</p>
+          ) : (
+            <div className={styles.bindingsGrid}>
+              {showcaseProjects.map((project) => (
+                <div key={project.name} className={styles.bindingCard}>
+                  <span className={styles.bindingLang}>{project.binding}</span>
+
+                  {project.screenshot ? <img src={project.screenshot} alt={`${project.name} screenshot`} style={{ width: "100%", borderRadius: "var(--radius)", display: "block" }} /> : null}
+
+                  <h3 className={styles.bindingTitle}>{project.name}</h3>
+                  <p className={styles.bindingDesc}>{project.description}</p>
+
+                  <p>
+                    <Link to={project.liveUrl}>
+                      Live project <MoveRight size={15} style={{ verticalAlign: "middle" }} />
+                    </Link>
+                    {" · "}
+                    <Link to={project.sourceUrl}>Source</Link>
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <p>
+            <Link className={styles.btnPrimary} to="/showcase/submit">
+              Submit your project <MoveRight size={15} />
+            </Link>
           </p>
         </section>
       </main>

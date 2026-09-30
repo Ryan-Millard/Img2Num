@@ -119,8 +119,8 @@ function HeroSection() {
 
         <div className={styles.heroRight}>
           <RasterToSvgDemo />
-          <Link className={styles.btnPrimary} to="/example-apps/">
-            View Example Apps <MoveRight size={15} />
+          <Link className={styles.btnPrimary} to="/showcase">
+            View Showcase <MoveRight size={15} />
           </Link>
         </div>
       </div>
