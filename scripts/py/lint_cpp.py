@@ -40,7 +40,7 @@ from pathlib import Path
 from img2num_root import IMG2NUM_ROOT as ROOT
 
 SEARCH_DIRS = ("core", "bindings")
-SUFFIXES = {".cpp", ".c"}  # translation units only; headers surface via HeaderFilterRegex
+SUFFIXES = {".cpp", ".c"}  # translation units only; headers via HeaderFilterRegex
 MAX_PARALLEL = os.cpu_count() or 4
 WASM_BUILD_DIR_NAME = "build-wasm"
 

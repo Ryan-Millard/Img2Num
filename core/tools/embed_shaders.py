@@ -1,4 +1,5 @@
-import sys, pathlib
+import sys
+import pathlib
 
 SHADER_DIR = pathlib.Path(sys.argv[1])
 OUTPUT_FILE = pathlib.Path(sys.argv[2])

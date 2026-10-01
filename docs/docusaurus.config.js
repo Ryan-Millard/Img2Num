@@ -140,6 +140,13 @@ const config = {
   plugins: [
     changelogPlugin,
     [
+      "@docusaurus/plugin-client-redirects",
+      {
+        redirects: [{ from: "/docs/faq", to: "/faq" }],
+      },
+    ],
+    "./plugins/github-stats/index.js",
+    [
       "docusaurus-plugin-copy-page-button",
       {
         injectButton: false,
