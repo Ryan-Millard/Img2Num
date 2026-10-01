@@ -15,7 +15,7 @@ std::string image_to_svg(
     std::memcpy(
         img_data.data(), data, static_cast<size_t>(width) * static_cast<size_t>(height) * 4
     );
-    if (config.synthetic) {
+    if (config.image_type == ImageType::Synthetic) {
         color_quantize(
             img_data.data(), out_data.data(), out_labels.data(), width, height, config.quantize.k,
             config.quantize.coverage, config.color_space

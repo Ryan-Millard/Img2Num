@@ -16,9 +16,23 @@
 extern "C" {
 #endif
 
+/// @brief Image type selector for img2num_ImageToSvgConfig.
+// This must match the C++ enum exactly!
+typedef enum {
+    IMG2NUM_IMAGE_TYPE_NATURAL = 0,
+    IMG2NUM_IMAGE_TYPE_SYNTHETIC = 1
+} img2num_image_type;
+
 /// @brief Configuration options for image_to_svg.
 /// @ingroup CIMG2NUM_H
 typedef struct img2num_ImageToSvgConfig {
+    /// @brief Whether Img2Num should use natural_image_config or synthetic_image_config (alters internal function call
+    /// chain).
+    /// @sa img2num::ImageType()
+    ///
+    /// @warning Setting the image type incorrectly may lead to undefined behaviour (see img2num_color_quantize()).
+    img2num_image_type image_type;
+
     /// Configuration settings for the bilateral filter in image_to_svg.
     struct BilateralFilterConfig {
         /// Standard deviation for spatial Gaussian (proximity weight).
@@ -61,11 +75,6 @@ typedef struct img2num_ImageToSvgConfig {
     /// - 0 = CIE LAB (more perceptually accurate)
     /// - 1 = sRGB (faster).
     uint8_t color_space;
-
-    /// Synthetic vs. Natural image flag.
-    /// - 0 = Natural image (default)
-    /// - 1 = Synthetic image
-    uint8_t synthetic;
 } img2num_ImageToSvgConfig;
 
 /// ImageToSvgConfig struct with default values for convenience
