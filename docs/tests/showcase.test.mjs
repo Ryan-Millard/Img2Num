@@ -75,7 +75,7 @@ test("submissions preserve special characters and target the Showcase discussion
   const url = new URL(
     createShowcaseDiscussionUrl(
       submission({
-        project_name: "صور & C++",
+        project_name: "Image tools & C++",
         binding: "Other",
         other_binding: "Rust",
         additional_links: "Docs: https://example.com/docs?a=1&b=2",
@@ -84,7 +84,7 @@ test("submissions preserve special characters and target the Showcase discussion
   );
   assert.equal(url.origin + url.pathname, "https://github.com/Ryan-Millard/Img2Num/discussions/new");
   assert.equal(url.searchParams.get("category"), "showcase");
-  assert.equal(url.searchParams.get("title"), "[Showcase]: صور & C++");
+  assert.equal(url.searchParams.get("title"), "[Showcase]: Image tools & C++");
   assert.match(url.searchParams.get("body"), /binding used\n\nRust/);
   assert.match(url.searchParams.get("body"), /1200 × 675/);
   assert.match(url.searchParams.get("body"), /docs\?a=1&b=2/);
@@ -107,5 +107,5 @@ test("invalid submissions and oversized URLs do not navigate", () => {
   ]) {
     assert.throws(() => createShowcaseDiscussionUrl(submission(fields)));
   }
-  assert.throws(() => createShowcaseDiscussionUrl(submission({ description: "ا".repeat(2000) })), /too long/);
+  assert.throws(() => createShowcaseDiscussionUrl(submission({ description: "\u00e9".repeat(2000) })), /too long/);
 });
