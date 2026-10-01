@@ -1,10 +1,12 @@
 import Link from "@docusaurus/Link";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import Layout from "@theme/Layout";
 import CodeBlock from "@theme/CodeBlock";
 import { Atom, Box, Braces, Code2, Cpu, Hexagon, Layers, MoveRight, Terminal, Zap } from "lucide-react";
 import React from "react";
 import { showcaseProjects } from "../../data/showcase";
 import styles from "../index.module.css";
+import showcaseStyles from "./showcase.module.css";
 
 /**
  * Index page for the example applications.
@@ -164,6 +166,36 @@ char* svg = img2num_image_to_svg(image_data, width, height, &cfg);`,
   },
 ];
 
+/** Render an accepted project using the official example card layout. */
+function CommunityProjectCard({ project }) {
+  const screenshot = useBaseUrl(project.screenshot);
+  const logo = useBaseUrl(project.logo || "/");
+  return (
+    <div className={styles.bindingCard}>
+      <span className={styles.bindingLang}>{project.binding}</span>
+      <div className={showcaseStyles.projectHeader}>
+        <div className={`${styles.bindingIcon} ${showcaseStyles.projectIcon}`}>
+          {project.logo ? <img className={showcaseStyles.projectLogo} src={logo} alt="" width="44" height="44" loading="lazy" /> : <Code2 size={22} aria-hidden="true" />}
+        </div>
+        <div className={showcaseStyles.projectDetails}>
+          <h3 className={styles.bindingTitle}>{project.name}</h3>
+          <Link to={project.liveUrl}>{project.liveUrl}</Link>
+        </div>
+      </div>
+      <p className={styles.bindingDesc}>{project.description}</p>
+      <img className={showcaseStyles.projectScreenshot} src={screenshot} alt={`${project.name} screenshot`} width="1200" height="675" loading="lazy" />
+      <p className={showcaseStyles.projectLinks}>
+        {project.sourceUrl ? <Link to={project.sourceUrl}>Source</Link> : null}
+        {project.links?.map((link, index) => (
+          <Link key={`${link.url}-${index}`} to={link.url}>
+            {link.label}
+          </Link>
+        ))}
+      </p>
+    </div>
+  );
+}
+
 /** Render the official examples and accepted community projects. */
 export default function Showcase() {
   return (
@@ -243,36 +275,21 @@ export default function Showcase() {
 
           <p>Community projects created by people outside the Img2Num project. These are third-party implementations, separate from the official examples above.</p>
 
+          <div className={showcaseStyles.submitAction}>
+            <Link className={styles.btnPrimary} to="/showcase/submit">
+              Submit your project <MoveRight size={15} />
+            </Link>
+          </div>
+
           {showcaseProjects.length === 0 ? (
             <p>No community projects have been listed yet. Built something with Img2Num? You can submit your project for consideration.</p>
           ) : (
             <div className={styles.bindingsGrid}>
               {showcaseProjects.map((project) => (
-                <div key={project.name} className={styles.bindingCard}>
-                  <span className={styles.bindingLang}>{project.binding}</span>
-
-                  {project.screenshot ? <img src={project.screenshot} alt={`${project.name} screenshot`} style={{ width: "100%", borderRadius: "var(--radius)", display: "block" }} /> : null}
-
-                  <h3 className={styles.bindingTitle}>{project.name}</h3>
-                  <p className={styles.bindingDesc}>{project.description}</p>
-
-                  <p>
-                    <Link to={project.liveUrl}>
-                      Live project <MoveRight size={15} style={{ verticalAlign: "middle" }} />
-                    </Link>
-                    {" · "}
-                    <Link to={project.sourceUrl}>Source</Link>
-                  </p>
-                </div>
+                <CommunityProjectCard key={project.name} project={project} />
               ))}
             </div>
           )}
-
-          <p>
-            <Link className={styles.btnPrimary} to="/showcase/submit">
-              Submit your project <MoveRight size={15} />
-            </Link>
-          </p>
         </section>
       </main>
     </Layout>

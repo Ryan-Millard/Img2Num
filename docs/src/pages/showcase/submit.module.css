@@ -153,6 +153,23 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
 }
 
+.imageHelp {
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--ink-2);
+  font-size: 14px;
+}
+
+.imageHelp h2 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.imageHelp p:last-child {
+  margin-bottom: 0;
+}
+
 .confirmation {
   display: flex;
   gap: 10px;
