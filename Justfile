@@ -13,6 +13,8 @@ help:
     \t py: build python bindings and python package \n \
     \t packages-js: build browser and node packages using js/wasm bindings \n \
     \t all: build all of above \n \
+    test <target>: \n \
+    \t py: run the Python binding test suite (pytest) \n \
     clean <target>: \n \
     \t cpp: delete c++ and c build folder (build-c-cpp) \n \
     \t js: delete js build folder (build-wasm) \n \
@@ -134,3 +136,10 @@ console-js-esm input:
 
 html-js script:
     pnpm -F html-js "{{script}}"
+
+test target:
+    @echo "Run {{ target }} tests"
+    case "{{ target }}" in \
+        py) uv run --group test pytest ;; \
+        *) echo "Unknown test target: {{ target }}" >&2 && exit 1 ;; \
+    esac

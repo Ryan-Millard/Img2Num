@@ -60,6 +60,11 @@
         "desc": "Run ESLint and automatically fix issues"
       }
     },
+    "Testing": {
+      "test:py": {
+        "desc": "Run the Python binding test suite (pytest)"
+      }
+    },
     "Validation": {
       "validate-scripts": {
         "desc": "Validate all scripts defined in workspace package.json files"
@@ -92,7 +97,8 @@
     "lint:cpp:fix": "uv run lint_cpp --fix",
     "lint:js": "eslint packages/js example-apps/react-js scripts/img2num-dev-scripts docs",
     "lint:js:fix": "eslint packages/js example-apps/react-js scripts/img2num-dev-scripts docs --fix",
-    "editorconfig:check": "editorconfig-checker"
+    "editorconfig:check": "editorconfig-checker",
+    "test:py": "uv run --group test pytest"
   },
   "devDependencies": {
     "clang-format": "^1.8.0",
