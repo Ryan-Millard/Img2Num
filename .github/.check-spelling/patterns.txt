@@ -20,7 +20,7 @@ https?://\S+
 ^```
 
 # GitHub repository references
-github\.com/[-\w]+/[-\w]+.*
+github\.com/[-\w]+/[-\w]+
 
 # GitHub Actions uses
 \buses:\s+[-\w.]+/[-\w./]+@[-\w.]+\b
