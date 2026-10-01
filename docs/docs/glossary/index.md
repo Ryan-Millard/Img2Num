@@ -2,6 +2,7 @@
 id: glossary
 title: Glossary
 sidebar_position: 5
+toc_max_heading_level: 2
 description: "Key Img2Num terms — quantization, contour tracing, path simplification, palettes, histograms, frequency transforms, color spaces, filtering, and clustering."
 keywords:
   - img2num
