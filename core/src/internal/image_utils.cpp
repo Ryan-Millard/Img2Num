@@ -42,6 +42,20 @@ uint8_t quantize(uint8_t value, uint8_t region_size) {
 }
 
 namespace img2num {
+
+// Helper to calculate reflect (mirror) boundary index
+static size_t reflect_index(int p, int dim) {
+    if (dim <= 1) return 0;
+    while (p < 0 || p >= dim) {
+        if (p < 0) {
+            p = -p - 1;
+        } else if (p >= dim) {
+            p = 2 * dim - 1 - p;
+        }
+    }
+    return static_cast<size_t>(p);
+}
+
 // image: pointer to RGBA data
 // width, height: dimensions
 // sigma: standard deviation of Gaussian blur
@@ -49,11 +63,14 @@ void gaussian_blur_fft(uint8_t* image, size_t width, size_t height, double sigma
     if (!image || width == 0 || height == 0 || sigma_pixels <= 0)
         return;
 
-    const size_t Npix = width * height;
+    // Pad by at least 3*sigma pixels to avoid border darkening and edge wrapping
+    const size_t pad = static_cast<size_t>(std::ceil(3.0 * sigma_pixels));
+    const size_t padded_width = width + 2 * pad;
+    const size_t padded_height = height + 2 * pad;
 
     // Compute padded dimensions (next power of two)
-    const size_t W = fft::next_power_of_two(width);
-    const size_t H = fft::next_power_of_two(height);
+    const size_t W = fft::next_power_of_two(padded_width);
+    const size_t H = fft::next_power_of_two(padded_height);
     const size_t Npix_padded = W * H;
 
     // Frequency coordinates helper (DC at corner)
@@ -68,10 +85,16 @@ void gaussian_blur_fft(uint8_t* image, size_t width, size_t height, double sigma
         // Allocate padded buffer
         std::vector<fft::cd> data(Npix_padded, {0.0, 0.0});
 
-        // Copy original image channel into padded buffer
-        for (size_t y = 0; y < height; y++)
-            for (size_t x = 0; x < width; x++)
-                data[y * W + x] = fft::cd(image[(y * width + x) * 4 + channel], 0.0);
+        // Copy image channel with reflect padding into padded buffer
+        for (size_t y = 0; y < H; y++) {
+            int py = static_cast<int>(y) - static_cast<int>(pad);
+            size_t src_y = reflect_index(py, static_cast<int>(height));
+            for (size_t x = 0; x < W; x++) {
+                int px = static_cast<int>(x) - static_cast<int>(pad);
+                size_t src_x = reflect_index(px, static_cast<int>(width));
+                data[y * W + x] = fft::cd(image[(src_y * width + src_x) * 4 + channel], 0.0);
+            }
+        }
 
         // Forward 2D FFT
         fft::iterative_fft_2d(data, W, H, false);
@@ -89,13 +112,17 @@ void gaussian_blur_fft(uint8_t* image, size_t width, size_t height, double sigma
         // Inverse 2D FFT
         fft::iterative_fft_2d(data, W, H, true);
 
-        // Copy back only the original width/height and clamp
-        for (size_t y = 0; y < height; y++)
+        // Copy back original width/height region from (pad, pad) and clamp
+        for (size_t y = 0; y < height; y++) {
             for (size_t x = 0; x < width; x++) {
-                double v = data[y * W + x].real();
-                v = std::clamp(v, 0.0, 255.0);
+                size_t py = y + pad;
+                size_t px = x + pad;
+                double v = data[py * W + px].real();
+                if (v < 0.0) v = 0.0;
+                else if (v > 255.0) v = 255.0;
                 image[(y * width + x) * 4 + channel] = static_cast<uint8_t>(std::lrint(v));
             }
+        }
     }
 
     // Alpha channel remains unchanged
@@ -158,4 +185,5 @@ void black_threshold_image(
     const auto& modified = img.getData();
     std::memcpy(ptr, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
 }
+
 } // namespace img2num
