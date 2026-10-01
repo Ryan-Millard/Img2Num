@@ -3,7 +3,6 @@
  *  @details This file declares functions for image manipulation, clustering, filtering,
  *           and conversion to SVG. Functions operate on raw image buffers (uint8_t*).
  *  @defgroup CIMG2NUM_H Img2Num Core Functions for C
- *  @note Dox File: `doxygen/img2num.h.dox`
  */
 #ifndef CIMG2NUM_H
 #define CIMG2NUM_H
@@ -52,44 +51,99 @@ typedef struct img2num_ImageToSvgConfig {
 
 img2num_ImageToSvgConfig img2num_ImageToSvgConfig_default(void);
 
-/// @copydoc ::IMG2NUM_H_GAUSSIAN_BLUR_DOC
+/// @brief Apply a Gaussian blur to an image using FFT.
+/// @ingroup CIMG2NUM_H
+/// @param image Pointer to the image buffer (RGBA).
+/// @param width Width of the image in pixels.
+/// @param height Height of the image in pixels.
+/// @param sigma Standard deviation for Gaussian kernel.
+/// @note The operation modifies the image buffer in-place.
 void img2num_gaussian_blur_fft(uint8_t* image, size_t width, size_t height, double sigma);
 
-/// @copydoc ::IMG2NUM_H_INVERT_IMAGE_DOC
+/// @brief Invert the pixel values of an image.
+/// @ingroup CIMG2NUM_H
+/// @param ptr Pointer to the image buffer.
+/// @param width Width of the image in pixels.
+/// @param height Height of the image in pixels.
+/// @note Each pixel value is replaced by 255 - original_value.
 void img2num_invert_image(uint8_t* ptr, int width, int height);
 
-/// @copydoc ::IMG2NUM_H_THRESHOLD_IMAGE_DOC
+/// @brief Apply a thresholding operation to an image.
+/// @ingroup CIMG2NUM_H
+/// @param ptr Pointer to the image buffer.
+/// @param width Width of the image in pixels.
+/// @param height Height of the image in pixels.
+/// @param num_thresholds Number of thresholds to apply.
+/// @note Thresholds split pixel intensity ranges into discrete levels.
 void img2num_threshold_image(
     uint8_t* ptr, const int width, const int height, const int num_thresholds
 );
 
-/// @copydoc ::IMG2NUM_H_BLACK_THRESHOLD_IMAGE_DOC
+/// @brief Apply black-thresholding to an image.
+/// @ingroup CIMG2NUM_H
+/// @param ptr Pointer to the image buffer.
+/// @param width Width of the image in pixels.
+/// @param height Height of the image in pixels.
+/// @param num_thresholds Number of thresholds to apply.
+/// @note Similar to threshold_image but prioritizes darker pixels.
 void img2num_black_threshold_image(
     uint8_t* ptr, const int width, const int height, const int num_thresholds
 );
 
-/// @copydoc ::IMG2NUM_H_KMEANS_DOC
+/// @brief Perform k-means clustering on image data.
+/// @ingroup CIMG2NUM_H
+/// @param data Pointer to input image data buffer.
+/// @param out_data Pointer to output buffer where clustered pixel values are stored.
+/// @param out_labels Pointer to output buffer for cluster labels per pixel.
+/// @param width Width of the image in pixels.
+/// @param height Height of the image in pixels.
+/// @param k Number of clusters to compute.
+/// @param max_iter Maximum number of iterations for the algorithm.
+/// @param color_space Color space flag (0 = CIE LAB, 1 = RGB).
+/// @note The function does not modify the input buffer.
 void img2num_kmeans(
     const uint8_t* data, uint8_t* out_data, int32_t* out_labels, const int32_t width,
     const int32_t height, const int32_t k, const int32_t max_iter, const uint8_t color_space
 );
 
-/// @copydoc ::IMG2NUM_H_BILATERAL_FILTER_DOC
+/// @brief Apply bilateral filtering to an image.
+/// @ingroup CIMG2NUM_H
+/// @param image Pointer to RGBA pixel buffer.
+/// @param width Width of the image in pixels.
+/// @param height Height of the image in pixels.
+/// @param sigma_spatial Standard deviation for spatial Gaussian (proximity weight).
+/// @param sigma_range Standard deviation for range Gaussian (intensity similarity weight).
+/// @param color_space Color space flag (0 = CIE LAB, 1 = RGB).
+/// @note The filter modifies the image buffer in-place.
 void img2num_bilateral_filter(
     uint8_t* image, size_t width, size_t height, double sigma_spatial, double sigma_range,
     uint8_t color_space
 );
 
-/// @copydoc ::IMG2NUM_H_LABELS_TO_SVG_DOC
+/// @brief Convert labeled regions of an image into an SVG string.
+/// @ingroup CIMG2NUM_H
+/// @param data Pointer to image data buffer.
+/// @param labels Pointer to label buffer, indicating region for each pixel.
+/// @param width Width of the image in pixels.
+/// @param height Height of the image in pixels.
+/// @param min_area Minimum area (in pixels) for a region to be included in the SVG.
+/// @return A valid SVG string containing the data.
 char* img2num_labels_to_svg(
     const uint8_t* data, const int32_t* labels, const int width, const int height,
     const int min_area, const int min_thickness
 );
 
-/// @copydoc ::IMG2NUM_H_IMAGE_TO_SVG_DOC
+/// @brief Convert labeled regions of an image into an SVG string.
+/// @ingroup CIMG2NUM_H
+/// @param data Pointer to image data buffer.
+/// @param width Width of the image in pixels.
+/// @param height Height of the image in pixels.
+/// @param config img2num_ImageToSvgConfig configuration struct.
+/// @return An SVG string containing data roughly approximate to the input image.
 char* img2num_image_to_svg(
     const uint8_t* data, const int width, const int height, const img2num_ImageToSvgConfig* config
 );
+
 #ifdef __cplusplus
 }
 #endif
