@@ -3,11 +3,9 @@
 
 #include "img2num.h"
 #include "internal/cielab.h"
-#include "internal/gpu.h"
 #include "internal/gpu_utils.h"
 #include "internal/Image.h"
 #include "internal/LABAPixel.h"
-#include "internal/log.h"
 #include "internal/PixelConverters.h"
 #include "internal/RGBAPixel.h"
 
