@@ -2,9 +2,7 @@
 
 #include "img2num.h"
 #include "internal/cielab.h"
-#include "internal/gpu.h"
 #include "internal/gpu_utils.h"
-#include "internal/log.h"
 
 #include <cstddef>
 #include <cstdint>
