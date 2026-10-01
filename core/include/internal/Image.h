@@ -115,7 +115,10 @@ template <typename PixelT> class Image {
 
     int index(int x, int y) const {
         if (x < 0 || y < 0 || x >= width || y >= height)
-            throw std::out_of_range("Pixel coordinates out of bounds");
+            throw std::out_of_range(
+                "Pixel coordinates out of bounds: The specified (x, y) coordinates "
+                "fall outside the dimensions of the image."
+            );
         return y * width + x;
     }
 };

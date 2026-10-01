@@ -97,7 +97,7 @@ char* img2num_labels_to_svg(
             std::string svg {img2num::labels_to_svg(d, l, w, h, min_a, min_t)};
             result = static_cast<char*>(std::malloc(svg.size() + 1));
             if (!result) {
-                return; // Allocation failed
+                throw std::bad_alloc(); // Allocation failed
             }
             std::memcpy(result, svg.c_str(), svg.size() + 1);
         },
@@ -121,7 +121,7 @@ char* img2num_image_to_svg(
 
             result = static_cast<char*>(std::malloc(svg.size() + 1));
             if (!result) {
-                return; // Allocation failed
+                throw std::bad_alloc(); // Allocation failed
             }
             std::memcpy(result, svg.c_str(), svg.size() + 1);
         },
