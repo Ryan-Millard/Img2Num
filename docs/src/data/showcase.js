@@ -5,7 +5,7 @@ export const showcaseProjects = validateShowcaseProjects([
   // {
   //   name: "Project name",
   //   description: "A short description of the project.",
-  //   screenshot: "/img/showcase/project-name/screenshot.png", // required, 1200 × 675 px
+  //   screenshot: "/img/showcase/project-name/screenshot.png", // optional, 1200 × 675 px
   //   logo: "/img/showcase/project-name/logo.png", // optional, square
   //   liveUrl: "https://example.com",
   //   sourceUrl: "https://github.com/user/repository", // optional

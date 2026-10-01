@@ -71,11 +71,17 @@ reviews:
         existing category such as project-scripts. Verify valid frontmatter
         (title, sidebar_label, etc.) and correct sidebar wiring.
 
-    - path: "docs/**/*.{js,jsx,ts,tsx,mdx}"
+    - path: "docs/**/*.{js,jsx,mjs,ts,tsx,mdx}"
       instructions: |
         This is the Docusaurus site source. Check for MDX compatibility, correct
         plugin usage, and valid imports. Review docusaurus.config.js changes carefully
         for broken routing or plugin config regressions.
+
+    - path: "docs/**/*.css"
+      instructions: |
+        This is Docusaurus site styling. Check light and dark theme compatibility,
+        responsive layouts, and consistency with the existing site styles.
+        CSS Module class names must use camelCase; global CSS uses kebab-case.
 
     - path: ".github/workflows/**"
       instructions: |

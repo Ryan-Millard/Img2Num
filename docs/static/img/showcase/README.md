@@ -5,7 +5,7 @@ After approving a submission in the [Showcase discussions](https://github.com/Ry
 - Recommend a **1200 × 675 px (16:9)** screenshot in PNG, JPEG, or WebP format. Cards fit the full image within a consistent 16:9 frame.
 - A square logo is optional. Without one, the card uses a Lucide code icon.
 - Use lowercase, hyphenated filenames. Optimize images before committing them.
-- Add the accepted project to `docs/src/data/showcase.js`. Name, description, binding, live URL, and a local screenshot path are required. The logo, source URL, and additional labeled links are optional.
+- Add the accepted project to `docs/src/data/showcase.js`. Name, description, binding, and live URL are required. The screenshot, logo, source URL, and additional labeled links are optional. If supplied, screenshots and logos must use local paths.
 - Use site-relative paths such as `/img/showcase/project-name/screenshot.png`; external image URLs are rejected.
 - Run `node --test docs/tests/showcase.test.mjs` from the repository root. It checks the data validation, submission URL, and existence of listed images.
 

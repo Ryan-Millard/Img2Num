@@ -168,7 +168,7 @@ char* svg = img2num_image_to_svg(image_data, width, height, &cfg);`,
 
 /** Render an accepted project using the official example card layout. */
 function CommunityProjectCard({ project }) {
-  const screenshot = useBaseUrl(project.screenshot);
+  const screenshot = useBaseUrl(project.screenshot || "/");
   const logo = useBaseUrl(project.logo || "/");
   return (
     <div className={styles.bindingCard}>
@@ -183,7 +183,7 @@ function CommunityProjectCard({ project }) {
         </div>
       </div>
       <p className={styles.bindingDesc}>{project.description}</p>
-      <img className={showcaseStyles.projectScreenshot} src={screenshot} alt={`${project.name} screenshot`} width="1200" height="675" loading="lazy" />
+      {project.screenshot ? <img className={showcaseStyles.projectScreenshot} src={screenshot} alt={`${project.name} screenshot`} width="1200" height="675" loading="lazy" /> : null}
       <p className={showcaseStyles.projectLinks}>
         {project.sourceUrl ? <Link to={project.sourceUrl}>Source</Link> : null}
         {project.links?.map((link, index) => (

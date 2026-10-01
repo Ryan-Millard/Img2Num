@@ -28,7 +28,7 @@ export function validateShowcaseProjects(projects) {
     if (names.has(project.name.trim())) fail("unique name");
     names.add(project.name.trim());
     if (!isWebUrl(project.liveUrl)) fail("liveUrl (HTTP/HTTPS URL)");
-    if (!isLocalImage(project.screenshot)) fail("screenshot (local /img/showcase/ image)");
+    if (project.screenshot !== undefined && !isLocalImage(project.screenshot)) fail("screenshot (local /img/showcase/ image)");
     if (project.logo !== undefined && !isLocalImage(project.logo)) fail("logo (local /img/showcase/ image)");
     if (project.sourceUrl !== undefined && !isWebUrl(project.sourceUrl)) fail("sourceUrl (HTTP/HTTPS URL)");
     if (project.links !== undefined) {
@@ -66,8 +66,8 @@ export function createShowcaseDiscussionUrl(formData) {
     binding,
     "### Additional links",
     value("additional_links") || "None",
-    "### Screenshot",
-    "Attach a screenshot here before posting (recommended: 1200 × 675 px, 16:9). Maintainers will store accepted images in the repository.",
+    "### Screenshot (optional)",
+    "If available, attach a screenshot here before posting (recommended: 1200 × 675 px, 16:9). Maintainers will store accepted images in the repository.",
     "### Logo (optional)",
     "Attach a square project logo here, or leave this section empty to use the default code icon.",
     "### Listing criteria",

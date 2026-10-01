@@ -115,8 +115,8 @@ export default function ShowcaseSubmit() {
               <div className={submitStyles.imageHelp}>
                 <h2>Project images</h2>
                 <p>
-                  Attach a screenshot in the GitHub discussion before posting. We recommend 1200 × 675 px (16:9) in PNG, JPEG, or WebP format. You can also attach a square logo; otherwise, we'll use a
-                  code icon.
+                  You can attach an optional screenshot in the GitHub discussion before posting. We recommend 1200 × 675 px (16:9) in PNG, JPEG, or WebP format. You can also attach a square logo;
+                  otherwise, we'll use a code icon.
                 </p>
                 <p>Maintainers will save accepted images in the project so your card doesn't depend on an external image host.</p>
               </div>

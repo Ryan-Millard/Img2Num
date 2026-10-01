@@ -33,10 +33,17 @@ test("accepted entries may omit logos and supplementary links", () => {
   assert.deepEqual(validateShowcaseProjects([]), []);
 });
 
+test("screenshots are optional, while empty project entries remain invalid", () => {
+  const withoutScreenshot = { ...project };
+  delete withoutScreenshot.screenshot;
+  assert.deepEqual(validateShowcaseProjects([withoutScreenshot]), [withoutScreenshot]);
+  assert.throws(() => validateShowcaseProjects([{}]), /invalid or missing/);
+});
+
 test("incomplete entries fail before they can render empty cards", () => {
   for (const entry of [{}, null, [], "project"])
     assert.throws(() => validateShowcaseProjects([entry]), /Showcase project 1/);
-  for (const field of Object.keys(project)) {
+  for (const field of ["name", "description", "binding", "liveUrl"]) {
     for (const value of [undefined, "", "   ", 123])
       assert.throws(() => validateShowcaseProjects([{ ...project, [field]: value }]), /invalid or missing/);
   }
@@ -47,6 +54,8 @@ test("unsafe URLs, external images, and malformed optional links are rejected", 
   for (const fields of [
     { liveUrl: "javascript:alert(1)" },
     { screenshot: "https://example.com/image.png" },
+    { screenshot: "" },
+    { screenshot: null },
     { screenshot: "/img/showcase/../image.png" },
     { logo: "//example.com/logo.svg" },
     { sourceUrl: "file:///source" },
