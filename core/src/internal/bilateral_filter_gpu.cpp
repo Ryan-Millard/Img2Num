@@ -3,19 +3,13 @@
 #include "img2num.h"
 #include "internal/cielab.h"
 #include "internal/gpu.h"
+#include "internal/gpu_utils.h"
+#include "internal/log.h"
 
-#include <algorithm>
-#include <climits>
-#include <cmath>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
 #include <vector>
-// for debug printing
-#include "internal/log.h"
-
-static constexpr uint8_t COLOR_SPACE_OPTION_CIELAB {0};
-static constexpr uint8_t COLOR_SPACE_OPTION_RGB {1};
 
 // Structure matching the WGSL Uniform (std140 layout)
 #ifdef _MSC_VER
@@ -45,268 +39,137 @@ void bilateral_filter_gpu(
 ) {
     if (sigma_spatial <= 0.0 || sigma_range <= 0.0 || width <= 0 || height <= 0)
         return;
-    if (color_space != COLOR_SPACE_OPTION_CIELAB && color_space != COLOR_SPACE_OPTION_RGB)
+    if (color_space != gpu::COLOR_SPACE_CIELAB && color_space != gpu::COLOR_SPACE_RGB)
         return;
 
-    std::vector<uint8_t> result(width * height * 4);
-    // copy image data to result incase filter fails
-    std::memcpy(result.data(), image, width * height * 4);
-    // CIELAB conversion will run as shader
+    const uint32_t w = static_cast<uint32_t>(width);
+    const uint32_t h = static_cast<uint32_t>(height);
+    constexpr uint32_t bpp = 4; // RGBA8 = 4 bytes per pixel
 
     IMG2NUM_LOG_INFO("begin wgpu portion");
-    // 1. Create Input Texture
-    wgpu::TextureDescriptor texDesc = {};
-    texDesc.size = {static_cast<uint32_t>(width), static_cast<uint32_t>(height), 1};
-    int bytesPerPixel {4};
-    texDesc.format = wgpu::TextureFormat::RGBA8Unorm;
-    texDesc.usage = wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst;
-    wgpu::Texture inputTexture = GPU::getClassInstance().get_device().CreateTexture(&texDesc);
 
-    IMG2NUM_LOG_INFO("upload texture");
-    // Upload data to Input Texture
-    wgpu::TexelCopyTextureInfo dst = {};
-    dst.texture = inputTexture;
-    wgpu::TexelCopyBufferLayout layout = {};
-    layout.offset = 0;
-
-    layout.bytesPerRow = width * bytesPerPixel; // Tightly packed for upload
-    layout.rowsPerImage = height;
-    GPU::getClassInstance().get_queue().WriteTexture(
-        &dst, image, bytesPerPixel * width * height, &layout, &texDesc.size
+    // 1. Create textures (RAII — destroyed automatically on scope exit)
+    gpu::Texture inputTexture(
+        w, h, wgpu::TextureFormat::RGBA8Unorm,
+        wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst
     );
 
-    IMG2NUM_LOG_INFO("create output texture");
-    // 2. Create Output Texture (Storage)
-    wgpu::TextureDescriptor outDesc = texDesc;
-    outDesc.usage = wgpu::TextureUsage::StorageBinding | wgpu::TextureUsage::CopySrc;
-    wgpu::Texture outputTexture = GPU::getClassInstance().get_device().CreateTexture(&outDesc);
+    IMG2NUM_LOG_INFO("upload texture");
+    inputTexture.write(image, bpp * width * height, bpp);
 
-    // 2a. Intermediate textures for LAB if needed
-    wgpu::TextureDescriptor descLab = texDesc;
-    descLab.format = wgpu::TextureFormat::RGBA32Float; // <--- CRITICAL
-    descLab.usage = wgpu::TextureUsage::StorageBinding | wgpu::TextureUsage::TextureBinding;
-    // input lab
-    wgpu::Texture texLabRaw = GPU::getClassInstance().get_device().CreateTexture(&descLab);
-    // filtered lab
-    wgpu::Texture texLabFiltered = GPU::getClassInstance().get_device().CreateTexture(&descLab);
+    IMG2NUM_LOG_INFO("create output texture");
+    gpu::Texture outputTexture(
+        w, h, wgpu::TextureFormat::RGBA8Unorm,
+        wgpu::TextureUsage::StorageBinding | wgpu::TextureUsage::CopySrc
+    );
+
+    // Intermediate textures for CIELAB color-space filtering
+    gpu::Texture texLabRaw(
+        w, h, wgpu::TextureFormat::RGBA32Float,
+        wgpu::TextureUsage::StorageBinding | wgpu::TextureUsage::TextureBinding
+    );
+    gpu::Texture texLabFiltered(
+        w, h, wgpu::TextureFormat::RGBA32Float,
+        wgpu::TextureUsage::StorageBinding | wgpu::TextureUsage::TextureBinding
+    );
 
     IMG2NUM_LOG_INFO("create buffer");
-    // 3. Create Uniform Buffer
-    float sr = static_cast<float>(sigma_range);
-    FilterParams params = {static_cast<float>(sigma_spatial), sr, 0.0f, 0.0f};
-    wgpu::BufferDescriptor bufDesc = {};
-    bufDesc.size = sizeof(FilterParams);
-    bufDesc.usage = wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst;
-    wgpu::Buffer paramBuffer = GPU::getClassInstance().get_device().CreateBuffer(&bufDesc);
-    GPU::getClassInstance().get_queue().WriteBuffer(paramBuffer, 0, &params, sizeof(FilterParams));
+    // 2. Create uniform buffer with filter parameters
+    gpu::Buffer<FilterParams> paramBuffer(
+        1, wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst
+    );
+    FilterParams params = {
+        static_cast<float>(sigma_spatial), static_cast<float>(sigma_range), 0.0f, 0.0f
+    };
+    paramBuffer.write(&params, 1);
 
+    // 3. Create pipelines
     wgpu::ComputePipeline pipeline;
     wgpu::ComputePipeline pipelineRGB2LAB;
     wgpu::ComputePipeline pipelineLAB2RGB;
 
     switch (color_space) {
-    case COLOR_SPACE_OPTION_RGB: {
+    case gpu::COLOR_SPACE_RGB:
         pipeline =
             GPU::getClassInstance().createPipeline("bilateral_filter_rgb", "BilateralFilterShader");
         break;
-    }
-    case COLOR_SPACE_OPTION_CIELAB: {
-        // also requires RGB-CIELAB conversion shaders
+    case gpu::COLOR_SPACE_CIELAB:
         pipeline =
             GPU::getClassInstance().createPipeline("bilateral_filter_lab", "BilateralFilterShader");
         pipelineRGB2LAB = GPU::getClassInstance().createPipeline("rgb2cielab", "rgb2lab");
         pipelineLAB2RGB = GPU::getClassInstance().createPipeline("cielab2rgb", "lab2rgb");
         break;
     }
-    }
 
-    // 6. Create Bind Group
-
-    // filter bind group
-    wgpu::BindGroupDescriptor bindGroupDesc = {};
-    bindGroupDesc.layout = pipeline.GetBindGroupLayout(0);
-    wgpu::BindGroupEntry entries[3];
-    // Entry 0: Input Texture View
-    entries[0].binding = 0;
-    entries[1].binding = 1;
-
-    switch (color_space) {
-    case COLOR_SPACE_OPTION_RGB: {
-        entries[0].textureView = inputTexture.CreateView();
-        // Entry 1: Output Texture View
-        entries[1].textureView = outputTexture.CreateView();
-        break;
-    }
-    case COLOR_SPACE_OPTION_CIELAB: {
-        entries[0].textureView = texLabRaw.CreateView();
-        // Entry 1: Output Texture View
-        entries[1].textureView = texLabFiltered.CreateView();
-        break;
-    }
-    }
-    // Entry 2: Uniform Buffer
-    entries[2].binding = 2;
-    entries[2].buffer = paramBuffer;
-    entries[2].size = sizeof(FilterParams);
-    bindGroupDesc.entryCount = 3;
-    bindGroupDesc.entries = entries;
-    wgpu::BindGroup bindGroup =
-        GPU::getClassInstance().get_device().CreateBindGroup(&bindGroupDesc);
-
+    // 4. Create bind groups
+    wgpu::BindGroup bindGroup;
     wgpu::BindGroup bindGroupRGB2LAB;
     wgpu::BindGroup bindGroupLAB2RGB;
 
-    if (color_space == COLOR_SPACE_OPTION_CIELAB) {
-        // rgb2lab bind group
-        wgpu::BindGroupEntry bg1Entries[2];
-        bg1Entries[0].binding = 0;
-        bg1Entries[0].textureView = inputTexture.CreateView();
-        bg1Entries[1].binding = 1;
-        bg1Entries[1].textureView = texLabRaw.CreateView();
-        wgpu::BindGroupDescriptor bg1Desc = {};
-        bg1Desc.layout = pipelineRGB2LAB.GetBindGroupLayout(0);
-        bg1Desc.entryCount = 2;
-        bg1Desc.entries = bg1Entries;
-        bindGroupRGB2LAB = GPU::getClassInstance().get_device().CreateBindGroup(&bg1Desc);
-        // lab2rgb bind group
-        wgpu::BindGroupEntry bg2Entries[2];
-        bg2Entries[0].binding = 0;
-        bg2Entries[0].textureView = texLabFiltered.CreateView();
-        bg2Entries[1].binding = 1;
-        bg2Entries[1].textureView = outputTexture.CreateView();
-        wgpu::BindGroupDescriptor bg2Desc = {};
-        bg2Desc.layout = pipelineLAB2RGB.GetBindGroupLayout(0);
-        bg2Desc.entryCount = 2;
-        bg2Desc.entries = bg2Entries;
-        bindGroupLAB2RGB = GPU::getClassInstance().get_device().CreateBindGroup(&bg2Desc);
+    switch (color_space) {
+    case gpu::COLOR_SPACE_RGB:
+        bindGroup = gpu::make_bind_group(
+            pipeline, 0,
+            {
+                gpu::BindEntry::texture(0, inputTexture),
+                gpu::BindEntry::texture(1, outputTexture),
+                gpu::BindEntry::buffer_entry(2, paramBuffer),
+            }
+        );
+        break;
+    case gpu::COLOR_SPACE_CIELAB:
+        bindGroup = gpu::make_bind_group(
+            pipeline, 0,
+            {
+                gpu::BindEntry::texture(0, texLabRaw),
+                gpu::BindEntry::texture(1, texLabFiltered),
+                gpu::BindEntry::buffer_entry(2, paramBuffer),
+            }
+        );
+        bindGroupRGB2LAB = gpu::make_bind_group(
+            pipelineRGB2LAB, 0,
+            {
+                gpu::BindEntry::texture(0, inputTexture),
+                gpu::BindEntry::texture(1, texLabRaw),
+            }
+        );
+        bindGroupLAB2RGB = gpu::make_bind_group(
+            pipelineLAB2RGB, 0,
+            {
+                gpu::BindEntry::texture(0, texLabFiltered),
+                gpu::BindEntry::texture(1, outputTexture),
+            }
+        );
+        break;
     }
 
-    // 7. Dispatch Compute Pass
+    // 5. Dispatch compute passes
+    uint32_t wgX = gpu::workgroup_count(w);
+    uint32_t wgY = gpu::workgroup_count(h);
+
     wgpu::CommandEncoder encoder = GPU::getClassInstance().get_device().CreateCommandEncoder();
 
-    if (color_space == COLOR_SPACE_OPTION_CIELAB) {
-        wgpu::ComputePassEncoder pass1 = encoder.BeginComputePass();
-        pass1.SetPipeline(pipelineRGB2LAB);
-        pass1.SetBindGroup(0, bindGroupRGB2LAB);
-        // Workgroups of 16x16
-        pass1.DispatchWorkgroups((width + 15) / 16, (height + 15) / 16);
-        pass1.End();
+    if (color_space == gpu::COLOR_SPACE_CIELAB) {
+        gpu::encode_pass(encoder, pipelineRGB2LAB, bindGroupRGB2LAB, wgX, wgY);
     }
 
-    wgpu::ComputePassEncoder pass = encoder.BeginComputePass();
-    pass.SetPipeline(pipeline);
-    pass.SetBindGroup(0, bindGroup);
-    // Workgroups of 16x16
-    pass.DispatchWorkgroups((width + 15) / 16, (height + 15) / 16);
-    pass.End();
+    gpu::encode_pass(encoder, pipeline, bindGroup, wgX, wgY);
 
-    if (color_space == COLOR_SPACE_OPTION_CIELAB) {
-        wgpu::ComputePassEncoder pass2 = encoder.BeginComputePass();
-        pass2.SetPipeline(pipelineLAB2RGB);
-        pass2.SetBindGroup(0, bindGroupLAB2RGB);
-        // Workgroups of 16x16
-        pass2.DispatchWorkgroups((width + 15) / 16, (height + 15) / 16);
-        pass2.End();
+    if (color_space == gpu::COLOR_SPACE_CIELAB) {
+        gpu::encode_pass(encoder, pipelineLAB2RGB, bindGroupLAB2RGB, wgX, wgY);
     }
-
-    // 8. Prepare for Readback (Copy Texture -> Buffer)
-    // We cannot read textures directly on CPU. We must copy to a MapRead buffer.
-    uint32_t alignedBytesPerRow =
-        GPU::getAlignedBytesPerRow(width, static_cast<uint32_t>(bytesPerPixel));
-    uint32_t bufferSize = alignedBytesPerRow * height;
-
-    wgpu::BufferDescriptor readBufDesc = {};
-    readBufDesc.size = bufferSize;
-    readBufDesc.usage = wgpu::BufferUsage::MapRead | wgpu::BufferUsage::CopyDst;
-    wgpu::Buffer readBuffer = GPU::getClassInstance().get_device().CreateBuffer(&readBufDesc);
-
-    wgpu::TexelCopyTextureInfo srcTex = {};
-    srcTex.texture = outputTexture;
-
-    wgpu::TexelCopyBufferInfo dstBuf = {};
-    dstBuf.buffer = readBuffer;
-    dstBuf.layout.bytesPerRow = alignedBytesPerRow;
-
-    encoder.CopyTextureToBuffer(&srcTex, &dstBuf, &texDesc.size);
 
     wgpu::CommandBuffer commands = encoder.Finish();
     GPU::getClassInstance().get_queue().Submit(1, &commands);
     IMG2NUM_LOG_INFO("queue submit");
 
-    // static volatile bool waiting = true;
-
-    // 9. Map Async (To read data back to C++)
-    // In a real app, you likely pass a callback function here.
-    struct ReadbackContext {
-        wgpu::Buffer buffer;
-        uint32_t size;
-        uint32_t alignedBytesPerRow;
-        int width;
-        int height;
-    };
-
-    uint8_t* result_ptr = result.data();
-    bool* waiting = new bool(true);
-
-    readBuffer.MapAsync(
-        wgpu::MapMode::Read, 0, bufferSize, wgpu::CallbackMode::AllowProcessEvents,
-        [](wgpu::MapAsyncStatus status, wgpu::StringView message, void* userdata) {
-            IMG2NUM_LOG_INFO("In callback");
-            bool* flag = static_cast<bool*>(userdata);
-            bool success = false;
-            if (status == wgpu::MapAsyncStatus::Success) {
-                success = true;
-            } else {
-                // Handle error
-                success = false;
-            }
-            *flag = false;
-        },
-        (void*)waiting
-    );
-
-    IMG2NUM_LOG_INFO("waiting {}", *waiting);
-
-    while (*waiting) {
-        GPU::getClassInstance().get_instance().ProcessEvents();
-#if defined(__EMSCRIPTEN__)
-        emscripten_sleep(10);
-#endif
-    }
-    IMG2NUM_LOG_INFO("done wgpu");
-    const uint8_t* mappedData = (const uint8_t*)readBuffer.GetConstMappedRange(0, bufferSize);
-    // copy to cpu buffer
-    for (size_t y = 0; y < height; ++y) {
-        const uint8_t* rowPtr = mappedData + (y * alignedBytesPerRow);
-        for (size_t x = 0; x < width; ++x) {
-            const uint8_t* pixelPtr = rowPtr + (x * bytesPerPixel);
-            size_t dstIndex = 4 * (y * width + x); // RGBA
-
-            std::memcpy(&result_ptr[dstIndex], pixelPtr, sizeof(uint8_t));
-            std::memcpy(&result_ptr[dstIndex + 1], pixelPtr + 1, sizeof(uint8_t));
-            std::memcpy(&result_ptr[dstIndex + 2], pixelPtr + 2, sizeof(uint8_t));
-            std::memcpy(&result_ptr[dstIndex + 3], pixelPtr + 3, sizeof(uint8_t));
-        }
-    }
-    readBuffer.Unmap();
+    // 6. Readback — handles staging buffer, MapAsync, alignment stripping automatically
+    std::vector<uint8_t> result = outputTexture.read(bpp);
     std::memcpy(image, result.data(), result.size());
     IMG2NUM_LOG_INFO("done memcpy");
 
-    // explicit clean up
-
-    if (inputTexture)
-        inputTexture.Destroy();
-    if (outputTexture)
-        outputTexture.Destroy();
-    if (texLabRaw)
-        texLabRaw.Destroy();
-    if (texLabFiltered)
-        texLabFiltered.Destroy();
-    readBuffer.Destroy();
-    delete waiting;
+    // All textures and buffers are destroyed automatically by RAII destructors
 #if defined(__EMSCRIPTEN__)
     emscripten_sleep(50);
 #endif
-    result.clear();
-    result.shrink_to_fit();
 }
