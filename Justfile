@@ -111,7 +111,7 @@ react-js action:
         start) pnpm -F react-example run dev ;; \
     esac
 
-console-py input:
+console-py input="":
     @echo "python example-apps/console-py/main.py {{ input }}"
     uv pip install opencv-python
     uv run python3 example-apps/console-py/main.py "{{ input }}"

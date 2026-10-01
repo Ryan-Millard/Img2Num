@@ -1,11 +1,5 @@
+import argparse
 import os
-import sys
-
-import img2num
-
-# if not preset install these with
-# python3 -m pip install -r requirements.txt --break-system-packages
-import cv2
 
 """
 Note: Images sent to img2num functions must be RGBA
@@ -13,10 +7,20 @@ Note: Images sent to img2num functions must be RGBA
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Convert an image with Img2Num")
+    parser.add_argument("image_path", help="path to the input image")
+    args = parser.parse_args()
+
+    import cv2
+    import img2num
+
     OUTDIR = "console-py_outputs"
     os.makedirs(OUTDIR, exist_ok=True)
 
-    img = cv2.imread(sys.argv[1])
+    img = cv2.imread(args.image_path)
+    if img is None:
+        parser.error(f"could not read image: {args.image_path}")
+
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)  # VERY IMPORTANT!!!
 
     # bilateral filter in-place
@@ -35,7 +39,7 @@ def main():
     # svg file
     res_svg = img2num.labels_to_svg(img, labels, 100, 10)
     with open(os.path.join(OUTDIR, "result.svg"), "w") as f:
-        f.writelines(res_svg)
+        f.write(res_svg)
 
     # res_svg2 should match res_svg
     cfg = img2num.ImageToSvgConfig(kmeans={"k": 64}, min_thickness=10)
@@ -43,7 +47,7 @@ def main():
 
     res_svg2 = img2num.image_to_svg(img, config=cfg)
     with open(os.path.join(OUTDIR, "result2.svg"), "w") as f:
-        f.writelines(res_svg2)
+        f.write(res_svg2)
 
 
 if __name__ == "__main__":
