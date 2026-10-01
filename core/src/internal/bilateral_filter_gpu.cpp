@@ -90,14 +90,12 @@ void bilateral_filter_gpu(
 
     switch (color_space) {
     case gpu::COLOR_SPACE_RGB:
-        pipeline =
-            GPU::getClassInstance().createPipeline("bilateral_filter_rgb", "BilateralFilterShader");
+        pipeline = gpu::cached_pipeline("bilateral_filter_rgb", "BilateralFilterShader");
         break;
     case gpu::COLOR_SPACE_CIELAB:
-        pipeline =
-            GPU::getClassInstance().createPipeline("bilateral_filter_lab", "BilateralFilterShader");
-        pipelineRGB2LAB = GPU::getClassInstance().createPipeline("rgb2cielab", "rgb2lab");
-        pipelineLAB2RGB = GPU::getClassInstance().createPipeline("cielab2rgb", "lab2rgb");
+        pipeline = gpu::cached_pipeline("bilateral_filter_lab", "BilateralFilterShader");
+        pipelineRGB2LAB = gpu::cached_pipeline("rgb2cielab", "rgb2lab");
+        pipelineLAB2RGB = gpu::cached_pipeline("cielab2rgb", "lab2rgb");
         break;
     }
 

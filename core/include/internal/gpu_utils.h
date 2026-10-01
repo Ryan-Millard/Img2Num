@@ -28,7 +28,9 @@
 #include <cstring>
 #include <initializer_list>
 #include <stdexcept>
+#include <string>
 #include <type_traits>
+#include <unordered_map>
 #include <vector>
 #include <webgpu/webgpu_cpp.h>
 
@@ -41,6 +43,31 @@ namespace gpu {
 /// @brief Color space selector constants previously duplicated in each kernel.
 static constexpr uint8_t COLOR_SPACE_CIELAB {0};
 static constexpr uint8_t COLOR_SPACE_RGB {1};
+
+// =========================================================================
+// cached_pipeline — pipeline caching wrapper
+// =========================================================================
+
+/// @brief Get or create a compute pipeline, caching by shader ID.
+///
+/// GPU::createPipeline() recreates the shader module and pipeline on every
+/// call. This wrapper memoizes the result so that repeated calls with the
+/// same shader_id return the cached pipeline instantly.
+///
+/// @param shader_id  The embedded shader identifier (e.g. "bilateral_filter_rgb").
+/// @param label      Debug label for the pipeline.
+/// @return Cached wgpu::ComputePipeline.
+inline wgpu::ComputePipeline cached_pipeline(const std::string& shader_id,
+                                              const std::string& label) {
+    static std::unordered_map<std::string, wgpu::ComputePipeline> cache;
+    auto it = cache.find(shader_id);
+    if (it != cache.end()) {
+        return it->second;
+    }
+    wgpu::ComputePipeline pipeline = GPU::getClassInstance().createPipeline(shader_id, label);
+    cache[shader_id] = pipeline;
+    return pipeline;
+}
 
 // =========================================================================
 // map_and_wait — blocking readback primitive
@@ -56,27 +83,31 @@ static constexpr uint8_t COLOR_SPACE_RGB {1};
 /// @return        Pointer to the mapped data. Valid until buffer.Unmap().
 /// @throws std::runtime_error if the mapping fails.
 inline const void* map_and_wait(wgpu::Buffer& buffer, size_t size) {
-    bool done = false;
-    bool success = false;
+    struct MapState {
+        bool done = false;
+        bool success = false;
+    };
+
+    MapState state;
 
     buffer.MapAsync(
         wgpu::MapMode::Read, 0, size, wgpu::CallbackMode::AllowProcessEvents,
         [](wgpu::MapAsyncStatus status, wgpu::StringView /*msg*/, void* userdata) {
-            auto* state = static_cast<std::pair<bool*, bool*>*>(userdata);
-            *(state->first) = true; // done
-            *(state->second) = (status == wgpu::MapAsyncStatus::Success);
+            auto* s = static_cast<MapState*>(userdata);
+            s->done = true;
+            s->success = (status == wgpu::MapAsyncStatus::Success);
         },
-        static_cast<void*>(new std::pair<bool*, bool*>(&done, &success))
+        static_cast<void*>(&state)
     );
 
-    while (!done) {
+    while (!state.done) {
         GPU::getClassInstance().get_instance().ProcessEvents();
 #if defined(__EMSCRIPTEN__)
         emscripten_sleep(10);
 #endif
     }
 
-    if (!success) {
+    if (!state.success) {
         throw std::runtime_error("gpu::map_and_wait: MapAsync failed");
     }
 
