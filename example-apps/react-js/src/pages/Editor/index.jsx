@@ -2,12 +2,13 @@ import ConfigPanel from "@components/ConfigPanel";
 import GlassCard from "@components/GlassCard";
 import GlassModal from "@components/GlassModal";
 import useFullscreen from "@hooks/useFullscreen";
-import { bilateralFilter, findContours, kmeans, color_quantize } from "img2num";
+import { bilateralFilter, findContours, kmeans } from "img2num";
 import { clearEditorHandoff, getEditorHandoff } from "@utils/editorHandoff";
 import { useEffect, useRef, useState } from "react";
 import EditorControls from "./EditorControls";
 import EditorHelmet from "./EditorHelmet";
 import SvgCanvas from "./SvgCanvas";
+import { TOUR_EVENTS } from "@components/OnboardingTour";
 
 import styles from "./Editor.module.css";
 
@@ -16,7 +17,10 @@ export default function Editor() {
   const { svg: initialSvg, fileData, imgBilateralFiltered, initialSettings } = handoff || {};
 
   useEffect(() => {
-    return () => clearEditorHandoff();
+    return () => {
+      clearEditorHandoff();
+      window.dispatchEvent(new Event(TOUR_EVENTS.processingComplete));
+    };
   }, []);
 
   const [svg, setSvg] = useState(initialSvg);
@@ -30,7 +34,6 @@ export default function Editor() {
   const [sigmaSpatial, setSigmaSpatial] = useState(initialSettings?.sigmaSpatial ?? 3);
   const [sigmaRange, setSigmaRange] = useState(initialSettings?.sigmaRange ?? 50);
   const [colorSpace, setColorSpace] = useState(initialSettings?.colorSpace ?? 0);
-  const [synthetic, setSyntheticFlag] = useState(initialSettings?.synthetic ?? false);
 
   const [cachedBilateralFiltered, setCachedBilateralFiltered] = useState(imgBilateralFiltered);
   const [appliedSigmaSpatial, setAppliedSigmaSpatial] = useState(initialSettings?.sigmaSpatial ?? 3);
@@ -55,46 +58,33 @@ export default function Editor() {
     try {
       const { width, height } = fileData;
 
-      let contourPixels = fileData.pixels;
-      let labels;
+      const bilateralChanged = sigmaSpatial !== appliedSigmaSpatial || sigmaRange !== appliedSigmaRange || colorSpace !== appliedColorSpace || !cachedBilateralFiltered;
 
-      if (synthetic) {
-        const result = await color_quantize({
-          ...fileData,
+      let filteredPixels = cachedBilateralFiltered;
+
+      if (bilateralChanged) {
+        filteredPixels = await bilateralFilter({
           pixels: fileData.pixels,
-          num_colors: 0,
+          width,
+          height,
+          sigma_spatial: sigmaSpatial,
+          sigma_range: sigmaRange,
+          color_space: colorSpace,
         });
-        labels = result.labels;
-      } else {
-        const bilateralChanged = sigmaSpatial !== appliedSigmaSpatial || sigmaRange !== appliedSigmaRange || colorSpace !== appliedColorSpace || !cachedBilateralFiltered;
-
-        contourPixels = cachedBilateralFiltered;
-
-        if (bilateralChanged) {
-          contourPixels = await bilateralFilter({
-            pixels: fileData.pixels,
-            width,
-            height,
-            sigma_spatial: sigmaSpatial,
-            sigma_range: sigmaRange,
-            color_space: colorSpace,
-          });
-          setCachedBilateralFiltered(contourPixels);
-          setAppliedSigmaSpatial(sigmaSpatial);
-          setAppliedSigmaRange(sigmaRange);
-          setAppliedColorSpace(colorSpace);
-        }
-
-        const kmeansResult = await kmeans({
-          ...fileData,
-          pixels: contourPixels,
-          num_colors: numColors,
-        });
-        labels = kmeansResult.labels;
+        setCachedBilateralFiltered(filteredPixels);
+        setAppliedSigmaSpatial(sigmaSpatial);
+        setAppliedSigmaRange(sigmaRange);
+        setAppliedColorSpace(colorSpace);
       }
 
+      const { labels } = await kmeans({
+        ...fileData,
+        pixels: filteredPixels,
+        num_colors: numColors,
+      });
+
       const { svg: newSvg } = await findContours({
-        pixels: contourPixels,
+        pixels: filteredPixels,
         labels,
         width,
         height,
@@ -198,8 +188,6 @@ export default function Editor() {
               setSigmaRange={setSigmaRange}
               colorSpace={colorSpace}
               setColorSpace={setColorSpace}
-              synthetic={synthetic}
-              setSyntheticFlag={setSyntheticFlag}
               isOpen={isSettingsOpen}
               onReset={() => {
                 setNumColors(16);
@@ -208,7 +196,6 @@ export default function Editor() {
                 setSigmaSpatial(3);
                 setSigmaRange(50);
                 setColorSpace(0);
-                setSyntheticFlag(false);
               }}
               onAction={reprocessImage}
               actionLabel="Apply"

@@ -1,6 +1,6 @@
 import { useEffect, useState, useId, useRef, useCallback, useMemo } from "react";
-import { Upload, Settings, ChevronDown, ChevronUp } from "lucide-react";
-import { imageToUint8ClampedArray, bilateralFilter, kmeans, findContours, color_quantize, terminateWasmModule } from "img2num";
+import { Upload, Settings } from "lucide-react";
+import { imageToUint8ClampedArray, bilateralFilter, kmeans, findContours, terminateWasmModule } from "img2num";
 import GlassCard from "@components/GlassCard";
 import styles from "./WasmImageProcessor.module.css";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import { setEditorHandoff } from "@utils/editorHandoff";
 import LoadingHedgehog from "@components/LoadingHedgehog";
 import Tooltip from "@components/Tooltip";
 import ConfigPanel from "@components/ConfigPanel";
+import { TOUR_EVENTS } from "@components/OnboardingTour";
 
 const WasmImageProcessor = () => {
   const navigate = useNavigate();
@@ -26,7 +27,6 @@ const WasmImageProcessor = () => {
   const [sigmaSpatial, setSigmaSpatial] = useState(3);
   const [sigmaRange, setSigmaRange] = useState(50);
   const [colorSpace, setColorSpace] = useState(0);
-  const [synthetic, setSyntheticFlag] = useState(false);
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -47,7 +47,27 @@ const WasmImageProcessor = () => {
 
     const { pixels, width, height } = await imageToUint8ClampedArray(file);
     setFileData({ pixels, width, height });
+
+    // Single source of truth for "an image is now loaded": fires for drop,
+    // file picker, AND paste, and only once the pixels are actually decoded
+    // (so the tour never advances to a state that isn't ready yet).
+    window.dispatchEvent(new Event(TOUR_EVENTS.imageLoaded));
   }, []);
+
+  /* Clear the current image (used by the tour's reset request) */
+  const clearImage = useCallback(() => {
+    setOriginalSrc(null); // the effect above revokes the old object URL
+    setFileData(null);
+    setIsSettingsOpen(false);
+    if (inputRef.current) inputRef.current.value = "";
+    window.dispatchEvent(new Event(TOUR_EVENTS.imageCleared));
+  }, []);
+
+  /* Let the tour ask for a reset so it can restart from the upload step */
+  useEffect(() => {
+    window.addEventListener(TOUR_EVENTS.requestReset, clearImage);
+    return () => window.removeEventListener(TOUR_EVENTS.requestReset, clearImage);
+  }, [clearImage]);
 
   /* Paste support */
   useEffect(() => {
@@ -73,7 +93,14 @@ const WasmImageProcessor = () => {
     [loadOriginal],
   );
 
-  const handleSelect = useCallback((e) => loadOriginal(e.target.files[0]), [loadOriginal]);
+  const handleSelect = useCallback(
+    (e) => {
+      loadOriginal(e.target.files[0]);
+      // Allow re-selecting the same file later (change wouldn't fire otherwise)
+      e.target.value = "";
+    },
+    [loadOriginal],
+  );
 
   /* Hashed steps to keep pipeline aligned */
   const step = useCallback((p) => setProgress(p), []);
@@ -89,40 +116,27 @@ const WasmImageProcessor = () => {
       const { width, height } = fileData;
 
       step(20);
+      // NOTE: Gaussian blur destroys the sharp outlines first, preventing the Bilateral filter from detecting and preserving them
+      const imgBilateralFiltered = await bilateralFilter({
+        pixels: fileData.pixels,
+        width,
+        height,
+        sigma_spatial: sigmaSpatial,
+        sigma_range: sigmaRange,
+        color_space: colorSpace,
+      });
 
-      let contourPixels = fileData.pixels;
-      let labels;
-
-      if (synthetic) {
-        const result = await color_quantize({
-          ...fileData,
-          pixels: fileData.pixels,
-          num_colors: 0,
-        });
-        labels = result.labels;
-      } else {
-        // NOTE: Gaussian blur destroys the sharp outlines first, preventing the Bilateral filter from detecting and preserving them
-        contourPixels = await bilateralFilter({
-          pixels: fileData.pixels,
-          width,
-          height,
-          sigma_spatial: sigmaSpatial,
-          sigma_range: sigmaRange,
-          color_space: colorSpace,
-        });
-
-        step(70);
-        const kmeansResult = await kmeans({
-          ...fileData,
-          pixels: contourPixels,
-          num_colors: numColors,
-        });
-        labels = kmeansResult.labels;
-      }
+      step(70);
+      // kmeansed pixels are unused - filtered pixels are better for findContours
+      const { labels } = await kmeans({
+        ...fileData,
+        pixels: imgBilateralFiltered,
+        num_colors: numColors,
+      });
 
       step(95);
       const { svg } = await findContours({
-        pixels: contourPixels,
+        pixels: imgBilateralFiltered,
         labels,
         width,
         height,
@@ -146,6 +160,10 @@ const WasmImageProcessor = () => {
         },
       });
 
+      // NOTE: TOUR_EVENTS.processingComplete is intentionally NOT dispatched
+      // here. At this point /editor hasn't rendered, so #svgCanvas doesn't
+      // exist yet and the tour would highlight nothing. The Editor page
+      // dispatches it from a mount effect instead.
       navigate("/editor");
     } catch (err) {
       console.error(err);
@@ -156,7 +174,7 @@ const WasmImageProcessor = () => {
         await terminateWasmModule();
       }, 800);
     }
-  }, [fileData, navigate, step, numColors, minArea, minThickness, sigmaSpatial, sigmaRange, colorSpace, synthetic]);
+  }, [fileData, navigate, step, numColors, minArea, minThickness, sigmaSpatial, sigmaRange, colorSpace]);
 
   /* Memo'd UI fragments */
   const EmptyState = useMemo(
@@ -193,8 +211,6 @@ const WasmImageProcessor = () => {
           setSigmaRange={setSigmaRange}
           colorSpace={colorSpace}
           setColorSpace={setColorSpace}
-          synthetic={synthetic}
-          setSyntheticFlag={setSyntheticFlag}
           isOpen={isSettingsOpen}
           onReset={() => {
             setNumColors(16);
@@ -203,7 +219,6 @@ const WasmImageProcessor = () => {
             setSigmaSpatial(3);
             setSigmaRange(50);
             setColorSpace(0);
-            setSyntheticFlag(false);
           }}
           onAction={processImage}
           actionLabel="Ok"
@@ -233,6 +248,7 @@ const WasmImageProcessor = () => {
                 }}
                 aria-expanded={isSettingsOpen}
                 aria-label="Toggle settings"
+                id="settingsToggleButton"
               >
                 <Settings size={18} />
               </button>
@@ -240,6 +256,7 @@ const WasmImageProcessor = () => {
               <button
                 type="button"
                 className={`button ${styles.okButton}`}
+                id="okButton"
                 onClick={(e) => {
                   e.stopPropagation();
                   processImage();
@@ -253,7 +270,7 @@ const WasmImageProcessor = () => {
 
           {isProcessing && (
             <div className={styles.controlsWrapper}>
-              <LoadingHedgehog progress={progress} text={`Processing — ${Math.round(progress)}%`} />
+              <LoadingHedgehog progress={progress} text={`Processing - ${Math.round(progress)}%`} />
             </div>
           )}
         </GlassCard>

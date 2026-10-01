@@ -2,10 +2,10 @@ import styles from "./GlassSwitch.module.css";
 import Tooltip from "@components/Tooltip";
 import PropTypes from "prop-types";
 
-const GlassSwitch = ({ onChange, isOn, ariaLabel, thumbContent, disabled = false, tooltipPosition = "right" }) => {
+const GlassSwitch = ({ onChange, isOn, ariaLabel, thumbContent, disabled = false }) => {
   const fallbackContent = isOn ? styles.fallbackThumbContentOn : styles.fallbackThumbContentOff;
   return (
-    <Tooltip content={ariaLabel} position={tooltipPosition}>
+    <Tooltip content={ariaLabel}>
       <button
         type="button"
         role="switch"
@@ -27,7 +27,6 @@ GlassSwitch.propTypes = {
   ariaLabel: PropTypes.string.isRequired,
   thumbContent: PropTypes.node,
   disabled: PropTypes.bool,
-  tooltipPosition: PropTypes.string,
 };
 
 export default GlassSwitch;
