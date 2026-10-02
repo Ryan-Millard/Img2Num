@@ -43,7 +43,10 @@ uint8_t quantize(uint8_t value, uint8_t region_size) {
 
 namespace img2num {
 
-// Helper to calculate reflect (mirror) boundary index
+/**
+ * Mirrors an out-of-range coordinate back into [0, dim) (reflect padding).
+ * Returns 0 when dim <= 1, since there is nothing to reflect.
+ */
 static size_t reflect_index(int p, int dim) {
     if (dim <= 1) return 0;
     while (p < 0 || p >= dim) {
@@ -56,21 +59,45 @@ static size_t reflect_index(int p, int dim) {
     return static_cast<size_t>(p);
 }
 
-// image: pointer to RGBA data
-// width, height: dimensions
-// sigma: standard deviation of Gaussian blur
+/**
+ * Applies a Gaussian blur in place using FFT on the R, G and B channels of an RGBA image.
+ * The image is reflect-padded by ceil(3 * sigma_pixels) on each side before the FFT to avoid
+ * border darkening and circular edge wrapping. The alpha channel is left unchanged.
+ *
+ * @param image        Pointer to RGBA data (4 bytes per pixel).
+ * @param width        Image width in pixels.
+ * @param height       Image height in pixels.
+ * @param sigma_pixels Standard deviation of the Gaussian in pixels. Must be finite and > 0,
+ *                     otherwise the image is left untouched.
+ */
 void gaussian_blur_fft(uint8_t* image, size_t width, size_t height, double sigma_pixels) {
-    if (!image || width == 0 || height == 0 || sigma_pixels <= 0)
+    if (!image || width == 0 || height == 0 || !std::isfinite(sigma_pixels) || sigma_pixels <= 0)
         return;
 
-    // Pad by at least 3*sigma pixels to avoid border darkening and edge wrapping
-    const size_t pad = static_cast<size_t>(std::ceil(3.0 * sigma_pixels));
+    // Keep every dimension within 2^30 so the int casts below (reflect_index, freq_coord)
+    // and next_power_of_two() cannot overflow.
+    constexpr size_t kMaxDim = size_t(1) << 30;
+    if (width > kMaxDim || height > kMaxDim)
+        return;
+
+    // Pad by at least 3*sigma pixels to avoid border darkening and edge wrapping.
+    // Check in double BEFORE casting: converting an out-of-range double to size_t is UB.
+    const double pad_d = std::ceil(3.0 * sigma_pixels);
+    if (pad_d > static_cast<double>(kMaxDim))
+        return;
+    const size_t pad = static_cast<size_t>(pad_d);
+
+    // Ensure width + 2*pad and height + 2*pad stay <= kMaxDim (written to avoid overflow)
+    if (pad > (kMaxDim - width) / 2 || pad > (kMaxDim - height) / 2)
+        return;
     const size_t padded_width = width + 2 * pad;
     const size_t padded_height = height + 2 * pad;
 
-    // Compute padded dimensions (next power of two)
+    // Compute padded dimensions (next power of two); both are <= kMaxDim
     const size_t W = fft::next_power_of_two(padded_width);
     const size_t H = fft::next_power_of_two(padded_height);
+    if (W > std::numeric_limits<size_t>::max() / H)
+        return;
     const size_t Npix_padded = W * H;
 
     // Frequency coordinates helper (DC at corner)
