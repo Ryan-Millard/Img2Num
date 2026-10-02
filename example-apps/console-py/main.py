@@ -1,5 +1,7 @@
 import argparse
 import os
+import cv2
+import img2num
 
 """
 Note: Images sent to img2num functions must be RGBA
@@ -11,9 +13,6 @@ def main():
     parser.add_argument("image_path", help="path to the input image")
     args = parser.parse_args()
 
-    import cv2
-    import img2num
-
     OUTDIR = "console-py_outputs"
     os.makedirs(OUTDIR, exist_ok=True)
 
@@ -21,7 +20,7 @@ def main():
     if img is None:
         parser.error(f"could not read image: {args.image_path}")
 
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)  # VERY IMPORTANT!!!
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
 
     # bilateral filter in-place
     img_bf = img2num.bilateral_filter(img, 3, 50, 0)
@@ -36,6 +35,7 @@ def main():
         os.path.join(OUTDIR, "kmeans_image.png"),
         cv2.cvtColor(img_kmeans, cv2.COLOR_RGBA2BGR),
     )
+
     # svg file
     res_svg = img2num.labels_to_svg(img, labels, 100, 10)
     with open(os.path.join(OUTDIR, "result.svg"), "w") as f:
