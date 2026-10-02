@@ -72,7 +72,11 @@ async function main() {
 
 export { generatedSection, replaceGeneratedSection };
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+const isMainModule =
+  process.argv[1] &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isMainModule) {
   main().catch((error) => {
     console.error(`Failed to generate package README: ${error.message}`);
     process.exitCode = 1;

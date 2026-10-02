@@ -174,8 +174,6 @@ try {
 } finally {
   await terminateWasmModule();
 }
-
-process.exit();
 ```
 <!-- END GENERATED: console-js-esm -->
 
@@ -226,7 +224,7 @@ async function main() {
 
 main().catch((err) => {
   console.error(err);
-  process.exit(1);
+  process.exitCode = 1;
 });
 ```
 <!-- END GENERATED: console-js-cjs -->
