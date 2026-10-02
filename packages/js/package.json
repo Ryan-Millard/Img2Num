@@ -84,7 +84,7 @@
     "build:types:cjs": "tsc -p tsconfig.types.json --outDir dist/types/cjs && node scripts/mark-cjs-types.js",
     "build:types": "pnpm build:types:esm && pnpm build:types:cjs",
     "build": "pnpm build:browser && pnpm build:standalone && pnpm build:node && pnpm build:types",
-    "test:types": "tsc -p test-types/tsconfig.json"
+    "test:types": "tsc -p test-types/tsconfig.json && tsc -p test-types/tsconfig.nodenext.json"
   },
   "engines": {
     "node": ">=18"
