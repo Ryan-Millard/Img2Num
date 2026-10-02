@@ -159,7 +159,11 @@ run_in_container() {
   image="$(load_image)"
 
   if [ "$IMG2NUM_IMAGE_SOURCE_SET" -eq 1 ]; then
-    pull_policy="always"
+    if [ "$image" = "img2num-dev:local" ]; then
+      pull_policy="missing"
+    else
+      pull_policy="always"
+    fi
   else
     pull_policy="$(load_pull_policy)"
   fi
@@ -214,7 +218,13 @@ fi
 
 case "$MODE" in
   build)
-    BUILD_IMAGE="${IMG2NUM_IMAGE_FLAG:-img2num-dev:local}"
+    if [ -n "$IMG2NUM_IMAGE_FLAG" ]; then
+      BUILD_IMAGE="$IMG2NUM_IMAGE_FLAG"
+    elif [ -n "${IMG2NUM_IMAGE:-}" ]; then
+      BUILD_IMAGE="$IMG2NUM_IMAGE"
+    else
+      BUILD_IMAGE="img2num-dev:local"
+    fi
 
     BUILD_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
     GIT_SHA="$(git rev-parse HEAD)"

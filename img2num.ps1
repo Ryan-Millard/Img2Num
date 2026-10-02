@@ -74,7 +74,8 @@ function Save-State {
     $imageFound = $false
     $pullPolicyFound = $false
 
-    $newContent = foreach ($line in $lines) {
+    $newContent = @(
+        foreach ($line in $lines) {
         if ($line -match '^IMAGE=') {
             $imageFound = $true
             "IMAGE=$Image"
@@ -92,7 +93,8 @@ function Save-State {
         else {
             $line
         }
-    }
+            }
+    )
 
     if (-not $imageFound) {
         if ($lines.Count -eq 0) {
@@ -137,7 +139,7 @@ function Load-Image {
 
 # Returns the Docker Compose pull policy from the state file.
 # Falls back to "always" when no policy has been saved.
-function Load-Pull-Policy {
+function Get-PullPolicy {
     if (Test-Path $IMG2NUM_STATE_FILE) {
         $match = Select-String -Path $IMG2NUM_STATE_FILE -Pattern '^PULL_POLICY=(.*)$' |
             Select-Object -First 1
@@ -165,9 +167,13 @@ function Run-InContainer {
 
     $image = Load-Image
     $pullPolicy = if ($IMG2NUM_IMAGE_SOURCE_SET) {
-        "always"
+        if ($image -eq "img2num-dev:local") {
+            "missing"
+        } else {
+            "always"
+        }
     } else {
-        Load-Pull-Policy
+        Get-PullPolicy
     }
 
     Save-State -Image $image -PullPolicy $pullPolicy
@@ -229,6 +235,8 @@ switch ($Mode) {
     "build" {
         $buildImage = if ($IMG2NUM_IMAGE_FLAG) {
             $IMG2NUM_IMAGE_FLAG
+        } elseif ($env:IMG2NUM_IMAGE) {
+            $env:IMG2NUM_IMAGE
         } else {
             "img2num-dev:local"
         }
@@ -238,7 +246,7 @@ switch ($Mode) {
         $gitSha = git rev-parse HEAD
 
         $dockerBuildArgs = @(
-            "-f", "Dockerfile.dev",
+            "-f", (Join-Path $PSScriptRoot "Dockerfile.dev"),
             "--build-arg", "BUILD_DATE=$buildDate",
             "--build-arg", "GIT_SHA=$gitSha",
             "-t", $buildImage
@@ -254,7 +262,7 @@ switch ($Mode) {
             $dockerBuildArgs += $RemainingArgs[($separatorIndex + 1)..($RemainingArgs.Count - 1)]
         }
 
-        $dockerBuildArgs += "."
+        $dockerBuildArgs += $PSScriptRoot
 
         docker build @dockerBuildArgs
 
