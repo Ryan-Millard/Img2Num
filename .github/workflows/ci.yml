@@ -85,6 +85,12 @@ jobs:
 
       - name: Install PNPM dependencies
         run: pnpm install
+        
+      - name: Build and test TypeScript types (packages/js)
+        working-directory: packages/js
+        run: |
+          pnpm build:types
+          pnpm test:types
 
       - name: Sync Python tooling (skip building img2num)
         run: uv sync --only-group lint
