@@ -244,7 +244,7 @@ export const findContours = async ({ pixels, labels, width, height, min_area = 1
  * @returns {Promise<SvgResult>} Generated SVG.
  * @throws {Error} If the WASM function fails or input labels are invalid.
  * @example
- * const { svg } = await findContours({ pixels, labels, width, height });
+ * const { svg } = await imageToSvg({ pixels, width, height });
  * @variation Convert a raster image (e.g., PNG, JPG) into an SVG.
  * @since 0.0.0
  */
