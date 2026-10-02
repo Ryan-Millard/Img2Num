@@ -164,7 +164,7 @@ run_in_container() {
     pull_policy="$(load_pull_policy)"
   fi
 
-  save_state "$image"
+  save_state "$image" "$pull_policy"
   export IMG2NUM_IMAGE="$image"
   export IMG2NUM_PULL_POLICY="$pull_policy"
 
@@ -189,6 +189,15 @@ case "$MODE" in
     }
     ;;
 esac
+
+# BuildKit is required for Dockerfile.dev cache mounts.
+if [ "$MODE" = "build" ]; then
+  docker buildx version >/dev/null 2>&1 || {
+    echo "Error: Docker BuildKit is unavailable." >&2
+    echo "Ensure Docker Buildx/BuildKit is installed and enabled." >&2
+    exit 1
+  }
+fi
 
 if [ "$MODE" = "build" ]; then
   if [ ! -f "./third_party/dawn/CMakeLists.txt" ]; then

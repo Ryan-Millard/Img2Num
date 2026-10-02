@@ -95,6 +95,11 @@ function Save-State {
     }
 
     if (-not $imageFound) {
+        if ($lines.Count -eq 0) {
+            $newContent += "# This file is managed by the img2num scripts."
+            $newContent += "# Do not edit manually."
+        }
+
         $newContent += "IMAGE=$Image"
     }
 
@@ -165,7 +170,7 @@ function Run-InContainer {
         Load-Pull-Policy
     }
 
-    Save-State -Image $image
+    Save-State -Image $image -PullPolicy $pullPolicy
     $env:IMG2NUM_IMAGE = $image
     $env:IMG2NUM_PULL_POLICY = $pullPolicy
 
@@ -189,6 +194,16 @@ function Run-InContainer {
 if ($Mode -in @("build","stop","restart","down","purge","destroy","logs")) {
     if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
         Write-Error "Error: docker is unavailable (not installed, not running or not in PATH)."
+        exit 1
+    }
+}
+
+# BuildKit is required for Dockerfile.dev cache mounts.
+if ($Mode -eq "build") {
+    docker buildx version *> $null
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "Error: Docker BuildKit is unavailable."
+        Write-Error "Ensure Docker Buildx/BuildKit is installed and enabled."
         exit 1
     }
 }
