@@ -1,7 +1,13 @@
 # =================================================================
 # Img2Num Top-Level (Manages all libs and apps)
 # =================================================================
-cmake_minimum_required(VERSION 3.25)
+file(READ "${CMAKE_CURRENT_LIST_DIR}/.versions/cmake.json" IMG2NUM_CMAKE_VERSION_JSON)
+string(REGEX MATCH "\"version\"[ \t]*:[ \t]*\"([0-9]+([.][0-9]+)*)\"" IMG2NUM_CMAKE_VERSION_MATCH "${IMG2NUM_CMAKE_VERSION_JSON}")
+if(NOT CMAKE_MATCH_1)
+  message(FATAL_ERROR "Could not read a valid version from .versions/cmake.json")
+endif()
+set(IMG2NUM_CMAKE_VERSION "${CMAKE_MATCH_1}")
+cmake_minimum_required(VERSION "${IMG2NUM_CMAKE_VERSION}")
 project(Img2NumRootManager LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)

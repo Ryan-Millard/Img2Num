@@ -27,7 +27,6 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
       gcc-14 \
       g++-14 \
       clang \
-      cmake \
       ninja-build \
       python3 \
       python3-setuptools \
@@ -59,6 +58,7 @@ RUN git config --global --add safe.directory /usr/src/app
 # --------------------------------------------------------------------------------------------------------------
 # Emscripten setup (Slightly Expensive)
 COPY .versions/.emscripten.json /tmp/.emscripten.json
+COPY .versions/cmake.json /tmp/cmake.json
 COPY scripts/read-version.js /tmp/read-version.js
 
 ENV EMSDK_DIR=/opt/emsdk
@@ -75,6 +75,16 @@ ENV EMSDK=$EMSDK_DIR
 
 # Auto-load emsdk in all shells
 RUN echo "source /opt/emsdk/emsdk_env.sh" >> /etc/bash.bashrc
+
+# --------------------------------------------------------------------------------------------------------------
+# Pinned CMake setup
+RUN CMAKE_VERSION=$(node /tmp/read-version.js /tmp/cmake.json) \
+  && curl --fail --location --silent --show-error \
+    "https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz" \
+    --output /tmp/cmake.tar.gz \
+    && tar -xzf /tmp/cmake.tar.gz --strip-components=1 -C /usr/local \
+  && rm /tmp/cmake.tar.gz
+  ENV PATH=/usr/local/bin:$PATH
 
 # --------------------------------------------------------------------------------------------------------------
 # Dawn dependencies
