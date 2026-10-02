@@ -31,6 +31,18 @@ __attribute__((packed))
 #pragma pack(pop)
 #endif
 
+/// @brief GPU-accelerated bilateral filter using WebGPU compute shaders.
+///
+/// Applies an edge-preserving smoothing filter to the input image in-place.
+/// Supports both RGB and CIELAB color spaces. Uses gpu::Texture, gpu::Buffer,
+/// and gpu::cached_pipeline helpers from gpu_utils.h.
+///
+/// @param image         RGBA8 pixel data (modified in-place).
+/// @param width         Image width in pixels.
+/// @param height        Image height in pixels.
+/// @param sigma_spatial Spatial extent of the filter kernel.
+/// @param sigma_range   Range (intensity) tolerance of the filter.
+/// @param color_space   Color space selector (gpu::COLOR_SPACE_RGB or CIELAB).
 void bilateral_filter_gpu(
     uint8_t* image, size_t width, size_t height, double sigma_spatial, double sigma_range,
     uint8_t color_space

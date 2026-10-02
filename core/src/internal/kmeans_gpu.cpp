@@ -69,7 +69,17 @@ __attribute__((packed))
 #pragma pack(pop)
 #endif
 
-// K-Means++ GPU initialization
+/// @brief GPU-accelerated K-Means++ centroid initialization.
+///
+/// Selects @p k initial centroids from the input image using the K-Means++
+/// algorithm. Distance computation is offloaded to a WebGPU compute shader
+/// while centroid selection remains on the CPU for numerical stability.
+///
+/// @tparam PixelT       Pixel type (RGBAPixel or LABAPixel).
+/// @param pixels        Input image.
+/// @param out_centroids Output image holding the selected centroids.
+/// @param k             Number of clusters.
+/// @param color_space   Color space selector.
 template <typename PixelT>
 void kMeansPlusPlusInitGpu(
     const ImageLib::Image<PixelT>& pixels, ImageLib::Image<PixelT>& out_centroids, int k,
@@ -124,8 +134,7 @@ void kMeansPlusPlusInitGpu(
     );
 
     // 4. Pipeline and bind group
-    wgpu::ComputePipeline pipeline =
-        gpu::cached_pipeline("dist_shader", "updateDistShader");
+    wgpu::ComputePipeline pipeline = gpu::cached_pipeline("dist_shader", "updateDistShader");
 
     wgpu::BindGroup bindGroup = gpu::make_bind_group(
         pipeline, 0,
@@ -205,6 +214,20 @@ void kMeansPlusPlusInitGpu(
     // All textures/buffers destroyed automatically by RAII
 }
 
+/// @brief GPU-accelerated K-Means color quantization using WebGPU compute shaders.
+///
+/// Performs K-Means clustering on the input image using GPU-accelerated
+/// assign-update iterations. Supports RGB and CIELAB color spaces.
+/// K-Means++ initialization selects diverse starting centroids.
+///
+/// @param data        Input RGBA8 pixel data.
+/// @param out_data    Output RGBA8 quantized pixel data.
+/// @param out_labels  Output cluster label per pixel.
+/// @param width       Image width in pixels.
+/// @param height      Image height in pixels.
+/// @param k           Number of color clusters.
+/// @param max_iter    Maximum number of K-Means iterations.
+/// @param color_space Color space selector (gpu::COLOR_SPACE_RGB or CIELAB).
 void kmeans_gpu(
     const uint8_t* data, uint8_t* out_data, int32_t* out_labels, const int32_t width,
     const int32_t height, const int32_t k, const int32_t max_iter, const uint8_t color_space
@@ -329,8 +352,7 @@ void kmeans_gpu(
     // Pipelines
     wgpu::ComputePipeline pipeline1 =
         gpu::cached_pipeline("assign_update_shader", "assignUpdateShader");
-    wgpu::ComputePipeline pipeline2 =
-        gpu::cached_pipeline("resolve_shader", "resolveShader");
+    wgpu::ComputePipeline pipeline2 = gpu::cached_pipeline("resolve_shader", "resolveShader");
 
     // Bind groups
     wgpu::BindGroup bindGroup1 = gpu::make_bind_group(
