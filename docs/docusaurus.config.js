@@ -276,7 +276,7 @@ const config = {
           { to: "/changelog", label: "Changelog", position: "left" },
           { to: "/faq", label: "FAQ", position: "left" },
           { to: "/blog", label: "Blog", position: "left" },
-          { type: "search", position: "right" },
+          { type: "search", position: "right", className: "navbar-search" },
           {
             type: "html",
             position: "right",

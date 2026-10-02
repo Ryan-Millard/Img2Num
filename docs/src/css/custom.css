@@ -455,6 +455,31 @@ div[class^="buttonGroup"] button {
   }
 }
 
+@media screen and (max-width: 640px) {
+  .footer,
+  .footer__links,
+  .footer__col,
+  .footer__item,
+  .footer__title,
+  .footer__link-item,
+  .footer__copyright {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .footer,
+  .footer__links,
+  .footer__col {
+    overflow: hidden;
+  }
+
+  .footer__link-item {
+    display: inline-block;
+    white-space: normal;
+  }
+}
+
 .breadcrumbs__link {
   color: var(--text-light);
 }
@@ -485,6 +510,69 @@ div[class^="buttonGroup"] button {
 }
 .DocSearch-Search-Icon {
   color: var(--primary);
+}
+
+.mobile-sidebar-search {
+  display: none;
+}
+
+@media screen and (max-width: 996px) {
+  .navbar__inner {
+    gap: 0;
+  }
+
+  .navbar__items--right {
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+}
+
+@media screen and (max-width: 240px) {
+  .navbar__items--right .navbar-search {
+    display: none;
+  }
+
+  .mobile-sidebar-search {
+    display: block;
+    box-sizing: border-box;
+    width: fit-content;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0 0 12px;
+    padding: 0;
+    margin-left: var(--ifm-menu-link-padding-horizontal);
+  }
+
+  .mobile-sidebar-search .DocSearch-Button {
+    width: fit-content;
+    max-width: 100%;
+    min-height: 48px;
+    padding: 0 14px;
+    justify-content: flex-start;
+    background-color: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    color: var(--text-light);
+    overflow: hidden;
+  }
+
+  .mobile-sidebar-search .DocSearch-Button-Container {
+    gap: 10px;
+  }
+
+  .mobile-sidebar-search .DocSearch-Button-Placeholder {
+    display: inline;
+    color: var(--text-light);
+  }
+
+  .mobile-sidebar-search .DocSearch-Button-Keys {
+    display: none;
+  }
+
+  .mobile-sidebar-search .DocSearch-Search-Icon {
+    margin: 0;
+    color: var(--primary);
+  }
 }
 
 :root {

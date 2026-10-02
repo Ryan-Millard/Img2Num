@@ -553,3 +553,65 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+
+@media (max-width: 640px) {
+  .hero {
+    padding-inline: 16px;
+  }
+
+  .heroInner,
+  .heroLeft,
+  .heroRight {
+    min-width: 0;
+  }
+
+  .heroTitle {
+    font-size: clamp(24px, 8vw, 48px);
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .hero,
+  .heroInner,
+  .heroLeft,
+  .heroRight,
+  .section,
+  .featuresSectionBg,
+  .featuresInner,
+  .ctaBand,
+  .ctaInner {
+    overflow: hidden;
+  }
+
+  .heroTitle,
+  .heroLead,
+  .heroActions,
+  .heroActionsWrapper,
+  .statsBar,
+  .panel,
+  .chromeText,
+  .caption,
+  .btnPrimary,
+  .btnGhost {
+    overflow: hidden;
+    text-overflow: clip;
+  }
+
+  .bindingCard,
+  .featureCardDark,
+  .linkCard,
+  .ctaBand {
+    overflow: hidden;
+  }
+
+  .bindingCard h3,
+  .bindingCard p,
+  .featureTitleDark,
+  .featureDescDark,
+  .linkTitle,
+  .linkDesc,
+  .ctaTitle {
+    overflow: hidden;
+    text-overflow: clip;
+  }
+}
