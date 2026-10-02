@@ -27,6 +27,7 @@
 #include <cstdint>
 #include <cstring>
 #include <initializer_list>
+#include <mutex>
 #include <stdexcept>
 #include <string>
 #include <type_traits>
@@ -57,15 +58,33 @@ static constexpr uint8_t COLOR_SPACE_RGB {1};
 /// @param shader_id  The embedded shader identifier (e.g. "bilateral_filter_rgb").
 /// @param label      Debug label for the pipeline.
 /// @return Cached wgpu::ComputePipeline.
-inline wgpu::ComputePipeline cached_pipeline(const std::string& shader_id,
-                                              const std::string& label) {
-    static std::unordered_map<std::string, wgpu::ComputePipeline> cache;
-    auto it = cache.find(shader_id);
+inline wgpu::ComputePipeline
+cached_pipeline(const std::string& shader_id, const std::string& label) {
+    // Cache key includes the raw device pointer so that a device recreation
+    // (which yields a different WGPUDevice handle) automatically invalidates
+    // stale entries.  A mutex guards the map against concurrent access.
+    using CacheKey = std::pair<WGPUDevice, std::string>;
+    struct PairHash {
+        size_t operator()(const CacheKey& k) const {
+            auto h1 = std::hash<const void*> {}(static_cast<const void*>(k.first));
+            auto h2 = std::hash<std::string> {}(k.second);
+            return h1 ^ (h2 << 1);
+        }
+    };
+
+    static std::mutex mtx;
+    static std::unordered_map<CacheKey, wgpu::ComputePipeline, PairHash> cache;
+
+    WGPUDevice raw_device = GPU::getClassInstance().get_device().Get();
+    CacheKey key {raw_device, shader_id};
+
+    std::lock_guard<std::mutex> lock(mtx);
+    auto it = cache.find(key);
     if (it != cache.end()) {
         return it->second;
     }
     wgpu::ComputePipeline pipeline = GPU::getClassInstance().createPipeline(shader_id, label);
-    cache[shader_id] = pipeline;
+    cache[key] = pipeline;
     return pipeline;
 }
 
@@ -207,7 +226,7 @@ template <typename T> class Buffer {
     Buffer(const Buffer&) = delete;
     Buffer& operator=(const Buffer&) = delete;
 
-    // Movable
+    /// @brief Move constructor. Transfers ownership of the GPU buffer.
     Buffer(Buffer&& other) noexcept
         : buffer_(std::move(other.buffer_))
         , count_(other.count_)
@@ -217,6 +236,7 @@ template <typename T> class Buffer {
         other.byte_size_ = 0;
     }
 
+    /// @brief Move assignment. Destroys the current buffer and takes ownership.
     Buffer& operator=(Buffer&& other) noexcept {
         if (this != &other) {
             if (buffer_) {
@@ -232,6 +252,7 @@ template <typename T> class Buffer {
         return *this;
     }
 
+    /// @brief Destructor. Releases the GPU buffer.
     ~Buffer() {
         if (buffer_) {
             buffer_.Destroy();
@@ -342,12 +363,15 @@ class Texture {
         return texture_;
     }
 
+    /// @brief Width of the texture in pixels.
     uint32_t width() const {
         return width_;
     }
+    /// @brief Height of the texture in pixels.
     uint32_t height() const {
         return height_;
     }
+    /// @brief Texel format of the texture.
     wgpu::TextureFormat format() const {
         return format_;
     }
@@ -356,7 +380,7 @@ class Texture {
     Texture(const Texture&) = delete;
     Texture& operator=(const Texture&) = delete;
 
-    // Movable
+    /// @brief Move constructor. Transfers ownership of the GPU texture.
     Texture(Texture&& other) noexcept
         : texture_(std::move(other.texture_))
         , width_(other.width_)
@@ -367,6 +391,7 @@ class Texture {
         other.height_ = 0;
     }
 
+    /// @brief Move assignment. Destroys the current texture and takes ownership.
     Texture& operator=(Texture&& other) noexcept {
         if (this != &other) {
             if (texture_) {
@@ -383,6 +408,7 @@ class Texture {
         return *this;
     }
 
+    /// @brief Destructor. Releases the GPU texture.
     ~Texture() {
         if (texture_) {
             texture_.Destroy();
