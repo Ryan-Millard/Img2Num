@@ -60,22 +60,59 @@ $IMG2NUM_STATE_FILE = Join-Path $PSScriptRoot ".img2num-state"
 # ---------------------------------------------------------------------------
 
 function Save-State {
-    param([string]$Image)
-    if ((Test-Path $IMG2NUM_STATE_FILE) -and (Select-String -Path $IMG2NUM_STATE_FILE -Pattern '^IMAGE=' -Quiet)) {
-        $content = Get-Content -Path $IMG2NUM_STATE_FILE
-        $replaced = $false
-        $newContent = $content | ForEach-Object {
-            if (-not $replaced -and $_ -match '^IMAGE=') {
-                $replaced = $true
-                "IMAGE=$Image"
-            } else {
-                $_
+    param(
+        [string]$Image,
+        [string]$PullPolicy = ""
+    )
+
+    $lines = @()
+
+    if (Test-Path $IMG2NUM_STATE_FILE) {
+        $lines = @(Get-Content -Path $IMG2NUM_STATE_FILE)
+    }
+
+    $imageFound = $false
+    $pullPolicyFound = $false
+
+    $newContent = @(
+        foreach ($line in $lines) {
+        if ($line -match '^IMAGE=') {
+            $imageFound = $true
+            "IMAGE=$Image"
+        }
+        elseif ($line -match '^PULL_POLICY=') {
+            $pullPolicyFound = $true
+
+            if ($PullPolicy) {
+                "PULL_POLICY=$PullPolicy"
+            }
+            else {
+                $line
             }
         }
-        Set-Content -Path $IMG2NUM_STATE_FILE -Value $newContent -Encoding UTF8
-    } else {
-        Add-Content -Path $IMG2NUM_STATE_FILE -Value "IMAGE=$Image" -Encoding UTF8
+        else {
+            $line
+        }
+            }
+    )
+
+    if (-not $imageFound) {
+        if ($lines.Count -eq 0) {
+            $newContent += "# This file is managed by the img2num scripts."
+            $newContent += "# Do not edit manually."
+        }
+
+        $newContent += "IMAGE=$Image"
     }
+
+    if ($PullPolicy -and -not $pullPolicyFound) {
+        $newContent += "PULL_POLICY=$PullPolicy"
+    }
+
+    Set-Content `
+        -Path $IMG2NUM_STATE_FILE `
+        -Value $newContent `
+        -Encoding UTF8
 }
 
 # Returns the image to use, in priority order:
@@ -100,6 +137,25 @@ function Load-Image {
     return $IMG2NUM_DEFAULT_IMAGE
 }
 
+# Returns the Docker Compose pull policy from the state file.
+# Falls back to "always" when no policy has been saved.
+function Get-PullPolicy {
+    if (Test-Path $IMG2NUM_STATE_FILE) {
+        $match = Select-String -Path $IMG2NUM_STATE_FILE -Pattern '^PULL_POLICY=(.*)$' |
+            Select-Object -First 1
+
+        if ($match) {
+            $val = $match.Matches[0].Groups[1].Value.Trim()
+
+            if ($val) {
+                return $val
+            }
+        }
+    }
+
+    return "always"
+}
+
 # ---------------------------------------------------------------------------
 # Container helpers
 # ---------------------------------------------------------------------------
@@ -108,10 +164,24 @@ function Load-Image {
 # The image is exported so docker-compose.yml can reference ${IMG2NUM_IMAGE}.
 function Run-InContainer {
     param([string[]]$CmdArgs)
+
     $image = Load-Image
-    Save-State -Image $image
+    $pullPolicy = if ($IMG2NUM_IMAGE_SOURCE_SET) {
+        if ($image -eq "img2num-dev:local") {
+            "missing"
+        } else {
+            "always"
+        }
+    } else {
+        Get-PullPolicy
+    }
+
+    Save-State -Image $image -PullPolicy $pullPolicy
     $env:IMG2NUM_IMAGE = $image
+    $env:IMG2NUM_PULL_POLICY = $pullPolicy
+
     docker compose up -d dev
+
     $ps = docker compose ps -q --status running dev 2>&1
     if ([string]::IsNullOrWhiteSpace($ps)) {
         Write-Error "Error: container 'dev' is not running."
@@ -127,14 +197,85 @@ function Run-InContainer {
 # ---------------------------------------------------------------------------
 
 # Ensure that Docker is available for the relevant commands.
-if ($Mode -in @("stop","restart","down","purge","destroy","logs")) {
+if ($Mode -in @("build","stop","restart","down","purge","destroy","logs")) {
     if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
         Write-Error "Error: docker is unavailable (not installed, not running or not in PATH)."
         exit 1
     }
 }
 
+# BuildKit is required for Dockerfile.dev cache mounts.
+if ($Mode -eq "build") {
+    docker buildx version *> $null
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "Error: Docker BuildKit is unavailable."
+        Write-Error "Ensure Docker Buildx/BuildKit is installed and enabled."
+        exit 1
+    }
+}
+
+if ($Mode -eq "build") {
+    $dawnCMake = Join-Path $PSScriptRoot "third_party\dawn\CMakeLists.txt"
+
+    if (-not (Test-Path $dawnCMake)) {
+        Write-Error "Error: third_party/dawn is not initialized."
+        Write-Host "Run: git submodule update --init --recursive"
+        exit 1
+    }
+
+    $emscriptenConfig = Join-Path $PSScriptRoot ".versions\.emscripten.json"
+
+    if (-not (Test-Path $emscriptenConfig)) {
+        Write-Error "Error: .versions/.emscripten.json is missing."
+        exit 1
+    }
+}
+
 switch ($Mode) {
+    "build" {
+        $buildImage = if ($IMG2NUM_IMAGE_FLAG) {
+            $IMG2NUM_IMAGE_FLAG
+        } elseif ($env:IMG2NUM_IMAGE) {
+            $env:IMG2NUM_IMAGE
+        } else {
+            "img2num-dev:local"
+        }
+
+        $buildDate = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+
+        $gitSha = git rev-parse HEAD
+
+        $dockerBuildArgs = @(
+            "-f", (Join-Path $PSScriptRoot "Dockerfile.dev"),
+            "--build-arg", "BUILD_DATE=$buildDate",
+            "--build-arg", "GIT_SHA=$gitSha",
+            "-t", $buildImage
+        )
+
+        if ($RemainingArgs -contains "--no-cache") {
+            $dockerBuildArgs += "--no-cache"
+        }
+
+        $separatorIndex = [Array]::IndexOf($RemainingArgs, "--")
+
+        if ($separatorIndex -ge 0 -and $separatorIndex -lt ($RemainingArgs.Count - 1)) {
+            $dockerBuildArgs += $RemainingArgs[($separatorIndex + 1)..($RemainingArgs.Count - 1)]
+        }
+
+        $dockerBuildArgs += $PSScriptRoot
+
+        docker build @dockerBuildArgs
+
+        if ($LASTEXITCODE -ne 0) {
+            Write-Error "Error: Docker build failed."
+            exit $LASTEXITCODE
+        }
+
+        Save-State -Image $buildImage -PullPolicy "missing"
+
+        Write-Host "Successfully built $buildImage"
+        break
+    }
     # Arbitrary one-off commands
     # Run command in shell, then leave
     { $_ -in @("run","exec") } {
@@ -169,10 +310,18 @@ switch ($Mode) {
             # Clear the persisted image so the next `up` falls back to the default
             if (Test-Path $IMG2NUM_STATE_FILE) {
                 $content = Get-Content -Path $IMG2NUM_STATE_FILE
-                $newContent = $content -replace '^IMAGE=.*', 'IMAGE='
+                $newContent = $content `
+                    -replace '^IMAGE=.*', 'IMAGE=' `
+                    -replace '^PULL_POLICY=.*', 'PULL_POLICY='
                 Set-Content -Path $IMG2NUM_STATE_FILE -Value $newContent -Encoding UTF8
             } else {
-                Add-Content -Path $IMG2NUM_STATE_FILE -Value "IMAGE=" -Encoding UTF8
+                Set-Content `
+                    -Path $IMG2NUM_STATE_FILE `
+                    -Value @(
+                        "IMAGE="
+                        "PULL_POLICY="
+                    ) `
+                    -Encoding UTF8
             }
         }
     }
@@ -197,6 +346,7 @@ Usage:
   ./img2num.ps1 [--img <image:tag>] <command>
 
 Commands:
+    build               Build the local development Docker image.               [--img]
     run|exec <args>     Run arbitrary one-off command inside the container.     [--img, --dh-img, --ghcr-img]
     sh|shell|bash       Opens bash terminal in Docker container.                [--img, --dh-img, --ghcr-img]
 
@@ -212,7 +362,8 @@ Commands:
 
 Flags:
   --img                 Use a specific Docker image.
-                          E.g.: ./img2num.ps1 sh --img ryanmillard/img2num-dev:dev
+                          For build, this sets the local image tag.
+                          E.g.: ./img2num.ps1 build --img img2num-dev:emsdk-bump
   --dh-img              Docker Hub shorthand for --img. Prefixes value with ryanmillard/img2num-dev:
                           E.g.: ./img2num.ps1 sh --dh-img dev
                             Resolves Docker image to ryanmillard/img2num-dev:dev
@@ -221,7 +372,7 @@ Flags:
                            Resolves Docker image to ghcr.io/ryan-millard/img2num-dev:dev
 
 Image Resolution (highest priority first):
-  Applies to: run, exec, sh/shell/bash, destroy
+  Applies to: build, run, exec, sh/shell/bash, destroy
   1. Image flags (--img, --dh-img, --ghcr-img)
   2. IMG2NUM_IMAGE env var
   3. Last image used with this script (in .img2num-state file)
