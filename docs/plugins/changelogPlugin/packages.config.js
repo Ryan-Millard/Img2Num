@@ -16,7 +16,7 @@ const PACKAGES = [
     packageName: "cimg2num",
     src: "bindings/c/CHANGELOG.md",
     icon: {
-      src: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg",
+      src: "/img/lang/c.svg",
       alt: "C",
     },
     releasePleaseVersionPrefix: "bindings-c",
