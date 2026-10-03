@@ -41,23 +41,21 @@ uint8_t quantize(uint8_t value, uint8_t region_size) {
     return bucket_midpoint;
 }
 
-namespace img2num {
-
 /**
- * Mirrors an out-of-range coordinate back into [0, dim) (reflect padding).
+ * Mirrors an out-of-range coordinate back into [0, dim) (reflect padding,
+ * edge pixel repeated: -1 -> 0, dim -> dim - 1). Runs in O(1) using modulo.
  * Returns 0 when dim <= 1, since there is nothing to reflect.
  */
 static size_t reflect_index(int p, int dim) {
     if (dim <= 1) return 0;
-    while (p < 0 || p >= dim) {
-        if (p < 0) {
-            p = -p - 1;
-        } else if (p >= dim) {
-            p = 2 * dim - 1 - p;
-        }
-    }
-    return static_cast<size_t>(p);
+    const int64_t period = 2 * static_cast<int64_t>(dim); // int64: 2*dim can overflow int
+    int64_t q = p % period;
+    if (q < 0) q += period;
+    if (q >= dim) q = period - 1 - q;
+    return static_cast<size_t>(q);
 }
+
+namespace img2num {
 
 /**
  * Applies a Gaussian blur in place using FFT on the R, G and B channels of an RGBA image.
@@ -96,7 +94,11 @@ void gaussian_blur_fft(uint8_t* image, size_t width, size_t height, double sigma
     // Compute padded dimensions (next power of two); both are <= kMaxDim
     const size_t W = fft::next_power_of_two(padded_width);
     const size_t H = fft::next_power_of_two(padded_height);
-    if (W > std::numeric_limits<size_t>::max() / H)
+
+    // Cap total FFT buffer size to prevent memory exhaustion (DoS) from a huge sigma.
+    // This also covers the W * H overflow case, so no separate overflow check is needed.
+    constexpr size_t MAX_FFT_ELEMENTS = 64 * 1024 * 1024; // 64M elements limit
+    if (W > MAX_FFT_ELEMENTS / H)
         return;
     const size_t Npix_padded = W * H;
 
