@@ -240,6 +240,10 @@ def image_to_svg(
     ----------
     image : numpy.ndarray
         Input image buffer.
+    width : int
+        Image width in pixels. Must match the image's second dimension.
+    height : int
+        Image height in pixels. Must match the image's first dimension.
     config : ImageToSvgConfig, optional
         Configuration object containing filter and clustering parameters.
         Defaults to ``ImageToSvgConfig()`` if not provided.
@@ -248,7 +252,17 @@ def image_to_svg(
     -------
     str
         SVG string representation of the image.
+
+    Raises
+    ------
+    ValueError
+        If the image or configuration is invalid, e.g. the image is not RGBA,
+        its shortest side is under 16 px, ``k < 1`` or ``k`` exceeds the pixel
+        count, or a sigma is not greater than 0. The message says which check failed.
     """
+    if image.ndim != 3 or image.shape[2] != 4:
+        raise ValueError("Expected an RGBA image with shape (H, W, 4)")
+
     _config = ImageToSvgConfig() if config is None else config
     return _image_to_svg(
         image,

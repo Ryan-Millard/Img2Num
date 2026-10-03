@@ -67,10 +67,11 @@
     "build:node-cjs": "cross-env TARGET=node-cjs vite build",
     "build:node": "pnpm build:node-esm && pnpm build:node-cjs",
     "build": "pnpm build:browser && pnpm build:standalone && pnpm build:node",
-    "check:package": "publint"
+    "check:package": "publint",
+    "test": "node --import ./tests/register.mjs --test"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=18.19.0"
   },
   "optionalDependencies": {
     "webgpu": "^0.6.0"

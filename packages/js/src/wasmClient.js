@@ -8,6 +8,7 @@
 import { WASM_TYPES } from "./wasmTypes.js";
 import { getWasmModule, initWasmModule } from "./wasmModule.js";
 import { ccallAsync } from "./ccall.js";
+import { Img2NumError, readLastError } from "./wasmError.js";
 
 /**
  * @internal
@@ -27,6 +28,8 @@ import { ccallAsync } from "./ccall.js";
  * @param {Array<{key:string,type:string}>} [options.bufferKeys=[]] - Buffer arguments requiring allocation.
  * @param {string} [options.returnType="void"] - Expected return type.
  * @returns {Promise<{output:Object, returnValue:any}>}
+ * @throws {Img2NumError} If the core rejected the call (e.g. invalid arguments such as
+ * an image that is too small); the message is the core's explanation.
  * @throws {Error} If allocation or the WASM call fails.
  * @since 0.0.0
  */
@@ -60,6 +63,16 @@ export async function callWasm({ funcName, args = {}, bufferKeys = [], returnTyp
 
     const result = await ccallAsync(funcName, argsMap, returnType);
 
+    // The core reports failures via a "last error" instead of trapping, so a
+    // failed call would otherwise look like success (e.g. a null SVG pointer).
+    const lastError = readLastError(wasmModule);
+    if (lastError) {
+      if (returnType === "string" && result) {
+        wasmModule._free(result);
+      }
+      throw lastError;
+    }
+
     const output = Object.create(null);
 
     for (const { key, type } of bufferKeys) {
@@ -83,6 +96,8 @@ export async function callWasm({ funcName, args = {}, bufferKeys = [], returnTyp
       returnValue,
     };
   } catch (error) {
+    // Already a readable, typed error from the core: don't bury it.
+    if (error instanceof Img2NumError) throw error;
     throw new Error(`[Img2Num wasmClient] Error: ${error?.message ?? error}`, { cause: error });
   } finally {
     for (const { ptr } of pointers.values()) {
