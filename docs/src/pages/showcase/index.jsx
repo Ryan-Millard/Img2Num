@@ -1,9 +1,12 @@
 import Link from "@docusaurus/Link";
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import Layout from "@theme/Layout";
 import CodeBlock from "@theme/CodeBlock";
 import { Atom, Box, Braces, Code2, Cpu, Hexagon, Layers, MoveRight, Terminal, Zap } from "lucide-react";
 import React from "react";
+import { showcaseProjects } from "../../data/showcase";
 import styles from "../index.module.css";
+import showcaseStyles from "./showcase.module.css";
 
 /**
  * Index page for the example applications.
@@ -163,9 +166,40 @@ char* svg = img2num_image_to_svg(image_data, width, height, &cfg);`,
   },
 ];
 
-export default function ExampleApps() {
+/** Render an accepted project using the official example card layout. */
+function CommunityProjectCard({ project }) {
+  const screenshot = useBaseUrl(project.screenshot || "/");
+  const logo = useBaseUrl(project.logo || "/");
   return (
-    <Layout title="Example Apps" description="Runnable example applications showing how to use Img2Num in the browser (React, ESM, IIFE, UMD) and from the command line (C, C++, Python, Node.js).">
+    <div className={styles.bindingCard}>
+      <span className={styles.bindingLang}>{project.binding}</span>
+      <div className={showcaseStyles.projectHeader}>
+        <div className={`${styles.bindingIcon} ${showcaseStyles.projectIcon}`}>
+          {project.logo ? <img className={showcaseStyles.projectLogo} src={logo} alt="" width="44" height="44" loading="lazy" /> : <Code2 size={22} aria-hidden="true" />}
+        </div>
+        <div className={showcaseStyles.projectDetails}>
+          <h3 className={styles.bindingTitle}>{project.name}</h3>
+          <Link to={project.liveUrl}>{project.liveUrl}</Link>
+        </div>
+      </div>
+      <p className={styles.bindingDesc}>{project.description}</p>
+      {project.screenshot ? <img className={showcaseStyles.projectScreenshot} src={screenshot} alt={`${project.name} screenshot`} width="1200" height="675" loading="lazy" /> : null}
+      <p className={showcaseStyles.projectLinks}>
+        {project.sourceUrl ? <Link to={project.sourceUrl}>Source</Link> : null}
+        {project.links?.map((link, index) => (
+          <Link key={`${link.url}-${index}`} to={link.url}>
+            {link.label}
+          </Link>
+        ))}
+      </p>
+    </div>
+  );
+}
+
+/** Render the official examples and accepted community projects. */
+export default function Showcase() {
+  return (
+    <Layout title="Showcase" description="Runnable example applications showing how to use Img2Num in the browser (React, ESM, IIFE, UMD) and from the command line (C, C++, Python, Node.js).">
       <main>
         <section className={styles.section}>
           <div className={styles.eyebrow}>
@@ -174,7 +208,7 @@ export default function ExampleApps() {
           </div>
 
           <div className={styles.sectionHeader} style={{ marginBottom: "auto" }}>
-            <h1 className={styles.heroTitle}>Example Apps</h1>
+            <h1 className={styles.heroTitle}>Showcase</h1>
             <Link className={styles.sectionLink} to="/docs">
               All Docs <MoveRight size={15} />
             </Link>
@@ -188,6 +222,12 @@ export default function ExampleApps() {
         </section>
 
         <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2>Official Examples</h2>
+          </div>
+
+          <p>Officially supported and recommended ways to use Img2Num across its available bindings.</p>
+
           <div className={styles.bindingsGrid}>
             {apps.map((app) => (
               <div key={app.title} id={app.slug} className={styles.bindingCard}>
@@ -226,6 +266,30 @@ export default function ExampleApps() {
             </Link>
             .
           </p>
+        </section>
+
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2>Built with Img2Num</h2>
+          </div>
+
+          <p>Community projects created by people outside the Img2Num project. These are third-party implementations, separate from the official examples above.</p>
+
+          <div className={showcaseStyles.submitAction}>
+            <Link className={styles.btnPrimary} to="/showcase/submit">
+              Submit your project <MoveRight size={15} />
+            </Link>
+          </div>
+
+          {showcaseProjects.length === 0 ? (
+            <p>No community projects have been listed yet. Built something with Img2Num? You can submit your project for consideration.</p>
+          ) : (
+            <div className={styles.bindingsGrid}>
+              {showcaseProjects.map((project) => (
+                <CommunityProjectCard key={project.name} project={project} />
+              ))}
+            </div>
+          )}
         </section>
       </main>
     </Layout>
