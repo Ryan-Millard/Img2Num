@@ -279,6 +279,9 @@ importers:
       publint:
         specifier: ^0.3.24
         version: 0.3.24
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
       vite:
         specifier: ^8.3.0
         version: 8.3.0(@types/node@26.2.0)(jiti@1.21.7)(terser@5.50.0)(yaml@2.9.0)
