@@ -1,0 +1,17 @@
+[
+  {
+    "username": "krasner",
+    "year": 2026,
+    "blurb": "Built the C bindings"
+  },
+  {
+    "username": "Prachi-Gupta2808",
+    "year": 2026,
+    "blurb": "Improved core image processing routines"
+  },
+  {
+    "username": "gaearon",
+    "year": 2025,
+    "blurb": "Refactored build pipeline and documentation"
+  }
+]
