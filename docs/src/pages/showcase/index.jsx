@@ -8,15 +8,6 @@ import { showcaseProjects } from "../../data/showcase";
 import styles from "../index.module.css";
 import showcaseStyles from "./showcase.module.css";
 
-/**
- * Index page for the example applications.
- *
- * Browser apps are standalone builds served from static/example-apps/ and
- * link to their live pages. Console apps are not published as pages; their
- * cards link to the source on GitHub (C/C++) or the published package
- * (npm/PyPI). Add new apps to the list below when one is added.
- */
-
 const repoDir = "https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps";
 const apps = [
   {
