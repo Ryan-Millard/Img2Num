@@ -246,34 +246,43 @@ void bilateral_filter_gpu(
     };
 
     uint8_t* result_ptr = result.data();
-    bool* waiting = new bool(true);
+    struct MapContext {
+        bool done = false;
+        bool success = false;
+        std::string error_msg;
+    };
+    MapContext ctx;
 
     readBuffer.MapAsync(
         wgpu::MapMode::Read, 0, bufferSize, wgpu::CallbackMode::AllowProcessEvents,
         [](wgpu::MapAsyncStatus status, wgpu::StringView message, void* userdata) {
             IMG2NUM_LOG_INFO("In callback");
-            bool* flag = static_cast<bool*>(userdata);
-            bool success = false;
+            MapContext* c = static_cast<MapContext*>(userdata);
             if (status == wgpu::MapAsyncStatus::Success) {
-                success = true;
+                c->success = true;
             } else {
-                // Handle error
-                success = false;
+                c->success = false;
+                c->error_msg = message.data ? std::string(message.data, message.length) : "Unknown error";
             }
-            *flag = false;
+            c->done = true;
         },
-        (void*)waiting
+        &ctx
     );
 
-    IMG2NUM_LOG_INFO("waiting {}", *waiting);
+    IMG2NUM_LOG_INFO("waiting {}", !ctx.done);
 
-    while (*waiting) {
+    while (!ctx.done) {
         GPU::getClassInstance().get_instance().ProcessEvents();
 #if defined(__EMSCRIPTEN__)
         emscripten_sleep(10);
 #endif
     }
     IMG2NUM_LOG_INFO("done wgpu");
+    if (!ctx.success) {
+        throw std::runtime_error(
+            "WebGPU MapAsync failed during bilateral filter: " + ctx.error_msg
+        );
+    }
     const uint8_t* mappedData = (const uint8_t*)readBuffer.GetConstMappedRange(0, bufferSize);
     // copy to cpu buffer
     for (size_t y = 0; y < height; ++y) {
