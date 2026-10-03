@@ -231,8 +231,8 @@ hr {
   z-index: -1;
   pointer-events: none;
   background-color: var(--navbar-glass-bg);
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
 }
 
 .navbar__inner {
