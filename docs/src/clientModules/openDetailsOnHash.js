@@ -6,20 +6,20 @@ function openDetailsForHash(hash) {
 
   // Collect every enclosing <details>, outermost first, so nested ones open too
   const ancestors = [];
-  for (let el = target.closest('details'); el; el = el.parentElement?.closest('details')) {
+  for (let el = target.closest("details"); el; el = el.parentElement?.closest("details")) {
     ancestors.unshift(el);
   }
 
   for (const details of ancestors) {
     if (!details.open) {
       // Click the summary so Docusaurus's Details component updates its own state
-      details.querySelector(':scope > summary')?.click();
+      details.querySelector(":scope > summary")?.click();
     }
   }
 
   requestAnimationFrame(() => {
     const margin = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
-    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 1.5*margin });
+    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 1.5 * margin });
   });
 }
 

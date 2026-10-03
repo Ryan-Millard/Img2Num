@@ -66,7 +66,7 @@ Img2Num converts raster images by:
 2. Tracing the boundaries of color regions using **Suzuki–Abe contour tracing**.
 3. Smoothing the resulting contours using **Savitzky–Golay filtering**.
 4. Generating clean SVG paths from the processed regions.
-:::
+   :::
 
 The resulting SVG can scale to different sizes without pixelation and can often be significantly smaller than the original raster image.
 
@@ -140,7 +140,6 @@ You can support the project by starring the repository, reporting bugs, contribu
 
 </summary>
 
-
 - **C**: A stable C ABI wrapper around the core library.
 - **C++**: The core library, consumable via CMake.
 - **Python**: Installable with `pip install img2num`, with prebuilt wheels for major platforms and full type stubs (`.pyi` + `py.typed`).
@@ -156,9 +155,11 @@ You can support the project by starring the repository, reporting bugs, contribu
 </summary>
 
 :::tip[Package Selection]
+
 - **Websites or Web Apps:** Use the **npm package** which runs entirely client-side and does not require a server.
 - **Scripts, Data Pipelines or Research:** Use the **Python package**.
 - **Native Applications:** Use the **C++ core** or **C bindings** for ABI stability or binding Img2Num from another language.
+
 :::
 
 </details>

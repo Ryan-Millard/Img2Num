@@ -415,9 +415,7 @@ const config = {
         darkTheme: prismThemes.dracula,
       },
     }),
-  clientModules: [
-    './src/clientModules/openDetailsOnHash.js'
-  ],
+  clientModules: ["./src/clientModules/openDetailsOnHash.js"],
 };
 
 export default config;
