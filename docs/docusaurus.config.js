@@ -146,6 +146,7 @@ const config = {
       },
     ],
     "./plugins/github-stats/index.js",
+    "./plugins/hallOfFame/index.js",
     [
       "docusaurus-plugin-copy-page-button",
       {
