@@ -58,7 +58,6 @@ RUN git config --global --add safe.directory /usr/src/app
 # --------------------------------------------------------------------------------------------------------------
 # Emscripten setup (Slightly Expensive)
 COPY .versions/.emscripten.json /tmp/.emscripten.json
-COPY .versions/cmake.json /tmp/cmake.json
 COPY scripts/read-version.js /tmp/read-version.js
 
 ENV EMSDK_DIR=/opt/emsdk
@@ -78,13 +77,15 @@ RUN echo "source /opt/emsdk/emsdk_env.sh" >> /etc/bash.bashrc
 
 # --------------------------------------------------------------------------------------------------------------
 # Pinned CMake setup
-RUN CMAKE_VERSION=$(node /tmp/read-version.js /tmp/cmake.json) \
+COPY .versions/cmake.json /tmp/cmake.json
+RUN set -o pipefail \
+  && CMAKE_VERSION=$(node /tmp/read-version.js /tmp/cmake.json) \
+  && ARCH=$(uname -m) \
   && curl --fail --location --silent --show-error \
-    "https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz" \
-    --output /tmp/cmake.tar.gz \
-    && tar -xzf /tmp/cmake.tar.gz --strip-components=1 -C /usr/local \
-  && rm /tmp/cmake.tar.gz
-  ENV PATH=/usr/local/bin:$PATH
+    "https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-${ARCH}.tar.gz" \
+  | tar -xz -C /usr/local --strip-components=1 \
+  && cmake --version
+ENV PATH=/usr/local/bin:$PATH
 
 # --------------------------------------------------------------------------------------------------------------
 # Dawn dependencies
