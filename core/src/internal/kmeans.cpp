@@ -103,7 +103,7 @@ void kmeans_cpu(
     // Init of each pixel is from default in Image constructor
     ImageLib::Image<ImageLib::RGBAPixel<float>> centroids {k, 1};
     ImageLib::Image<ImageLib::LABAPixel<float>> centroids_lab {k, 1};
-    std::vector<int32_t> labels(num_pixels, 0);
+    std::vector<int32_t> labels(num_pixels, max_iter > 0 ? -1 : 0);
 
     ImageLib::Image<ImageLib::LABAPixel<float>> lab(pixels.getWidth(), pixels.getHeight());
     if (color_space == COLOR_SPACE_OPTION_CIELAB) {
