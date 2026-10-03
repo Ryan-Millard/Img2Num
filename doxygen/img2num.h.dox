@@ -98,5 +98,18 @@
 /// @param config img2num_ImageToSvgConfig Configuration Struct.
 /// > See @ref img2num::ImageToSvgConfig.
 /// @return std::string An SVG string containing data roughly approximate to the input image.
+/// @throws std::invalid_argument If the input is invalid. Checked before any processing:
+/// - `data` is null
+/// - `width` or `height` is <= 0
+/// - the shortest side is below 16 pixels
+/// - `width * height * 4` overflows, or the pixel count exceeds `INT32_MAX`
+/// - `config.kmeans.k` is < 1 or greater than the pixel count
+/// - `config.kmeans.max_iter` is < 1
+/// - `config.bilateral_filter.sigma_spatial` or `sigma_range` is not a finite number > 0
+/// - `config.min_cluster_area` or `config.min_thickness` is negative
+/// - `config.color_space` is not 0 or 1
+/// @note The C API (`img2num_image_to_svg`) catches this and returns `NULL`;
+/// read the cause with `img2num_get_last_error()` (`IMG2NUM_ERROR_INVALID_ARGUMENT`) and
+/// `img2num_get_last_error_message()`.
 /// @note Dox File: `doxygen/img2num.h.dox`
 ///

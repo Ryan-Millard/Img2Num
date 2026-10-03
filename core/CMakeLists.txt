@@ -181,3 +181,7 @@ install(DIRECTORY include/
 )
 
 message(STATUS "Core library configured with ${CORE_SRC}")
+
+if(IMG2NUM_BUILD_TESTS AND NOT EMSCRIPTEN)
+  add_subdirectory(tests)
+endif()

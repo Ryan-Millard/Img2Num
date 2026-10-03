@@ -1,4 +1,5 @@
 #include "img2num.h"
+#include "validation.h"
 
 #include <cstring>
 #include <vector>
@@ -7,14 +8,18 @@ namespace img2num {
 std::string image_to_svg(
     const uint8_t* data, const int width, const int height, const ImageToSvgConfig& config
 ) {
-    // self deallocate
-    std::vector<uint8_t> img_data(static_cast<size_t>(width) * static_cast<size_t>(height) * 4);
-    std::vector<uint8_t> out_data(static_cast<size_t>(width) * static_cast<size_t>(height) * 4);
-    std::vector<int32_t> out_labels(static_cast<size_t>(width) * static_cast<size_t>(height));
+    // Reject bad input before allocating anything. Throws std::invalid_argument.
+    validate_image_to_svg_args(data, width, height, config);
 
-    std::memcpy(
-        img_data.data(), data, static_cast<size_t>(width) * static_cast<size_t>(height) * 4
-    );
+    const size_t pixel_count {static_cast<size_t>(width) * static_cast<size_t>(height)};
+    const size_t byte_count {pixel_count * 4}; // overflow already ruled out by validation
+
+    // self deallocate
+    std::vector<uint8_t> img_data(byte_count);
+    std::vector<uint8_t> out_data(byte_count);
+    std::vector<int32_t> out_labels(pixel_count);
+
+    std::memcpy(img_data.data(), data, byte_count);
     bilateral_filter(
         img_data.data(), width, height, config.bilateral_filter.sigma_spatial,
         config.bilateral_filter.sigma_range, config.color_space
