@@ -382,6 +382,54 @@ hr {
   fill: var(--primary);
 }
 
+/* Content pages: match the home page's serif display headings */
+.markdown h1,
+.markdown h2,
+article header h1 {
+  font-family: "DM Serif Display", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.markdown h1 {
+  font-size: 2.6rem;
+}
+.markdown h2 {
+  margin-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Info alerts (changelog releases etc.) use the site palette, not Infima's teal */
+.alert--info {
+  --ifm-alert-background-color: var(--glass-bg);
+  --ifm-alert-border-color: var(--accent);
+  --ifm-alert-foreground-color: var(--text);
+  border: 1px solid var(--glass-border);
+  border-left: 4px solid var(--accent);
+  box-shadow: 0 2px 6px var(--glass-shadow);
+}
+
+/* Card used by standalone pages such as /credits */
+.page-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-lg);
+  margin: var(--spacing-lg) 0;
+  padding: var(--spacing-lg);
+  background-color: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 6px var(--glass-shadow);
+}
+.page-card > :first-child {
+  flex: 0 0 auto;
+}
+.page-card ul {
+  flex: 1 1 260px;
+  margin: 0;
+}
+
 table thead {
   background-color: var(--secondary);
   color: var(--text);
