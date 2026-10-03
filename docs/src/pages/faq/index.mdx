@@ -16,36 +16,11 @@ keywords:
 image: /img/social-card.png
 ---
 
-import styles from './index.module.css';
-import { useEffect } from 'react';
-import { useLocation } from '@docusaurus/router';
-
-export const FaqDeepLinkHandler = () => {
-  const { hash } = useLocation();
-
-  useEffect(() => {
-    if (!hash) return;
-
-    const heading = document.getElementById(decodeURIComponent(hash.slice(1)));
-    const details = heading?.closest('details');
-    if (!details) return;
-
-    if (!details.open) {
-      details.querySelector('summary')?.click();
-    }
-    requestAnimationFrame(() => heading.scrollIntoView({ block: 'start' }));
-  }, [hash]);
-
-  return null;
-};
-
 # Img2Num FAQ
 
 Find answers to common questions about **Img2Num**, including what it is, raster-to-SVG image vectorization, installation, supported languages, usage, troubleshooting, and contributing.
 
 ---
-
-<div className={styles.faqContainer}>
 
 ## General
 
@@ -308,7 +283,7 @@ For guidance on preparing and validating image inputs for Img2Num functions, see
 
 The npm package's **exports map** automatically selects the appropriate build when you `import` or `require("img2num")`.
 
-You only need to select a specific build when loading Img2Num through a plain `<script>` tag.  
+You only need to select a specific build when loading Img2Num through a plain `<script>` tag.
 In that case, use the **IIFE** or **UMD** bundle.
 
 See the [Img2Num JavaScript documentation](https://img2num.dev/docs/js) for the CDN snippet and more details.
@@ -426,7 +401,7 @@ Upgrade to the latest release.
 
 Version **0.4.0** contained a regression in which the CJS build pulled in an ESM‑only dependency. This caused `require("img2num")` to fail in Node.js.
 
-The issue was fixed in the following release, and **v0.4.0 is deprecated on npm** for this reason.  
+The issue was fixed in the following release, and **v0.4.0 is deprecated on npm** for this reason.
 If your project is pinned to 0.4.0, remove the pin and upgrade.
 
 </details>
@@ -467,7 +442,7 @@ The quality of the generated SVG depends heavily on the image‑processing param
 - **Jagged edges or noisy paths**: Increase contour smoothing, or raise `min_area` to filter out tiny contours. You can also increase `sigma_spatial` to smooth noise before clustering.
 - **Very small images**: Icons and thumbnails may contain too few pixels for stable clustering. Try upscaling the image first or reducing the number of colors.
 
-If the result appears **blurry or over‑smoothed** (loss of edge detail), reduce the spatial standard deviation (`sigma_spatial`).  
+If the result appears **blurry or over‑smoothed** (loss of edge detail), reduce the spatial standard deviation (`sigma_spatial`).
 If the result is **too noisy or insufficiently smoothed**, increase it.
 
 Remember that bilateral filtering depends on both spatial and range parameters:
@@ -478,8 +453,8 @@ Remember that bilateral filtering depends on both spatial and range parameters:
 Both may need to be tuned per image depending on texture and noise levels.
 
 :::tip[Default Values]
-The default Img2Num bilateral filter parameters are tuned for general natural images and typically produce balanced results. While fixed parameters work well in most cases, adaptive smoothing strategies are commonly used in image processing literature to account for variation in noise level and edge density across images  
-([Marr & Hildreth, 1980](https://www.researchgate.net/publication/17083076_Theory_of_Edge_Detection);  
+The default Img2Num bilateral filter parameters are tuned for general natural images and typically produce balanced results. While fixed parameters work well in most cases, adaptive smoothing strategies are commonly used in image processing literature to account for variation in noise level and edge density across images
+([Marr & Hildreth, 1980](https://www.researchgate.net/publication/17083076_Theory_of_Edge_Detection);
 [Canny, 1986](https://www.researchgate.net/publication/224377985_A_Computational_Approach_To_Edge_Detection)).
 :::
 
@@ -582,7 +557,7 @@ Img2Num uses **Conventional Commits** such as `feat:`, `fix:`, and `docs:`, toge
 A mislabeled commit can therefore result in an incorrect changelog entry or version bump.
 :::
 
-The project usually catches these issues before a pull request is merged, so contributors do not need to master the convention immediately.  
+The project usually catches these issues before a pull request is merged, so contributors do not need to master the convention immediately.
 For more details, see [Conventional Commits](https://www.conventionalcommits.org/).
 
 </details>
@@ -640,5 +615,3 @@ The project does plan to support additional languages in the future, but would l
 The mascot is Joan, an African pygmy hedgehog and the project's original quality-assurance department. She belonged to the maintainer and lives on as the face of Img2Num.
 
 </details>
-
-</div>
