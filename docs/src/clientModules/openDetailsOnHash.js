@@ -1,7 +1,13 @@
 function openDetailsForHash(hash) {
   if (!hash) return;
 
-  const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+  let id;
+  try {
+    id = decodeURIComponent(hash.slice(1));
+  } catch {
+    return;
+  }
+  const target = document.getElementById(id);
   if (!target) return;
 
   // Collect every enclosing <details>, outermost first, so nested ones open too
