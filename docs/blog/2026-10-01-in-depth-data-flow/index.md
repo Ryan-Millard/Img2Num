@@ -1,5 +1,6 @@
 ---
 title: In-depth Technical Flow and Explanation of the Img2Num Architecture
+date: 2026-10-01
 description: "An in-depth look at the data flow and architecture of Img2Num, explaining how a raster image is processed through the C++ core and language bindings to produce an SVG (Scalable Vector Graphics) output."
 keywords: [SVG, raster image, vectorization, color quantization, contours, WASM]
 authors: [aditya-prakash]
@@ -146,9 +147,7 @@ Emscripten
 WebAssembly
 ```
 
-The C bindings give a clean and stable interface for Emscripten to export through WebAssembly.
-
-This is the reason why the WebAssembly path cannot simply export the whole C++ API at once because the C API does not allow any C++ constructs to be exported through WebAssembly.
+The Emscripten build uses the C bindings as its interface to the C++ core. This is a project choice, not a WebAssembly limitation: Emscripten's Embind can expose registered C++ functions and classes to JavaScript. The full C++ API is not exported automatically; it requires explicit bindings.
 
 The key architecture here is:
 
@@ -284,3 +283,5 @@ SVG String
 ```
 
 This layered architecture allows Img2Num to maintain one central image processing implementation while supporting multiple programming environments.
+
+[Read the documentation here](https://github.com/Ryan-Millard/Img2Num/blob/main/README.md)
