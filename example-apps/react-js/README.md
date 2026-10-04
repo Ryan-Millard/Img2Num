@@ -26,9 +26,7 @@ Run the example app's tests with:
 pnpm -F react-example test
 ```
 
-The test files are kept in the source tree, although the example app's tests
-are currently disabled in the broader project workflow. Tests can be revived
-later if needed.
+The test files are kept in the source tree. The example app's tests are currently disabled in CI but can still be run locally using the command above.
 
 ## Source layout
 
