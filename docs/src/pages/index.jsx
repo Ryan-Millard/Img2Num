@@ -40,6 +40,7 @@ function RasterToSvgDemo() {
 }
 
 //core hero section
+/** Render the homepage hero with repository stats and showcase navigation. */
 function HeroSection() {
   // Build-time numbers, baked into the static HTML.
   const buildTimeStats = usePluginData("github-stats");
@@ -119,8 +120,8 @@ function HeroSection() {
 
         <div className={styles.heroRight}>
           <RasterToSvgDemo />
-          <Link className={styles.btnPrimary} to="/example-apps/">
-            View Example Apps <MoveRight size={15} />
+          <Link className={styles.btnPrimary} to="/showcase">
+            View Showcase <MoveRight size={15} />
           </Link>
         </div>
       </div>
