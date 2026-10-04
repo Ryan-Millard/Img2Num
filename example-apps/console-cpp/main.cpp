@@ -96,7 +96,8 @@ int main(int argc, char** argv) {
             return false;
         }
         file << content;
-        return static_cast<bool>(file);
+        file.close();
+        return !file.fail();
     };
     const bool svg_save_success {write_text(svg_path, res_svg)};
     const bool svg2_save_success {write_text(svg2_path, res_svg2)};
