@@ -1,10 +1,10 @@
 import React from "react";
 import Layout from "@theme/Layout";
 import { usePluginData } from "@docusaurus/useGlobalData";
-import { GitPullRequest, ExternalLink } from "lucide-react";
+import { GitPullRequest, ExternalLink, GitCommit } from "lucide-react";
 
 export default function HallOfFame() {
-  const hallOfFameData = usePluginData("hall-of-fame");
+  const { featured, contributors } = usePluginData("hall-of-fame");
 
   return (
     <Layout
@@ -46,7 +46,7 @@ export default function HallOfFame() {
           </p>
         </header>
 
-        {hallOfFameData.map(({ year, members }) => (
+        {featured.map(({ year, members }) => (
           <section
             key={year}
             style={{
@@ -225,6 +225,95 @@ export default function HallOfFame() {
             </div>
           </section>
         ))}
+
+        {/* All Contributors */}
+        {contributors.length > 0 && (
+          <section
+            style={{
+              marginBottom: "3.5rem",
+            }}
+          >
+            <h2
+              style={{
+                fontSize: "1.75rem",
+                borderBottom: "2px solid var(--ifm-toc-border-color)",
+                paddingBottom: "0.5rem",
+                marginBottom: "1.5rem",
+              }}
+            >
+              All Contributors ({contributors.length})
+            </h2>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+                gap: "1rem",
+              }}
+            >
+              {contributors.map((c) => (
+                <a
+                  key={c.username}
+                  href={c.profileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={`Open ${c.username}'s GitHub profile`}
+                  style={{
+                    backgroundColor: "var(--ifm-card-background-color)",
+                    border: "1px solid var(--ifm-toc-border-color)",
+                    borderRadius: "12px",
+                    padding: "0.75rem 1rem",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.75rem",
+                    boxShadow: "var(--ifm-global-shadow-lw)",
+                    textDecoration: "none",
+                    color: "inherit",
+                  }}
+                >
+                  <img
+                    src={c.avatarUrl}
+                    alt={`${c.username}'s avatar`}
+                    loading="lazy"
+                    width="40"
+                    height="40"
+                    style={{
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                    }}
+                  />
+
+                  <div style={{ minWidth: 0 }}>
+                    <div
+                      style={{
+                        fontWeight: 600,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {c.username}
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.3rem",
+                        fontSize: "0.8rem",
+                        opacity: 0.7,
+                      }}
+                    >
+                      <GitCommit size={14} />
+                      {c.contributions}{" "}
+                      {c.contributions === 1 ? "commit" : "commits"}
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
       </main>
     </Layout>
   );
