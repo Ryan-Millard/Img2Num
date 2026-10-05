@@ -59,7 +59,7 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 
 ### What are you waiting for?
 
-Try one of our [example-apps](https://img2num.dev/example-apps/)!
+Try one of our [example-apps](https://img2num.dev/showcase/)!
 
 <br />
 </div>

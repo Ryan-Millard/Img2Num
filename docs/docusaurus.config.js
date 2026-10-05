@@ -185,7 +185,10 @@ const config = {
     [
       "@docusaurus/plugin-client-redirects",
       {
-        redirects: [{ from: "/docs/faq", to: "/faq" }],
+        redirects: [
+          { from: "/docs/faq", to: "/faq" },
+          { from: "/example-apps", to: "/showcase" },
+        ],
       },
     ],
     "./plugins/github-stats/index.js",
