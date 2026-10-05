@@ -140,15 +140,28 @@ function Load-Image {
 # Returns the Docker Compose pull policy from the state file.
 # Falls back to "always" when no policy has been saved.
 function Get-PullPolicy {
+    param(
+        [string]$Image
+    )
+
     if (Test-Path $IMG2NUM_STATE_FILE) {
-        $match = Select-String -Path $IMG2NUM_STATE_FILE -Pattern '^PULL_POLICY=(.*)$' |
+        $savedImageMatch = Select-String -Path $IMG2NUM_STATE_FILE -Pattern '^IMAGE=(.*)$' |
             Select-Object -First 1
 
-        if ($match) {
-            $val = $match.Matches[0].Groups[1].Value.Trim()
+        if ($savedImageMatch) {
+            $savedImage = $savedImageMatch.Matches[0].Groups[1].Value.Trim()
 
-            if ($val) {
-                return $val
+            if ($savedImage -eq $Image) {
+                $match = Select-String -Path $IMG2NUM_STATE_FILE -Pattern '^PULL_POLICY=(.*)$' |
+                    Select-Object -First 1
+
+                if ($match) {
+                    $val = $match.Matches[0].Groups[1].Value.Trim()
+
+                    if ($val) {
+                        return $val
+                    }
+                }
             }
         }
     }
@@ -173,7 +186,7 @@ function Run-InContainer {
             "always"
         }
     } else {
-        Get-PullPolicy
+        Get-PullPolicy -Image $image
     }
 
     Save-State -Image $image -PullPolicy $pullPolicy

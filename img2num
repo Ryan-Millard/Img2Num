@@ -131,14 +131,21 @@ load_image() {
 # Returns the Docker Compose pull policy from the state file.
 # Falls back to "always" when no policy has been saved.
 load_pull_policy() {
-  if [ -f "$IMG2NUM_STATE_FILE" ]; then
-    local line val
-    line="$(grep -m1 '^PULL_POLICY=' "$IMG2NUM_STATE_FILE" | tr -d '\r')"
-    val="${line#PULL_POLICY=}"
+  local image="$1"
 
-    if [ -n "$val" ]; then
-      printf '%s\n' "$val"
-      return
+  if [ -f "$IMG2NUM_STATE_FILE" ]; then
+    local saved_image line val
+    saved_image="$(grep -m1 '^IMAGE=' "$IMG2NUM_STATE_FILE" | tr -d '\r')"
+    saved_image="${saved_image#IMAGE=}"
+
+    if [ "$saved_image" = "$image" ]; then
+      line="$(grep -m1 '^PULL_POLICY=' "$IMG2NUM_STATE_FILE" | tr -d '\r')"
+      val="${line#PULL_POLICY=}"
+
+      if [ -n "$val" ]; then
+        printf '%s\n' "$val"
+        return
+      fi
     fi
   fi
 
@@ -165,7 +172,7 @@ run_in_container() {
       pull_policy="always"
     fi
   else
-    pull_policy="$(load_pull_policy)"
+    pull_policy="$(load_pull_policy "$image")"
   fi
 
   save_state "$image" "$pull_policy"
