@@ -1,4 +1,4 @@
-import hallOfFameInput from "../src/datab/hall-of-fame.json";
+import hallOfFameInput from "../src/data/hall-of-fame.json";
 
 const REPO = "Ryan-Millard/Img2Num";
 const API = "https://api.github.com";
