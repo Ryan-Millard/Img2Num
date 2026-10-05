@@ -136,6 +136,9 @@ void threshold_image(uint8_t* ptr, const int width, const int height, const int 
     std::memcpy(ptr, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
 }
 
+// Unlike `threshold_image` above, `num_thresholds` here is a per-channel 0-255
+// brightness cutoff, not a number of output levels. A pixel becomes pure black
+// only when all three of its channels are strictly below the cutoff.
 void black_threshold_image(
     uint8_t* ptr, const int width, const int height, const int num_thresholds
 ) {

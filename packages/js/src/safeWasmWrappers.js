@@ -86,11 +86,14 @@ export const bilateralFilter = async ({ pixels, width, height, sigma_spatial = 3
 };
 
 /**
- * @summary Apply a black-biased threshold filter to reduce colors in an image.
+ * @summary Apply a black-biased threshold filter to an image.
  *
  * @description
- * Apply a simple sRGB bin-based threshold on the Uint8ClampedArray image.
- * The bins in this function are determined by the `num_colors` parameter.
+ * Sets a pixel to pure black when all three of its colour channels are strictly
+ * below the `num_colors` cutoff; every other pixel is left untouched. Despite
+ * the name (kept for backwards compatibility), `num_colors` is a per-channel
+ * 0-255 brightness cutoff, not a number of output colour levels. Values of 0 or
+ * less leave the image unchanged.
  *
  * @async
  * @function blackThreshold
@@ -98,14 +101,14 @@ export const bilateralFilter = async ({ pixels, width, height, sigma_spatial = 3
  * @param {Uint8ClampedArray} options.pixels - The image pixel data (flat RGBA array).
  * @param {number} options.width - The width of the image.
  * @param {number} options.height - The height of the image.
- * @param {number} options.num_colors - Number of colors to reduce the image to.
+ * @param {number} options.num_colors - Per-channel brightness cutoff (0-255): pixels whose red, green and blue values are all below this become black. Retained as `num_colors` for backwards compatibility.
  * @returns {Promise<Uint8ClampedArray>} The thresholded image pixels.
  * @throws {Error} If the WASM function fails.
  * @example
  * const thresholded = await blackThreshold({ pixels, width, height, num_colors: 16 });
- * @see {@link https://en.wikipedia.org/wiki/Color_quantization|Color Quantization Wiki}
+ * @see {@link https://en.wikipedia.org/wiki/Thresholding_(image_processing)|Thresholding Wiki}
  * @todo Support different bias levels for black/white thresholds.
- * @variation Black-biased threshold with customizable number of colors
+ * @variation Black-biased threshold with customizable brightness cutoff
  * @since 0.0.0
  */
 export const blackThreshold = async ({ pixels, width, height, num_colors }) => {

@@ -40,8 +40,11 @@
 /// @param ptr Pointer to the image buffer.
 /// @param width Width of the image in pixels.
 /// @param height Height of the image in pixels.
-/// @param num_thresholds Number of thresholds to apply.
-/// @note Similar to threshold_image but prioritizes darker pixels.
+/// @param num_thresholds Per-channel brightness cutoff in the 0-255 range.
+/// @note A pixel is set to pure black when all of its red, green and blue
+/// channels are strictly below `num_thresholds`; all other pixels are left
+/// untouched. This is a brightness cutoff, not a number of output levels.
+/// Values of 0 or less leave the image unchanged.
 /// @note Dox File: `doxygen/img2num.h.dox`
 ///
 
