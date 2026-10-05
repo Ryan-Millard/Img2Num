@@ -93,7 +93,8 @@ export const bilateralFilter = async ({ pixels, width, height, sigma_spatial = 3
  * below the `num_colors` cutoff; every other pixel is left untouched. Despite
  * the name (kept for backwards compatibility), `num_colors` is a per-channel
  * 0-255 brightness cutoff, not a number of output colour levels. Values of 0 or
- * less leave the image unchanged.
+ * less leave the image unchanged. Blackened pixels have their alpha channel
+ * set to an opaque 255.
  *
  * @async
  * @function blackThreshold
