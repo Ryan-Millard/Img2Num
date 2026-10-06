@@ -19,7 +19,9 @@ async function run(command, args) {
   });
 }
 
-// Run before anything to guarantee it exists and there are no failures
+await run("node", ["--test", "tests/showcase.test.mjs"]);
+
+// Build the library before generating documentation that depends on it.
 await run("pnpm", ["-F", "img2num", "run", "build"]);
 
 await run("pnpm", ["-F", "docs", "run", "doxygen"]);
