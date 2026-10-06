@@ -177,7 +177,10 @@ class GPU {
             IMG2NUM_LOG_INFO("Fatal: Could not get WebGPU Adapter.");
             return;
         }
-
+        if (adapter.GetInfo().backendType == wgpu::BackendType::Null) {
+            IMG2NUM_LOG_INFO("No usable WebGPU adapter found. Falling back to CPU.");
+            return;
+        }
         // ---------------------------------------------------------
         // 2. Get Device
         // ---------------------------------------------------------
