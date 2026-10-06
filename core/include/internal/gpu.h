@@ -28,8 +28,17 @@ class GPU {
     bool adapter_ready = false;
     bool device_ready = false;
     bool gpu_initialized = false;
+    bool init_attempted = false;
 
     GPU() = default;
+
+    void cleanup() {
+        queue = nullptr;
+        device = nullptr;
+        adapter = nullptr;
+        instance = nullptr;
+        gpu_initialized = false;
+    }
 
     bool validate_device() {
         if (!device)
@@ -132,14 +141,16 @@ class GPU {
     };
 
     void init_gpu() {
-        if (gpu_initialized)
+        if (init_attempted)
             return;
+        init_attempted = true;
 
         wgpu::InstanceDescriptor instanceDesc = {};
         instance = wgpu::CreateInstance(&instanceDesc);
 
         if (!instance) {
-            IMG2NUM_LOG_INFO("Fatal: WebGPU instance creation failed.");
+            IMG2NUM_LOG_INFO("Fatal: WebGPU instance creation failed. Falling back to CPU.");
+            cleanup();
             return;
         }
 
@@ -174,7 +185,8 @@ class GPU {
         }
 
         if (!adapter) {
-            IMG2NUM_LOG_INFO("Fatal: Could not get WebGPU Adapter.");
+            IMG2NUM_LOG_INFO("Fatal: Could not get WebGPU Adapter. Falling back to CPU.");
+            cleanup();
             return;
         }
 
@@ -256,12 +268,14 @@ class GPU {
         }
 
         if (!device) {
-            IMG2NUM_LOG_INFO("Fatal: Could not get WebGPU Device.");
+            IMG2NUM_LOG_INFO("Fatal: Could not get WebGPU Device. Falling back to CPU.");
+            cleanup();
             return;
         }
 
         if (!validate_device()) {
-            IMG2NUM_LOG_INFO("Fatal: Could not get WebGPU Device.");
+            IMG2NUM_LOG_INFO("Fatal: Could not get WebGPU Device. Falling back to CPU.");
+            cleanup();
             return;
         }
 
@@ -271,11 +285,7 @@ class GPU {
     };
 
     ~GPU() {
-        device = nullptr;
-        adapter = nullptr;
-        queue = nullptr;
-        instance = nullptr;
-        gpu_initialized = false;
+        cleanup();
     };
 };
 
