@@ -1,5 +1,7 @@
 # Img2Num HTML example apps
 
+[![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.com/invite/BHjxcCqAnU)
+ 
 One template, three module-loading variants. Everything shared between the
 apps (page shell, styles, demo logic) lives once in this folder; each variant
 contributes only its metadata and the snippet that loads the library.
