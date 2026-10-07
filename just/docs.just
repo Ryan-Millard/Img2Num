@@ -14,7 +14,7 @@ start:
     @echo "Start Docusaurus on port 3000"
     cd docs/ && pnpm run serve
 
-# Delete Docusaurus build artefacts (check these folder names against docs/)
+# Delete Docusaurus build artefacts (docs/build and docs/.docusaurus)
 clean:
-    @echo "Remove docs/build and docs/.docusaurus"
+    @echo "Remove docs/build/ and docs/.docusaurus/"
     rm -rf docs/build/ docs/.docusaurus/
