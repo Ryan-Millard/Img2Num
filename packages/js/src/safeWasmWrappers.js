@@ -215,13 +215,20 @@ export const findContours = async ({ pixels, labels, width, height, min_area = 1
  * @param {Uint8ClampedArray} options.pixels - Original image pixels.
  * @param {number} options.width - Image width.
  * @param {number} options.height - Image height.
- * @param {number} [options.sigma_spatial=3] - Spatial standard deviation.
- * @param {number} [options.sigma_range=50] - Range (color) standard deviation.
- * @param {number} [options.num_colors=16] - Number of color clusters.
- * @param {number} [options.max_iter=100] - Maximum number of iterations.
- * @param {number} [options.min_area=100] - Minimum area of a region to be considered a contour.
- * @param {number} [options.min_thickness=10] - Minimum thickness of a region to be considered a contour.
- * @param {number} [options.color_space=0] - Color space mode.
+ * @param {number} [options.sigma_spatial] - Spatial standard deviation.
+ * @defaultValue 3
+ * @param {number} [options.sigma_range] - Range (color) standard deviation.
+ * @defaultValue 50
+ * @param {number} [options.num_colors] - Number of color clusters.
+ * @defaultValue 16
+ * @param {number} [options.max_iter] - Maximum number of iterations.
+ * @defaultValue 100
+ * @param {number} [options.min_area] - Minimum area of a region to be considered a contour.
+ * @defaultValue 100
+ * @param {number} [options.min_thickness] - Minimum thickness of a region to be considered a contour.
+ * @defaultValue 10
+ * @param {number} [options.color_space] - Color space mode.
+ * @defaultValue 0
  * @returns {Promise<{svg: string}>} Generated SVG.
  * @throws {Img2NumError} If the input is invalid: `pixels` empty or not `width * height * 4` long,
  * `width`/`height` not positive or below the 16 px minimum on the shortest side, `num_colors` < 1

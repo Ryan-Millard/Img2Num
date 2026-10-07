@@ -9,7 +9,7 @@ const config = [
     readme: "none",
     tsconfig: "../packages/js/tsconfig.typedoc.json",
     exclude: ["node_modules/", "build-wasm/", "dist/", ".gitignore", "package.json", "*.test.*"],
-    blockTags: ["@param", "@returns", "@throws", "@example", "@async", "@summary", "@property", "@todo", "@variation", "@description", "@module", "@author", "@license", "@exports", "@see", "@since"],
+    blockTags: ["@param", "@returns", "@throws", "@example", "@async", "@summary", "@property", "@defaultValue", "@todo", "@variation", "@description", "@module", "@author", "@license", "@exports", "@see", "@since"],
     gitRevision: "main",
     sourceLinkTemplate: "https://github.com/Ryan-Millard/Img2Num/blob/{gitRevision}/{path}#L{line}",
     useFirstParagraphOfCommentAsSummary: true,

@@ -30,7 +30,6 @@ export const ERROR_CODE_NAMES = Object.freeze(["OK", "BAD_ALLOC", "INVALID_ARGUM
  * `k < 1`). `message` is the human-readable explanation from the core.
  *
  * @class
- * @extends Error
  */
 export class Img2NumError extends Error {
   /**

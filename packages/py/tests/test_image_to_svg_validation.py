@@ -43,7 +43,7 @@ def test_empty_image_raises(shape):
 
 def test_rgb_image_is_rejected_instead_of_read_out_of_bounds():
     rgb = np.zeros((64, 64, 3), dtype=np.uint8)
-    with pytest.raises(ValueError, match=r"width \* height \* 4"):
+    with pytest.raises(ValueError, match="RGBA"):
         img2num.image_to_svg(rgb)
 
 
