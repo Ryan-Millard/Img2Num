@@ -299,7 +299,7 @@ Img2Num does the math, and you decide which thread it runs on.
 
 Talking about build targets is abstract, so the examples got a matching overhaul:
 
-- `console-js` is now split into <a href="/example-apps/#node-esm"><code>console-js-esm</code></a> and <a href="/example-apps/#node-cjs"><code>console-js-cjs</code></a>,
+- `console-js` is now split into <a href="/showcase/#node-esm"><code>console-js-esm</code></a> and <a href="/showcase/#node-cjs"><code>console-js-cjs</code></a>,
   so the `import` and `require` export conditions are each exercised by a real consumer (and we fixed a byte-offset bug in the pixel-buffer construction while we were in there).
 - The `html-js` example was rebuilt as a single shared template compiled into three self-contained variants -
   <Link to="/example-apps/esm/" target="_blank">
@@ -314,7 +314,7 @@ Talking about build targets is abstract, so the examples got a matching overhaul
     UMD
   </Link>
   &nbsp;- each deployable as plain static files with no build tooling at runtime.
-- The docs site now has an [example apps index](https://img2num.dev/example-apps/) with a card and representative snippet for every binding:
+- The docs site now has an [example apps index](https://img2num.dev/showcase/) with a card and representative snippet for every binding:
   React, browser ESM, IIFE, UMD, Node ESM/CJS - and Python, C++, and C, because Img2Num was never just a JavaScript library.
 - Every JS target is also runnable in your browser right now - the CodeSandbox links in the
   [tabs above](#how-to-use-img2num-in-the-browser-and-nodejs) are one click from "processed image" with nothing installed.
