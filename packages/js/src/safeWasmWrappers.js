@@ -224,8 +224,8 @@ export const findContours = async ({ pixels, labels, width, height, min_area = 1
  * @param {number} [options.color_space] - Color space mode. Defaults to 0.
  * @returns {Promise<{svg: string}>} Generated SVG.
  * @throws {Img2NumError} If the input is invalid: `pixels` empty or not `width * height * 4` long,
- * `width`/`height` not positive or below the 16 px minimum on the shortest side, `num_colors` < 1
- * or greater than the pixel count, `sigma_*` <= 0, `max_iter` < 1, negative `min_area`/`min_thickness`,
+ * `width`/`height` not positive or below the 16 px minimum on the shortest side, `num_colors < 1`
+ * or greater than the pixel count, `sigma_* <= 0`, `max_iter < 1`, negative `min_area`/`min_thickness`,
  * or an unknown `color_space`. The rejection message explains which check failed.
  * @throws {Error} If the WASM function fails.
  * @example
