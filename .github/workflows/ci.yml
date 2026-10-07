@@ -115,6 +115,27 @@ jobs:
     with:
       image: ${{ needs.set-image.outputs.image }}
 
+  core-cpp-tests:
+    name: Core C++ tests (CPU-only)
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ needs.set-image.outputs.image }}
+    needs: [set-image]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          submodules: false
+
+      - name: Configure CPU-only Catch2 core tests
+        run: cmake -S . -B build-tests/ -DIMG2NUM_BUILD_TESTS=ON
+
+      - name: Build core tests
+        run: cmake --build build-tests/
+
+      - name: Run core tests
+        run: ctest --test-dir build-tests/ --output-on-failure
+
   # Docs now builds react app internally
   build-docs:
     name: Build Documentation Site
