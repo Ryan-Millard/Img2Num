@@ -26,6 +26,8 @@ pip install img2num
 
 ## Usage
 
+For a complete walkthrough, see the [Python Usage Guide](./usage).
+
 Input images must be **RGBA** (4 channels).
 
 > `width` and `height` are inferred from the array shape automatically - you don't pass them.
