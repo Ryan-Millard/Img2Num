@@ -3,7 +3,7 @@ services:
     image: ${IMG2NUM_IMAGE:-ryanmillard/img2num-dev:latest} # Allow specifying the image
     environment:
       IMG2NUM_IMAGE: ${IMG2NUM_IMAGE:-ryanmillard/img2num-dev:latest}
-    pull_policy: always
+    pull_policy: ${IMG2NUM_PULL_POLICY:-always}
     working_dir: /usr/src/app
     volumes:
       - .:/usr/src/app:cached

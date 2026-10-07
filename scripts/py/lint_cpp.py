@@ -5,9 +5,9 @@ Requires one or more compile databases (compile_commands.json). The project's
 normal build flows produce them automatically (CMAKE_EXPORT_COMPILE_COMMANDS
 is always exported):
 
-    just build cpp   -> build-c-cpp/
-    just build py    -> build-py/<wheel_tag>/  (scikit-build-core build-dir)
-    just build js    -> build-wasm/            (linted when the Emscripten
+    just cmake build -> build-c-cpp/
+    just py build    -> build-py/<wheel_tag>/  (scikit-build-core build-dir)
+    just js build    -> build-wasm/            (linted when the Emscripten
                                                 sysroot can be located via
                                                 $EMSDK or em-config)
 
@@ -251,9 +251,9 @@ def main() -> int:
                 "No usable compile databases found.\n"
                 "Build the project first (databases are exported "
                 "automatically):\n"
-                "  just build cpp    # -> build-c-cpp/\n"
-                "  just build py     # -> build-py/<wheel_tag>/\n"
-                "  just build js     # -> build-wasm/ (needs $EMSDK to lint)",
+                "  just cmake build  # -> build-c-cpp/\n"
+                "  just py build     # -> build-py/<wheel_tag>/\n"
+                "  just js build     # -> build-wasm/ (needs $EMSDK to lint)",
                 Colors.RED,
                 err=True,
             )
