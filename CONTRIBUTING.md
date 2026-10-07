@@ -12,6 +12,24 @@ We wrote a [contribution guide](https://img2num.dev/docs/contributing) to help y
 
 If you're unsure what to change, [open a discussion](https://github.com/Ryan-Millard/Img2Num/discussions/new/choose) and someone will assist you.
 
+## README Generation
+
+The package README contains generated Node.js examples sourced from the canonical example applications in `example-apps/`.
+
+When updating the ESM or CommonJS example applications, regenerate `packages/js/README.md` with:
+
+```bash
+pnpm readme:generate
+```
+
+The generated sections are marked with `BEGIN GENERATED` and `END GENERATED` comments. Do not edit the contents of those sections manually; update the canonical example source instead and regenerate the README.
+
+To run the README generator tests:
+
+```bash
+pnpm readme:test
+```
+
 ## Questions?
 
 If you have questions or need help:
