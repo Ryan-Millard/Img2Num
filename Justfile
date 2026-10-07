@@ -46,4 +46,5 @@ clean-all:
     just js clean
     just js package-clean
     just py clean
+    just py package-clean
     just docs clean

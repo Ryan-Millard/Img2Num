@@ -14,7 +14,12 @@ build build_type="Release" log_level="AUTO":
     SKBUILD_CMAKE_DEFINE="IMG2NUM_LOG_LEVEL={{ log_level }}" \
     uv build --wheel
 
-# Delete packages/py/build-py
+# Delete the py build folder
 clean:
+    @echo "Remove build-py/"
+    rm -rf build-py/
+
+# Delete packages/py/build-py
+package-clean:
     @echo "Remove packages/py/build-py/"
     rm -rf packages/py/build-py/
