@@ -52,6 +52,7 @@ sdist.include = [
   "pyproject.toml",
   "LICENSE",
   "CMakeLists.txt",
+  ".versions/cmake.json",
   "core/**",
   "bindings/py/**",
   "packages/py/**",
