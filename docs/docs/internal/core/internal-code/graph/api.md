@@ -12,7 +12,7 @@ Each pixel has its own color and position.
 
 `Node`s reference neighbors through node pointers (`shared_ptr`)
 
-```cpp title="Nodes reference neigbors through node shared pointers"
+```cpp title="Nodes reference neighbors through node shared pointers"
 Node_ptr n_ptr = std::make_shared<Node>(<id>, <std::unique_ptr<std::vector<RGBXY>> pixels>);
 ```
 
@@ -84,15 +84,15 @@ Pseudocode:
 ```text
 for node in G.nodes
 {
-    // Consider all neigbors
-    for neigbor in node.edges
+    // Consider all neighbors
+    for neighbor in node.edges
     {
         // collect pixels for each neighbor
     }
     /*
     1. Create joint grid plot of all pixels in node and neighbors
     2. Find edge pixels
-    3. Decide if edge pixel should be added to the `node`'s or `neigbor`'s edge_pixel collection to ensure contour overlap
+    3. Decide if edge pixel should be added to the `node`'s or `neighbor`'s edge_pixel collection to ensure contour overlap
     */
 }
 

@@ -1,0 +1,6 @@
+github
+https
+passthrough
+ssh
+ubuntu
+workarounds

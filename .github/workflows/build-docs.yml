@@ -39,7 +39,7 @@ jobs:
       - name: Initialize spdlog
         run: git -c submodule.recurse=false submodule update --init third_party/spdlog
 
-      - name: Install Dependendencies
+      - name: Install Dependencies
         run: pnpm install
 
       - name: Download WASM artifacts
