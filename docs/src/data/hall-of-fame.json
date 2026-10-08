@@ -1,17 +1,42 @@
 [
   {
-    "username": "krasner",
+    "username": "08abhinav",
     "year": 2026,
-    "blurb": "Built the C bindings"
+    "blurb": "Built this page"
+  },
+  {
+    "username": "siddharth1407",
+    "year": 2026,
+    "blurb": "Built a reusable WebGPU helper layer, ported both kernels to it, and documented gpu_utils"
+  },
+  {
+    "username": "hjmillard",
+    "year": 2025,
+    "blurb": "Wrote the original K-means and thresholding utilities and later split K-means into its own module"
+  },
+  {
+    "username": "fransafu",
+    "year": 2025,
+    "blurb": "Collaborated with @Krasner on the first implementation of the bilateral filter"
+  },
+  {
+    "username": "krasner",
+    "year": 2025,
+    "blurb": "Turned Img2Num into what it is today"
   },
   {
     "username": "Prachi-Gupta2808",
     "year": 2026,
-    "blurb": "Improved core image processing routines"
+    "blurb": "Did a lot...≡ƒªö"
   },
   {
-    "username": "afshanons",
+    "username": "dougwithseismic",
+    "year": "2025",
+    "blurb": "Helped set up initial CMake and pnpm build system"
+  },
+  {
+    "username": "Ryan-Millard",
     "year": 2025,
-    "blurb": ""
+    "blurb": "Did nothing"
   }
 ]
