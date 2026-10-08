@@ -127,6 +127,14 @@ ignore = []
 [tool.ruff.lint.per-file-ignores]
 "**/__init__.py" = ["F401"] # Allow re-exports in __init__.py
 
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["packages/py/tests"]
+# importlib mode stops pytest from putting packages/py on sys.path, which would
+# shadow the installed (compiled) img2num package with the source tree.
+addopts = ["--import-mode=importlib", "-ra", "--strict-markers", "--strict-config"]
+xfail_strict = true
+
 [tool.cibuildwheel]
 build-verbosity = 1
 
@@ -143,4 +151,7 @@ lint = [
 ]
 licensing = [
   "reuse>=6.2.0,<7"
+]
+test = [
+    "pytest>=8,<9",
 ]
