@@ -181,3 +181,24 @@ install(DIRECTORY include/
 )
 
 message(STATUS "Core library configured with ${CORE_SRC}")
+
+# Tests
+if(IMG2NUM_BUILD_TESTS)
+  add_executable(test_labels_to_svg
+    tests/test_labels_to_svg.cpp
+    ../third_party/Catch2/extras/catch_amalgamated.cpp
+  )
+
+  target_include_directories(test_labels_to_svg PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../third_party/Catch2/extras
+  )
+
+  target_link_libraries(test_labels_to_svg PRIVATE
+    Img2Num
+  )
+
+  add_test(
+    NAME labels_to_svg
+    COMMAND test_labels_to_svg
+  )
+endif()
