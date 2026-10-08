@@ -48,6 +48,8 @@ the source and makes changes easier to discover and review.
 - After changing API documentation, verify that the relevant Doxygen
   configuration still generates the API documentation correctly.
 
-:::tip Contributor Tip
+:::tip[Contributor Tip]
+
 Keep folders self-contained and organized by feature for future scalability.
+
 :::
