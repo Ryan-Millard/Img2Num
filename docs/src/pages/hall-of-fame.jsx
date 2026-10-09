@@ -64,16 +64,7 @@ const contributorGridStyle = {
 /** Round avatar with an initial-letter fallback when no image URL exists. */
 function Avatar({ src, name, size }) {
   if (src) {
-    return (
-      <img
-        src={src}
-        alt={`${name}'s avatar`}
-        loading="lazy"
-        width={size}
-        height={size}
-        style={{ borderRadius: "50%", objectFit: "cover", flexShrink: 0 }}
-      />
-    );
+    return <img src={src} alt={`${name}'s avatar`} loading="lazy" width={size} height={size} style={{ borderRadius: "50%", objectFit: "cover", flexShrink: 0 }} />;
   }
 
   return (
@@ -125,9 +116,7 @@ function FeaturedCard({ member }) {
             {member.name}
             <ExternalLink size={14} />
           </a>
-          <div style={{ fontSize: "0.85rem", opacity: 0.7 }}>
-            @{member.username}
-          </div>
+          <div style={{ fontSize: "0.85rem", opacity: 0.7 }}>@{member.username}</div>
         </div>
       </div>
 
@@ -249,10 +238,7 @@ export default function HallOfFame() {
   const { featured = [], contributors = [] } = usePluginData("hall-of-fame");
 
   return (
-    <Layout
-      title="Hall of Fame"
-      description="Honoring top contributors and featured community members of Img2Num."
-    >
+    <Layout title="Hall of Fame" description="Honoring top contributors and featured community members of Img2Num.">
       <main
         style={{
           // Docusaurus renders pages inside a flex column wrapper. Without an
@@ -276,9 +262,7 @@ export default function HallOfFame() {
               margin: "0.5rem auto 0",
             }}
           >
-            Celebrating the key contributors whose efforts helped build,
-            refine, and expand Img2Num. Featured members are hand-picked by the
-            maintainers. See everyone on the{" "}
+            Celebrating the key contributors whose efforts helped build, refine, and expand Img2Num. Featured members are hand-picked by the maintainers. See everyone on the{" "}
             <a href={CONTRIBUTORS_URL} target="_blank" rel="noopener noreferrer">
               full contributors list
             </a>
@@ -304,9 +288,7 @@ export default function HallOfFame() {
         {/* Every contributor to the repository */}
         {contributors.length > 0 && (
           <section style={{ marginBottom: "3.5rem" }}>
-            <h2 style={sectionHeadingStyle}>
-              All Contributors ({contributors.length})
-            </h2>
+            <h2 style={sectionHeadingStyle}>All Contributors ({contributors.length})</h2>
 
             <div style={contributorGridStyle}>
               {contributors.map((c) => (

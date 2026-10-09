@@ -10,21 +10,16 @@ const API = "https://api.github.com";
 const PER_PAGE = 50;
 const MAX_PAGES = 10;
 
-const isBot = (user) =>
-  user?.type === "Bot" || user?.login?.endsWith("[bot]");
+const isBot = (user) => user?.type === "Bot" || user?.login?.endsWith("[bot]");
 
-const withAvatarSize = (url) =>
-  url ? `${url}${url.includes("?") ? "&" : "?"}s=96` : null;
+const withAvatarSize = (url) => (url ? `${url}${url.includes("?") ? "&" : "?"}s=96` : null);
 
 async function fetchAllContributors(headers) {
   const all = [];
 
   try {
     for (let page = 1; page <= MAX_PAGES; page++) {
-      const res = await fetch(
-        `${API}/repos/${REPO}/contributors?per_page=${PER_PAGE}&page=${page}`,
-        { headers },
-      );
+      const res = await fetch(`${API}/repos/${REPO}/contributors?per_page=${PER_PAGE}&page=${page}`, { headers });
       if (!res.ok) break;
 
       const batch = await res.json();
@@ -33,8 +28,7 @@ async function fetchAllContributors(headers) {
       all.push(...batch);
       if (batch.length < PER_PAGE) break;
     }
-  } catch {
-  }
+  } catch {}
 
   return all
     .filter((c) => !isBot(c))
@@ -99,10 +93,7 @@ export async function fetchHallOfFameData({ token } = {}) {
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 
-  const [contributors, featuredRaw] = await Promise.all([
-    fetchAllContributors(headers),
-    Promise.all(hallOfFameInput.map((e) => fetchFeaturedMember(e, headers))),
-  ]);
+  const [contributors, featuredRaw] = await Promise.all([fetchAllContributors(headers), Promise.all(hallOfFameInput.map((e) => fetchFeaturedMember(e, headers)))]);
 
   // Group featured members by year, newest first
   const grouped = featuredRaw.filter(Boolean).reduce((acc, item) => {
