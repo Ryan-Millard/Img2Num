@@ -15,6 +15,7 @@ If you're unsure what to change, [open a discussion](https://github.com/Ryan-Mil
 ## Questions?
 
 If you have questions or need help:
+- Join our [Discord](https://discord.com/invite/BHjxcCqAnU)
 - Check the [FAQ](https://img2num.dev/faq/) for answers to common questions.
 - Open a [discussion](https://github.com/Ryan-Millard/Img2Num/discussions)
 - Create an [issue](https://github.com/Ryan-Millard/Img2Num/issues)
