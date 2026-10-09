@@ -102,7 +102,8 @@ export const bilateralFilter = async ({ pixels, width, height, sigma_spatial = 3
  * @param {Uint8ClampedArray} options.pixels - The image pixel data (flat RGBA array).
  * @param {number} options.width - The width of the image.
  * @param {number} options.height - The height of the image.
- * @param {number} options.num_colors - Per-channel brightness cutoff (0-255): pixels whose red, green and blue values are all below this become black. Retained as `num_colors` for backwards compatibility.
+ * @param {number} options.num_colors - Per-channel brightness cutoff (0-255): pixels whose red, green and blue values are all below this become black.
+ * Retained as `num_colors` for backwards compatibility.
  * @returns {Promise<Uint8ClampedArray>} The thresholded image pixels.
  * @throws {Error} If the WASM function fails.
  * @example
