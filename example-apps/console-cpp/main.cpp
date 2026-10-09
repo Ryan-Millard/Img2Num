@@ -31,7 +31,8 @@ int main(int argc, char** argv) {
     int width {0}, height {0}, channels {0};
     // Force load as RGBA (NUM_CHANNELS = 4)
     uint8_t* image_data_original {
-        stbi_load(image_path.c_str(), &width, &height, &channels, NUM_CHANNELS)};
+        stbi_load(image_path.c_str(), &width, &height, &channels, NUM_CHANNELS)
+    };
     if (!image_data_original) {
         std::cerr << "Failed to load image: " << stbi_failure_reason() << std::endl;
         return 1;
@@ -66,7 +67,8 @@ int main(int argc, char** argv) {
     img2num::kmeans(img_data.data(), out_data.data(), out_labels.data(), width, height, 32, 100, 1);
     // Generate SVG from labels
     std::string res_svg {
-        img2num::labels_to_svg(img_data.data(), out_labels.data(), width, height, 100, 10)};
+        img2num::labels_to_svg(img_data.data(), out_labels.data(), width, height, 100, 10)
+    };
 
     // Generate SVG with the full pipeline
     img2num::ImageToSvgConfig config;
@@ -83,11 +85,13 @@ int main(int argc, char** argv) {
         stbi_write_png(
             bilateral_path.c_str(), width, height, NUM_CHANNELS, img_data.data(),
             width * NUM_CHANNELS
-        ) == 1};
+        ) == 1
+    };
     const bool kmeans_save_success {
         stbi_write_png(
             kmeans_path.c_str(), width, height, NUM_CHANNELS, out_data.data(), width * NUM_CHANNELS
-        ) == 1};
+        ) == 1
+    };
 
     auto write_text = [](const std::string& path, const std::string& content) {
         std::ofstream file(path);
