@@ -13,7 +13,6 @@ const config = [
     gitRevision: "main",
     sourceLinkTemplate: "https://github.com/Ryan-Millard/Img2Num/blob/{gitRevision}/{path}#L{line}",
     useFirstParagraphOfCommentAsSummary: true,
-    includeHierarchySummary: true,
     excludePrivate: true,
     excludeInternal: true,
     readme: "none",

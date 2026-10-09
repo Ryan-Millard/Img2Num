@@ -6,6 +6,8 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <sstream>
+#include <stdexcept>
+#include <string>
 
 PYBIND11_MODULE(_img2num, m) {
     m.doc() = R"docstring(
@@ -373,8 +375,28 @@ PYBIND11_MODULE(_img2num, m) {
         "image_to_svg",
         [](pybind11::array_t<uint8_t, pybind11::array::c_style> data, int width, int height,
            const img2num::ImageToSvgConfig& cfg) {
+            // image_to_svg() only receives a raw pointer, so it cannot know how large the
+            // numpy buffer really is. Check it here so a too-small array (e.g. RGB instead of
+            // RGBA) raises instead of being read out of bounds. Non-positive dimensions are
+            // left for the core to reject with its own message.
+            if (width > 0 && height > 0) {
+                const unsigned long long required {
+                    static_cast<unsigned long long>(width) *
+                    static_cast<unsigned long long>(height) * 4ULL
+                };
+                if (static_cast<unsigned long long>(data.size()) < required) {
+                    throw std::invalid_argument(
+                        "image_to_svg: data has " + std::to_string(data.size()) +
+                        " elements but width * height * 4 = " + std::to_string(required) +
+                        " are required (the image must be RGBA)"
+                    );
+                }
+            }
+
             const uint8_t* data_ptr {static_cast<const uint8_t*>(data.request().ptr)};
 
+            // std::invalid_argument thrown here is translated by pybind11 into ValueError
+            // (message preserved).
             std::string svg {img2num::image_to_svg(data_ptr, width, height, cfg)};
 
             return pybind11::str(std::move(svg));
@@ -399,6 +421,15 @@ PYBIND11_MODULE(_img2num, m) {
         -------
         str
             SVG string representation of the image.
+
+        Raises
+        ------
+        ValueError
+            If the input is invalid: ``data`` smaller than ``width * height * 4``,
+            non-positive dimensions, shortest side under 16 px, or an invalid
+            configuration (``k < 1`` or greater than the pixel count, non-positive
+            sigmas, ``max_iter < 1``, negative ``min_cluster_area``/``min_thickness``,
+            or ``color_space`` not 0 or 1).
         )docstring"
     );
 }

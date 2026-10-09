@@ -17,6 +17,7 @@
  */
 
 import { callWasm } from "./wasmClient.js";
+import { Img2NumError } from "./wasmError.js";
 
 /**
  * @summary Apply a Gaussian blur to an image using FFT in WASM.
@@ -214,21 +215,32 @@ export const findContours = async ({ pixels, labels, width, height, min_area = 1
  * @param {Uint8ClampedArray} options.pixels - Original image pixels.
  * @param {number} options.width - Image width.
  * @param {number} options.height - Image height.
- * @param {number} [options.sigma_spatial=3] - Spatial standard deviation.
- * @param {number} [options.sigma_range=50] - Range (color) standard deviation.
- * @param {number} [options.num_colors=16] - Number of color clusters.
- * @param {number} [options.max_iter=100] - Maximum number of iterations.
- * @param {number} [options.min_area=100] - Minimum area of a region to be considered a contour.
- * @param {number} [options.min_thickness=10] - Minimum thickness of a region to be considered a contour.
- * @param {number} [options.color_space=0] - Color space mode.
+ * @param {number} [options.sigma_spatial] - Spatial standard deviation. Defaults to 3.
+ * @param {number} [options.sigma_range] - Range (color) standard deviation. Defaults to 50.
+ * @param {number} [options.num_colors] - Number of color clusters. Defaults to 16.
+ * @param {number} [options.max_iter] - Maximum number of iterations. Defaults to 100.
+ * @param {number} [options.min_area] - Minimum area of a region to be considered a contour. Defaults to 100.
+ * @param {number} [options.min_thickness] - Minimum thickness of a region to be considered a contour. Defaults to 10.
+ * @param {number} [options.color_space] - Color space mode. Defaults to 0.
  * @returns {Promise<{svg: string}>} Generated SVG.
- * @throws {Error} If the WASM function fails or input labels are invalid.
+ * @throws {Img2NumError} If the input is invalid: `pixels` empty or not `width * height * 4` long,
+ * `width`/`height` not positive or below the 16 px minimum on the shortest side, `num_colors < 1`
+ * or greater than the pixel count, `sigma_* <= 0`, `max_iter < 1`, negative `min_area`/`min_thickness`,
+ * or an unknown `color_space`. The rejection message explains which check failed.
+ * @throws {Error} If the WASM function fails.
  * @example
- * const { svg } = await findContours({ pixels, labels, width, height });
+ * const { svg } = await imageToSvg({ pixels, width, height });
  * @variation Convert a raster image (e.g., PNG, JPG) into an SVG.
  * @since 0.0.0
  */
 export const imageToSvg = async ({ pixels, width, height, sigma_spatial = 3, sigma_range = 50, num_colors = 16, max_iter = 100, min_area = 100, min_thickness = 10, color_space = 0 }) => {
+  // The core only receives a pointer, so it cannot tell how big the buffer really is.
+  // Catch a mismatch here rather than letting WASM read past the end of the array.
+  if (Number.isInteger(width) && Number.isInteger(height) && width > 0 && height > 0 && pixels?.length !== width * height * 4) {
+    // 2 === INVALID_ARGUMENT, the same code the core uses for bad input
+    throw new Img2NumError(`imageToSvg: pixels must be an RGBA buffer of width * height * 4 = ${width * height * 4} bytes (got ${pixels?.length})`, 2);
+  }
+
   const result = await callWasm({
     funcName: "image_to_svg",
     args: { pixels, width, height, sigma_spatial, sigma_range, num_colors, max_iter, min_area, min_thickness, color_space },
