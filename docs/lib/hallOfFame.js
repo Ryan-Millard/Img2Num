@@ -1,3 +1,8 @@
+/*
+ *IMPORTANT: GitHub rate limits unauthenticated requests, so
+ *this may break during development. To fix it, authenticate manually
+ */
+
 import hallOfFameInput from "../src/data/hall-of-fame.json";
 
 const REPO = "Ryan-Millard/Img2Num";
