@@ -189,7 +189,13 @@ class GPU {
             cleanup();
             return;
         }
-        if (adapter.GetInfo().backendType == wgpu::BackendType::Null) {
+        if (wgpu::AdapterInfo info;
+            adapter.GetInfo(&info) != wgpu::Status::Success ||
+                info.backendType == wgpu::BackendType::Null) {
+            IMG2NUM_LOG_INFO("No usable WebGPU adapter found. Falling back to CPU.");
+            cleanup();
+            return;
+        }
             IMG2NUM_LOG_INFO("No usable WebGPU adapter found. Falling back to CPU.");
             return;
         }
