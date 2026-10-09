@@ -196,9 +196,7 @@ class GPU {
             cleanup();
             return;
         }
-            IMG2NUM_LOG_INFO("No usable WebGPU adapter found. Falling back to CPU.");
-            return;
-        }
+        
         // ---------------------------------------------------------
         // 2. Get Device
         // ---------------------------------------------------------
