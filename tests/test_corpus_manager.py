@@ -1,12 +1,18 @@
 import os
+import hashlib
+import io
 from pathlib import Path
 from unittest.mock import patch
 
 import pytest
+from PIL import Image
 
+import scripts.corpus_manager as corpus_manager
 from scripts.corpus_manager import (
     ALLOWED_LICENSES,
+    CorpusManagerError,
     Entry,
+    add_entry,
     cache_path,
     corpus_hash,
     load_entries,
@@ -53,6 +59,20 @@ def create_corpus(
     for filename, content in (entries or {}).items():
         (images_dir / filename).write_text(content, encoding="utf-8")
     return root
+
+
+@pytest.fixture
+def png_bytes() -> bytes:
+    buffer = io.BytesIO()
+    Image.new("RGB", (3, 2), color=(12, 34, 56)).save(buffer, format="PNG")
+    return buffer.getvalue()
+
+
+@pytest.fixture
+def add_corpus(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
+    corpus_dir = create_corpus(tmp_path / "corpus")
+    monkeypatch.setenv("IMG2NUM_BENCH_CACHE", str(tmp_path / "cache"))
+    return corpus_dir
 
 
 def test_load_entries_parses_valid_file_with_path(tmp_path: Path) -> None:
@@ -338,3 +358,152 @@ def test_verify_collects_errors_from_all_entry_files(tmp_path: Path) -> None:
 
     assert any(error.startswith("broken.toml:") for error in errors)
     assert any(error.startswith("missing.toml:") for error in errors)
+
+
+def test_add_happy_path_writes_entry_and_hash_cache(
+    add_corpus: Path, png_bytes: bytes, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(corpus_manager, "download_url", lambda url: png_bytes)
+
+    entry = add_entry(
+        "https://images.example.test/Some%20Image.png",
+        dataset="Sample Set",
+        license_id="CC0-1.0",
+        author="Test Author",
+        source="https://source.example.test/item",
+        tags=["small", "fixture"],
+        corpus_dir=add_corpus,
+    )
+
+    assert entry.id == "sample-set-some-image-png"
+    assert entry.size == (3, 2)
+    assert verify_corpus(add_corpus) == []
+    entry_path = add_corpus / "images" / f"{entry.id}.toml"
+    assert entry_path.is_file()
+    assert corpus_manager.cache_path(entry.sha256).read_bytes() == png_bytes
+    field_order = [
+        line.split(" = ", 1)[0] for line in entry_path.read_text().splitlines()
+    ]
+    assert field_order == [
+        "id",
+        "dataset",
+        "url",
+        "sha256",
+        "size",
+        "license",
+        "author",
+        "source",
+        "tags",
+    ]
+
+
+def test_add_refuses_duplicate_id_without_writing(
+    add_corpus: Path, png_bytes: bytes, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    entry_path = add_corpus / "images" / "chosen-id.toml"
+    entry_path.write_text(VALID_CORPUS_ENTRY, encoding="utf-8")
+    monkeypatch.setattr(corpus_manager, "download_url", lambda url: png_bytes)
+
+    with pytest.raises(CorpusManagerError, match="already exists"):
+        add_entry(
+            "https://images.example.test/image.png",
+            dataset="dataset",
+            license_id="CC0-1.0",
+            author="author",
+            source="source",
+            entry_id="chosen-id",
+            corpus_dir=add_corpus,
+        )
+
+    assert list((add_corpus / "images").glob("*.toml")) == [entry_path]
+    assert not list((add_corpus.parent / "cache").glob("*"))
+
+
+def test_add_refuses_duplicate_hash_under_another_id(
+    add_corpus: Path, png_bytes: bytes, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    digest = hashlib.sha256(png_bytes).hexdigest()
+    existing = VALID_CORPUS_ENTRY.replace("sample", "existing").replace(
+        "a" * 64, digest
+    )
+    (add_corpus / "images" / "existing.toml").write_text(existing, encoding="utf-8")
+    monkeypatch.setattr(corpus_manager, "download_url", lambda url: png_bytes)
+
+    with pytest.raises(CorpusManagerError, match="already exists under id 'existing'"):
+        add_entry(
+            "https://images.example.test/image.png",
+            dataset="dataset",
+            license_id="CC0-1.0",
+            author="author",
+            source="source",
+            entry_id="new-id",
+            corpus_dir=add_corpus,
+        )
+
+    assert sorted(path.name for path in (add_corpus / "images").glob("*.toml")) == [
+        "existing.toml"
+    ]
+    assert not list((add_corpus.parent / "cache").glob("*"))
+
+
+def test_add_rejects_bad_license_before_download_or_writes(
+    add_corpus: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def unexpected_download(url: str) -> bytes:
+        raise AssertionError("download must not start for a disallowed license")
+
+    monkeypatch.setattr(corpus_manager, "download_url", unexpected_download)
+
+    with pytest.raises(CorpusManagerError, match="is not allowed"):
+        add_entry(
+            "https://images.example.test/image.png",
+            dataset="dataset",
+            license_id="CC-BY-NC-4.0",
+            author="author",
+            source="source",
+            corpus_dir=add_corpus,
+        )
+
+    assert not list((add_corpus / "images").glob("*.toml"))
+    assert not list((add_corpus.parent / "cache").glob("*"))
+
+
+def test_add_rejects_non_image_without_writing(
+    add_corpus: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(corpus_manager, "download_url", lambda url: b"not an image")
+
+    with pytest.raises(CorpusManagerError, match="not a supported or valid image"):
+        add_entry(
+            "https://images.example.test/not-image.bin",
+            dataset="dataset",
+            license_id="CC0-1.0",
+            author="author",
+            source="source",
+            corpus_dir=add_corpus,
+        )
+
+    assert not list((add_corpus / "images").glob("*.toml"))
+    assert not list((add_corpus.parent / "cache").glob("*"))
+
+
+def test_add_failed_download_writes_nothing(
+    add_corpus: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def failed_download(url: str) -> bytes:
+        raise CorpusManagerError("download failed: test failure")
+
+    monkeypatch.setattr(corpus_manager, "download_url", failed_download)
+
+    with pytest.raises(CorpusManagerError, match="download failed"):
+        add_entry(
+            "https://images.example.test/image.png",
+            dataset="dataset",
+            license_id="CC0-1.0",
+            author="author",
+            source="source",
+            corpus_dir=add_corpus,
+        )
+
+    assert not list((add_corpus / "images").glob("*.toml"))
+    assert not list((add_corpus.parent / "cache").glob("*"))

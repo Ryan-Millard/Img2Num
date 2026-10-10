@@ -5,12 +5,19 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
+import json
 import os
 import re
 import sys
+import tempfile
 from dataclasses import dataclass
 from pathlib import Path
+from pathlib import PurePosixPath
 from typing import Any
+from urllib.error import URLError
+from urllib.parse import unquote, urlsplit
+from urllib.request import Request, urlopen
 
 try:
     import tomllib
@@ -29,6 +36,10 @@ ALLOWED_LICENSES = {
     "Public-Domain",
 }
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
+ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+MAX_DOWNLOAD_BYTES = 50 * 1024 * 1024
+DOWNLOAD_TIMEOUT_SECONDS = 30
+USER_AGENT = "Img2Num-Benchmark-Corpus/1.0"
 STRING_FIELDS = (
     "id",
     "dataset",
@@ -54,6 +65,10 @@ class Entry:
     author: str
     source: str
     tags: list[str]
+
+
+class CorpusManagerError(ValueError):
+    """Raised when an add request cannot safely create a corpus entry."""
 
 
 def _entry_from_data(data: dict[str, Any], path: Path) -> Entry:
@@ -215,20 +230,225 @@ def verify_corpus(corpus_dir: Path) -> list[str]:
 
         license_id = data.get("license")
         if isinstance(license_id, str):
-            if "ND" in license_id:
-                entry_errors.append(
-                    "NoDerivs licenses are not allowed because benchmark SVGs are "
-                    "derivatives of their source images"
-                )
-            elif license_id and license_id not in ALLOWED_LICENSES:
-                entry_errors.append(
-                    f"license '{license_id}' is not allowed; use an identifier "
-                    "from the corpus manager allow-list"
-                )
+            license_message = license_error(license_id)
+            if license_message:
+                entry_errors.append(license_message)
 
         errors.extend(f"{path.name}: {message}" for message in entry_errors)
 
     return errors
+
+
+def license_error(license_id: str) -> str | None:
+    """Return a shared allow-list error message, if the license is rejected."""
+    if "ND" in license_id:
+        return (
+            "NoDerivs licenses are not allowed because benchmark SVGs are "
+            "derivatives of their source images"
+        )
+    if license_id not in ALLOWED_LICENSES:
+        return (
+            f"license '{license_id}' is not allowed; "
+            "use an identifier from the allow-list"
+        )
+    return None
+
+
+def download_url(url: str) -> bytes:
+    """Download one image URL with a user agent, timeout, and size cap."""
+    if not url.startswith(("http://", "https://")):
+        raise CorpusManagerError("URL must start with http:// or https://")
+    request = Request(url, headers={"User-Agent": USER_AGENT})
+    try:
+        with urlopen(request, timeout=DOWNLOAD_TIMEOUT_SECONDS) as response:
+            content_length = response.headers.get("Content-Length")
+            if content_length and int(content_length) > MAX_DOWNLOAD_BYTES:
+                raise CorpusManagerError(
+                    f"download exceeds the {MAX_DOWNLOAD_BYTES}-byte size limit"
+                )
+            data = response.read(MAX_DOWNLOAD_BYTES + 1)
+    except CorpusManagerError:
+        raise
+    except (URLError, TimeoutError, OSError, ValueError) as error:
+        raise CorpusManagerError(f"download failed: {error}") from error
+    if len(data) > MAX_DOWNLOAD_BYTES:
+        raise CorpusManagerError(
+            f"download exceeds the {MAX_DOWNLOAD_BYTES}-byte size limit"
+        )
+    return data
+
+
+def image_dimensions(image_bytes: bytes) -> tuple[int, int]:
+    """Read and validate image dimensions using Pillow."""
+    try:
+        from PIL import Image, UnidentifiedImageError
+    except ImportError as error:
+        raise CorpusManagerError(
+            "Pillow is required to add benchmark images; "
+            "install the script dependencies"
+        ) from error
+
+    try:
+        with Image.open(io.BytesIO(image_bytes)) as image:
+            width, height = image.size
+            image.verify()
+    except (
+        EOFError,
+        OSError,
+        SyntaxError,
+        ValueError,
+        UnidentifiedImageError,
+        Image.DecompressionBombError,
+    ) as error:
+        raise CorpusManagerError(
+            "downloaded data is not a supported or valid image"
+        ) from error
+    if width <= 0 or height <= 0:
+        raise CorpusManagerError("image width and height must both be positive")
+    return width, height
+
+
+def _slug(value: str) -> str:
+    return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", value.lower())).strip("-")
+
+
+def derive_id(dataset: str, url: str) -> str:
+    """Derive a lowercase slug from the dataset and URL path filename."""
+    filename = PurePosixPath(unquote(urlsplit(url).path)).name
+    if not filename:
+        raise CorpusManagerError("URL must include a file name, or provide --id")
+    dataset_slug = _slug(dataset)
+    filename_slug = _slug(filename)
+    if not dataset_slug or not filename_slug:
+        raise CorpusManagerError(
+            "dataset and URL file name must contain letters or digits to derive an id"
+        )
+    return f"{dataset_slug}-{filename_slug}"
+
+
+def _toml_string(value: str) -> str:
+    return json.dumps(value, ensure_ascii=False)
+
+
+def render_entry(entry: Entry) -> str:
+    """Serialize an entry with a fixed, deterministic TOML field order."""
+    tags = ", ".join(_toml_string(tag) for tag in entry.tags)
+    return (
+        f"id = {_toml_string(entry.id)}\n"
+        f"dataset = {_toml_string(entry.dataset)}\n"
+        f"url = {_toml_string(entry.url)}\n"
+        f"sha256 = {_toml_string(entry.sha256)}\n"
+        f"size = [{entry.size[0]}, {entry.size[1]}]\n"
+        f"license = {_toml_string(entry.license)}\n"
+        f"author = {_toml_string(entry.author)}\n"
+        f"source = {_toml_string(entry.source)}\n"
+        f"tags = [{tags}]\n"
+    )
+
+
+def _write_atomically(path: Path, data: bytes) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary_path: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(dir=path.parent, delete=False) as temporary:
+            temporary_path = Path(temporary.name)
+            temporary.write(data)
+        os.replace(temporary_path, path)
+    finally:
+        if temporary_path is not None and temporary_path.exists():
+            temporary_path.unlink()
+
+
+def _write_new_atomically(path: Path, data: bytes) -> None:
+    """Atomically create a new file without replacing an existing entry."""
+    temporary_path: Path | None = None
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with tempfile.NamedTemporaryFile(dir=path.parent, delete=False) as temporary:
+            temporary_path = Path(temporary.name)
+            temporary.write(data)
+        os.link(temporary_path, path)
+    except FileExistsError as error:
+        raise CorpusManagerError(f"entry id '{path.stem}' already exists") from error
+    except OSError as error:
+        raise CorpusManagerError(
+            f"cannot write entry '{path.name}': {error}"
+        ) from error
+    finally:
+        if temporary_path is not None and temporary_path.exists():
+            temporary_path.unlink()
+
+
+def add_entry(
+    url: str,
+    *,
+    dataset: str,
+    license_id: str,
+    author: str,
+    source: str,
+    tags: list[str] | None = None,
+    entry_id: str | None = None,
+    corpus_dir: Path = DEFAULT_CORPUS_DIR,
+) -> Entry:
+    """Download an image and write its cache object and metadata entry."""
+    license_message = license_error(license_id)
+    if license_message:
+        raise CorpusManagerError(license_message)
+    for field, value in (("dataset", dataset), ("author", author), ("source", source)):
+        if not value.strip():
+            raise CorpusManagerError(f"--{field} must not be empty")
+    if not url.startswith(("http://", "https://")):
+        raise CorpusManagerError("URL must start with http:// or https://")
+
+    resolved_id = entry_id if entry_id is not None else derive_id(dataset, url)
+    if not ID_PATTERN.fullmatch(resolved_id) or resolved_id in {".", ".."}:
+        raise CorpusManagerError(
+            "id must contain only letters, digits, '.', '_' or '-'")
+
+    images_dir = corpus_dir / "images"
+    entry_path = images_dir / f"{resolved_id}.toml"
+    if entry_path.exists():
+        raise CorpusManagerError(f"entry id '{resolved_id}' already exists")
+
+    try:
+        downloaded = download_url(url)
+    except CorpusManagerError:
+        raise
+    except Exception as error:
+        raise CorpusManagerError(f"download failed: {error}") from error
+    width, height = image_dimensions(downloaded)
+    sha256 = hashlib.sha256(downloaded).hexdigest()
+
+    try:
+        existing_entries = load_entries(images_dir)
+    except (OSError, ValueError) as error:
+        raise CorpusManagerError(f"cannot inspect existing entries: {error}") from error
+    for existing, existing_path in existing_entries:
+        if existing.sha256 == sha256:
+            raise CorpusManagerError(
+                f"image hash already exists under id '{existing.id}' "
+                f"({existing_path.name})"
+            )
+
+    entry = Entry(
+        id=resolved_id,
+        dataset=dataset,
+        url=url,
+        sha256=sha256,
+        size=(width, height),
+        license=license_id,
+        author=author,
+        source=source,
+        tags=tags or [],
+    )
+    cache_file = cache_path(sha256)
+    _write_new_atomically(entry_path, render_entry(entry).encode("utf-8"))
+    try:
+        _write_atomically(cache_file, downloaded)
+    except OSError as error:
+        entry_path.unlink(missing_ok=True)
+        raise CorpusManagerError(f"cannot write image cache: {error}") from error
+    return entry
 
 
 def _not_implemented(command: str) -> int:
@@ -239,12 +459,35 @@ def _not_implemented(command: str) -> int:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
-    for command in ("add", "fetch"):
-        subparsers.add_parser(command)
+    add_parser = subparsers.add_parser("add")
+    add_parser.add_argument("url")
+    add_parser.add_argument("--dataset", required=True)
+    add_parser.add_argument("--license", dest="license_id", required=True)
+    add_parser.add_argument("--author", required=True)
+    add_parser.add_argument("--source", required=True)
+    add_parser.add_argument("--tags", default="")
+    add_parser.add_argument("--id", dest="entry_id")
+    subparsers.add_parser("fetch")
     verify_parser = subparsers.add_parser("verify")
     verify_parser.add_argument("--corpus-dir", type=Path, default=DEFAULT_CORPUS_DIR)
     args = parser.parse_args()
-    if args.command != "verify":
+    if args.command == "add":
+        try:
+            entry = add_entry(
+                args.url,
+                dataset=args.dataset,
+                license_id=args.license_id,
+                author=args.author,
+                source=args.source,
+                tags=[tag.strip() for tag in args.tags.split(",") if tag.strip()],
+                entry_id=args.entry_id,
+            )
+        except CorpusManagerError as error:
+            print(f"Error: {error}", file=sys.stderr)
+            return 1
+        print(f"Added {entry.id} ({entry.sha256})")
+        return 0
+    if args.command == "fetch":
         return _not_implemented(args.command)
 
     errors = verify_corpus(args.corpus_dir)
