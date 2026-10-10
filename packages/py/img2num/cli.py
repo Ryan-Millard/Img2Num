@@ -5,8 +5,6 @@ import os
 from PIL import Image
 
 def main():
-    """The function mapped in pyproject.toml"""
-    print("Hello from my native CLI tool!")
     # Capture standard CLI arguments if not using a library
     parser = argparse.ArgumentParser(description="Convert an image with Img2Num")
     parser.add_argument("image_path", help="path to the input image")
