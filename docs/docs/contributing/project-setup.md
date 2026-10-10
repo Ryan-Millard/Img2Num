@@ -230,7 +230,7 @@ just init
 As mentioned in [Step 1](./#1-clone-the-repository) `just init`:
 
 1. **Installs dependencies** (shallow Git submodule pull, `pnpm install`, etc.)
-2. Compiles all code (C++, C, JavaScript, Python package, etc.) via `just build all`.
+2. Compiles all code (C++, C, JavaScript, Python package, etc.) via `just build-all`.
 
 See [Img2Num's Just documentation](../just) page for more information.
 
@@ -249,7 +249,7 @@ Picsum Photos offers some nice random images:
 
 :::
 
-To test that you have built everything properly, we recommend running `just build all` from above
+To test that you have built everything properly, we recommend running `just build-all` from above
 and testing each example app. You can find out how to use the example app on
 [our Just documentation](../just/#example-applications) page.
 

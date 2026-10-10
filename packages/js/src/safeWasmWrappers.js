@@ -134,11 +134,15 @@ export const bilateralFilter = async ({ pixels, width, height, sigma_spatial = 3
 };
 
 /**
- * @summary Apply a black-biased threshold filter to reduce colors in an image.
+ * @summary Apply a black-biased threshold filter to an image.
  *
  * @description
- * Apply a simple sRGB bin-based threshold on the Uint8ClampedArray image.
- * The bins in this function are determined by the `num_colors` parameter.
+ * Sets a pixel to pure black when all three of its colour channels are strictly
+ * below the `num_colors` cutoff; every other pixel is left untouched. Despite
+ * the name (kept for backwards compatibility), `num_colors` is a per-channel
+ * 0-255 brightness cutoff, not a number of output colour levels. Values of 0 or
+ * less leave the image unchanged. Blackened pixels have their alpha channel
+ * set to an opaque 255.
  *
  * @async
  * @function blackThreshold
@@ -147,9 +151,9 @@ export const bilateralFilter = async ({ pixels, width, height, sigma_spatial = 3
  * @throws {Error} If the WASM function fails.
  * @example
  * const thresholded = await blackThreshold({ pixels, width, height, num_colors: 16 });
- * @see {@link https://en.wikipedia.org/wiki/Color_quantization|Color Quantization Wiki}
+ * @see {@link https://en.wikipedia.org/wiki/Thresholding_(image_processing)|Thresholding Wiki}
  * @todo Support different bias levels for black/white thresholds.
- * @variation Black-biased threshold with customizable number of colors
+ * @variation Black-biased threshold with customizable brightness cutoff
  * @since 0.0.0
  */
 export const blackThreshold = async ({ pixels, width, height, num_colors }) => {
