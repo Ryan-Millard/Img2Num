@@ -18,7 +18,7 @@ see the relevant documentation from the links below instead.
 
 <div style={{ display: "flex", justifyContent: "space-evenly", maxWidth: "500px", margin: "0 auto" }}>
 
-[<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" width="30" alt="C" />](../../c)
+[<img src="/img/lang/c.svg" width="30" alt="C" />](../../c)
 
 [<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" width="30" alt="C++" />](../../cpp)
 
