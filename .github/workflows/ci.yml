@@ -118,6 +118,8 @@ jobs:
   core-cpp-tests:
     name: Core C++ tests (CPU-only)
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     container:
       image: ${{ needs.set-image.outputs.image }}
     needs: [set-image]
