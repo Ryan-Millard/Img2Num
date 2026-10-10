@@ -17,61 +17,71 @@
  */
 
 import { callWasm } from "./wasmClient.js";
+
 /** @typedef {0 | 1} ColorSpace 0 = CIE LAB, 1 = sRGB */
 
 /**
- * @typedef {Object} ImageInput
- * @property {Uint8ClampedArray} pixels Flat RGBA pixel data.
- * @property {number} width Image width.
- * @property {number} height Image height.
+ * @typedef {Object} GaussianBlurOptions
+ * @property {Uint8ClampedArray} pixels - The image pixel data (flat RGBA array).
+ * @property {number} width - The width of the image.
+ * @property {number} height - The height of the image.
+ * @property {number} [sigma_pixels] - Standard deviation of the Gaussian blur. Defaults to `width * 0.005`.
  */
 
 /**
- * @typedef {ImageInput & {
- *   sigma_pixels?: number
- * }} GaussianBlurOptions
+ * @typedef {Object} BilateralFilterOptions
+ * @property {Uint8ClampedArray} pixels - The image pixel data (flat RGBA array).
+ * @property {number} width - The width of the image.
+ * @property {number} height - The height of the image.
+ * @property {number} [sigma_spatial=3] - Spatial standard deviation.
+ * @property {number} [sigma_range=50] - Range (color) standard deviation.
+ * @property {ColorSpace} [color_space=0] - Color space mode (0: CIE LAB; 1: sRGB).
  */
 
 /**
- * @typedef {ImageInput & {
- *   sigma_spatial?: number,
- *   sigma_range?: number,
- *   color_space?: ColorSpace
- * }} BilateralFilterOptions
+ * @typedef {Object} BlackThresholdOptions
+ * @property {Uint8ClampedArray} pixels - The image pixel data (flat RGBA array).
+ * @property {number} width - The width of the image.
+ * @property {number} height - The height of the image.
+ * @property {number} num_colors - Per-channel brightness cutoff (0-255): pixels whose red, green and blue values are all below this become black. Retained as `num_colors` for backwards compatibility.
  */
 
-/** @typedef {ImageInput & { num_colors: number }} BlackThresholdOptions */
-
 /**
- * @typedef {ImageInput & {
- *   num_colors: number,
- *   out_pixels?: Uint8ClampedArray,
- *   out_labels?: Int32Array,
- *   max_iter?: number,
- *   color_space?: ColorSpace
- * }} KMeansOptions
+ * @typedef {Object} KMeansOptions
+ * @property {Uint8ClampedArray} pixels - Original image pixels.
+ * @property {number} width - Image width.
+ * @property {number} height - Image height.
+ * @property {number} num_colors - Number of color clusters.
+ * @property {Uint8ClampedArray} [out_pixels] - Output pixels array. Defaults to a new array the size of `pixels`.
+ * @property {Int32Array} [out_labels] - Output labels array. Defaults to a new array of `pixels.length / 4`.
+ * @property {number} [max_iter=100] - Maximum number of iterations.
+ * @property {ColorSpace} [color_space=0] - Color space mode (0: CIE LAB; 1: sRGB).
  */
 
 /** @typedef {{ pixels: Uint8ClampedArray, labels: Int32Array }} KMeansResult */
 
 /**
- * @typedef {ImageInput & {
- *   labels: Int32Array,
- *   min_area?: number,
- *   min_thickness?: number
- * }} FindContoursOptions
+ * @typedef {Object} FindContoursOptions
+ * @property {Uint8ClampedArray} pixels - Original image pixels.
+ * @property {Int32Array} labels - Label array from clustering (e.g., K-Means) or segmentation.
+ * @property {number} width - Image width.
+ * @property {number} height - Image height.
+ * @property {number} [min_area=100] - Minimum area of a region to be considered a contour.
+ * @property {number} [min_thickness=10] - Minimum thickness of a region to be considered a contour.
  */
 
 /**
- * @typedef {ImageInput & {
- *   sigma_spatial?: number,
- *   sigma_range?: number,
- *   num_colors?: number,
- *   max_iter?: number,
- *   min_area?: number,
- *   min_thickness?: number,
- *   color_space?: ColorSpace
- * }} ImageToSvgOptions
+ * @typedef {Object} ImageToSvgOptions
+ * @property {Uint8ClampedArray} pixels - Original image pixels.
+ * @property {number} width - Image width.
+ * @property {number} height - Image height.
+ * @property {number} [sigma_spatial=3] - Spatial standard deviation.
+ * @property {number} [sigma_range=50] - Range (color) standard deviation.
+ * @property {number} [num_colors=16] - Number of color clusters.
+ * @property {number} [max_iter=100] - Maximum number of iterations.
+ * @property {number} [min_area=100] - Minimum area of a region to be considered a contour.
+ * @property {number} [min_thickness=10] - Minimum thickness of a region to be considered a contour.
+ * @property {ColorSpace} [color_space=0] - Color space mode (0: CIE LAB; 1: sRGB).
  */
 
 /** @typedef {{ svg: string }} SvgResult */
