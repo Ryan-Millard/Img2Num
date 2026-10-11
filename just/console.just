@@ -16,13 +16,13 @@ console-c input:
 
 # Run the Node (CommonJS) example app on an image
 console-js-cjs input output="output.svg":
-    @echo "node example-apps/console-js-cjs/index.cjs {{ input }} {{ output }}"
-    node example-apps/console-js-cjs/index.cjs "{{ input }}" "{{ output }}"
+  @echo "node example-apps/console-js-cjs/index.cjs {{ input }} {{ output }}"
+  node example-apps/console-js-cjs/index.cjs "{{ input }}" "{{ output }}"
 
 # Run the Node (ESM) example app on an image
 console-js-esm input output="output.svg":
-    @echo "node example-apps/console-js-esm/index.mjs {{ input }} {{ output }}"
-    node example-apps/console-js-esm/index.mjs "{{ input }}" "{{ output }}"
+  @echo "node example-apps/console-js-esm/index.mjs {{ input }} {{ output }}"
+  node example-apps/console-js-esm/index.mjs "{{ input }}" "{{ output }}"
 
 # Run an npm script from example-apps/html-js/package.json
 html-js script:
