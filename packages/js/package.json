@@ -1,84 +1,84 @@
-{
-  "name": "img2num",
-  "version": "0.4.2",
-  "description": "Img2Num is a raster vectorization library - it converts images to SVGs",
-  "publishConfig": {
-    "access": "public"
-  },
-  "keywords": [
-    "img2num",
-    "computer-vision",
-    "vectorization",
-    "image-to-svg",
-    "wasm",
-    "webgpu"
-  ],
-  "homepage": "https://github.com/Ryan-Millard/Img2Num#readme",
-  "bugs": {
-    "url": "https://github.com/Ryan-Millard/Img2Num/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Ryan-Millard/Img2Num.git",
-    "directory": "packages/js"
-  },
-  "funding": [
-    {
-      "type": "github",
-      "url": "https://github.com/sponsors/Ryan-Millard"
+  {
+    "name": "img2num",
+    "version": "0.4.2",
+    "description": "Img2Num is a raster vectorization library - it converts images to SVGs",
+    "publishConfig": {
+      "access": "public"
     },
-    {
-      "type": "ko-fi",
-      "url": "https://ko-fi.com/ryan_millard"
-    }
-  ],
-  "license": "MIT",
-  "author": "Ryan-Millard",
-  "type": "module",
-  "main": "./dist/node/img2num.cjs",
-  "module": "./dist/browser/img2num.js",
-  "browser": "./dist/browser/img2num.js",
-  "unpkg": "./dist/standalone/img2num.iife.js",
-  "jsdelivr": "./dist/standalone/img2num.iife.js",
-  "exports": {
-    ".": {
-      "browser": "./dist/browser/img2num.js",
-      "node": {
-        "import": "./dist/node/img2num.js",
-        "require": "./dist/node/img2num.cjs"
+    "keywords": [
+      "img2num",
+      "computer-vision",
+      "vectorization",
+      "image-to-svg",
+      "wasm",
+      "webgpu"
+    ],
+    "homepage": "https://github.com/Ryan-Millard/Img2Num#readme",
+    "bugs": {
+      "url": "https://github.com/Ryan-Millard/Img2Num/issues"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/Ryan-Millard/Img2Num.git",
+      "directory": "packages/js"
+    },
+    "funding": [
+      {
+        "type": "github",
+        "url": "https://github.com/sponsors/Ryan-Millard"
       },
-      "default": "./dist/browser/img2num.js"
+      {
+        "type": "ko-fi",
+        "url": "https://ko-fi.com/ryan_millard"
+      }
+    ],
+    "license": "MIT",
+    "author": "Ryan-Millard",
+    "type": "module",
+    "main": "./dist/node/cjs/img2num.cjs",
+    "module": "./dist/browser/img2num.js",
+    "browser": "./dist/browser/img2num.js",
+    "unpkg": "./dist/standalone/img2num.iife.js",
+    "jsdelivr": "./dist/standalone/img2num.iife.js",
+    "exports": {
+      ".": {
+        "browser": "./dist/browser/img2num.js",
+        "node": {
+          "import": "./dist/node/esm/img2num.js",
+          "require": "./dist/node/cjs/img2num.cjs"
+        },
+        "default": "./dist/browser/img2num.js"
+      },
+      "./wasm": "./dist/browser/img2num.wasm",
+      "./package.json": "./package.json"
     },
-    "./wasm": "./dist/browser/img2num.wasm",
-    "./package.json": "./package.json"
-  },
-  "files": [
-    "dist",
-    "CHANGELOG.md"
-  ],
-  "sideEffects": [
-    "**/*.wasm",
-    "**/build-wasm/**"
-  ],
-  "scripts": {
-    "build:browser": "cross-env TARGET=browser vite build",
-    "build:standalone": "cross-env TARGET=standalone vite build",
-    "build:node-esm": "cross-env TARGET=node-esm vite build",
-    "build:node-cjs": "cross-env TARGET=node-cjs vite build",
-    "build:node": "pnpm build:node-esm && pnpm build:node-cjs",
-    "build": "pnpm build:browser && pnpm build:standalone && pnpm build:node",
-    "check:package": "publint"
-  },
-  "engines": {
-    "node": ">=18"
-  },
-  "optionalDependencies": {
-    "webgpu": "^0.6.0"
-  },
-  "devDependencies": {
-    "@rollup/plugin-commonjs": "^29.0.3",
-    "cross-env": "^10.1.0",
-    "publint": "^0.3.24",
-    "vite": "^8.3.0"
+    "files": [
+      "dist",
+      "CHANGELOG.md"
+    ],
+    "sideEffects": [
+      "**/*.wasm",
+      "**/build-wasm/**"
+    ],
+    "scripts": {
+      "build:browser": "cross-env TARGET=browser vite build",
+      "build:standalone": "cross-env TARGET=standalone vite build",
+      "build:node-esm": "cross-env TARGET=node-esm vite build",
+      "build:node-cjs": "cross-env TARGET=node-cjs vite build",
+      "build:node": "pnpm build:node-esm && pnpm build:node-cjs",
+      "build": "pnpm build:browser && pnpm build:standalone && pnpm build:node",
+      "check:package": "publint"
+    },
+    "engines": {
+      "node": ">=18"
+    },
+    "optionalDependencies": {
+      "webgpu": "^0.6.0"
+    },
+    "devDependencies": {
+      "@rollup/plugin-commonjs": "^29.0.3",
+      "cross-env": "^10.1.0",
+      "publint": "^0.3.24",
+      "vite": "^8.3.0"
+    }
   }
-}
