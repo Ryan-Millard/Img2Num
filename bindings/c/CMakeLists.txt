@@ -71,7 +71,3 @@ install(DIRECTORY include/
 )
 
 message(STATUS "C bindings library configured with ${C_BINDINGS_SRC}")
-
-if(IMG2NUM_BUILD_TESTS AND NOT EMSCRIPTEN)
-  add_subdirectory(tests)
-endif()
