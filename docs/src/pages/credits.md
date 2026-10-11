@@ -12,9 +12,12 @@ import Hedgehog from "@site/src/components/Hedgehog";
 
 By [dustdfg](https://opengameart.org/users/dustdfg)
 
+<div className="page-card">
 <Hedgehog />
 
 - _License:_ [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 - _Modifications:_ None
 - _Source:_ [opengameart.org](https://opengameart.org/content/pixel-art-hedgehog)
 - _Usage:_ Interactive animations across the site.
+
+</div>
