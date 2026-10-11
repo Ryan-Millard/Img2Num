@@ -15,6 +15,7 @@ from scripts.corpus_manager import (
     add_entry,
     cache_path,
     corpus_hash,
+    fetch_corpus,
     load_entries,
     verify_corpus,
 )
@@ -358,6 +359,126 @@ def test_verify_collects_errors_from_all_entry_files(tmp_path: Path) -> None:
 
     assert any(error.startswith("broken.toml:") for error in errors)
     assert any(error.startswith("missing.toml:") for error in errors)
+
+
+def _write_fetch_entry(
+    corpus_dir: Path, image_bytes: bytes, *, entry_id: str = "sample"
+) -> str:
+    digest = hashlib.sha256(image_bytes).hexdigest()
+    content = (
+        VALID_CORPUS_ENTRY.replace("sample", entry_id)
+        .replace("https://", f"https://images.example.test/{entry_id}")
+        .replace("a" * 64, digest)
+    )
+    (corpus_dir / "images" / f"{entry_id}.toml").write_text(
+        content, encoding="utf-8"
+    )
+    return digest
+
+
+def test_fetch_skips_network_for_already_cached_entry(
+    add_corpus: Path, png_bytes: bytes, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    digest = _write_fetch_entry(add_corpus, png_bytes)
+    cache_file = cache_path(digest)
+    cache_file.parent.mkdir(parents=True)
+    cache_file.write_bytes(png_bytes)
+
+    def unexpected_download(url: str) -> bytes:
+        raise AssertionError("cached entry must not access the network")
+
+    monkeypatch.setattr(corpus_manager, "download_url", unexpected_download)
+
+    assert fetch_corpus(add_corpus) == []
+
+
+def test_fetch_downloads_matching_content_to_cache(
+    add_corpus: Path, png_bytes: bytes, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    digest = _write_fetch_entry(add_corpus, png_bytes)
+    calls: list[str] = []
+    monkeypatch.setattr(
+        corpus_manager,
+        "download_url",
+        lambda url: calls.append(url) or png_bytes,
+    )
+
+    assert fetch_corpus(add_corpus) == []
+    assert calls == ["https://images.example.test/sample"]
+    assert cache_path(digest).read_bytes() == png_bytes
+
+
+def test_fetch_hash_mismatch_does_not_leave_cache_file(
+    add_corpus: Path, png_bytes: bytes, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _write_fetch_entry(add_corpus, png_bytes)
+    different_bytes = b"different image bytes"
+    monkeypatch.setattr(corpus_manager, "download_url", lambda url: different_bytes)
+
+    errors = fetch_corpus(add_corpus)
+
+    assert len(errors) == 1
+    assert "entry 'sample'" in errors[0]
+    assert "https://" in errors[0]
+    assert hashlib.sha256(png_bytes).hexdigest() in errors[0]
+    assert hashlib.sha256(different_bytes).hexdigest() in errors[0]
+    assert not cache_path(hashlib.sha256(png_bytes).hexdigest()).exists()
+
+
+def test_fetch_reports_unreachable_url_and_continues(
+    add_corpus: Path, png_bytes: bytes, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    expected = _write_fetch_entry(add_corpus, png_bytes)
+    _write_fetch_entry(add_corpus, png_bytes + b"other", entry_id="second")
+
+    def failed_download(url: str) -> bytes:
+        if url.endswith("/sample"):
+            raise CorpusManagerError("download failed: unreachable")
+        return png_bytes + b"other"
+
+    monkeypatch.setattr(corpus_manager, "download_url", failed_download)
+
+    errors = fetch_corpus(add_corpus)
+
+    assert len(errors) == 1
+    assert "entry 'sample'" in errors[0]
+    assert "https://images.example.test/sample" in errors[0]
+    assert expected in errors[0]
+    assert "actual unavailable" in errors[0]
+    assert cache_path(hashlib.sha256(png_bytes + b"other").hexdigest()).is_file()
+
+
+def test_verify_hashes_passes_with_matching_cache(
+    add_corpus: Path, png_bytes: bytes
+) -> None:
+    digest = _write_fetch_entry(add_corpus, png_bytes)
+    cache_file = cache_path(digest)
+    cache_file.parent.mkdir(parents=True)
+    cache_file.write_bytes(png_bytes)
+
+    assert verify_corpus(add_corpus, hashes=True) == []
+
+
+def test_verify_hashes_reports_missing_cache_and_mismatch(
+    add_corpus: Path, png_bytes: bytes
+) -> None:
+    missing_digest = _write_fetch_entry(add_corpus, png_bytes)
+    mismatch_bytes = png_bytes + b"tampered"
+    mismatch_digest = _write_fetch_entry(add_corpus, mismatch_bytes, entry_id="second")
+    mismatch_cache = cache_path(mismatch_digest)
+    mismatch_cache.parent.mkdir(parents=True)
+    mismatch_cache.write_bytes(b"wrong cache bytes")
+
+    errors = verify_corpus(add_corpus, hashes=True)
+
+    assert any("sample.toml" in error and "run fetch first" in error for error in errors)
+    assert any(
+        "second.toml" in error
+        and mismatch_digest in error
+        and hashlib.sha256(b"wrong cache bytes").hexdigest() in error
+        for error in errors
+    )
+    assert not cache_path(missing_digest).exists()
 
 
 def test_add_happy_path_writes_entry_and_hash_cache(

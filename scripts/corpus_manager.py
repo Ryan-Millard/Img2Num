@@ -135,7 +135,7 @@ def corpus_hash(images_dir: Path) -> str:
     return digest.hexdigest()
 
 
-def verify_corpus(corpus_dir: Path) -> list[str]:
+def verify_corpus(corpus_dir: Path, *, hashes: bool = False) -> list[str]:
     """Validate corpus metadata offline, returning every actionable error."""
     errors: list[str] = []
     config_path = corpus_dir / "corpus.toml"
@@ -166,6 +166,9 @@ def verify_corpus(corpus_dir: Path) -> list[str]:
             data = tomllib.loads(path.read_text(encoding="utf-8"))
         except (OSError, tomllib.TOMLDecodeError) as error:
             errors.append(f"{path.name}: cannot parse TOML: {error}")
+            continue
+        if not isinstance(data, dict):
+            errors.append(f"{path.name}: entry must be a TOML table")
             continue
 
         entry_errors: list[str] = []
@@ -236,6 +239,113 @@ def verify_corpus(corpus_dir: Path) -> list[str]:
 
         errors.extend(f"{path.name}: {message}" for message in entry_errors)
 
+    if hashes:
+        errors.extend(verify_cached_hashes(images_dir))
+    return errors
+
+
+def verify_cached_hashes(images_dir: Path) -> list[str]:
+    """Check that every parseable entry has a matching content-addressed cache."""
+    errors: list[str] = []
+    for path in sorted(images_dir.glob("*.toml"), key=lambda item: item.name):
+        try:
+            data = tomllib.loads(path.read_text(encoding="utf-8"))
+        except (OSError, tomllib.TOMLDecodeError):
+            # The offline verifier already reports the parse error.
+            continue
+        if not isinstance(data, dict):
+            continue
+        entry_id = data.get("id", path.stem)
+        expected = data.get("sha256")
+        if not isinstance(expected, str) or not SHA256_PATTERN.fullmatch(expected):
+            continue
+        image_path = cache_path(expected)
+        if not image_path.is_file():
+            errors.append(
+                f"{path.name}: cache for entry '{entry_id}' is missing; run fetch first"
+            )
+            continue
+        try:
+            actual = hashlib.sha256(image_path.read_bytes()).hexdigest()
+        except OSError as error:
+            errors.append(
+                f"{path.name}: cannot read cache for entry '{entry_id}': {error}"
+            )
+            continue
+        if actual != expected:
+            errors.append(
+                f"{path.name}: cache hash mismatch for entry '{entry_id}': "
+                f"expected {expected}, actual {actual}"
+            )
+    return errors
+
+
+def fetch_corpus(corpus_dir: Path) -> list[str]:
+    """Populate missing image cache objects, collecting failures by entry."""
+    images_dir = corpus_dir / "images"
+    if not images_dir.is_dir():
+        return ["images/: directory is missing; create it for corpus entries"]
+
+    errors: list[str] = []
+    for path in sorted(images_dir.glob("*.toml"), key=lambda item: item.name):
+        try:
+            data = tomllib.loads(path.read_text(encoding="utf-8"))
+        except (OSError, tomllib.TOMLDecodeError) as error:
+            errors.append(f"{path.name}: cannot parse TOML: {error}")
+            continue
+        if not isinstance(data, dict):
+            errors.append(f"{path.name}: entry must be a TOML table")
+            continue
+
+        entry_id = data.get("id", path.stem)
+        url = data.get("url", "")
+        expected = data.get("sha256", "")
+        if not isinstance(expected, str) or not SHA256_PATTERN.fullmatch(expected):
+            errors.append(
+                f"{path.name}: entry '{entry_id}' has an invalid expected hash; "
+                f"URL {url!r}, expected {expected!r}, actual unavailable"
+            )
+            continue
+
+        target = cache_path(expected)
+        if target.is_file():
+            continue
+        if not isinstance(url, str):
+            url = str(url)
+        try:
+            downloaded = download_url(url)
+        except Exception as error:
+            errors.append(
+                f"{path.name}: entry '{entry_id}' URL {url!r} download failed; "
+                f"expected {expected}, actual unavailable: {error}"
+            )
+            continue
+
+        actual = hashlib.sha256(downloaded).hexdigest()
+        if actual != expected:
+            errors.append(
+                f"{path.name}: entry '{entry_id}' URL {url!r} hash mismatch; "
+                f"expected {expected}, actual {actual}"
+            )
+            continue
+
+        temporary_path: Path | None = None
+        try:
+            target.parent.mkdir(parents=True, exist_ok=True)
+            with tempfile.NamedTemporaryFile(
+                dir=target.parent, delete=False
+            ) as temporary:
+                temporary_path = Path(temporary.name)
+                temporary.write(downloaded)
+            os.replace(temporary_path, target)
+        except OSError as error:
+            errors.append(
+                f"{path.name}: entry '{entry_id}' URL {url!r} could not be cached; "
+                f"expected {expected}, actual {actual}: {error}"
+            )
+        finally:
+            if temporary_path is not None and temporary_path.exists():
+                temporary_path.unlink()
     return errors
 
 
@@ -467,9 +577,11 @@ def main() -> int:
     add_parser.add_argument("--source", required=True)
     add_parser.add_argument("--tags", default="")
     add_parser.add_argument("--id", dest="entry_id")
-    subparsers.add_parser("fetch")
+    fetch_parser = subparsers.add_parser("fetch")
+    fetch_parser.add_argument("--corpus-dir", type=Path, default=DEFAULT_CORPUS_DIR)
     verify_parser = subparsers.add_parser("verify")
     verify_parser.add_argument("--corpus-dir", type=Path, default=DEFAULT_CORPUS_DIR)
+    verify_parser.add_argument("--hashes", action="store_true")
     args = parser.parse_args()
     if args.command == "add":
         try:
@@ -488,9 +600,15 @@ def main() -> int:
         print(f"Added {entry.id} ({entry.sha256})")
         return 0
     if args.command == "fetch":
-        return _not_implemented(args.command)
+        errors = fetch_corpus(args.corpus_dir)
+        if errors:
+            for error in errors:
+                print(f"Error: {error}", file=sys.stderr)
+            return 1
+        print("Corpus images are cached")
+        return 0
 
-    errors = verify_corpus(args.corpus_dir)
+    errors = verify_corpus(args.corpus_dir, hashes=args.hashes)
     if errors:
         for error in errors:
             print(f"Error: {error}", file=sys.stderr)
