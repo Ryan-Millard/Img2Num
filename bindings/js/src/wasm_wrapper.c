@@ -1,5 +1,29 @@
 #include <cimg2num.h>
+#include <cimg2num/img2num_error_t.h>
 #include <emscripten/emscripten.h>
+
+/* ---- Error reporting -------------------------------------------------
+ * Every wrapper below ends up in a C API function that catches C++
+ * exceptions and records them in a thread-local "last error". A failing
+ * call therefore does not trap: it returns (NULL for pointer-returning
+ * functions) and the error is read back from JS with these three exports
+ * (see packages/js/src/wasmError.js).
+ */
+
+/* Returns an img2num_error_t value: 0 = OK, 2 = INVALID_ARGUMENT, ... */
+EMSCRIPTEN_KEEPALIVE int get_last_error(void) {
+    return (int)img2num_get_last_error();
+}
+
+/* Returns a NUL-terminated message owned by the library. It is only valid
+ * until the next img2num call, so read it immediately (do NOT free it). */
+EMSCRIPTEN_KEEPALIVE const char* get_last_error_message(void) {
+    return img2num_get_last_error_message();
+}
+
+EMSCRIPTEN_KEEPALIVE void clear_last_error(void) {
+    img2num_clear_last_error();
+}
 
 EMSCRIPTEN_KEEPALIVE void
 gaussian_blur_fft(uint8_t* image, size_t width, size_t height, double sigma) {
