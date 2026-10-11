@@ -21,7 +21,7 @@ const TARGETS = {
     // Non-ES6 glue is CJS-shaped (module.exports), but
     // Rolldown-Vite's native CJS interop handles the
     // import, so no plugin is needed.
-    // If this package ever moves back to Rollup-based Vite (<=5), add
+    // If this package ever moves back to Rollup-based Vite (7 or earlier), add
     // build.commonjsOptions.include = [/node_modules/, /build-wasm/].
     glue: "standalone",
     formats: ["umd", "iife"],
@@ -36,7 +36,7 @@ const TARGETS = {
     formats: ["es"],
     isNode: true,
     copyWasm: "required",
-    outDir: "dist/node",
+    outDir: "dist/node/esm",
     emptyOutDir: true,
     // Emscripten's CJS-shaped node glue reads __dirname/__filename. ESM has
     // neither, and platform:'node' only shims require().
@@ -52,8 +52,7 @@ const TARGETS = {
     formats: ["cjs"],
     isNode: true,
     copyWasm: "required",
-    outDir: "dist/node",
-    emptyOutDir: false, // must not wipe the ESM output
+    outDir: "dist/node/cjs",
     banner: undefined,
   },
 };
