@@ -152,7 +152,10 @@ For more detailed information on installing this package, please refer to [our d
 
 ```html
 <!-- IMPORTANT: this is browser-only -->
-<script src="https://cdn.jsdelivr.net/npm/img2num@0.3.0/dist/browser/img2num.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/img2num@0.4.2/dist/standalone/img2num.iife.js"></script>
+<script>
+  const { imageToUint8ClampedArray, imageToSvg } = Img2Num;
+</script>
 ```
 
 #### Package Manager
