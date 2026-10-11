@@ -187,6 +187,7 @@ const config = {
       {
         redirects: [
           { from: "/docs/faq", to: "/faq" },
+          { from: "/docs/core-concepts", to: "/docs/glossary" },
           { from: "/example-apps", to: "/showcase" },
         ],
       },
