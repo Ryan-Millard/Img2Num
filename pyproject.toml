@@ -46,7 +46,9 @@ cmake.args = [
   "-DIMG2NUM_BUILD_PYTHON=ON",
   "-DIMG2NUM_BUILD_EXAMPLES=OFF",
 ]
-wheel.packages = ["img2num"]
+# Python sources are installed by CMake (bindings/py/CMakeLists.txt).
+# Don't list "img2num" here: at the repo root that is the dev CLI script.
+wheel.packages = []
 sdist.inclusion-mode = "explicit"
 sdist.include = [
   "pyproject.toml",
