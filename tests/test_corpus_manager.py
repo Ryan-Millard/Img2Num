@@ -318,15 +318,23 @@ def test_verify_rejects_licenses_outside_allowlist(
     assert any("is not allowed" in error for error in verify_corpus(root))
 
 
-def test_verify_reports_specific_no_derivatives_error(tmp_path: Path) -> None:
+@pytest.mark.parametrize(
+    "license_id,error_fragment",
+    [
+        ("CC-BY-ND-4.0", "NoDerivs licenses are not allowed"),
+        ("cc-by-nd-4.0", "NoDerivs licenses are not allowed"),
+        ("CC-BY-NDLESS-4.0", "is not allowed"),
+    ],
+)
+def test_verify_classifies_no_derivatives_license_tokens(
+    tmp_path: Path, license_id: str, error_fragment: str
+) -> None:
     content = VALID_CORPUS_ENTRY.replace(
-        'license = "CC0-1.0"', 'license = "CC-BY-ND-4.0"'
+        'license = "CC0-1.0"', f'license = "{license_id}"'
     )
     root = create_corpus(tmp_path, entries={"sample.toml": content})
 
-    assert any(
-        "NoDerivs licenses are not allowed" in error for error in verify_corpus(root)
-    )
+    assert any(error_fragment in error for error in verify_corpus(root))
 
 
 @pytest.mark.parametrize(

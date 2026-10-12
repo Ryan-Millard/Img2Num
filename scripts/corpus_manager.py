@@ -351,7 +351,7 @@ def fetch_corpus(corpus_dir: Path) -> list[str]:
 
 def license_error(license_id: str) -> str | None:
     """Return a shared allow-list error message, if the license is rejected."""
-    if "ND" in license_id:
+    if "ND" in license_id.upper().split("-"):
         return (
             "NoDerivs licenses are not allowed because benchmark SVGs are "
             "derivatives of their source images"

@@ -28,7 +28,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install uv
-        run: python -m pip install uv
+        run: python -m pip install uv==0.13.0
 
       - name: Install Python tooling
         run: uv sync --only-group dev --no-install-project
@@ -43,7 +43,7 @@ jobs:
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830  # v4.3.0
         with:
           path: ~/.cache/img2num-bench
-          key: img2num-bench-${{ hashFiles('benchmarks/**') }}
+          key: img2num-bench-${{ hashFiles('benchmarks/images/*.toml') }}
 
       - name: Fetch and verify benchmark image hashes
         if: ${{ hashFiles('benchmarks/images/*.toml') != '' }}
