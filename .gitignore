@@ -45,3 +45,8 @@ console-py_outputs
 
 # Output files
 output.svg
+
+# local-only
+graphify-out/
+issue-634-plan.md
+task.md
