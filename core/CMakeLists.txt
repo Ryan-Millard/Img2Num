@@ -115,15 +115,36 @@ if (EMSCRIPTEN)
 else()
 
   # Dawn WebGPU (prefer installed Dawn over building it — baked into Dockerfile.dev)
-  block(PROPAGATE Dawn_FOUND DAWN_INCLUDE_DIR)
+  # Build flags come from .versions/dawn.json, shared with scripts/build-dawn.sh.
+  # DAWN_ENABLE_INSTALL stays script-side: the fallback never installs.
+  file(READ "${CMAKE_CURRENT_SOURCE_DIR}/../.versions/dawn.json" IMG2NUM_DAWN_JSON)
+  foreach(_dawn_key IN ITEMS DAWN_SUPPORTS_GLFW_FOR_WINDOWING DAWN_USE_X11 DAWN_FETCH_DEPENDENCIES DAWN_BUILD_SAMPLES DAWN_USE_GLFW DAWN_BUILD_TESTS TINT_BUILD_TESTS TINT_BUILD_CMD_TOOLS TINT_BUILD_GLSL_VALIDATOR DAWN_BUILD_PROTOBUF TINT_BUILD_IR_BINARY)
+    string(JSON _dawn_type ERROR_VARIABLE _dawn_err TYPE "${IMG2NUM_DAWN_JSON}" "${_dawn_key}")
+    if(_dawn_err OR NOT _dawn_type STREQUAL "STRING")
+      message(FATAL_ERROR "Could not read a valid string for ${_dawn_key} from .versions/dawn.json")
+    endif()
+    string(JSON IMG2NUM_${_dawn_key} ERROR_VARIABLE _dawn_err GET "${IMG2NUM_DAWN_JSON}" "${_dawn_key}")
+    if(_dawn_err)
+      message(FATAL_ERROR "Could not read a valid string for ${_dawn_key} from .versions/dawn.json")
+    endif()
+  endforeach()
+  block(PROPAGATE Dawn_FOUND)
     find_package(Dawn QUIET)
     if(Dawn_FOUND)
       message("Found system Dawn")
     else()
       message("Building Dawn from third_party")
-      set(DAWN_SUPPORTS_GLFW_FOR_WINDOWING OFF CACHE BOOL "Disable GLFW support for windowing" FORCE)
-      set(DAWN_USE_X11 OFF CACHE BOOL "Disable X11 support" FORCE)
-      set(DAWN_FETCH_DEPENDENCIES ON)
+      set(DAWN_SUPPORTS_GLFW_FOR_WINDOWING ${IMG2NUM_DAWN_SUPPORTS_GLFW_FOR_WINDOWING} CACHE BOOL "Disable GLFW support for windowing" FORCE)
+      set(DAWN_USE_X11 ${IMG2NUM_DAWN_USE_X11} CACHE BOOL "Disable X11 support" FORCE)
+      set(DAWN_FETCH_DEPENDENCIES ${IMG2NUM_DAWN_FETCH_DEPENDENCIES} CACHE BOOL "Fetch Dawn dependencies" FORCE)
+      set(DAWN_BUILD_SAMPLES ${IMG2NUM_DAWN_BUILD_SAMPLES} CACHE BOOL "Build Dawn samples" FORCE)
+      set(DAWN_USE_GLFW ${IMG2NUM_DAWN_USE_GLFW} CACHE BOOL "Use GLFW with Dawn" FORCE)
+      set(DAWN_BUILD_TESTS ${IMG2NUM_DAWN_BUILD_TESTS} CACHE BOOL "Build Dawn tests" FORCE)
+      set(TINT_BUILD_TESTS ${IMG2NUM_TINT_BUILD_TESTS} CACHE BOOL "Build Tint tests" FORCE)
+      set(TINT_BUILD_CMD_TOOLS ${IMG2NUM_TINT_BUILD_CMD_TOOLS} CACHE BOOL "Build Tint command-line tools" FORCE)
+      set(TINT_BUILD_GLSL_VALIDATOR ${IMG2NUM_TINT_BUILD_GLSL_VALIDATOR} CACHE BOOL "Build Tint GLSL validator" FORCE)
+      set(DAWN_BUILD_PROTOBUF ${IMG2NUM_DAWN_BUILD_PROTOBUF} CACHE BOOL "Build Dawn protobuf" FORCE)
+      set(TINT_BUILD_IR_BINARY ${IMG2NUM_TINT_BUILD_IR_BINARY} CACHE BOOL "Build Tint IR binary" FORCE)
       # Keep Dawn's TUs out of compile_commands.json
       set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
       add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../third_party/dawn" "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/dawn/build/" EXCLUDE_FROM_ALL)
@@ -136,11 +157,25 @@ else()
     PUBLIC
       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     PRIVATE
-      $<BUILD_INTERFACE:${DAWN_INCLUDE_DIR}>
       ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
   )
 
-  target_link_libraries(Img2Num PRIVATE $<BUILD_INTERFACE:webgpu_dawn>)
+  # Installed Dawn never sets DAWN_INCLUDE_DIR (the imported target carries
+  # its own include dirs), so drop any stale cache entry from a previous
+  # miss-configure and only add the dir when the fallback set it.
+  if(Dawn_FOUND)
+    unset(DAWN_INCLUDE_DIR CACHE)
+  elseif(DAWN_INCLUDE_DIR)
+    target_include_directories(Img2Num PRIVATE $<BUILD_INTERFACE:${DAWN_INCLUDE_DIR}>)
+  endif()
+
+  # Installed Dawn only exports the namespaced target. The in-tree fallback
+  # defines the bare target instead.
+  if(Dawn_FOUND)
+    target_link_libraries(Img2Num PRIVATE $<BUILD_INTERFACE:dawn::webgpu_dawn>)
+  else()
+    target_link_libraries(Img2Num PRIVATE $<BUILD_INTERFACE:webgpu_dawn>)
+  endif()
 endif()
 
 # --- Install targets for packaging ---
