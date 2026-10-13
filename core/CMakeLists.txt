@@ -129,6 +129,9 @@ else()
     endif()
   endforeach()
   block(PROPAGATE Dawn_FOUND)
+    # dawn::webgpu_dawn links Threads::Threads; the imported target fails
+    # at generate time unless something finds Threads first.
+    find_package(Threads REQUIRED)
     find_package(Dawn QUIET)
     if(Dawn_FOUND)
       message("Found system Dawn")
