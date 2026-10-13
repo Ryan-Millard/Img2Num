@@ -22,4 +22,4 @@ void img2num_clear_last_error(void);
 }
 #endif
 
-#endif // IMG2NUM_ERROR_T_H
+#endif // CIMG2NUM_ERROR_T_H
