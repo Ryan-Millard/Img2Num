@@ -52,7 +52,7 @@ for key in CMAKE_MSVC_RUNTIME_LIBRARY \
   DARGS+=("-D${key}=$(rv "$key")")
 done
 
-cmake -S "$SRC" -B "$BUILD_DIR" "${GEN[@]}" \
+cmake -S "$SRC" -B "$BUILD_DIR" ${GEN[@]+"${GEN[@]}"} \
   -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
   -DCMAKE_POLICY_DEFAULT_CMP0091=NEW \
   "${DARGS[@]}"

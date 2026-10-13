@@ -16,7 +16,8 @@ function Get-DawnFlag {
   param([string]$Key)
   $val = node (Join-Path $ROOT "scripts/read-version.js") $DAWN_JSON $Key
   if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-  return $val
+  if ([string]::IsNullOrWhiteSpace("$val")) { Write-Error "Empty value for $Key"; exit 1 }
+  return "$val".Trim()
 }
 
 function Invoke-Native {
