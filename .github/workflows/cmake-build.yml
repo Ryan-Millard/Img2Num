@@ -14,19 +14,21 @@ jobs:
   build-wasm:
     name: Build WASM (bindings/js)
     runs-on: ubuntu-latest
-    container:
-      image: ${{ inputs.image }}
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           submodules: true
 
+      - name: Set current image
+        run: |
+          echo "IMG2NUM_IMAGE=${{ inputs.image }}" >> "$GITHUB_ENV"
+
       - name: Run emcmake
-        run: emcmake cmake -DCMAKE_BUILD_TYPE=Release -B build-wasm/ .
+        run: ./img2num run emcmake cmake -DCMAKE_BUILD_TYPE=Release -B build-wasm/ .
 
       - name: Build using Emscripten
-        run: cmake --build build-wasm/
+        run: ./img2num run cmake --build build-wasm/
 
       - name: Upload WASM build artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
@@ -38,24 +40,26 @@ jobs:
   build-c-cpp:
     name: Build C & C++
     runs-on: ubuntu-latest
-    container:
-      image: ${{ inputs.image }}
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           submodules: true
 
+      - name: Set current image
+        run: |
+          echo "IMG2NUM_IMAGE=${{ inputs.image }}" >> "$GITHUB_ENV"
+
       - name: Check toolchain
         run: |
-          cmake --version
-          clang --version
+          ./img2num run cmake --version
+          ./img2num run clang --version
 
       - name: Run cmake
-        run: cmake -B build-c-cpp/ .
+        run: ./img2num run cmake -B build-c-cpp/ .
 
       - name: Build C/C++
-        run: cmake --build build-c-cpp/
+        run: ./img2num run cmake --build build-c-cpp/
 
       - name: Upload C/C++ build artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

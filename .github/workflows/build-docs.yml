@@ -24,8 +24,6 @@ jobs:
   build-docs:
     name: Build Docusaurus Site
     runs-on: ubuntu-latest
-    container:
-      image: ${{ inputs.image }}
     steps:
       - name: Checkout code
         # No need for submodules since docs uses NPM
@@ -33,14 +31,16 @@ jobs:
         with:
           submodules: false
 
-      - name: Mark repository as safe
-        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - name: Set current image
+        run: |
+          echo "IMG2NUM_IMAGE=${{ inputs.image }}" >> "$GITHUB_ENV"
 
+      # Runs on the host runner, which owns the checkout, so no safe.directory config is needed
       - name: Initialize spdlog
         run: git -c submodule.recurse=false submodule update --init third_party/spdlog
 
       - name: Install Dependendencies
-        run: pnpm install
+        run: ./img2num run pnpm install
 
       - name: Download WASM artifacts
         if: ${{ inputs.wasm-artifacts-path }}
@@ -51,7 +51,7 @@ jobs:
 
       - name: Build packages/js
         # Only build for browser since that is all we need here
-        run: pnpm -F img2num build:browser
+        run: ./img2num run pnpm -F img2num build:browser
 
       - name: Build Docusaurus
         env:
@@ -59,7 +59,14 @@ jobs:
           ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
           ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: pnpm -F docs run build
+        # `docker compose exec` does not inherit the runner's environment, so forward it explicitly
+        run: |
+          ./img2num run env \
+            ALGOLIA_APP_ID="$ALGOLIA_APP_ID" \
+            ALGOLIA_API_KEY="$ALGOLIA_API_KEY" \
+            ALGOLIA_INDEX_NAME="$ALGOLIA_INDEX_NAME" \
+            GITHUB_TOKEN="$GITHUB_TOKEN" \
+            pnpm -F docs run build
 
       - name: Upload Documentation Artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
