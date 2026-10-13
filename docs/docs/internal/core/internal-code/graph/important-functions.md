@@ -3,86 +3,17 @@ title: Important Functions Explained
 sidebar_position: 4
 ---
 
-Nodes are responsible in computing their own contours using the Suzuki-Abe method.
+# Shared Boundary Extraction and Curve Fitting
 
-# Suzuki-Abe Contour Tracing Algorithm
+The current SVG pipeline uses `Graph::compute_contours()` in `core/src/internal/graph.cpp`. It constructs a region-label image after small-region merging and calls `build_shared_loops()` in `core/src/internal/shared_contours.cpp`.
 
-**Reference:** _Suzuki, S. and Abe, K., "Topological Structural Analysis of Digitized Binary Images by Border Following", CVGIP 30 1, pp 32-46 (1985)_
+1. **Crack-grid boundaries:** Compare adjacent region labels on the pixel-corner grid to identify boundary segments, rather than tracing through pixel centres.
+2. **Canonical shared edges:** Split boundary chains at junctions. Fit each edge once and reuse it for adjacent regions, keeping their borders coincident without an overlap workaround.
+3. **Edge smoothing:** Apply five passes of a weighted 1–2–1 average to interior edge points. Edge endpoints and image-border points remain fixed.
+4. **Curve fitting:** `fit_curve_reduction()` in `core/src/internal/bezier.cpp` fits quadratic Bézier segments to the smoothed edges.
+5. **Region loops:** Assemble fitted edges into loops for each region. `Graph::compute_contours()` stores their curves and region mean colours, and `contoursResultToSVG()` emits individual filled SVG `<path>` elements.
 
-The Suzuki-Abe algorithm is a border-following technique designed to extract the topological structure of binary images. Unlike simple boundary tracing, it produces two distinct outputs:
-
-1.  **Contours:** Vector lists of point coordinates representing the borders.
-2.  **Hierarchy:** A tree structure indicating the relationship between borders (e.g., is a border an external outline or a hole inside another shape?).
-
----
-
-## Key Concepts
-
-### 1. Border Types
-
-The algorithm distinguishes between two types of borders based on the transition between 0 (background) and 1 (foreground) pixels:
-
-- **Outer Border:** The boundary between a background region and a foreground component (surrounded by background).
-- **Hole Border:** The boundary between a foreground component and an internal background hole (surrounded by foreground).
-
-### 2. Tracking Variables
-
-- **`f[i,j]`**: The value of the pixel at row `i`, column `j`. Initially, the image contains only `0` (background) and `1` (foreground). As the algorithm runs, `1`s are replaced by unique Border IDs.
-- **`NBD` (Number of Border)**: A counter representing the current Border ID being assigned. Starts at `2` (since `1` is used for raw foreground).
-- **`LNBD` (Last Number of Border)**: Tracks the Border ID of the most recently visited border during the raster scan. This acts as the "Parent" tracker.
-
----
-
-## The Algorithm Steps
-
-The algorithm combines a **Raster Scan** (to find new borders) with a **Border Following** routine (to trace and mark the entire boundary once found).
-
-### Phase 1: Raster Scan
-
-Iterate through the image row by row, from top-left to bottom-right.
-
-1.  **Reset `LNBD`:** At the start of every row, reset `LNBD = 1` (frame ID).
-2.  **Check Pixel `f[i,j]`:**
-    - **Case A (Outer Border Start):** If `f[i,j] == 1` and `f[i, j-1] == 0` (transition from empty space to object):
-      - Increment `NBD`.
-      - This is a new **Outer Border**.
-      - Update Hierarchy: `LNBD` is the parent of `NBD`.
-      - **Trigger Phase 2 (Trace Border)** starting at `(i,j)`.
-    - **Case B (Hole Border Start):** If `f[i,j] >= 1` and `f[i, j+1] == 0` (transition from object to empty space):
-      - Increment `NBD`.
-      - This is a new **Hole Border**.
-      - Update Hierarchy: `LNBD` is the parent of `NBD`. (If `f[i,j] > 1`, set `LNBD = f[i,j]` first).
-      - **Trigger Phase 2 (Trace Border)** starting at `(i,j)`.
-    - **Case C (Non-Border):** If neither A nor B, update `LNBD` if `f[i,j] != 0` and continue scanning.
-
-### Phase 2: Border Following (The "Turtle" Logic)
-
-Once a starting pixel `(x, y)` is found, trace the connected edge pixels until returning to the start.
-
-1.  **Search Neighborhood:** Starting from the previous pixel (or a default direction), check the 8-connected (or 4-connected) neighbors in a **Clockwise** (or Counter-Clockwise) direction.
-2.  **Find Next Pixel:** The first non-zero pixel found becomes the next current pixel.
-3.  **Mark Pixel:** Change the value of the current pixel in the image to `NBD` (or `-NBD` in specific cases to mark visited edges without destroying topology).
-    - _Note: This modification prevents the Raster Scan from re-detecting the same border later._
-4.  **Record Coordinate:** Add the pixel `(x, y)` to the current contour vector.
-5.  **Termination:** Stop when the tracer returns to the **Starting Point** AND matches the **Starting Direction**.
-
----
-
-## Hierarchy Tree Structure
-
-The algorithm maintains a hierarchy table (often stored as an `std::array<int, 4>` : `[Next, Previous, First_Child, Parent]`).
-
-| Topology   | Description                                            |
-| :--------- | :----------------------------------------------------- |
-| **Root**   | The image frame (background).                          |
-| **Parent** | The border immediately surrounding the current one.    |
-| **Child**  | A border immediately contained within the current one. |
-
-**Example Hierarchy:**
-
-1.  **Outer Box (ID 2)** -> Parent: Frame.
-2.  **Inner Hole (ID 3)** -> Parent: ID 2.
-3.  **Island inside Hole (ID 4)** -> Parent: ID 3.
+The previous Suzuki–Abe tracer and Savitzky–Golay filter are retained in the source tree but are no longer used by the public SVG conversion path. See [issue #736](https://github.com/Ryan-Millard/Img2Num/issues/736) and [PR #429](https://github.com/Ryan-Millard/Img2Num/pull/429).
 
 ---
 
@@ -117,7 +48,7 @@ Represents a Quadratic Bezier curve segment. This is used when the raw pixel con
 
 ### `struct ContoursResult`
 
-The primary container for the output of the contour extraction algorithm (e.g., Suzuki-Abe). It separates the raw pixel data from the topological relationship data.
+A container for raw contour points, quadratic Bézier curves, and compatibility topology fields. In the current shared-edge pipeline, `Graph::compute_contours()` sets hierarchy entries to `{-1, -1, -1, -1}` and hole flags to `false`.
 
 #### Member Variables
 
