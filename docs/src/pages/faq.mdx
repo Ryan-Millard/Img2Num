@@ -43,9 +43,9 @@ A raster image consists of pixels, while an SVG consists of scalable vector path
 Img2Num converts raster images by:
 
 1. Quantizing image colors into a smaller palette using **k-means clustering**.
-2. Tracing the boundaries of color regions using **Suzuki–Abe contour tracing**.
-3. Smoothing the resulting contours using **Savitzky–Golay filtering**.
-4. Generating clean SVG paths from the processed regions.
+2. Tracing **shared boundaries** between image regions on a pixel-corner grid.
+3. Smoothing shared edges while keeping junctions and image-border points fixed, then fitting **quadratic Bézier curves**.
+4. Generating SVG paths for the resulting regions, each filled with its region's mean pixel color.
 
 The resulting SVG can scale to different sizes without pixelation and can often be significantly smaller than the original raster image.
 
