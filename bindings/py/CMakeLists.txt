@@ -59,6 +59,7 @@ if(NOT CMAKE_CROSSCOMPILING)
   )
   install(FILES "${CMAKE_CURRENT_BINARY_DIR}/stubs/_img2num.pyi"
     DESTINATION img2num
+    COMPONENT python
   )
 else()
   message(WARNING "Cross-compiling: _img2num.pyi will not be generated; wheel ships without a stub")
