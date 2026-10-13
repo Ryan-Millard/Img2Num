@@ -22,7 +22,7 @@ All APIs share these core concepts:
 1. **Bilateral Filtering** — Smooths noise while preserving edges.
 2. **K-Means Clustering** — Reduces the palette to `k` representative colors.
 3. **Contour Tracing** — Detects boundaries between color clusters.
-4. **B-spline Simplification** — Fits smooth quadratic curves to contours.
+4. **Shared Boundary Smoothing and Curve Fitting** — Traces shared region boundaries on the pixel-corner grid, smooths the edges, and fits quadratic Bézier curves.
 
 ## Shared Parameters
 
