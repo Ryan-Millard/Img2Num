@@ -162,10 +162,10 @@ void gaussian_blur_fft(uint8_t* image, size_t width, size_t height, double sigma
     // Alpha channel remains unchanged
 }
 
-// Called from JS. `ptr` points to RGBA bytes.
-void invert_image(uint8_t* ptr, int width, int height) {
+// Called from JS. `image` points to RGBA bytes.
+void invert_image(uint8_t* image, int width, int height) {
     ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> img;
-    img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
+    img.loadFromBuffer(image, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
     for (ImageLib::RGBAPixel<uint8_t>& p : img) {
         p.red = 255 - p.red;
@@ -174,17 +174,17 @@ void invert_image(uint8_t* ptr, int width, int height) {
     }
 
     const auto& modified = img.getData();
-    std::memcpy(ptr, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
+    std::memcpy(image, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
 }
 
-void threshold_image(uint8_t* ptr, const int width, const int height, const int num_thresholds) {
+void threshold_image(uint8_t* image, const int width, const int height, const int num_thresholds) {
     if (num_thresholds <= 0) {
         return;
     }
     const uint8_t REGION_SIZE(255 / num_thresholds); // Size of buckets per colour
 
     ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> img;
-    img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
+    img.loadFromBuffer(image, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
     const auto imgWidth {img.getWidth()}, imgHeight {img.getHeight()};
     for (ImageLib::RGBAPixel<uint8_t>& p : img) {
@@ -194,20 +194,20 @@ void threshold_image(uint8_t* ptr, const int width, const int height, const int 
     }
 
     const auto& modified = img.getData();
-    std::memcpy(ptr, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
+    std::memcpy(image, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
 }
 
 // Unlike `threshold_image` above, `num_thresholds` here is a per-channel 0-255
 // brightness cutoff, not a number of output levels. A pixel becomes pure black
 // only when all three of its channels are strictly below the cutoff.
 void black_threshold_image(
-    uint8_t* ptr, const int width, const int height, const int num_thresholds
+    uint8_t* image, const int width, const int height, const int num_thresholds
 ) {
     if (num_thresholds <= 0) {
         return;
     }
     ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> img;
-    img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
+    img.loadFromBuffer(image, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
     const auto imgWidth {img.getWidth()}, imgHeight {img.getHeight()};
     for (ImageLib::RGBAPixel<uint8_t>& p : img) {
@@ -220,7 +220,7 @@ void black_threshold_image(
     }
 
     const auto& modified = img.getData();
-    std::memcpy(ptr, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
+    std::memcpy(image, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
 }
 
 } // namespace img2num
