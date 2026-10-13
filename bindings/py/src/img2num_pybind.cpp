@@ -1,11 +1,18 @@
 #include <cstdlib>
 #include <img2num.h>
 #include <memory>
+#include <mutex>
 #include <optional>
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <sstream>
+
+namespace {
+// The core shares a GPU context. Release the GIL before waiting for this lock,
+// and unlock it before reacquiring the GIL, including when a core call throws.
+std::mutex core_mutex;
+} // namespace
 
 PYBIND11_MODULE(_img2num, m) {
     m.doc() = R"docstring(
@@ -14,6 +21,11 @@ PYBIND11_MODULE(_img2num, m) {
     This module provides access to Img2Num's image processing capabilities from Python.
     All image functions operate on ``numpy.ndarray`` buffers and return new image data,
     making them easy to integrate into Python-based image processing pipelines.
+
+    Native image operations release the GIL, allowing other Python threads to run.
+    Calls into the core are serialized to protect its shared GPU context. The API
+    remains synchronous. Input arrays and their aliases must not be mutated or
+    resized until the operation returns.
 
     )docstring";
 
@@ -29,7 +41,12 @@ PYBIND11_MODULE(_img2num, m) {
             pybind11::array_t<uint8_t, pybind11::array::c_style> out_image(buf.shape);
             std::memcpy(out_image.mutable_data(), buf.ptr, buf.size * sizeof(uint8_t));
 
-            img2num::gaussian_blur_fft(out_image.mutable_data(), width, height, sigma);
+            auto* output = out_image.mutable_data();
+            {
+                pybind11::gil_scoped_release release;
+                std::lock_guard<std::mutex> lock(core_mutex);
+                img2num::gaussian_blur_fft(output, width, height, sigma);
+            }
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"),
@@ -61,7 +78,12 @@ PYBIND11_MODULE(_img2num, m) {
             pybind11::array_t<uint8_t, pybind11::array::c_style> out_image(buf.shape);
             std::memcpy(out_image.mutable_data(), buf.ptr, buf.size * sizeof(uint8_t));
 
-            img2num::invert_image(out_image.mutable_data(), width, height);
+            auto* output = out_image.mutable_data();
+            {
+                pybind11::gil_scoped_release release;
+                std::lock_guard<std::mutex> lock(core_mutex);
+                img2num::invert_image(output, width, height);
+            }
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"), R"docstring(
@@ -90,7 +112,12 @@ PYBIND11_MODULE(_img2num, m) {
             pybind11::buffer_info buf = image.request();
             pybind11::array_t<uint8_t, pybind11::array::c_style> out_image(buf.shape);
             std::memcpy(out_image.mutable_data(), buf.ptr, buf.size * sizeof(uint8_t));
-            img2num::threshold_image(out_image.mutable_data(), width, height, num_thresholds);
+            auto* output = out_image.mutable_data();
+            {
+                pybind11::gil_scoped_release release;
+                std::lock_guard<std::mutex> lock(core_mutex);
+                img2num::threshold_image(output, width, height, num_thresholds);
+            }
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"),
@@ -123,7 +150,12 @@ PYBIND11_MODULE(_img2num, m) {
             pybind11::array_t<uint8_t, pybind11::array::c_style> out_image(buf.shape);
             std::memcpy(out_image.mutable_data(), buf.ptr, buf.size * sizeof(uint8_t));
 
-            img2num::black_threshold_image(out_image.mutable_data(), width, height, num_thresholds);
+            auto* output = out_image.mutable_data();
+            {
+                pybind11::gil_scoped_release release;
+                std::lock_guard<std::mutex> lock(core_mutex);
+                img2num::black_threshold_image(output, width, height, num_thresholds);
+            }
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"),
@@ -168,9 +200,14 @@ PYBIND11_MODULE(_img2num, m) {
             pybind11::array_t<uint8_t, pybind11::array::c_style> out_image(buf.shape);
             std::memcpy(out_image.mutable_data(), buf.ptr, buf.size * sizeof(uint8_t));
 
-            img2num::bilateral_filter(
-                out_image.mutable_data(), width, height, sigma_spatial, sigma_range, color_space
-            );
+            auto* output = out_image.mutable_data();
+            {
+                pybind11::gil_scoped_release release;
+                std::lock_guard<std::mutex> lock(core_mutex);
+                img2num::bilateral_filter(
+                    output, width, height, sigma_spatial, sigma_range, color_space
+                );
+            }
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"),
@@ -212,12 +249,14 @@ PYBIND11_MODULE(_img2num, m) {
                 {static_cast<size_t>(height), static_cast<size_t>(width)}
             );
 
-            img2num::kmeans(
-                static_cast<const uint8_t*>(data_buf.ptr),
-                static_cast<uint8_t*>(out_data.mutable_data()),
-                static_cast<int32_t*>(out_labels.mutable_data()), width, height, k, max_iter,
-                color_space
-            );
+            const auto* input = static_cast<const uint8_t*>(data_buf.ptr);
+            auto* output = out_data.mutable_data();
+            auto* labels = out_labels.mutable_data();
+            {
+                pybind11::gil_scoped_release release;
+                std::lock_guard<std::mutex> lock(core_mutex);
+                img2num::kmeans(input, output, labels, width, height, k, max_iter, color_space);
+            }
             return pybind11::make_tuple(out_data, out_labels);
         },
         pybind11::arg("data"), pybind11::arg("width"), pybind11::arg("height"), pybind11::arg("k"),
@@ -254,9 +293,14 @@ PYBIND11_MODULE(_img2num, m) {
             const uint8_t* data_ptr {static_cast<const uint8_t*>(data.request().ptr)};
             const int32_t* labels_ptr {static_cast<const int32_t*>(labels.request().ptr)};
 
-            std::string svg {
-                img2num::labels_to_svg(data_ptr, labels_ptr, width, height, min_area, min_thickness)
-            };
+            std::string svg;
+            {
+                pybind11::gil_scoped_release release;
+                std::lock_guard<std::mutex> lock(core_mutex);
+                svg = img2num::labels_to_svg(
+                    data_ptr, labels_ptr, width, height, min_area, min_thickness
+                );
+            }
 
             return pybind11::str(std::move(svg));
         },
@@ -384,10 +428,15 @@ PYBIND11_MODULE(_img2num, m) {
     m.def(
         "image_to_svg",
         [](pybind11::array_t<uint8_t, pybind11::array::c_style> data, int width, int height,
-           const img2num::ImageToSvgConfig& cfg) {
+           img2num::ImageToSvgConfig cfg) {
             const uint8_t* data_ptr {static_cast<const uint8_t*>(data.request().ptr)};
 
-            std::string svg {img2num::image_to_svg(data_ptr, width, height, cfg)};
+            std::string svg;
+            {
+                pybind11::gil_scoped_release release;
+                std::lock_guard<std::mutex> lock(core_mutex);
+                svg = img2num::image_to_svg(data_ptr, width, height, cfg);
+            }
 
             return pybind11::str(std::move(svg));
         },
