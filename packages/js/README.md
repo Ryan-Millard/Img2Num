@@ -83,8 +83,8 @@ Try one of our [example-apps](https://img2num.dev/example-apps/)!
 - **Built for real-world photos** - Designed from the ground up to handle natural, noisy raster images (photographs, scans, etc.), unlike many vectorization libraries that are optimized for clean, synthetic source images (icons, logos, flat illustrations).
 - **Raster to SVG vectorization** - Converts PNG/JPEG images into clean, layered SVG paths using color quantization, contour tracing, and an integrated SVG writer.
 - **GPU-accelerated processing** - Leverages [Dawn](https://dawn.googlesource.com/dawn) (Google's WebGPU implementation) for hardware-accelerated quantization and image processing.
-- **Color quantization & palette control** - Reduce an image to any K number of colors (K-Means), with output SVGs organized into logical color groups.
-- **Precise contour extraction** - Edge detection and polygon simplification with tunable fidelity for accuracy vs. performance trade-offs.
+- **Color quantization & palette control** - Use K-Means to identify representative colors; SVG regions are filled individually using their mean pixel colors rather than grouped by palette entry.
+- **Precise contour extraction** - Trace shared region boundaries, smooth their edges, and fit quadratic Bézier curves with tunable fidelity.
 - [**Multi-language bindings**](#multi-language-support) - Native C++17 core with first-class bindings for:
   - **C** - lightweight C API (add as a submodule)
   - **Python** (`pip install img2num`) - NumPy arrays in, SVG strings out
