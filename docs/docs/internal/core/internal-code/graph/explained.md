@@ -68,42 +68,26 @@ The `Graph` is parsed to locate small area nodes. Each small node is merged with
 
 4. Contour creation
 
-Now that small nodes have been pruned, each `Node` can compute its own contour using the Suzuki-Abe method.
+After small regions have been merged, `Graph::compute_contours()` assembles the current region labels into an image-sized label grid. It calls `build_shared_loops()`, which follows boundaries along **pixel corners** (the crack grid), not pixel centres.
 
 ![Contours](./img/contours.png)
 
-:::caution SVG space offset
+5. Shared boundaries and SVG export
 
-While Suzuki-Abe contour tracing correctly captures topological data, adjacent nodes end up with contours offset by ~1 pixel when mapped to SVG coordinates.
+Rather than tracing each region independently and compensating for gaps afterward, the pipeline extracts each canonical boundary edge once. It splits edges at junctions, smooths their interior points with five passes of a weighted 1–2–1 average while keeping endpoints and image-border points fixed, and fits quadratic Bézier curves with `fit_curve_reduction()`. Adjacent regions reuse those fitted edges, so their outlines coincide.
 
-<div align="center">
-See [this PR discussion](https://github.com/Ryan-Millard/Img2Num/pull/245#issuecomment-3807553622) for details on why this happens.
-![ContoursZ](./img/contours_zoom.png)
-</div>
+`Graph::compute_contours()` assembles the edges into region loops and attaches each region's mean colour. The SVG writer emits one filled `<path>` per loop, not grouped paths per K-Means palette entry.
 
-:::
+For the implementation see `core/src/internal/graph.cpp`, `shared_contours.cpp`, `bezier.cpp`, and `labels_to_svg.cpp`. This supersedes the historical Suzuki–Abe contour and one-pixel overlap process; the old illustrations below are retained only as historical examples.
 
-5. Contour Management
+### Historical illustrations (prior to shared edges)
 
-To solve this problem `Graph` has to overlap neighboring contours. For this `Nodes` have a special `edge_pixel` property to keep track of additional pixels to be considered for the contour. This forces neighboring contours to perfectly overlap creating no gaps or holes, which is important for SVGs.
-
-Before gap management
-
-<details>
-<summary>Pull the code locally from PR #238</summary>
-```bash
-# 1. Clone the repo (if you haven't already)
-git clone --recursive https://github.com/Ryan-Millard/Img2Num.git
-cd Img2Num
-# 2. Fetch the specific commit from the PR
-git fetch origin 9eb23f9a56edaeec95e2dfcfc8389b11bfd777b6
-# 3. Create a local branch pointing at it
-git checkout -b try-pr-238 9eb23f9a56edaeec95e2dfcfc8389b11bfd777b6
-```
-</details>
+Before the shared-edge pipeline:
 
 ![gaps](./img/cow_contours_gap.png)
 
-After gap management
+After the historical overlap workaround:
 
 ![nogaps](./img/cow_contours.png)
+
+For the change history, see [PR #429](https://github.com/Ryan-Millard/Img2Num/pull/429).

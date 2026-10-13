@@ -72,35 +72,15 @@ G.discover_edges(region_labels, width, height);
 G.merge_small_area_nodes(min_area);
 ```
 
-3. Compute contours and manage gaps
+3. Compute shared contours
 
 ```cpp
 G.compute_contours();
 ```
 
-In this function nodes are iterated over one at a time.
-Pseudocode:
+`Graph::compute_contours()` assembles a pixel-label grid from the merged regions and calls `build_shared_loops(labels, width, height, eps)`. The shared-loop builder traces boundaries on pixel corners, splits edges at junctions, smooths each edge while preserving endpoints and image-border points, and fits quadratic Bézier curves. A shared edge is fitted once and reused by neighbouring regions, eliminating the former one-pixel overlap workaround.
 
-```text
-for node in G.nodes
-{
-    // Consider all neigbors
-    for neigbor in node.edges
-    {
-        // collect pixels for each neighbor
-    }
-    /*
-    1. Create joint grid plot of all pixels in node and neighbors
-    2. Find edge pixels
-    3. Decide if edge pixel should be added to the `node`'s or `neigbor`'s edge_pixel collection to ensure contour overlap
-    */
-}
-
-for node in G.nodes
-{
-    // compute contour per node
-}
-```
+The resulting loops and their region mean colours are stored in each node's `m_contours` for SVG export.
 
 4. Collect all contours for SVG export
 
@@ -117,13 +97,12 @@ for node in G.nodes
 | `m_id`          | `int32_t`                             | Unique identifier for the node.                                                                                          |
 | `m_pixels`      | `std::unique_ptr<std::vector<RGBXY>>` | Exclusive ownership of the raw pixel data defining this region.                                                          |
 | `m_edges`       | `std::set<Node_ptr>`                  | Adjacency list containing pointers to neighboring `Node` objects.                                                        |
-| `m_edge_pixels` | `std::set<XY>`                        | Auxiliary pixels used for contour tracing. These are distinct from `m_pixels` and do not affect color/area calculations. |
 
 ### Public Members
 
 | Variable Name | Type              | Description                                                                                     |
 | :------------ | :---------------- | :---------------------------------------------------------------------------------------------- |
-| `m_contours`  | `ColoredContours` | Vector representation of the node boundaries. Populated only after calling `compute_contour()`. |
+| `m_contours`  | `ColoredContours` | Vector representation of region loops, populated by `Graph::compute_contours()`. |
 
 ---
 
@@ -187,17 +166,8 @@ Rasterizes the node into a binary mask.
 - **binary:** Output buffer where the mask is written.
 - **Returns:** Array describing dimensions/offsets of the generated mask.
 
-#### `void compute_contour()`
+The current SVG workflow does not call the legacy `Node::compute_contour()`, `add_edge_pixel()`, or `clear_edge_pixels()` helpers. See the graph-level `compute_contours()` method below for the active contour generation path.
 
-Calculates the vector contours of the node based on edge pixels and populates `m_contours`.
-
-#### `void add_edge_pixel(const XY edge_pixel)`
-
-Adds a coordinate to the set used specifically for boundary tracing.
-
-#### `void clear_edge_pixels()`
-
-Clears the temporary edge pixel buffer.
 
 ---
 
@@ -281,7 +251,7 @@ Removes nodes that have no edges (orphaned regions) from the internal list.
 
 #### `void compute_contours()`
 
-Iterates through all nodes in the graph and triggers their individual `compute_contour()` methods.
+Creates a region-label grid, calls `build_shared_loops()` once to extract and fit shared boundaries, and distributes the resulting region loops and mean colours to each node's `m_contours`.
 
 #### `const std::vector<Node_ptr> &get_nodes() const`
 

@@ -214,13 +214,13 @@ function FeaturesSection() {
       color: "rgba(82,183,136,0.2)",
       icon: <Target size={18} color="#52b788" />,
       title: "Precise contour extraction",
-      desc: "Edge detection & polygon simplification with tunable fidelity.",
+      desc: "Shared boundary tracing, edge smoothing, and quadratic Bézier fitting with tunable fidelity.",
     },
     {
       color: "rgba(199,122,39,0.2)",
       icon: <Palette size={18} color="#e08c38" />,
       title: "Colour quantization + palette",
-      desc: "Automatically reduce colours to any K value, output SVG with groups.",
+      desc: "Reduce colours using K-Means; SVG paths are filled using each region’s mean colour.",
     },
     {
       color: "rgba(29,111,164,0.2)",
