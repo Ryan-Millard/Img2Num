@@ -1,0 +1,9 @@
+id = "coco-2017-val-000000002153-jpg"
+dataset = "COCO 2017 val"
+url = "http://images.cocodataset.org/val2017/000000002153.jpg"
+sha256 = "8795ff243cf20405bd442631d5d1cb7e60665dd459c8d57f5764333808dd49fd"
+size = [640, 480]
+license = "CC-BY-SA-2.0"
+author = "Jack (RiverRatt3)"
+source = "https://www.flickr.com/photos/44458147@N00/2535221304/"
+tags = ["natural"]

@@ -5,6 +5,9 @@ requires-python = ">=3.10"
 dependencies = [
   "clang-tidy==22.1.8",
   "clang-format==22.1.8",
+  "tomlkit>=0.13",
+  "Pillow>=10",
+  "tomli>=2; python_version < '3.11'",
 ]
 
 [project.scripts]

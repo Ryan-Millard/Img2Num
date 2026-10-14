@@ -1,0 +1,9 @@
+id = "coco-2017-val-000000030213-jpg"
+dataset = "COCO 2017 val"
+url = "http://images.cocodataset.org/val2017/000000030213.jpg"
+sha256 = "27fdc374629bb5fc3c059eb7f5516b940596f0b50087adf364b6b09922089eaf"
+size = [640, 449]
+license = "CC-BY-2.0"
+author = "liz west"
+source = "https://www.flickr.com/photos/calliope/8561578295/"
+tags = ["natural"]
