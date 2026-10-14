@@ -324,6 +324,45 @@ PYBIND11_MODULE(_img2num, m) {
         .def(
             pybind11::init([](pybind11::dict bf_dict, pybind11::dict km_dict,
                               pybind11::kwargs kwargs) {
+                // Raise TypeError for unrecognised keys instead of silently ignoring them
+                auto reject_unknown_keys = [](const pybind11::dict& d,
+                                              std::initializer_list<const char*> valid_keys,
+                                              const std::string& noun, const std::string& where) {
+                    for (auto item : d) {
+                        bool known {false};
+                        if (pybind11::isinstance<pybind11::str>(item.first)) {
+                            const std::string key {item.first.cast<std::string>()};
+                            for (const char* valid_key : valid_keys)
+                                if (key == valid_key)
+                                    known = true;
+                        }
+                        if (known)
+                            continue;
+
+                        std::string valid_list;
+                        for (const char* valid_key : valid_keys) {
+                            if (!valid_list.empty())
+                                valid_list += ", ";
+                            valid_list += std::string("'") + valid_key + "'";
+                        }
+                        throw pybind11::type_error(
+                            "ImageToSvgConfig() got an unexpected " + noun + " " +
+                            pybind11::repr(item.first).cast<std::string>() + where + "; valid " +
+                            noun + "s are: " + valid_list
+                        );
+                    }
+                };
+                reject_unknown_keys(
+                    kwargs,
+                    {"bilateral_filter", "kmeans", "min_cluster_area", "min_thickness",
+                     "color_space"},
+                    "keyword argument", ""
+                );
+                reject_unknown_keys(
+                    bf_dict, {"sigma_spatial", "sigma_range"}, "key", " in bilateral_filter"
+                );
+                reject_unknown_keys(km_dict, {"k", "max_iter"}, "key", " in kmeans");
+
                 // hand over ownership to python
                 std::unique_ptr<img2num::ImageToSvgConfig> c =
                     std::make_unique<img2num::ImageToSvgConfig>();
