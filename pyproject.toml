@@ -46,12 +46,14 @@ cmake.args = [
   "-DIMG2NUM_BUILD_PYTHON=ON",
   "-DIMG2NUM_BUILD_EXAMPLES=OFF",
 ]
-wheel.packages = ["img2num"]
+wheel.packages = []
+install.components = ["python"]
 sdist.inclusion-mode = "explicit"
 sdist.include = [
   "pyproject.toml",
   "LICENSE",
   "CMakeLists.txt",
+  ".versions/cmake.json",
   "core/**",
   "bindings/py/**",
   "packages/py/**",
