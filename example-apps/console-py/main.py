@@ -1,7 +1,8 @@
 import argparse
 import os
-import cv2
 import img2num
+import numpy as np
+from PIL import Image
 
 """
 Note: Images sent to img2num functions must be RGBA
@@ -16,24 +17,21 @@ def main():
     OUTDIR = "console-py_outputs"
     os.makedirs(OUTDIR, exist_ok=True)
 
-    img = cv2.imread(args.image_path)
+    img = Image.open(args.image_path).convert("RGBA")
     if img is None:
         parser.error(f"could not read image: {args.image_path}")
 
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
-
+    img = np.asarray(img)
     # bilateral filter in-place
     img_bf = img2num.bilateral_filter(img, 3, 50, 0)
-    cv2.imwrite(
+    Image.fromarray(img_bf).convert("RGB").save(
         os.path.join(OUTDIR, "bilateral_image.png"),
-        cv2.cvtColor(img_bf, cv2.COLOR_RGBA2BGR),
     )
 
     # kmeans
     img_kmeans, labels = img2num.kmeans(img_bf, 64, 100, 0)
-    cv2.imwrite(
+    Image.fromarray(img_kmeans).convert("RGB").save(
         os.path.join(OUTDIR, "kmeans_image.png"),
-        cv2.cvtColor(img_kmeans, cv2.COLOR_RGBA2BGR),
     )
 
     # svg file

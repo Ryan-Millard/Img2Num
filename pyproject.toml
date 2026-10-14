@@ -7,7 +7,8 @@ license = { text = "MIT" }
 readme = "packages/py/README.md"
 authors = [{ name = "Ryan Millard" }]
 dependencies = [
-  "numpy>=1.23.5"
+  "numpy>=1.23.5",
+  "pillow>=12.0.0"
 ]
 classifiers = [
   "Intended Audience :: Developers",
@@ -144,3 +145,7 @@ lint = [
 licensing = [
   "reuse>=6.2.0,<7"
 ]
+
+[project.scripts]
+# syntax: command_name = "package.module:function"
+img2num = "img2num.cli:main"
