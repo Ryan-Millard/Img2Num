@@ -341,12 +341,9 @@ PYBIND11_MODULE(_img2num, m) {
                                               const std::string& noun, const std::string& where) {
                     for (auto item : d) {
                         bool known {false};
-                        if (pybind11::isinstance<pybind11::str>(item.first)) {
-                            const std::string key {item.first.cast<std::string>()};
-                            for (const char* valid_key : valid_keys)
-                                if (key == valid_key)
-                                    known = true;
-                        }
+                        for (const char* valid_key : valid_keys)
+                            if (pybind11::str(valid_key).equal(item.first))
+                                known = true;
                         if (known)
                             continue;
 
