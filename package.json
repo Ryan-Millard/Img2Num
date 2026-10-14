@@ -103,9 +103,5 @@
     "globals": "^17.12.0",
     "img2num-dev-scripts": "workspace:*",
     "prettier": "^3.9.6"
-  },
-  "dependencies": {
-    "driver.js": "^1.8.0",
-    "fast-glob": "^3.3.3"
   }
 }
