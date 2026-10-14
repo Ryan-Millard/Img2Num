@@ -25,6 +25,7 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 
 [![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/Ryan-Millard)
 [![Security Policy](https://img.shields.io/badge/Security-Policy-red?logo=github)](SECURITY.md)
+[![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.com/invite/BHjxcCqAnU)
 
 ## Contents
 
@@ -120,6 +121,7 @@ Try our [image to color-by-number demo](https://img2num.dev/example-apps/react-j
 [![Good First Issues](https://img.shields.io/badge/Good%20First%20Issues-Welcome-6cc644?logo=github)](https://github.com/Ryan-Millard/Img2Num/issues/views/1155)
 [![Blog](https://img.shields.io/badge/Blog-Updates-ff6f00?logo=githubpages)](https://img2num.dev/blog/)
 [![GitHub Discussions](https://img.shields.io/badge/discussions-join_the_chat-4c1?logo=github)](https://github.com/Ryan-Millard/Img2Num/discussions)
+[![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.com/invite/BHjxcCqAnU)
 
 ## Quick Start
 
