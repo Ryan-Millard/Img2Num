@@ -4,32 +4,19 @@ title: 🧹 Clean Scripts
 sidebar_position: 4
 ---
 
-## `npm run clean`
+This page explains package-specific cleanup scripts.
 
-Cleans both WebAssembly and Vite build folders.
+:::info Full Project Cleanup with Just
+To remove CMake build directories, compiled C++ binaries, and temporary caches across the entire repository, use **`just clean`**. 
 
-```bash
-npm run clean-wasm && npm run clean-js
-```
+See the **[Just Guide](../../contributing/just.md)** for more details.
+:::
 
-Ensures the project returns to a “fresh” state.
+## React Example App (`example-apps/react-js/package.json`)
 
-## `npm run clean-js`
+### `pnpm -F react-example clean`
 
-Removes the Vite build output directory:
+Deletes the Vite build output directory (`example-apps/react-js/dist/`) to ensure a fresh build state:
 
 ```bash
 rimraf dist
-```
-
-## `npm run clean-wasm`
-
-Delegates to:
-
-```bash
-node scripts/build-wasm.js --clean
-```
-
-`scripts/build-wasm.js` handles the deletion of build files.
-
-This calls the [orchestrator CMakeLists.txt's](https://github.com/Ryan-Millard/Img2Num/blob/main/src/wasm/CMakeLists.txt) `clean` script, which calls the `clean` script in every WASM module.

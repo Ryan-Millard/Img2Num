@@ -4,55 +4,19 @@ title: 🛠️ Build Scripts
 sidebar_position: 3
 ---
 
-## `npm run build`
+This page describes production build scripts across the workspace packages.
 
-Builds both:
+:::info Full Project Builds with Just
+Compiling the core C++ library, C bindings, Python extensions, and WebAssembly modules is orchestrated through the **`just`** task runner. 
 
-- the WASM module (`build-wasm`)
-- the Vite production bundle (`vite build`)
+To build everything or target specific languages, see the **[Just Guide](../../contributing/just.md)**.
+:::
 
-```bash
-npm run build-wasm && vite build
-```
+## React Example App (`example-apps/react-js/package.json`)
 
-Used for completing production builds for deployment.
+### `pnpm -F react-example build`
 
-## `npm run build-js`
-
-Only builds the JavaScript/Vite project.
+Bundles the React example application into static production assets in `example-apps/react-js/dist/` using Vite:
 
 ```bash
-vite build
-```
-
-Useful if the WASM module didn’t change.
-
-## `npm run preview`
-
-Runs Vite’s local preview server for inspecting builds:
-
-```bash
-vite preview
-```
-
-Useful when you have built the frontend and want to see what it _could_ look like in production.
-
-## `npm run build-wasm`
-
-Runs the WASM release build:
-
-```bash
-make -C src/wasm build
-```
-
-Creates an optimized WebAssembly module using the `build` script available in the [orchestrator CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/src/wasm/CMakeLists.txt).
-
-## `npm run build-wasm:debug`
-
-Runs the debug build:
-
-```bash
-make -C src/wasm debug
-```
-
-Includes debug symbols and no optimizations. Recommended for debugging logic issues inside C++ code. Also uses a script from the [orchestrator CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/src/wasm/CMakeLists.txt).
+vite build --emptyOutDir
