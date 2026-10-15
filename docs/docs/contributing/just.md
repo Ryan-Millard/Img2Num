@@ -19,6 +19,10 @@ To see every available command at any time, run:
 just help
 ```
 
+Commands are grouped by subsystem and follow the pattern `just <subsystem> <action>`
+(for example `just cmake build` or `just js clean`). To list only one subsystem's
+commands, run `just <subsystem> help` (for example `just cmake help`).
+
 :::
 
 ## Initialise the project
@@ -52,7 +56,7 @@ This:
 **Build Everything (C++, C, JS, WASM, Python, React App, ...).**
 
 ```bash title="Paste this inside the Docker shell"
-just build all
+just build-all
 ```
 
   </TabItem>
@@ -66,7 +70,7 @@ This is CMake-based with GCC / MSVC.
 > `build-c-cpp/` CMake build folder.
 
 ```bash title="Paste this inside the Docker shell"
-just build cpp
+just cmake build
 ```
 
 Key files:
@@ -91,7 +95,7 @@ This is CMake-based with Emscripten (to compile to WebAssembly).
 > - `packages/js/build-wasm/` copied folder (from `build-wasm/`).
 
 ```bash title="Paste this inside the Docker shell"
-just build js
+just js build
 ```
 
 Key Files:
@@ -106,12 +110,12 @@ Key Files:
 **Build _Browser_ & _Node.js_ npm packages.**
 
 This is pnpm-based, yet it requires the outputs from the
-`just build js` command.
+`just js build` command.
 
 > `packages/js/dist` folder.
 
 ```bash title="Paste this inside the Docker shell"
-just build packages-js
+just js package
 ```
 
 Key files:
@@ -127,9 +131,9 @@ Key files:
 
 :::caution[Common Confusion]
 
-`just build js` only produces the raw WASM/JS bindings. To build the publishable
+`just js build` only produces the raw WASM/JS bindings. To build the publishable
 `img2num` npm package — which targets **both the browser and Node.js** — run
-`just build packages-js`. It compiles the WASM bindings first (so it works from a
+`just js package`. It compiles the WASM bindings first (so it works from a
 clean checkout) and then bundles the browser and Node builds into
 `packages/js/dist/`.
 
@@ -147,7 +151,7 @@ in `bindings/py` alongside the Python wrapper in `packages/py`.
 > `dist` folder.
 
 ```bash title="Paste this inside the Docker shell"
-just build py
+just py build
 ```
 
 Key files:
@@ -183,6 +187,16 @@ Start the documentation server:
 
 ```bash title="Paste this in the Docker shell"
 just docs start
+```
+
+  </TabItem>
+
+  <TabItem value="clean" label="Clean">
+
+Remove the generated documentation files:
+
+```bash title="Paste this in the Docker shell"
+just docs clean
 ```
 
   </TabItem>
@@ -237,8 +251,12 @@ run them or see the latest changes you made.
 
   <TabItem value="console-js" label="Node.js console app">
 
-    ```sh title="Run it"
-    just console-js <path-to-image>
+    ```sh title="Run it (CommonJS)"
+    just console-js-cjs <path-to-image>
+    ```
+
+    ```sh title="Run it (ES modules)"
+    just console-js-esm <path-to-image>
     ```
 
   </TabItem>
@@ -250,10 +268,20 @@ run them or see the latest changes you made.
 Remove generated build files:
 
 <Tabs groupId="clean-target">
+  <TabItem value="all" label="Everything">
+
+Removes every generated build folder below (and the cleaned documentation files).
+
+```bash title="Paste this inside the Docker shell"
+just clean-all
+```
+
+  </TabItem>
+
   <TabItem value="cpp" label="C++">
 
 ```bash title="Paste this inside the Docker shell"
-just clean cpp
+just cmake clean
 ```
 
   </TabItem>
@@ -261,7 +289,7 @@ just clean cpp
   <TabItem value="js" label="JS / WASM">
 
 ```bash title="Paste this inside the Docker shell"
-just clean js
+just js clean
 ```
 
   </TabItem>
@@ -269,7 +297,7 @@ just clean js
   <TabItem value="packages-js" label="JS Packages">
 
 ```bash title="Paste this inside the Docker shell"
-just clean packages-js
+just js package-clean
 ```
 
   </TabItem>
@@ -277,7 +305,7 @@ just clean packages-js
   <TabItem value="packages-py" label="Python Packages">
 
 ```bash title="Paste this inside the Docker shell"
-just clean packages-py
+just py clean
 ```
 
   </TabItem>

@@ -53,7 +53,7 @@ print(svg)
 | `gaussian_blur_fft`     | FFT-based Gaussian blur                          |
 | `invert_image`          | Invert pixel values                              |
 | `threshold_image`       | Posterize to N intensity levels                  |
-| `black_threshold_image` | Posterize, biased toward dark output             |
+| `black_threshold_image` | Force near-black pixels to pure black            |
 
 See the [Python API Reference](./api-reference) for full
 signatures.

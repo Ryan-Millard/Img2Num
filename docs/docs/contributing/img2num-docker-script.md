@@ -106,7 +106,7 @@ Runs a one-off command inside the Docker development container.
 Example:
 
 ```bash
-./img2num run just build docs
+./img2num run just docs build
 ```
 
 > `run` and `exec` are interchangeable.
