@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.2](https://github.com/Ryan-Millard/Img2Num/compare/packages-py-v0.3.1...packages-py-v0.3.2) (2026-10-15)
+
+
+### 📚 Documentation
+
+* **api:** describe black_threshold_image as a per-channel brightness cutoff ([#692](https://github.com/Ryan-Millard/Img2Num/issues/692)) ([3506b0a](https://github.com/Ryan-Millard/Img2Num/commit/3506b0afc82b6d67e69e38a906b0cbf91763fb20)), closes [#691](https://github.com/Ryan-Millard/Img2Num/issues/691)
+* **examples:** add community showcase ([#644](https://github.com/Ryan-Millard/Img2Num/issues/644)) ([e6b20ba](https://github.com/Ryan-Millard/Img2Num/commit/e6b20babd1bd7d66662b25435e0297155605f10c)), closes [#638](https://github.com/Ryan-Millard/Img2Num/issues/638)
+* **website:** added the Discord server to the navbar, footer and contributing guide ([#689](https://github.com/Ryan-Millard/Img2Num/issues/689)) ([2d7e84d](https://github.com/Ryan-Millard/Img2Num/commit/2d7e84defce9e4f6ea3b17cd7f4a29732f03d41d))
+
 ## [0.3.1](https://github.com/Ryan-Millard/Img2Num/compare/packages-py-v0.3.0...packages-py-v0.3.1) (2026-09-24)
 
 
