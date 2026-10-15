@@ -655,3 +655,23 @@ div[class^="buttonGroup"] button {
     animation: none;
   }
 }
+
+details {
+  --ifm-alert-background-color: var(--glass-bg);
+  --ifm-alert-border-color: var(--ifm-color-primary);
+  --ifm-alert-foreground-color: var(--text);
+
+  --docusaurus-details-decoration-color: var(--ifm-color-primary);
+  margin-bottom: 0.75rem;
+  border: 0 solid var(--ifm-color-primary);
+  border-left-width: 4px;
+}
+
+details summary h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+details p:last-child {
+  margin-bottom: 0;
+}
