@@ -4,7 +4,7 @@ description: "Img2Num 0.4.2 ships five purpose-built WASM bundles on npm - brows
 keywords: [img2num, image to svg, raster to svg, javascript svg converter, webassembly, wasm, npm, commonjs, esm, vectorization]
 image: ./img/social.png
 slug: img2num_js_0_4_2
-authors: [ryan-millard]
+authors: [ryan-millard, ayush-jaiswal]
 tags: [release, javascript, wasm]
 ---
 
@@ -313,7 +313,7 @@ Talking about build targets is abstract, so the examples got a matching overhaul
   <Link to="/example-apps/iife/" target="_blank">
     IIFE
   </Link>
-  &comma; and&nbsp;
+  &comma;&nbsp;
   <Link to="/example-apps/umd/" target="_blank">
     UMD
   </Link>
