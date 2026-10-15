@@ -313,7 +313,7 @@ Talking about build targets is abstract, so the examples got a matching overhaul
   <Link to="/example-apps/iife/" target="_blank">
     IIFE
   </Link>
-  &comma;&nbsp;
+  &comma; and&nbsp;
   <Link to="/example-apps/umd/" target="_blank">
     UMD
   </Link>
