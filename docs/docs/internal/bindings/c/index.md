@@ -13,52 +13,45 @@ The **Img2Num C Bindings** provide a C-friendly interface to the core Img2Num im
 
 ## Overview
 
-The bindings wrap the underlying C++ functions (from [`core/`](../../core)) in a C interface using `extern "C"`. They operate on raw image buffers (`uint8_t*`) and provide access to key image processing operations.
+The bindings wrap the underlying C++ functions (from [`core/`](../../core)) in a C interface using `extern "C"`. 
+
+:::caution Buffer Format: RGBA Only
+All Img2Num functions operate on raw row-major image buffers (`uint8_t*`) and strictly require **RGBA format (4 bytes per pixel)**. A buffer of size `width * height` requires `(size_t)width * (size_t)height * 4` bytes. Passing RGB (3 bytes/pixel) or grayscale (1 byte/pixel) buffers will cause out-of-bounds memory corruption.
+:::
 
 ## Key Functions
 
-* `img2num_gaussian_blur_fft` — Apply FFT-based Gaussian blur
-* `img2num_invert_image` — Invert pixel values in an image
-* `img2num_threshold_image` — Apply thresholding to an image
-* `img2num_black_threshold_image` — Apply black-thresholding
-* `img2num_kmeans` — Perform k-means clustering on image pixels
-* `img2num_bilateral_filter` — Apply bilateral filtering
-* `img2num_labels_to_svg` — Convert labeled image to SVG
+* `img2num_image_to_svg` — Full pipeline: converts an RGBA raster image to an SVG string
+* `img2num_labels_to_svg` — Converts segmented label buffers to SVG paths
+* `img2num_gaussian_blur_fft` — Applies FFT-based Gaussian blur
+* `img2num_invert_image` — Inverts pixel values in an image
+* `img2num_threshold_image` — Applies thresholding to an image
+* `img2num_black_threshold_image` — Applies black-thresholding
+* `img2num_kmeans` — Performs k-means color quantization on image pixels
+* `img2num_bilateral_filter` — Applies edge-preserving bilateral filtering
 
-Each function is fully documented with Doxygen and mirrors the corresponding C++ function in `core/img2num.h`.
+Each function is fully documented with Doxygen and mirrors the corresponding C++ function in `core/include/img2num.h`.
 
-## Building the C Bindings
+## Memory Ownership
 
-```bash title="Run this in the root of the project"
-cmake -B build .
-cmake --build build
-cmake --install build
-```
+Functions that return a dynamic string (`char*`), such as `img2num_image_to_svg()` and `img2num_labels_to_svg()`, allocate the returned buffer via `malloc()`. 
 
-> `cmake --install build` might need elevated permissions, but that shouldn't be a problem in the Docker container.
+**The caller owns the returned string and must release it using `free()`.**
 
-* The library is installed under `lib/` and headers under `include/cimg2num`.
-* Ensure that the core `Img2Num` library is built and accessible.
+## Error Handling
 
-## Usage Example
+Error codes and diagnostic messages are managed through `<cimg2num/img2num_error_t.h>`:
+- `img2num_get_last_error()` — Returns the last `img2num_error_t` status code (`IMG2NUM_OK`, `IMG2NUM_ERROR_BAD_ALLOC`, `IMG2NUM_ERROR_INVALID_ARGUMENT`, etc.).
+- `img2num_get_last_error_message()` — Returns a human-readable string describing the error.
+- `img2num_clear_last_error()` — Resets the thread-local error state.
 
-:::important Proper Examples
-See the [`example-apps/`](https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps/) folder for the most up-to-date usage examples.
-:::
+## CMake Integration
 
-```c title="Applying basic image processing operations using the C API"
-#include "cimg2num.h"
-#include <stdint.h>
+Link against `CImg2Num` in your `CMakeLists.txt`:
 
-int main() {
-    uint8_t image[256*256];  // Example image buffer
-    img2num_gaussian_blur_fft(image, 256, 256, 1.5);
-    img2num_invert_image(image, 256, 256);
-
-    // Further processing...
-    return 0;
-}
-```
+```cmake
+find_package(CImg2Num REQUIRED)
+target_link_libraries(your_app PRIVATE CImg2Num::CImg2Num)
 
 ## Documentation
 
