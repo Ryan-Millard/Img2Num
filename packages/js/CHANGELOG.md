@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.5.0](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.4.2...packages-js-v0.5.0) (2026-10-15)
+
+
+### ✨ Features
+
+* **Debug Logging:** route logging through spdlog with compile-time level control ([#524](https://github.com/Ryan-Millard/Img2Num/issues/524)) ([47c8dd9](https://github.com/Ryan-Millard/Img2Num/commit/47c8dd91a8325a1f7f34838b978a8830f5f839b6))
+* **Types:** Ship TypeScript type definitions for the npm package ([#670](https://github.com/Ryan-Millard/Img2Num/issues/670)) ([b2dbed8](https://github.com/Ryan-Millard/Img2Num/commit/b2dbed84618020b89b507d70528a82a416faa9ad)), closes [#631](https://github.com/Ryan-Millard/Img2Num/issues/631)
+
+
+### 📚 Documentation
+
+* add JS 0.4.2 blog post, overhaul READMEs and security policy, redesign navbar ([#558](https://github.com/Ryan-Millard/Img2Num/issues/558)) ([e1a2a8a](https://github.com/Ryan-Millard/Img2Num/commit/e1a2a8aa332dc0a3e826a80e2ac9581964f747f5))
+* **api:** describe black_threshold_image as a per-channel brightness cutoff ([#692](https://github.com/Ryan-Millard/Img2Num/issues/692)) ([3506b0a](https://github.com/Ryan-Millard/Img2Num/commit/3506b0afc82b6d67e69e38a906b0cbf91763fb20)), closes [#691](https://github.com/Ryan-Millard/Img2Num/issues/691)
+* **examples:** add community showcase ([#644](https://github.com/Ryan-Millard/Img2Num/issues/644)) ([e6b20ba](https://github.com/Ryan-Millard/Img2Num/commit/e6b20babd1bd7d66662b25435e0297155605f10c)), closes [#638](https://github.com/Ryan-Millard/Img2Num/issues/638)
+* **website:** added the Discord server to the navbar, footer and contributing guide ([#689](https://github.com/Ryan-Millard/Img2Num/issues/689)) ([2d7e84d](https://github.com/Ryan-Millard/Img2Num/commit/2d7e84defce9e4f6ea3b17cd7f4a29732f03d41d))
+
 ## [0.4.2](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.4.1...packages-js-v0.4.2) (2026-08-18)
 
 
