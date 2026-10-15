@@ -244,7 +244,7 @@ const config = {
         docs: {
           sidebarPath: "./sidebars.js",
           // Remove this to remove the "edit this page" links.
-          editUrl: "https://github.com/Ryan-Millard/Img2Num/edit/main/docs/",
+          editUrl: "https://github.com/Ryan-Millard/Img2Num/edit/dev/docs/",
           routeBasePath: "docs",
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
@@ -257,7 +257,7 @@ const config = {
           },
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: "https://github.com/Ryan-Millard/Img2Num/edit/main/docs/",
+          editUrl: "https://github.com/Ryan-Millard/Img2Num/edit/dev/docs/",
           // Useful options to enforce blogging best practices
           onInlineTags: "warn",
           onInlineAuthors: "warn",
