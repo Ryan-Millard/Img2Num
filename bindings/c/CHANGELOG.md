@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.1](https://github.com/Ryan-Millard/Img2Num/compare/bindings-c-v0.2.0...bindings-c-v0.2.1) (2026-10-15)
+
+
+### 🐛 Bug Fixes
+
+* **bindings/c:** use (void) in error-API declarations to make them prototypes ([#764](https://github.com/Ryan-Millard/Img2Num/issues/764)) ([9bee27f](https://github.com/Ryan-Millard/Img2Num/commit/9bee27f8469596620ed73127d917bcc1d8e60b0d)), closes [#717](https://github.com/Ryan-Millard/Img2Num/issues/717)
+
+
+### 📚 Documentation
+
+* refresh docs, add Python guides, and remove outdated versioning ([#446](https://github.com/Ryan-Millard/Img2Num/issues/446)) ([8edaadd](https://github.com/Ryan-Millard/Img2Num/commit/8edaadddf18ca20407b7f480cd88c72b11c99000))
+
 ## [0.2.0](https://github.com/Ryan-Millard/Img2Num/compare/bindings-c-v0.1.0...bindings-c-v0.2.0) (2026-06-27)
 
 
