@@ -15,7 +15,7 @@ Img2Num is a lightweight, high-performance library for converting raster images 
 
 ## Getting Started
 
-- **Concepts** - Learn about color spaces, filtering, and contours.
+- **Glossary** - Learn about color spaces, filtering, and contours.
 - **FAQ** - Common issues and fixes.
 
 ## API Bindings

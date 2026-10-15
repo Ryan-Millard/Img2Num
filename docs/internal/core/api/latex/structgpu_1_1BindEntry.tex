@@ -1,0 +1,256 @@
+\doxysection{gpu\+::Bind\+Entry Struct Reference}
+\hypertarget{structgpu_1_1BindEntry}{}\label{structgpu_1_1BindEntry}\index{gpu::BindEntry@{gpu::BindEntry}}
+
+
+A single entry for bind-\/group construction.  
+
+
+
+
+{\ttfamily \#include $<$gpu\+\_\+utils.\+h$>$}
+
+
+
+Collaboration diagram for gpu\+::Bind\+Entry\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=168pt]{structgpu_1_1BindEntry__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{structgpu_1_1BindEntry}{Bind\+Entry}} \mbox{\hyperlink{structgpu_1_1BindEntry_ade86aba85ae265fda3d0fa477bbaf5f7}{texture}} (uint32\+\_\+t binding, const \mbox{\hyperlink{classgpu_1_1Texture}{Texture}} \&tex)
+\begin{DoxyCompactList}\small\item\em Create a texture-\/view entry. \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{structgpu_1_1BindEntry}{Bind\+Entry}} \mbox{\hyperlink{structgpu_1_1BindEntry_a1bba1e8523fefc8c128d453f0e0ad31e}{texture\+\_\+raw}} (uint32\+\_\+t binding, wgpu\+::\+Texture\+View tv)
+\begin{DoxyCompactList}\small\item\em Create a texture-\/view entry from a raw wgpu\+::\+Texture\+View. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\static \mbox{\hyperlink{structgpu_1_1BindEntry}{Bind\+Entry}} \mbox{\hyperlink{structgpu_1_1BindEntry_a86772409d7ba64a0cd128f36112a9ec4}{buffer\+\_\+entry}} (uint32\+\_\+t binding, const \mbox{\hyperlink{classgpu_1_1Buffer}{Buffer}}$<$ T $>$ \&buf)
+\begin{DoxyCompactList}\small\item\em Create a buffer entry (storage or uniform). \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{structgpu_1_1BindEntry}{Bind\+Entry}} \mbox{\hyperlink{structgpu_1_1BindEntry_a6cb328ff87a3c839cf4e5d4ec36922ce}{buffer\+\_\+raw}} (uint32\+\_\+t binding, wgpu\+::\+Buffer buf, uint64\+\_\+t size)
+\begin{DoxyCompactList}\small\item\em Create a buffer entry from a raw wgpu\+::\+Buffer and size. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structgpu_1_1BindEntry_acf93b58954f430ec00a02d957964186c}{binding}}
+\item 
+wgpu\+::\+Texture\+View \mbox{\hyperlink{structgpu_1_1BindEntry_a40e28f8e37a8f37aba4d091e7592c65d}{texture\+\_\+view}} \{\}
+\item 
+wgpu\+::\+Buffer \mbox{\hyperlink{structgpu_1_1BindEntry_ae091fd82a9a8fe2ecee21c0c7ceb887d}{buffer}} \{\}
+\item 
+uint64\+\_\+t \mbox{\hyperlink{structgpu_1_1BindEntry_a08940a243973882091d2e180876b2b26}{buffer\+\_\+size}} \{0\}
+\item 
+uint64\+\_\+t \mbox{\hyperlink{structgpu_1_1BindEntry_a885df55d02a5a3311b2324d0a1b09d96}{buffer\+\_\+offset}} \{0\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A single entry for bind-\/group construction. 
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00430}{430}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structgpu_1_1BindEntry_a86772409d7ba64a0cd128f36112a9ec4}\label{structgpu_1_1BindEntry_a86772409d7ba64a0cd128f36112a9ec4} 
+\index{gpu::BindEntry@{gpu::BindEntry}!buffer\_entry@{buffer\_entry}}
+\index{buffer\_entry@{buffer\_entry}!gpu::BindEntry@{gpu::BindEntry}}
+\doxysubsubsection{\texorpdfstring{buffer\_entry()}{buffer\_entry()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+static \mbox{\hyperlink{structgpu_1_1BindEntry}{Bind\+Entry}} gpu\+::\+Bind\+Entry\+::buffer\+\_\+entry (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{binding,  }\item[{const \mbox{\hyperlink{classgpu_1_1Buffer}{Buffer}}$<$ T $>$ \&}]{buf }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Create a buffer entry (storage or uniform). 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00454}{454}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00454\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \ \ BindEntry\ e;}
+\DoxyCodeLine{00456\ \ \ \ \ \ \ \ \ e.binding\ =\ binding;}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \ \ e.buffer\ =\ buf.handle();}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \ \ e.buffer\_size\ =\ buf.byte\_size();}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ e;}
+\DoxyCodeLine{00460\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+References \mbox{\hyperlink{gpu__utils_8h_source_l00216}{gpu\+::\+Buffer$<$ T $>$\+::byte\+\_\+size()}}, and \mbox{\hyperlink{gpu__utils_8h_source_l00211}{gpu\+::\+Buffer$<$ T $>$\+::handle()}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structgpu_1_1BindEntry_a86772409d7ba64a0cd128f36112a9ec4_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{structgpu_1_1BindEntry_a6cb328ff87a3c839cf4e5d4ec36922ce}\label{structgpu_1_1BindEntry_a6cb328ff87a3c839cf4e5d4ec36922ce} 
+\index{gpu::BindEntry@{gpu::BindEntry}!buffer\_raw@{buffer\_raw}}
+\index{buffer\_raw@{buffer\_raw}!gpu::BindEntry@{gpu::BindEntry}}
+\doxysubsubsection{\texorpdfstring{buffer\_raw()}{buffer\_raw()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{structgpu_1_1BindEntry}{Bind\+Entry}} gpu\+::\+Bind\+Entry\+::buffer\+\_\+raw (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{binding,  }\item[{wgpu\+::\+Buffer}]{buf,  }\item[{uint64\+\_\+t}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Create a buffer entry from a raw wgpu\+::\+Buffer and size. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00463}{463}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ BindEntry\ e;}
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \ \ e.binding\ =\ binding;}
+\DoxyCodeLine{00466\ \ \ \ \ \ \ \ \ e.buffer\ =\ std::move(buf);}
+\DoxyCodeLine{00467\ \ \ \ \ \ \ \ \ e.buffer\_size\ =\ size;}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ e;}
+\DoxyCodeLine{00469\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{structgpu_1_1BindEntry_ade86aba85ae265fda3d0fa477bbaf5f7}\label{structgpu_1_1BindEntry_ade86aba85ae265fda3d0fa477bbaf5f7} 
+\index{gpu::BindEntry@{gpu::BindEntry}!texture@{texture}}
+\index{texture@{texture}!gpu::BindEntry@{gpu::BindEntry}}
+\doxysubsubsection{\texorpdfstring{texture()}{texture()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{structgpu_1_1BindEntry}{Bind\+Entry}} gpu\+::\+Bind\+Entry\+::texture (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{binding,  }\item[{const \mbox{\hyperlink{classgpu_1_1Texture}{Texture}} \&}]{tex }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Create a texture-\/view entry. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00438}{438}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ \ \ BindEntry\ e;}
+\DoxyCodeLine{00440\ \ \ \ \ \ \ \ \ e.binding\ =\ binding;}
+\DoxyCodeLine{00441\ \ \ \ \ \ \ \ \ e.texture\_view\ =\ tex.view();}
+\DoxyCodeLine{00442\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ e;}
+\DoxyCodeLine{00443\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+References \mbox{\hyperlink{gpu__utils_8h_source_l00357}{gpu\+::\+Texture\+::view()}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structgpu_1_1BindEntry_ade86aba85ae265fda3d0fa477bbaf5f7_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{structgpu_1_1BindEntry_a1bba1e8523fefc8c128d453f0e0ad31e}\label{structgpu_1_1BindEntry_a1bba1e8523fefc8c128d453f0e0ad31e} 
+\index{gpu::BindEntry@{gpu::BindEntry}!texture\_raw@{texture\_raw}}
+\index{texture\_raw@{texture\_raw}!gpu::BindEntry@{gpu::BindEntry}}
+\doxysubsubsection{\texorpdfstring{texture\_raw()}{texture\_raw()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{structgpu_1_1BindEntry}{Bind\+Entry}} gpu\+::\+Bind\+Entry\+::texture\+\_\+raw (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{binding,  }\item[{wgpu\+::\+Texture\+View}]{tv }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Create a texture-\/view entry from a raw wgpu\+::\+Texture\+View. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00446}{446}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \ \ BindEntry\ e;}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \ \ e.binding\ =\ binding;}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \ \ e.texture\_view\ =\ std::move(tv);}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ e;}
+\DoxyCodeLine{00451\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structgpu_1_1BindEntry_acf93b58954f430ec00a02d957964186c}\label{structgpu_1_1BindEntry_acf93b58954f430ec00a02d957964186c} 
+\index{gpu::BindEntry@{gpu::BindEntry}!binding@{binding}}
+\index{binding@{binding}!gpu::BindEntry@{gpu::BindEntry}}
+\doxysubsubsection{\texorpdfstring{binding}{binding}}
+{\footnotesize\ttfamily uint32\+\_\+t gpu\+::\+Bind\+Entry\+::binding}
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00431}{431}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+\Hypertarget{structgpu_1_1BindEntry_ae091fd82a9a8fe2ecee21c0c7ceb887d}\label{structgpu_1_1BindEntry_ae091fd82a9a8fe2ecee21c0c7ceb887d} 
+\index{gpu::BindEntry@{gpu::BindEntry}!buffer@{buffer}}
+\index{buffer@{buffer}!gpu::BindEntry@{gpu::BindEntry}}
+\doxysubsubsection{\texorpdfstring{buffer}{buffer}}
+{\footnotesize\ttfamily wgpu\+::\+Buffer gpu\+::\+Bind\+Entry\+::buffer \{\}}
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00433}{433}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00433\ \{\};}
+
+\end{DoxyCode}
+\Hypertarget{structgpu_1_1BindEntry_a885df55d02a5a3311b2324d0a1b09d96}\label{structgpu_1_1BindEntry_a885df55d02a5a3311b2324d0a1b09d96} 
+\index{gpu::BindEntry@{gpu::BindEntry}!buffer\_offset@{buffer\_offset}}
+\index{buffer\_offset@{buffer\_offset}!gpu::BindEntry@{gpu::BindEntry}}
+\doxysubsubsection{\texorpdfstring{buffer\_offset}{buffer\_offset}}
+{\footnotesize\ttfamily uint64\+\_\+t gpu\+::\+Bind\+Entry\+::buffer\+\_\+offset \{0\}}
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00435}{435}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00435\ \{0\};}
+
+\end{DoxyCode}
+\Hypertarget{structgpu_1_1BindEntry_a08940a243973882091d2e180876b2b26}\label{structgpu_1_1BindEntry_a08940a243973882091d2e180876b2b26} 
+\index{gpu::BindEntry@{gpu::BindEntry}!buffer\_size@{buffer\_size}}
+\index{buffer\_size@{buffer\_size}!gpu::BindEntry@{gpu::BindEntry}}
+\doxysubsubsection{\texorpdfstring{buffer\_size}{buffer\_size}}
+{\footnotesize\ttfamily uint64\+\_\+t gpu\+::\+Bind\+Entry\+::buffer\+\_\+size \{0\}}
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00434}{434}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00434\ \{0\};}
+
+\end{DoxyCode}
+\Hypertarget{structgpu_1_1BindEntry_a40e28f8e37a8f37aba4d091e7592c65d}\label{structgpu_1_1BindEntry_a40e28f8e37a8f37aba4d091e7592c65d} 
+\index{gpu::BindEntry@{gpu::BindEntry}!texture\_view@{texture\_view}}
+\index{texture\_view@{texture\_view}!gpu::BindEntry@{gpu::BindEntry}}
+\doxysubsubsection{\texorpdfstring{texture\_view}{texture\_view}}
+{\footnotesize\ttfamily wgpu\+::\+Texture\+View gpu\+::\+Bind\+Entry\+::texture\+\_\+view \{\}}
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00432}{432}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00432\ \{\};}
+
+\end{DoxyCode}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/internal/\mbox{\hyperlink{gpu__utils_8h}{gpu\+\_\+utils.\+h}}\end{DoxyCompactItemize}

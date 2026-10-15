@@ -1,0 +1,5 @@
+<map id="gpu::Buffer::byte_size" name="gpu::Buffer::byte_size">
+<area shape="rect" id="Node000001" title="Size in bytes." alt="" coords="216,13,379,38"/>
+<area shape="rect" id="Node000002" href="$structgpu_1_1BindEntry.html#a86772409d7ba64a0cd128f36112a9ec4" title="Create a buffer entry (storage or uniform)." alt="" coords="5,5,168,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,28,168,28,168,23,202,23"/>
+</map>

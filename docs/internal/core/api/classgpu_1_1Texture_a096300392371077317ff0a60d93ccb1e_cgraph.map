@@ -1,0 +1,6 @@
+<map id="gpu::Texture::read" name="gpu::Texture::read">
+<area shape="rect" id="Node000001" title="Blocking readback with automatic 256&#45;byte row&#45;alignment stripping." alt="" coords="5,29,144,55"/>
+<area shape="rect" id="Node000002" href="$gpu__utils_8h.html#aa8083a6a628c8a891771e104257607b9" title="Block until a MapAsync on buffer completes." alt="" coords="192,29,341,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,39,179,39,179,45,144,45"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="235,31,228,21,232,11,245,5,267,3,293,6,304,15,301,19,291,11,267,8,246,10,236,15,233,20,239,28"/>
+</map>

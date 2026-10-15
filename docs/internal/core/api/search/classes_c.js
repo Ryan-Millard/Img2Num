@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xy_0',['XY',['../structXY.html',1,'']]]
+  ['texture_0',['Texture',['../classgpu_1_1Texture.html',1,'gpu']]]
 ];

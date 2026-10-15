@@ -1,0 +1,9 @@
+<map id="gpu::Texture::Texture" name="gpu::Texture::Texture">
+<area shape="rect" id="Node000001" title="Create a 2D texture." alt="" coords="5,55,164,80"/>
+<area shape="rect" id="Node000002" href="$classgpu_1_1Texture.html#ad5ad5a589655b309555a50026c2c3e27" title="Texel format of the texture." alt="" coords="212,5,367,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="137,52,222,31,223,37,139,57"/>
+<area shape="rect" id="Node000003" href="$classgpu_1_1Texture.html#a98d1b416dac9d1cb883efb43ad2c7804" title="Height of the texture in pixels." alt="" coords="214,55,365,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="164,65,200,65,200,70,164,70"/>
+<area shape="rect" id="Node000004" href="$classgpu_1_1Texture.html#a10691a74815853df462d26c7e16d0b95" title="Width of the texture in pixels." alt="" coords="216,104,363,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="139,77,223,98,222,103,137,83"/>
+</map>

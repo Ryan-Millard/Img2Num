@@ -223,7 +223,7 @@ Img2Num does the math, and you decide which thread it runs on.</p></div></div>
 <h2 class="anchor anchorTargetStickyNavbar_w0Nu" id="example-apps-for-every-binding">Example apps for every binding<a href="https://img2num.dev/blog/img2num_js_0_4_2/#example-apps-for-every-binding" class="hash-link" aria-label="Direct link to Example apps for every binding" title="Direct link to Example apps for every binding" translate="no">​</a></h2>
 <p>Talking about build targets is abstract, so the examples got a matching overhaul:</p>
 <ul>
-<li class=""><code>console-js</code> is now split into <a href="https://img2num.dev/example-apps/#node-esm"><code>console-js-esm</code></a> and <a href="https://img2num.dev/example-apps/#node-cjs"><code>console-js-cjs</code></a>,
+<li class=""><code>console-js</code> is now split into <a href="https://img2num.dev/showcase/#node-esm"><code>console-js-esm</code></a> and <a href="https://img2num.dev/showcase/#node-cjs"><code>console-js-cjs</code></a>,
 so the <code>import</code> and <code>require</code> export conditions are each exercised by a real consumer (and we fixed a byte-offset bug in the pixel-buffer construction while we were in there).</li>
 <li class="">The <code>html-js</code> example was rebuilt as a single shared template compiled into three self-contained variants -<!-- -->
 <a href="https://img2num.dev/example-apps/esm/" target="_blank"><p>ESM</p></a>
@@ -232,7 +232,7 @@ so the <code>import</code> and <code>require</code> export conditions are each e
 <!-- -->, and&nbsp;<!-- -->
 <a href="https://img2num.dev/example-apps/umd/" target="_blank"><p>UMD</p></a>
 <!-- -->&nbsp;- each deployable as plain static files with no build tooling at runtime.</li>
-<li class="">The docs site now has an <a href="https://img2num.dev/example-apps/" target="_blank" rel="noopener noreferrer" class="">example apps index</a> with a card and representative snippet for every binding:
+<li class="">The docs site now has an <a href="https://img2num.dev/showcase/" target="_blank" rel="noopener noreferrer" class="">example apps index</a> with a card and representative snippet for every binding:
 React, browser ESM, IIFE, UMD, Node ESM/CJS - and Python, C++, and C, because Img2Num was never just a JavaScript library.</li>
 <li class="">Every JS target is also runnable in your browser right now - the CodeSandbox links in the
 <a href="https://img2num.dev/blog/img2num_js_0_4_2/#how-to-use-img2num-in-the-browser-and-nodejs" class="">tabs above</a> are one click from "processed image" with nothing installed.</li>

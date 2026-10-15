@@ -1,0 +1,5 @@
+<map id="gpu::Buffer::write" name="gpu::Buffer::write">
+<area shape="rect" id="Node000001" title="Upload an entire vector to GPU." alt="" coords="5,5,140,31"/>
+<area shape="rect" id="Node000002" href="$classgpu_1_1Buffer.html#a4b305b7a5112aac8017666547e78fa7e" title="Upload data from CPU to GPU." alt="" coords="188,5,323,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,15,174,15,174,21,140,21"/>
+</map>

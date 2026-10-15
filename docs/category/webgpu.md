@@ -10,6 +10,10 @@ Overview of WebGPU architecture including hardware hierarchy, compute workgroups
 
 Explanation of the GPU singleton manager used to access the WebGPU device and queue across the codebase.
 
+## 📄️ Part 3: Utilities Layer
+
+Overview of the gpu_utils.h layer for resource management, pipeline caching, and RAII wrappers.
+
 ## 🗃 Part 3: Implementations
 
 3 items

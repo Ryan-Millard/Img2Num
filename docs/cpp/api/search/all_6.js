@@ -8,5 +8,5 @@ var searchData=
   ['img2num_2eh_5',['img2num.h',['../img2num_8h.html',1,'']]],
   ['installation_6',['Installation',['../index.html#install_sec',1,'']]],
   ['introduction_7',['Introduction',['../index.html#intro_sec',1,'']]],
-  ['invert_5fimage_8',['invert_image',['../namespaceimg2num.html#adcf00084d90ead66510dadc459d0990e',1,'img2num']]]
+  ['invert_5fimage_8',['invert_image',['../namespaceimg2num.html#ab1906e33330d80eba5399ca2a30e1572',1,'img2num']]]
 ];

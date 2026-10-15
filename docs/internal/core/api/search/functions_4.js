@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kmeans_0',['kmeans',['../namespaceimg2num.html#ae73563e9dd25a8dd2120fd519ef87abd',1,'img2num']]]
+  ['encode_5fpass_0',['encode_pass',['../gpu__utils_8h.html#a1dbdd4527ebabb3eb83e00d0604cfa65',1,'gpu']]]
 ];

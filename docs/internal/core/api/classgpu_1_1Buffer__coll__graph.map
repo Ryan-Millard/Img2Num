@@ -1,0 +1,5 @@
+<map id="gpu::Buffer&lt; T &gt;" name="gpu::Buffer&lt; T &gt;">
+<area shape="rect" id="Node000001" title="RAII wrapper around a wgpu::Buffer with compile&#45;time type safety." alt="" coords="5,148,128,433"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="41,5,93,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,71,69,131,64,131,64,71"/>
+</map>

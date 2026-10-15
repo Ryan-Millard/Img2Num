@@ -4,6 +4,11 @@ var annotated_dup =
       [ "Coord", "structcontours_1_1Coord.html", null ],
       [ "PointID", "structcontours_1_1PointID.html", null ]
     ] ],
+    [ "gpu", null, [
+      [ "BindEntry", "structgpu_1_1BindEntry.html", "structgpu_1_1BindEntry" ],
+      [ "Buffer", "classgpu_1_1Buffer.html", "classgpu_1_1Buffer" ],
+      [ "Texture", "classgpu_1_1Texture.html", "classgpu_1_1Texture" ]
+    ] ],
     [ "ImageLib", null, [
       [ "Image", "classImageLib_1_1Image.html", null ],
       [ "LABAPixel", "structImageLib_1_1LABAPixel.html", null ],
@@ -24,6 +29,7 @@ var annotated_dup =
     [ "GPU", "classGPU.html", null ],
     [ "Graph", "classGraph.html", "classGraph" ],
     [ "Node", "classNode.html", null ],
+    [ "NodeIdLess", "structNodeIdLess.html", null ],
     [ "Params", "structParams.html", null ],
     [ "Point", "structPoint.html", null ],
     [ "QuadBezier", "structQuadBezier.html", null ],

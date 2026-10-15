@@ -1,0 +1,479 @@
+\doxysection{gpu\+::Buffer\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classgpu_1_1Buffer}{}\label{classgpu_1_1Buffer}\index{gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}}
+
+
+RAII wrapper around a wgpu\+::\+Buffer with compile-\/time type safety.  
+
+
+
+
+{\ttfamily \#include $<$gpu\+\_\+utils.\+h$>$}
+
+
+
+Collaboration diagram for gpu\+::Buffer\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=185pt]{classgpu_1_1Buffer__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classgpu_1_1Buffer_a6d8e93549e540cfa0e23457b0d75a7fb}{Buffer}} (size\+\_\+t count, wgpu\+::\+Buffer\+Usage usage)
+\begin{DoxyCompactList}\small\item\em Create a \doxylink{classGPU}{GPU} buffer holding {\ttfamily count} elements of T. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classgpu_1_1Buffer_a4b305b7a5112aac8017666547e78fa7e}{write}} (const T \texorpdfstring{$\ast$}{*}data, size\+\_\+t count, size\+\_\+t offset\+\_\+elements=0)
+\begin{DoxyCompactList}\small\item\em Upload data from CPU to \doxylink{classGPU}{GPU}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classgpu_1_1Buffer_a9244e03f65819da73715d91f33af4bca}{write}} (const std\+::vector$<$ T $>$ \&data)
+\begin{DoxyCompactList}\small\item\em Upload an entire vector to \doxylink{classGPU}{GPU}. \end{DoxyCompactList}\item 
+std\+::vector$<$ T $>$ \mbox{\hyperlink{classgpu_1_1Buffer_af23f433dfce1f517c38575ce35683f65}{read}} ()
+\begin{DoxyCompactList}\small\item\em Blocking readback\+: \doxylink{classGPU}{GPU} → CPU. \end{DoxyCompactList}\item 
+const wgpu\+::\+Buffer \& \mbox{\hyperlink{classgpu_1_1Buffer_adcd67b01e45d8fe916a6c4b22b921f2f}{handle}} () const
+\begin{DoxyCompactList}\small\item\em Returns the underlying wgpu\+::\+Buffer handle. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classgpu_1_1Buffer_aba4580118ffc2272eccac4de442f9f41}{byte\+\_\+size}} () const
+\begin{DoxyCompactList}\small\item\em Size in bytes. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classgpu_1_1Buffer_a11826da75ad587d2f3700cb8bfc4487a}{size}} () const
+\begin{DoxyCompactList}\small\item\em Element count. \end{DoxyCompactList}\item 
+\Hypertarget{classgpu_1_1Buffer_a48a2e4ef4ba5ed6296a56370e59a2c52}\label{classgpu_1_1Buffer_a48a2e4ef4ba5ed6296a56370e59a2c52} 
+{\bfseries Buffer} (const \mbox{\hyperlink{classgpu_1_1Buffer}{Buffer}} \&)=delete
+\item 
+\Hypertarget{classgpu_1_1Buffer_a8f910775d98e460f600e3edb3049c84b}\label{classgpu_1_1Buffer_a8f910775d98e460f600e3edb3049c84b} 
+\mbox{\hyperlink{classgpu_1_1Buffer}{Buffer}} \& {\bfseries operator=} (const \mbox{\hyperlink{classgpu_1_1Buffer}{Buffer}} \&)=delete
+\item 
+\mbox{\hyperlink{classgpu_1_1Buffer_a369651c685644cdf6eb0d26b28177877}{Buffer}} (\mbox{\hyperlink{classgpu_1_1Buffer}{Buffer}} \&\&other) noexcept
+\begin{DoxyCompactList}\small\item\em Move constructor. Transfers ownership of the \doxylink{classGPU}{GPU} buffer. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classgpu_1_1Buffer}{Buffer}} \& \mbox{\hyperlink{classgpu_1_1Buffer_a780056e693eccdc5d0613b4be55a4e8e}{operator=}} (\mbox{\hyperlink{classgpu_1_1Buffer}{Buffer}} \&\&other) noexcept
+\begin{DoxyCompactList}\small\item\em Move assignment. Destroys the current buffer and takes ownership. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classgpu_1_1Buffer_a965fd7bbec4e414d413e403ea349595b}{\texorpdfstring{$\sim$}{\string~}\+Buffer}} ()
+\begin{DoxyCompactList}\small\item\em Destructor. Releases the \doxylink{classGPU}{GPU} buffer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+wgpu\+::\+Buffer \mbox{\hyperlink{classgpu_1_1Buffer_a4964d10eaebfe1161f86b9eaa41b4f36}{buffer\+\_\+}} \{nullptr\}
+\item 
+size\+\_\+t \mbox{\hyperlink{classgpu_1_1Buffer_af5cc9fdd8de9f2ca9289f849dfc07e8a}{count\+\_\+}} \{0\}
+\item 
+size\+\_\+t \mbox{\hyperlink{classgpu_1_1Buffer_afbcfdc94314bcdf177ffc8bac9afdb0d}{byte\+\_\+size\+\_\+}} \{0\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class gpu\+::\+Buffer$<$ T $>$}
+RAII wrapper around a wgpu\+::\+Buffer with compile-\/time type safety. 
+
+T must be a trivially copyable type. The buffer is destroyed when this object goes out of scope.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Element type (e.\+g. float, uint32\+\_\+t, \doxylink{structFilterParams}{Filter\+Params}). \\
+\hline
+\end{DoxyTemplParams}
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00150}{150}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classgpu_1_1Buffer_a6d8e93549e540cfa0e23457b0d75a7fb}\label{classgpu_1_1Buffer_a6d8e93549e540cfa0e23457b0d75a7fb} 
+\index{gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}!Buffer@{Buffer}}
+\index{Buffer@{Buffer}!gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Buffer()}{Buffer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classgpu_1_1Buffer}{gpu\+::\+Buffer}}$<$ T $>$\+::\+Buffer (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{count,  }\item[{wgpu\+::\+Buffer\+Usage}]{usage }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Create a \doxylink{classGPU}{GPU} buffer holding {\ttfamily count} elements of T. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em count} & Number of elements. \\
+\hline
+{\em usage} & wgpu\+::\+Buffer\+Usage flags. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00157}{157}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ :\ count\_(count)}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ ,\ byte\_size\_(count\ *\ \textcolor{keyword}{sizeof}(T))\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ wgpu::BufferDescriptor\ desc\ \{\};}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ desc.size\ =\ byte\_size\_;}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ desc.usage\ =\ usage;}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ buffer\_\ =\ GPU::getClassInstance().get\_device().CreateBuffer(\&desc);}
+\DoxyCodeLine{00164\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classgpu_1_1Buffer_a369651c685644cdf6eb0d26b28177877}\label{classgpu_1_1Buffer_a369651c685644cdf6eb0d26b28177877} 
+\index{gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}!Buffer@{Buffer}}
+\index{Buffer@{Buffer}!gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Buffer()}{Buffer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classgpu_1_1Buffer}{gpu\+::\+Buffer}}$<$ T $>$\+::\+Buffer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classgpu_1_1Buffer}{Buffer}}$<$ T $>$ \&\&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Move constructor. Transfers ownership of the \doxylink{classGPU}{GPU} buffer. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00230}{230}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ :\ buffer\_(std::move(other.buffer\_))}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ ,\ count\_(other.count\_)}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ ,\ byte\_size\_(other.byte\_size\_)\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ other.buffer\_\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ other.count\_\ =\ 0;}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ other.byte\_size\_\ =\ 0;}
+\DoxyCodeLine{00237\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classgpu_1_1Buffer_a965fd7bbec4e414d413e403ea349595b}\label{classgpu_1_1Buffer_a965fd7bbec4e414d413e403ea349595b} 
+\index{gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}!````~Buffer@{\texorpdfstring{$\sim$}{\string~}Buffer}}
+\index{````~Buffer@{\texorpdfstring{$\sim$}{\string~}Buffer}!gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}Buffer()}{\string~Buffer()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classgpu_1_1Buffer}{gpu\+::\+Buffer}}$<$ T $>$\+::\texorpdfstring{$\sim$}{\string~}\mbox{\hyperlink{classgpu_1_1Buffer}{Buffer}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Destructor. Releases the \doxylink{classGPU}{GPU} buffer. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00256}{256}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer\_)\ \{}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \ \ buffer\_.Destroy();}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00260\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classgpu_1_1Buffer_aba4580118ffc2272eccac4de442f9f41}\label{classgpu_1_1Buffer_aba4580118ffc2272eccac4de442f9f41} 
+\index{gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}!byte\_size@{byte\_size}}
+\index{byte\_size@{byte\_size}!gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{byte\_size()}{byte\_size()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+size\+\_\+t \mbox{\hyperlink{classgpu_1_1Buffer}{gpu\+::\+Buffer}}$<$ T $>$\+::byte\+\_\+size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Size in bytes. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00216}{216}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ byte\_size\_;}
+\DoxyCodeLine{00218\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00454}{gpu\+::\+Bind\+Entry\+::buffer\+\_\+entry()}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classgpu_1_1Buffer_aba4580118ffc2272eccac4de442f9f41_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classgpu_1_1Buffer_adcd67b01e45d8fe916a6c4b22b921f2f}\label{classgpu_1_1Buffer_adcd67b01e45d8fe916a6c4b22b921f2f} 
+\index{gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}!handle@{handle}}
+\index{handle@{handle}!gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{handle()}{handle()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const wgpu\+::\+Buffer \& \mbox{\hyperlink{classgpu_1_1Buffer}{gpu\+::\+Buffer}}$<$ T $>$\+::handle (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the underlying wgpu\+::\+Buffer handle. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00211}{211}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ buffer\_;}
+\DoxyCodeLine{00213\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00454}{gpu\+::\+Bind\+Entry\+::buffer\+\_\+entry()}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=347pt]{classgpu_1_1Buffer_adcd67b01e45d8fe916a6c4b22b921f2f_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classgpu_1_1Buffer_a780056e693eccdc5d0613b4be55a4e8e}\label{classgpu_1_1Buffer_a780056e693eccdc5d0613b4be55a4e8e} 
+\index{gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classgpu_1_1Buffer}{Buffer}} \& \mbox{\hyperlink{classgpu_1_1Buffer}{gpu\+::\+Buffer}}$<$ T $>$\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classgpu_1_1Buffer}{Buffer}}$<$ T $>$ \&\&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Move assignment. Destroys the current buffer and takes ownership. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00240}{240}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{this}\ !=\ \&other)\ \{}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer\_)\ \{}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ buffer\_.Destroy();}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \ \ \ \ buffer\_\ =\ std::move(other.buffer\_);}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ count\_\ =\ other.count\_;}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \ \ \ \ byte\_size\_\ =\ other.byte\_size\_;}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ other.buffer\_\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ other.count\_\ =\ 0;}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \ \ \ \ other.byte\_size\_\ =\ 0;}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00253\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classgpu_1_1Buffer_af23f433dfce1f517c38575ce35683f65}\label{classgpu_1_1Buffer_af23f433dfce1f517c38575ce35683f65} 
+\index{gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}!read@{read}}
+\index{read@{read}!gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::vector$<$ T $>$ \mbox{\hyperlink{classgpu_1_1Buffer}{gpu\+::\+Buffer}}$<$ T $>$\+::read (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Blocking readback\+: \doxylink{classGPU}{GPU} → CPU. 
+
+Creates an internal staging buffer, copies, maps, waits, and returns the data. Works on both native Dawn and Emscripten. 
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00185}{185}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ staging\ buffer}}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ wgpu::BufferDescriptor\ staging\_desc\ \{\};}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ staging\_desc.size\ =\ byte\_size\_;}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ staging\_desc.usage\ =\ wgpu::BufferUsage::MapRead\ |\ wgpu::BufferUsage::CopyDst;}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ wgpu::Buffer\ staging\ =\ GPU::getClassInstance().get\_device().CreateBuffer(\&staging\_desc);}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ GPU\ buffer\ →\ staging}}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ wgpu::CommandEncoder\ encoder\ =\ GPU::getClassInstance().get\_device().CreateCommandEncoder();}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ encoder.CopyBufferToBuffer(buffer\_,\ 0,\ staging,\ 0,\ byte\_size\_);}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ wgpu::CommandBuffer\ commands\ =\ encoder.Finish();}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ GPU::getClassInstance().get\_queue().Submit(1,\ \&commands);}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Map\ and\ wait}}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ mapped\ =\ \mbox{\hyperlink{gpu__utils_8h_aa8083a6a628c8a891771e104257607b9}{map\_and\_wait}}(staging,\ byte\_size\_);}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ to\ vector}}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ std::vector<T>\ result(count\_);}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ std::memcpy(result.data(),\ mapped,\ byte\_size\_);}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ staging.Unmap();}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ staging.Destroy();}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00208\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+References \mbox{\hyperlink{gpu__utils_8h_source_l00104}{gpu\+::map\+\_\+and\+\_\+wait()}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=326pt]{classgpu_1_1Buffer_af23f433dfce1f517c38575ce35683f65_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classgpu_1_1Buffer_a11826da75ad587d2f3700cb8bfc4487a}\label{classgpu_1_1Buffer_a11826da75ad587d2f3700cb8bfc4487a} 
+\index{gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}!size@{size}}
+\index{size@{size}!gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+size\+\_\+t \mbox{\hyperlink{classgpu_1_1Buffer}{gpu\+::\+Buffer}}$<$ T $>$\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Element count. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00221}{221}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ count\_;}
+\DoxyCodeLine{00223\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classgpu_1_1Buffer_a9244e03f65819da73715d91f33af4bca}\label{classgpu_1_1Buffer_a9244e03f65819da73715d91f33af4bca} 
+\index{gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}!write@{write}}
+\index{write@{write}!gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classgpu_1_1Buffer}{gpu\+::\+Buffer}}$<$ T $>$\+::write (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Upload an entire vector to \doxylink{classGPU}{GPU}. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00177}{177}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classgpu_1_1Buffer_a4b305b7a5112aac8017666547e78fa7e}{write}}(data.data(),\ data.size());}
+\DoxyCodeLine{00179\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+References \mbox{\hyperlink{gpu__utils_8h_source_l00170}{gpu\+::\+Buffer$<$ T $>$\+::write()}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=318pt]{classgpu_1_1Buffer_a9244e03f65819da73715d91f33af4bca_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classgpu_1_1Buffer_a4b305b7a5112aac8017666547e78fa7e}\label{classgpu_1_1Buffer_a4b305b7a5112aac8017666547e78fa7e} 
+\index{gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}!write@{write}}
+\index{write@{write}!gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classgpu_1_1Buffer}{gpu\+::\+Buffer}}$<$ T $>$\+::write (\begin{DoxyParamCaption}\item[{const T \texorpdfstring{$\ast$}{*}}]{data,  }\item[{size\+\_\+t}]{count,  }\item[{size\+\_\+t}]{offset\+\_\+elements = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Upload data from CPU to \doxylink{classGPU}{GPU}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Pointer to source data. \\
+\hline
+{\em count} & Number of elements to write. \\
+\hline
+{\em offset\+\_\+elements} & Element offset into the buffer (default 0). \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00170}{170}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ GPU::getClassInstance().get\_queue().WriteBuffer(}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ \ \ buffer\_,\ offset\_elements\ *\ \textcolor{keyword}{sizeof}(T),\ data,\ count\ *\ \textcolor{keyword}{sizeof}(T)}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{00174\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00177}{gpu\+::\+Buffer$<$ T $>$\+::write()}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=318pt]{classgpu_1_1Buffer_a4b305b7a5112aac8017666547e78fa7e_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classgpu_1_1Buffer_a4964d10eaebfe1161f86b9eaa41b4f36}\label{classgpu_1_1Buffer_a4964d10eaebfe1161f86b9eaa41b4f36} 
+\index{gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}!buffer\_@{buffer\_}}
+\index{buffer\_@{buffer\_}!gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{buffer\_}{buffer\_}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+wgpu\+::\+Buffer \mbox{\hyperlink{classgpu_1_1Buffer}{gpu\+::\+Buffer}}$<$ T $>$\+::buffer\+\_\+ \{nullptr\}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00263}{263}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00263\ \{\textcolor{keyword}{nullptr}\};}
+
+\end{DoxyCode}
+\Hypertarget{classgpu_1_1Buffer_afbcfdc94314bcdf177ffc8bac9afdb0d}\label{classgpu_1_1Buffer_afbcfdc94314bcdf177ffc8bac9afdb0d} 
+\index{gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}!byte\_size\_@{byte\_size\_}}
+\index{byte\_size\_@{byte\_size\_}!gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{byte\_size\_}{byte\_size\_}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+size\+\_\+t \mbox{\hyperlink{classgpu_1_1Buffer}{gpu\+::\+Buffer}}$<$ T $>$\+::byte\+\_\+size\+\_\+ \{0\}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00265}{265}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00265\ \{0\};}
+
+\end{DoxyCode}
+\Hypertarget{classgpu_1_1Buffer_af5cc9fdd8de9f2ca9289f849dfc07e8a}\label{classgpu_1_1Buffer_af5cc9fdd8de9f2ca9289f849dfc07e8a} 
+\index{gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}!count\_@{count\_}}
+\index{count\_@{count\_}!gpu::Buffer$<$ T $>$@{gpu::Buffer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{count\_}{count\_}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+size\+\_\+t \mbox{\hyperlink{classgpu_1_1Buffer}{gpu\+::\+Buffer}}$<$ T $>$\+::count\+\_\+ \{0\}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00264}{264}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00264\ \{0\};}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/internal/\mbox{\hyperlink{gpu__utils_8h}{gpu\+\_\+utils.\+h}}\end{DoxyCompactItemize}

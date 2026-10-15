@@ -144,7 +144,7 @@ just init
 As mentioned in [Step 1](/docs/contributing/project-setup/#1-clone-the-repository)`just init` :
 
 1. **Installs dependencies** (shallow Git submodule pull, `pnpm install` , etc.)
-2. Compiles all code (C++, C, JavaScript, Python package, etc.) via `just build all` .
+2. Compiles all code (C++, C, JavaScript, Python package, etc.) via `just build-all` .
 SeeImg2Num's Just documentation page for more information.
 
 ## 4. Test that everything works
@@ -154,7 +154,7 @@ Ensure that you have an image to test with. We recommend using a small image to 
 - [128x128px](https://picsum.photos/128)
 - [256x256px](https://picsum.photos/256)
 
-To test that you have built everything properly, we recommend running `just build all` from above and testing each example app. You can find out how to use the example app on [our Just documentation](/docs/contributing/just/#example-applications) page.
+To test that you have built everything properly, we recommend running `just build-all` from above and testing each example app. You can find out how to use the example app on [our Just documentation](/docs/contributing/just/#example-applications) page.
 
 ## DONE!
 

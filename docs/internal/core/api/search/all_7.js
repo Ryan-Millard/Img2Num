@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['k_0',['k',['../structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig.html#a75ddf7439fdcf08f636b4475ad9d81a4',1,'img2num::ImageToSvgConfig::KMeansConfig']]],
-  ['key_20features_1',['Key Features',['../index.html#features_sec',1,'']]],
-  ['kmeans_2',['kmeans',['../namespaceimg2num.html#ae73563e9dd25a8dd2120fd519ef87abd',1,'img2num']]],
-  ['kmeansconfig_3',['KMeansConfig',['../structimg2num_1_1ImageToSvgConfig_1_1KMeansConfig.html',1,'img2num::ImageToSvgConfig']]]
+  ['handle_0',['handle',['../classgpu_1_1Buffer.html#adcd67b01e45d8fe916a6c4b22b921f2f',1,'gpu::Buffer::handle()'],['../classgpu_1_1Texture.html#ae03091c94de23820e1c5b059b685f08b',1,'gpu::Texture::handle() const']]],
+  ['height_1',['height',['../classgpu_1_1Texture.html#a98d1b416dac9d1cb883efb43ad2c7804',1,'gpu::Texture']]]
 ];

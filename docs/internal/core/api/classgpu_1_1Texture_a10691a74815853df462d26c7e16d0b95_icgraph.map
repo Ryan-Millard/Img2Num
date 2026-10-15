@@ -1,0 +1,5 @@
+<map id="gpu::Texture::width" name="gpu::Texture::width">
+<area shape="rect" id="Node000001" title="Width of the texture in pixels." alt="" coords="212,5,359,31"/>
+<area shape="rect" id="Node000002" href="$classgpu_1_1Texture.html#ab2a8e483a16d01d7479593297529fad8" title="Create a 2D texture." alt="" coords="5,5,164,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,21,164,21,164,15,199,15"/>
+</map>

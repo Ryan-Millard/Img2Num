@@ -17,6 +17,8 @@ All APIs share these core concepts:
 
 ## Shared Parameters
 
-| Parameter | Type | Default | Description | `sigma_spatial` ( σ s \sigma_{s} σ s ) | `float` | `3` | Bilateral spatial sigma | `sigma_range` ( σ r \sigma_{r} σ r ) | `float` | `50` | Bilateral range sigma | `num_colors` / `k` ( k k k ) | `int` | `16` | Number of clusters | `max_iter` | `int` | `100` | K-means iterations | `min_area` | `int` | `100` | Minimum contour area | `color_space` | `int` | `0` | `0` = CIE LAB, `1` = sRGB 
+| Parameter | Type | Default | Description | `sigma_spatial` ( σ s \sigma_{s} σ s ) | `float` | `3` | Bilateral spatial sigma | `sigma_range` ( σ r \sigma_{r} σ r ) | `float` | `50` | Bilateral range sigma | `num_colors` / `k` ( k k k ) | `int` | `16` | Number of clusters | `max_iter` | `int` | `100` | K-means iterations | `min_area` | `int` | `100` | Minimum contour area | `min_thickness` | `int` | Varies | Minimum region thickness | `color_space` | `int` | `0` | `0` = CIE LAB, `1` = sRGB 
+
+`min_thickness` is measured in pixels, and `0` disables thickness filtering. C, C++, and Python currently default to `0` ; JavaScript defaults to `10` .
 
 ## Pipeline Flow

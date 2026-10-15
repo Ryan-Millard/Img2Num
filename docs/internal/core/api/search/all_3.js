@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['example_0',['Usage Example',['../index.html#usage_sec',1,'']]]
+  ['dispatch_0',['dispatch',['../gpu__utils_8h.html#a328a3023ad496b52c54c121a6ba1a2ca',1,'gpu']]]
 ];

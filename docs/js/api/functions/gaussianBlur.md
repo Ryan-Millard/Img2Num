@@ -4,37 +4,15 @@ URL: https://img2num.dev/docs/js/api/functions/gaussianBlur
 
 > **gaussianBlur** ( `options` ): `Promise` < `Uint8ClampedArray` < `ArrayBufferLike` >>
 
-Defined in: [safeWasmWrappers.js:44](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L44)
+Defined in: [safeWasmWrappers.js:108](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L108)
 
 ## Parameters
 
 ### options
 
+`GaussianBlurOptions`
+
 The input options.
-
-#### height
-
-`number`
-
-The height of the image.
-
-#### pixels
-
-`Uint8ClampedArray` < `ArrayBufferLike` >
-
-The image pixel data (flat RGBA array).
-
-#### sigma_pixels?
-
-`number` = `...`
-
-Standard deviation of the Gaussian blur (default=width*0.005; 5% of width).
-
-#### width
-
-`number`
-
-The width of the image.
 
 ## Returns
 

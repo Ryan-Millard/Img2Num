@@ -2,55 +2,21 @@
 
 URL: https://img2num.dev/docs/js/api/functions/findContours
 
-> **findContours** ( `options` ): `Promise` <{ `svg` : `string` ; }>
+> **findContours** ( `options` ): `Promise` <`SvgResult` >
 
-Defined in: [safeWasmWrappers.js:192](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L192)
+Defined in: [safeWasmWrappers.js:236](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L236)
 
 ## Parameters
 
 ### options
 
+`FindContoursOptions`
+
 The input options.
-
-#### height
-
-`number`
-
-Image height.
-
-#### labels
-
-`Int32Array` < `ArrayBufferLike` >
-
-Label array from clustering (e.g., K-Means) or segmentation.
-
-#### min_area?
-
-`number` = `100`
-
-Minimum area of a region to be considered a contour.
-
-#### min_thickness?
-
-`number` = `10`
-
-Minimum thickness of a region to be considered a contour.
-
-#### pixels
-
-`Uint8ClampedArray` < `ArrayBufferLike` >
-
-Original image pixels.
-
-#### width
-
-`number`
-
-Image width.
 
 ## Returns
 
-`Promise` <{ `svg` : `string` ; }>
+`Promise` <`SvgResult` >
 
 Generated SVG.
 

@@ -1,0 +1,5 @@
+<map id="gpu::Texture::view" name="gpu::Texture::view">
+<area shape="rect" id="Node000001" title="Create a default texture view." alt="" coords="224,5,365,31"/>
+<area shape="rect" id="Node000002" href="$structgpu_1_1BindEntry.html#ade86aba85ae265fda3d0fa477bbaf5f7" title="Create a texture&#45;view entry." alt="" coords="5,5,176,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="210,21,176,21,176,15,210,15"/>
+</map>

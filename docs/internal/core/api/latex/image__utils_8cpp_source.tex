@@ -45,123 +45,172 @@
 \DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00041}00041\ \ \ \ \ \textcolor{keywordflow}{return}\ bucket\_midpoint;}
 \DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00042}00042\ \}}
 \DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00043}00043\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00044}00044\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceimg2num}{img2num}}\ \{}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00045}00045\ \textcolor{comment}{//\ image:\ pointer\ to\ RGBA\ data}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00046}00046\ \textcolor{comment}{//\ width,\ height:\ dimensions}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00047}00047\ \textcolor{comment}{//\ sigma:\ standard\ deviation\ of\ Gaussian\ blur}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00048}\mbox{\hyperlink{namespaceimg2num_a365bbbd4976477bdf515be023a73d63f}{00048}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceimg2num_a365bbbd4976477bdf515be023a73d63f}{gaussian\_blur\_fft}}(uint8\_t*\ image,\ \textcolor{keywordtype}{size\_t}\ width,\ \textcolor{keywordtype}{size\_t}\ height,\ \textcolor{keywordtype}{double}\ sigma\_pixels)\ \{}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00049}00049\ \ \ \ \ \textcolor{keywordflow}{if}\ (!image\ ||\ width\ ==\ 0\ ||\ height\ ==\ 0\ ||\ sigma\_pixels\ <=\ 0)}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00050}00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00051}00051\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00052}00052\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ Npix\ =\ width\ *\ height;}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00053}00053\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00054}00054\ \ \ \ \ \textcolor{comment}{//\ Compute\ padded\ dimensions\ (next\ power\ of\ two)}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00055}00055\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ W\ =\ fft::next\_power\_of\_two(width);}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00056}00056\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ H\ =\ fft::next\_power\_of\_two(height);}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00057}00057\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ Npix\_padded\ =\ W\ *\ H;}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00058}00058\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00059}00059\ \ \ \ \ \textcolor{comment}{//\ Frequency\ coordinates\ helper\ (DC\ at\ corner)}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00060}00060\ \ \ \ \ \textcolor{keyword}{auto}\ freq\_coord\ =\ [](\textcolor{keywordtype}{int}\ k,\ \textcolor{keywordtype}{int}\ dim)\ -\/>\ \textcolor{keywordtype}{double}\ \{}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00061}00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (k\ <=\ dim\ /\ 2)\ ?\ double(k)\ /\ dim\ :\ double(k\ -\/\ dim)\ /\ dim;}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00062}00062\ \ \ \ \ \};}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00063}00063\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00064}00064\ \ \ \ \ \textcolor{comment}{//\ Precompute\ Gaussian\ factor\ in\ frequency\ domain}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00065}00065\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ two\_pi2\_sigma2\ =\ 2.0\ *\ M\_PI\ *\ M\_PI\ *\ sigma\_pixels\ *\ sigma\_pixels;}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00066}00066\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00067}00067\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ channel\ =\ 0;\ channel\ <\ 3;\ channel++)\ \{}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00068}00068\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Allocate\ padded\ buffer}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00069}00069\ \ \ \ \ \ \ \ \ std::vector<fft::cd>\ data(Npix\_padded,\ \{0.0,\ 0.0\});}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00070}00070\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00071}00071\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ original\ image\ channel\ into\ padded\ buffer}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00072}00072\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ y\ =\ 0;\ y\ <\ height;\ y++)}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00073}00073\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ x\ =\ 0;\ x\ <\ width;\ x++)}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ data[y\ *\ W\ +\ x]\ =\ fft::cd(image[(y\ *\ width\ +\ x)\ *\ 4\ +\ channel],\ 0.0);}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00075}00075\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00076}00076\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Forward\ 2D\ FFT}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00077}00077\ \ \ \ \ \ \ \ \ fft::iterative\_fft\_2d(data,\ W,\ H,\ \textcolor{keyword}{false});}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00078}00078\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00079}00079\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Apply\ Gaussian\ filter\ in\ frequency\ domain}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00080}00080\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ y\ =\ 0;\ y\ <\ H;\ y++)\ \{}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ fy2\ =\ freq\_coord(y,\ H)\ *\ freq\_coord(y,\ H);}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ x\ =\ 0;\ x\ <\ W;\ x++)\ \{}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ fx2\ =\ freq\_coord(x,\ W)\ *\ freq\_coord(x,\ W);}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ gain\ =\ std::exp(-\/two\_pi2\_sigma2\ *\ (fx2\ +\ fy2));}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ data[y\ *\ W\ +\ x]\ *=\ gain;}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00087}00087\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00088}00088\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00089}00089\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Inverse\ 2D\ FFT}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00090}00090\ \ \ \ \ \ \ \ \ fft::iterative\_fft\_2d(data,\ W,\ H,\ \textcolor{keyword}{true});}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00091}00091\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00092}00092\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ back\ only\ the\ original\ width/height\ and\ clamp}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00093}00093\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ y\ =\ 0;\ y\ <\ height;\ y++)}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00094}00094\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ x\ =\ 0;\ x\ <\ width;\ x++)\ \{}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ v\ =\ data[y\ *\ W\ +\ x].real();}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ v\ =\ std::clamp(v,\ 0.0,\ 255.0);}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ image[(y\ *\ width\ +\ x)\ *\ 4\ +\ channel]\ =\ \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(std::lrint(v));}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00099}00099\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00049}00049\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{size\_t}\ reflect\_index(\textcolor{keywordtype}{int}\ p,\ \textcolor{keywordtype}{int}\ dim)\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00050}00050\ \ \ \ \ \textcolor{keywordflow}{if}\ (dim\ <=\ 1)}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00051}00051\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00052}00052\ \ \ \ \ \textcolor{keyword}{const}\ int64\_t\ period\ =\ 2\ *\ \textcolor{keyword}{static\_cast<}int64\_t\textcolor{keyword}{>}(dim);\ \textcolor{comment}{//\ int64:\ 2*dim\ can\ overflow\ int}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00053}00053\ \ \ \ \ int64\_t\ q\ =\ p\ \%\ period;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00054}00054\ \ \ \ \ \textcolor{keywordflow}{if}\ (q\ <\ 0)}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00055}00055\ \ \ \ \ \ \ \ \ q\ +=\ period;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00056}00056\ \ \ \ \ \textcolor{keywordflow}{if}\ (q\ >=\ dim)}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00057}00057\ \ \ \ \ \ \ \ \ q\ =\ period\ -\/\ 1\ -\/\ q;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00058}00058\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(q);}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00059}00059\ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00061}00061\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceimg2num}{img2num}}\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00062}00062\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00074}\mbox{\hyperlink{namespaceimg2num_a365bbbd4976477bdf515be023a73d63f}{00074}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceimg2num_a365bbbd4976477bdf515be023a73d63f}{gaussian\_blur\_fft}}(uint8\_t*\ image,\ \textcolor{keywordtype}{size\_t}\ width,\ \textcolor{keywordtype}{size\_t}\ height,\ \textcolor{keywordtype}{double}\ sigma\_pixels)\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00075}00075\ \ \ \ \ \textcolor{keywordflow}{if}\ (!image\ ||\ width\ ==\ 0\ ||\ height\ ==\ 0\ ||\ !std::isfinite(sigma\_pixels)\ ||\ sigma\_pixels\ <=\ 0)}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00076}00076\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00078}00078\ \ \ \ \ \textcolor{comment}{//\ Keep\ every\ dimension\ within\ 2\string^30\ so\ the\ int\ casts\ below\ (reflect\_index,\ freq\_coord)}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00079}00079\ \ \ \ \ \textcolor{comment}{//\ and\ next\_power\_of\_two()\ cannot\ overflow.}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00080}00080\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ kMaxDim\ =\ size\_t(1)\ <<\ 30;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00081}00081\ \ \ \ \ \textcolor{keywordflow}{if}\ (width\ >\ kMaxDim\ ||\ height\ >\ kMaxDim)}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00082}00082\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00083}00083\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00084}00084\ \ \ \ \ \textcolor{comment}{//\ Pad\ by\ at\ least\ 3*sigma\ pixels\ to\ avoid\ border\ darkening\ and\ edge\ wrapping.}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00085}00085\ \ \ \ \ \textcolor{comment}{//\ Check\ in\ double\ BEFORE\ casting:\ converting\ an\ out-\/of-\/range\ double\ to\ size\_t\ is\ UB.}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00086}00086\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ pad\_d\ =\ std::ceil(3.0\ *\ sigma\_pixels);}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00087}00087\ \ \ \ \ \textcolor{keywordflow}{if}\ (pad\_d\ >\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(kMaxDim))}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00088}00088\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00089}00089\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ pad\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(pad\_d);}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00090}00090\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00091}00091\ \ \ \ \ \textcolor{comment}{//\ Ensure\ width\ +\ 2*pad\ and\ height\ +\ 2*pad\ stay\ <=\ kMaxDim\ (written\ to\ avoid\ overflow)}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00092}00092\ \ \ \ \ \textcolor{keywordflow}{if}\ (pad\ >\ (kMaxDim\ -\/\ width)\ /\ 2\ ||\ pad\ >\ (kMaxDim\ -\/\ height)\ /\ 2)}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00093}00093\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00094}00094\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ padded\_width\ =\ width\ +\ 2\ *\ pad;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00095}00095\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ padded\_height\ =\ height\ +\ 2\ *\ pad;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00096}00096\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00097}00097\ \ \ \ \ \textcolor{comment}{//\ Compute\ padded\ dimensions\ (next\ power\ of\ two);\ both\ are\ <=\ kMaxDim}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00098}00098\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ W\ =\ fft::next\_power\_of\_two(padded\_width);}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00099}00099\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ H\ =\ fft::next\_power\_of\_two(padded\_height);}
 \DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00100}00100\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00101}00101\ \ \ \ \ \textcolor{comment}{//\ Alpha\ channel\ remains\ unchanged}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00102}00102\ \}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00103}00103\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00104}00104\ \textcolor{comment}{//\ Called\ from\ JS.\ \`{}ptr`\ points\ to\ RGBA\ bytes.}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00105}\mbox{\hyperlink{namespaceimg2num_adcf00084d90ead66510dadc459d0990e}{00105}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceimg2num_adcf00084d90ead66510dadc459d0990e}{invert\_image}}(uint8\_t*\ ptr,\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keywordtype}{int}\ height)\ \{}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00106}00106\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ img;}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00107}00107\ \ \ \ \ img.loadFromBuffer(ptr,\ width,\ height,\ ImageLib::RGBA\_CONVERTER<uint8\_t>);}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00108}00108\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00109}00109\ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\&\ p\ :\ img)\ \{}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00110}00110\ \ \ \ \ \ \ \ \ p.red\ =\ 255\ -\/\ p.red;}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00111}00111\ \ \ \ \ \ \ \ \ p.blue\ =\ 255\ -\/\ p.blue;}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00112}00112\ \ \ \ \ \ \ \ \ p.green\ =\ 255\ -\/\ p.green;}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00113}00113\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00114}00114\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00115}00115\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ modified\ =\ img.getData();}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00116}00116\ \ \ \ \ std::memcpy(ptr,\ modified.data(),\ modified.size()\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00117}00117\ \}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00118}00118\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00119}\mbox{\hyperlink{namespaceimg2num_ad36f12c85016e28c7427c356783dea03}{00119}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceimg2num_ad36f12c85016e28c7427c356783dea03}{threshold\_image}}(uint8\_t*\ ptr,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ num\_thresholds)\ \{}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00120}00120\ \ \ \ \ \textcolor{keywordflow}{if}\ (num\_thresholds\ <=\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00121}00121\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00122}00122\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00123}00123\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t\ REGION\_SIZE(255\ /\ num\_thresholds);\ \textcolor{comment}{//\ Size\ of\ buckets\ per\ colour}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00124}00124\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00125}00125\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ img;}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00126}00126\ \ \ \ \ img.loadFromBuffer(ptr,\ width,\ height,\ ImageLib::RGBA\_CONVERTER<uint8\_t>);}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00127}00127\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00128}00128\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ imgWidth\ \{img.getWidth()\},\ imgHeight\ \{img.getHeight()\};}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00129}00129\ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\&\ p\ :\ img)\ \{}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00130}00130\ \ \ \ \ \ \ \ \ p.red\ =\ quantize(p.red,\ REGION\_SIZE);}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00131}00131\ \ \ \ \ \ \ \ \ p.green\ =\ quantize(p.green,\ REGION\_SIZE);}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00132}00132\ \ \ \ \ \ \ \ \ p.blue\ =\ quantize(p.blue,\ REGION\_SIZE);}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00133}00133\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00134}00134\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00135}00135\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ modified\ =\ img.getData();}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00136}00136\ \ \ \ \ std::memcpy(ptr,\ modified.data(),\ modified.size()\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00137}00137\ \}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00138}00138\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00139}\mbox{\hyperlink{namespaceimg2num_a0b00cb7b162b17498d9c816ac5e38563}{00139}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceimg2num_a0b00cb7b162b17498d9c816ac5e38563}{black\_threshold\_image}}(}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00140}00140\ \ \ \ \ uint8\_t*\ ptr,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ num\_thresholds}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00141}00141\ )\ \{}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00142}00142\ \ \ \ \ \textcolor{keywordflow}{if}\ (num\_thresholds\ <=\ 0)\ \{}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00143}00143\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00144}00144\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00145}00145\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ img;}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00146}00146\ \ \ \ \ img.loadFromBuffer(ptr,\ width,\ height,\ ImageLib::RGBA\_CONVERTER<uint8\_t>);}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00147}00147\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00148}00148\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ imgWidth\ \{img.getWidth()\},\ imgHeight\ \{img.getHeight()\};}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00149}00149\ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\&\ p\ :\ img)\ \{}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00150}00150\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ R\ \{p.red\ <\ num\_thresholds\};}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00151}00151\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ G\ \{p.green\ <\ num\_thresholds\};}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00152}00152\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ B\ \{p.blue\ <\ num\_thresholds\};}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00153}00153\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (R\ \&\&\ B\ \&\&\ G)\ \{}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00154}00154\ \ \ \ \ \ \ \ \ \ \ \ \ p.setGray(0);}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00155}00155\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00156}00156\ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00157}00157\ }
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00158}00158\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ modified\ =\ img.getData();}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00159}00159\ \ \ \ \ std::memcpy(ptr,\ modified.data(),\ modified.size()\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00160}00160\ \}}
-\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00161}00161\ \}\ \textcolor{comment}{//\ namespace\ img2num}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00101}00101\ \ \ \ \ \textcolor{comment}{//\ Cap\ total\ FFT\ buffer\ size\ to\ prevent\ memory\ exhaustion\ (DoS)\ from\ a\ huge\ sigma.}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00102}00102\ \ \ \ \ \textcolor{comment}{//\ This\ also\ covers\ the\ W\ *\ H\ overflow\ case,\ so\ no\ separate\ overflow\ check\ is\ needed.}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00103}00103\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ MAX\_FFT\_ELEMENTS\ =\ 64\ *\ 1024\ *\ 1024;\ \textcolor{comment}{//\ 64M\ elements\ limit}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00104}00104\ \ \ \ \ \textcolor{keywordflow}{if}\ (W\ >\ MAX\_FFT\_ELEMENTS\ /\ H)}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00105}00105\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00106}00106\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ Npix\_padded\ =\ W\ *\ H;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00107}00107\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00108}00108\ \ \ \ \ \textcolor{comment}{//\ Frequency\ coordinates\ helper\ (DC\ at\ corner)}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00109}00109\ \ \ \ \ \textcolor{keyword}{auto}\ freq\_coord\ =\ [](\textcolor{keywordtype}{int}\ k,\ \textcolor{keywordtype}{int}\ dim)\ -\/>\ \textcolor{keywordtype}{double}\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00110}00110\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (k\ <=\ dim\ /\ 2)\ ?\ double(k)\ /\ dim\ :\ double(k\ -\/\ dim)\ /\ dim;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00111}00111\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00112}00112\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00113}00113\ \ \ \ \ \textcolor{comment}{//\ Precompute\ Gaussian\ factor\ in\ frequency\ domain}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00114}00114\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ two\_pi2\_sigma2\ =\ 2.0\ *\ M\_PI\ *\ M\_PI\ *\ sigma\_pixels\ *\ sigma\_pixels;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00116}00116\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ channel\ =\ 0;\ channel\ <\ 3;\ channel++)\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00117}00117\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Allocate\ padded\ buffer}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00118}00118\ \ \ \ \ \ \ \ \ std::vector<fft::cd>\ data(Npix\_padded,\ \{0.0,\ 0.0\});}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00119}00119\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00120}00120\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ image\ channel\ with\ reflect\ padding\ into\ padded\ buffer}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00121}00121\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ y\ =\ 0;\ y\ <\ H;\ y++)\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00122}00122\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ py\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(y)\ -\/\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(pad);}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ src\_y\ =\ reflect\_index(py,\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(height));}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ x\ =\ 0;\ x\ <\ W;\ x++)\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ px\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(x)\ -\/\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(pad);}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00126}00126\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ src\_x\ =\ reflect\_index(px,\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(width));}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00127}00127\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ data[y\ *\ W\ +\ x]\ =\ fft::cd(image[(src\_y\ *\ width\ +\ src\_x)\ *\ 4\ +\ channel],\ 0.0);}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00129}00129\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00130}00130\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00131}00131\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Forward\ 2D\ FFT}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00132}00132\ \ \ \ \ \ \ \ \ fft::iterative\_fft\_2d(data,\ W,\ H,\ \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00133}00133\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00134}00134\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Apply\ Gaussian\ filter\ in\ frequency\ domain}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00135}00135\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ y\ =\ 0;\ y\ <\ H;\ y++)\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00136}00136\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ fy2\ =\ freq\_coord(y,\ H)\ *\ freq\_coord(y,\ H);}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00137}00137\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ x\ =\ 0;\ x\ <\ W;\ x++)\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00138}00138\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ fx2\ =\ freq\_coord(x,\ W)\ *\ freq\_coord(x,\ W);}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00139}00139\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ gain\ =\ std::exp(-\/two\_pi2\_sigma2\ *\ (fx2\ +\ fy2));}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00140}00140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ data[y\ *\ W\ +\ x]\ *=\ gain;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00141}00141\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00142}00142\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00143}00143\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00144}00144\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Inverse\ 2D\ FFT}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00145}00145\ \ \ \ \ \ \ \ \ fft::iterative\_fft\_2d(data,\ W,\ H,\ \textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00146}00146\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00147}00147\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ back\ original\ width/height\ region\ from\ (pad,\ pad)\ and\ clamp}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00148}00148\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ y\ =\ 0;\ y\ <\ height;\ y++)\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00149}00149\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ x\ =\ 0;\ x\ <\ width;\ x++)\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00150}00150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ py\ =\ y\ +\ pad;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00151}00151\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ px\ =\ x\ +\ pad;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00152}00152\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ v\ =\ data[py\ *\ W\ +\ px].real();}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00153}00153\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (v\ <\ 0.0)}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00154}00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ v\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00155}00155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (v\ >\ 255.0)}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00156}00156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ v\ =\ 255.0;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00157}00157\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ image[(y\ *\ width\ +\ x)\ *\ 4\ +\ channel]\ =\ \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(std::lrint(v));}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00158}00158\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00159}00159\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00160}00160\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00161}00161\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00162}00162\ \ \ \ \ \textcolor{comment}{//\ Alpha\ channel\ remains\ unchanged}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00163}00163\ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00164}00164\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00165}00165\ \textcolor{comment}{//\ Called\ from\ JS.\ \`{}image`\ points\ to\ RGBA\ bytes.}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00166}\mbox{\hyperlink{namespaceimg2num_ab1906e33330d80eba5399ca2a30e1572}{00166}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceimg2num_ab1906e33330d80eba5399ca2a30e1572}{invert\_image}}(uint8\_t*\ image,\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keywordtype}{int}\ height)\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00167}00167\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ img;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00168}00168\ \ \ \ \ img.loadFromBuffer(image,\ width,\ height,\ ImageLib::RGBA\_CONVERTER<uint8\_t>);}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00169}00169\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00170}00170\ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\&\ p\ :\ img)\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00171}00171\ \ \ \ \ \ \ \ \ p.red\ =\ 255\ -\/\ p.red;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00172}00172\ \ \ \ \ \ \ \ \ p.blue\ =\ 255\ -\/\ p.blue;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00173}00173\ \ \ \ \ \ \ \ \ p.green\ =\ 255\ -\/\ p.green;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00174}00174\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00175}00175\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00176}00176\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ modified\ =\ img.getData();}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00177}00177\ \ \ \ \ std::memcpy(image,\ modified.data(),\ modified.size()\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00178}00178\ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00179}00179\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00180}\mbox{\hyperlink{namespaceimg2num_ac67c435eb2553073406c22bd795937f5}{00180}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceimg2num_ac67c435eb2553073406c22bd795937f5}{threshold\_image}}(uint8\_t*\ image,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ num\_thresholds)\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00181}00181\ \ \ \ \ \textcolor{keywordflow}{if}\ (num\_thresholds\ <=\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00182}00182\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00183}00183\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00184}00184\ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t\ REGION\_SIZE(255\ /\ num\_thresholds);\ \textcolor{comment}{//\ Size\ of\ buckets\ per\ colour}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00185}00185\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00186}00186\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ img;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00187}00187\ \ \ \ \ img.loadFromBuffer(image,\ width,\ height,\ ImageLib::RGBA\_CONVERTER<uint8\_t>);}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00188}00188\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00189}00189\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ imgWidth\ \{img.getWidth()\},\ imgHeight\ \{img.getHeight()\};}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00190}00190\ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\&\ p\ :\ img)\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00191}00191\ \ \ \ \ \ \ \ \ p.red\ =\ quantize(p.red,\ REGION\_SIZE);}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00192}00192\ \ \ \ \ \ \ \ \ p.green\ =\ quantize(p.green,\ REGION\_SIZE);}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00193}00193\ \ \ \ \ \ \ \ \ p.blue\ =\ quantize(p.blue,\ REGION\_SIZE);}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00194}00194\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00195}00195\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00196}00196\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ modified\ =\ img.getData();}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00197}00197\ \ \ \ \ std::memcpy(image,\ modified.data(),\ modified.size()\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00198}00198\ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00199}00199\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00200}00200\ \textcolor{comment}{//\ Unlike\ \`{}threshold\_image`\ above,\ \`{}num\_thresholds`\ here\ is\ a\ per-\/channel\ 0-\/255}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00201}00201\ \textcolor{comment}{//\ brightness\ cutoff,\ not\ a\ number\ of\ output\ levels.\ A\ pixel\ becomes\ pure\ black}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00202}00202\ \textcolor{comment}{//\ only\ when\ all\ three\ of\ its\ channels\ are\ strictly\ below\ the\ cutoff.}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00203}\mbox{\hyperlink{namespaceimg2num_a03ca037ca3d86a43ed7ade0c8a704bf9}{00203}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceimg2num_a03ca037ca3d86a43ed7ade0c8a704bf9}{black\_threshold\_image}}(}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00204}00204\ \ \ \ \ uint8\_t*\ image,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ num\_thresholds}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00205}00205\ )\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00206}00206\ \ \ \ \ \textcolor{keywordflow}{if}\ (num\_thresholds\ <=\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00207}00207\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00208}00208\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00209}00209\ \ \ \ \ \mbox{\hyperlink{classImageLib_1_1Image}{ImageLib::Image<ImageLib::RGBAPixel<uint8\_t>}}>\ img;}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00210}00210\ \ \ \ \ img.loadFromBuffer(image,\ width,\ height,\ ImageLib::RGBA\_CONVERTER<uint8\_t>);}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00211}00211\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00212}00212\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ imgWidth\ \{img.getWidth()\},\ imgHeight\ \{img.getHeight()\};}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00213}00213\ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\&\ p\ :\ img)\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00214}00214\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ R\ \{p.red\ <\ num\_thresholds\};}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00215}00215\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ G\ \{p.green\ <\ num\_thresholds\};}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00216}00216\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ B\ \{p.blue\ <\ num\_thresholds\};}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00217}00217\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (R\ \&\&\ B\ \&\&\ G)\ \{}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00218}00218\ \ \ \ \ \ \ \ \ \ \ \ \ p.setGray(0);}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00219}00219\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00220}00220\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00221}00221\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00222}00222\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ modified\ =\ img.getData();}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00223}00223\ \ \ \ \ std::memcpy(image,\ modified.data(),\ modified.size()\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}));}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00224}00224\ \}}
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00225}00225\ }
+\DoxyCodeLine{\Hypertarget{image__utils_8cpp_source_l00226}00226\ \}\ \textcolor{comment}{//\ namespace\ img2num}}
 
 \end{DoxyCode}

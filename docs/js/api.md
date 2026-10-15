@@ -10,6 +10,21 @@ Re-exports convenience utilities, high-level image-processing functions, and hel
 
 0.0.0
 
+## Interfaces
+
+- BilateralFilterOptions
+- BlackThresholdOptions
+- FindContoursOptions
+- GaussianBlurOptions
+- ImageToSvgOptions
+- KMeansOptions
+
+## Type Aliases
+
+- ColorSpace
+- KMeansResult
+- SvgResult
+
 ## Functions
 
 - bilateralFilter

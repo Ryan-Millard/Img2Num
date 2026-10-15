@@ -184,7 +184,7 @@ async function createImg2NumModule(moduleArg = {}) {
 		callRuntimeCallbacks(onPreRuns);
 	}
 	function initRuntime() {
-		wasmExports["ma"]();
+		wasmExports["na"]();
 	}
 	function postRun() {
 		var postRun = Module["postRun"];
@@ -1783,6 +1783,13 @@ async function createImg2NumModule(moduleArg = {}) {
 		size >>>= 0;
 		return randomFill(HEAPU8.subarray(buffer >>> 0, buffer + size >>> 0));
 	}
+	function _wgpuAdapterGetInfo(adapterPtr, info) {
+		adapterPtr >>>= 0;
+		info >>>= 0;
+		var adapter = WebGPU.getJsObject(adapterPtr);
+		WebGPU.fillAdapterInfoStruct(adapter.info, info);
+		return 1;
+	}
 	function _wgpuAdapterGetLimits(adapterPtr, limitsOutPtr) {
 		adapterPtr >>>= 0;
 		limitsOutPtr >>>= 0;
@@ -2295,156 +2302,157 @@ async function createImg2NumModule(moduleArg = {}) {
 	Module["lengthBytesUTF8"] = lengthBytesUTF8;
 	var _malloc, _emwgpuCreateBindGroup, _emwgpuCreateBindGroupLayout, _emwgpuCreateCommandBuffer, _emwgpuCreateCommandEncoder, _emwgpuCreateComputePassEncoder, _emwgpuCreateComputePipeline, _emwgpuCreateExternalTexture, _emwgpuCreatePipelineLayout, _emwgpuCreateQuerySet, _emwgpuCreateRenderBundle, _emwgpuCreateRenderBundleEncoder, _emwgpuCreateRenderPassEncoder, _emwgpuCreateRenderPipeline, _emwgpuCreateSampler, _emwgpuCreateSurface, _emwgpuCreateTexture, _emwgpuCreateTextureView, _emwgpuCreateAdapter, _emwgpuImportBuffer, _emwgpuCreateDevice, _emwgpuCreateQueue, _emwgpuCreateShaderModule, _emwgpuOnDeviceLostCompleted, _emwgpuOnMapAsyncCompleted, _emwgpuOnRequestAdapterCompleted, _emwgpuOnRequestDeviceCompleted, _emwgpuOnUncapturedError, _free, _memalign, _setThrew, __emscripten_tempret_set, __emscripten_stack_restore, __emscripten_stack_alloc, _emscripten_stack_get_current, ___cxa_decrement_exception_refcount, ___cxa_increment_exception_refcount, ___cxa_can_catch, ___cxa_get_exception_ptr, dynCall_vi, dynCall_ii, dynCall_viii, dynCall_viiii, dynCall_vii, dynCall_iii, dynCall_iiii, dynCall_v, dynCall_iiiiiiii, dynCall_fiii, dynCall_diii, dynCall_viiiiiii, dynCall_i, dynCall_iiiii, dynCall_iiiiiii, dynCall_iiiiiiiiiiii, dynCall_viiiiiiiiii, dynCall_viiiiiiiiiiiiiii, dynCall_iiiiii, dynCall_iiiiid, _asyncify_start_unwind, _asyncify_stop_unwind, _asyncify_start_rewind, _asyncify_stop_rewind, wasmMemory;
 	function assignWasmExports(wasmExports) {
-		Module["_gaussian_blur_fft"] = wasmExports["na"];
-		Module["_invert_image"] = wasmExports["oa"];
-		Module["_threshold_image"] = wasmExports["pa"];
-		Module["_black_threshold_image"] = wasmExports["qa"];
-		Module["_kmeans"] = wasmExports["ra"];
-		Module["_bilateral_filter"] = wasmExports["sa"];
-		Module["_labels_to_svg"] = wasmExports["ta"];
-		Module["_image_to_svg"] = wasmExports["ua"];
-		_malloc = Module["_malloc"] = wasmExports["wa"];
-		_emwgpuCreateBindGroup = wasmExports["xa"];
-		_emwgpuCreateBindGroupLayout = wasmExports["ya"];
-		_emwgpuCreateCommandBuffer = wasmExports["za"];
-		_emwgpuCreateCommandEncoder = wasmExports["Aa"];
-		_emwgpuCreateComputePassEncoder = wasmExports["Ba"];
-		_emwgpuCreateComputePipeline = wasmExports["Ca"];
-		_emwgpuCreateExternalTexture = wasmExports["Da"];
-		_emwgpuCreatePipelineLayout = wasmExports["Ea"];
-		_emwgpuCreateQuerySet = wasmExports["Fa"];
-		_emwgpuCreateRenderBundle = wasmExports["Ga"];
-		_emwgpuCreateRenderBundleEncoder = wasmExports["Ha"];
-		_emwgpuCreateRenderPassEncoder = wasmExports["Ia"];
-		_emwgpuCreateRenderPipeline = wasmExports["Ja"];
-		_emwgpuCreateSampler = wasmExports["Ka"];
-		_emwgpuCreateSurface = wasmExports["La"];
-		_emwgpuCreateTexture = wasmExports["Ma"];
-		_emwgpuCreateTextureView = wasmExports["Na"];
-		_emwgpuCreateAdapter = wasmExports["Oa"];
-		_emwgpuImportBuffer = wasmExports["Pa"];
-		_emwgpuCreateDevice = wasmExports["Qa"];
-		_emwgpuCreateQueue = wasmExports["Ra"];
-		_emwgpuCreateShaderModule = wasmExports["Sa"];
-		_emwgpuOnDeviceLostCompleted = wasmExports["Ta"];
-		_emwgpuOnMapAsyncCompleted = wasmExports["Ua"];
-		_emwgpuOnRequestAdapterCompleted = wasmExports["Va"];
-		_emwgpuOnRequestDeviceCompleted = wasmExports["Wa"];
-		_emwgpuOnUncapturedError = wasmExports["Xa"];
-		_free = Module["_free"] = wasmExports["Ya"];
-		_memalign = wasmExports["Za"];
-		_setThrew = wasmExports["_a"];
-		__emscripten_tempret_set = wasmExports["$a"];
-		__emscripten_stack_restore = wasmExports["ab"];
-		__emscripten_stack_alloc = wasmExports["bb"];
-		_emscripten_stack_get_current = wasmExports["cb"];
-		___cxa_decrement_exception_refcount = wasmExports["db"];
-		___cxa_increment_exception_refcount = wasmExports["eb"];
-		___cxa_can_catch = wasmExports["fb"];
-		___cxa_get_exception_ptr = wasmExports["gb"];
-		dynCall_vi = dynCalls["vi"] = wasmExports["hb"];
-		dynCall_ii = dynCalls["ii"] = wasmExports["ib"];
-		dynCalls["viiiii"] = wasmExports["jb"];
-		dynCall_viii = dynCalls["viii"] = wasmExports["kb"];
-		dynCall_viiii = dynCalls["viiii"] = wasmExports["lb"];
-		dynCall_vii = dynCalls["vii"] = wasmExports["mb"];
-		dynCall_iii = dynCalls["iii"] = wasmExports["nb"];
-		dynCalls["viji"] = wasmExports["ob"];
-		dynCall_iiii = dynCalls["iiii"] = wasmExports["pb"];
-		dynCall_v = dynCalls["v"] = wasmExports["qb"];
-		dynCalls["viijii"] = wasmExports["rb"];
-		dynCalls["iidiiiii"] = wasmExports["sb"];
-		dynCall_iiiiiiii = dynCalls["iiiiiiii"] = wasmExports["tb"];
-		dynCalls["iiiiiiiiiiiii"] = wasmExports["ub"];
-		dynCall_fiii = dynCalls["fiii"] = wasmExports["vb"];
-		dynCall_diii = dynCalls["diii"] = wasmExports["wb"];
-		dynCall_viiiiiii = dynCalls["viiiiiii"] = wasmExports["xb"];
-		dynCall_i = dynCalls["i"] = wasmExports["yb"];
-		dynCall_iiiii = dynCalls["iiiii"] = wasmExports["zb"];
-		dynCall_iiiiiii = dynCalls["iiiiiii"] = wasmExports["Ab"];
-		dynCall_iiiiiiiiiiii = dynCalls["iiiiiiiiiiii"] = wasmExports["Bb"];
-		dynCall_viiiiiiiiii = dynCalls["viiiiiiiiii"] = wasmExports["Cb"];
-		dynCall_viiiiiiiiiiiiiii = dynCalls["viiiiiiiiiiiiiii"] = wasmExports["Db"];
-		dynCall_iiiiii = dynCalls["iiiiii"] = wasmExports["Eb"];
-		dynCalls["iiiiiiiii"] = wasmExports["Fb"];
-		dynCalls["iiiiij"] = wasmExports["Gb"];
-		dynCall_iiiiid = dynCalls["iiiiid"] = wasmExports["Hb"];
-		dynCalls["iiiiijj"] = wasmExports["Ib"];
-		dynCalls["iiiiiijj"] = wasmExports["Jb"];
-		dynCalls["viiiiii"] = wasmExports["Kb"];
-		_asyncify_start_unwind = wasmExports["Lb"];
-		_asyncify_stop_unwind = wasmExports["Mb"];
-		_asyncify_start_rewind = wasmExports["Nb"];
-		_asyncify_stop_rewind = wasmExports["Ob"];
-		wasmMemory = wasmExports["la"];
-		wasmExports["va"];
+		Module["_gaussian_blur_fft"] = wasmExports["oa"];
+		Module["_invert_image"] = wasmExports["pa"];
+		Module["_threshold_image"] = wasmExports["qa"];
+		Module["_black_threshold_image"] = wasmExports["ra"];
+		Module["_kmeans"] = wasmExports["sa"];
+		Module["_bilateral_filter"] = wasmExports["ta"];
+		Module["_labels_to_svg"] = wasmExports["ua"];
+		Module["_image_to_svg"] = wasmExports["va"];
+		_malloc = Module["_malloc"] = wasmExports["xa"];
+		_emwgpuCreateBindGroup = wasmExports["ya"];
+		_emwgpuCreateBindGroupLayout = wasmExports["za"];
+		_emwgpuCreateCommandBuffer = wasmExports["Aa"];
+		_emwgpuCreateCommandEncoder = wasmExports["Ba"];
+		_emwgpuCreateComputePassEncoder = wasmExports["Ca"];
+		_emwgpuCreateComputePipeline = wasmExports["Da"];
+		_emwgpuCreateExternalTexture = wasmExports["Ea"];
+		_emwgpuCreatePipelineLayout = wasmExports["Fa"];
+		_emwgpuCreateQuerySet = wasmExports["Ga"];
+		_emwgpuCreateRenderBundle = wasmExports["Ha"];
+		_emwgpuCreateRenderBundleEncoder = wasmExports["Ia"];
+		_emwgpuCreateRenderPassEncoder = wasmExports["Ja"];
+		_emwgpuCreateRenderPipeline = wasmExports["Ka"];
+		_emwgpuCreateSampler = wasmExports["La"];
+		_emwgpuCreateSurface = wasmExports["Ma"];
+		_emwgpuCreateTexture = wasmExports["Na"];
+		_emwgpuCreateTextureView = wasmExports["Oa"];
+		_emwgpuCreateAdapter = wasmExports["Pa"];
+		_emwgpuImportBuffer = wasmExports["Qa"];
+		_emwgpuCreateDevice = wasmExports["Ra"];
+		_emwgpuCreateQueue = wasmExports["Sa"];
+		_emwgpuCreateShaderModule = wasmExports["Ta"];
+		_emwgpuOnDeviceLostCompleted = wasmExports["Ua"];
+		_emwgpuOnMapAsyncCompleted = wasmExports["Va"];
+		_emwgpuOnRequestAdapterCompleted = wasmExports["Wa"];
+		_emwgpuOnRequestDeviceCompleted = wasmExports["Xa"];
+		_emwgpuOnUncapturedError = wasmExports["Ya"];
+		_free = Module["_free"] = wasmExports["Za"];
+		_memalign = wasmExports["_a"];
+		_setThrew = wasmExports["$a"];
+		__emscripten_tempret_set = wasmExports["ab"];
+		__emscripten_stack_restore = wasmExports["bb"];
+		__emscripten_stack_alloc = wasmExports["cb"];
+		_emscripten_stack_get_current = wasmExports["db"];
+		___cxa_decrement_exception_refcount = wasmExports["eb"];
+		___cxa_increment_exception_refcount = wasmExports["fb"];
+		___cxa_can_catch = wasmExports["gb"];
+		___cxa_get_exception_ptr = wasmExports["hb"];
+		dynCall_vi = dynCalls["vi"] = wasmExports["ib"];
+		dynCall_ii = dynCalls["ii"] = wasmExports["jb"];
+		dynCalls["viiiii"] = wasmExports["kb"];
+		dynCall_viii = dynCalls["viii"] = wasmExports["lb"];
+		dynCall_viiii = dynCalls["viiii"] = wasmExports["mb"];
+		dynCall_vii = dynCalls["vii"] = wasmExports["nb"];
+		dynCall_iii = dynCalls["iii"] = wasmExports["ob"];
+		dynCalls["viji"] = wasmExports["pb"];
+		dynCall_iiii = dynCalls["iiii"] = wasmExports["qb"];
+		dynCall_v = dynCalls["v"] = wasmExports["rb"];
+		dynCalls["viijii"] = wasmExports["sb"];
+		dynCalls["iidiiiii"] = wasmExports["tb"];
+		dynCall_iiiiiiii = dynCalls["iiiiiiii"] = wasmExports["ub"];
+		dynCalls["iiiiiiiiiiiii"] = wasmExports["vb"];
+		dynCall_fiii = dynCalls["fiii"] = wasmExports["wb"];
+		dynCall_diii = dynCalls["diii"] = wasmExports["xb"];
+		dynCall_viiiiiii = dynCalls["viiiiiii"] = wasmExports["yb"];
+		dynCall_i = dynCalls["i"] = wasmExports["zb"];
+		dynCall_iiiii = dynCalls["iiiii"] = wasmExports["Ab"];
+		dynCall_iiiiiii = dynCalls["iiiiiii"] = wasmExports["Bb"];
+		dynCall_iiiiiiiiiiii = dynCalls["iiiiiiiiiiii"] = wasmExports["Cb"];
+		dynCall_viiiiiiiiii = dynCalls["viiiiiiiiii"] = wasmExports["Db"];
+		dynCall_viiiiiiiiiiiiiii = dynCalls["viiiiiiiiiiiiiii"] = wasmExports["Eb"];
+		dynCall_iiiiii = dynCalls["iiiiii"] = wasmExports["Fb"];
+		dynCalls["iiiiiiiii"] = wasmExports["Gb"];
+		dynCalls["iiiiij"] = wasmExports["Hb"];
+		dynCall_iiiiid = dynCalls["iiiiid"] = wasmExports["Ib"];
+		dynCalls["iiiiijj"] = wasmExports["Jb"];
+		dynCalls["iiiiiijj"] = wasmExports["Kb"];
+		dynCalls["viiiiii"] = wasmExports["Lb"];
+		_asyncify_start_unwind = wasmExports["Mb"];
+		_asyncify_stop_unwind = wasmExports["Nb"];
+		_asyncify_start_rewind = wasmExports["Ob"];
+		_asyncify_stop_rewind = wasmExports["Pb"];
+		wasmMemory = wasmExports["ma"];
+		wasmExports["wa"];
 	}
 	var wasmImports = {
-		x: ___cxa_begin_catch,
-		F: ___cxa_end_catch,
+		t: ___cxa_begin_catch,
+		D: ___cxa_end_catch,
 		b: ___cxa_find_matching_catch_2,
 		f: ___cxa_find_matching_catch_3,
-		Y: ___cxa_rethrow,
-		o: ___cxa_throw,
-		X: ___cxa_uncaught_exceptions,
+		U: ___cxa_rethrow,
+		n: ___cxa_throw,
+		T: ___cxa_uncaught_exceptions,
 		d: ___resumeException,
-		_: __abort_js,
-		V: __tzset_js,
-		da: _emscripten_has_asyncify,
-		Z: _emscripten_resize_heap,
-		m: _emscripten_sleep,
-		ca: _emwgpuAdapterRequestDevice,
-		ia: _emwgpuBufferDestroy,
-		ha: _emwgpuBufferGetConstMappedRange,
-		ga: _emwgpuBufferMapAsync,
-		fa: _emwgpuBufferUnmap,
+		W: __abort_js,
+		R: __tzset_js,
+		$: _emscripten_has_asyncify,
+		V: _emscripten_resize_heap,
+		w: _emscripten_sleep,
+		_: _emwgpuAdapterRequestDevice,
+		ea: _emwgpuBufferDestroy,
+		da: _emwgpuBufferGetConstMappedRange,
+		ca: _emwgpuBufferMapAsync,
+		ba: _emwgpuBufferUnmap,
 		g: _emwgpuDelete,
-		ba: _emwgpuDeviceCreateBuffer,
-		aa: _emwgpuDeviceCreateShaderModule,
-		ea: _emwgpuDeviceDestroy,
-		$: _emwgpuInstanceRequestAdapter,
-		T: _environ_get,
-		U: _environ_sizes_get,
-		M: invoke_diii,
-		N: invoke_fiii,
+		Z: _emwgpuDeviceCreateBuffer,
+		Y: _emwgpuDeviceCreateShaderModule,
+		aa: _emwgpuDeviceDestroy,
+		X: _emwgpuInstanceRequestAdapter,
+		P: _environ_get,
+		Q: _environ_sizes_get,
+		J: invoke_diii,
+		K: invoke_fiii,
 		k: invoke_i,
 		a: invoke_ii,
 		c: invoke_iii,
 		j: invoke_iiii,
 		h: invoke_iiiii,
-		W: invoke_iiiiid,
-		P: invoke_iiiiii,
-		s: invoke_iiiiiii,
-		O: invoke_iiiiiiii,
-		I: invoke_iiiiiiiiiiii,
+		S: invoke_iiiiid,
+		M: invoke_iiiiii,
+		p: invoke_iiiiiii,
+		L: invoke_iiiiiiii,
+		H: invoke_iiiiiiiiiiii,
 		i: invoke_v,
-		t: invoke_vi,
+		q: invoke_vi,
 		e: invoke_vii,
-		p: invoke_viii,
-		Q: invoke_viiii,
-		n: invoke_viiiiiii,
-		D: invoke_viiiiiiiiii,
-		H: invoke_viiiiiiiiiiiiiii,
-		S: _random_get,
-		ka: _wgpuAdapterGetLimits,
-		C: _wgpuCommandEncoderBeginComputePass,
-		R: _wgpuCommandEncoderCopyBufferToBuffer,
-		L: _wgpuCommandEncoderCopyTextureToBuffer,
-		K: _wgpuCommandEncoderFinish,
-		z: _wgpuComputePassEncoderDispatchWorkgroups,
-		y: _wgpuComputePassEncoderEnd,
-		A: _wgpuComputePassEncoderSetBindGroup,
-		B: _wgpuComputePassEncoderSetPipeline,
-		v: _wgpuComputePipelineGetBindGroupLayout,
-		u: _wgpuDeviceCreateBindGroup,
-		E: _wgpuDeviceCreateCommandEncoder,
-		ja: _wgpuDeviceCreateComputePipeline,
-		q: _wgpuDeviceCreateTexture,
-		J: _wgpuQueueSubmit,
-		w: _wgpuQueueWriteBuffer,
-		G: _wgpuQueueWriteTexture,
+		o: invoke_viii,
+		N: invoke_viiii,
+		m: invoke_viiiiiii,
+		y: invoke_viiiiiiiiii,
+		G: invoke_viiiiiiiiiiiiiii,
+		O: _random_get,
+		la: _wgpuAdapterGetInfo,
+		ha: _wgpuAdapterGetLimits,
+		x: _wgpuCommandEncoderBeginComputePass,
+		fa: _wgpuCommandEncoderCopyBufferToBuffer,
+		ia: _wgpuCommandEncoderCopyTextureToBuffer,
+		F: _wgpuCommandEncoderFinish,
+		A: _wgpuComputePassEncoderDispatchWorkgroups,
+		z: _wgpuComputePassEncoderEnd,
+		u: _wgpuComputePassEncoderSetBindGroup,
+		v: _wgpuComputePassEncoderSetPipeline,
+		ka: _wgpuComputePipelineGetBindGroupLayout,
+		ja: _wgpuDeviceCreateBindGroup,
+		B: _wgpuDeviceCreateCommandEncoder,
+		ga: _wgpuDeviceCreateComputePipeline,
+		r: _wgpuDeviceCreateTexture,
+		E: _wgpuQueueSubmit,
+		C: _wgpuQueueWriteBuffer,
+		I: _wgpuQueueWriteTexture,
 		l: _wgpuTextureCreateView,
-		r: _wgpuTextureDestroy
+		s: _wgpuTextureDestroy
 	};
 	function invoke_iiii(index, a1, a2, a3) {
 		var sp = stackSave();
@@ -2651,11 +2659,11 @@ async function createImg2NumModule(moduleArg = {}) {
 		var makeWrapper_pp = (f) => (a0) => f(a0) >>> 0;
 		var makeWrapper_ppp = (f) => (a0, a1) => f(a0, a1) >>> 0;
 		var makeWrapper_p = (f) => () => f() >>> 0;
-		wasmExports["wa"] = makeWrapper_pp(wasmExports["wa"]);
-		wasmExports["Za"] = makeWrapper_ppp(wasmExports["Za"]);
-		wasmExports["bb"] = makeWrapper_pp(wasmExports["bb"]);
-		wasmExports["cb"] = makeWrapper_p(wasmExports["cb"]);
-		wasmExports["gb"] = makeWrapper_pp(wasmExports["gb"]);
+		wasmExports["xa"] = makeWrapper_pp(wasmExports["xa"]);
+		wasmExports["_a"] = makeWrapper_ppp(wasmExports["_a"]);
+		wasmExports["cb"] = makeWrapper_pp(wasmExports["cb"]);
+		wasmExports["db"] = makeWrapper_p(wasmExports["db"]);
+		wasmExports["hb"] = makeWrapper_pp(wasmExports["hb"]);
 		return wasmExports;
 	}
 	async function run() {
@@ -2919,6 +2927,65 @@ async function callWasm({ funcName, args = {}, bufferKeys = [], returnType = "vo
 * @description This module provides high-level image processing functions using WASM.
 *              Each function handles memory management and exposes a JavaScript-friendly API.
 */
+/** @typedef {0 | 1} ColorSpace 0 = CIE LAB, 1 = sRGB */
+/**
+* @typedef {Object} GaussianBlurOptions
+* @property {Uint8ClampedArray} pixels - The image pixel data (flat RGBA array).
+* @property {number} width - The width of the image.
+* @property {number} height - The height of the image.
+* @property {number} [sigma_pixels] - Standard deviation of the Gaussian blur. Defaults to `width * 0.005`.
+*/
+/**
+* @typedef {Object} BilateralFilterOptions
+* @property {Uint8ClampedArray} pixels - The image pixel data (flat RGBA array).
+* @property {number} width - The width of the image.
+* @property {number} height - The height of the image.
+* @property {number} [sigma_spatial=3] - Spatial standard deviation.
+* @property {number} [sigma_range=50] - Range (color) standard deviation.
+* @property {ColorSpace} [color_space=0] - Color space mode (0: CIE LAB; 1: sRGB).
+*/
+/**
+* @typedef {Object} BlackThresholdOptions
+* @property {Uint8ClampedArray} pixels - The image pixel data (flat RGBA array).
+* @property {number} width - The width of the image.
+* @property {number} height - The height of the image.
+* @property {number} num_colors - Per-channel brightness cutoff (0-255): pixels whose red, green and blue values are all below this become black. Retained as `num_colors` for backwards compatibility.
+*/
+/**
+* @typedef {Object} KMeansOptions
+* @property {Uint8ClampedArray} pixels - Original image pixels.
+* @property {number} width - Image width.
+* @property {number} height - Image height.
+* @property {number} num_colors - Number of color clusters.
+* @property {Uint8ClampedArray} [out_pixels] - Output pixels array. Defaults to a new array the size of `pixels`.
+* @property {Int32Array} [out_labels] - Output labels array. Defaults to a new array of `pixels.length / 4`.
+* @property {number} [max_iter=100] - Maximum number of iterations.
+* @property {ColorSpace} [color_space=0] - Color space mode (0: CIE LAB; 1: sRGB).
+*/
+/** @typedef {{ pixels: Uint8ClampedArray, labels: Int32Array }} KMeansResult */
+/**
+* @typedef {Object} FindContoursOptions
+* @property {Uint8ClampedArray} pixels - Original image pixels.
+* @property {Int32Array} labels - Label array from clustering (e.g., K-Means) or segmentation.
+* @property {number} width - Image width.
+* @property {number} height - Image height.
+* @property {number} [min_area=100] - Minimum area of a region to be considered a contour.
+* @property {number} [min_thickness=10] - Minimum thickness of a region to be considered a contour.
+*/
+/**
+* @typedef {Object} ImageToSvgOptions
+* @property {Uint8ClampedArray} pixels - Original image pixels.
+* @property {number} width - Image width.
+* @property {number} height - Image height.
+* @property {number} [sigma_spatial=3] - Spatial standard deviation.
+* @property {number} [sigma_range=50] - Range (color) standard deviation.
+* @property {number} [num_colors=16] - Number of color clusters.
+* @property {number} [max_iter=100] - Maximum number of iterations.
+* @property {number} [min_area=100] - Minimum area of a region to be considered a contour.
+* @property {number} [min_thickness=10] - Minimum thickness of a region to be considered a contour.
+* @property {ColorSpace} [color_space=0] - Color space mode (0: CIE LAB; 1: sRGB).
+*/
+/** @typedef {{ svg: string }} SvgResult */
 /**
 * @summary Apply a Gaussian blur to an image using FFT in WASM.
 *
@@ -2929,11 +2996,7 @@ async function callWasm({ funcName, args = {}, bufferKeys = [], returnType = "vo
 *
 * @async
 * @function gaussianBlur
-* @param {Object} options - The input options.
-* @param {Uint8ClampedArray} options.pixels - The image pixel data (flat RGBA array).
-* @param {number} options.width - The width of the image.
-* @param {number} options.height - The height of the image.
-* @param {number} [options.sigma_pixels=width*0.005] - Standard deviation of the Gaussian blur (default=width*0.005; 5% of width).
+* @param {GaussianBlurOptions} options - The input options.
 * @returns {Promise<Uint8ClampedArray>} The blurred image pixels.
 * @throws {Error} If the WASM function fails or memory allocation fails.
 * @example
@@ -2969,13 +3032,7 @@ var gaussianBlur = async ({ pixels, width, height, sigma_pixels = width * .005 }
 *
 * @async
 * @function bilateralFilter
-* @param {Object} options - The input options.
-* @param {Uint8ClampedArray} options.pixels - The image pixel data (flat RGBA array).
-* @param {number} options.width - The width of the image.
-* @param {number} options.height - The height of the image.
-* @param {number} [options.sigma_spatial=3] - Spatial standard deviation.
-* @param {number} [options.sigma_range=50] - Range (color) standard deviation.
-* @param {number} [options.color_space=0] - Color space mode (0: CIE LAB; 1: sRGB).
+* @param {BilateralFilterOptions} options - The input options.
 * @returns {Promise<Uint8ClampedArray>} The filtered image pixels.
 * @throws {Error} If the WASM function fails.
 * @example
@@ -3001,26 +3058,26 @@ var bilateralFilter = async ({ pixels, width, height, sigma_spatial = 3, sigma_r
 	})).output.pixels;
 };
 /**
-* @summary Apply a black-biased threshold filter to reduce colors in an image.
+* @summary Apply a black-biased threshold filter to an image.
 *
 * @description
-* Apply a simple sRGB bin-based threshold on the Uint8ClampedArray image.
-* The bins in this function are determined by the `num_colors` parameter.
+* Sets a pixel to pure black when all three of its colour channels are strictly
+* below the `num_colors` cutoff; every other pixel is left untouched. Despite
+* the name (kept for backwards compatibility), `num_colors` is a per-channel
+* 0-255 brightness cutoff, not a number of output colour levels. Values of 0 or
+* less leave the image unchanged. Blackened pixels have their alpha channel
+* set to an opaque 255.
 *
 * @async
 * @function blackThreshold
-* @param {Object} options - The input options.
-* @param {Uint8ClampedArray} options.pixels - The image pixel data (flat RGBA array).
-* @param {number} options.width - The width of the image.
-* @param {number} options.height - The height of the image.
-* @param {number} options.num_colors - Number of colors to reduce the image to.
+* @param {BlackThresholdOptions} options - The input options.
 * @returns {Promise<Uint8ClampedArray>} The thresholded image pixels.
 * @throws {Error} If the WASM function fails.
 * @example
 * const thresholded = await blackThreshold({ pixels, width, height, num_colors: 16 });
-* @see {@link https://en.wikipedia.org/wiki/Color_quantization|Color Quantization Wiki}
+* @see {@link https://en.wikipedia.org/wiki/Thresholding_(image_processing)|Thresholding Wiki}
 * @todo Support different bias levels for black/white thresholds.
-* @variation Black-biased threshold with customizable number of colors
+* @variation Black-biased threshold with customizable brightness cutoff
 * @since 0.0.0
 */
 var blackThreshold = async ({ pixels, width, height, num_colors }) => {
@@ -3050,16 +3107,8 @@ var blackThreshold = async ({ pixels, width, height, num_colors }) => {
 *
 * @async
 * @function kmeans
-* @param {Object} options - The input options.
-* @param {Uint8ClampedArray} options.pixels - Original image pixels.
-* @param {Uint8ClampedArray} [options.out_pixels=new Uint8ClampedArray(pixels.length)] - Output pixels array.
-* @param {Int32Array} [options.out_labels=new Int32Array(pixels.length/4)] - Output labels array.
-* @param {number} options.width - Image width.
-* @param {number} options.height - Image height.
-* @param {number} options.num_colors - Number of color clusters.
-* @param {number} [options.max_iter=100] - Maximum number of iterations.
-* @param {number} [options.color_space=0] - Color space mode.
-* @returns {Promise<{pixels: Uint8ClampedArray, labels: Int32Array}>} Clustered pixels and labels.
+* @param {KMeansOptions} options - The input options.
+* @returns {Promise<KMeansResult>} Clustered pixels and labels.
 * @throws {Error} If the WASM function fails or iterations do not converge.
 * @example
 * const { pixels: clusteredPixels, labels } = await kmeans({ pixels, width, height, num_colors: 8 });
@@ -3107,14 +3156,8 @@ var kmeans = async ({ pixels, out_pixels = new Uint8ClampedArray(pixels.length),
 *
 * @async
 * @function findContours
-* @param {Object} options - The input options.
-* @param {Uint8ClampedArray} options.pixels - Original image pixels.
-* @param {Int32Array} options.labels - Label array from clustering (e.g., K-Means) or segmentation.
-* @param {number} options.width - Image width.
-* @param {number} options.height - Image height.
-* @param {number} [options.min_area=100] - Minimum area of a region to be considered a contour.
-* @param {number} [options.min_thickness=10] - Minimum thickness of a region to be considered a contour.
-* @returns {Promise<{svg: string}>} Generated SVG.
+* @param {FindContoursOptions} options - The input options.
+* @returns {Promise<SvgResult>} Generated SVG.
 * @throws {Error} If the WASM function fails or input labels are invalid.
 * @example
 * const { svg } = await findContours({ pixels, labels, width, height });
@@ -3150,21 +3193,11 @@ var findContours = async ({ pixels, labels, width, height, min_area = 100, min_t
 *
 * @async
 * @function imageToSvg
-* @param {Object} options - The input options.
-* @param {Uint8ClampedArray} options.pixels - Original image pixels.
-* @param {number} options.width - Image width.
-* @param {number} options.height - Image height.
-* @param {number} [options.sigma_spatial=3] - Spatial standard deviation.
-* @param {number} [options.sigma_range=50] - Range (color) standard deviation.
-* @param {number} [options.num_colors=16] - Number of color clusters.
-* @param {number} [options.max_iter=100] - Maximum number of iterations.
-* @param {number} [options.min_area=100] - Minimum area of a region to be considered a contour.
-* @param {number} [options.min_thickness=10] - Minimum thickness of a region to be considered a contour.
-* @param {number} [options.color_space=0] - Color space mode.
-* @returns {Promise<{svg: string}>} Generated SVG.
+* @param {ImageToSvgOptions} options - The input options.
+* @returns {Promise<SvgResult>} Generated SVG.
 * @throws {Error} If the WASM function fails or input labels are invalid.
 * @example
-* const { svg } = await findContours({ pixels, labels, width, height });
+* const { svg } = await imageToSvg({ pixels, width, height });
 * @variation Convert a raster image (e.g., PNG, JPG) into an SVG.
 * @since 0.0.0
 */

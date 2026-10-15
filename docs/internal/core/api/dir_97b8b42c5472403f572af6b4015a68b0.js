@@ -8,6 +8,7 @@ var dir_97b8b42c5472403f572af6b4015a68b0 =
     [ "douglas_peucker.h", "douglas__peucker_8h_source.html", null ],
     [ "fft_iterative.h", "fft__iterative_8h_source.html", null ],
     [ "gpu.h", "gpu_8h_source.html", null ],
+    [ "gpu_utils.h", "gpu__utils_8h.html", "gpu__utils_8h" ],
     [ "graph.h", "graph_8h_source.html", null ],
     [ "Image.h", "Image_8h_source.html", null ],
     [ "image_utils.h", "image__utils_8h_source.html", null ],

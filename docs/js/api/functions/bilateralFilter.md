@@ -4,49 +4,15 @@ URL: https://img2num.dev/docs/js/api/functions/bilateralFilter
 
 > **bilateralFilter** ( `options` ): `Promise` < `Uint8ClampedArray` < `ArrayBufferLike` >>
 
-Defined in: [safeWasmWrappers.js:79](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L79)
+Defined in: [safeWasmWrappers.js:137](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L137)
 
 ## Parameters
 
 ### options
 
+`BilateralFilterOptions`
+
 The input options.
-
-#### color_space?
-
-`number` = `0`
-
-Color space mode (0: CIE LAB; 1: sRGB).
-
-#### height
-
-`number`
-
-The height of the image.
-
-#### pixels
-
-`Uint8ClampedArray` < `ArrayBufferLike` >
-
-The image pixel data (flat RGBA array).
-
-#### sigma_range?
-
-`number` = `50`
-
-Range (color) standard deviation.
-
-#### sigma_spatial?
-
-`number` = `3`
-
-Spatial standard deviation.
-
-#### width
-
-`number`
-
-The width of the image.
 
 ## Returns
 

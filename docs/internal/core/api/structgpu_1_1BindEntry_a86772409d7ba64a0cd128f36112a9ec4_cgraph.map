@@ -1,0 +1,7 @@
+<map id="gpu::BindEntry::buffer_entry" name="gpu::BindEntry::buffer_entry">
+<area shape="rect" id="Node000001" title="Create a buffer entry (storage or uniform)." alt="" coords="5,23,168,63"/>
+<area shape="rect" id="Node000002" href="$classgpu_1_1Buffer.html#aba4580118ffc2272eccac4de442f9f41" title="Size in bytes." alt="" coords="216,5,379,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,31,202,27,203,32,169,36"/>
+<area shape="rect" id="Node000003" href="$classgpu_1_1Buffer.html#adcd67b01e45d8fe916a6c4b22b921f2f" title="Returns the underlying wgpu::Buffer handle." alt="" coords="225,55,370,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="169,50,212,55,211,60,168,55"/>
+</map>

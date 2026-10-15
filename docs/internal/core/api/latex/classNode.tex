@@ -31,7 +31,7 @@ int32\+\_\+t \mbox{\hyperlink{classNode_ac778ddfbe8b17883170d86cba5ed63d3}{id}} 
 \item 
 size\+\_\+t \mbox{\hyperlink{classNode_ad225f26654b5fa72e806b1b3a9022d35}{area}} () const
 \item 
-const std\+::set$<$ Node\+\_\+ptr $>$ \& \mbox{\hyperlink{classNode_ae6f75d8b66072c86bc57b4bba5a697ad}{edges}} () const
+const Node\+\_\+set \& \mbox{\hyperlink{classNode_af4a342c5fb556326771034ba83525cb6}{edges}} () const
 \item 
 size\+\_\+t \mbox{\hyperlink{classNode_a8d8f2c2af03a189148f367d61ff03a2d}{num\+\_\+edges}} () const
 \item 
@@ -65,7 +65,7 @@ int32\+\_\+t \mbox{\hyperlink{classNode_ae290d5afb95c73d6f7fe1fef4a57d476}{m\+\_
 \item 
 std\+::unique\+\_\+ptr$<$ std\+::vector$<$ \mbox{\hyperlink{structRGBXY}{RGBXY}} $>$ $>$ \mbox{\hyperlink{classNode_a2c8e15307d10a4e2bde9ec6a6e21ae67}{m\+\_\+pixels}}
 \item 
-std\+::set$<$ Node\+\_\+ptr $>$ \mbox{\hyperlink{classNode_abb919cd0f676365dc222d284dde9c6ef}{m\+\_\+edges}} \{\}
+Node\+\_\+set \mbox{\hyperlink{classNode_af1086fa75abea86c0cf6f548423dcb75}{m\+\_\+edges}} \{\}
 \item 
 std\+::set$<$ \mbox{\hyperlink{structXY}{XY}} $>$ \mbox{\hyperlink{classNode_a5d00228b34cbe37be40ebc0053f4b309}{m\+\_\+edge\+\_\+pixels}} \{\}
 \end{DoxyCompactItemize}
@@ -74,7 +74,7 @@ std\+::set$<$ \mbox{\hyperlink{structXY}{XY}} $>$ \mbox{\hyperlink{classNode_a5d
 \doxysubsection{Detailed Description}
 
 
-Definition at line \mbox{\hyperlink{node_8h_source_l00069}{69}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+Definition at line \mbox{\hyperlink{node_8h_source_l00077}{77}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
 
 
 
@@ -87,13 +87,13 @@ Definition at line \mbox{\hyperlink{node_8h_source_l00069}{69}} of file \mbox{\h
 
 
 
-Definition at line \mbox{\hyperlink{node_8h_source_l00080}{80}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+Definition at line \mbox{\hyperlink{node_8h_source_l00088}{88}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ :\ m\_id(\textcolor{keywordtype}{id})}
-\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ ,\ m\_pixels(std::move(pixels))\ \{}
-\DoxyCodeLine{00083\ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ :\ m\_id(\textcolor{keywordtype}{id})}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ ,\ m\_pixels(std::move(pixels))\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \}}
 
 \end{DoxyCode}
 
@@ -107,13 +107,13 @@ Definition at line \mbox{\hyperlink{node_8h_source_l00080}{80}} of file \mbox{\h
 
 
 
-Definition at line \mbox{\hyperlink{node_8h_source_l00124}{124}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+Definition at line \mbox{\hyperlink{node_8h_source_l00132}{132}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ m\_edges.insert(node);}
-\DoxyCodeLine{00126\ \ \ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ m\_edges.insert(node);}
+\DoxyCodeLine{00134\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{classNode_ac9d4cb213b3ffc955b9f1bee846a7cd7}\label{classNode_ac9d4cb213b3ffc955b9f1bee846a7cd7} 
@@ -160,13 +160,13 @@ Definition at line \mbox{\hyperlink{node_8cpp_source_l00164}{164}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{node_8h_source_l00101}{101}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+Definition at line \mbox{\hyperlink{node_8h_source_l00109}{109}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_pixels-\/>size();}
-\DoxyCodeLine{00103\ \ \ \ \ \};}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_pixels-\/>size();}
+\DoxyCodeLine{00111\ \ \ \ \ \};}
 
 \end{DoxyCode}
 \Hypertarget{classNode_a1b03dd34e2ac098d361fa42be0ad0df2}\label{classNode_a1b03dd34e2ac098d361fa42be0ad0df2} 
@@ -438,21 +438,21 @@ Definition at line \mbox{\hyperlink{node_8cpp_source_l00099}{99}} of file \mbox{
 \DoxyCodeLine{00118\ \}}
 
 \end{DoxyCode}
-\Hypertarget{classNode_ae6f75d8b66072c86bc57b4bba5a697ad}\label{classNode_ae6f75d8b66072c86bc57b4bba5a697ad} 
+\Hypertarget{classNode_af4a342c5fb556326771034ba83525cb6}\label{classNode_af4a342c5fb556326771034ba83525cb6} 
 \index{Node@{Node}!edges@{edges}}
 \index{edges@{edges}!Node@{Node}}
 \doxysubsubsection{\texorpdfstring{edges()}{edges()}}
-{\footnotesize\ttfamily const std\+::set$<$ Node\+\_\+ptr $>$ \& Node\+::edges (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily const Node\+\_\+set \& Node\+::edges (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-Definition at line \mbox{\hyperlink{node_8h_source_l00104}{104}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+Definition at line \mbox{\hyperlink{node_8h_source_l00112}{112}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_edges;}
-\DoxyCodeLine{00106\ \ \ \ \ \}}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_edges;}
+\DoxyCodeLine{00114\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{classNode_a181b633c22d09bea5f54b126ab41e053}\label{classNode_a181b633c22d09bea5f54b126ab41e053} 
@@ -463,13 +463,13 @@ Definition at line \mbox{\hyperlink{node_8h_source_l00104}{104}} of file \mbox{\
 
 
 
-Definition at line \mbox{\hyperlink{node_8h_source_l00113}{113}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+Definition at line \mbox{\hyperlink{node_8h_source_l00121}{121}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_contours;}
-\DoxyCodeLine{00115\ \ \ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_contours;}
+\DoxyCodeLine{00123\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{classNode_ae189e4d4b4171b996749aad8a183c409}\label{classNode_ae189e4d4b4171b996749aad8a183c409} 
@@ -480,13 +480,13 @@ Definition at line \mbox{\hyperlink{node_8h_source_l00113}{113}} of file \mbox{\
 
 
 
-Definition at line \mbox{\hyperlink{node_8h_source_l00110}{110}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+Definition at line \mbox{\hyperlink{node_8h_source_l00118}{118}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *m\_pixels;}
-\DoxyCodeLine{00112\ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *m\_pixels;}
+\DoxyCodeLine{00120\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{classNode_ac778ddfbe8b17883170d86cba5ed63d3}\label{classNode_ac778ddfbe8b17883170d86cba5ed63d3} 
@@ -497,13 +497,13 @@ Definition at line \mbox{\hyperlink{node_8h_source_l00110}{110}} of file \mbox{\
 
 
 
-Definition at line \mbox{\hyperlink{node_8h_source_l00098}{98}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+Definition at line \mbox{\hyperlink{node_8h_source_l00106}{106}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_id;}
-\DoxyCodeLine{00100\ \ \ \ \ \};}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_id;}
+\DoxyCodeLine{00108\ \ \ \ \ \};}
 
 \end{DoxyCode}
 \Hypertarget{classNode_a8d8f2c2af03a189148f367d61ff03a2d}\label{classNode_a8d8f2c2af03a189148f367d61ff03a2d} 
@@ -514,13 +514,13 @@ Definition at line \mbox{\hyperlink{node_8h_source_l00098}{98}} of file \mbox{\h
 
 
 
-Definition at line \mbox{\hyperlink{node_8h_source_l00107}{107}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+Definition at line \mbox{\hyperlink{node_8h_source_l00115}{115}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_edges.size();}
-\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_edges.size();}
+\DoxyCodeLine{00117\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{classNode_aba1ec085d600582bae407077bd2b01c8}\label{classNode_aba1ec085d600582bae407077bd2b01c8} 
@@ -531,13 +531,13 @@ Definition at line \mbox{\hyperlink{node_8h_source_l00107}{107}} of file \mbox{\
 
 
 
-Definition at line \mbox{\hyperlink{node_8h_source_l00130}{130}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+Definition at line \mbox{\hyperlink{node_8h_source_l00138}{138}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ m\_edges.clear();}
-\DoxyCodeLine{00132\ \ \ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ m\_edges.clear();}
+\DoxyCodeLine{00140\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{classNode_afeb853a2c74316010c4850cbde459660}\label{classNode_afeb853a2c74316010c4850cbde459660} 
@@ -548,13 +548,13 @@ Definition at line \mbox{\hyperlink{node_8h_source_l00130}{130}} of file \mbox{\
 
 
 
-Definition at line \mbox{\hyperlink{node_8h_source_l00127}{127}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+Definition at line \mbox{\hyperlink{node_8h_source_l00135}{135}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ m\_edges.erase(node);}
-\DoxyCodeLine{00129\ \ \ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ m\_edges.erase(node);}
+\DoxyCodeLine{00137\ \ \ \ \ \}}
 
 \end{DoxyCode}
 
@@ -568,7 +568,7 @@ Definition at line \mbox{\hyperlink{node_8h_source_l00127}{127}} of file \mbox{\
 
 
 
-Definition at line \mbox{\hyperlink{node_8h_source_l00093}{93}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+Definition at line \mbox{\hyperlink{node_8h_source_l00101}{101}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
 
 \Hypertarget{classNode_a5d00228b34cbe37be40ebc0053f4b309}\label{classNode_a5d00228b34cbe37be40ebc0053f4b309} 
 \index{Node@{Node}!m\_edge\_pixels@{m\_edge\_pixels}}
@@ -578,26 +578,26 @@ Definition at line \mbox{\hyperlink{node_8h_source_l00093}{93}} of file \mbox{\h
 
 
 
-Definition at line \mbox{\hyperlink{node_8h_source_l00077}{77}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+Definition at line \mbox{\hyperlink{node_8h_source_l00085}{85}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00077\ \{\};}
+\DoxyCodeLine{00085\ \{\};}
 
 \end{DoxyCode}
-\Hypertarget{classNode_abb919cd0f676365dc222d284dde9c6ef}\label{classNode_abb919cd0f676365dc222d284dde9c6ef} 
+\Hypertarget{classNode_af1086fa75abea86c0cf6f548423dcb75}\label{classNode_af1086fa75abea86c0cf6f548423dcb75} 
 \index{Node@{Node}!m\_edges@{m\_edges}}
 \index{m\_edges@{m\_edges}!Node@{Node}}
 \doxysubsubsection{\texorpdfstring{m\_edges}{m\_edges}}
-{\footnotesize\ttfamily std\+::set$<$Node\+\_\+ptr$>$ Node\+::m\+\_\+edges \{\}\hspace{0.3cm}{\ttfamily [protected]}}
+{\footnotesize\ttfamily Node\+\_\+set Node\+::m\+\_\+edges \{\}\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 
-Definition at line \mbox{\hyperlink{node_8h_source_l00073}{73}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+Definition at line \mbox{\hyperlink{node_8h_source_l00081}{81}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00073\ \{\};}
+\DoxyCodeLine{00081\ \{\};}
 
 \end{DoxyCode}
 \Hypertarget{classNode_ae290d5afb95c73d6f7fe1fef4a57d476}\label{classNode_ae290d5afb95c73d6f7fe1fef4a57d476} 
@@ -608,7 +608,7 @@ Definition at line \mbox{\hyperlink{node_8h_source_l00073}{73}} of file \mbox{\h
 
 
 
-Definition at line \mbox{\hyperlink{node_8h_source_l00071}{71}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+Definition at line \mbox{\hyperlink{node_8h_source_l00079}{79}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
 
 \Hypertarget{classNode_a2c8e15307d10a4e2bde9ec6a6e21ae67}\label{classNode_a2c8e15307d10a4e2bde9ec6a6e21ae67} 
 \index{Node@{Node}!m\_pixels@{m\_pixels}}
@@ -618,7 +618,7 @@ Definition at line \mbox{\hyperlink{node_8h_source_l00071}{71}} of file \mbox{\h
 
 
 
-Definition at line \mbox{\hyperlink{node_8h_source_l00072}{72}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
+Definition at line \mbox{\hyperlink{node_8h_source_l00080}{80}} of file \mbox{\hyperlink{node_8h_source}{node.\+h}}.
 
 
 

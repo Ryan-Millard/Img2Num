@@ -1,0 +1,548 @@
+\doxysection{gpu\+::Texture Class Reference}
+\hypertarget{classgpu_1_1Texture}{}\label{classgpu_1_1Texture}\index{gpu::Texture@{gpu::Texture}}
+
+
+RAII wrapper around a wgpu\+::\+Texture with upload and aligned readback.  
+
+
+
+
+{\ttfamily \#include $<$gpu\+\_\+utils.\+h$>$}
+
+
+
+Collaboration diagram for gpu\+::Texture\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=159pt]{classgpu_1_1Texture__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classgpu_1_1Texture_ab2a8e483a16d01d7479593297529fad8}{Texture}} (uint32\+\_\+t \mbox{\hyperlink{classgpu_1_1Texture_a10691a74815853df462d26c7e16d0b95}{width}}, uint32\+\_\+t \mbox{\hyperlink{classgpu_1_1Texture_a98d1b416dac9d1cb883efb43ad2c7804}{height}}, wgpu\+::\+Texture\+Format \mbox{\hyperlink{classgpu_1_1Texture_ad5ad5a589655b309555a50026c2c3e27}{format}}, wgpu\+::\+Texture\+Usage usage)
+\begin{DoxyCompactList}\small\item\em Create a 2D texture. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classgpu_1_1Texture_a43b75ff2ba8b7b6bb927c18466c87427}{write}} (const void \texorpdfstring{$\ast$}{*}data, size\+\_\+t data\+\_\+size, uint32\+\_\+t bytes\+\_\+per\+\_\+pixel)
+\begin{DoxyCompactList}\small\item\em Upload tightly-\/packed pixel data to the texture. \end{DoxyCompactList}\item 
+std\+::vector$<$ uint8\+\_\+t $>$ \mbox{\hyperlink{classgpu_1_1Texture_a096300392371077317ff0a60d93ccb1e}{read}} (uint32\+\_\+t bytes\+\_\+per\+\_\+pixel)
+\begin{DoxyCompactList}\small\item\em Blocking readback with automatic 256-\/byte row-\/alignment stripping. \end{DoxyCompactList}\item 
+wgpu\+::\+Texture\+View \mbox{\hyperlink{classgpu_1_1Texture_a5d34164d1cc53a038f28634597226d30}{view}} () const
+\begin{DoxyCompactList}\small\item\em Create a default texture view. \end{DoxyCompactList}\item 
+const wgpu\+::\+Texture \& \mbox{\hyperlink{classgpu_1_1Texture_ae03091c94de23820e1c5b059b685f08b}{handle}} () const
+\begin{DoxyCompactList}\small\item\em Underlying wgpu\+::\+Texture handle. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{classgpu_1_1Texture_a10691a74815853df462d26c7e16d0b95}{width}} () const
+\begin{DoxyCompactList}\small\item\em Width of the texture in pixels. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{classgpu_1_1Texture_a98d1b416dac9d1cb883efb43ad2c7804}{height}} () const
+\begin{DoxyCompactList}\small\item\em Height of the texture in pixels. \end{DoxyCompactList}\item 
+wgpu\+::\+Texture\+Format \mbox{\hyperlink{classgpu_1_1Texture_ad5ad5a589655b309555a50026c2c3e27}{format}} () const
+\begin{DoxyCompactList}\small\item\em Texel format of the texture. \end{DoxyCompactList}\item 
+\Hypertarget{classgpu_1_1Texture_aedfd3d2df4fa7ccabc4ca8a11a72df9e}\label{classgpu_1_1Texture_aedfd3d2df4fa7ccabc4ca8a11a72df9e} 
+{\bfseries Texture} (const \mbox{\hyperlink{classgpu_1_1Texture}{Texture}} \&)=delete
+\item 
+\Hypertarget{classgpu_1_1Texture_a4405c2d2ed8b8e79e3bdeab8bf17ef36}\label{classgpu_1_1Texture_a4405c2d2ed8b8e79e3bdeab8bf17ef36} 
+\mbox{\hyperlink{classgpu_1_1Texture}{Texture}} \& {\bfseries operator=} (const \mbox{\hyperlink{classgpu_1_1Texture}{Texture}} \&)=delete
+\item 
+\mbox{\hyperlink{classgpu_1_1Texture_ac9cd4ecd6e516e187e30c79ae09e7a33}{Texture}} (\mbox{\hyperlink{classgpu_1_1Texture}{Texture}} \&\&other) noexcept
+\begin{DoxyCompactList}\small\item\em Move constructor. Transfers ownership of the \doxylink{classGPU}{GPU} texture. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classgpu_1_1Texture}{Texture}} \& \mbox{\hyperlink{classgpu_1_1Texture_a1f556ff6074531e50fd79c73a857041f}{operator=}} (\mbox{\hyperlink{classgpu_1_1Texture}{Texture}} \&\&other) noexcept
+\begin{DoxyCompactList}\small\item\em Move assignment. Destroys the current texture and takes ownership. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classgpu_1_1Texture_a8d54de83cefa4b956bdf72c23e0180b4}{\texorpdfstring{$\sim$}{\string~}\+Texture}} ()
+\begin{DoxyCompactList}\small\item\em Destructor. Releases the \doxylink{classGPU}{GPU} texture. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+wgpu\+::\+Texture \mbox{\hyperlink{classgpu_1_1Texture_a21d2dedc440915b09f248f52d5141b93}{texture\+\_\+}} \{nullptr\}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classgpu_1_1Texture_a3180e07361ea3c6cabbb87b340c2466f}{width\+\_\+}} \{0\}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classgpu_1_1Texture_afa69fb591d14d95856e77592d8f6b51a}{height\+\_\+}} \{0\}
+\item 
+wgpu\+::\+Texture\+Format \mbox{\hyperlink{classgpu_1_1Texture_a2e5d34ce6cd68d215e7a7383116d5e8c}{format\+\_\+}} \{\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+RAII wrapper around a wgpu\+::\+Texture with upload and aligned readback. 
+
+Handles the 256-\/byte row-\/alignment requirement for Copy\+Texture\+To\+Buffer automatically during readback. 
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00276}{276}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classgpu_1_1Texture_ab2a8e483a16d01d7479593297529fad8}\label{classgpu_1_1Texture_ab2a8e483a16d01d7479593297529fad8} 
+\index{gpu::Texture@{gpu::Texture}!Texture@{Texture}}
+\index{Texture@{Texture}!gpu::Texture@{gpu::Texture}}
+\doxysubsubsection{\texorpdfstring{Texture()}{Texture()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily gpu\+::\+Texture\+::\+Texture (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{width,  }\item[{uint32\+\_\+t}]{height,  }\item[{wgpu\+::\+Texture\+Format}]{format,  }\item[{wgpu\+::\+Texture\+Usage}]{usage }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Create a 2D texture. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em width} & Width in pixels. \\
+\hline
+{\em height} & Height in pixels. \\
+\hline
+{\em format} & Texel format (e.\+g. RGBA8\+Unorm, RGBA32\+Float). \\
+\hline
+{\em usage} & \doxylink{classgpu_1_1Texture}{Texture} usage flags. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00283}{283}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ :\ width\_(\mbox{\hyperlink{classgpu_1_1Texture_a10691a74815853df462d26c7e16d0b95}{width}})}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ ,\ height\_(\mbox{\hyperlink{classgpu_1_1Texture_a98d1b416dac9d1cb883efb43ad2c7804}{height}})}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ ,\ format\_(\mbox{\hyperlink{classgpu_1_1Texture_ad5ad5a589655b309555a50026c2c3e27}{format}})\ \{}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ wgpu::TextureDescriptor\ desc\ \{\};}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ desc.size\ =\ \{\mbox{\hyperlink{classgpu_1_1Texture_a10691a74815853df462d26c7e16d0b95}{width}},\ \mbox{\hyperlink{classgpu_1_1Texture_a98d1b416dac9d1cb883efb43ad2c7804}{height}},\ 1\};}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ desc.format\ =\ \mbox{\hyperlink{classgpu_1_1Texture_ad5ad5a589655b309555a50026c2c3e27}{format}};}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ desc.usage\ =\ usage;}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ texture\_\ =\ GPU::getClassInstance().get\_device().CreateTexture(\&desc);}
+\DoxyCodeLine{00292\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+References \mbox{\hyperlink{gpu__utils_8h_source_l00375}{format()}}, \mbox{\hyperlink{gpu__utils_8h_source_l00371}{height()}}, and \mbox{\hyperlink{gpu__utils_8h_source_l00367}{width()}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classgpu_1_1Texture_ab2a8e483a16d01d7479593297529fad8_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classgpu_1_1Texture_ac9cd4ecd6e516e187e30c79ae09e7a33}\label{classgpu_1_1Texture_ac9cd4ecd6e516e187e30c79ae09e7a33} 
+\index{gpu::Texture@{gpu::Texture}!Texture@{Texture}}
+\index{Texture@{Texture}!gpu::Texture@{gpu::Texture}}
+\doxysubsubsection{\texorpdfstring{Texture()}{Texture()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily gpu\+::\+Texture\+::\+Texture (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classgpu_1_1Texture}{Texture}} \&\&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Move constructor. Transfers ownership of the \doxylink{classGPU}{GPU} texture. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00384}{384}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \ \ :\ texture\_(std::move(other.texture\_))}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \ \ ,\ width\_(other.width\_)}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \ \ ,\ height\_(other.height\_)}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \ \ ,\ format\_(other.format\_)\ \{}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \ \ other.texture\_\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \ \ other.width\_\ =\ 0;}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ other.height\_\ =\ 0;}
+\DoxyCodeLine{00392\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classgpu_1_1Texture_a8d54de83cefa4b956bdf72c23e0180b4}\label{classgpu_1_1Texture_a8d54de83cefa4b956bdf72c23e0180b4} 
+\index{gpu::Texture@{gpu::Texture}!````~Texture@{\texorpdfstring{$\sim$}{\string~}Texture}}
+\index{````~Texture@{\texorpdfstring{$\sim$}{\string~}Texture}!gpu::Texture@{gpu::Texture}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}Texture()}{\string~Texture()}}
+{\footnotesize\ttfamily gpu\+::\+Texture\+::\texorpdfstring{$\sim$}{\string~}\+Texture (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Destructor. Releases the \doxylink{classGPU}{GPU} texture. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00412}{412}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (texture\_)\ \{}
+\DoxyCodeLine{00414\ \ \ \ \ \ \ \ \ \ \ \ \ texture\_.Destroy();}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00416\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classgpu_1_1Texture_ad5ad5a589655b309555a50026c2c3e27}\label{classgpu_1_1Texture_ad5ad5a589655b309555a50026c2c3e27} 
+\index{gpu::Texture@{gpu::Texture}!format@{format}}
+\index{format@{format}!gpu::Texture@{gpu::Texture}}
+\doxysubsubsection{\texorpdfstring{format()}{format()}}
+{\footnotesize\ttfamily wgpu\+::\+Texture\+Format gpu\+::\+Texture\+::format (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Texel format of the texture. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00375}{375}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ format\_;}
+\DoxyCodeLine{00377\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00283}{Texture()}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classgpu_1_1Texture_ad5ad5a589655b309555a50026c2c3e27_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classgpu_1_1Texture_ae03091c94de23820e1c5b059b685f08b}\label{classgpu_1_1Texture_ae03091c94de23820e1c5b059b685f08b} 
+\index{gpu::Texture@{gpu::Texture}!handle@{handle}}
+\index{handle@{handle}!gpu::Texture@{gpu::Texture}}
+\doxysubsubsection{\texorpdfstring{handle()}{handle()}}
+{\footnotesize\ttfamily const wgpu\+::\+Texture \& gpu\+::\+Texture\+::handle (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Underlying wgpu\+::\+Texture handle. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00362}{362}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ texture\_;}
+\DoxyCodeLine{00364\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classgpu_1_1Texture_a98d1b416dac9d1cb883efb43ad2c7804}\label{classgpu_1_1Texture_a98d1b416dac9d1cb883efb43ad2c7804} 
+\index{gpu::Texture@{gpu::Texture}!height@{height}}
+\index{height@{height}!gpu::Texture@{gpu::Texture}}
+\doxysubsubsection{\texorpdfstring{height()}{height()}}
+{\footnotesize\ttfamily uint32\+\_\+t gpu\+::\+Texture\+::height (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Height of the texture in pixels. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00371}{371}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ height\_;}
+\DoxyCodeLine{00373\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00283}{Texture()}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=348pt]{classgpu_1_1Texture_a98d1b416dac9d1cb883efb43ad2c7804_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classgpu_1_1Texture_a1f556ff6074531e50fd79c73a857041f}\label{classgpu_1_1Texture_a1f556ff6074531e50fd79c73a857041f} 
+\index{gpu::Texture@{gpu::Texture}!operator=@{operator=}}
+\index{operator=@{operator=}!gpu::Texture@{gpu::Texture}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classgpu_1_1Texture}{Texture}} \& gpu\+::\+Texture\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classgpu_1_1Texture}{Texture}} \&\&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+
+
+Move assignment. Destroys the current texture and takes ownership. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00395}{395}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{this}\ !=\ \&other)\ \{}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (texture\_)\ \{}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ texture\_.Destroy();}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \ \ \ \ \ \ texture\_\ =\ std::move(other.texture\_);}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \ \ \ \ \ \ width\_\ =\ other.width\_;}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \ \ \ \ \ \ height\_\ =\ other.height\_;}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \ \ \ \ \ \ format\_\ =\ other.format\_;}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \ \ \ \ \ \ other.texture\_\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \ \ \ \ \ \ other.width\_\ =\ 0;}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \ \ \ \ \ \ other.height\_\ =\ 0;}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00409\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{classgpu_1_1Texture_a096300392371077317ff0a60d93ccb1e}\label{classgpu_1_1Texture_a096300392371077317ff0a60d93ccb1e} 
+\index{gpu::Texture@{gpu::Texture}!read@{read}}
+\index{read@{read}!gpu::Texture@{gpu::Texture}}
+\doxysubsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily std\+::vector$<$ uint8\+\_\+t $>$ gpu\+::\+Texture\+::read (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{bytes\+\_\+per\+\_\+pixel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Blocking readback with automatic 256-\/byte row-\/alignment stripping. 
+
+Returns tightly-\/packed pixel data with no padding between rows.
+
+
+\begin{DoxyParams}{Parameters}
+{\em bytes\+\_\+per\+\_\+pixel} & Bytes per pixel in the texture format. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Tightly-\/packed pixel data. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00315}{315}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ uint32\_t\ aligned\_bpr\ =\ GPU::getAlignedBytesPerRow(width\_,\ bytes\_per\_pixel);}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ uint32\_t\ staging\_size\ =\ aligned\_bpr\ *\ height\_;}
+\DoxyCodeLine{00318\ }
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ staging\ buffer}}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ wgpu::BufferDescriptor\ staging\_desc\ \{\};}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ staging\_desc.size\ =\ staging\_size;}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ staging\_desc.usage\ =\ wgpu::BufferUsage::MapRead\ |\ wgpu::BufferUsage::CopyDst;}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ wgpu::Buffer\ staging\ =\ GPU::getClassInstance().get\_device().CreateBuffer(\&staging\_desc);}
+\DoxyCodeLine{00324\ }
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Encode\ copy}}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ wgpu::CommandEncoder\ encoder\ =\ GPU::getClassInstance().get\_device().CreateCommandEncoder();}
+\DoxyCodeLine{00327\ }
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ wgpu::TexelCopyTextureInfo\ src\ \{\};}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ src.texture\ =\ texture\_;}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ wgpu::TexelCopyBufferInfo\ dst\ \{\};}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ dst.buffer\ =\ staging;}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ dst.layout.bytesPerRow\ =\ aligned\_bpr;}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ dst.layout.rowsPerImage\ =\ height\_;}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ wgpu::Extent3D\ extent\ \{width\_,\ height\_,\ 1\};}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ encoder.CopyTextureToBuffer(\&src,\ \&dst,\ \&extent);}
+\DoxyCodeLine{00336\ }
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ wgpu::CommandBuffer\ commands\ =\ encoder.Finish();}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ GPU::getClassInstance().get\_queue().Submit(1,\ \&commands);}
+\DoxyCodeLine{00339\ }
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Map\ and\ wait}}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}*\ mapped\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }uint8\_t*\textcolor{keyword}{>}(\mbox{\hyperlink{gpu__utils_8h_aa8083a6a628c8a891771e104257607b9}{map\_and\_wait}}(staging,\ staging\_size));}
+\DoxyCodeLine{00342\ }
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Strip\ row\ alignment\ padding}}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ uint32\_t\ tight\_bpr\ =\ width\_\ *\ bytes\_per\_pixel;}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ std::vector<uint8\_t>\ result(tight\_bpr\ *\ height\_);}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (uint32\_t\ y\ =\ 0;\ y\ <\ height\_;\ ++y)\ \{}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \ \ \ \ std::memcpy(result.data()\ +\ y\ *\ tight\_bpr,\ mapped\ +\ y\ *\ aligned\_bpr,\ tight\_bpr);}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00350\ }
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ staging.Unmap();}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ staging.Destroy();}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00354\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+References \mbox{\hyperlink{gpu__utils_8h_source_l00104}{gpu\+::map\+\_\+and\+\_\+wait()}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=332pt]{classgpu_1_1Texture_a096300392371077317ff0a60d93ccb1e_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classgpu_1_1Texture_a5d34164d1cc53a038f28634597226d30}\label{classgpu_1_1Texture_a5d34164d1cc53a038f28634597226d30} 
+\index{gpu::Texture@{gpu::Texture}!view@{view}}
+\index{view@{view}!gpu::Texture@{gpu::Texture}}
+\doxysubsubsection{\texorpdfstring{view()}{view()}}
+{\footnotesize\ttfamily wgpu\+::\+Texture\+View gpu\+::\+Texture\+::view (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Create a default texture view. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00357}{357}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ texture\_.CreateView();}
+\DoxyCodeLine{00359\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00438}{gpu\+::\+Bind\+Entry\+::texture()}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classgpu_1_1Texture_a5d34164d1cc53a038f28634597226d30_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classgpu_1_1Texture_a10691a74815853df462d26c7e16d0b95}\label{classgpu_1_1Texture_a10691a74815853df462d26c7e16d0b95} 
+\index{gpu::Texture@{gpu::Texture}!width@{width}}
+\index{width@{width}!gpu::Texture@{gpu::Texture}}
+\doxysubsubsection{\texorpdfstring{width()}{width()}}
+{\footnotesize\ttfamily uint32\+\_\+t gpu\+::\+Texture\+::width (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Width of the texture in pixels. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00367}{367}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ width\_;}
+\DoxyCodeLine{00369\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00283}{Texture()}}.
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=345pt]{classgpu_1_1Texture_a10691a74815853df462d26c7e16d0b95_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{classgpu_1_1Texture_a43b75ff2ba8b7b6bb927c18466c87427}\label{classgpu_1_1Texture_a43b75ff2ba8b7b6bb927c18466c87427} 
+\index{gpu::Texture@{gpu::Texture}!write@{write}}
+\index{write@{write}!gpu::Texture@{gpu::Texture}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily void gpu\+::\+Texture\+::write (\begin{DoxyParamCaption}\item[{const void \texorpdfstring{$\ast$}{*}}]{data,  }\item[{size\+\_\+t}]{data\+\_\+size,  }\item[{uint32\+\_\+t}]{bytes\+\_\+per\+\_\+pixel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Upload tightly-\/packed pixel data to the texture. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Pointer to pixel data. \\
+\hline
+{\em data\+\_\+size} & Total size in bytes. \\
+\hline
+{\em bytes\+\_\+per\+\_\+pixel} & Bytes per pixel (e.\+g. 4 for RGBA8, 16 for RGBA32\+Float). \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00298}{298}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ wgpu::TexelCopyTextureInfo\ dst\ \{\};}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ dst.texture\ =\ texture\_;}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ wgpu::TexelCopyBufferLayout\ layout\ \{\};}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ layout.offset\ =\ 0;}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ layout.bytesPerRow\ =\ width\_\ *\ bytes\_per\_pixel;}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ layout.rowsPerImage\ =\ height\_;}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ wgpu::Extent3D\ extent\ \{width\_,\ height\_,\ 1\};}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ GPU::getClassInstance().get\_queue().WriteTexture(\&dst,\ data,\ data\_size,\ \&layout,\ \&extent);}
+\DoxyCodeLine{00307\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classgpu_1_1Texture_a2e5d34ce6cd68d215e7a7383116d5e8c}\label{classgpu_1_1Texture_a2e5d34ce6cd68d215e7a7383116d5e8c} 
+\index{gpu::Texture@{gpu::Texture}!format\_@{format\_}}
+\index{format\_@{format\_}!gpu::Texture@{gpu::Texture}}
+\doxysubsubsection{\texorpdfstring{format\_}{format\_}}
+{\footnotesize\ttfamily wgpu\+::\+Texture\+Format gpu\+::\+Texture\+::format\+\_\+ \{\}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00422}{422}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00422\ \{\};}
+
+\end{DoxyCode}
+\Hypertarget{classgpu_1_1Texture_afa69fb591d14d95856e77592d8f6b51a}\label{classgpu_1_1Texture_afa69fb591d14d95856e77592d8f6b51a} 
+\index{gpu::Texture@{gpu::Texture}!height\_@{height\_}}
+\index{height\_@{height\_}!gpu::Texture@{gpu::Texture}}
+\doxysubsubsection{\texorpdfstring{height\_}{height\_}}
+{\footnotesize\ttfamily uint32\+\_\+t gpu\+::\+Texture\+::height\+\_\+ \{0\}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00421}{421}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00421\ \{0\};}
+
+\end{DoxyCode}
+\Hypertarget{classgpu_1_1Texture_a21d2dedc440915b09f248f52d5141b93}\label{classgpu_1_1Texture_a21d2dedc440915b09f248f52d5141b93} 
+\index{gpu::Texture@{gpu::Texture}!texture\_@{texture\_}}
+\index{texture\_@{texture\_}!gpu::Texture@{gpu::Texture}}
+\doxysubsubsection{\texorpdfstring{texture\_}{texture\_}}
+{\footnotesize\ttfamily wgpu\+::\+Texture gpu\+::\+Texture\+::texture\+\_\+ \{nullptr\}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00419}{419}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00419\ \{\textcolor{keyword}{nullptr}\};}
+
+\end{DoxyCode}
+\Hypertarget{classgpu_1_1Texture_a3180e07361ea3c6cabbb87b340c2466f}\label{classgpu_1_1Texture_a3180e07361ea3c6cabbb87b340c2466f} 
+\index{gpu::Texture@{gpu::Texture}!width\_@{width\_}}
+\index{width\_@{width\_}!gpu::Texture@{gpu::Texture}}
+\doxysubsubsection{\texorpdfstring{width\_}{width\_}}
+{\footnotesize\ttfamily uint32\+\_\+t gpu\+::\+Texture\+::width\+\_\+ \{0\}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00420}{420}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00420\ \{0\};}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/internal/\mbox{\hyperlink{gpu__utils_8h}{gpu\+\_\+utils.\+h}}\end{DoxyCompactItemize}

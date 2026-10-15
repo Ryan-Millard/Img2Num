@@ -2,67 +2,21 @@
 
 URL: https://img2num.dev/docs/js/api/functions/kmeans
 
-> **kmeans** ( `options` ): `Promise` <{ `labels` : `Int32Array` ; `pixels` : `Uint8ClampedArray` ; }>
+> **kmeans** ( `options` ): `Promise` <`KMeansResult` >
 
-Defined in: [safeWasmWrappers.js:148](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L148)
+Defined in: [safeWasmWrappers.js:198](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L198)
 
 ## Parameters
 
 ### options
 
+`KMeansOptions`
+
 The input options.
-
-#### color_space?
-
-`number` = `0`
-
-Color space mode.
-
-#### height
-
-`number`
-
-Image height.
-
-#### max_iter?
-
-`number` = `100`
-
-Maximum number of iterations.
-
-#### num_colors
-
-`number`
-
-Number of color clusters.
-
-#### out_labels?
-
-`Int32Array` < `ArrayBufferLike` > = `...`
-
-Output labels array.
-
-#### out_pixels?
-
-`Uint8ClampedArray` < `ArrayBufferLike` > = `...`
-
-Output pixels array.
-
-#### pixels
-
-`Uint8ClampedArray` < `ArrayBufferLike` >
-
-Original image pixels.
-
-#### width
-
-`number`
-
-Image width.
 
 ## Returns
 
-`Promise` <{ `labels` : `Int32Array` ; `pixels` : `Uint8ClampedArray` ; }>
+`Promise` <`KMeansResult` >
 
 Clustered pixels and labels.
 

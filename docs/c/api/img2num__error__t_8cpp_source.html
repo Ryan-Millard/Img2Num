@@ -125,14 +125,14 @@ $(document).ready(function(){initNavTree('img2num__error__t_8cpp_source.html',''
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
 <div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="img2num__error__t_8h.html#a19e8b982f542ab10e701fe3557582340">   27</a></span><a class="code hl_enumeration" href="img2num__error__t_8h.html#a208debf202796bb5ac21d27878829bb2">img2num_error_t</a> <a class="code hl_function" href="img2num__error__t_8cpp.html#a19e8b982f542ab10e701fe3557582340">img2num_get_last_error</a>() {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="img2num__error__t_8h.html#aeb883cfa4b215e1794bd1a7c9e53103b">   27</a></span><a class="code hl_enumeration" href="img2num__error__t_8h.html#a208debf202796bb5ac21d27878829bb2">img2num_error_t</a> <a class="code hl_function" href="img2num__error__t_8cpp.html#a19e8b982f542ab10e701fe3557582340">img2num_get_last_error</a>() {</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keyword">const</span> img2num::Error cpp_err {img2num::get_last_error()};</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordflow">return</span> cpp_error_to_c_error(cpp_err);</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}</div>
 </div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
 <div class="foldopen" id="foldopen00032" data-start="{" data-end="}">
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="img2num__error__t_8h.html#a41d48f4c353c389bd2657f5191479577">   32</a></span><span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="img2num__error__t_8cpp.html#a41d48f4c353c389bd2657f5191479577">img2num_get_last_error_message</a>() {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="img2num__error__t_8h.html#a9325e2ee5a1183643a0ec32a0913292f">   32</a></span><span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="img2num__error__t_8cpp.html#a41d48f4c353c389bd2657f5191479577">img2num_get_last_error_message</a>() {</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keyword">static</span> <span class="keyword">thread_local</span> std::string msg;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    msg = img2num::get_last_error_message();</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">return</span> msg.c_str();</div>
@@ -140,7 +140,7 @@ $(document).ready(function(){initNavTree('img2num__error__t_8cpp_source.html',''
 </div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="foldopen" id="foldopen00038" data-start="{" data-end="}">
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="img2num__error__t_8h.html#a6e18e50086049cc81d6ab0babacf2dee">   38</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="img2num__error__t_8cpp.html#a6e18e50086049cc81d6ab0babacf2dee">img2num_clear_last_error</a>() {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="img2num__error__t_8h.html#abc167d0d882bad1ffcdf7bc42c76fc8e">   38</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="img2num__error__t_8cpp.html#a6e18e50086049cc81d6ab0babacf2dee">img2num_clear_last_error</a>() {</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    img2num::clear_last_error();</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>}</div>
 </div>

@@ -1,0 +1,3 @@
+<map id="gpu::Texture" name="gpu::Texture">
+<area shape="rect" id="Node000001" title="RAII wrapper around a wgpu::Texture with upload and aligned readback." alt="" coords="5,5,111,371"/>
+</map>

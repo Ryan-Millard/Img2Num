@@ -45,11 +45,11 @@ typedef struct \mbox{\hyperlink{structimg2num__ImageToSvgConfig}{img2num\+\_\+\+
 \item 
 void \mbox{\hyperlink{cimg2num_8h_a9ec403b5d2ba9b510eb999dfc8ba9305}{img2num\+\_\+gaussian\+\_\+blur\+\_\+fft}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}image, size\+\_\+t width, size\+\_\+t height, double sigma)
 \begin{DoxyCompactList}\small\item\em Apply a Gaussian blur to an image using FFT.   \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{cimg2num_8h_a1414ef09df95cdbef430433629b2a136}{img2num\+\_\+invert\+\_\+image}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}ptr, int width, int height)
+void \mbox{\hyperlink{cimg2num_8h_a938eb2be340be827192bfbcbf6c90af8}{img2num\+\_\+invert\+\_\+image}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}image, int width, int height)
 \begin{DoxyCompactList}\small\item\em Invert the pixel values of an image.   \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{cimg2num_8h_a553a2adf9345b19adc20473ab70692b0}{img2num\+\_\+threshold\+\_\+image}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}ptr, const int width, const int height, const int num\+\_\+thresholds)
+void \mbox{\hyperlink{cimg2num_8h_aa34e1d33a78fdf9c08187263cf7e584c}{img2num\+\_\+threshold\+\_\+image}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}image, const int width, const int height, const int num\+\_\+thresholds)
 \begin{DoxyCompactList}\small\item\em Apply a thresholding operation to an image.   \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{cimg2num_8h_ab121126337eeb4f32e02ad068f784deb}{img2num\+\_\+black\+\_\+threshold\+\_\+image}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}ptr, const int width, const int height, const int num\+\_\+thresholds)
+void \mbox{\hyperlink{cimg2num_8h_a40f2e90f20bf2631d00328fef2e998d2}{img2num\+\_\+black\+\_\+threshold\+\_\+image}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}image, const int width, const int height, const int num\+\_\+thresholds)
 \begin{DoxyCompactList}\small\item\em Apply black-\/thresholding to an image.   \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{cimg2num_8h_acfb692edf4159d210555b0a42da84993}{img2num\+\_\+kmeans}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, uint8\+\_\+t \texorpdfstring{$\ast$}{*}out\+\_\+data, int32\+\_\+t \texorpdfstring{$\ast$}{*}out\+\_\+labels, const int32\+\_\+t width, const int32\+\_\+t height, const int32\+\_\+t k, const int32\+\_\+t max\+\_\+iter, const uint8\+\_\+t color\+\_\+space)
 \begin{DoxyCompactList}\small\item\em Perform k-\/means clustering on image data.   \end{DoxyCompactList}\item 
@@ -114,11 +114,11 @@ Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00080}{80}} of file \m
 \DoxyCodeLine{00087\ \}}
 
 \end{DoxyCode}
-\Hypertarget{cimg2num_8h_ab121126337eeb4f32e02ad068f784deb}\label{cimg2num_8h_ab121126337eeb4f32e02ad068f784deb} 
+\Hypertarget{cimg2num_8h_a40f2e90f20bf2631d00328fef2e998d2}\label{cimg2num_8h_a40f2e90f20bf2631d00328fef2e998d2} 
 \index{cimg2num.h@{cimg2num.h}!img2num\_black\_threshold\_image@{img2num\_black\_threshold\_image}}
 \index{img2num\_black\_threshold\_image@{img2num\_black\_threshold\_image}!cimg2num.h@{cimg2num.h}}
 \doxysubsubsection{\texorpdfstring{img2num\_black\_threshold\_image()}{img2num\_black\_threshold\_image()}}
-{\footnotesize\ttfamily void img2num\+\_\+black\+\_\+threshold\+\_\+image (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{ptr,  }\item[{const int}]{width,  }\item[{const int}]{height,  }\item[{const int}]{num\+\_\+thresholds }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void img2num\+\_\+black\+\_\+threshold\+\_\+image (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{image,  }\item[{const int}]{width,  }\item[{const int}]{height,  }\item[{const int}]{num\+\_\+thresholds }\end{DoxyParamCaption})}
 
 
 
@@ -126,17 +126,19 @@ Apply black-\/thresholding to an image.
 
 
 \begin{DoxyParams}{Parameters}
-{\em ptr} & Pointer to the image buffer. \\
+{\em image} & Pointer to the image buffer. \\
 \hline
 {\em width} & Width of the image in pixels. \\
 \hline
 {\em height} & Height of the image in pixels. \\
 \hline
-{\em num\+\_\+thresholds} & Number of thresholds to apply. \\
+{\em num\+\_\+thresholds} & Per-\/channel brightness cutoff in the 0-\/255 range. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyNote}{Note}
-Similar to threshold\+\_\+image but prioritizes darker pixels. 
+A pixel is set to pure black when all of its red, green and blue channels are strictly below {\ttfamily num\+\_\+thresholds}; all other pixels are left untouched. This is a brightness cutoff, not a number of output levels. Values of 0 or less leave the image unchanged. 
+
+Blackened pixels have their alpha channel set to an opaque 255. 
 
 Dox File\+: {\ttfamily \doxylink{img2num_8h_8dox}{doxygen/img2num.\+h.\+dox}}   
 \end{DoxyNote}
@@ -148,7 +150,7 @@ Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00063}{63}} of file \m
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00065\ \ \ \{}
 \DoxyCodeLine{00066\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(}
-\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ img2num::black\_threshold\_image,\ ptr,\ width,\ height,\ num\_thresholds}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ img2num::black\_threshold\_image,\ image,\ width,\ height,\ num\_thresholds}
 \DoxyCodeLine{00068\ \ \ \ \ );}
 \DoxyCodeLine{00069\ \}}
 
@@ -291,11 +293,11 @@ Here is the caller graph for this function\+:
 \includegraphics[width=350pt]{cimg2num_8h_a5a016ab3fb1a11977549ad30180bdbdc_icgraph}
 \end{center}
 \end{figure}
-\Hypertarget{cimg2num_8h_a1414ef09df95cdbef430433629b2a136}\label{cimg2num_8h_a1414ef09df95cdbef430433629b2a136} 
+\Hypertarget{cimg2num_8h_a938eb2be340be827192bfbcbf6c90af8}\label{cimg2num_8h_a938eb2be340be827192bfbcbf6c90af8} 
 \index{cimg2num.h@{cimg2num.h}!img2num\_invert\_image@{img2num\_invert\_image}}
 \index{img2num\_invert\_image@{img2num\_invert\_image}!cimg2num.h@{cimg2num.h}}
 \doxysubsubsection{\texorpdfstring{img2num\_invert\_image()}{img2num\_invert\_image()}}
-{\footnotesize\ttfamily void img2num\+\_\+invert\+\_\+image (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{ptr,  }\item[{int}]{width,  }\item[{int}]{height }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void img2num\+\_\+invert\+\_\+image (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{image,  }\item[{int}]{width,  }\item[{int}]{height }\end{DoxyParamCaption})}
 
 
 
@@ -303,7 +305,7 @@ Invert the pixel values of an image.
 
 
 \begin{DoxyParams}{Parameters}
-{\em ptr} & Pointer to the image buffer. \\
+{\em image} & Pointer to the image buffer. \\
 \hline
 {\em width} & Width of the image in pixels. \\
 \hline
@@ -426,11 +428,11 @@ Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00089}{89}} of file \m
 \DoxyCodeLine{00107\ \}}
 
 \end{DoxyCode}
-\Hypertarget{cimg2num_8h_a553a2adf9345b19adc20473ab70692b0}\label{cimg2num_8h_a553a2adf9345b19adc20473ab70692b0} 
+\Hypertarget{cimg2num_8h_aa34e1d33a78fdf9c08187263cf7e584c}\label{cimg2num_8h_aa34e1d33a78fdf9c08187263cf7e584c} 
 \index{cimg2num.h@{cimg2num.h}!img2num\_threshold\_image@{img2num\_threshold\_image}}
 \index{img2num\_threshold\_image@{img2num\_threshold\_image}!cimg2num.h@{cimg2num.h}}
 \doxysubsubsection{\texorpdfstring{img2num\_threshold\_image()}{img2num\_threshold\_image()}}
-{\footnotesize\ttfamily void img2num\+\_\+threshold\+\_\+image (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{ptr,  }\item[{const int}]{width,  }\item[{const int}]{height,  }\item[{const int}]{num\+\_\+thresholds }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void img2num\+\_\+threshold\+\_\+image (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{image,  }\item[{const int}]{width,  }\item[{const int}]{height,  }\item[{const int}]{num\+\_\+thresholds }\end{DoxyParamCaption})}
 
 
 
@@ -438,7 +440,7 @@ Apply a thresholding operation to an image.
 
 
 \begin{DoxyParams}{Parameters}
-{\em ptr} & Pointer to the image buffer. \\
+{\em image} & Pointer to the image buffer. \\
 \hline
 {\em width} & Width of the image in pixels. \\
 \hline
@@ -460,7 +462,7 @@ Definition at line \mbox{\hyperlink{cimg2num_8cpp_source_l00055}{55}} of file \m
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00057\ \ \ \{}
 \DoxyCodeLine{00058\ \ \ \ \ img2num::clear\_last\_error\_and\_catch(}
-\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ img2num::threshold\_image,\ ptr,\ width,\ height,\ num\_thresholds}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ img2num::threshold\_image,\ image,\ width,\ height,\ num\_thresholds}
 \DoxyCodeLine{00060\ \ \ \ \ );}
 \DoxyCodeLine{00061\ \}}
 

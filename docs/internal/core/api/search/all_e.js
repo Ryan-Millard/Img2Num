@@ -1,6 +1,9 @@
 var searchData=
 [
-  ['savitzkygolay_0',['SavitzkyGolay',['../classSavitzkyGolay.html',1,'']]],
-  ['sigma_5frange_1',['sigma_range',['../structimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig.html#ac3ce10da1c666a3af5a7500d361384b1',1,'img2num::ImageToSvgConfig::BilateralFilterConfig']]],
-  ['sigma_5fspatial_2',['sigma_spatial',['../structimg2num_1_1ImageToSvgConfig_1_1BilateralFilterConfig.html#a55ea5d975d8f0da9ff8d8412ef2b0bab',1,'img2num::ImageToSvgConfig::BilateralFilterConfig']]]
+  ['params_0',['Params',['../structParams.html',1,'']]],
+  ['pixel_1',['Pixel',['../structImageLib_1_1Pixel.html',1,'ImageLib']]],
+  ['pixel_3c_20uint8_5ft_20_3e_2',['Pixel&lt; uint8_t &gt;',['../structImageLib_1_1Pixel.html',1,'ImageLib']]],
+  ['pixelconverter_3',['PixelConverter',['../structImageLib_1_1PixelConverter.html',1,'ImageLib']]],
+  ['point_4',['Point',['../structPoint.html',1,'']]],
+  ['pointid_5',['PointID',['../structcontours_1_1PointID.html',1,'contours']]]
 ];

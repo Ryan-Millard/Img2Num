@@ -175,9 +175,9 @@ Cross-environment compatibility. A hidden worker only made sense in some targets
 
 Talking about build targets is abstract, so the examples got a matching overhaul:
 
-- `console-js` is now split into [`console-js-esm`](/example-apps/#node-esm) and [`console-js-cjs`](/example-apps/#node-cjs) , so the `import` and `require` export conditions are each exercised by a real consumer (and we fixed a byte-offset bug in the pixel-buffer construction while we were in there).
+- `console-js` is now split into [`console-js-esm`](/showcase/#node-esm) and [`console-js-cjs`](/showcase/#node-cjs) , so the `import` and `require` export conditions are each exercised by a real consumer (and we fixed a byte-offset bug in the pixel-buffer construction while we were in there).
 - The `html-js` example was rebuilt as a single shared template compiled into three self-contained variants -[ESM](/example-apps/esm/),[IIFE](/example-apps/iife/), and[UMD](/example-apps/umd/)- each deployable as plain static files with no build tooling at runtime.
-- The docs site now has an [example apps index](https://img2num.dev/example-apps/) with a card and representative snippet for every binding: React, browser ESM, IIFE, UMD, Node ESM/CJS - and Python, C++, and C, because Img2Num was never just a JavaScript library.
+- The docs site now has an [example apps index](https://img2num.dev/showcase/) with a card and representative snippet for every binding: React, browser ESM, IIFE, UMD, Node ESM/CJS - and Python, C++, and C, because Img2Num was never just a JavaScript library.
 - Every JS target is also runnable in your browser right now - the CodeSandbox links in the tabs above are one click from "processed image" with nothing installed.
 Each example is intentionally minimal: the shortest path from "empty directory" to "processed image" in your environment of choice. They're also our first line of defense - and this release proved it twice. The React example caught the 0.4.0 browser bug before almost anyone could hit it, and the new Node CJS example caught the CommonJS bug that survived into 0.4.1 the same way. Every entry point now has a real consumer that runs it the way you would.
 

@@ -4,37 +4,15 @@ URL: https://img2num.dev/docs/js/api/functions/blackThreshold
 
 > **blackThreshold** ( `options` ): `Promise` < `Uint8ClampedArray` < `ArrayBufferLike` >>
 
-Defined in: [safeWasmWrappers.js:111](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L111)
+Defined in: [safeWasmWrappers.js:169](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L169)
 
 ## Parameters
 
 ### options
 
+`BlackThresholdOptions`
+
 The input options.
-
-#### height
-
-`number`
-
-The height of the image.
-
-#### num_colors
-
-`number`
-
-Number of colors to reduce the image to.
-
-#### pixels
-
-`Uint8ClampedArray` < `ArrayBufferLike` >
-
-The image pixel data (flat RGBA array).
-
-#### width
-
-`number`
-
-The width of the image.
 
 ## Returns
 
@@ -44,7 +22,7 @@ The thresholded image pixels.
 
 ## Description
 
-Apply a simple sRGB bin-based threshold on the Uint8ClampedArray image. The bins in this function are determined by the `num_colors` parameter.
+Sets a pixel to pure black when all three of its colour channels are strictly below the `num_colors` cutoff; every other pixel is left untouched. Despite the name (kept for backwards compatibility), `num_colors` is a per-channel 0-255 brightness cutoff, not a number of output colour levels. Values of 0 or less leave the image unchanged. Blackened pixels have their alpha channel set to an opaque 255.
 
 ## Async
 
@@ -62,7 +40,7 @@ const thresholded = await blackThreshold({ pixels, width, height, num_colors: 16
 
 ## See
 
-[Quantization Wiki](https://en.wikipedia.org/wiki/Color_quantization%7CColor)
+[Wiki](https://en.wikipedia.org/wiki/Thresholding_(image_processing)%7CThresholding)
 
 ## Todo
 
@@ -70,7 +48,7 @@ Support different bias levels for black/white thresholds.
 
 ## Variation
 
-Black-biased threshold with customizable number of colors
+Black-biased threshold with customizable brightness cutoff
 
 ## Since
 

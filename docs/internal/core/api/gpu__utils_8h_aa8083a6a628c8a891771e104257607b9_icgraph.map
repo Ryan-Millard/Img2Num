@@ -1,0 +1,8 @@
+<map id="gpu::map_and_wait" name="gpu::map_and_wait">
+<area shape="rect" id="Node000001" title="Block until a MapAsync on buffer completes." alt="" coords="192,31,341,56"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="301,20,291,12,267,9,246,11,236,16,233,22,239,29,235,32,228,22,232,12,245,6,267,4,293,8,304,16"/>
+<area shape="rect" id="Node000002" href="$classgpu_1_1Buffer.html#af23f433dfce1f517c38575ce35683f65" title="Blocking readback: GPU → CPU." alt="" coords="9,5,140,31"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="178,34,140,29,140,24,179,29"/>
+<area shape="rect" id="Node000003" href="$classgpu_1_1Texture.html#a096300392371077317ff0a60d93ccb1e" title="Blocking readback with automatic 256&#45;byte row&#45;alignment stripping." alt="" coords="5,55,144,80"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="179,57,145,61,144,56,178,52"/>
+</map>

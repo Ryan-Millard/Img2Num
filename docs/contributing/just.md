@@ -11,6 +11,8 @@ To see every available command at any time, run: Show available Just commands
 just help
 ```
 
+Commands are grouped by subsystem and follow the pattern `just <subsystem> <action>` (for example `just cmake build` or `just js clean` ). To list only one subsystem's commands, run `just <subsystem> help` (for example `just cmake help` ).
+
 ## Initialise the project
 
 info
@@ -36,7 +38,7 @@ This:
 **Build Everything (C++, C, JS, WASM, Python, React App, ...).** Paste this inside the Docker shell
 
 ```bash
-just build all
+just build-all
 ```
 
 **Build C++ Core and C Bindings.** This is CMake-based with GCC / MSVC.
@@ -45,7 +47,7 @@ just build all
 Paste this inside the Docker shell
 
 ```bash
-just build cpp
+just cmake build
 ```
 
 Key files:
@@ -60,20 +62,20 @@ Key files:
 Paste this inside the Docker shell
 
 ```bash
-just build js
+just js build
 ```
 
 Key Files:
 - [CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/CMakeLists.txt)
 - [bindings/js/CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/bindings/js/CMakeLists.txt) .
 
-**Build *Browser* & *Node.js* npm packages.** This is pnpm-based, yet it requires the outputs from the `just build js` command.
+**Build *Browser* & *Node.js* npm packages.** This is pnpm-based, yet it requires the outputs from the `just js build` command.
 > `packages/js/dist` folder.
 
 Paste this inside the Docker shell
 
 ```bash
-just build packages-js
+just js package
 ```
 
 Key files:
@@ -83,7 +85,7 @@ Key files:
 - [packages/js/vite.config.js](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/vite.config.js)
 
 Common Confusion
-`just build js` only produces the raw WASM/JS bindings. To build the publishable `img2num` npm package — which targets **both the browser and Node.js** — run `just build packages-js` . It compiles the WASM bindings first (so it works from a clean checkout) and then bundles the browser and Node builds into `packages/js/dist/` .
+`just js build` only produces the raw WASM/JS bindings. To build the publishable `img2num` npm package — which targets **both the browser and Node.js** — run `just js package` . It compiles the WASM bindings first (so it works from a clean checkout) and then bundles the browser and Node builds into `packages/js/dist/` .
 
 **Build Python Bindings + Wheel** This uses uv and scikit-build-core to build the Pybind11 Python bindings in `bindings/py` alongside the Python wrapper in `packages/py` .
 > `dist` folder.
@@ -91,7 +93,7 @@ Common Confusion
 Paste this inside the Docker shell
 
 ```bash
-just build py
+just py build
 ```
 
 Key files:
@@ -102,7 +104,7 @@ Key files:
 
 ## Documentation
 
-- Build - Server
+- Build - Server - Clean
 Build the documentation: Paste this in the Docker shell
 
 ```bash
@@ -113,6 +115,12 @@ Start the documentation server: Paste this in the Docker shell
 
 ```bash
 just docs start
+```
+
+Remove the generated documentation files: Paste this in the Docker shell
+
+```bash
+just docs clean
 ```
 
 ## Example applications
@@ -147,37 +155,49 @@ Run it
 just console-py <path-to-image>
 ```
 
-Run it
+Run it (CommonJS)
 
 ```sh
-just console-js <path-to-image>
+just console-js-cjs <path-to-image>
+```
+
+Run it (ES modules)
+
+```sh
+just console-js-esm <path-to-image>
 ```
 
 ## Cleaning
 
 Remove generated build files:
 
-- C++ - JS / WASM - JS Packages - Python Packages
-Paste this inside the Docker shell
+- Everything - C++ - JS / WASM - JS Packages - Python Packages
+Removes every generated build folder below (and the cleaned documentation files). Paste this inside the Docker shell
 
 ```bash
-just clean cpp
+just clean-all
 ```
 
 Paste this inside the Docker shell
 
 ```bash
-just clean js
+just cmake clean
 ```
 
 Paste this inside the Docker shell
 
 ```bash
-just clean packages-js
+just js clean
 ```
 
 Paste this inside the Docker shell
 
 ```bash
-just clean packages-py
+just js package-clean
+```
+
+Paste this inside the Docker shell
+
+```bash
+just py clean
 ```

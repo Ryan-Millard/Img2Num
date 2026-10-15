@@ -1,0 +1,553 @@
+\doxysection{include/internal/gpu\+\_\+utils.h File Reference}
+\hypertarget{gpu__utils_8h}{}\label{gpu__utils_8h}\index{include/internal/gpu\_utils.h@{include/internal/gpu\_utils.h}}
+
+
+Reusable RAII helpers for Web\+GPU/\+Dawn compute work.  
+
+
+{\ttfamily \#include "{}internal/gpu.\+h"{}}\newline
+{\ttfamily \#include "{}internal/log.\+h"{}}\newline
+{\ttfamily \#include $<$cstddef$>$}\newline
+{\ttfamily \#include $<$cstdint$>$}\newline
+{\ttfamily \#include $<$cstring$>$}\newline
+{\ttfamily \#include $<$initializer\+\_\+list$>$}\newline
+{\ttfamily \#include $<$mutex$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$type\+\_\+traits$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$webgpu/webgpu\+\_\+cpp.\+h$>$}\newline
+Include dependency graph for gpu\+\_\+utils.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{gpu__utils_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=326pt]{gpu__utils_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classgpu_1_1Buffer}{gpu\+::\+Buffer$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em RAII wrapper around a wgpu\+::\+Buffer with compile-\/time type safety. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classgpu_1_1Texture}{gpu\+::\+Texture}}
+\begin{DoxyCompactList}\small\item\em RAII wrapper around a wgpu\+::\+Texture with upload and aligned readback. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structgpu_1_1BindEntry}{gpu\+::\+Bind\+Entry}}
+\begin{DoxyCompactList}\small\item\em A single entry for bind-\/group construction. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+wgpu\+::\+Compute\+Pipeline \mbox{\hyperlink{gpu__utils_8h_a623edfd2aff7254f66ad816d3d4ea092}{gpu\+::cached\+\_\+pipeline}} (const std\+::string \&shader\+\_\+id, const std\+::string \&label)
+\begin{DoxyCompactList}\small\item\em Get or create a compute pipeline, caching by shader ID. \end{DoxyCompactList}\item 
+const void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{gpu__utils_8h_aa8083a6a628c8a891771e104257607b9}{gpu\+::map\+\_\+and\+\_\+wait}} (wgpu\+::\+Buffer \&buffer, size\+\_\+t size)
+\begin{DoxyCompactList}\small\item\em Block until a Map\+Async on {\ttfamily buffer} completes. \end{DoxyCompactList}\item 
+wgpu\+::\+Bind\+Group \mbox{\hyperlink{gpu__utils_8h_aa3cc80277e95733a04ed1181a9ec9e83}{gpu\+::make\+\_\+bind\+\_\+group}} (const wgpu\+::\+Compute\+Pipeline \&pipeline, uint32\+\_\+t group\+\_\+index, const std\+::vector$<$ \mbox{\hyperlink{structgpu_1_1BindEntry}{Bind\+Entry}} $>$ \&entries)
+\begin{DoxyCompactList}\small\item\em Build a wgpu\+::\+Bind\+Group from a pipeline layout and a list of entries. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{gpu__utils_8h_a1dbdd4527ebabb3eb83e00d0604cfa65}{gpu\+::encode\+\_\+pass}} (wgpu\+::\+Command\+Encoder \&encoder, const wgpu\+::\+Compute\+Pipeline \&pipeline, const wgpu\+::\+Bind\+Group \&bind\+\_\+group, uint32\+\_\+t groups\+\_\+x, uint32\+\_\+t groups\+\_\+y=1, uint32\+\_\+t groups\+\_\+z=1)
+\begin{DoxyCompactList}\small\item\em Encode a compute pass into an existing command encoder. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{gpu__utils_8h_a328a3023ad496b52c54c121a6ba1a2ca}{gpu\+::dispatch}} (const wgpu\+::\+Compute\+Pipeline \&pipeline, const wgpu\+::\+Bind\+Group \&bind\+\_\+group, uint32\+\_\+t groups\+\_\+x, uint32\+\_\+t groups\+\_\+y=1, uint32\+\_\+t groups\+\_\+z=1)
+\begin{DoxyCompactList}\small\item\em Encode, finish, and submit a single compute dispatch. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{gpu__utils_8h_a47a39a01c11b36be1bca18a771c85886}{gpu\+::workgroup\+\_\+count}} (uint32\+\_\+t total\+\_\+size, uint32\+\_\+t workgroup\+\_\+size=16)
+\begin{DoxyCompactList}\small\item\em Compute the number of workgroups needed to cover {\ttfamily total\+\_\+size} with workgroups of {\ttfamily workgroup\+\_\+size}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr uint8\+\_\+t \mbox{\hyperlink{gpu__utils_8h_a0ed013630d79862361b24070b94260ac}{gpu\+::\+COLOR\+\_\+\+SPACE\+\_\+\+CIELAB}} \{0\}
+\begin{DoxyCompactList}\small\item\em Color space selector constants previously duplicated in each kernel. \end{DoxyCompactList}\item 
+static constexpr uint8\+\_\+t \mbox{\hyperlink{gpu__utils_8h_a963ab28be368cc53927b00fc6bb5c483}{gpu\+::\+COLOR\+\_\+\+SPACE\+\_\+\+RGB}} \{1\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Reusable RAII helpers for Web\+GPU/\+Dawn compute work. 
+
+This layer sits on top of the \doxylink{classGPU}{GPU} singleton (\doxylink{gpu_8h_source}{gpu.\+h}) and eliminates boilerplate that every compute kernel otherwise duplicates\+:
+\begin{DoxyItemize}
+\item typed buffer creation, upload, and blocking readback
+\item texture creation, upload, and aligned readback
+\item bind-\/group construction from a simple list
+\item compute-\/pass encoding and single-\/shot dispatch
+\end{DoxyItemize}
+
+All helpers live in the {\ttfamily gpu} namespace and are internal to the library. 
+
+Definition in file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{gpu__utils_8h_a623edfd2aff7254f66ad816d3d4ea092}\label{gpu__utils_8h_a623edfd2aff7254f66ad816d3d4ea092} 
+\index{gpu\_utils.h@{gpu\_utils.h}!cached\_pipeline@{cached\_pipeline}}
+\index{cached\_pipeline@{cached\_pipeline}!gpu\_utils.h@{gpu\_utils.h}}
+\doxysubsubsection{\texorpdfstring{cached\_pipeline()}{cached\_pipeline()}}
+{\footnotesize\ttfamily wgpu\+::\+Compute\+Pipeline gpu\+::cached\+\_\+pipeline (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{shader\+\_\+id,  }\item[{const std\+::string \&}]{label }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get or create a compute pipeline, caching by shader ID. 
+
+GPU\+::create\+Pipeline() recreates the shader module and pipeline on every call. This wrapper memoizes the result so that repeated calls with the same shader\+\_\+id return the cached pipeline instantly.
+
+
+\begin{DoxyParams}{Parameters}
+{\em shader\+\_\+id} & The embedded shader identifier (e.\+g. "{}bilateral\+\_\+filter\+\_\+rgb"{}). \\
+\hline
+{\em label} & Debug label for the pipeline. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Cached wgpu\+::\+Compute\+Pipeline. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00062}{62}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{comment}{//\ Cache\ key\ includes\ the\ raw\ device\ pointer\ so\ that\ a\ device\ recreation}}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{comment}{//\ (which\ yields\ a\ different\ WGPUDevice\ handle)\ automatically\ invalidates}}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{comment}{//\ stale\ entries.\ \ A\ mutex\ guards\ the\ map\ against\ concurrent\ access.}}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{using\ }CacheKey\ =\ std::pair<WGPUDevice,\ std::string>;}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{struct\ }PairHash\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ operator()(\textcolor{keyword}{const}\ CacheKey\&\ k)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ h1\ =\ std::hash<const\ void*>\ \{\}(\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }\textcolor{keywordtype}{void}*\textcolor{keyword}{>}(k.first));}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ h2\ =\ std::hash<std::string>\ \{\}(k.second);}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ h1\ \string^\ (h2\ <<\ 1);}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \};}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{static}\ std::mutex\ mtx;}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{static}\ std::unordered\_map<CacheKey,\ wgpu::ComputePipeline,\ PairHash>\ cache;}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ WGPUDevice\ raw\_device\ =\ GPU::getClassInstance().get\_device().Get();}
+\DoxyCodeLine{00079\ \ \ \ \ CacheKey\ key\ \{raw\_device,\ shader\_id\};}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \ \ std::lock\_guard<std::mutex>\ lock(mtx);}
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ cache.find(key);}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ !=\ cache.end())\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ it-\/>second;}
+\DoxyCodeLine{00085\ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \ \ wgpu::ComputePipeline\ pipeline\ =\ GPU::getClassInstance().createPipeline(shader\_id,\ label);}
+\DoxyCodeLine{00087\ \ \ \ \ cache[key]\ =\ pipeline;}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{return}\ pipeline;}
+\DoxyCodeLine{00089\ \}}
+
+\end{DoxyCode}
+
+
+References \mbox{\hyperlink{gpu__utils_8h_source_l00062}{gpu\+::cached\+\_\+pipeline()}}.
+
+
+
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00062}{gpu\+::cached\+\_\+pipeline()}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=199pt]{gpu__utils_8h_a623edfd2aff7254f66ad816d3d4ea092_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=199pt]{gpu__utils_8h_a623edfd2aff7254f66ad816d3d4ea092_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{gpu__utils_8h_a328a3023ad496b52c54c121a6ba1a2ca}\label{gpu__utils_8h_a328a3023ad496b52c54c121a6ba1a2ca} 
+\index{gpu\_utils.h@{gpu\_utils.h}!dispatch@{dispatch}}
+\index{dispatch@{dispatch}!gpu\_utils.h@{gpu\_utils.h}}
+\doxysubsubsection{\texorpdfstring{dispatch()}{dispatch()}}
+{\footnotesize\ttfamily void gpu\+::dispatch (\begin{DoxyParamCaption}\item[{const wgpu\+::\+Compute\+Pipeline \&}]{pipeline,  }\item[{const wgpu\+::\+Bind\+Group \&}]{bind\+\_\+group,  }\item[{uint32\+\_\+t}]{groups\+\_\+x,  }\item[{uint32\+\_\+t}]{groups\+\_\+y = {\ttfamily 1},  }\item[{uint32\+\_\+t}]{groups\+\_\+z = {\ttfamily 1} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Encode, finish, and submit a single compute dispatch. 
+
+Convenience for kernels that only need one pass.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pipeline} & The compute pipeline to run. \\
+\hline
+{\em bind\+\_\+group} & The bind group for this pass. \\
+\hline
+{\em groups\+\_\+x} & Number of workgroups in X. \\
+\hline
+{\em groups\+\_\+y} & Number of workgroups in Y (default 1). \\
+\hline
+{\em groups\+\_\+z} & Number of workgroups in Z (default 1). \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00542}{542}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00545\ \ \ \{}
+\DoxyCodeLine{00546\ \ \ \ \ wgpu::CommandEncoder\ encoder\ =\ GPU::getClassInstance().get\_device().CreateCommandEncoder();}
+\DoxyCodeLine{00547\ \ \ \ \ \mbox{\hyperlink{gpu__utils_8h_a1dbdd4527ebabb3eb83e00d0604cfa65}{encode\_pass}}(encoder,\ pipeline,\ bind\_group,\ groups\_x,\ groups\_y,\ groups\_z);}
+\DoxyCodeLine{00548\ \ \ \ \ wgpu::CommandBuffer\ commands\ =\ encoder.Finish();}
+\DoxyCodeLine{00549\ \ \ \ \ GPU::getClassInstance().get\_queue().Submit(1,\ \&commands);}
+\DoxyCodeLine{00550\ \}}
+
+\end{DoxyCode}
+
+
+References \mbox{\hyperlink{gpu__utils_8h_source_l00542}{gpu\+::dispatch()}}, and \mbox{\hyperlink{gpu__utils_8h_source_l00521}{gpu\+::encode\+\_\+pass()}}.
+
+
+
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00542}{gpu\+::dispatch()}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=302pt]{gpu__utils_8h_a328a3023ad496b52c54c121a6ba1a2ca_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=162pt]{gpu__utils_8h_a328a3023ad496b52c54c121a6ba1a2ca_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{gpu__utils_8h_a1dbdd4527ebabb3eb83e00d0604cfa65}\label{gpu__utils_8h_a1dbdd4527ebabb3eb83e00d0604cfa65} 
+\index{gpu\_utils.h@{gpu\_utils.h}!encode\_pass@{encode\_pass}}
+\index{encode\_pass@{encode\_pass}!gpu\_utils.h@{gpu\_utils.h}}
+\doxysubsubsection{\texorpdfstring{encode\_pass()}{encode\_pass()}}
+{\footnotesize\ttfamily void gpu\+::encode\+\_\+pass (\begin{DoxyParamCaption}\item[{wgpu\+::\+Command\+Encoder \&}]{encoder,  }\item[{const wgpu\+::\+Compute\+Pipeline \&}]{pipeline,  }\item[{const wgpu\+::\+Bind\+Group \&}]{bind\+\_\+group,  }\item[{uint32\+\_\+t}]{groups\+\_\+x,  }\item[{uint32\+\_\+t}]{groups\+\_\+y = {\ttfamily 1},  }\item[{uint32\+\_\+t}]{groups\+\_\+z = {\ttfamily 1} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Encode a compute pass into an existing command encoder. 
+
+Use this for multi-\/pass work (e.\+g. bilateral filter with color conversion).
+
+
+\begin{DoxyParams}{Parameters}
+{\em encoder} & Existing command encoder to append to. \\
+\hline
+{\em pipeline} & The compute pipeline to run. \\
+\hline
+{\em bind\+\_\+group} & The bind group for this pass. \\
+\hline
+{\em groups\+\_\+x} & Number of workgroups in X. \\
+\hline
+{\em groups\+\_\+y} & Number of workgroups in Y (default 1). \\
+\hline
+{\em groups\+\_\+z} & Number of workgroups in Z (default 1). \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00521}{521}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00525\ \ \ \{}
+\DoxyCodeLine{00526\ \ \ \ \ wgpu::ComputePassEncoder\ pass\ =\ encoder.BeginComputePass();}
+\DoxyCodeLine{00527\ \ \ \ \ pass.SetPipeline(pipeline);}
+\DoxyCodeLine{00528\ \ \ \ \ pass.SetBindGroup(0,\ bind\_group);}
+\DoxyCodeLine{00529\ \ \ \ \ pass.DispatchWorkgroups(groups\_x,\ groups\_y,\ groups\_z);}
+\DoxyCodeLine{00530\ \ \ \ \ pass.End();}
+\DoxyCodeLine{00531\ \}}
+
+\end{DoxyCode}
+
+
+References \mbox{\hyperlink{gpu__utils_8h_source_l00521}{gpu\+::encode\+\_\+pass()}}.
+
+
+
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00542}{gpu\+::dispatch()}}, and \mbox{\hyperlink{gpu__utils_8h_source_l00521}{gpu\+::encode\+\_\+pass()}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{gpu__utils_8h_a1dbdd4527ebabb3eb83e00d0604cfa65_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=302pt]{gpu__utils_8h_a1dbdd4527ebabb3eb83e00d0604cfa65_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{gpu__utils_8h_aa3cc80277e95733a04ed1181a9ec9e83}\label{gpu__utils_8h_aa3cc80277e95733a04ed1181a9ec9e83} 
+\index{gpu\_utils.h@{gpu\_utils.h}!make\_bind\_group@{make\_bind\_group}}
+\index{make\_bind\_group@{make\_bind\_group}!gpu\_utils.h@{gpu\_utils.h}}
+\doxysubsubsection{\texorpdfstring{make\_bind\_group()}{make\_bind\_group()}}
+{\footnotesize\ttfamily wgpu\+::\+Bind\+Group gpu\+::make\+\_\+bind\+\_\+group (\begin{DoxyParamCaption}\item[{const wgpu\+::\+Compute\+Pipeline \&}]{pipeline,  }\item[{uint32\+\_\+t}]{group\+\_\+index,  }\item[{const std\+::vector$<$ \mbox{\hyperlink{structgpu_1_1BindEntry}{Bind\+Entry}} $>$ \&}]{entries }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Build a wgpu\+::\+Bind\+Group from a pipeline layout and a list of entries. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pipeline} & The compute pipeline (used to get the bind group layout). \\
+\hline
+{\em group\+\_\+index} & Which bind group index (usually 0). \\
+\hline
+{\em entries} & List of Bind\+Entry objects. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The constructed wgpu\+::\+Bind\+Group. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00478}{478}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00481\ \ \ \{}
+\DoxyCodeLine{00482\ \ \ \ \ std::vector<wgpu::BindGroupEntry>\ wgpu\_entries;}
+\DoxyCodeLine{00483\ \ \ \ \ wgpu\_entries.reserve(entries.size());}
+\DoxyCodeLine{00484\ }
+\DoxyCodeLine{00485\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ e\ :\ entries)\ \{}
+\DoxyCodeLine{00486\ \ \ \ \ \ \ \ \ wgpu::BindGroupEntry\ wge\ \{\};}
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \ \ wge.binding\ =\ e.binding;}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (e.texture\_view)\ \{}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \ \ \ \ \ \ wge.textureView\ =\ e.texture\_view;}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00491\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (e.buffer)\ \{}
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \ \ \ \ \ \ wge.buffer\ =\ e.buffer;}
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \ \ \ \ \ \ wge.size\ =\ e.buffer\_size;}
+\DoxyCodeLine{00494\ \ \ \ \ \ \ \ \ \ \ \ \ wge.offset\ =\ e.buffer\_offset;}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00496\ \ \ \ \ \ \ \ \ wgpu\_entries.push\_back(wge);}
+\DoxyCodeLine{00497\ \ \ \ \ \}}
+\DoxyCodeLine{00498\ }
+\DoxyCodeLine{00499\ \ \ \ \ wgpu::BindGroupDescriptor\ desc\ \{\};}
+\DoxyCodeLine{00500\ \ \ \ \ desc.layout\ =\ pipeline.GetBindGroupLayout(group\_index);}
+\DoxyCodeLine{00501\ \ \ \ \ desc.entryCount\ =\ \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(wgpu\_entries.size());}
+\DoxyCodeLine{00502\ \ \ \ \ desc.entries\ =\ wgpu\_entries.data();}
+\DoxyCodeLine{00503\ }
+\DoxyCodeLine{00504\ \ \ \ \ \textcolor{keywordflow}{return}\ GPU::getClassInstance().get\_device().CreateBindGroup(\&desc);}
+\DoxyCodeLine{00505\ \}}
+
+\end{DoxyCode}
+
+
+References \mbox{\hyperlink{gpu__utils_8h_source_l00478}{gpu\+::make\+\_\+bind\+\_\+group()}}.
+
+
+
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00478}{gpu\+::make\+\_\+bind\+\_\+group()}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=207pt]{gpu__utils_8h_aa3cc80277e95733a04ed1181a9ec9e83_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=207pt]{gpu__utils_8h_aa3cc80277e95733a04ed1181a9ec9e83_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{gpu__utils_8h_aa8083a6a628c8a891771e104257607b9}\label{gpu__utils_8h_aa8083a6a628c8a891771e104257607b9} 
+\index{gpu\_utils.h@{gpu\_utils.h}!map\_and\_wait@{map\_and\_wait}}
+\index{map\_and\_wait@{map\_and\_wait}!gpu\_utils.h@{gpu\_utils.h}}
+\doxysubsubsection{\texorpdfstring{map\_and\_wait()}{map\_and\_wait()}}
+{\footnotesize\ttfamily const void \texorpdfstring{$\ast$}{*} gpu\+::map\+\_\+and\+\_\+wait (\begin{DoxyParamCaption}\item[{wgpu\+::\+Buffer \&}]{buffer,  }\item[{size\+\_\+t}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Block until a Map\+Async on {\ttfamily buffer} completes. 
+
+Works on both native Dawn and Emscripten (ASYNCIFY). Returns the pointer from Get\+Const\+Mapped\+Range.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffer} & The buffer to map (must have Map\+Read usage). \\
+\hline
+{\em size} & Number of bytes to map. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to the mapped data. Valid until buffer.\+Unmap(). 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::runtime\+\_\+error} & if the mapping fails. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00104}{104}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keyword}{struct\ }MapState\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ done\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ success\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00108\ \ \ \ \ \};}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \ \ MapState\ state;}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \ \ buffer.MapAsync(}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ wgpu::MapMode::Read,\ 0,\ size,\ wgpu::CallbackMode::AllowProcessEvents,}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ [](wgpu::MapAsyncStatus\ status,\ wgpu::StringView\ \textcolor{comment}{/*msg*/},\ \textcolor{keywordtype}{void}*\ userdata)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}*\ s\ =\ \textcolor{keyword}{static\_cast<}MapState*\textcolor{keyword}{>}(userdata);}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ s-\/>done\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ s-\/>success\ =\ (status\ ==\ wgpu::MapAsyncStatus::Success);}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \},}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{void}*\textcolor{keyword}{>}(\&state)}
+\DoxyCodeLine{00120\ \ \ \ \ );}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordflow}{while}\ (!state.done)\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ GPU::getClassInstance().get\_instance().ProcessEvents();}
+\DoxyCodeLine{00124\ \textcolor{preprocessor}{\#if\ defined(\_\_EMSCRIPTEN\_\_)}}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ emscripten\_sleep(10);}
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00127\ \ \ \ \ \}}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{if}\ (!state.success)\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}gpu::map\_and\_wait:\ MapAsync\ failed"{}});}
+\DoxyCodeLine{00131\ \ \ \ \ \}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ mapped\ =\ buffer.GetConstMappedRange(0,\ size);}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{if}\ (!mapped)\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}gpu::map\_and\_wait:\ GetConstMappedRange\ returned\ null"{}});}
+\DoxyCodeLine{00136\ \ \ \ \ \}}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{return}\ mapped;}
+\DoxyCodeLine{00138\ \}}
+
+\end{DoxyCode}
+
+
+References \mbox{\hyperlink{gpu__utils_8h_source_l00104}{gpu\+::map\+\_\+and\+\_\+wait()}}.
+
+
+
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00104}{gpu\+::map\+\_\+and\+\_\+wait()}}, \mbox{\hyperlink{gpu__utils_8h_source_l00185}{gpu\+::\+Buffer$<$ T $>$\+::read()}}, and \mbox{\hyperlink{gpu__utils_8h_source_l00315}{gpu\+::\+Texture\+::read()}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=192pt]{gpu__utils_8h_aa8083a6a628c8a891771e104257607b9_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=332pt]{gpu__utils_8h_aa8083a6a628c8a891771e104257607b9_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{gpu__utils_8h_a47a39a01c11b36be1bca18a771c85886}\label{gpu__utils_8h_a47a39a01c11b36be1bca18a771c85886} 
+\index{gpu\_utils.h@{gpu\_utils.h}!workgroup\_count@{workgroup\_count}}
+\index{workgroup\_count@{workgroup\_count}!gpu\_utils.h@{gpu\_utils.h}}
+\doxysubsubsection{\texorpdfstring{workgroup\_count()}{workgroup\_count()}}
+{\footnotesize\ttfamily uint32\+\_\+t gpu\+::workgroup\+\_\+count (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{total\+\_\+size,  }\item[{uint32\+\_\+t}]{workgroup\+\_\+size = {\ttfamily 16} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Compute the number of workgroups needed to cover {\ttfamily total\+\_\+size} with workgroups of {\ttfamily workgroup\+\_\+size}. 
+
+Equivalent to {\ttfamily (total\+\_\+size + workgroup\+\_\+size -\/ 1) / workgroup\+\_\+size}. 
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00560}{560}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00560\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00561\ \ \ \ \ \textcolor{keywordflow}{return}\ (total\_size\ +\ workgroup\_size\ -\/\ 1)\ /\ workgroup\_size;}
+\DoxyCodeLine{00562\ \}}
+
+\end{DoxyCode}
+
+
+References \mbox{\hyperlink{gpu__utils_8h_source_l00560}{gpu\+::workgroup\+\_\+count()}}.
+
+
+
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00560}{gpu\+::workgroup\+\_\+count()}}.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=205pt]{gpu__utils_8h_a47a39a01c11b36be1bca18a771c85886_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=205pt]{gpu__utils_8h_a47a39a01c11b36be1bca18a771c85886_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{gpu__utils_8h_a0ed013630d79862361b24070b94260ac}\label{gpu__utils_8h_a0ed013630d79862361b24070b94260ac} 
+\index{gpu\_utils.h@{gpu\_utils.h}!COLOR\_SPACE\_CIELAB@{COLOR\_SPACE\_CIELAB}}
+\index{COLOR\_SPACE\_CIELAB@{COLOR\_SPACE\_CIELAB}!gpu\_utils.h@{gpu\_utils.h}}
+\doxysubsubsection{\texorpdfstring{COLOR\_SPACE\_CIELAB}{COLOR\_SPACE\_CIELAB}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t gpu\+::\+COLOR\+\_\+\+SPACE\+\_\+\+CIELAB \{0\}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Color space selector constants previously duplicated in each kernel. 
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00045}{45}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00045\ \{0\};}
+
+\end{DoxyCode}
+\Hypertarget{gpu__utils_8h_a963ab28be368cc53927b00fc6bb5c483}\label{gpu__utils_8h_a963ab28be368cc53927b00fc6bb5c483} 
+\index{gpu\_utils.h@{gpu\_utils.h}!COLOR\_SPACE\_RGB@{COLOR\_SPACE\_RGB}}
+\index{COLOR\_SPACE\_RGB@{COLOR\_SPACE\_RGB}!gpu\_utils.h@{gpu\_utils.h}}
+\doxysubsubsection{\texorpdfstring{COLOR\_SPACE\_RGB}{COLOR\_SPACE\_RGB}}
+{\footnotesize\ttfamily constexpr uint8\+\_\+t gpu\+::\+COLOR\+\_\+\+SPACE\+\_\+\+RGB \{1\}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00046}{46}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00046\ \{1\};}
+
+\end{DoxyCode}

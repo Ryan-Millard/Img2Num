@@ -8,7 +8,7 @@ Apply a bilateral filter to the image.
 
 ## 📄️ black_threshold_image
 
-Apply thresholding with a bias in favor of black to the image.
+Force near-black pixels to pure black.
 
 ## 📄️ gaussian_blur_fft
 

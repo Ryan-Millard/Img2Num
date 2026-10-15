@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['gaussian_5fblur_5ffft_0',['gaussian_blur_fft',['../namespaceimg2num.html#a365bbbd4976477bdf515be023a73d63f',1,'img2num']]],
-  ['getpixel_1',['getPixel',['../classGraph.html#a0c88d5759816a622560c8d18da2b7902',1,'Graph']]],
-  ['gpu_2',['GPU',['../classGPU.html',1,'']]],
-  ['graph_3',['Graph',['../classGraph.html',1,'']]]
+  ['features_0',['Key Features',['../index.html#features_sec',1,'']]],
+  ['filterparams_1',['FilterParams',['../structFilterParams.html',1,'']]],
+  ['format_2',['format',['../classgpu_1_1Texture.html#ad5ad5a589655b309555a50026c2c3e27',1,'gpu::Texture']]],
+  ['functions_3',['Img2Num Core Functions',['../group__IMG2NUM__H.html',1,'']]]
 ];
