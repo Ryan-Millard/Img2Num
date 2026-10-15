@@ -65,6 +65,8 @@ def run_child(code, extension_dir=None):
 
 @pytest.fixture(scope="session")
 def controlled_extension(tmp_path_factory):
+    if sys.platform == "win32":
+        pytest.skip("controlled fixture build requires a POSIX C++ toolchain")
     output_dir = tmp_path_factory.mktemp("native-gil-fixture")
     # A baseline source override lets maintainers demonstrate the regression.
     binding = Path(
@@ -76,7 +78,7 @@ def controlled_extension(tmp_path_factory):
     command = [
         os.environ.get("CXX", "c++"),
         "-std=c++17",
-        "-shared",
+        "-bundle" if sys.platform == "darwin" else "-shared",
         "-fPIC",
         "-pthread",
         "-O0",
@@ -85,6 +87,7 @@ def controlled_extension(tmp_path_factory):
         "-I" + str(ROOT / "core/include"),
         str(binding),
         str(Path(__file__).with_name("native_core_fixture.cpp")),
+        *(["-undefined", "dynamic_lookup"] if sys.platform == "darwin" else []),
         "-o",
         str(output),
     ]
