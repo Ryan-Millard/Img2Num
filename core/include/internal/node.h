@@ -61,6 +61,14 @@ struct RGBXY {
 class Node;
 typedef std::shared_ptr<Node> Node_ptr;
 
+// Orders nodes by id instead of heap address so neighbour iteration is deterministic.
+// Defined after class Node, because Node is incomplete here.
+struct NodeIdLess {
+    bool operator()(const Node_ptr& a, const Node_ptr& b) const;
+};
+
+typedef std::set<Node_ptr, NodeIdLess> Node_set;
+
 /*
  *Node represents a region - collection of pixels, and their neighboring regions
  *(edges)
@@ -70,7 +78,7 @@ class Node {
   protected:
     int32_t m_id;
     std::unique_ptr<std::vector<RGBXY>> m_pixels;
-    std::set<Node_ptr> m_edges {};
+    Node_set m_edges {};
 
     // pixels considered for contour tracing but not influencing other
     // node properties such as color
@@ -101,7 +109,7 @@ class Node {
     inline size_t area() const {
         return m_pixels->size();
     };
-    inline const std::set<Node_ptr>& edges() const {
+    inline const Node_set& edges() const {
         return m_edges;
     }
     inline size_t num_edges() const {
@@ -131,5 +139,9 @@ class Node {
         m_edges.clear();
     }
 };
+
+inline bool NodeIdLess::operator()(const Node_ptr& a, const Node_ptr& b) const {
+    return a->id() < b->id();
+}
 
 #endif
