@@ -4,7 +4,6 @@
 #include "internal/Pixel.h"
 
 #include <cmath>
-#include <iostream>
 
 /*
 can support signed data types
@@ -60,12 +59,6 @@ __attribute__((packed))
 #ifdef _MSC_VER
 #pragma pack(pop)
 #endif
-
-template <typename NumberT>
-std::ostream& operator<<(std::ostream& out, const ImageLib::LABPixel<NumberT>& pixel) {
-    out << "( " << pixel.l << "," << pixel.a << "," << pixel.b << " )";
-    return out;
-}
 
 } // namespace ImageLib
 

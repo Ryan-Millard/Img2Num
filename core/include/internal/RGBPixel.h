@@ -4,7 +4,6 @@
 #include "internal/Pixel.h"
 
 #include <cmath>
-#include <iostream>
 
 namespace ImageLib {
 
@@ -55,12 +54,6 @@ __attribute__((packed))
 #ifdef _MSC_VER
 #pragma pack(pop)
 #endif
-
-template <typename NumberT>
-std::ostream& operator<<(std::ostream& out, const ImageLib::RGBPixel<NumberT>& pixel) {
-    out << "( " << pixel.red << "," << pixel.green << "," << pixel.blue << " )";
-    return out;
-}
 
 } // namespace ImageLib
 
