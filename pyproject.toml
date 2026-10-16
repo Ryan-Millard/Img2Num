@@ -156,5 +156,5 @@ licensing = [
   "reuse>=6.2.0,<7"
 ]
 test = [
-    "pytest>=8,<9",
+  "pytest>=8,<9",
 ]
