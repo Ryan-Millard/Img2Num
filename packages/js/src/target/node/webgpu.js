@@ -9,6 +9,10 @@ let gpuInitPromise;
  * one does not already exist on `globalThis.navigator.gpu`. The initialized
  * instance is cached so repeated calls return the same promise.
  *
+ * Calling `create()` without flags allows Dawn to select the platform's
+ * default graphics API (D3D12 on Windows, Metal on macOS, Vulkan on Linux).
+ * Users can override the backend via the `DAWNNODE_BACKEND` environment variable.
+ *
  * The `webgpu` package is ESM-only and MUST be loaded via dynamic `import()`.
  * A static import compiles to a top-level CommonJS require of the package
  * in the CJS build, which throws ERR_REQUIRE_ESM on Node < 22.12.
@@ -23,7 +27,7 @@ export async function initWebGPU() {
   if (!gpuInitPromise) {
     gpuInitPromise = (async () => {
       const { create } = await import("webgpu");
-      const nativeGpu = create(["backend=vulkan"]);
+      const nativeGpu = create();
       globalThis.navigator ??= {};
       globalThis.navigator.gpu = nativeGpu;
       return nativeGpu;
