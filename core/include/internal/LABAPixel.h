@@ -41,12 +41,6 @@ __attribute__((packed))
 #pragma pack(pop)
 #endif
 
-template <typename NumberT>
-std::ostream& operator<<(std::ostream& out, const ImageLib::LABAPixel<NumberT>& pixel) {
-    out << "( " << pixel.l << "," << pixel.a << "," << pixel.b << "," << pixel.alpha << " )";
-    return out;
-}
-
 } // namespace ImageLib
 
 #endif // LABAPixel_H
