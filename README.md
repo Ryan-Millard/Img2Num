@@ -151,11 +151,42 @@ For more detailed information on installing this package, please refer to [our d
 [![CDN: jsDelivr](https://img.shields.io/badge/CDN-jsDelivr-%23f7df1e?logo=jsdelivr&logoColor=black)](https://www.jsdelivr.com/package/npm/img2num)
 
 ```html
+
 <!-- IMPORTANT: this is browser-only -->
+<input id="fileInput" type="file" accept="image/*">
+<img id="preview" alt="Converted SVG preview">
+
 <script src="https://cdn.jsdelivr.net/npm/img2num@0.4.2/dist/standalone/img2num.iife.js"></script>
 <script>
   const { imageToUint8ClampedArray, imageToSvg } = Img2Num;
+
+  document.getElementById("fileInput").addEventListener("change", async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const { pixels, width, height } =
+        await imageToUint8ClampedArray(file);
+
+      const { svg } = await imageToSvg({ pixels, width, height });
+      const preview = document.getElementById("preview");
+
+      if (preview.dataset.objectUrl) {
+        URL.revokeObjectURL(preview.dataset.objectUrl);
+      }
+
+      const url = URL.createObjectURL(
+        new Blob([svg], { type: "image/svg+xml" })
+      );
+
+      preview.src = url;
+      preview.dataset.objectUrl = url;
+    } catch (error) {
+      console.error("Image conversion failed:", error);
+    }
+  });
 </script>
+
 ```
 
 #### Package Manager
