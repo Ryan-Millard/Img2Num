@@ -1,18 +1,11 @@
 #include <cstdlib>
 #include <img2num.h>
 #include <memory>
-#include <mutex>
 #include <optional>
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <sstream>
-
-namespace {
-// The core shares a GPU context. Release the GIL before waiting for this lock,
-// and unlock it before reacquiring the GIL, including when a core call throws.
-std::mutex core_mutex;
-} // namespace
 
 PYBIND11_MODULE(_img2num, m) {
     m.doc() = R"docstring(
