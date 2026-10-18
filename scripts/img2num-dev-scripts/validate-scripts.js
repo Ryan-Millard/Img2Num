@@ -46,7 +46,7 @@ export function validateScripts(pkgPath) {
 
   // Scripts without description and not ignored
   for (const script of scriptsSet) {
-     if (!infoSet.has(script) && !(scriptsInfo._meta?.ignore ?? []).includes(script)) {
+    if (!infoSet.has(script) && !(scriptsInfo._meta?.ignore ?? []).includes(script)) {
       logColor(`Script "${script}" exists in scripts but missing in scriptsInfo`, Colors.RED);
       failed = true;
     }
