@@ -6,8 +6,8 @@ description: How to use Img2Num's compile-time gated logging macros, choose a lo
 keywords: [logging, spdlog, debug, log level, clang-tidy, build]
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 Img2Num uses [spdlog](https://github.com/gabime/spdlog) for **compile-time gated** debug
 logging. spdlog is header-only and is part of every build (C++, C, WASM and Python). What
@@ -35,14 +35,14 @@ Include the header, which lives at [`core/include/internal/log.h`](https://githu
 It provides one macro per level, from most to least verbose. Messages use spdlog's
 `{}`-style formatting and are written to stdout by the `img2num` logger.
 
-| Macro                        | Typical use                                        |
-| ---------------------------- | -------------------------------------------------- |
-| `IMG2NUM_LOG_TRACE(...)`     | Very fine-grained tracing, usually per iteration   |
-| `IMG2NUM_LOG_DEBUG(...)`     | Diagnostic detail useful while developing          |
-| `IMG2NUM_LOG_INFO(...)`      | High-level progress and state changes              |
-| `IMG2NUM_LOG_WARN(...)`      | Something unexpected but recoverable               |
-| `IMG2NUM_LOG_ERROR(...)`     | An operation failed                                |
-| `IMG2NUM_LOG_CRITICAL(...)`  | The process cannot continue                        |
+| Macro                       | Typical use                                      |
+| --------------------------- | ------------------------------------------------ |
+| `IMG2NUM_LOG_TRACE(...)`    | Very fine-grained tracing, usually per iteration |
+| `IMG2NUM_LOG_DEBUG(...)`    | Diagnostic detail useful while developing        |
+| `IMG2NUM_LOG_INFO(...)`     | High-level progress and state changes            |
+| `IMG2NUM_LOG_WARN(...)`     | Something unexpected but recoverable             |
+| `IMG2NUM_LOG_ERROR(...)`    | An operation failed                              |
+| `IMG2NUM_LOG_CRITICAL(...)` | The process cannot continue                      |
 
 ```cpp title="Example"
 IMG2NUM_LOG_INFO("GPU initialized");
@@ -151,10 +151,10 @@ Raw `iostream` and `stdio` output is banned in library code. The rule is enforce
 **clang-tidy**, configured in `.clang-tidy` - not by a GitHub Actions workflow that greps
 for `std::cout`. Two checks do the work, and both are treated as errors:
 
-| Check                                  | What it blocks                                                                                             |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Check                                  | What it blocks                                                                                                                |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | `portability-restrict-system-includes` | `<iostream>`, `<ostream>`, `<istream>`, `<cstdio>`, `<stdio.h>`, `<print>`, `<syncstream>` - i.e. `std::cout` and `std::cerr` |
-| `bugprone-unsafe-functions`            | `printf`, `fprintf`, `puts`, `putchar`, `vprintf`, `perror` - and points you to the logging macros          |
+| `bugprone-unsafe-functions`            | `printf`, `fprintf`, `puts`, `putchar`, `vprintf`, `perror` - and points you to the logging macros                            |
 
 :::caution[CI step currently disabled]
 
