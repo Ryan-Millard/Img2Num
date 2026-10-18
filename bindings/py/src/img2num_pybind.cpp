@@ -44,7 +44,6 @@ PYBIND11_MODULE(_img2num, m) {
             auto* output = out_image.mutable_data();
             {
                 pybind11::gil_scoped_release release;
-                // std::lock_guard<std::mutex> lock(core_mutex);
                 img2num::gaussian_blur_fft(output, width, height, sigma);
             }
             return out_image;
@@ -81,7 +80,6 @@ PYBIND11_MODULE(_img2num, m) {
             auto* output = out_image.mutable_data();
             {
                 pybind11::gil_scoped_release release;
-                // std::lock_guard<std::mutex> lock(core_mutex);
                 img2num::invert_image(output, width, height);
             }
             return out_image;
@@ -115,7 +113,6 @@ PYBIND11_MODULE(_img2num, m) {
             auto* output = out_image.mutable_data();
             {
                 pybind11::gil_scoped_release release;
-                // std::lock_guard<std::mutex> lock(core_mutex);
                 img2num::threshold_image(output, width, height, num_thresholds);
             }
             return out_image;
@@ -153,7 +150,6 @@ PYBIND11_MODULE(_img2num, m) {
             auto* output = out_image.mutable_data();
             {
                 pybind11::gil_scoped_release release;
-                // std::lock_guard<std::mutex> lock(core_mutex);
                 img2num::black_threshold_image(output, width, height, num_thresholds);
             }
             return out_image;
@@ -203,7 +199,6 @@ PYBIND11_MODULE(_img2num, m) {
             auto* output = out_image.mutable_data();
             {
                 pybind11::gil_scoped_release release;
-                // std::lock_guard<std::mutex> lock(core_mutex);
                 img2num::bilateral_filter(
                     output, width, height, sigma_spatial, sigma_range, color_space
                 );
@@ -254,7 +249,6 @@ PYBIND11_MODULE(_img2num, m) {
             auto* labels = out_labels.mutable_data();
             {
                 pybind11::gil_scoped_release release;
-                // std::lock_guard<std::mutex> lock(core_mutex);
                 img2num::kmeans(input, output, labels, width, height, k, max_iter, color_space);
             }
             return pybind11::make_tuple(out_data, out_labels);
@@ -296,7 +290,6 @@ PYBIND11_MODULE(_img2num, m) {
             std::string svg;
             {
                 pybind11::gil_scoped_release release;
-                // std::lock_guard<std::mutex> lock(core_mutex);
                 svg = img2num::labels_to_svg(
                     data_ptr, labels_ptr, width, height, min_area, min_thickness
                 );
@@ -516,7 +509,7 @@ PYBIND11_MODULE(_img2num, m) {
             std::string svg;
             {
                 pybind11::gil_scoped_release release;
-                // std::lock_guard<std::mutex> lock(core_mutex);
+                
                 svg = img2num::image_to_svg(data_ptr, width, height, cfg);
             }
 
