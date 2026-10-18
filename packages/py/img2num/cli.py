@@ -118,13 +118,16 @@ def _process(image_source, output_path, cfg, args, progress):
     if output_path != STDIO and pth.exists(output_path) and not args.overwrite:
         say(
             f"""
-            {progress}{output_path} already exists, skipping 
+            {progress}{output_path} already exists, skipping
             (use --overwrite to replace)
             """
         )
         return 0
     try:
-        source = io.BytesIO(sys.stdin.buffer.read()) if image_source == STDIO else image_source
+        source = (
+            io.BytesIO(sys.stdin.buffer.read())
+            if image_source == STDIO else image_source
+        )
         svg = convert(source, cfg)
         write_svg(svg, output_path)
         if output_path != STDIO:
@@ -133,7 +136,7 @@ def _process(image_source, output_path, cfg, args, progress):
     except Exception as e:  # keep going in batch mode
         log(f"{progress}failed: {label}: {e}")
         return 1
-        
+
 
 def build_parser():
     parser = argparse.ArgumentParser(

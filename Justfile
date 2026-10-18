@@ -26,6 +26,7 @@ init:
 format:
     @echo "Format all files"
     pnpm format
+    pnpm lint:py
 
 # Check REUSE/SPDX license compliance
 reuse-check:
