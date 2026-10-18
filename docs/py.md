@@ -41,6 +41,21 @@ print(svg)
 
 See thePython API Reference for full signatures.
 
+## Threads and asynchronous applications
+
+Native image operations release Python's Global Interpreter Lock (GIL), so other Python threads can continue while Img2Num processes an image. Calls into the native core are serialized to protect its shared GPU context.
+
+The functions remain synchronous. Run them on a worker thread to keep a GUI or an asyncio event loop responsive, for example:
+
+```python
+import asyncio
+from img2num import image_to_svg
+
+svg = await asyncio.to_thread(image_to_svg, img)
+```
+
+Do not mutate or resize input arrays, including through another view, until the operation returns. Img2Num retains the input objects but does not lock their contents. `image_to_svg` takes a snapshot of the supplied configuration before releasing the GIL.
+
 ## Configuration
 
 Override defaults by passing an `ImageToSvgConfig` object:

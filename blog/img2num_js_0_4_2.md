@@ -6,6 +6,9 @@ August 19, 2026 · 12 min read
 ![Ryan Millard](https://avatars.githubusercontent.com/u/142347829?v=4) Ryan Millard
 Img2Num Author
 
+![Ayush Jaiswal](https://github.com/jazayush.png) Ayush Jaiswal
+Img2Num Contributor
+
 ![Hero](/assets/images/social-9580fa15e2a6c4708fca1760c765ffc5.png)
 
 Img2Num's [JavaScript package v0.4.2](https://www.npmjs.com/package/img2num) is out on npm, and it's the biggest change to the npm distribution since we first shipped WebAssembly builds.
@@ -154,22 +157,25 @@ Two quieter improvements ride along:
 1. The optional `webgpu` dependency in Node is now properly guarded: if it's missing ( `--ignore-optional` ), fails to install on your platform, or can't be loaded, Img2Num logs a warning and falls back to CPU instead of throwing. (0.4.0 and 0.4.1 claimed this and didn't deliver it - the fallback path itself crashed. 0.4.2 delivers it, verified against both the ESM and CJS console examples with `webgpu` removed.)
 2. Initial WASM memory **dropped from 2 GB to 32 MB** - a 2 GB reservation fails outright on mobile Safari and bought nothing with memory growth enabled.
 
-## What about the synchronous API?
+## What happened to the Web Worker?
 
-That was last release. [0.3.0](https://www.npmjs.com/package/img2num/v/0.3.0) removed the internal Web Worker and made the API fully synchronous - Img2Num does the math, you decide where it runs. If you're moving from an earlier version straight to [v0.4.2](https://www.npmjs.com/package/img2num) , the [0.3.0](https://www.npmjs.com/package/img2num/v/0.3.0) migration still applies: delete the `await` , and wrap calls in your own worker if you need to keep the main thread free:
+That was last release. [0.3.0](https://www.npmjs.com/package/img2num/v/0.3.0) removed the internal Web Worker, so every call now runs on the thread that makes it - Img2Num does the math, you decide where it runs. The functions are still `async` , though, so **keep your `await`** : without it you get a `Promise` back instead of a result. If you're moving from an earlier version straight to [v0.4.2](https://www.npmjs.com/package/img2num) , the [0.3.0](https://www.npmjs.com/package/img2num/v/0.3.0) migration still applies: if you need to keep the main thread free, wrap calls in your own worker:
 
 ```js
 // worker.js
-import { process } from "img2num";
-self.onmessage = ({ data }) => {
-  self.postMessage(process(data.imageData, data.options));
+import { imageToSvg } from "img2num";
+
+self.onmessage = async ({ data }) => {
+  const { pixels, width, height } = data;
+  const { svg } = await imageToSvg({ pixels, width, height });
+  self.postMessage(svg);
 };
 ```
 
 [v0.4.2](https://www.npmjs.com/package/img2num) is what that change unlocked: with no worker plumbing forced into every artifact, each target could finally get a build shaped for its actual environment.
 
 Why did [0.3.0](https://www.npmjs.com/package/img2num/v/0.3.0) remove the workers?
-Cross-environment compatibility. A hidden worker only made sense in some targets, and it fought any worker architecture you already had. Running synchronously works everywhere - Img2Num does the math, and you decide which thread it runs on.
+Cross-environment compatibility. A hidden worker only made sense in some targets, and it fought any worker architecture you already had. Running on the calling thread works everywhere - Img2Num does the math, and you decide which thread it runs on.
 
 ## Example apps for every binding
 

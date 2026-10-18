@@ -27,6 +27,9 @@ var NAVTREE =
   [ "Img2Num Python Bindings (Internal Developer Docs)", "index.html", [
     [ "Img2Num Python Bindings", "index.html", "index" ],
     [ "Topics", "topics.html", "topics" ],
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ]
+    ] ],
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ]
     ] ]

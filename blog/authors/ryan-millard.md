@@ -8,6 +8,9 @@ August 19, 2026 · 12 min read
 ![Ryan Millard](https://avatars.githubusercontent.com/u/142347829?v=4) Ryan Millard
 Img2Num Author
 
+![Ayush Jaiswal](https://github.com/jazayush.png) Ayush Jaiswal
+Img2Num Contributor
+
 ![Hero](/assets/images/social-9580fa15e2a6c4708fca1760c765ffc5.png)
 
 Img2Num's [JavaScript package v0.4.2](https://www.npmjs.com/package/img2num) is out on npm, and it's the biggest change to the npm distribution since we first shipped WebAssembly builds.
