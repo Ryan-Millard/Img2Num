@@ -6,11 +6,9 @@ import argparse
 import os
 from concurrent.futures import ThreadPoolExecutor
 
-import cv2
 import img2num
 import numpy as np
 from PIL import Image
-
 
 def step_by_step(img):
     """Convert the image in stages, retaining the intermediate images."""
@@ -37,7 +35,7 @@ def main():
     if img is None:
         parser.error(f"could not read image: {args.image_path}")
 
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
+    img = np.asarray(img)
     cfg = img2num.ImageToSvgConfig(kmeans={"k": 64}, min_thickness=10)
     print(cfg)
 
@@ -51,12 +49,12 @@ def main():
         res_svg2 = combined_future.result()
 
     # bilateral filter
-    cv2.imwrite(
+    Image.fromarray(img_bf).save(
         os.path.join(OUTDIR, "bilateral_image.png"),
     )
 
     # kmeans
-    cv2.imwrite(
+    Image.fromarray(img_kmeans).save(
         os.path.join(OUTDIR, "kmeans_image.png"),
     )
 

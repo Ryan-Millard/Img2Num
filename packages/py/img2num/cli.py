@@ -17,12 +17,24 @@ import sys
 
 import numpy as np
 from PIL import Image
+from concurrent.futures import ThreadPoolExecutor, Executor, Future
 
 import img2num
 
 # Target image extensions (must be lowercase)
 IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".tif", ".webp")
 STDIO = "-"
+
+class SyncExecutor(Executor):
+    """Runs submitted callables immediately in the calling thread."""
+
+    def submit(self, fn, /, *args, **kwargs):
+        fut = Future()
+        try:
+            fut.set_result(fn(*args, **kwargs))
+        except Exception as e:
+            fut.set_exception(e)
+        return fut
 
 
 def log(msg):
@@ -99,6 +111,29 @@ def write_svg(svg, output_path):
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(svg)
 
+def _process(image_source, output_path, cfg, args, progress):
+    say = (lambda _msg: None) if args.quiet else log
+
+    label = "<stdin>" if image_source == STDIO else image_source
+    if output_path != STDIO and pth.exists(output_path) and not args.overwrite:
+        say(
+            f"""
+            {progress}{output_path} already exists, skipping 
+            (use --overwrite to replace)
+            """
+        )
+        return 0
+    try:
+        source = io.BytesIO(sys.stdin.buffer.read()) if image_source == STDIO else image_source
+        svg = convert(source, cfg)
+        write_svg(svg, output_path)
+        if output_path != STDIO:
+            say(f"{progress}{label} -> {output_path}")
+        return 0
+    except Exception as e:  # keep going in batch mode
+        log(f"{progress}failed: {label}: {e}")
+        return 1
+        
 
 def build_parser():
     parser = argparse.ArgumentParser(
@@ -145,6 +180,8 @@ def build_parser():
                         help="overwrite existing SVG files")
     parser.add_argument("--quiet", "-q", action="store_true",
                         help="suppress progress messages")
+    parser.add_argument("--jobs", "-j", default=8, type=int,
+                        help="number of parallel processes to use")
     return parser
 
 
@@ -212,25 +249,20 @@ def main(argv=None):
 
     jobs = plan_jobs(args)
     failures = 0
-    for i, (src, out) in enumerate(jobs, 1):
-        progress = f"[{i}/{len(jobs)}] " if len(jobs) > 1 else ""
-        label = "<stdin>" if src == STDIO else src
-        if out != STDIO and pth.exists(out) and not args.overwrite:
-            say(f"{progress}{out} already exists, skipping (use --overwrite to replace)")
-            continue
-        try:
-            source = io.BytesIO(sys.stdin.buffer.read()) if src == STDIO else src
-            svg = convert(source, cfg)
-            write_svg(svg, out)
-        except KeyboardInterrupt:
-            log("interrupted")
-            return 130
-        except Exception as e:  # keep going in batch mode
-            failures += 1
-            log(f"{progress}failed: {label}: {e}")
-            continue
-        if out != STDIO:
-            say(f"{progress}{label} -> {out}")
+    nproc = min(args.jobs, len(jobs))
+
+    say(f"Starting processing with {nproc} job{'s' if nproc > 1 else ''}")
+
+    ctx = ThreadPoolExecutor(max_workers=nproc) if nproc > 1 else SyncExecutor()
+
+    with ctx as executor:
+        ft = []
+        for i, (src, out) in enumerate(jobs, 1):
+            progress = f"[{i}/{len(jobs)}] " if len(jobs) > 1 else ""
+            ft.append(executor.submit(_process, src, out, cfg, args, progress))
+
+        # success will return 0, failure will return 1
+        failures = sum(f.result() for f in ft)
 
     if failures:
         log(f"{failures} of {len(jobs)} conversion(s) failed")
