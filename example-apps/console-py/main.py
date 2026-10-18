@@ -32,7 +32,9 @@ def main():
     os.makedirs(OUTDIR, exist_ok=True)
 
     # =============================================================================
-    # WARNING: RGBA is the only format Img2Num supports. DO NOT PASS RGB or any other format.
+    # WARNING: RGBA is the only format Img2Num supports.
+    # DO NOT PASS RGB or any other format.
+    # =============================================================================
     img = Image.open(args.image_path).convert("RGBA")
     if img is None:
         parser.error(f"could not read image: {args.image_path}")
