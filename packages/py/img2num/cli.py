@@ -16,7 +16,11 @@ import os.path as pth
 import sys
 
 import numpy as np
-from PIL import Image
+try:
+    from PIL import Image
+except:
+    "The img2num CLI requires extra dependencies.\n"
+    "Install them with: pip install 'img2num[cli]'"
 from concurrent.futures import ThreadPoolExecutor, Executor, Future
 
 import img2num
