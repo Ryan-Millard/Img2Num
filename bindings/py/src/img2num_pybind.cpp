@@ -44,7 +44,7 @@ PYBIND11_MODULE(_img2num, m) {
             auto* output = out_image.mutable_data();
             {
                 pybind11::gil_scoped_release release;
-                std::lock_guard<std::mutex> lock(core_mutex);
+                // std::lock_guard<std::mutex> lock(core_mutex);
                 img2num::gaussian_blur_fft(output, width, height, sigma);
             }
             return out_image;
@@ -81,7 +81,7 @@ PYBIND11_MODULE(_img2num, m) {
             auto* output = out_image.mutable_data();
             {
                 pybind11::gil_scoped_release release;
-                std::lock_guard<std::mutex> lock(core_mutex);
+                // std::lock_guard<std::mutex> lock(core_mutex);
                 img2num::invert_image(output, width, height);
             }
             return out_image;
@@ -115,7 +115,7 @@ PYBIND11_MODULE(_img2num, m) {
             auto* output = out_image.mutable_data();
             {
                 pybind11::gil_scoped_release release;
-                std::lock_guard<std::mutex> lock(core_mutex);
+                // std::lock_guard<std::mutex> lock(core_mutex);
                 img2num::threshold_image(output, width, height, num_thresholds);
             }
             return out_image;
@@ -153,7 +153,7 @@ PYBIND11_MODULE(_img2num, m) {
             auto* output = out_image.mutable_data();
             {
                 pybind11::gil_scoped_release release;
-                std::lock_guard<std::mutex> lock(core_mutex);
+                // std::lock_guard<std::mutex> lock(core_mutex);
                 img2num::black_threshold_image(output, width, height, num_thresholds);
             }
             return out_image;
@@ -203,7 +203,7 @@ PYBIND11_MODULE(_img2num, m) {
             auto* output = out_image.mutable_data();
             {
                 pybind11::gil_scoped_release release;
-                std::lock_guard<std::mutex> lock(core_mutex);
+                // std::lock_guard<std::mutex> lock(core_mutex);
                 img2num::bilateral_filter(
                     output, width, height, sigma_spatial, sigma_range, color_space
                 );
@@ -254,7 +254,7 @@ PYBIND11_MODULE(_img2num, m) {
             auto* labels = out_labels.mutable_data();
             {
                 pybind11::gil_scoped_release release;
-                std::lock_guard<std::mutex> lock(core_mutex);
+                // std::lock_guard<std::mutex> lock(core_mutex);
                 img2num::kmeans(input, output, labels, width, height, k, max_iter, color_space);
             }
             return pybind11::make_tuple(out_data, out_labels);
@@ -296,7 +296,7 @@ PYBIND11_MODULE(_img2num, m) {
             std::string svg;
             {
                 pybind11::gil_scoped_release release;
-                std::lock_guard<std::mutex> lock(core_mutex);
+                // std::lock_guard<std::mutex> lock(core_mutex);
                 svg = img2num::labels_to_svg(
                     data_ptr, labels_ptr, width, height, min_area, min_thickness
                 );
@@ -442,6 +442,52 @@ PYBIND11_MODULE(_img2num, m) {
             pybind11::arg("bilateral_filter") = pybind11::dict(), // Defaults to empty dict
             pybind11::arg("kmeans") = pybind11::dict()            // Defaults to empty dict
         )
+         .def(pybind11::pickle(
+            // __getstate__: convert to plain Python objects
+            [](const img2num::ImageToSvgConfig& c) {
+                pybind11::dict bf;
+                bf["sigma_spatial"] = c.bilateral_filter.sigma_spatial;
+                bf["sigma_range"] = c.bilateral_filter.sigma_range;
+
+                pybind11::dict km;
+                km["k"] = c.kmeans.k;
+                km["max_iter"] = c.kmeans.max_iter;
+
+                pybind11::dict state;
+                state["bilateral_filter"] = bf;
+                state["kmeans"] = km;
+                state["min_cluster_area"] = c.min_cluster_area;
+                state["min_thickness"] = c.min_thickness;
+                state["color_space"] = static_cast<int>(c.color_space);
+                return state;
+            },
+            // __setstate__: rebuild from that state
+            [](const pybind11::dict& state) {
+                img2num::ImageToSvgConfig c;  // starts from defaults
+
+                if (state.contains("bilateral_filter")) {
+                    auto bf = state["bilateral_filter"].cast<pybind11::dict>();
+                    if (bf.contains("sigma_spatial"))
+                        c.bilateral_filter.sigma_spatial = bf["sigma_spatial"].cast<double>();
+                    if (bf.contains("sigma_range"))
+                        c.bilateral_filter.sigma_range = bf["sigma_range"].cast<double>();
+                }
+                if (state.contains("kmeans")) {
+                    auto km = state["kmeans"].cast<pybind11::dict>();
+                    if (km.contains("k"))
+                        c.kmeans.k = km["k"].cast<int>();
+                    if (km.contains("max_iter"))
+                        c.kmeans.max_iter = km["max_iter"].cast<int>();
+                }
+                if (state.contains("min_cluster_area"))
+                    c.min_cluster_area = state["min_cluster_area"].cast<int>();
+                if (state.contains("min_thickness"))
+                    c.min_thickness = state["min_thickness"].cast<int>();
+                if (state.contains("color_space"))
+                    c.color_space = static_cast<uint8_t>(state["color_space"].cast<int>());
+                return c;
+            }
+        ))
         .def_readwrite("bilateral_filter", &img2num::ImageToSvgConfig::bilateral_filter)
         .def_readwrite("min_cluster_area", &img2num::ImageToSvgConfig::min_cluster_area)
         .def_readwrite("min_thickness", &img2num::ImageToSvgConfig::min_thickness)
