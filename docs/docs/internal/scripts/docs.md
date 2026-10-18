@@ -20,3 +20,4 @@ Starts the local Docusaurus development server with live reload at `http://local
 
 ```bash
 docusaurus start --host 0.0.0.0 --poll 1000
+```

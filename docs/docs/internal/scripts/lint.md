@@ -20,3 +20,4 @@ Runs all linters (`lint:cpp` and `lint:js`) in parallel across the workspace:
 
 ```bash
 pnpm run --filter=. --parallel "/^lint:(cpp|js)$/"
+```

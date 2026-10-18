@@ -6,8 +6,15 @@ sidebar_position: 4
 
 This page explains package-specific cleanup scripts.
 
-:::info Full Project Cleanup with Just
-To remove CMake build directories, compiled C++ binaries, and temporary caches across the entire repository, use **`just clean`**. 
+:::info Project Cleanup with Just
+The Justfile provides target-specific cleanup commands. To clean all Just-managed outputs, run:
+
+```bash
+just clean cpp
+just clean js
+just clean packages-js
+just clean packages-py
+```
 
 See the **[Just Guide](../../contributing/just.md)** for more details.
 :::
@@ -20,3 +27,4 @@ Deletes the Vite build output directory (`example-apps/react-js/dist/`) to ensur
 
 ```bash
 rimraf dist
+```

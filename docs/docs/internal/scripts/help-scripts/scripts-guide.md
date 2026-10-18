@@ -3,22 +3,15 @@ title: Scripts & help CLI
 sidebar_label: Scripts & help
 ---
 
-This page describes the `scriptsInfo` metadata schema, the `validate-scripts` tool, the interactive `help` CLI, and the CI integration that validates script documentation across pull requests.
+This page describes the `scriptsInfo` metadata schema and category-keyed examples.
 
 :::info Short Summary
 Package-level `scriptsInfo` is the single source of truth for documenting custom scripts.
-The repo includes a `validate-scripts` check in `ci.yml` that enforces a strict 1:1 mapping between `scripts` and `scriptsInfo`.
-The `help` CLIs read this metadata and present an interactive, searchable CLI for developers.
 :::
 
 ## What's in this page
 
 - `scriptsInfo` schema and examples
-- How to add or update scripts
-- `validate-scripts` usage and CI integration
-- Interactive `help` CLI usage
-- Location of shared utilities
-- Troubleshooting & tips
 
 ## `scriptsInfo` — Schema & Examples
 
@@ -68,3 +61,4 @@ Modern `scriptsInfo` organizes scripts under **category keys** with an optional 
     "help": "node scripts/help.js"
   }
 }
+```

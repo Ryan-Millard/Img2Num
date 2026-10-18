@@ -20,3 +20,4 @@ Bundles the React example application into static production assets in `example-
 
 ```bash
 vite build --emptyOutDir
+```

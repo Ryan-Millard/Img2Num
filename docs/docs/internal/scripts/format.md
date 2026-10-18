@@ -16,3 +16,4 @@ Runs all formatting tools (`format:cpp` and `format:js`) in parallel across the 
 
 ```bash
 pnpm run --filter=. --parallel "/^format:(cpp|js)$/"
+```
