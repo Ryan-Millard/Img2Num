@@ -47,11 +47,14 @@ uint8_t quantize(uint8_t value, uint8_t region_size) {
  * Returns 0 when dim <= 1, since there is nothing to reflect.
  */
 static size_t reflect_index(int p, int dim) {
-    if (dim <= 1) return 0;
+    if (dim <= 1)
+        return 0;
     const int64_t period = 2 * static_cast<int64_t>(dim); // int64: 2*dim can overflow int
     int64_t q = p % period;
-    if (q < 0) q += period;
-    if (q >= dim) q = period - 1 - q;
+    if (q < 0)
+        q += period;
+    if (q >= dim)
+        q = period - 1 - q;
     return static_cast<size_t>(q);
 }
 
@@ -147,8 +150,10 @@ void gaussian_blur_fft(uint8_t* image, size_t width, size_t height, double sigma
                 size_t py = y + pad;
                 size_t px = x + pad;
                 double v = data[py * W + px].real();
-                if (v < 0.0) v = 0.0;
-                else if (v > 255.0) v = 255.0;
+                if (v < 0.0)
+                    v = 0.0;
+                else if (v > 255.0)
+                    v = 255.0;
                 image[(y * width + x) * 4 + channel] = static_cast<uint8_t>(std::lrint(v));
             }
         }
@@ -157,10 +162,10 @@ void gaussian_blur_fft(uint8_t* image, size_t width, size_t height, double sigma
     // Alpha channel remains unchanged
 }
 
-// Called from JS. `ptr` points to RGBA bytes.
-void invert_image(uint8_t* ptr, int width, int height) {
+// Called from JS. `image` points to RGBA bytes.
+void invert_image(uint8_t* image, int width, int height) {
     ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> img;
-    img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
+    img.loadFromBuffer(image, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
     for (ImageLib::RGBAPixel<uint8_t>& p : img) {
         p.red = 255 - p.red;
@@ -169,17 +174,17 @@ void invert_image(uint8_t* ptr, int width, int height) {
     }
 
     const auto& modified = img.getData();
-    std::memcpy(ptr, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
+    std::memcpy(image, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
 }
 
-void threshold_image(uint8_t* ptr, const int width, const int height, const int num_thresholds) {
+void threshold_image(uint8_t* image, const int width, const int height, const int num_thresholds) {
     if (num_thresholds <= 0) {
         return;
     }
     const uint8_t REGION_SIZE(255 / num_thresholds); // Size of buckets per colour
 
     ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> img;
-    img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
+    img.loadFromBuffer(image, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
     const auto imgWidth {img.getWidth()}, imgHeight {img.getHeight()};
     for (ImageLib::RGBAPixel<uint8_t>& p : img) {
@@ -189,17 +194,20 @@ void threshold_image(uint8_t* ptr, const int width, const int height, const int 
     }
 
     const auto& modified = img.getData();
-    std::memcpy(ptr, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
+    std::memcpy(image, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
 }
 
+// Unlike `threshold_image` above, `num_thresholds` here is a per-channel 0-255
+// brightness cutoff, not a number of output levels. A pixel becomes pure black
+// only when all three of its channels are strictly below the cutoff.
 void black_threshold_image(
-    uint8_t* ptr, const int width, const int height, const int num_thresholds
+    uint8_t* image, const int width, const int height, const int num_thresholds
 ) {
     if (num_thresholds <= 0) {
         return;
     }
     ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> img;
-    img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
+    img.loadFromBuffer(image, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
     const auto imgWidth {img.getWidth()}, imgHeight {img.getHeight()};
     for (ImageLib::RGBAPixel<uint8_t>& p : img) {
@@ -212,7 +220,7 @@ void black_threshold_image(
     }
 
     const auto& modified = img.getData();
-    std::memcpy(ptr, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
+    std::memcpy(image, modified.data(), modified.size() * sizeof(ImageLib::RGBAPixel<uint8_t>));
 }
 
 } // namespace img2num

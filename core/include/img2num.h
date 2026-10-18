@@ -56,14 +56,14 @@ struct ImageToSvgConfig {
 void gaussian_blur_fft(uint8_t* image, size_t width, size_t height, double sigma);
 
 /// @copydoc IMG2NUM_H_INVERT_IMAGE_DOC
-void invert_image(uint8_t* ptr, int width, int height);
+void invert_image(uint8_t* image, int width, int height);
 
 /// @copydoc IMG2NUM_H_THRESHOLD_IMAGE_DOC
-void threshold_image(uint8_t* ptr, const int width, const int height, const int num_thresholds);
+void threshold_image(uint8_t* image, const int width, const int height, const int num_thresholds);
 
 /// @copydoc IMG2NUM_H_BLACK_THRESHOLD_IMAGE_DOC
 void black_threshold_image(
-    uint8_t* ptr, const int width, const int height, const int num_thresholds
+    uint8_t* image, const int width, const int height, const int num_thresholds
 );
 
 /// @copydoc IMG2NUM_H_KMEANS_DOC
