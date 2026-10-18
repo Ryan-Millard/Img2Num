@@ -82,7 +82,7 @@ If you change `IMG2NUM_LOG_LEVEL` or the build type, you must rebuild.
 
 ## Enabling logging per build
 
-Every `just` build recipe takes the **build type first** and the **log level second**.
+The C/C++, Python, and JS/WASM `just` build recipes take the **build type first** and the **log level second**.
 Both are optional and default to `Release` and `AUTO`.
 
 <Tabs groupId="build-target">
