@@ -4,7 +4,8 @@ Note: Images sent to img2num functions must be RGBA
 
 import argparse
 import os
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
+import multiprocessing as mp
 
 import img2num
 import numpy as np
@@ -45,7 +46,7 @@ def main():
 
     # Python workers can run while the GIL is released; native calls stay serialized.
     # Both workers only read the shared input image and configuration.
-    with ThreadPoolExecutor(max_workers=2) as executor:
+    with ProcessPoolExecutor(max_workers=2, mp_context=mp.get_context("spawn")) as executor:
         step_by_step_future = executor.submit(step_by_step, img)
         combined_future = executor.submit(combined_process, img, cfg)
 
