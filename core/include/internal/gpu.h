@@ -24,6 +24,7 @@ class GPU {
     wgpu::Adapter adapter;
     wgpu::Device device;
     wgpu::Queue queue;
+    std::mutex mutex_;
 
     bool adapter_ready = false;
     bool device_ready = false;
@@ -58,6 +59,12 @@ class GPU {
     static GPU& getClassInstance() {
         static GPU gpuInstance;
         return gpuInstance;
+    }
+
+    template <class F>
+    decltype(auto) with_device(F&& f) {
+        std::lock_guard<std::mutex> lock(mutex_);
+        return std::forward<F>(f)(device, queue);
     }
 
     const wgpu::Device& get_device() {

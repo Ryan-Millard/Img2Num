@@ -246,7 +246,9 @@ void kmeans(
     GPU::getClassInstance().init_gpu();
 
     if (GPU::getClassInstance().is_initialized()) {
-        kmeans_gpu(data, out_data, out_labels, width, height, k, max_iter, color_space);
+        GPU::getClassInstance().with_device([&](auto& dev, auto& q) {
+            kmeans_gpu(data, out_data, out_labels, width, height, k, max_iter, color_space);
+        });
     } else {
         kmeans_cpu(data, out_data, out_labels, width, height, k, max_iter, color_space);
     }

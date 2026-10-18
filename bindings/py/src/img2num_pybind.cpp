@@ -470,7 +470,7 @@ PYBIND11_MODULE(_img2num, m) {
             std::string svg;
             {
                 pybind11::gil_scoped_release release;
-                std::lock_guard<std::mutex> lock(core_mutex);
+                // std::lock_guard<std::mutex> lock(core_mutex);
                 svg = img2num::image_to_svg(data_ptr, width, height, cfg);
             }
 
