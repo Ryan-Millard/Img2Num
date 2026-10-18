@@ -24,6 +24,7 @@ class GPU {
     wgpu::Adapter adapter;
     wgpu::Device device;
     wgpu::Queue queue;
+    std::mutex mutex_;
 
     bool adapter_ready = false;
     bool device_ready = false;
@@ -64,6 +65,12 @@ class GPU {
     static GPU& getClassInstance() {
         static GPU* gpuInstance = new GPU();
         return *gpuInstance;
+    }
+
+    template <class F>
+    decltype(auto) with_device(F&& f) {
+        std::lock_guard<std::mutex> lock(mutex_);
+        return std::forward<F>(f)(device, queue);
     }
 
     const wgpu::Device& get_device() {
@@ -195,14 +202,13 @@ class GPU {
             cleanup();
             return;
         }
-        if (wgpu::AdapterInfo info;
-            adapter.GetInfo(&info) != wgpu::Status::Success ||
-                info.backendType == wgpu::BackendType::Null) {
+        if (wgpu::AdapterInfo info; adapter.GetInfo(&info) != wgpu::Status::Success ||
+                                    info.backendType == wgpu::BackendType::Null) {
             IMG2NUM_LOG_INFO("No usable WebGPU adapter found. Falling back to CPU.");
             cleanup();
             return;
         }
-        
+
         // ---------------------------------------------------------
         // 2. Get Device
         // ---------------------------------------------------------

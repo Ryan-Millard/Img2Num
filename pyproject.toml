@@ -17,6 +17,7 @@ classifiers = [
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Topic :: Multimedia :: Graphics :: Graphics Conversion",
   "Topic :: Scientific/Engineering :: Image Processing"
 ]
@@ -47,7 +48,9 @@ cmake.args = [
   "-DIMG2NUM_BUILD_PYTHON=ON",
   "-DIMG2NUM_BUILD_EXAMPLES=OFF",
 ]
-wheel.packages = ["img2num"]
+# Python sources are installed by CMake (bindings/py/CMakeLists.txt).
+# Don't list "img2num" here: at the repo root that is the dev CLI script.
+wheel.packages = []
 sdist.inclusion-mode = "explicit"
 sdist.include = [
   "pyproject.toml",
@@ -111,7 +114,7 @@ img2num-dev-scripts = { workspace = true }
 [tool.ruff]
 target-version = "py310"
 line-length = 88
-exclude = ["third_party/", "docs/", ".venv/"]
+exclude = ["**/third_party/", "docs/", ".venv/"]
 
 [tool.ruff.lint]
 select = [
@@ -132,6 +135,10 @@ ignore = []
 build-verbosity = 1
 
 [dependency-groups]
+test = [
+    "pytest>=8,<10",
+    "pybind11>=2.10",
+]
 dev = [
     "img2num_dev_scripts",
     "docspec>=2.2.1,<3",
