@@ -149,7 +149,7 @@ def build_parser():
             "  img2num input.png              (writes input.svg next to it)\n"
             "  img2num - < input.png > output.svg"
         ),
-        formatter_class=argparse.RawDescriptionHelpFormatter,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument(
         "inputs", nargs="+", metavar="INPUT",
