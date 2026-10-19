@@ -18,7 +18,7 @@ import sys
 import numpy as np
 try:
     from PIL import Image
-except:
+except Exception:
     "The img2num CLI requires extra dependencies.\n"
     "Install them with: pip install 'img2num[cli]'"
 from concurrent.futures import ThreadPoolExecutor, Executor, Future
