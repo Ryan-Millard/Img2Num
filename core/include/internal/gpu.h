@@ -210,10 +210,6 @@ class GPU {
         IMG2NUM_LOG_INFO("GPU Fully Initialized.");
     };
 
-    ~GPU() {
-        cleanup();
-    };
-
   private:
     // Creates the shared instance once. Caller must hold mutex_.
     bool init_instance() {
