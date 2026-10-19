@@ -31,6 +31,7 @@ void step_by_step(
     double sigma_spatial, double sigma_range,
     int k, int max_iter,
     int min_cluster_area, int min_thickness,
+    uint8_t color_space,
     std::string& res_svg
 ){
     const size_t pixel_count {static_cast<size_t>(width) * static_cast<size_t>(height)};
@@ -39,9 +40,9 @@ void step_by_step(
     std::memcpy(bilateral_data.data(), image_data_original, byte_count);
     std::vector<int32_t> out_labels(pixel_count);
 
-    img2num::bilateral_filter(bilateral_data.data(), width, height, sigma_range, sigma_spatial, 1);
+    img2num::bilateral_filter(bilateral_data.data(), width, height, sigma_spatial, sigma_range, color_space);
     // Apply kmeans
-    img2num::kmeans(bilateral_data.data(), kmeans_data.data(), out_labels.data(), width, height, k, max_iter, 1);
+    img2num::kmeans(bilateral_data.data(), kmeans_data.data(), out_labels.data(), width, height, k, max_iter, color_space);
     // Generate SVG from labels
     res_svg = img2num::labels_to_svg(bilateral_data.data(), out_labels.data(), width, height, min_cluster_area, min_thickness); 
 }
@@ -104,12 +105,13 @@ int main(int argc, char** argv) {
 
     std::thread t1( 
         step_by_step, image_data_original, 
-        std::ref(img_data), std::ref(out_data), width, height, 50.0, sigma,
-        32, 100, 100, 10, std::ref(res_svg)
+        std::ref(img_data), std::ref(out_data), width, height, sigma, 50.0,
+        32, 100, 100, 10, 0, std::ref(res_svg)
     );
 
     // Generate SVG with the full pipeline
     img2num::ImageToSvgConfig config;
+    config.color_space = 0;
     config.bilateral_filter.sigma_spatial = sigma;
     config.kmeans.k = 32;
     config.min_thickness = 10;
