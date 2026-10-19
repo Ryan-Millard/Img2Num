@@ -15,7 +15,7 @@ import os
 import os.path as pth
 import sys
 import contextlib
-
+import img2num
 import numpy as np
 try:
     from PIL import Image
@@ -37,9 +37,6 @@ def _get_umask():
     return mask
 
 _FILE_MODE = 0o666 & ~_get_umask()
-
-
-import img2num
 
 # Target image extensions (must be lowercase)
 IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".tif", ".webp")
