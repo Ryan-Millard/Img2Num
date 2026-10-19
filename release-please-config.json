@@ -26,12 +26,12 @@
         { "type": "generic", "path": "CMakeLists.txt" },
         {
           "type": "json",
-          "path": "bindings/c/.versions/img2num-core.json",
+          "path": "/bindings/c/.versions/img2num-core.json",
           "jsonpath": "$.version"
         },
         {
           "type": "json",
-          "path": "packages/py/.versions/img2num-core.json",
+          "path": "/packages/py/.versions/img2num-core.json",
           "jsonpath": "$.version"
         }
       ]
@@ -47,7 +47,7 @@
         { "type": "generic", "path": "CMakeLists.txt" },
         {
           "type": "json",
-          "path": "packages/js/.versions/img2num-bindings-c.json",
+          "path": "/packages/js/.versions/img2num-bindings-c.json",
           "jsonpath": "$.version"
         }
       ]
