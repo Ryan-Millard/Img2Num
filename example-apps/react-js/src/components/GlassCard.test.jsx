@@ -134,7 +134,10 @@ describe("GlassCard", () => {
       );
 
       const element = screen.getByTestId("glass-card");
-      expect(element).toHaveStyle({ padding: "1rem" });
+      // Assert the inline style as authored: jsdom resolves `toHaveStyle("1rem")` to 16px,
+      // so the computed-style helper can never match a rem value.
+      expect(element.style.padding).toBe("1rem");
+      expect(element.style.backgroundColor).toBe("blue");
     });
 
     it("should pass through onClick handler", () => {
