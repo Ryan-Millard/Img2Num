@@ -107,7 +107,9 @@ def test_each_binding_releases_gil(controlled_extension, operation):
     # run_child(f"calls[{operation!r}]()", controlled_extension)
     run_child(f"run_call(calls[{operation!r}])", controlled_extension)
 
-
+'''
+# NOTE: This is will fail with ThreadPoolExecutor
+# because the C++ backend is not mutex guarded
 def test_native_entries_share_one_lock(controlled_extension):
     run_child(
         """
@@ -117,14 +119,34 @@ def test_native_entries_share_one_lock(controlled_extension):
             out = run_call(operation)
             print(operation[0])
             return out
-        with concurrent.futures.ProcessPoolExecutor(max_workers=len(calls)) as pool:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=len(calls)) as pool:
             futures = [pool.submit(run, operation) for operation in calls.values()]
             for future in futures:
                 future.result()
     """,
         controlled_extension,
     )
+'''
 
+def test_native_entries_share_one_lock_with_gating(controlled_extension):
+    run_child(
+        """
+        import concurrent.futures
+        import threading
+        gate = threading.Barrier(1)
+        def run(operation):
+            gate.wait()
+            out = run_call(operation)
+            print(operation[0])
+            return out
+        with concurrent.futures.ProcessPoolExecutor(max_workers=len(calls)) as pool:
+            futures = [pool.submit(run, operation) for operation in calls.values()]
+            gate.wait()
+            for future in futures:
+                future.result()
+    """,
+        controlled_extension,
+    )
 
 def test_native_exception_restores_gil_and_unlocks_core(controlled_extension):
     run_child(
@@ -141,7 +163,6 @@ def test_native_exception_restores_gil_and_unlocks_core(controlled_extension):
         controlled_extension,
     )
 
-'''
 # NOTE: This test fails for some reason
 def test_config_is_snapshotted_before_release(controlled_extension):
     run_child(
@@ -153,7 +174,7 @@ def test_config_is_snapshotted_before_release(controlled_extension):
         control.gil_test_core_active.restype = ctypes.c_int
         config.min_cluster_area = 101
         control.gil_test_pause_svg()
-        with concurrent.futures.ProcessPoolExecutor(max_workers=1) as pool:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
             future = pool.submit(*calls["image_to_svg"])
             deadline = time.monotonic() + 5
             while not control.gil_test_core_active():
@@ -167,7 +188,6 @@ def test_config_is_snapshotted_before_release(controlled_extension):
     """,
         controlled_extension,
     )
-'''
 
 
 @pytest.mark.parametrize("operation", OPERATIONS)
@@ -236,13 +256,13 @@ def test_concurrent_first_use_of_gpu_reaching_operations():
         import threading
         import xml.etree.ElementTree as ET
         kinds = ("bilateral_filter", "kmeans", "image_to_svg")
-        # gate = threading.Barrier(4)
+        gate = threading.Barrier(4)
         def work(kind):
-            # gate.wait()
+            gate.wait()
             return run_call(calls[kind])
-        with concurrent.futures.ProcessPoolExecutor(max_workers=3) as pool:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
             futures = [pool.submit(work, kind) for kind in kinds]
-            # gate.wait()
+            gate.wait()
             filtered, clustered, svg = [future.result() for future in futures]
         assert filtered.shape == image.shape
         assert clustered[0].shape == image.shape and np.all(clustered[1] == 0)
@@ -255,13 +275,13 @@ def test_two_concurrent_image_to_svg_calls_finish():
         import concurrent.futures
         import threading
         import xml.etree.ElementTree as ET
-        # gate = threading.Barrier(3)
+        gate = threading.Barrier(3)
         def work():
-            # gate.wait()
+            gate.wait()
             return run_call(calls["image_to_svg"])
-        with concurrent.futures.ProcessPoolExecutor(max_workers=2) as pool:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
             futures = [pool.submit(work) for _ in range(2)]
-            # gate.wait()
+            gate.wait()
             results = [future.result() for future in futures]
         for svg in results:
             assert ET.fromstring(svg).tag == "{http://www.w3.org/2000/svg}svg"

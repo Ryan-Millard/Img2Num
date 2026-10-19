@@ -18,7 +18,7 @@ import sys
 import numpy as np
 from PIL import Image
 import multiprocessing as mp
-from concurrent.futures import ThreadPoolExecutor, Executor, Future, ProcessPoolExecutor
+from concurrent.futures import Executor, Future, ProcessPoolExecutor
 
 import img2num
 
@@ -257,7 +257,10 @@ def main(argv=None):
 
     say(f"Starting processing with {nproc} job{'s' if nproc > 1 else ''}")
 
-    ctx = ProcessPoolExecutor(max_workers=nproc, mp_context=mp.get_context("spawn")) if nproc > 1 else SyncExecutor()
+    ctx = (
+        ProcessPoolExecutor(max_workers=nproc, mp_context=mp.get_context("spawn"))
+        if nproc > 1 else SyncExecutor()
+    )
 
     with ctx as executor:
         ft = []
