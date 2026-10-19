@@ -27,6 +27,9 @@ Modern `scriptsInfo` organizes scripts under **category keys** with an optional 
         "format",
         "lint",
         "help"
+      ],
+      "ignore": [
+        "prebuild"
       ]
     },
     "Formatting": {
@@ -62,3 +65,10 @@ Modern `scriptsInfo` organizes scripts under **category keys** with an optional 
   }
 }
 ```
+
+### The `_meta` Block
+
+The optional `_meta` block configures metadata behavior and validator rules:
+
+- **`basic`**: An array of script names featured prominently in the interactive `help` CLI.
+- **`ignore`**: An array of internal or auxiliary scripts (such as lifecycle hooks like `prebuild`). Scripts listed in `ignore` are excluded from category documentation and hidden from the `help` CLI, allowing the `validate-scripts` tool to accept them without requiring a category entry. Ignored scripts must not appear under any category group.
