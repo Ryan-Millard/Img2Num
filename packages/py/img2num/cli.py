@@ -14,6 +14,7 @@ import io
 import os
 import os.path as pth
 import sys
+import contextlib
 
 import numpy as np
 try:
@@ -141,10 +142,8 @@ def write_svg(svg, output_path):
         os.chmod(tmp_path, _FILE_MODE)
         os.replace(tmp_path, output_path)
     except BaseException:
-        try:
+        with contextlib.suppress(FileNotFoundError):
             os.remove(tmp_path)
-        except FileNotFoundError:
-            pass
         raise
 
 def _process(image_source, output_path, cfg, args, progress):
