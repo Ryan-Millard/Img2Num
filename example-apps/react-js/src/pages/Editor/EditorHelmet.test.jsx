@@ -1,4 +1,5 @@
-import { render, waitFor } from "@testing-library/react";
+import { cleanup, render, waitFor } from "@testing-library/react";
+import { HelmetProvider } from "react-helmet-async";
 import EditorHelmet from "./EditorHelmet";
 
 describe("EditorHelmet", () => {
@@ -12,11 +13,19 @@ describe("EditorHelmet", () => {
   });
 
   afterEach(() => {
+    // Unmount while the head is still intact: React must be able to detach the nodes
+    // Helmet rendered. Clearing `head.innerHTML` first leaves React holding null
+    // parents and unmount throws `Cannot read properties of null (reading 'removeChild')`.
+    cleanup();
     resetHead();
   });
 
   it("sets title, meta, and canonical link", async () => {
-    render(<EditorHelmet />);
+    render(
+      <HelmetProvider>
+        <EditorHelmet />
+      </HelmetProvider>,
+    );
 
     await waitFor(() => {
       expect(document.title).toBe("Editor – Img2Num");
