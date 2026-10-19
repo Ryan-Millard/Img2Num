@@ -1,0 +1,47 @@
+.submitAction {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0 32px;
+}
+
+.projectHeader {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.projectIcon {
+  flex: 0 0 44px;
+  background: var(--surface-2);
+  color: var(--accent);
+}
+
+.projectLogo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: inherit;
+}
+
+.projectDetails {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.projectScreenshot {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  background: var(--surface-2);
+  border-radius: var(--radius);
+}
+
+.projectLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  margin: 8px 0 0;
+  overflow-wrap: anywhere;
+}

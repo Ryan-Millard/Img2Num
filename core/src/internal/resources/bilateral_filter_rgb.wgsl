@@ -22,7 +22,8 @@ fn main(@builtin(global_invocation_id) global_id : vec3<u32>) {
     var denominator = 0.0;
     
     // Kernel radius
-    let radius = i32(3.0 * params.sigmaSpatial); 
+    let radius = i32(3.0 * params.sigmaSpatial);
+    let sigmaR = f32(params.sigmaRange / 255.0); 
 
     for (var i = -radius; i <= radius; i++) {
         for (var j = -radius; j <= radius; j++) {
@@ -39,7 +40,7 @@ fn main(@builtin(global_invocation_id) global_id : vec3<u32>) {
                 // Range weight (using RGB distance)
                 let diff = centerVal.rgb - neighborVal.rgb;
                 let rangeSq = dot(diff, diff);
-                let wR = exp(-rangeSq / (2.0 * params.sigmaRange * params.sigmaRange));
+                let wR = exp(-rangeSq / (2.0 * sigmaR * sigmaR));
 
                 let w = wS * wR;
                 numerator += neighborVal * w;
