@@ -1,13 +1,11 @@
-import { lazy, Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Suspense } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import useGoogleAnalytics from "@hooks/useGoogleAnalytics";
 import NavBar from "@components/NavBar";
+import ExternalRedirect from "@components/ExternalRedirect";
 import Home from "@pages/Home";
 import Editor from "@pages/Editor";
 import Loading from "@pages/Loading";
-
-const Credits = lazy(() => import("@pages/Credits"));
-const About = lazy(() => import("@pages/About"));
 
 export default function App() {
   useGoogleAnalytics();
@@ -19,8 +17,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/editor" element={<Editor />} />
-          <Route path="/credits" element={<Credits />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/about" element={<Navigate to="/" replace />} />
+          <Route path="/credits" element={<ExternalRedirect to="https://img2num.dev/credits" />} />
         </Routes>
       </Suspense>
     </>
