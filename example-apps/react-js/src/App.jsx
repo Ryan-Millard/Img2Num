@@ -18,7 +18,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/editor" element={<Editor />} />
           <Route path="/about" element={<Navigate to="/" replace />} />
-          <Route path="/credits" element={<ExternalRedirect to="https://img2num.dev/credits" />} />
+          <Route path="/credits" element={<ExternalRedirect to="https://img2num.dev/hall-of-fame" />} />
         </Routes>
       </Suspense>
     </>
