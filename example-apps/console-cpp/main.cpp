@@ -3,6 +3,7 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <filesystem>
 #include <fstream>
 #include <img2num.h>
@@ -10,6 +11,7 @@
 #include <stb/stb_image_write.h>
 #include <string>
 #include <vector>
+#include <thread>
 
 #ifndef OUTPUT_DIR
 #define OUTPUT_DIR "./console-cpp-outputs"
@@ -20,6 +22,42 @@ constexpr const char* OUT_DIR {OUTPUT_DIR};
 constexpr int NUM_CHANNELS {4};
 constexpr double SIGMA_WIDTH_RATIO {0.005};
 constexpr int MAX_ITER {100};
+
+void step_by_step(
+    uint8_t* image_data_original,
+    std::vector<uint8_t>& bilateral_data, 
+    std::vector<uint8_t>& kmeans_data,
+    int width, int height,
+    double sigma_spatial, double sigma_range,
+    int k, int max_iter,
+    int min_cluster_area, int min_thickness,
+    std::string& res_svg
+){
+    const size_t pixel_count {static_cast<size_t>(width) * static_cast<size_t>(height)};
+    const size_t byte_count {pixel_count * NUM_CHANNELS};
+
+    std::memcpy(bilateral_data.data(), image_data_original, byte_count);
+    std::vector<int32_t> out_labels(pixel_count);
+
+    img2num::bilateral_filter(bilateral_data.data(), width, height, sigma_range, sigma_spatial, 1);
+    // Apply kmeans
+    img2num::kmeans(bilateral_data.data(), kmeans_data.data(), out_labels.data(), width, height, k, max_iter, 1);
+    // Generate SVG from labels
+    res_svg = img2num::labels_to_svg(bilateral_data.data(), out_labels.data(), width, height, min_cluster_area, min_thickness); 
+}
+
+void combined_process(
+    uint8_t* image_data_original,
+    int width, int height,
+    img2num::ImageToSvgConfig& cfg,
+    std::string& res_svg
+) {
+    const size_t pixel_count {static_cast<size_t>(width) * static_cast<size_t>(height)};
+    const size_t byte_count {pixel_count * NUM_CHANNELS};
+
+    std::vector<uint8_t> img_data(image_data_original, image_data_original + byte_count);
+    res_svg = img2num::image_to_svg(img_data.data(), width, height, cfg);
+}
 
 int main(int argc, char** argv) {
     if (argc < 2) {
@@ -54,15 +92,39 @@ int main(int argc, char** argv) {
               << " channel(s)." << std::endl;
 
     // Working copy of the original image
-    std::vector<uint8_t> img_data(image_data_original, image_data_original + byte_count);
+    // std::vector<uint8_t> img_data(image_data_original, image_data_original + byte_count);
+    std::vector<uint8_t> img_data(byte_count);
     std::vector<uint8_t> out_data(byte_count);
-    std::vector<int32_t> out_labels(pixel_count);
 
-    stbi_image_free(image_data_original);
+    std::string res_svg;
+    std::string res_svg2;
 
     // Apply bilateral
     const double sigma {width * SIGMA_WIDTH_RATIO};
-    img2num::bilateral_filter(img_data.data(), width, height, sigma, 50.0, 0);
+
+    std::thread t1( 
+        step_by_step, image_data_original, 
+        std::ref(img_data), std::ref(out_data), width, height, 50.0, sigma,
+        32, 100, 100, 10, std::ref(res_svg)
+    );
+
+    // Generate SVG with the full pipeline
+    img2num::ImageToSvgConfig config;
+    config.bilateral_filter.sigma_spatial = sigma;
+    config.kmeans.k = 32;
+    config.min_thickness = 10;
+
+    std::thread t2(
+        combined_process, image_data_original, 
+        width, height, std::ref(config), std::ref(res_svg2)
+    );
+
+    t1.join();
+    t2.join();
+
+    stbi_image_free(image_data_original);
+
+    /*img2num::bilateral_filter(img_data.data(), width, height, sigma, 50.0, 0);
     // Apply kmeans
     img2num::kmeans(img_data.data(), out_data.data(), out_labels.data(), width, height, 32, 100, 1);
     // Generate SVG from labels
@@ -75,6 +137,7 @@ int main(int argc, char** argv) {
     config.kmeans.k = 32;
     config.min_thickness = 10;
     std::string res_svg2 {img2num::image_to_svg(img_data.data(), width, height, config)};
+    */
 
     const std::string bilateral_path {std::string(OUT_DIR) + "/console-cpp-bilateral.png"};
     const std::string kmeans_path {std::string(OUT_DIR) + "/console-cpp-kmeans.png"};
