@@ -1,6 +1,7 @@
 # Run the Python example app on an image
 console-py input="":
     @echo "python example-apps/console-py/main.py {{ input }}"
+    uv pip install pillow>=12.0.0
     uv run python3 example-apps/console-py/main.py "{{ input }}"
 
 # Run the C++ example app on an image

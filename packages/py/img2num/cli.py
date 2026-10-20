@@ -14,13 +14,30 @@ import io
 import os
 import os.path as pth
 import sys
-
-import numpy as np
-from PIL import Image
-import multiprocessing as mp
-from concurrent.futures import Executor, Future, ProcessPoolExecutor
-
+import contextlib
 import img2num
+import numpy as np
+import multiprocessing as mp
+try:
+    from PIL import Image
+except Exception:
+    print("""
+    The img2num CLI requires extra dependencies.\n
+    Install them with: pip install 'img2num[cli]'
+    """)
+    exit()
+from concurrent.futures import ProcessPoolExecutor, Executor, Future
+
+import tempfile
+
+def _get_umask():
+    # os.umask can only be read by setting it, so set and immediately restore.
+    # Done once at import time, before any threads exist.
+    mask = os.umask(0)
+    os.umask(mask)
+    return mask
+
+_FILE_MODE = 0o666 & ~_get_umask()
 
 # Target image extensions (must be lowercase)
 IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".tif", ".webp")
@@ -109,8 +126,23 @@ def write_svg(svg, output_path):
     parent = pth.dirname(output_path)
     if parent:
         os.makedirs(parent, exist_ok=True)
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write(svg)
+    # with open(output_path, "w", encoding="utf-8") as f:
+    #     f.write(svg)
+    # Temp file must be in the same directory (same filesystem) for an atomic rename
+    fd, tmp_path = tempfile.mkstemp(
+        dir=parent, prefix=f".{pth.basename(output_path)}.", suffix=".tmp"
+    )
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(svg)
+            f.flush()
+            os.fsync(f.fileno())  # data is on disk before the rename makes it visible
+        os.chmod(tmp_path, _FILE_MODE)
+        os.replace(tmp_path, output_path)
+    except BaseException:
+        with contextlib.suppress(FileNotFoundError):
+            os.remove(tmp_path)
+        raise
 
 def _process(image_source, output_path, cfg, args, progress):
     say = (lambda _msg: None) if args.quiet else log
