@@ -6,9 +6,9 @@ import argparse
 import os
 from concurrent.futures import ThreadPoolExecutor
 
-import cv2
 import img2num
-
+import numpy as np
+from PIL import Image
 
 def step_by_step(img):
     """Convert the image in stages, retaining the intermediate images."""
@@ -31,11 +31,15 @@ def main():
     OUTDIR = "console-py_outputs"
     os.makedirs(OUTDIR, exist_ok=True)
 
-    img = cv2.imread(args.image_path)
+    # =============================================================================
+    # WARNING: RGBA is the only format Img2Num supports.
+    # DO NOT PASS RGB or any other format.
+    # =============================================================================
+    img = Image.open(args.image_path).convert("RGBA")
     if img is None:
         parser.error(f"could not read image: {args.image_path}")
 
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGBA)
+    img = np.asarray(img)
     cfg = img2num.ImageToSvgConfig(kmeans={"k": 64}, min_thickness=10)
     print(cfg)
 
@@ -49,15 +53,13 @@ def main():
         res_svg2 = combined_future.result()
 
     # bilateral filter
-    cv2.imwrite(
+    Image.fromarray(img_bf).save(
         os.path.join(OUTDIR, "bilateral_image.png"),
-        cv2.cvtColor(img_bf, cv2.COLOR_RGBA2BGR),
     )
 
     # kmeans
-    cv2.imwrite(
+    Image.fromarray(img_kmeans).save(
         os.path.join(OUTDIR, "kmeans_image.png"),
-        cv2.cvtColor(img_kmeans, cv2.COLOR_RGBA2BGR),
     )
 
     # svg file
