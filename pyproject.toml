@@ -153,6 +153,10 @@ licensing = [
   "reuse>=6.2.0,<7"
 ]
 
+[project.optional-dependencies]
+cli = [
+    "pillow>=12.0.0"
+]
 [project.scripts]
 # syntax: command_name = "package.module:function"
 img2num = "img2num.cli:main"
