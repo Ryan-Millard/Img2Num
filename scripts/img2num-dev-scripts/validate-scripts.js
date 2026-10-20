@@ -42,18 +42,19 @@ export function validateScripts(pkgPath) {
 
   const scriptsSet = new Set(Object.keys(scripts));
   const infoSet = new Set(Object.keys(flattenScriptsInfo(scriptsInfo)));
+  const ignore = scriptsInfo._meta?.ignore ?? [];
   let failed = false;
 
   // Scripts without description and not ignored
   for (const script of scriptsSet) {
-    if (!infoSet.has(script) && !scriptsInfo._meta.ignore.includes(script)) {
+    if (!infoSet.has(script) && !ignore.includes(script)) {
       logColor(`Script "${script}" exists in scripts but missing in scriptsInfo`, Colors.RED);
       failed = true;
     }
   }
 
   // Scripts that are in ignore shouldn’t exist in scriptsInfo
-  for (const ignored of scriptsInfo._meta?.ignore ?? []) {
+  for (const ignored of ignore) {
     for (const group of Object.keys(scriptsInfo)) {
       if (group === "_meta") continue;
       if (ignored in scriptsInfo[group]) {
