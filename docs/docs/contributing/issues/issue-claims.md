@@ -28,6 +28,12 @@ Please only claim an issue if you intend to start working on it soon.
 
 :::
 
+## One issue at a time
+
+Please only hold **one claimed issue at a time**. Finish your current issue, or
+release it with `/untake`, before claiming another. This keeps issues open for
+other contributors.
+
 ## Release an issue
 
 If you decide not to work on an issue anymore, comment:
@@ -62,8 +68,10 @@ to expire, comment `/untake` followed by `/take` to re-claim it.
 
 ### Can I work on an issue that is already claimed?
 
-It is generally discouraged. If you believe the claim has become inactive,
-leave a comment on the issue or contact a maintainer.
+Only one solution for an issue is typically merged. If you open a pull request
+for an issue that someone else has claimed, you may be asked to collaborate
+with the claimant instead. Checking whether an issue is already claimed or has
+an open pull request can save everyone time.
 
 ### What if someone else has already opened a pull request?
 
