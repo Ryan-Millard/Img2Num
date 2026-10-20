@@ -6,11 +6,11 @@ deployed as part of the Img2Num documentation site at
 
 ## Quickstart
 
-Follow these steps to run the React example app locally using either `pnpm` or `npm`, and test SVG conversions.
+Follow these steps to run the React example app locally with the pnpm workspace and optional npm scripts, then test SVG conversions.
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v18 or later recommended)
+- [Node.js](https://nodejs.org/) (20.19.0 through 20.x, or 22.12.0+ required)
 - [pnpm](https://pnpm.io/) (v10+ recommended for monorepo workspace commands) or [npm](https://www.npmjs.com/)
 
 ### 1. Running the Example App Locally
@@ -30,16 +30,12 @@ Alternatively, if you use [just](https://github.com/casey/just):
 just react-js start
 ```
 
-#### Using npm or pnpm (App Directory)
+#### Using npm scripts after workspace install
 
-You can also run directly from within `example-apps/react-js`:
+After running `pnpm install` from the repository root, run the development server from `example-apps/react-js`:
 
 ```bash
 cd example-apps/react-js
-
-# Install dependencies
-npm install
-# or: pnpm install
 
 # Start the Vite development server
 npm run dev
@@ -58,21 +54,17 @@ Run the example app's test suite covering SVG rendering, canvas rasterization, e
 # From workspace root
 pnpm -F react-example test
 
-# From example-apps/react-js using npm
+# After `pnpm install` at the repository root, from example-apps/react-js
 npm test
-
-# From example-apps/react-js using pnpm
-pnpm test
+# or: pnpm test
 ```
 
 To run tests in watch mode during development:
 
 ```bash
-# Using npm
+# After `pnpm install` at the repository root, from example-apps/react-js
 npm run test:watch
-
-# Using pnpm
-pnpm test:watch
+# or: pnpm test:watch
 ```
 
 To run the SVG editor tests specifically:
@@ -86,7 +78,7 @@ npx vitest run src/pages/Editor/Editor.test.jsx
 To manually verify raster-to-SVG conversion in the browser:
 
 1. Launch the local dev server and open <http://localhost:5173/example-apps/react-js/>.
-2. **Upload or select an image**: Drag and drop a PNG/JPG/WebP file onto the dropzone or choose one of the sample presets.
+2. **Upload an image**: Drag and drop a PNG/JPG/WebP file onto the dropzone or select a file with the file picker.
 3. **Configure vectorization settings**: Open the settings panel to tune the number of colors (`K` clusters), minimum area threshold, and bilateral filter spatial/range smoothing.
 4. **Generate SVG**: The app runs Img2Num's C++ WASM pipeline to quantize colors, trace contours, and build the SVG paths.
 5. **Inspect SVG output**:

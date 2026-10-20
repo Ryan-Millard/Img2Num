@@ -221,21 +221,23 @@ pnpm -F react-example dev
 
 Open <http://localhost:5173/example-apps/react-js/>.
 
-#### Run with npm or pnpm (from app directory)
+#### Run with npm scripts (after repository root install)
+
+After running `pnpm install` at the repository root, you can also start the Vite development server directly from the app directory:
 
 ```sh
 cd example-apps/react-js
-npm install && npm run dev
-# or: pnpm install && pnpm dev
+npm run dev
+# or: pnpm dev
 ```
 
 #### Test SVG Output Conversions
 
 ```sh
-# Run automated Vitest suite
+# Run automated Vitest suite from repository root
 pnpm -F react-example test
 
-# Or from example-apps/react-js
+# After `pnpm install` at the repository root, from example-apps/react-js
 npm test
 # or: pnpm test
 ```
