@@ -14,7 +14,7 @@ import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 from pathlib import PurePosixPath
-from typing import Any
+from typing import Any, Callable
 from urllib.error import URLError
 from urllib.parse import unquote, urlsplit
 from urllib.request import Request, urlopen
@@ -24,8 +24,32 @@ try:
 except ModuleNotFoundError:  # Python 3.10
     import tomli as tomllib
 
-DEFAULT_CACHE_ROOT = Path.home() / ".cache" / "img2num-bench"
-DEFAULT_CORPUS_DIR = Path(__file__).resolve().parents[1] / "benchmarks"
+def default_cache_root(platform: str | None = None) -> Path:
+    """Return the platform-appropriate default cache root directory."""
+    target_platform = platform if platform is not None else sys.platform
+    if target_platform == "win32":
+        local_app_data = os.environ.get("LOCALAPPDATA")
+        if local_app_data and local_app_data.strip():
+            return Path(local_app_data.strip()) / "img2num-bench"
+        return Path.home() / "AppData" / "Local" / "img2num-bench"
+    if target_platform == "darwin":
+        return Path.home() / "Library" / "Caches" / "img2num-bench"
+    xdg_cache_home = os.environ.get("XDG_CACHE_HOME")
+    if xdg_cache_home and xdg_cache_home.strip():
+        return Path(xdg_cache_home.strip()) / "img2num-bench"
+    return Path.home() / ".cache" / "img2num-bench"
+
+
+def cache_dir(platform: str | None = None) -> Path:
+    """Return the active cache directory, respecting IMG2NUM_BENCH_CACHE."""
+    override = os.environ.get("IMG2NUM_BENCH_CACHE")
+    if override and override.strip():
+        return Path(override.strip()).expanduser()
+    return default_cache_root(platform)
+
+
+DEFAULT_CACHE_ROOT = default_cache_root()
+DEFAULT_CORPUS_DIR = Path(__file__).resolve().parent
 SUPPORTED_SCHEMA_VERSIONS = {1}
 ALLOWED_LICENSES = {
     "CC0-1.0",
@@ -114,8 +138,7 @@ def load_entries(images_dir: Path) -> list[tuple[Entry, Path]]:
 
 def cache_path(sha256: str) -> Path:
     """Return the image cache location for a content digest."""
-    cache_root = Path(os.environ.get("IMG2NUM_BENCH_CACHE") or DEFAULT_CACHE_ROOT)
-    return cache_root.expanduser() / sha256
+    return cache_dir() / sha256
 
 
 def corpus_hash(images_dir: Path) -> str:
@@ -266,7 +289,8 @@ def verify_cached_hashes(images_dir: Path) -> list[str]:
             )
             continue
         try:
-            actual = hashlib.sha256(image_path.read_bytes()).hexdigest()
+            image_bytes = image_path.read_bytes()
+            actual = hashlib.sha256(image_bytes).hexdigest()
         except OSError as error:
             errors.append(
                 f"{path.name}: cannot read cache for entry '{entry_id}': {error}"
@@ -277,6 +301,27 @@ def verify_cached_hashes(images_dir: Path) -> list[str]:
                 f"{path.name}: cache hash mismatch for entry '{entry_id}': "
                 f"expected {expected}, actual {actual}"
             )
+            continue
+
+        declared_size = data.get("size")
+        if (
+            isinstance(declared_size, list)
+            and len(declared_size) == 2
+            and all(type(value) is int and value > 0 for value in declared_size)
+        ):
+            try:
+                actual_dimensions = image_dimensions(image_bytes)
+            except CorpusManagerError as error:
+                errors.append(
+                    f"{path.name}: cannot decode cached image for entry '{entry_id}': {error}"
+                )
+                continue
+            expected_dimensions = (declared_size[0], declared_size[1])
+            if actual_dimensions != expected_dimensions:
+                errors.append(
+                    f"{path.name}: cache size mismatch for entry '{entry_id}': "
+                    f"expected {list(expected_dimensions)}, actual {list(actual_dimensions)}"
+                )
     return errors
 
 
@@ -394,7 +439,7 @@ def image_dimensions(image_bytes: bytes) -> tuple[int, int]:
         from PIL import Image, UnidentifiedImageError
     except ImportError as error:
         raise CorpusManagerError(
-            "Pillow is required to add benchmark images; "
+            "Pillow is required to inspect and add benchmark images; "
             "install the script dependencies"
         ) from error
 
@@ -561,29 +606,318 @@ def add_entry(
     return entry
 
 
-def _not_implemented(command: str) -> int:
-    print(f"{command}: not implemented", file=sys.stderr)
-    return 1
+def interactive_add_entry(
+    corpus_dir: Path = DEFAULT_CORPUS_DIR,
+    *,
+    initial_url: str | None = None,
+    initial_dataset: str | None = None,
+    initial_license_id: str | None = None,
+    initial_author: str | None = None,
+    initial_source: str | None = None,
+    initial_tags: str | None = None,
+    initial_entry_id: str | None = None,
+    input_fn: Callable[[str], str] | None = None,
+    print_fn: Callable[..., None] | None = None,
+) -> Entry | None:
+    """Interactively prompt for image metadata and write a corpus entry."""
+    _input = input_fn if input_fn is not None else input
+    _print = print_fn if print_fn is not None else print
+
+    _print()
+    _print("Img2Num Benchmark Corpus")
+    _print("────────────────────────")
+    _print()
+
+    # 1. Image URL
+    url = (initial_url or "").strip()
+    while True:
+        prompt = f"Image URL [{url}]: " if url else "Image URL: "
+        entered = _input(prompt).strip()
+        if not entered and url:
+            entered = url
+        if not entered:
+            _print("  Error: Image URL must not be empty.")
+            continue
+        if not entered.startswith(("http://", "https://")):
+            _print("  Error: URL must start with http:// or https://")
+            continue
+        url = entered
+        break
+
+    # 2. Dataset name
+    dataset = (initial_dataset or "").strip()
+    while True:
+        prompt = f"Dataset name [{dataset}]: " if dataset else "Dataset name: "
+        entered = _input(prompt).strip()
+        if not entered and dataset:
+            entered = dataset
+        if not entered:
+            _print("  Error: Dataset name must not be empty.")
+            continue
+        dataset = entered
+        break
+
+    # 3. License identifier
+    license_id = (initial_license_id or "").strip()
+    while True:
+        prompt = (
+            f"License identifier [{license_id}]: "
+            if license_id
+            else "License identifier: "
+        )
+        entered = _input(prompt).strip()
+        if not entered and license_id:
+            entered = license_id
+        if not entered:
+            _print("  Error: License identifier must not be empty.")
+            _print(f"  Allowed: {', '.join(sorted(ALLOWED_LICENSES))}")
+            continue
+        err = license_error(entered)
+        if err:
+            _print(f"  Error: {err}")
+            _print(f"  Allowed: {', '.join(sorted(ALLOWED_LICENSES))}")
+            continue
+        license_id = entered
+        break
+
+    # 4. Author / rights holder
+    author = (initial_author or "").strip()
+    while True:
+        prompt = (
+            f"Author / rights holder [{author}]: "
+            if author
+            else "Author / rights holder: "
+        )
+        entered = _input(prompt).strip()
+        if not entered and author:
+            entered = author
+        if not entered:
+            _print("  Error: Author / rights holder must not be empty.")
+            continue
+        author = entered
+        break
+
+    # 5. Source / attribution reference
+    source = (initial_source or "").strip()
+    while True:
+        prompt = (
+            f"Source / attribution reference [{source}]: "
+            if source
+            else "Source / attribution reference: "
+        )
+        entered = _input(prompt).strip()
+        if not entered and source:
+            entered = source
+        if not entered:
+            _print("  Error: Source / attribution reference must not be empty.")
+            continue
+        source = entered
+        break
+
+    # 6. Tags (comma-separated, optional)
+    tags_default = (initial_tags or "").strip()
+    prompt = (
+        f"Tags (comma-separated, optional) [{tags_default}]: "
+        if tags_default
+        else "Tags (comma-separated, optional): "
+    )
+    entered = _input(prompt).strip()
+    if not entered and tags_default:
+        entered = tags_default
+    tags = [tag.strip() for tag in entered.split(",") if tag.strip()] if entered else []
+
+    # 7. Entry ID (optional)
+    try:
+        auto_id = derive_id(dataset, url)
+    except CorpusManagerError:
+        auto_id = None
+
+    entry_id = (initial_entry_id or "").strip()
+    while True:
+        if entry_id:
+            prompt = f"Entry ID (optional, press Enter for '{entry_id}'): "
+        elif auto_id:
+            prompt = f"Entry ID (optional, press Enter for auto '{auto_id}'): "
+        else:
+            prompt = "Entry ID: "
+        entered = _input(prompt).strip()
+        if not entered:
+            resolved_id = entry_id or auto_id
+            if not resolved_id:
+                _print(
+                    "  Error: Could not derive ID automatically; please provide an explicit ID."
+                )
+                continue
+        else:
+            resolved_id = entered
+
+        if not ID_PATTERN.fullmatch(resolved_id) or resolved_id in {".", ".."}:
+            _print(
+                "  Error: ID must contain only letters, digits, '.', '_' or '-'."
+            )
+            continue
+        break
+
+    # Review summary
+    _print()
+    _print("Review your entry:")
+    _print(f"  Image URL: {url}")
+    _print(f"  Dataset:   {dataset}")
+    _print(f"  License:   {license_id}")
+    _print(f"  Author:    {author}")
+    _print(f"  Source:    {source}")
+    _print(f"  Tags:      {', '.join(tags) if tags else '(none)'}")
+    _print(f"  Entry ID:  {resolved_id}")
+    _print()
+
+    # Confirmation
+    while True:
+        confirm = _input("Add this entry? (Y/n): ").strip().lower()
+        if confirm in ("", "y", "yes"):
+            break
+        if confirm in ("n", "no"):
+            _print("\nCancelled. No entry was added.")
+            return None
+        _print("  Please enter 'y' to confirm or 'n' to cancel.")
+
+    entry = add_entry(
+        url,
+        dataset=dataset,
+        license_id=license_id,
+        author=author,
+        source=source,
+        tags=tags,
+        entry_id=resolved_id,
+        corpus_dir=corpus_dir,
+    )
+    _print(f"\nAdded {entry.id} ({entry.sha256})")
+    return entry
 
 
-def main() -> int:
+def main(
+    argv: list[str] | None = None,
+    *,
+    input_fn: Callable[[str], str] | None = None,
+    print_fn: Callable[..., None] | None = None,
+) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
     add_parser = subparsers.add_parser("add")
-    add_parser.add_argument("url")
-    add_parser.add_argument("--dataset", required=True)
-    add_parser.add_argument("--license", dest="license_id", required=True)
-    add_parser.add_argument("--author", required=True)
-    add_parser.add_argument("--source", required=True)
-    add_parser.add_argument("--tags", default="")
-    add_parser.add_argument("--id", dest="entry_id")
+    add_parser.add_argument(
+        "url",
+        nargs="?",
+        default=None,
+        help="Direct HTTP or HTTPS image URL",
+    )
+    add_parser.add_argument(
+        "--dataset",
+        default=None,
+        help="Name of the dataset",
+    )
+    add_parser.add_argument(
+        "--license",
+        dest="license_id",
+        default=None,
+        help="Allow-listed license identifier",
+    )
+    add_parser.add_argument(
+        "--author",
+        default=None,
+        help="Image author or rights holder",
+    )
+    add_parser.add_argument(
+        "--source",
+        default=None,
+        help="Source or attribution reference",
+    )
+    add_parser.add_argument(
+        "--tags",
+        default="",
+        help="Optional comma-separated tags",
+    )
+    add_parser.add_argument(
+        "--id",
+        dest="entry_id",
+        default=None,
+        help="Explicit entry ID (derived automatically if omitted)",
+    )
+    add_parser.add_argument(
+        "-i",
+        "--interactive",
+        action="store_true",
+        help="Interactively prompt for entry metadata",
+    )
+    add_parser.add_argument(
+        "--corpus-dir",
+        type=Path,
+        default=DEFAULT_CORPUS_DIR,
+        help="Path to corpus directory (default: benchmarks)",
+    )
     fetch_parser = subparsers.add_parser("fetch")
     fetch_parser.add_argument("--corpus-dir", type=Path, default=DEFAULT_CORPUS_DIR)
     verify_parser = subparsers.add_parser("verify")
     verify_parser.add_argument("--corpus-dir", type=Path, default=DEFAULT_CORPUS_DIR)
     verify_parser.add_argument("--hashes", action="store_true")
-    args = parser.parse_args()
+
+    args = parser.parse_args(argv)
+
     if args.command == "add":
+        is_interactive = args.interactive
+        no_required_args = (
+            args.url is None
+            and args.dataset is None
+            and args.license_id is None
+            and args.author is None
+            and args.source is None
+        )
+        if not is_interactive and no_required_args and sys.stdin.isatty():
+            is_interactive = True
+
+        if is_interactive:
+            try:
+                entry = interactive_add_entry(
+                    corpus_dir=args.corpus_dir,
+                    initial_url=args.url,
+                    initial_dataset=args.dataset,
+                    initial_license_id=args.license_id,
+                    initial_author=args.author,
+                    initial_source=args.source,
+                    initial_tags=args.tags,
+                    initial_entry_id=args.entry_id,
+                    input_fn=input_fn,
+                    print_fn=print_fn,
+                )
+            except CorpusManagerError as error:
+                print(f"Error: {error}", file=sys.stderr)
+                return 1
+            except KeyboardInterrupt:
+                print("\nOperation cancelled.", file=sys.stderr)
+                return 130
+            except EOFError:
+                print("\nOperation cancelled.", file=sys.stderr)
+                return 1
+            return 0 if entry is not None else 0
+
+        # Non-interactive mode validation
+        missing = []
+        if not args.url:
+            missing.append("url")
+        if not args.dataset:
+            missing.append("--dataset")
+        if not args.license_id:
+            missing.append("--license")
+        if not args.author:
+            missing.append("--author")
+        if not args.source:
+            missing.append("--source")
+        if missing:
+            print(
+                f"Error: missing required arguments: {', '.join(missing)}\n"
+                "Pass --interactive (or run 'add' without arguments in a terminal) for guided entry.",
+                file=sys.stderr,
+            )
+            return 2
+
         try:
             entry = add_entry(
                 args.url,
@@ -593,12 +927,14 @@ def main() -> int:
                 source=args.source,
                 tags=[tag.strip() for tag in args.tags.split(",") if tag.strip()],
                 entry_id=args.entry_id,
+                corpus_dir=args.corpus_dir,
             )
         except CorpusManagerError as error:
             print(f"Error: {error}", file=sys.stderr)
             return 1
         print(f"Added {entry.id} ({entry.sha256})")
         return 0
+
     if args.command == "fetch":
         errors = fetch_corpus(args.corpus_dir)
         if errors:
@@ -619,3 +955,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+

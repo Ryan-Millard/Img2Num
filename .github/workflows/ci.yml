@@ -38,10 +38,10 @@ jobs:
         run: uv sync --only-group dev --no-install-project
 
       - name: Run corpus manager tests
-        run: uv run --no-sync python -m pytest -q tests/test_corpus_manager.py
+        run: uv run --no-sync python -m pytest -q benchmarks/tests/test_corpus_manager.py
 
       - name: Verify corpus metadata
-        run: uv run --no-sync python scripts/corpus_manager.py verify
+        run: uv run --no-sync python benchmarks/corpus_manager.py verify
 
       - name: Restore benchmark image cache
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830  # v4.3.0
@@ -52,8 +52,8 @@ jobs:
       - name: Fetch and verify benchmark image hashes
         if: ${{ hashFiles('benchmarks/images/*.toml') != '' }}
         run: |
-          uv run --no-sync python scripts/corpus_manager.py fetch
-          uv run --no-sync python scripts/corpus_manager.py verify --hashes
+          uv run --no-sync python benchmarks/corpus_manager.py fetch
+          uv run --no-sync python benchmarks/corpus_manager.py verify --hashes
 
   set-image:
     name: Set Docker image
