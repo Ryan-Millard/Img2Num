@@ -47,3 +47,13 @@ contributing:
   label: Contributing
   permalink: /contributing
   description: How to contribute, good first issues, and contributor guides
+
+image-processing:
+  label: Image Processing
+  permalink: /image-processing
+  description: Image processing, image analysis, and image transformation techniques.
+
+bindings:
+  label: Bindings
+  permalink: /bindings
+  description: Bindings or interface between native code implementations and various programming languages.
