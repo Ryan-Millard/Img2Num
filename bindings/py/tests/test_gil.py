@@ -107,9 +107,7 @@ def test_each_binding_releases_gil(controlled_extension, operation):
     # run_child(f"calls[{operation!r}]()", controlled_extension)
     run_child(f"run_call(calls[{operation!r}])", controlled_extension)
 
-'''
-# NOTE: This is will fail with ThreadPoolExecutor
-# because the C++ backend is not mutex guarded
+
 def test_native_entries_share_one_lock(controlled_extension):
     run_child(
         """
@@ -126,27 +124,7 @@ def test_native_entries_share_one_lock(controlled_extension):
     """,
         controlled_extension,
     )
-'''
 
-def test_native_entries_share_one_lock_with_gating(controlled_extension):
-    run_child(
-        """
-        import concurrent.futures
-        import threading
-        gate = threading.Barrier(1)
-        def run(operation):
-            gate.wait()
-            out = run_call(operation)
-            print(operation[0])
-            return out
-        with concurrent.futures.ProcessPoolExecutor(max_workers=len(calls)) as pool:
-            futures = [pool.submit(run, operation) for operation in calls.values()]
-            gate.wait()
-            for future in futures:
-                future.result()
-    """,
-        controlled_extension,
-    )
 
 def test_native_exception_restores_gil_and_unlocks_core(controlled_extension):
     run_child(
