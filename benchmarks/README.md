@@ -203,7 +203,7 @@ uv run corpus-manager verify --hashes
 ```
 
 CI runs the corpus tests and offline `verify` check. It restores the cache at
-`~/.cache/img2num-bench` using a key derived from `benchmarks/**`. When at least
+`~/.cache/img2num-bench` using a key derived from `benchmarks/images/*.toml`. When at least
 one image entry exists, CI runs `fetch` followed by `verify --hashes`; an empty
 corpus does not trigger image downloads.
 

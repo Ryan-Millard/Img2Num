@@ -7,7 +7,8 @@ license = { text = "MIT" }
 readme = "packages/py/README.md"
 authors = [{ name = "Ryan Millard" }]
 dependencies = [
-  "numpy>=1.23.5"
+  "numpy>=1.23.5",
+  "Pillow>=10",
 ]
 classifiers = [
   "Intended Audience :: Developers",
@@ -53,7 +54,8 @@ cmake.args = [
 ]
 # Python sources are installed by CMake (bindings/py/CMakeLists.txt).
 # Don't list "img2num" here: at the repo root that is the dev CLI script.
-wheel.packages = []
+# Include "benchmarks" so console scripts (corpus-manager) work when installed from wheel.
+wheel.packages = ["benchmarks"]
 sdist.inclusion-mode = "explicit"
 sdist.include = [
   "pyproject.toml",
@@ -159,4 +161,7 @@ licensing = [
 ]
 [tool.pytest.ini_options]
 pythonpath = ["."]
-testpaths = ["benchmarks/tests"]
+testpaths = [
+  "benchmarks/tests",
+  "bindings/py/tests",
+]

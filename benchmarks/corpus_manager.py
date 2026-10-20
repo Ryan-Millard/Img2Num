@@ -374,23 +374,13 @@ def fetch_corpus(corpus_dir: Path) -> list[str]:
             )
             continue
 
-        temporary_path: Path | None = None
         try:
-            target.parent.mkdir(parents=True, exist_ok=True)
-            with tempfile.NamedTemporaryFile(
-                dir=target.parent, delete=False
-            ) as temporary:
-                temporary_path = Path(temporary.name)
-                temporary.write(downloaded)
-            os.replace(temporary_path, target)
+            _write_atomically(target, downloaded)
         except OSError as error:
             errors.append(
                 f"{path.name}: entry '{entry_id}' URL {url!r} could not be cached; "
                 f"expected {expected}, actual {actual}: {error}"
             )
-        finally:
-            if temporary_path is not None and temporary_path.exists():
-                temporary_path.unlink()
     return errors
 
 
@@ -754,6 +744,13 @@ def interactive_add_entry(
         if not ID_PATTERN.fullmatch(resolved_id) or resolved_id in {".", ".."}:
             _print(
                 "  Error: ID must contain only letters, digits, '.', '_' or '-'."
+            )
+            continue
+
+        images_dir = corpus_dir / "images"
+        if (images_dir / f"{resolved_id}.toml").exists():
+            _print(
+                f"  Error: Entry ID '{resolved_id}' already exists; please choose a different ID."
             )
             continue
         break

@@ -565,6 +565,25 @@ def test_fetch_reports_unreachable_url_and_continues(
     assert cache_path(hashlib.sha256(png_bytes + b"other").hexdigest()).is_file()
 
 
+def test_fetch_reports_cache_write_oserror_and_continues(
+    add_corpus: Path, png_bytes: bytes, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    expected = _write_fetch_entry(add_corpus, png_bytes)
+    monkeypatch.setattr(corpus_manager, "download_url", lambda url: png_bytes)
+
+    def failing_write(path: Path, data: bytes) -> None:
+        raise OSError("disk full")
+
+    monkeypatch.setattr(corpus_manager, "_write_atomically", failing_write)
+
+    errors = fetch_corpus(add_corpus)
+
+    assert len(errors) == 1
+    assert "could not be cached" in errors[0]
+    assert expected in errors[0]
+    assert "disk full" in errors[0]
+
+
 def test_verify_hashes_passes_with_matching_cache(
     add_corpus: Path, png_bytes: bytes
 ) -> None:
@@ -870,6 +889,40 @@ def test_interactive_add_reprompts_invalid_inputs(
     assert any("Author / rights holder must not be empty" in line for line in printed)
     assert any("Source / attribution reference must not be empty" in line for line in printed)
     assert any("ID must contain only" in line for line in printed)
+
+
+def test_interactive_add_reprompts_existing_id(
+    add_corpus: Path, png_bytes: bytes, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # Pre-create an existing entry
+    (add_corpus / "images" / "existing-slug.toml").write_text(
+        VALID_CORPUS_ENTRY.replace("sample", "existing-slug"), encoding="utf-8"
+    )
+    monkeypatch.setattr(corpus_manager, "download_url", lambda url: png_bytes)
+    inputs = [
+        "https://images.example.test/img.png",
+        "Test Dataset",
+        "CC0-1.0",
+        "Author",
+        "https://source.example.test",
+        "",
+        "existing-slug",  # Triggers duplicate check
+        "new-unique-slug",  # Accepted
+        "y",
+    ]
+    input_iter = iter(inputs)
+    printed: list[str] = []
+
+    entry = interactive_add_entry(
+        corpus_dir=add_corpus,
+        input_fn=lambda _: next(input_iter),
+        print_fn=lambda *args: printed.append(" ".join(map(str, args))),
+    )
+
+    assert entry is not None
+    assert entry.id == "new-unique-slug"
+    assert any("Entry ID 'existing-slug' already exists" in line for line in printed)
+    assert (add_corpus / "images" / "new-unique-slug.toml").is_file()
 
 
 def test_interactive_add_cancelled_by_user(
