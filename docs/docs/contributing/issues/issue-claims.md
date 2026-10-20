@@ -35,7 +35,7 @@ release it with `/untake`, before claiming another. This keeps issues open for
 other contributors.
 
 ## Release an issue
-  
+
 If you decide not to work on an issue anymore, comment:
 
 ```text title="Remove your claim on the issue"
@@ -67,7 +67,6 @@ to expire, comment `/untake` followed by `/take` to re-claim it.
 ## Frequently Asked Questions
 
 ### Can I work on an issue that is already claimed?
-
 
 It is generally discouraged. If you believe the claim has become inactive,
 leave a comment on the issue or contact a maintainer.
