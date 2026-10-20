@@ -68,15 +68,16 @@ to expire, comment `/untake` followed by `/take` to re-claim it.
 
 ### Can I work on an issue that is already claimed?
 
+
+It is generally discouraged. If you believe the claim has become inactive,
+leave a comment on the issue or contact a maintainer.
+
+### What if someone else has already opened a pull request?
+
 Only one solution for an issue is typically merged. If you open a pull request
 for an issue that someone else has claimed, you may be asked to collaborate
 with the claimant instead. Checking whether an issue is already claimed or has
 an open pull request can save everyone time.
-
-### What if someone else has already opened a pull request?
-
-Only one solution for an issue is typically merged. Checking whether an issue
-is already claimed or has an open pull request can save everyone time.
 
 ### What happens if I forget to `/untake` an issue?
 
