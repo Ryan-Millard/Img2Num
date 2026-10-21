@@ -33,7 +33,11 @@ All APIs share these core concepts:
 |       `num_colors` / `k` ($k$) | `int`   | `16`    | Number of clusters        |
 |                     `max_iter` | `int`   | `100`   | K-means iterations        |
 |                     `min_area` | `int`   | `100`   | Minimum contour area      |
+|                `min_thickness` | `int`   | Varies  | Minimum region thickness  |
 |                  `color_space` | `int`   | `0`     | `0` = CIE LAB, `1` = sRGB |
+
+`min_thickness` is measured in pixels, and `0` disables thickness filtering.
+C, C++, and Python currently default to `0`; JavaScript defaults to `10`.
 
 ## Pipeline Flow
 

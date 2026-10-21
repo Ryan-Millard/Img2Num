@@ -18,6 +18,74 @@
 
 import { callWasm } from "./wasmClient.js";
 
+/** @typedef {0 | 1} ColorSpace 0 = CIE LAB, 1 = sRGB */
+
+/**
+ * @typedef {Object} GaussianBlurOptions
+ * @property {Uint8ClampedArray} pixels - The image pixel data (flat RGBA array).
+ * @property {number} width - The width of the image.
+ * @property {number} height - The height of the image.
+ * @property {number} [sigma_pixels] - Standard deviation of the Gaussian blur. Defaults to `width * 0.005`.
+ */
+
+/**
+ * @typedef {Object} BilateralFilterOptions
+ * @property {Uint8ClampedArray} pixels - The image pixel data (flat RGBA array).
+ * @property {number} width - The width of the image.
+ * @property {number} height - The height of the image.
+ * @property {number} [sigma_spatial=3] - Spatial standard deviation.
+ * @property {number} [sigma_range=50] - Range (color) standard deviation.
+ * @property {ColorSpace} [color_space=0] - Color space mode (0: CIE LAB; 1: sRGB).
+ */
+
+/**
+ * @typedef {Object} BlackThresholdOptions
+ * @property {Uint8ClampedArray} pixels - The image pixel data (flat RGBA array).
+ * @property {number} width - The width of the image.
+ * @property {number} height - The height of the image.
+ * @property {number} num_colors - Per-channel brightness cutoff (0-255): pixels whose red, green and blue values are all below this become black. Retained as `num_colors` for backwards compatibility.
+ */
+
+/**
+ * @typedef {Object} KMeansOptions
+ * @property {Uint8ClampedArray} pixels - Original image pixels.
+ * @property {number} width - Image width.
+ * @property {number} height - Image height.
+ * @property {number} num_colors - Number of color clusters.
+ * @property {Uint8ClampedArray} [out_pixels] - Output pixels array. Defaults to a new array the size of `pixels`.
+ * @property {Int32Array} [out_labels] - Output labels array. Defaults to a new array of `pixels.length / 4`.
+ * @property {number} [max_iter=100] - Maximum number of iterations.
+ * @property {ColorSpace} [color_space=0] - Color space mode (0: CIE LAB; 1: sRGB).
+ */
+
+/** @typedef {{ pixels: Uint8ClampedArray, labels: Int32Array }} KMeansResult */
+
+/**
+ * @typedef {Object} FindContoursOptions
+ * @property {Uint8ClampedArray} pixels - Original image pixels.
+ * @property {Int32Array} labels - Label array from clustering (e.g., K-Means) or segmentation.
+ * @property {number} width - Image width.
+ * @property {number} height - Image height.
+ * @property {number} [min_area=100] - Minimum area of a region to be considered a contour.
+ * @property {number} [min_thickness=10] - Minimum thickness of a region to be considered a contour.
+ */
+
+/**
+ * @typedef {Object} ImageToSvgOptions
+ * @property {Uint8ClampedArray} pixels - Original image pixels.
+ * @property {number} width - Image width.
+ * @property {number} height - Image height.
+ * @property {number} [sigma_spatial=3] - Spatial standard deviation.
+ * @property {number} [sigma_range=50] - Range (color) standard deviation.
+ * @property {number} [num_colors=16] - Number of color clusters.
+ * @property {number} [max_iter=100] - Maximum number of iterations.
+ * @property {number} [min_area=100] - Minimum area of a region to be considered a contour.
+ * @property {number} [min_thickness=10] - Minimum thickness of a region to be considered a contour.
+ * @property {ColorSpace} [color_space=0] - Color space mode (0: CIE LAB; 1: sRGB).
+ */
+
+/** @typedef {{ svg: string }} SvgResult */
+
 /**
  * @summary Apply a Gaussian blur to an image using FFT in WASM.
  *
@@ -28,11 +96,7 @@ import { callWasm } from "./wasmClient.js";
  *
  * @async
  * @function gaussianBlur
- * @param {Object} options - The input options.
- * @param {Uint8ClampedArray} options.pixels - The image pixel data (flat RGBA array).
- * @param {number} options.width - The width of the image.
- * @param {number} options.height - The height of the image.
- * @param {number} [options.sigma_pixels=width*0.005] - Standard deviation of the Gaussian blur (default=width*0.005; 5% of width).
+ * @param {GaussianBlurOptions} options - The input options.
  * @returns {Promise<Uint8ClampedArray>} The blurred image pixels.
  * @throws {Error} If the WASM function fails or memory allocation fails.
  * @example
@@ -62,13 +126,7 @@ export const gaussianBlur = async ({ pixels, width, height, sigma_pixels = width
  *
  * @async
  * @function bilateralFilter
- * @param {Object} options - The input options.
- * @param {Uint8ClampedArray} options.pixels - The image pixel data (flat RGBA array).
- * @param {number} options.width - The width of the image.
- * @param {number} options.height - The height of the image.
- * @param {number} [options.sigma_spatial=3] - Spatial standard deviation.
- * @param {number} [options.sigma_range=50] - Range (color) standard deviation.
- * @param {number} [options.color_space=0] - Color space mode (0: CIE LAB; 1: sRGB).
+ * @param {BilateralFilterOptions} options - The input options.
  * @returns {Promise<Uint8ClampedArray>} The filtered image pixels.
  * @throws {Error} If the WASM function fails.
  * @example
@@ -86,26 +144,26 @@ export const bilateralFilter = async ({ pixels, width, height, sigma_spatial = 3
 };
 
 /**
- * @summary Apply a black-biased threshold filter to reduce colors in an image.
+ * @summary Apply a black-biased threshold filter to an image.
  *
  * @description
- * Apply a simple sRGB bin-based threshold on the Uint8ClampedArray image.
- * The bins in this function are determined by the `num_colors` parameter.
+ * Sets a pixel to pure black when all three of its colour channels are strictly
+ * below the `num_colors` cutoff; every other pixel is left untouched. Despite
+ * the name (kept for backwards compatibility), `num_colors` is a per-channel
+ * 0-255 brightness cutoff, not a number of output colour levels. Values of 0 or
+ * less leave the image unchanged. Blackened pixels have their alpha channel
+ * set to an opaque 255.
  *
  * @async
  * @function blackThreshold
- * @param {Object} options - The input options.
- * @param {Uint8ClampedArray} options.pixels - The image pixel data (flat RGBA array).
- * @param {number} options.width - The width of the image.
- * @param {number} options.height - The height of the image.
- * @param {number} options.num_colors - Number of colors to reduce the image to.
+ * @param {BlackThresholdOptions} options - The input options.
  * @returns {Promise<Uint8ClampedArray>} The thresholded image pixels.
  * @throws {Error} If the WASM function fails.
  * @example
  * const thresholded = await blackThreshold({ pixels, width, height, num_colors: 16 });
- * @see {@link https://en.wikipedia.org/wiki/Color_quantization|Color Quantization Wiki}
+ * @see {@link https://en.wikipedia.org/wiki/Thresholding_(image_processing)|Thresholding Wiki}
  * @todo Support different bias levels for black/white thresholds.
- * @variation Black-biased threshold with customizable number of colors
+ * @variation Black-biased threshold with customizable brightness cutoff
  * @since 0.0.0
  */
 export const blackThreshold = async ({ pixels, width, height, num_colors }) => {
@@ -129,16 +187,8 @@ export const blackThreshold = async ({ pixels, width, height, num_colors }) => {
  *
  * @async
  * @function kmeans
- * @param {Object} options - The input options.
- * @param {Uint8ClampedArray} options.pixels - Original image pixels.
- * @param {Uint8ClampedArray} [options.out_pixels=new Uint8ClampedArray(pixels.length)] - Output pixels array.
- * @param {Int32Array} [options.out_labels=new Int32Array(pixels.length/4)] - Output labels array.
- * @param {number} options.width - Image width.
- * @param {number} options.height - Image height.
- * @param {number} options.num_colors - Number of color clusters.
- * @param {number} [options.max_iter=100] - Maximum number of iterations.
- * @param {number} [options.color_space=0] - Color space mode.
- * @returns {Promise<{pixels: Uint8ClampedArray, labels: Int32Array}>} Clustered pixels and labels.
+ * @param {KMeansOptions} options - The input options.
+ * @returns {Promise<KMeansResult>} Clustered pixels and labels.
  * @throws {Error} If the WASM function fails or iterations do not converge.
  * @example
  * const { pixels: clusteredPixels, labels } = await kmeans({ pixels, width, height, num_colors: 8 });
@@ -175,14 +225,8 @@ export const kmeans = async ({
  *
  * @async
  * @function findContours
- * @param {Object} options - The input options.
- * @param {Uint8ClampedArray} options.pixels - Original image pixels.
- * @param {Int32Array} options.labels - Label array from clustering (e.g., K-Means) or segmentation.
- * @param {number} options.width - Image width.
- * @param {number} options.height - Image height.
- * @param {number} [options.min_area=100] - Minimum area of a region to be considered a contour.
- * @param {number} [options.min_thickness=10] - Minimum thickness of a region to be considered a contour.
- * @returns {Promise<{svg: string}>} Generated SVG.
+ * @param {FindContoursOptions} options - The input options.
+ * @returns {Promise<SvgResult>} Generated SVG.
  * @throws {Error} If the WASM function fails or input labels are invalid.
  * @example
  * const { svg } = await findContours({ pixels, labels, width, height });
@@ -210,21 +254,11 @@ export const findContours = async ({ pixels, labels, width, height, min_area = 1
  *
  * @async
  * @function imageToSvg
- * @param {Object} options - The input options.
- * @param {Uint8ClampedArray} options.pixels - Original image pixels.
- * @param {number} options.width - Image width.
- * @param {number} options.height - Image height.
- * @param {number} [options.sigma_spatial=3] - Spatial standard deviation.
- * @param {number} [options.sigma_range=50] - Range (color) standard deviation.
- * @param {number} [options.num_colors=16] - Number of color clusters.
- * @param {number} [options.max_iter=100] - Maximum number of iterations.
- * @param {number} [options.min_area=100] - Minimum area of a region to be considered a contour.
- * @param {number} [options.min_thickness=10] - Minimum thickness of a region to be considered a contour.
- * @param {number} [options.color_space=0] - Color space mode.
- * @returns {Promise<{svg: string}>} Generated SVG.
+ * @param {ImageToSvgOptions} options - The input options.
+ * @returns {Promise<SvgResult>} Generated SVG.
  * @throws {Error} If the WASM function fails or input labels are invalid.
  * @example
- * const { svg } = await findContours({ pixels, labels, width, height });
+ * const { svg } = await imageToSvg({ pixels, width, height });
  * @variation Convert a raster image (e.g., PNG, JPG) into an SVG.
  * @since 0.0.0
  */
