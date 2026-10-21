@@ -22,6 +22,10 @@ The issue will automatically:
 tip
 Please only claim an issue if you intend to start working on it soon.
 
+## One issue at a time
+
+Please claim and hold only **one issue at a time** . Finish your current issue, or release it with `/untake` , before claiming another. This keeps issues open for other contributors.
+
 ## Release an issue
 
 If you decide not to work on an issue anymore, comment:
@@ -56,7 +60,7 @@ It is generally discouraged. If you believe the claim has become inactive, leave
 
 ### What if someone else has already opened a pull request?
 
-Only one solution for an issue is typically merged. Checking whether an issue is already claimed or has an open pull request can save everyone time.
+Only one solution for an issue is typically merged. If you open a pull request for an issue that someone else has claimed, you must collaborate with the claimant. A pull request for an already-claimed issue that is not made in collaboration with the claimant **will be closed** , as it does not follow our contribution rules. Checking whether an issue is already claimed or has an open pull request can save everyone time.
 
 ### What happens if I forget to `/untake` an issue?
 

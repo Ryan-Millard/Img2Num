@@ -4,7 +4,7 @@ URL: https://img2num.dev/docs/common-api-reference
 
 Img2Num provides bindings for multiple languages. Choose the one that fits your workflow:
 
-| Language | Docs | [![](https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg)](https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c) | JS API Reference | [![](https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg)](https://github.com/Ryan-Millard/Img2Num/releases?q=cpp) | C++ API Reference | [![](https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg)](https://github.com/Ryan-Millard/Img2Num/releases?q=packages-js) | C API Reference | [![](https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg)](https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py) | Python API Reference 
+| Language | Docs | [![C](https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg)](https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c) | C API Reference | [![C++](https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg)](https://github.com/Ryan-Millard/Img2Num/releases?q=cpp) | C++ API Reference | [![JavaScript](https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg)](https://github.com/Ryan-Millard/Img2Num/releases?q=packages-js) | JS API Reference | [![Python](https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg)](https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py) | Python API Reference 
 
 ## Common Concepts Across All Bindings
 
