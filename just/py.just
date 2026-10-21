@@ -14,6 +14,10 @@ build build_type="Release" log_level="AUTO":
     SKBUILD_CMAKE_DEFINE="IMG2NUM_LOG_LEVEL={{ log_level }}" \
     uv build --wheel
 
+# Test the compiled Python bindings
+test:
+    uv run --group test pytest bindings/py/tests
+
 # Delete the py build folder
 clean:
     @echo "Remove build-py/"
