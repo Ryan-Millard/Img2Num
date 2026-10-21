@@ -4,7 +4,7 @@
 #include "internal/Pixel.h"
 
 #include <cmath>
-
+#include <spdlog/fmt/fmt.h>
 /*
 can support signed data types
 preferrably float or double
@@ -61,5 +61,21 @@ __attribute__((packed))
 #endif
 
 } // namespace ImageLib
+// Lets spdlog/fmt print LABPixel, e.g. IMG2NUM_LOG_DEBUG("{}", pixel);
+namespace fmt {
+template <typename NumberT> struct formatter<ImageLib::LABPixel<NumberT>> {
+    constexpr auto parse(format_parse_context& ctx) {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const ImageLib::LABPixel<NumberT>& pixel, FormatContext& ctx) const {
+        const NumberT l = pixel.l;
+        const NumberT a = pixel.a;
+        const NumberT b = pixel.b;
+        return format_to(ctx.out(), "( {},{},{} )", l, a, b);
+    }
+};
+} // namespace fmt
 
 #endif // LABPIXEL_H
