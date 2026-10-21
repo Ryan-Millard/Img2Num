@@ -155,11 +155,3 @@ for `std::cout`. Two checks do the work, and both are treated as errors:
 | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | `portability-restrict-system-includes` | `<iostream>`, `<ostream>`, `<istream>`, `<cstdio>`, `<stdio.h>`, `<print>`, `<syncstream>` - i.e. `std::cout` and `std::cerr` |
 | `bugprone-unsafe-functions`            | `printf`, `fprintf`, `puts`, `putchar`, `vprintf`, `perror` - and points you to the logging macros                            |
-
-:::caution[CI step currently disabled]
-
-The clang-tidy step in `.github/workflows/ci.yml` is commented out until
-[#607](https://github.com/Ryan-Millard/Img2Num/issues/607) is resolved, so CI does **not**
-currently catch these violations. Please avoid them anyway and use the logging macros.
-
-:::

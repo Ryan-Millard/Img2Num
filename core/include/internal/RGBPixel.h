@@ -4,7 +4,8 @@
 #include "internal/Pixel.h"
 
 #include <cmath>
-#include <iostream>
+#include <cmath>
+#include <spdlog/fmt/fmt.h>
 
 namespace ImageLib {
 
@@ -56,12 +57,25 @@ __attribute__((packed))
 #pragma pack(pop)
 #endif
 
-template <typename NumberT>
-std::ostream& operator<<(std::ostream& out, const ImageLib::RGBPixel<NumberT>& pixel) {
-    out << "( " << pixel.red << "," << pixel.green << "," << pixel.blue << " )";
-    return out;
-}
-
 } // namespace ImageLib
+
+
+namespace fmt {
+template <typename NumberT> struct formatter<ImageLib::RGBPixel<NumberT>> {
+    constexpr auto parse(format_parse_context& ctx) {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const ImageLib::RGBPixel<NumberT>& pixel, FormatContext& ctx) const {
+        // The struct is packed, so copy the members out instead of
+        // binding references to them.
+        const NumberT red = pixel.red;
+        const NumberT green = pixel.green;
+        const NumberT blue = pixel.blue;
+        return format_to(ctx.out(), "( {},{},{} )", red, green, blue);
+    }
+};
+} // namespace fmt
 
 #endif // RGBPIXEL_H
