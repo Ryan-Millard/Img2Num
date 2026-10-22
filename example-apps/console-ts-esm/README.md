@@ -7,7 +7,7 @@ It type-checks under `strict` against the types shipped by the `img2num` package
 
 ## Requirements
 
-- Node.js 18+
+- Node.js 20.9+
 - Dependencies installed (`pnpm install` from the repo root)
 - The `img2num` package built (see the project setup docs). Running needs the WASM build; type-checking only needs
   the generated declarations (`pnpm --filter img2num build:types`).
