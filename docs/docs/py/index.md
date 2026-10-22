@@ -24,6 +24,16 @@ involved.
 pip install img2num
 ```
 
+To use Img2Num from the command line instead of writing Python code, install the
+optional CLI dependencies, including Pillow:
+
+```bash title="Install the command-line tool"
+pip install "img2num[cli]"
+```
+
+The plain installation remains sufficient for library use. See the
+[CLI guide](./cli.md) for usage examples, options, and troubleshooting.
+
 ## Usage
 
 Input images must be **RGBA** (4 channels).

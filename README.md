@@ -191,6 +191,20 @@ pip install img2num
 from img2num import image_to_svg
 ```
 
+#### Use Img2Num from the command line
+
+To convert images without writing Python code, install the optional CLI dependencies, including Pillow:
+
+```sh
+pip install "img2num[cli]"
+img2num input.png -o output.svg
+img2num photos/ -o out/
+img2num --help
+```
+
+The plain `pip install img2num` command remains sufficient for library use.
+See the [CLI guide](docs/docs/py/cli.md) for more examples, options, and troubleshooting.
+
 ## License
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?logo=open-source-initiative)](LICENSE)
