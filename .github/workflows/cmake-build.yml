@@ -18,11 +18,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
+          persist-credentials: false
           submodules: true
 
       - name: Set current image
+        env:
+          IMAGE: ${{ inputs.image }}
         run: |
-          echo "IMG2NUM_IMAGE=${{ inputs.image }}" >> "$GITHUB_ENV"
+          echo "IMG2NUM_IMAGE=$IMAGE" >> "$GITHUB_ENV"
 
       - name: Run emcmake
         run: ./img2num run emcmake cmake -DCMAKE_BUILD_TYPE=Release -B build-wasm/ .
@@ -44,11 +47,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
+          persist-credentials: false
           submodules: true
 
       - name: Set current image
+        env:
+          IMAGE: ${{ inputs.image }}
         run: |
-          echo "IMG2NUM_IMAGE=${{ inputs.image }}" >> "$GITHUB_ENV"
+          echo "IMG2NUM_IMAGE=$IMAGE" >> "$GITHUB_ENV"
 
       - name: Check toolchain
         run: |
@@ -75,11 +81,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
+          persist-credentials: false
           submodules: true
 
       - name: Set current image
+        env:
+          IMAGE: ${{ inputs.image }}
         run: |
-          echo "IMG2NUM_IMAGE=${{ inputs.image }}" >> $GITHUB_ENV
+          echo "IMG2NUM_IMAGE=$IMAGE" >> "$GITHUB_ENV"
 
       - name: Debug Image
         run: echo "$IMG2NUM_IMAGE"

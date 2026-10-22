@@ -32,8 +32,10 @@ jobs:
           submodules: false
 
       - name: Set current image
+        env:
+          IMAGE: ${{ inputs.image }}
         run: |
-          echo "IMG2NUM_IMAGE=${{ inputs.image }}" >> "$GITHUB_ENV"
+          echo "IMG2NUM_IMAGE=$IMAGE" >> "$GITHUB_ENV"
 
       # Runs on the host runner, which owns the checkout, so no safe.directory config is needed
       - name: Initialize spdlog
