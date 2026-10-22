@@ -193,10 +193,13 @@ from img2num import image_to_svg
 
 #### Use Img2Num from the command line
 
-To convert images without writing Python code, install the optional CLI dependencies, including Pillow:
+> [!IMPORTANT]
+> PyPI version `0.3.1` does not include the `cli` extra or the `img2num` command.
+> CLI installation from PyPI must wait for a release containing both. The examples below require the CLI built from repository source.
+
+Follow the [CLI guide](docs/docs/py/cli.md#installation) to install from source in the Docker development environment. Then convert images without writing Python code:
 
 ```sh
-pip install "img2num[cli]"
 img2num input.png -o output.svg
 img2num photos/ -o out/
 img2num --help

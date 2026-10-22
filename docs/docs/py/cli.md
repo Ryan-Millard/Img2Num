@@ -7,20 +7,37 @@ sidebar_position: 2
 # Command-line tool
 
 The `img2num` command converts image files or folders into SVGs without requiring
-you to write Python code. It is included in the Img2Num Python package.
+you to write Python code. This guide describes the CLI in the repository source.
 
 ## Installation
 
-With Python 3.10 or newer, install the package with its optional CLI dependencies:
+:::important[CLI release availability]
 
-```bash title="Install the CLI"
-pip install "img2num[cli]"
+PyPI version `0.3.1` does not include the `cli` extra or the `img2num` command.
+Installing that release provides the Python library, not the CLI. CLI
+installation from PyPI must wait for a release containing both the extra and
+the command. The examples below require a source-built CLI until then.
+
+:::
+
+### Install from source
+
+The Python package requires Python 3.10 or newer. Follow the
+[project setup guide](../contributing/project-setup.md) to configure the Docker
+development environment and initialize the repository's submodules. The commands
+below use that environment's native build tools, NumPy, and pybind11.
+
+Run these commands from the repository root inside the development container:
+
+```bash title="Install the CLI from repository source"
+uv pip install "scikit-build-core>=1.0"
+uv pip install ".[cli]" --no-build-isolation
 ```
 
-The `[cli]` extra installs Pillow for decoding images. The plain
+The repository's `[cli]` extra installs Pillow for decoding images. The plain
 `pip install img2num` command remains sufficient for using the Python library,
-but does not install this extra dependency. Keep the quotes around
-`img2num[cli]` so shells do not interpret the brackets as a glob pattern.
+but does not provide the CLI in version `0.3.1`. Keep the quotes around `.[cli]`
+so shells do not interpret the brackets as a glob pattern.
 
 ```sh title="Show available options"
 img2num --help
@@ -116,6 +133,10 @@ Other options control input/output and progress:
 
 ## Troubleshooting
 
+If `img2num` is not found after installing PyPI version `0.3.1`, this is the
+release limitation described above. Installing Pillow alone does not add the
+missing CLI; use the source installation instructions instead.
+
 If Pillow is missing, the CLI displays:
 
 ```text
@@ -123,10 +144,12 @@ The img2num CLI requires extra dependencies.
 Install them with: pip install 'img2num[cli]'
 ```
 
-Install the extra in the same Python environment as the `img2num` command:
+The PyPI installation suggested in this message does not provide the CLI in
+version `0.3.1`. For a source-built CLI, install the extra from the repository
+root in the same development environment as the `img2num` command:
 
 ```sh
-pip install "img2num[cli]"
+uv pip install ".[cli]" --no-build-isolation
 ```
 
 To replace an existing SVG that would otherwise be skipped, pass `--overwrite`:

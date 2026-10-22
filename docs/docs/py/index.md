@@ -24,15 +24,14 @@ involved.
 pip install img2num
 ```
 
-To use Img2Num from the command line instead of writing Python code, install the
-optional CLI dependencies, including Pillow:
+:::important[CLI release availability]
 
-```bash title="Install the command-line tool"
-pip install "img2num[cli]"
-```
+PyPI version `0.3.1` does not include the `cli` extra or the `img2num` command.
+CLI installation from PyPI must wait for a release containing both. The
+repository source includes the CLI; see the [CLI guide](./cli.md) for source
+installation, usage examples, options, and troubleshooting.
 
-The plain installation remains sufficient for library use. See the
-[CLI guide](./cli.md) for usage examples, options, and troubleshooting.
+:::
 
 ## Usage
 
