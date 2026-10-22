@@ -52,6 +52,7 @@ Link against `CImg2Num` in your `CMakeLists.txt`:
 ```cmake
 find_package(CImg2Num REQUIRED)
 target_link_libraries(your_app PRIVATE CImg2Num::CImg2Num)
+```
 
 ## Documentation
 
