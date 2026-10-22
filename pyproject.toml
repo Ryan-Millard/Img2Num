@@ -23,6 +23,8 @@ classifiers = [
 ]
 
 [project.scripts]
+# syntax: command_name = "package.module:function"
+img2num = "img2num.cli:main"
 corpus-manager = "benchmarks.corpus_manager:main"
 corpus_manager = "benchmarks.corpus_manager:main"
 
@@ -120,7 +122,7 @@ img2num-dev-scripts = { workspace = true }
 [tool.ruff]
 target-version = "py310"
 line-length = 88
-exclude = ["third_party/", "docs/", ".venv/"]
+exclude = ["**/third_party/", "docs/", ".venv/"]
 
 [tool.ruff.lint]
 select = [
@@ -159,6 +161,12 @@ lint = [
 licensing = [
   "reuse>=6.2.0,<7"
 ]
+
+[project.optional-dependencies]
+cli = [
+    "pillow>=12.0.0"
+]
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = [

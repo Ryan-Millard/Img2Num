@@ -3,8 +3,8 @@ name = "console-py"
 version = "0.0.0"
 description = "A simple console example app that demonstrates how to use Img2Num"
 dependencies = [
-  "numpy",
-  "opencv-python"
+  "numpy>=1.23.5",
+  "pillow>=12.0.0"
 ]
 
 [tool.uv]

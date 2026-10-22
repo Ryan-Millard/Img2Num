@@ -8,17 +8,12 @@ from unittest.mock import patch
 import pytest
 from PIL import Image
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
-if str(REPO_ROOT) not in sys.path:
-    sys.path.insert(0, str(REPO_ROOT))
-
 import benchmarks.corpus_manager as corpus_manager
 from benchmarks.corpus_manager import (
     ALLOWED_LICENSES,
     CorpusManagerError,
     Entry,
     add_entry,
-    cache_dir,
     cache_path,
     corpus_hash,
     default_cache_root,
@@ -28,6 +23,8 @@ from benchmarks.corpus_manager import (
     main,
     verify_corpus,
 )
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
 VALID_ENTRY = """\
@@ -329,7 +326,7 @@ def test_verify_rejects_empty_id(tmp_path: Path) -> None:
     )
 
     assert any(
-        "sample.toml: 'id' must not be empty" == error
+        error == "sample.toml: 'id' must not be empty"
         for error in verify_corpus(root)
     )
 
@@ -607,7 +604,9 @@ def test_verify_hashes_reports_missing_cache_and_mismatch(
 
     errors = verify_corpus(add_corpus, hashes=True)
 
-    assert any("sample.toml" in error and "run fetch first" in error for error in errors)
+    assert any(
+        "sample.toml" in error and "run fetch first" in error for error in errors
+    )
     assert any(
         "second.toml" in error
         and mismatch_digest in error
@@ -887,7 +886,9 @@ def test_interactive_add_reprompts_invalid_inputs(
     assert any("Dataset name must not be empty" in line for line in printed)
     assert any("is not allowed" in line for line in printed)
     assert any("Author / rights holder must not be empty" in line for line in printed)
-    assert any("Source / attribution reference must not be empty" in line for line in printed)
+    assert any(
+        "Source / attribution reference must not be empty" in line for line in printed
+    )
     assert any("ID must contain only" in line for line in printed)
 
 
