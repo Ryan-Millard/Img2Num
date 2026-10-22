@@ -1,0 +1,288 @@
+import Link from "@docusaurus/Link";
+import useBaseUrl from "@docusaurus/useBaseUrl";
+import Layout from "@theme/Layout";
+import CodeBlock from "@theme/CodeBlock";
+import { Atom, Box, Braces, Code2, Cpu, Hexagon, Layers, MoveRight, Terminal, Zap } from "lucide-react";
+import React from "react";
+import { showcaseProjects } from "../../data/showcase";
+import styles from "../index.module.css";
+import showcaseStyles from "./showcase.module.css";
+
+const repoDir = "https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps";
+const apps = [
+  {
+    lang: "React",
+    slug: "react",
+    dir: "react-js",
+    codeLang: "javascript",
+    icon: <Atom size={22} color="var(--blue)" />,
+    accentVar: "--blue-light",
+    title: "React color-by-number demo",
+    desc: "Full interactive demo, bundled with Vite - the setup most web apps use.",
+    code: `import { imageToUint8ClampedArray, imageToSvg } from "img2num";
+
+const { pixels, width, height } = await imageToUint8ClampedArray(file);
+const { svg } = await imageToSvg({ pixels, width, height });`,
+    href: "/example-apps/react-js/",
+    cta: "Open live demo",
+  },
+  {
+    lang: "ESM",
+    slug: "esm",
+    dir: "html-js",
+    codeLang: "html",
+    icon: <Braces size={22} color="var(--accent)" />,
+    accentVar: "--accent-light",
+    title: "HTML + ES Modules",
+    desc: "The browser ESM build loaded natively. No bundler, no build step.",
+    code: `<script type="module">
+  import { imageToUint8ClampedArray, imageToSvg }
+    from "https://cdn.jsdelivr.net/npm/img2num/dist/browser/img2num.js";
+  // ...
+</script>`,
+    href: "/example-apps/esm/",
+    cta: "Open live demo",
+  },
+  {
+    lang: "IIFE",
+    slug: "iife",
+    dir: "html-js",
+    codeLang: "html",
+    icon: <Code2 size={22} color="var(--amber)" />,
+    accentVar: "--amber-light",
+    title: "HTML + IIFE",
+    desc: "One plain script tag, one global object. The simplest integration.",
+    code: `<script src="https://cdn.jsdelivr.net/npm/img2num/dist/standalone/img2num.iife.js"></script>
+<script>
+  const { imageToUint8ClampedArray, imageToSvg } = Img2Num;
+  // ...
+</script>`,
+    href: "/example-apps/iife/",
+    cta: "Open live demo",
+  },
+  {
+    lang: "UMD",
+    slug: "umd",
+    dir: "html-js",
+    codeLang: "javascript",
+    icon: <Layers size={22} color="var(--coral)" />,
+    accentVar: "--coral-light",
+    title: "HTML + UMD (RequireJS)",
+    desc: "Loaded as an AMD module - nothing is added to the global scope.",
+    code: `requirejs.config({ paths: { img2num: ".../dist/standalone/img2num.umd" } });
+requirejs(["img2num"], ({ imageToUint8ClampedArray, imageToSvg }) => {
+  // ...
+});`,
+    href: "/example-apps/umd/",
+    cta: "Open live demo",
+  },
+  {
+    lang: "Node ESM",
+    slug: "node-esm",
+    dir: "console-js-esm",
+    codeLang: "javascript",
+    icon: <Hexagon size={22} color="var(--blue)" />,
+    accentVar: "--blue-light",
+    title: "console-js-esm",
+    desc: "The same WASM build in Node.js: decode with sharp, convert with imageToSvg.",
+    code: `import { imageToSvg } from "img2num";
+import sharp from "sharp";
+
+const { data, info } = await sharp(imagePath).ensureAlpha().raw()
+  .toBuffer({ resolveWithObject: true });
+const { svg } = await imageToSvg({ pixels: new Uint8ClampedArray(data.buffer), ...info });`,
+    href: "https://www.npmjs.com/package/img2num",
+    cta: "img2num on npm",
+  },
+  {
+    lang: "Node CJS",
+    slug: "node-cjs",
+    dir: "console-js-cjs",
+    codeLang: "javascript",
+    icon: <Box size={22} color="var(--ink-3)" />,
+    accentVar: "--surface-2",
+    title: "console-js-cjs",
+    desc: "Identical to the ESM app, consumed with require() from CommonJS.",
+    code: `const { imageToSvg } = require("img2num");
+const sharp = require("sharp");
+// ... decode, then:
+const { svg } = await imageToSvg({ pixels, width, height });`,
+    href: "https://www.npmjs.com/package/img2num",
+    cta: "img2num on npm",
+  },
+  {
+    lang: "Python",
+    slug: "python",
+    dir: "console-py",
+    codeLang: "python",
+    icon: <Terminal size={22} color="var(--amber)" />,
+    accentVar: "--amber-light",
+    title: "console-py",
+    desc: "OpenCV image in, SVG out with numpy zero-copy.",
+    code: `import img2num
+
+cfg = img2num.ImageToSvgConfig(kmeans={"k": 64}, min_thickness=10)
+svg = img2num.image_to_svg(img, config=cfg)`,
+    href: "https://pypi.org/project/img2num/",
+    cta: "img2num on PyPI",
+  },
+  {
+    lang: "C++17",
+    slug: "cpp",
+    dir: "console-cpp",
+    codeLang: "cpp",
+    icon: <Zap size={22} color="var(--accent)" />,
+    accentVar: "--accent-light",
+    title: "console-cpp",
+    desc: "The native core: step-by-step pipeline and the unified call.",
+    code: `img2num::ImageToSvgConfig config;
+config.kmeans.k = 32;
+std::string svg {img2num::image_to_svg(img_data, width, height, config)};`,
+    href: `${repoDir}/console-cpp`,
+    cta: "Source on GitHub",
+  },
+  {
+    lang: "C",
+    slug: "c",
+    dir: "console-c",
+    codeLang: "c",
+    icon: <Cpu size={22} color="var(--coral)" />,
+    accentVar: "--coral-light",
+    title: "console-c",
+    desc: "The C bindings with stb_image: filter, k-means, SVG output.",
+    code: `img2num_ImageToSvgConfig cfg = img2num_ImageToSvgConfig_default();
+char* svg = img2num_image_to_svg(image_data, width, height, &cfg);`,
+    href: `${repoDir}/console-c`,
+    cta: "Source on GitHub",
+  },
+];
+
+/** Render an accepted project using the official example card layout. */
+function CommunityProjectCard({ project }) {
+  const screenshot = useBaseUrl(project.screenshot || "/");
+  const logo = useBaseUrl(project.logo || "/");
+  return (
+    <div className={styles.bindingCard}>
+      <span className={styles.bindingLang}>{project.binding}</span>
+      <div className={showcaseStyles.projectHeader}>
+        <div className={`${styles.bindingIcon} ${showcaseStyles.projectIcon}`}>
+          {project.logo ? <img className={showcaseStyles.projectLogo} src={logo} alt="" width="44" height="44" loading="lazy" /> : <Code2 size={22} aria-hidden="true" />}
+        </div>
+        <div className={showcaseStyles.projectDetails}>
+          <h3 className={styles.bindingTitle}>{project.name}</h3>
+          <Link to={project.liveUrl}>{project.liveUrl}</Link>
+        </div>
+      </div>
+      <p className={styles.bindingDesc}>{project.description}</p>
+      {project.screenshot ? <img className={showcaseStyles.projectScreenshot} src={screenshot} alt={`${project.name} screenshot`} width="1200" height="675" loading="lazy" /> : null}
+      <p className={showcaseStyles.projectLinks}>
+        {project.sourceUrl ? <Link to={project.sourceUrl}>Source</Link> : null}
+        {project.links?.map((link, index) => (
+          <Link key={`${link.url}-${index}`} to={link.url}>
+            {link.label}
+          </Link>
+        ))}
+      </p>
+    </div>
+  );
+}
+
+/** Render the official examples and accepted community projects. */
+export default function Showcase() {
+  return (
+    <Layout title="Showcase" description="Runnable example applications showing how to use Img2Num in the browser (React, ESM, IIFE, UMD) and from the command line (C, C++, Python, Node.js).">
+      <main>
+        <section className={styles.section}>
+          <div className={styles.eyebrow}>
+            <span className={styles.eyebrowBar}></span>
+            upload · convert · copy the code
+          </div>
+
+          <div className={styles.sectionHeader} style={{ marginBottom: "auto" }}>
+            <h1 className={styles.heroTitle}>Showcase</h1>
+            <Link className={styles.sectionLink} to="/docs">
+              All Docs <MoveRight size={15} />
+            </Link>
+          </div>
+
+          <p>
+            One conversion pipeline - filter, segment, trace - run from every binding. The browser apps are live: upload a raster image, get an SVG back, and see the exact code that did it. The
+            console apps run the same pipeline from the command line in <Link to="/docs/c">C</Link>, <Link to="/docs/cpp">C++</Link>, <Link to="/docs/py">Python</Link>, and{" "}
+            <Link to="/docs/js">JavaScript</Link>. Pick whichever matches your stack and copy it as a starting point.
+          </p>
+        </section>
+
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2>Official Examples</h2>
+          </div>
+
+          <p>Officially supported and recommended ways to use Img2Num across its available bindings.</p>
+
+          <div className={styles.bindingsGrid}>
+            {apps.map((app) => (
+              <div key={app.title} id={app.slug} className={styles.bindingCard}>
+                <span className={styles.bindingLang}>{app.lang}</span>
+                <div style={{ display: "flex", alignItems: "center", gap: "1em" }}>
+                  <div className={styles.bindingIcon} style={{ background: `var(${app.accentVar})` }}>
+                    {app.icon}
+                  </div>
+                  <div>
+                    <h3 className={styles.bindingTitle}>{app.title}</h3>
+                    <Link to={`https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps/${app.dir}`}>
+                      <code>example-apps/{app.dir}</code>
+                    </Link>
+                  </div>
+                </div>
+                <p className={styles.bindingDesc}>{app.desc}</p>
+                <CodeBlock language={app.codeLang} className={styles.codeSnippet}>
+                  {app.code}
+                </CodeBlock>
+                <p>
+                  <a href={app.href}>
+                    {app.cta} <MoveRight size={15} style={{ verticalAlign: "middle" }} />
+                  </a>
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <br />
+
+          <p>
+            Each browser example page shows its complete code, and the plain-HTML apps are fully standalone - use your browser's <i>View Source</i> to see the whole page. All example source and build
+            setup lives in{" "}
+            <Link to="https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps">
+              <code>example-apps/</code> on GitHub
+            </Link>
+            .
+          </p>
+        </section>
+
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <h2>Built with Img2Num</h2>
+          </div>
+
+          <p>Community projects created by people outside the Img2Num project. These are third-party implementations, separate from the official examples above.</p>
+
+          <div className={showcaseStyles.submitAction}>
+            <Link className={styles.btnPrimary} to="/showcase/submit">
+              Submit your project <MoveRight size={15} />
+            </Link>
+          </div>
+
+          {showcaseProjects.length === 0 ? (
+            <p>No community projects have been listed yet. Built something with Img2Num? You can submit your project for consideration.</p>
+          ) : (
+            <div className={styles.bindingsGrid}>
+              {showcaseProjects.map((project) => (
+                <CommunityProjectCard key={project.name} project={project} />
+              ))}
+            </div>
+          )}
+        </section>
+      </main>
+    </Layout>
+  );
+}
