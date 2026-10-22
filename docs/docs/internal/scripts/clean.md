@@ -10,10 +10,10 @@ This page explains package-specific cleanup scripts.
 The Justfile provides target-specific cleanup commands. To clean all Just-managed outputs, run:
 
 ```bash
-just clean cpp
-just clean js
-just clean packages-js
-just clean packages-py
+just cmake clean
+just js clean
+just js package-clean
+just py package-clean
 ```
 
 See the **[Just Guide](../../contributing/just.md)** for more details.

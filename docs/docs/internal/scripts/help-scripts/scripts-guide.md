@@ -52,7 +52,7 @@ Modern `scriptsInfo` organizes scripts under **category keys** with an optional 
       "help": {
         "desc": "Show this help message",
         "args": [
-          "--filter <term>   Only show scripts matching <term>"
+          "<term>   Fuzzy-search scripts by <term>"
         ]
       }
     }
@@ -60,7 +60,7 @@ Modern `scriptsInfo` organizes scripts under **category keys** with an optional 
   "scripts": {
     "format": "pnpm run --filter=. --parallel \"/^format:(cpp|js)$/\"",
     "format:js": "pnpm prettier --write . --ignore-path .prettierignore --config .prettierrc",
-    "lint": "pnpm run --filter=. --parallel \"/^lint:(cpp|js)$/\"",
+    "lint": "pnpm run --filter=. --parallel \"/^lint:(cpp|js|py)$/\"",
     "help": "node scripts/help.js"
   }
 }

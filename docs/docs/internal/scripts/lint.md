@@ -16,8 +16,8 @@ The root `package.json` coordinates linting across all workspace packages and la
 
 #### `pnpm lint`
 
-Runs all linters (`lint:cpp` and `lint:js`) in parallel across the workspace:
+Runs all linters (`lint:cpp`, `lint:js`, and `lint:py`) in parallel across the workspace:
 
 ```bash
-pnpm run --filter=. --parallel "/^lint:(cpp|js)$/"
+pnpm run --filter=. --parallel "/^lint:(cpp|js|py)$/"
 ```
