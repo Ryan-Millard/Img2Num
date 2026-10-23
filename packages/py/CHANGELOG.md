@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.4.0](https://github.com/Ryan-Millard/Img2Num/compare/packages-py-v0.3.1...packages-py-v0.4.0) (2026-10-23)
+
+
+### ✨ Features
+
+* cli tool ([#703](https://github.com/Ryan-Millard/Img2Num/issues/703)) ([ac4d06f](https://github.com/Ryan-Millard/Img2Num/commit/ac4d06fda8279c77e949bfa15eca3fc4b83035c2))
+* **py:** expose img2num.__version__ ([#758](https://github.com/Ryan-Millard/Img2Num/issues/758)) ([9a8f275](https://github.com/Ryan-Millard/Img2Num/commit/9a8f275287ee77a53de6f67bd3a4b3bc581dce26))
+
+
+### 📚 Documentation
+
+* **api:** describe black_threshold_image as a per-channel brightness cutoff ([#692](https://github.com/Ryan-Millard/Img2Num/issues/692)) ([3506b0a](https://github.com/Ryan-Millard/Img2Num/commit/3506b0afc82b6d67e69e38a906b0cbf91763fb20)), closes [#691](https://github.com/Ryan-Millard/Img2Num/issues/691)
+* **examples:** add community showcase ([#644](https://github.com/Ryan-Millard/Img2Num/issues/644)) ([e6b20ba](https://github.com/Ryan-Millard/Img2Num/commit/e6b20babd1bd7d66662b25435e0297155605f10c)), closes [#638](https://github.com/Ryan-Millard/Img2Num/issues/638)
+* **website:** added the Discord server to the navbar, footer and contributing guide ([#689](https://github.com/Ryan-Millard/Img2Num/issues/689)) ([2d7e84d](https://github.com/Ryan-Millard/Img2Num/commit/2d7e84defce9e4f6ea3b17cd7f4a29732f03d41d))
+
+
+### 🔧 Miscellaneous
+
+* **linting:** fix ruff warnings and enforce ruff in CI ([#620](https://github.com/Ryan-Millard/Img2Num/issues/620)) ([e44ae8c](https://github.com/Ryan-Millard/Img2Num/commit/e44ae8c8ed0850516902af4c8e284c0c76a28a35)), closes [#606](https://github.com/Ryan-Millard/Img2Num/issues/606)
+* **main:** release cpp 0.3.0 ([#546](https://github.com/Ryan-Millard/Img2Num/issues/546)) ([147d07e](https://github.com/Ryan-Millard/Img2Num/commit/147d07e5f8777725d7e27d5cde515980229a3163))
+* **release:** add version propagation tracking files ([#787](https://github.com/Ryan-Millard/Img2Num/issues/787)) ([#787](https://github.com/Ryan-Millard/Img2Num/issues/787)) ([7d3216f](https://github.com/Ryan-Millard/Img2Num/commit/7d3216f61c96abb8510228961abe818b278f0740))
+
 ## [0.3.1](https://github.com/Ryan-Millard/Img2Num/compare/packages-py-v0.3.0...packages-py-v0.3.1) (2026-09-24)
 
 
