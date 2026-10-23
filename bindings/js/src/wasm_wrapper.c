@@ -27,6 +27,13 @@ EMSCRIPTEN_KEEPALIVE void kmeans(
     img2num_kmeans(data, out_data, out_labels, width, height, k, max_iter, color_space);
 }
 
+EMSCRIPTEN_KEEPALIVE void color_quantize(
+    const uint8_t* data, uint8_t* out_data, int32_t* out_labels, const int32_t width,
+    const int32_t height, const int32_t k, const float coverage, const uint8_t color_space
+) {
+    img2num_color_quantize(data, out_data, out_labels, width, height, k, coverage, color_space);
+}
+
 EMSCRIPTEN_KEEPALIVE void bilateral_filter(
     uint8_t* image, size_t width, size_t height, double sigma_spatial, double sigma_range,
     uint8_t color_space
@@ -44,14 +51,19 @@ EMSCRIPTEN_KEEPALIVE char* labels_to_svg(
 EMSCRIPTEN_KEEPALIVE char* image_to_svg(
     const uint8_t* data, const int width, const int height, double sigma_spatial,
     double sigma_range, const int32_t k, const int32_t max_iter, const int min_area,
-    const int min_thickness, const uint8_t color_space
+    const int min_thickness, const uint8_t color_space, const float coverage
 ) {
     img2num_ImageToSvgConfig config = img2num_ImageToSvgConfig_default();
 
-    config.bilateral_filter.sigma_spatial = sigma_spatial;
-    config.bilateral_filter.sigma_range = sigma_range;
-    config.kmeans.k = k;
-    config.kmeans.max_iter = max_iter;
+    config.natural_image_config.bilateral_filter.sigma_spatial = sigma_spatial;
+    config.natural_image_config.bilateral_filter.sigma_range = sigma_range;
+
+    config.natural_image_config.kmeans.k = k;
+    config.natural_image_config.kmeans.max_iter = max_iter;
+
+    config.synthetic_image_config.quantize.k = k;
+    config.synthetic_image_config.quantize.coverage = coverage;
+
     config.min_cluster_area = min_area;
     config.min_thickness = min_thickness;
     config.color_space = color_space;

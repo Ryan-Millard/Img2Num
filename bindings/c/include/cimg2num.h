@@ -16,28 +16,61 @@
 extern "C" {
 #endif
 
+/// @brief Image type selector for img2num_ImageToSvgConfig.
+// This must match the C++ enum exactly!
+typedef enum {
+    IMG2NUM_IMAGE_TYPE_NATURAL = 0,
+    IMG2NUM_IMAGE_TYPE_SYNTHETIC = 1
+} img2num_image_type;
+
 /// @brief Configuration options for image_to_svg.
 /// @ingroup CIMG2NUM_H
 typedef struct img2num_ImageToSvgConfig {
-    /// Configuration settings for the bilateral filter in image_to_svg.
-    struct BilateralFilterConfig {
-        /// Standard deviation for spatial Gaussian (proximity weight).
-        /// Higher values smooth over larger spatial neighborhoods.
-        double sigma_spatial;
-        /// Standard deviation for range Gaussian (intensity similarity weight).
-        /// Higher values allow blending of more dissimilar pixel intensities.
-        double sigma_range;
-    } bilateral_filter;
+    /// @brief Whether Img2Num should use natural_image_config or synthetic_image_config (alters internal function call
+    /// chain).
+    /// @sa img2num::ImageType()
+    ///
+    /// @warning Setting the image type incorrectly may lead to undefined behaviour (see img2num_color_quantize()).
+    img2num_image_type image_type;
 
-    /// Configuration settings for K-Means in image_to_svg.
-    struct KMeansConfig {
-        /// Number of clusters to compute in K-Means.
-        /// Roughly represents number of unique colors discovered.
-        int32_t k;
-        /// Maximum number of iterations for the K-Means algorithm.
-        /// The algorithm may terminate earlier if it converges.
-        int32_t max_iter;
-    } kmeans;
+    /// @brief Configuration settings for processing on natural images
+    struct NaturalImageConfig {
+        /// @brief Configuration settings for the bilateral filter in image_to_svg.
+        struct BilateralFilterConfig {
+            /// Standard deviation for spatial Gaussian (proximity weight).
+            /// Higher values smooth over larger spatial neighborhoods.
+            double sigma_spatial;
+            /// Standard deviation for range Gaussian (intensity similarity weight).
+            /// Higher values allow blending of more dissimilar pixel intensities.
+            double sigma_range;
+        } bilateral_filter;
+
+        /// @brief Configuration settings for K-Means in image_to_svg.
+        struct KMeansConfig {
+            /// Number of clusters to compute in K-Means.
+            /// Roughly represents number of unique colors discovered.
+            int32_t k;
+            /// Maximum number of iterations for the K-Means algorithm.
+            /// The algorithm may terminate earlier if it converges.
+            int32_t max_iter;
+        } kmeans;
+    } natural_image_config;
+
+    /// @brief Configuration settings for processing on synthetic images
+    struct SyntheticImageConfig{
+        /// @brief Quantization configuration settings for color_quantize
+        /// - .k: number of dominant colors
+        /// - .coverage: spatial area ratio for determining color dominance
+        struct QuantizeConfig {
+            /// Number of dominant colors to find in the image.
+            /// If 0 (default) use `coverage` to threshold based on area.
+            int32_t k;
+            /// Area ratio to consider when determining dominant colors.
+            /// Top dominant colors must cover at least `coverage` * `width` * `height` number of
+            /// pixels.
+            float coverage;
+        } quantize;
+    } synthetic_image_config;
 
     /// Minimum area (in pixels) for a region to be included in the SVG.
     int min_cluster_area;
@@ -50,6 +83,8 @@ typedef struct img2num_ImageToSvgConfig {
     uint8_t color_space;
 } img2num_ImageToSvgConfig;
 
+/// ImageToSvgConfig struct with default values for convenience
+/// Recommended even if you plan to override them
 img2num_ImageToSvgConfig img2num_ImageToSvgConfig_default(void);
 
 /// @copydoc ::IMG2NUM_H_GAUSSIAN_BLUR_DOC
@@ -72,6 +107,26 @@ void img2num_black_threshold_image(
 void img2num_kmeans(
     const uint8_t* data, uint8_t* out_data, int32_t* out_labels, const int32_t width,
     const int32_t height, const int32_t k, const int32_t max_iter, const uint8_t color_space
+);
+
+/// @brief Apply a Gaussian blur to an image using FFT.
+/// @ingroup IMG2NUM_H
+/// @param data Pointer to the image buffer (RGBA).
+/// @param out_data Pointer to output buffer where quantized pixel values are stored (RGBA).
+/// @param out_labels Pointer to output buffer for quantized labels per pixel (unique integer values per dominant color
+/// region).
+/// @param width Width of the image in pixels.
+/// @param height Height of the image in pixels.
+/// @param k Number of dominant colors to compute.
+/// @param coverage Area ratio to consider when determining dominant colors. Top dominant colors must cover at least
+/// `coverage` * `width` * `height` number of pixels. Example: 0.38 means that the top dominant colors must cover
+/// at least 38% of the image's pixels
+/// @param color_space Color space flag (0 = CIE LAB, 1 = RGB).
+/// @note The function does not modify the input buffer.
+/// @return void
+void img2num_color_quantize(
+    const uint8_t* data, uint8_t* out_data, int32_t* out_labels, const int32_t width,
+    const int32_t height, const int32_t k, const float coverage, const uint8_t color_space
 );
 
 /// @copydoc ::IMG2NUM_H_BILATERAL_FILTER_DOC
