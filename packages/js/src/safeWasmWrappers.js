@@ -91,7 +91,7 @@ import { callWasm } from "./wasmClient.js";
  *
  * @description
  * Takes a Uint8ClampedArray and its dimensions and applies a Gaussian blur on the Uint8ClampedArray image.
- * The `sigma_pixels` parameter determines the blur radius and has a dynamic default value equal to 5% of the image's width.
+ * The `sigma_pixels` parameter determines the blur radius and has a dynamic default value equal to 0.5% of the image's width.
  * Useful for denoising images by applying a low-pass filter. Sped up by a 2-D FFT.
  *
  * @async
@@ -101,7 +101,6 @@ import { callWasm } from "./wasmClient.js";
  * @throws {Error} If the WASM function fails or memory allocation fails.
  * @example
  * const blurred = await gaussianBlur({ pixels, width, height });
- * @todo Fix FFT zero-padding bug around edges of the image.
  * @variation Standard Gaussian blur using FFT
  * @since 0.0.0
  */
@@ -180,16 +179,17 @@ export const blackThreshold = async ({ pixels, width, height, num_colors }) => {
  *
  * @description
  * Apply a standard K-Means clustering algorithm to the input image in the specified `color_space`
- * (default is 0: CIE LAB, but 1: sRGB can be use) using pre-specified maximum color and iteration counts.
+ * (default is 0: CIE LAB, but 1: sRGB can be used) using pre-specified maximum color and iteration counts.
  * You can provide the `out_pixels` and `out_labels` arrays,
  * however this is atypical in JavaScript (since it is modified in-place and you will need to allocate a sufficiently large array),
  * so it is recommended to use the default arguments and returns.
+ * Iteration stops early when no pixel changes cluster; otherwise it stops after `max_iter` iterations.
  *
  * @async
  * @function kmeans
  * @param {KMeansOptions} options - The input options.
  * @returns {Promise<KMeansResult>} Clustered pixels and labels.
- * @throws {Error} If the WASM function fails or iterations do not converge.
+ * @throws {Error} If the WASM function fails.
  * @example
  * const { pixels: clusteredPixels, labels } = await kmeans({ pixels, width, height, num_colors: 8 });
  * @variation K-means clustering with default color space
@@ -256,7 +256,7 @@ export const findContours = async ({ pixels, labels, width, height, min_area = 1
  * @function imageToSvg
  * @param {ImageToSvgOptions} options - The input options.
  * @returns {Promise<SvgResult>} Generated SVG.
- * @throws {Error} If the WASM function fails or input labels are invalid.
+ * @throws {Error} If the WASM function fails.
  * @example
  * const { svg } = await imageToSvg({ pixels, width, height });
  * @variation Convert a raster image (e.g., PNG, JPG) into an SVG.
