@@ -1,5 +1,37 @@
 # Changelog
 
+## [0.5.0](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.4.2...packages-js-v0.5.0) (2026-10-23)
+
+
+### ✨ Features
+
+* **Debug Logging:** route logging through spdlog with compile-time level control ([#524](https://github.com/Ryan-Millard/Img2Num/issues/524)) ([47c8dd9](https://github.com/Ryan-Millard/Img2Num/commit/47c8dd91a8325a1f7f34838b978a8830f5f839b6))
+* **Types:** Ship TypeScript type definitions for the npm package ([#670](https://github.com/Ryan-Millard/Img2Num/issues/670)) ([b2dbed8](https://github.com/Ryan-Millard/Img2Num/commit/b2dbed84618020b89b507d70528a82a416faa9ad)), closes [#631](https://github.com/Ryan-Millard/Img2Num/issues/631)
+
+
+### 📚 Documentation
+
+* add JS 0.4.2 blog post, overhaul READMEs and security policy, redesign navbar ([#558](https://github.com/Ryan-Millard/Img2Num/issues/558)) ([e1a2a8a](https://github.com/Ryan-Millard/Img2Num/commit/e1a2a8aa332dc0a3e826a80e2ac9581964f747f5))
+* **api:** describe black_threshold_image as a per-channel brightness cutoff ([#692](https://github.com/Ryan-Millard/Img2Num/issues/692)) ([3506b0a](https://github.com/Ryan-Millard/Img2Num/commit/3506b0afc82b6d67e69e38a906b0cbf91763fb20)), closes [#691](https://github.com/Ryan-Millard/Img2Num/issues/691)
+* **examples:** add community showcase ([#644](https://github.com/Ryan-Millard/Img2Num/issues/644)) ([e6b20ba](https://github.com/Ryan-Millard/Img2Num/commit/e6b20babd1bd7d66662b25435e0297155605f10c)), closes [#638](https://github.com/Ryan-Millard/Img2Num/issues/638)
+* **website:** added the Discord server to the navbar, footer and contributing guide ([#689](https://github.com/Ryan-Millard/Img2Num/issues/689)) ([2d7e84d](https://github.com/Ryan-Millard/Img2Num/commit/2d7e84defce9e4f6ea3b17cd7f4a29732f03d41d))
+
+
+### 🔧 Miscellaneous
+
+* bump @rollup/plugin-commonjs from 28.0.9 to 29.0.3 in /packages/js in the all-deps group across 1 directory ([#563](https://github.com/Ryan-Millard/Img2Num/issues/563)) ([dcf2eba](https://github.com/Ryan-Millard/Img2Num/commit/dcf2ebac0ace0acabb0c3c03cf4af8d991ad500f))
+* bump black from 23.12.1 to 26.3.1 in the uv group across 1 directory ([#555](https://github.com/Ryan-Millard/Img2Num/issues/555)) ([4d6a9eb](https://github.com/Ryan-Millard/Img2Num/commit/4d6a9ebd37c38cdfc48543b5662df67122bb7b74))
+* bump the all-deps group across 1 directory with 21 dep and 3 toolchain updates ([#604](https://github.com/Ryan-Millard/Img2Num/issues/604)) ([463ad7a](https://github.com/Ryan-Millard/Img2Num/commit/463ad7ab4c45d17b987e7c89d514fee467f48b23))
+* **deps:** bump docs, example-apps and packages/js devDependencies ([#576](https://github.com/Ryan-Millard/Img2Num/issues/576)) ([8bda4a3](https://github.com/Ryan-Millard/Img2Num/commit/8bda4a3adb564c453b7fe4a7b86d0d182e69f7a3))
+* **main:** release bindings-c 0.2.1 ([#545](https://github.com/Ryan-Millard/Img2Num/issues/545)) ([a0de888](https://github.com/Ryan-Millard/Img2Num/commit/a0de88828fc222693691b47339c8e6200a41840f))
+* **release:** add version propagation tracking files ([#787](https://github.com/Ryan-Millard/Img2Num/issues/787)) ([#787](https://github.com/Ryan-Millard/Img2Num/issues/787)) ([7d3216f](https://github.com/Ryan-Millard/Img2Num/commit/7d3216f61c96abb8510228961abe818b278f0740))
+* split justfile ([#695](https://github.com/Ryan-Millard/Img2Num/issues/695)) ([9fa8c0f](https://github.com/Ryan-Millard/Img2Num/commit/9fa8c0f288254306417e5b92e81bf5fd9bb8319b))
+
+
+### ♻️ Refactoring
+
+* **js:** make TARGET lookup a strict allowlist ([#590](https://github.com/Ryan-Millard/Img2Num/issues/590)) ([0d3a0cb](https://github.com/Ryan-Millard/Img2Num/commit/0d3a0cb8ff1f53fd22d4555974430a0d4fc150a0)), closes [#580](https://github.com/Ryan-Millard/Img2Num/issues/580)
+
 ## [0.4.2](https://github.com/Ryan-Millard/Img2Num/compare/packages-js-v0.4.1...packages-js-v0.4.2) (2026-08-18)
 
 
