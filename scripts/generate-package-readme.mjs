@@ -3,23 +3,21 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const CONFIG_PATH = path.join(ROOT, "scripts", "package-readme.json");
 
-const README_PATH = path.join(ROOT, "packages", "js", "README.md");
+function resolveRootPath(relativePath, root = ROOT) {
+  return path.join(root, relativePath);
+}
 
-const GENERATED_SECTIONS = [
-  {
-    name: "console-js-esm",
-    source: path.join(ROOT, "example-apps", "console-js-esm", "index.mjs"),
-    language: "js",
-  },
-  {
-    name: "console-js-cjs",
-    source: path.join(ROOT, "example-apps", "console-js-cjs", "index.cjs"),
-    language: "js",
-  },
-];
+function generatedSection(name, source, language, type = "code") {
+  if (type === "markdown") {
+    return [
+      `<!-- BEGIN GENERATED: ${name} -->`,
+      source.trim(),
+      `<!-- END GENERATED: ${name} -->`,
+    ].join("\n");
+  }
 
-function generatedSection(name, source, language) {
   return [
     `<!-- BEGIN GENERATED: ${name} -->`,
     "```" + language,
@@ -52,25 +50,75 @@ function replaceGeneratedSection(readme, section) {
 
   return (
     readme.slice(0, start) +
-    generatedSection(section.name, section.sourceContent, section.language) +
+    generatedSection(
+      section.name,
+      section.sourceContent,
+      section.language,
+      section.type,
+    ) +
     readme.slice(endPosition)
   );
 }
 
-async function main() {
-  let readme = await readFile(README_PATH, "utf8");
+async function loadConfig() {
+  const config = JSON.parse(await readFile(CONFIG_PATH, "utf8"));
 
-  for (const section of GENERATED_SECTIONS) {
-    section.sourceContent = await readFile(section.source, "utf8");
-    readme = replaceGeneratedSection(readme, section);
+  if (!Array.isArray(config.readmes)) {
+    throw new Error('README configuration must contain a "readmes" array.');
   }
 
-  await writeFile(README_PATH, readme, "utf8");
-
-  console.log(`Generated ${path.relative(ROOT, README_PATH)}`);
+  return config;
 }
 
-export { generatedSection, replaceGeneratedSection };
+async function generateReadme(readmeConfig, check, root = ROOT) {
+  const readmePath = resolveRootPath(readmeConfig.path, root);
+  let readme = await readFile(readmePath, "utf8");
+
+  for (const section of readmeConfig.sections) {
+    const sourcePath = resolveRootPath(section.source, root);
+    const sourceContent = await readFile(sourcePath, "utf8");
+
+    readme = replaceGeneratedSection(readme, {
+      ...section,
+      sourceContent,
+    });
+  }
+
+  const currentReadme = await readFile(readmePath, "utf8");
+
+  if (check) {
+    if (readme !== currentReadme) {
+      throw new Error(
+        `Generated README is out of date: ${path.relative(root, readmePath)}`,
+      );
+    }
+
+    console.log(`Checked ${path.relative(root, readmePath)}`);
+    return;
+  }
+
+  if (readme !== currentReadme) {
+    await writeFile(readmePath, readme, "utf8");
+  }
+
+  console.log(`Generated ${path.relative(root, readmePath)}`);
+}
+
+async function main() {
+  const check = process.argv.includes("--check");
+  const config = await loadConfig();
+
+  for (const readme of config.readmes) {
+    await generateReadme(readme, check);
+  }
+}
+
+export {
+  generatedSection,
+  replaceGeneratedSection,
+  loadConfig,
+  generateReadme,
+};
 
 const isMainModule =
   process.argv[1] &&

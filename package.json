@@ -79,11 +79,11 @@
     "Documentation": {
       "readme:generate": {
         "desc": "Generate package README examples from canonical example sources"
-  },
-  "readme:test": {
-    "desc": "Test the package README generator"
-  }
-}
+      },
+      "readme:test": {
+        "desc": "Test the package README generator"
+      }
+    }
   },
   "scripts": {
     "help": "node scripts/help.js",

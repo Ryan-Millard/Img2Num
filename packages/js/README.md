@@ -148,8 +148,8 @@ import sharp from "sharp";
 const imagePath = process.argv[2];
 
 if (!imagePath) {
-  console.error("Usage: node index.js <image-path>");
-  process.exit(1);
+  console.error("Usage: node index.mjs <image-path>");
+  process.exitCode = 1;
 }
 
 console.log(`Processing image: ${imagePath}`);
