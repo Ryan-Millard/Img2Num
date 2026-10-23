@@ -33,38 +33,44 @@ typedef struct img2num_ImageToSvgConfig {
     /// @warning Setting the image type incorrectly may lead to undefined behaviour (see img2num_color_quantize()).
     img2num_image_type image_type;
 
-    /// Configuration settings for the bilateral filter in image_to_svg.
-    struct BilateralFilterConfig {
-        /// Standard deviation for spatial Gaussian (proximity weight).
-        /// Higher values smooth over larger spatial neighborhoods.
-        double sigma_spatial;
-        /// Standard deviation for range Gaussian (intensity similarity weight).
-        /// Higher values allow blending of more dissimilar pixel intensities.
-        double sigma_range;
-    } bilateral_filter;
+    /// @brief Configuration settings for processing on natural images
+    struct NaturalImageConfig {
+        /// @brief Configuration settings for the bilateral filter in image_to_svg.
+        struct BilateralFilterConfig {
+            /// Standard deviation for spatial Gaussian (proximity weight).
+            /// Higher values smooth over larger spatial neighborhoods.
+            double sigma_spatial;
+            /// Standard deviation for range Gaussian (intensity similarity weight).
+            /// Higher values allow blending of more dissimilar pixel intensities.
+            double sigma_range;
+        } bilateral_filter;
 
-    /// Configuration settings for K-Means in image_to_svg.
-    struct KMeansConfig {
-        /// Number of clusters to compute in K-Means.
-        /// Roughly represents number of unique colors discovered.
-        int32_t k;
-        /// Maximum number of iterations for the K-Means algorithm.
-        /// The algorithm may terminate earlier if it converges.
-        int32_t max_iter;
-    } kmeans;
+        /// @brief Configuration settings for K-Means in image_to_svg.
+        struct KMeansConfig {
+            /// Number of clusters to compute in K-Means.
+            /// Roughly represents number of unique colors discovered.
+            int32_t k;
+            /// Maximum number of iterations for the K-Means algorithm.
+            /// The algorithm may terminate earlier if it converges.
+            int32_t max_iter;
+        } kmeans;
+    } natural_image_config;
 
-    /// Quantization configuration struct for synthetic image
-    /// - .k: number of dominant colors
-    /// - .coverage: spatial area ratio for determining color dominance
-    struct QuantizeConfig {
-        /// Number of dominant colors to find in the image.
-        /// If 0 (default) use `coverage` to threshold based on area.
-        int32_t k;
-        /// Area ratio to consider when determining dominant colors.
-        /// Top dominant colors must cover at least `coverage` * `width` * `height` number of
-        /// pixels.
-        float coverage;
-    } quantize;
+    /// @brief Configuration settings for processing on synthetic images
+    struct SyntheticImageConfig{
+        /// @brief Quantization configuration settings for color_quantize
+        /// - .k: number of dominant colors
+        /// - .coverage: spatial area ratio for determining color dominance
+        struct QuantizeConfig {
+            /// Number of dominant colors to find in the image.
+            /// If 0 (default) use `coverage` to threshold based on area.
+            int32_t k;
+            /// Area ratio to consider when determining dominant colors.
+            /// Top dominant colors must cover at least `coverage` * `width` * `height` number of
+            /// pixels.
+            float coverage;
+        } quantize;
+    } synthetic_image_config;
 
     /// Minimum area (in pixels) for a region to be included in the SVG.
     int min_cluster_area;
@@ -85,16 +91,16 @@ img2num_ImageToSvgConfig img2num_ImageToSvgConfig_default(void);
 void img2num_gaussian_blur_fft(uint8_t* image, size_t width, size_t height, double sigma);
 
 /// @copydoc ::IMG2NUM_H_INVERT_IMAGE_DOC
-void img2num_invert_image(uint8_t* ptr, int width, int height);
+void img2num_invert_image(uint8_t* image, int width, int height);
 
 /// @copydoc ::IMG2NUM_H_THRESHOLD_IMAGE_DOC
 void img2num_threshold_image(
-    uint8_t* ptr, const int width, const int height, const int num_thresholds
+    uint8_t* image, const int width, const int height, const int num_thresholds
 );
 
 /// @copydoc ::IMG2NUM_H_BLACK_THRESHOLD_IMAGE_DOC
 void img2num_black_threshold_image(
-    uint8_t* ptr, const int width, const int height, const int num_thresholds
+    uint8_t* image, const int width, const int height, const int num_thresholds
 );
 
 /// @copydoc ::IMG2NUM_H_KMEANS_DOC

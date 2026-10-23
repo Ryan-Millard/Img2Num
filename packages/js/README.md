@@ -59,7 +59,7 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 
 ### What are you waiting for?
 
-Try one of our [example-apps](https://img2num.dev/example-apps/)!
+Try one of our [example-apps](https://img2num.dev/showcase/)!
 
 <br />
 </div>
@@ -116,6 +116,7 @@ Try one of our [example-apps](https://img2num.dev/example-apps/)!
 [![Good First Issues](https://img.shields.io/badge/Good%20First%20Issues-Welcome-6cc644?logo=github)](https://github.com/Ryan-Millard/Img2Num/issues/views/1155)
 [![Blog](https://img.shields.io/badge/Blog-Updates-ff6f00?logo=githubpages)](https://img2num.dev/blog/)
 [![GitHub Discussions](https://img.shields.io/badge/discussions-join_the_chat-4c1?logo=github)](https://github.com/Ryan-Millard/Img2Num/discussions)
+[![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.com/invite/BHjxcCqAnU)
 
 ## Supported Runtimes
 

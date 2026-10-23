@@ -1,7 +1,9 @@
+import { useState } from "react";
 import PropTypes from "prop-types";
-import { RotateCcw, X } from "lucide-react";
+import { RotateCcw, X, ChevronUp, ChevronDown } from "lucide-react";
 import GlassSwitch from "./GlassSwitch";
 import styles from "./ConfigPanel.module.css";
+import "driver.js/dist/driver.css";
 
 const ConfigPanel = ({
   numColors,
@@ -24,13 +26,27 @@ const ConfigPanel = ({
   isProcessing = false,
   className = "",
 }) => {
+  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
+
   return (
-    <div className={`${styles.settingsPanel} ${isOpen ? styles.settingsOpen : ""} ${className}`} onClick={(e) => e.stopPropagation()}>
+    <div
+      id="configNotes"
+      className={`${styles.settingsPanel} ${
+        isOpen ? styles.settingsOpen : ""
+      } ${className}`}
+      onClick={(e) => e.stopPropagation()}
+    >
       <div className={styles.settingsHeaderWrapper}>
         <h3 className={styles.settingsHeading}>Configuration</h3>
         <div className={styles.headerButtons}>
           {onClose && (
-            <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Close settings">
+            <button
+              type="button"
+              id="configPanel_closeButton"
+              className={styles.closeButton}
+              onClick={onClose}
+              aria-label="Close settings"
+            >
               <X size={20} />
             </button>
           )}
@@ -42,12 +58,19 @@ const ConfigPanel = ({
         <div className={styles.settingGroup}>
           <div className={styles.settingLabelWrapper}>
             <label>Synthetic Mode</label>
-            <GlassSwitch isOn={synthetic} onChange={() => setSyntheticFlag(!synthetic)} ariaLabel="toggle synthetic mode" disabled={isProcessing} tooltipPosition="top" />
+
+            <GlassSwitch
+              isOn={synthetic}
+              onChange={() => setSyntheticFlag(!synthetic)}
+              ariaLabel="toggle synthetic mode"
+              disabled={isProcessing}
+              tooltipPosition="top"
+            />
           </div>
         </div>
       )}
 
-      {/* K-Means Parameters (Color Settings) - unused in Synthetic Mode */}
+      {/* K-Means Parameters */}
       <div className={styles.sectionHeader}>K-Means Segmentation</div>
 
       <div className={styles.settingGroup}>
@@ -67,6 +90,7 @@ const ConfigPanel = ({
             disabled={isProcessing || synthetic}
           />
         </div>
+
         <input
           id="k-colors"
           type="range"
@@ -143,75 +167,119 @@ const ConfigPanel = ({
       </div>
 
       {!synthetic && (
-        <details className={styles.advancedToggle}>
-          <summary>Advanced Settings</summary>
+        <>
+          <button
+            id="advancedToggle"
+            type="button"
+            className={styles.advancedToggle}
+            onClick={() =>
+              setIsAdvancedOpen((prev) => !prev)
+            }
+            aria-expanded={isAdvancedOpen}
+          >
+            <span>Advanced Settings</span>
 
-          <div className={styles.advancedContent}>
-            <div className={styles.sectionHeader}>Bilateral Filter</div>
+            {isAdvancedOpen ? (
+              <ChevronUp size={16} />
+            ) : (
+              <ChevronDown size={16} />
+            )}
+          </button>
 
-            <div className={styles.settingGroup}>
-              <div className={styles.settingLabelWrapper}>
-                <label htmlFor="sigma-spatial">
-                  Spatial Sigma (σ<sub>s</sub>)
-                </label>
+          {isAdvancedOpen && (
+            <div className={styles.advancedContent}>
+              <div className={styles.sectionHeader}>
+                Bilateral Filter
+              </div>
+
+              <div className={styles.settingGroup}>
+                <div className={styles.settingLabelWrapper}>
+                  <label htmlFor="sigma-spatial">
+                    Spatial Sigma (σ<sub>s</sub>)
+                  </label>
+
+                  <input
+                    id="sigma-spatial-num"
+                    type="number"
+                    min="1"
+                    max="20"
+                    value={sigmaSpatial}
+                    onChange={(e) => {
+                      const val = Math.max(
+                        1,
+                        Math.min(
+                          20,
+                          parseInt(e.target.value, 10) || 1
+                        )
+                      );
+                      setSigmaSpatial(val);
+                    }}
+                    className={styles.numberInput}
+                    disabled={isProcessing}
+                  />
+                </div>
+
                 <input
-                  id="sigma-spatial-num"
-                  type="number"
+                  id="sigma-spatial"
+                  type="range"
                   min="1"
                   max="20"
                   value={sigmaSpatial}
-                  onChange={(e) => {
-                    const val = Math.max(1, Math.min(20, parseInt(e.target.value, 10) || 1));
-                    setSigmaSpatial(val);
-                  }}
-                  className={styles.numberInput}
+                  onChange={(e) =>
+                    setSigmaSpatial(
+                      parseInt(e.target.value, 10)
+                    )
+                  }
+                  className={styles.rangeInput}
                   disabled={isProcessing}
                 />
               </div>
-              <input
-                id="sigma-spatial"
-                type="range"
-                min="1"
-                max="20"
-                value={sigmaSpatial}
-                onChange={(e) => setSigmaSpatial(parseInt(e.target.value, 10))}
-                className={styles.rangeInput}
-                disabled={isProcessing}
-              />
-            </div>
 
-            <div className={styles.settingGroup}>
-              <div className={styles.settingLabelWrapper}>
-                <label htmlFor="sigma-range">
-                  Range Sigma (σ<sub>range</sub>)
-                </label>
+              <div className={styles.settingGroup}>
+                <div className={styles.settingLabelWrapper}>
+                  <label htmlFor="sigma-range">
+                    Range Sigma (σ<sub>range</sub>)
+                  </label>
+
+                  <input
+                    id="sigma-range-num"
+                    type="number"
+                    min="1"
+                    max="200"
+                    value={sigmaRange}
+                    onChange={(e) => {
+                      const val = Math.max(
+                        1,
+                        Math.min(
+                          200,
+                          parseInt(e.target.value, 10) || 1
+                        )
+                      );
+                      setSigmaRange(val);
+                    }}
+                    className={styles.numberInput}
+                    disabled={isProcessing}
+                  />
+                </div>
+
                 <input
-                  id="sigma-range-num"
-                  type="number"
+                  id="sigma-range"
+                  type="range"
                   min="1"
                   max="200"
                   value={sigmaRange}
-                  onChange={(e) => {
-                    const val = Math.max(1, Math.min(200, parseInt(e.target.value, 10) || 1));
-                    setSigmaRange(val);
-                  }}
-                  className={styles.numberInput}
+                  onChange={(e) =>
+                    setSigmaRange(
+                      parseInt(e.target.value, 10)
+                    )
+                  }
+                  className={styles.rangeInput}
                   disabled={isProcessing}
                 />
               </div>
-              <input
-                id="sigma-range"
-                type="range"
-                min="1"
-                max="200"
-                value={sigmaRange}
-                onChange={(e) => setSigmaRange(parseInt(e.target.value, 10))}
-                className={styles.rangeInput}
-                disabled={isProcessing}
-              />
             </div>
-          </div>
-        </details>
+          )}
+        </>
       )}
 
       <div className="flex-center gap-sm" style={{ marginTop: "var(--spacing-md)", width: "100%" }}>
@@ -231,6 +299,7 @@ const ConfigPanel = ({
         <button
           type="button"
           className="button"
+          id="okButton"
           onClick={(e) => {
             e.stopPropagation();
             onAction();

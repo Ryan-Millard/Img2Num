@@ -6,6 +6,7 @@ We wrote a [contribution guide](https://img2num.dev/docs/contributing) to help y
 
 **A few important points:**
 
+- **Before you start:** check that the issue isn't already claimed (look for the **taken** label), and please claim only **one issue at a time**. See the [issue claiming guide](https://img2num.dev/docs/contributing/issues/issue-claims/) for details.
 - **Add tests** with your PR — new features and bug fixes **must** include tests where appropriate. PRs without tests are unlikely to be approved.
 - Follow the repository's coding style rules.
 - Use the issue and PR templates when filing issues or submitting code. Your PR will be rejected if you don't.
@@ -15,6 +16,7 @@ If you're unsure what to change, [open a discussion](https://github.com/Ryan-Mil
 ## Questions?
 
 If you have questions or need help:
+- Join our [Discord](https://discord.com/invite/BHjxcCqAnU)
 - Check the [FAQ](https://img2num.dev/faq/) for answers to common questions.
 - Open a [discussion](https://github.com/Ryan-Millard/Img2Num/discussions)
 - Create an [issue](https://github.com/Ryan-Millard/Img2Num/issues)

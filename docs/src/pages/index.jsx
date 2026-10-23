@@ -6,6 +6,8 @@ import React, { useEffect, useState } from "react";
 import Hedgehog from "../components/Hedgehog";
 import styles from "./index.module.css";
 import CodeBlock from "@theme/CodeBlock";
+import { usePluginData } from "@docusaurus/useGlobalData";
+import { fetchContributorCount, fetchRepoStats } from "../../lib/githubStats";
 
 function RasterToSvgDemo() {
   return (
@@ -38,24 +40,22 @@ function RasterToSvgDemo() {
 }
 
 //core hero section
+/** Render the homepage hero with repository stats and showcase navigation. */
 function HeroSection() {
-  const [stats, setStats] = useState({
-    stars: null,
-    forks: null,
-  });
+  // Build-time numbers, baked into the static HTML.
+  const buildTimeStats = usePluginData("github-stats");
 
+  const [stats, setStats] = useState(buildTimeStats);
+
+  // Client-side refresh, so numbers stay current between deploys.
   useEffect(() => {
-    fetch("https://api.github.com/repos/Ryan-Millard/Img2Num")
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (data) {
-          setStats({
-            stars: data.stargazers_count,
-            forks: data.forks_count,
-          });
-        }
-      })
-      .catch(() => {});
+    Promise.all([fetchRepoStats(), fetchContributorCount()]).then(([repo, contributors]) => {
+      setStats((prev) => ({
+        stars: repo?.stars ?? prev.stars,
+        forks: repo?.forks ?? prev.forks,
+        contributors: contributors ?? prev.contributors,
+      }));
+    });
   }, []);
 
   return (
@@ -108,6 +108,10 @@ function HeroSection() {
               <span className={styles.statLabel}>forks</span>
             </div>
             <div className={styles.stat}>
+              <span className={styles.statNum}>◉ {stats.contributors !== null ? stats.contributors : "—"}</span>
+              <span className={styles.statLabel}>contributors</span>
+            </div>
+            <div className={styles.stat}>
               <span className={styles.statNum}>C++/C/Py/JS</span>
               <span className={styles.statLabel}>bindings</span>
             </div>
@@ -116,8 +120,8 @@ function HeroSection() {
 
         <div className={styles.heroRight}>
           <RasterToSvgDemo />
-          <Link className={styles.btnPrimary} to="/example-apps/">
-            View Example Apps <MoveRight size={15} />
+          <Link className={styles.btnPrimary} to="/showcase">
+            View Showcase <MoveRight size={15} />
           </Link>
         </div>
       </div>

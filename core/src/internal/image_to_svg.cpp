@@ -17,17 +17,17 @@ std::string image_to_svg(
     );
     if (config.image_type == ImageType::Synthetic) {
         color_quantize(
-            img_data.data(), out_data.data(), out_labels.data(), width, height, config.quantize.k,
-            config.quantize.coverage, config.color_space
+            img_data.data(), out_data.data(), out_labels.data(), width, height, config.synthetic_image_config.quantize.k,
+            config.synthetic_image_config.quantize.coverage, config.color_space
         );
     } else {
         bilateral_filter(
-            img_data.data(), width, height, config.bilateral_filter.sigma_spatial,
-            config.bilateral_filter.sigma_range, config.color_space
+            img_data.data(), width, height, config.natural_image_config.bilateral_filter.sigma_spatial,
+            config.natural_image_config.bilateral_filter.sigma_range, config.color_space
         );
         kmeans(
-            img_data.data(), out_data.data(), out_labels.data(), width, height, config.kmeans.k,
-            config.kmeans.max_iter, config.color_space
+            img_data.data(), out_data.data(), out_labels.data(), width, height, config.natural_image_config.kmeans.k,
+            config.natural_image_config.kmeans.max_iter, config.color_space
         );
     }
     std::string svg {labels_to_svg(

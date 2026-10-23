@@ -10,19 +10,18 @@ extern "C" {
 static img2num::ImageToSvgConfig to_cpp(const img2num_ImageToSvgConfig& c) {
     img2num::ImageToSvgConfig cfg {};
 
-    cfg.bilateral_filter.sigma_spatial = c.bilateral_filter.sigma_spatial;
-    cfg.bilateral_filter.sigma_range = c.bilateral_filter.sigma_range;
+    cfg.natural_image_config.bilateral_filter.sigma_spatial = c.natural_image_config.bilateral_filter.sigma_spatial;
+    cfg.natural_image_config.bilateral_filter.sigma_range = c.natural_image_config.bilateral_filter.sigma_range;
 
-    cfg.kmeans.k = c.kmeans.k;
-    cfg.kmeans.max_iter = c.kmeans.max_iter;
+    cfg.natural_image_config.kmeans.k = c.natural_image_config.kmeans.k;
+    cfg.natural_image_config.kmeans.max_iter = c.natural_image_config.kmeans.max_iter;
 
-    cfg.quantize.k = c.quantize.k;
-    cfg.quantize.coverage = c.quantize.coverage;
+    cfg.synthetic_image_config.quantize.k = c.synthetic_image_config.quantize.k;
+    cfg.synthetic_image_config.quantize.coverage = c.synthetic_image_config.quantize.coverage;
 
     cfg.min_cluster_area = c.min_cluster_area;
     cfg.min_thickness = c.min_thickness;
     cfg.color_space = c.color_space;
-    cfg.synthetic = c.synthetic;
 
     return cfg;
 }
@@ -30,19 +29,18 @@ static img2num::ImageToSvgConfig to_cpp(const img2num_ImageToSvgConfig& c) {
 static img2num_ImageToSvgConfig to_c(const img2num::ImageToSvgConfig& cpp) {
     img2num_ImageToSvgConfig cfg {};
 
-    cfg.bilateral_filter.sigma_spatial = cpp.bilateral_filter.sigma_spatial;
-    cfg.bilateral_filter.sigma_range = cpp.bilateral_filter.sigma_range;
+    cfg.natural_image_config.bilateral_filter.sigma_spatial = cpp.natural_image_config.bilateral_filter.sigma_spatial;
+    cfg.natural_image_config.bilateral_filter.sigma_range = cpp.natural_image_config.bilateral_filter.sigma_range;
 
-    cfg.kmeans.k = cpp.kmeans.k;
-    cfg.kmeans.max_iter = cpp.kmeans.max_iter;
+    cfg.natural_image_config.kmeans.k = cpp.natural_image_config.kmeans.k;
+    cfg.natural_image_config.kmeans.max_iter = cpp.natural_image_config.kmeans.max_iter;
 
-    cfg.quantize.k = cpp.quantize.k;
-    cfg.quantize.coverage = cpp.quantize.coverage;
+    cfg.synthetic_image_config.quantize.k = cpp.synthetic_image_config.quantize.k;
+    cfg.synthetic_image_config.quantize.coverage = cpp.synthetic_image_config.quantize.coverage;
 
     cfg.min_cluster_area = cpp.min_cluster_area;
     cfg.min_thickness = cpp.min_thickness;
     cfg.color_space = cpp.color_space;
-    cfg.synthetic = cpp.synthetic;
 
     return cfg;
 }
@@ -61,18 +59,18 @@ void img2num_invert_image(uint8_t* image, int width, int height) {
 }
 
 void img2num_threshold_image(
-    uint8_t* ptr, const int width, const int height, const int num_thresholds
+    uint8_t* image, const int width, const int height, const int num_thresholds
 ) {
     img2num::clear_last_error_and_catch(
-        img2num::threshold_image, ptr, width, height, num_thresholds
+        img2num::threshold_image, image, width, height, num_thresholds
     );
 }
 
 void img2num_black_threshold_image(
-    uint8_t* ptr, const int width, const int height, const int num_thresholds
+    uint8_t* image, const int width, const int height, const int num_thresholds
 ) {
     img2num::clear_last_error_and_catch(
-        img2num::black_threshold_image, ptr, width, height, num_thresholds
+        img2num::black_threshold_image, image, width, height, num_thresholds
     );
 }
 

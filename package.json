@@ -58,6 +58,12 @@
       },
       "lint:js:fix": {
         "desc": "Run ESLint and automatically fix issues"
+      },
+      "lint:py": {
+        "desc": "Run ruff to flag formatting issues"
+      },
+      "lint:py:fix": {
+        "desc": "Run ruff to apply formatting issues"
       }
     },
     "Validation": {
@@ -86,25 +92,24 @@
     "format:js": "pnpm prettier --write . --ignore-path .prettierignore --config .prettierrc",
     "format:js:check": "pnpm prettier --check . --ignore-path .prettierignore --config .prettierrc",
     "validate-scripts": "node scripts/validate-scripts.js",
-    "lint": "pnpm run --filter=. --parallel \"/^lint:(cpp|js)$/\"",
-    "lint:fix": "pnpm run --filter=. --parallel \"/^lint:(cpp|js):fix$/\"",
+    "lint": "pnpm run --filter=. --parallel \"/^lint:(cpp|js|py)$/\"",
+    "lint:fix": "pnpm run --filter=. --parallel \"/^lint:(cpp|js|py):fix$/\"",
     "lint:cpp": "uv run lint_cpp",
     "lint:cpp:fix": "uv run lint_cpp --fix",
     "lint:js": "eslint packages/js example-apps/react-js scripts/img2num-dev-scripts docs",
     "lint:js:fix": "eslint packages/js example-apps/react-js scripts/img2num-dev-scripts docs --fix",
+    "lint:py": "uv run --with ruff ruff check .",
+    "lint:py:fix": "uv run --with ruff ruff check --fix --unsafe-fixes .",
     "editorconfig:check": "editorconfig-checker"
   },
   "devDependencies": {
     "clang-format": "^1.8.0",
-    "editorconfig-checker": "^6.1.1",
-    "eslint": "^10.9.0",
+    "editorconfig-checker": "^7.0.0",
+    "eslint": "^10.10.0",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.5.4",
-    "globals": "^17.11.0",
+    "eslint-plugin-react-refresh": "^0.5.6",
+    "globals": "^17.12.0",
     "img2num-dev-scripts": "workspace:*",
     "prettier": "^3.9.6"
-  },
-  "dependencies": {
-    "fast-glob": "^3.3.3"
   }
 }

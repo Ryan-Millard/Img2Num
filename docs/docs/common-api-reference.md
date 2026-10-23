@@ -8,12 +8,12 @@ sidebar_position: 6
 
 Img2Num provides bindings for multiple languages. Choose the one that fits your workflow:
 
-|                                                                                                                                                                                                            Language | Docs                          |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------- |
-|                             <a alt="C" href="https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" width="30" /></a> | [JS API Reference](../js)     |
-|                  <a alt="C++" href="https://github.com/Ryan-Millard/Img2Num/releases?q=cpp"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" width="30" /></a> | [C++ API Reference](../cpp)   |
-| <a alt="JavaScript" href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-js"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="30" /></a> | [C API Reference](../c)       |
-|             <a alt="Python" href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" width="30" /></a> | [Python API Reference](../py) |
+|                                                                                                                                                                                                                             Language | Docs                          |
+| -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------- |
+|                                      <a alt="C" href="https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c"><img alt="C" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" width="30" /></a> | [C API Reference](../c)       |
+|                         <a alt="C++" href="https://github.com/Ryan-Millard/Img2Num/releases?q=cpp"><img alt="C++" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" width="30" /></a> | [C++ API Reference](../cpp)   |
+| <a alt="JavaScript" href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-js"><img alt="JavaScript" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="30" /></a> | [JS API Reference](../js)     |
+|                 <a alt="Python" href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py"><img alt="Python" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" width="30" /></a> | [Python API Reference](../py) |
 
 ## Common Concepts Across All Bindings
 
@@ -33,7 +33,11 @@ All APIs share these core concepts:
 |       `num_colors` / `k` ($k$) | `int`   | `16`    | Number of clusters        |
 |                     `max_iter` | `int`   | `100`   | K-means iterations        |
 |                     `min_area` | `int`   | `100`   | Minimum contour area      |
+|                `min_thickness` | `int`   | Varies  | Minimum region thickness  |
 |                  `color_space` | `int`   | `0`     | `0` = CIE LAB, `1` = sRGB |
+
+`min_thickness` is measured in pixels, and `0` disables thickness filtering.
+C, C++, and Python currently default to `0`; JavaScript defaults to `10`.
 
 ## Pipeline Flow
 

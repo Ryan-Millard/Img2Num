@@ -244,7 +244,13 @@ jobs:
           submodules: true
           persist-credentials: false
 
+      - name: Read Emscripten version
+        id: emscripten-version
+        run: echo "version=$(node scripts/read-version.js .versions/.emscripten.json)" >> "$GITHUB_OUTPUT"
+
       - uses: mymindstorm/setup-emsdk@1f4f5866c1f8745a10fcb64c4d7a0eb7a8daed9d
+        with:
+          version: ${{ steps.emscripten-version.outputs.version }}
 
       - uses: actions/setup-node@670825a89dc0abd596e7a3abd0f5e3f6e5faf37c
         with:

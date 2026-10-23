@@ -6,18 +6,18 @@ gaussian_blur_fft(uint8_t* image, size_t width, size_t height, double sigma) {
     img2num_gaussian_blur_fft(image, width, height, sigma);
 }
 
-EMSCRIPTEN_KEEPALIVE void invert_image(uint8_t* ptr, int width, int height) {
-    img2num_invert_image(ptr, width, height);
+EMSCRIPTEN_KEEPALIVE void invert_image(uint8_t* image, int width, int height) {
+    img2num_invert_image(image, width, height);
 }
 
 EMSCRIPTEN_KEEPALIVE void
-threshold_image(uint8_t* ptr, const int width, const int height, const int num_thresholds) {
-    img2num_threshold_image(ptr, width, height, num_thresholds);
+threshold_image(uint8_t* image, const int width, const int height, const int num_thresholds) {
+    img2num_threshold_image(image, width, height, num_thresholds);
 }
 
 EMSCRIPTEN_KEEPALIVE void
-black_threshold_image(uint8_t* ptr, const int width, const int height, const int num_thresholds) {
-    img2num_black_threshold_image(ptr, width, height, num_thresholds);
+black_threshold_image(uint8_t* image, const int width, const int height, const int num_thresholds) {
+    img2num_black_threshold_image(image, width, height, num_thresholds);
 }
 
 EMSCRIPTEN_KEEPALIVE void kmeans(
@@ -51,14 +51,19 @@ EMSCRIPTEN_KEEPALIVE char* labels_to_svg(
 EMSCRIPTEN_KEEPALIVE char* image_to_svg(
     const uint8_t* data, const int width, const int height, double sigma_spatial,
     double sigma_range, const int32_t k, const int32_t max_iter, const int min_area,
-    const int min_thickness, const uint8_t color_space
+    const int min_thickness, const uint8_t color_space, const float coverage
 ) {
     img2num_ImageToSvgConfig config = img2num_ImageToSvgConfig_default();
 
-    config.bilateral_filter.sigma_spatial = sigma_spatial;
-    config.bilateral_filter.sigma_range = sigma_range;
-    config.kmeans.k = k;
-    config.kmeans.max_iter = max_iter;
+    config.natural_image_config.bilateral_filter.sigma_spatial = sigma_spatial;
+    config.natural_image_config.bilateral_filter.sigma_range = sigma_range;
+
+    config.natural_image_config.kmeans.k = k;
+    config.natural_image_config.kmeans.max_iter = max_iter;
+
+    config.synthetic_image_config.quantize.k = k;
+    config.synthetic_image_config.quantize.coverage = coverage;
+
     config.min_cluster_area = min_area;
     config.min_thickness = min_thickness;
     config.color_space = color_space;
