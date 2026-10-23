@@ -10,7 +10,7 @@ Changelog:[`img2num`](/changelog/cpp) Latest:[v0.3.0 - 2026-10-21](/changelog/cp
 
 ## [C](/changelog/c)
 
-Changelog:[`cimg2num`](/changelog/c) Latest:[v0.2.0 - 2026-06-27](/changelog/c/2026-06-27_0-2-0)
+Changelog:[`cimg2num`](/changelog/c) Latest:[v0.2.1 - 2026-10-23](/changelog/c/2026-10-23_0-2-1)
 
 [![C](https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg)](/changelog/c)
 
