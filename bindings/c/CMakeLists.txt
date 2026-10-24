@@ -71,3 +71,25 @@ install(DIRECTORY include/
 )
 
 message(STATUS "C bindings library configured with ${C_BINDINGS_SRC}")
+
+# Tests
+if(IMG2NUM_BUILD_TESTS)
+  add_executable(test_cimg2num
+    tests/test_cimg2num.cpp
+    ../../third_party/Catch2/extras/catch_amalgamated.cpp
+  )
+
+  target_include_directories(test_cimg2num PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../third_party/Catch2/extras
+  )
+
+  target_link_libraries(test_cimg2num PRIVATE
+    CImg2Num
+  )
+
+  add_test(
+    NAME cimg2num
+    COMMAND test_cimg2num
+  )
+endif()

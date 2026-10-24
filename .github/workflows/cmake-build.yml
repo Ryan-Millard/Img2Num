@@ -6,6 +6,11 @@ on:
       image:
         required: true
         type: string
+      run-tests:
+        description: 'Build and run the C++ core and C bindings tests'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -52,10 +57,14 @@ jobs:
           clang --version
 
       - name: Run cmake
-        run: cmake -B build-c-cpp/ .
+        run: cmake -DIMG2NUM_BUILD_TESTS=${{ inputs.run-tests && 'ON' || 'OFF' }} -B build-c-cpp/ .
 
       - name: Build C/C++
         run: cmake --build build-c-cpp/
+
+      - name: Run C/C++ tests
+        if: ${{ inputs.run-tests }}
+        run: ctest --test-dir build-c-cpp/ --output-on-failure
 
       - name: Upload C/C++ build artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
