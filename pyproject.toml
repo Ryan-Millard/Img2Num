@@ -7,7 +7,8 @@ license = { text = "MIT" }
 readme = "packages/py/README.md"
 authors = [{ name = "Ryan Millard" }]
 dependencies = [
-  "numpy>=1.23.5"
+  "numpy>=1.23.5",
+  "Pillow>=10",
 ]
 classifiers = [
   "Intended Audience :: Developers",
@@ -20,6 +21,12 @@ classifiers = [
   "Topic :: Multimedia :: Graphics :: Graphics Conversion",
   "Topic :: Scientific/Engineering :: Image Processing"
 ]
+
+[project.scripts]
+# syntax: command_name = "package.module:function"
+img2num = "img2num.cli:main"
+corpus-manager = "benchmarks.corpus_manager:main"
+corpus_manager = "benchmarks.corpus_manager:main"
 
 [project.urls]
 Homepage      = "https://img2num.dev"
@@ -49,7 +56,8 @@ cmake.args = [
 ]
 # Python sources are installed by CMake (bindings/py/CMakeLists.txt).
 # Don't list "img2num" here: at the repo root that is the dev CLI script.
-wheel.packages = []
+# Include "benchmarks" so console scripts (corpus-manager) work when installed from wheel.
+wheel.packages = ["benchmarks"]
 sdist.inclusion-mode = "explicit"
 sdist.include = [
   "pyproject.toml",
@@ -59,6 +67,7 @@ sdist.include = [
   "core/**",
   "bindings/py/**",
   "packages/py/**",
+  "benchmarks/**",
   "third_party/dawn/**",
   "third_party/spdlog/**",
 ]
@@ -144,6 +153,7 @@ dev = [
     "docspec-python>=2.2.1,<3",
     "pybind11-stubgen>=2.5.5,<3",
     "pydoc-markdown>=4.8.2,<5",
+    "pytest>=8,<10",
 ]
 lint = [
     "ruff>=0.15,<0.16",
@@ -156,6 +166,10 @@ licensing = [
 cli = [
     "pillow>=12.0.0"
 ]
-[project.scripts]
-# syntax: command_name = "package.module:function"
-img2num = "img2num.cli:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = [
+  "benchmarks/tests",
+  "bindings/py/tests",
+]
