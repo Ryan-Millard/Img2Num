@@ -15,7 +15,7 @@ TEST_CASE("labels_to_svg converts a simple labeled image to SVG")
         0, 0
     };
 
-    const std::string svg = labels_to_svg(
+    const std::string svg = img2num::labels_to_svg(
         data,
         labels,
         2,
@@ -46,7 +46,7 @@ TEST_CASE("labels_to_svg handles multiple labeled regions")
         0, 1
     };
 
-    const std::string svg = labels_to_svg(
+    const std::string svg = img2num::labels_to_svg(
         data,
         labels,
         2,

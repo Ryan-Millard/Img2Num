@@ -114,6 +114,7 @@ jobs:
     needs: [set-image]
     with:
       image: ${{ needs.set-image.outputs.image }}
+      run-tests: true
 
   # Docs now builds react app internally
   build-docs:
