@@ -239,7 +239,7 @@ For example, an `Int32Array` cannot be read if `HEAP32` is not exported from WAS
 
 This means that it needs to be exported explicitly in the CMake file's flags:
 
-```CMakeLists.txt
+```cmake
 "SHELL:-s EXPORTED_RUNTIME_METHODS=['HEAP32']"
 ```
 

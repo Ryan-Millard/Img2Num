@@ -108,7 +108,7 @@ just init
 </TabItem>
 <TabItem value="cmd">
 
-```sh title="Paste this in your terminal"
+```batch title="Paste this in your terminal"
 # Clone the repository
 git clone https://github.com/<your-username>/Img2Num.git
 cd Img2Num/
@@ -123,7 +123,7 @@ just init
 </TabItem>
 <TabItem value="powershell">
 
-```sh title="Paste this in your terminal"
+```powershell title="Paste this in your terminal"
 # Clone the repository
 git clone https://github.com/<your-username>/Img2Num.git
 cd Img2Num/
@@ -187,7 +187,7 @@ values={[
 </TabItem>
 <TabItem value="cmd">
 
-```bat title="Paste this in your terminal"
+```batch title="Paste this in your terminal"
 .\img2num.bat sh
 ```
 
