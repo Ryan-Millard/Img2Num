@@ -1,0 +1,35 @@
+# URLs
+https?://\S+
+
+# Email addresses
+[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}
+
+# Git commit SHA
+\b[0-9a-f]{40}\b
+
+# Markdown anchors
+\]\(#[-a-zA-Z0-9_]+\)
+
+# Markdown links
+\]\(https?://[^)]+\)
+
+# Inline code
+`[^`]+`
+
+# Code blocks
+^```
+
+# GitHub repository references
+github\.com/[-\w]+/[-\w]+
+
+# GitHub Actions uses
+\buses:\s+[-\w.]+/[-\w./]+@[-\w.]+\b
+
+# Version numbers
+\bv?\d+\.\d+(\.\d+)?\b
+
+# Hex colors
+#[0-9A-Fa-f]{6}\b
+
+# UUIDs
+\b[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}\b

@@ -85,6 +85,14 @@ reviews:
         - Least-privilege permissions on each job/workflow.
         - Correct job dependency ordering (needs:) and if/condition logic.
 
+    - path: ".github/.check-spelling/**"
+      instructions: |
+        Check-spelling configuration files. Review for:
+        - Correct check-spelling syntax and configuration file purpose.
+        - Narrow, intentional patterns and exclusions that do not hide documentation typos.
+        - Project-specific terms in the allowlist, avoiding overly broad entries.
+        - Consistency with the paths and behavior configured in the check-spelling workflow.
+
     - path: "scripts/**"
       instructions: |
         These are the Img2Num developer scripts. When referencing CLI commands in review
