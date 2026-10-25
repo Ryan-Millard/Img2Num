@@ -33,7 +33,7 @@
  * - `width`: Width of the image in pixels.
  * - `height`: Height of the image in pixels.
  *
- * @throws {Error} Will not throw in current implementation, but could reject if the image fails to load.
+ * @throws {Error} The returned promise rejects with an `Error("Failed to load image")` if the file cannot be decoded as an image.
  *
  * @example
  * const fileInput = document.querySelector("#fileInput");
@@ -44,7 +44,6 @@
  *   console.log("Pixels:", pixels);
  * });
  *
- * @todo Add error handling for invalid or corrupt image files.
  * @variation Standard image file input
  */
 export function imageToUint8ClampedArray(file) {
