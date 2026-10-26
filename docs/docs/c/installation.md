@@ -46,7 +46,7 @@ Set `CMAKE_PREFIX_PATH` to the extracted package directory. CMake will find the 
 
 ```cmake title="CMakeLists.txt"
 cmake_minimum_required(VERSION 3.19)
-project(c_img2num_example LANGUAGES C)
+project(c_img2num_example LANGUAGES C CXX)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -54,6 +54,9 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 find_package(CImg2Num CONFIG REQUIRED)
 
 add_executable(c_img2num_example main.c)
+set_target_properties(c_img2num_example PROPERTIES
+    LINKER_LANGUAGE CXX
+)
 target_link_libraries(c_img2num_example PRIVATE CImg2Num::CImg2Num)
 ```
 

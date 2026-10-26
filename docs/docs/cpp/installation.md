@@ -76,6 +76,7 @@ The package exposes the C++ API through `img2num.h`. This example converts a one
 #include <cstdint>
 #include <iostream>
 #include <img2num.h>
+#include <string>
 
 int main() {
     const std::uint8_t pixel[] = {255, 0, 0, 255};
@@ -86,6 +87,14 @@ int main() {
     return 0;
 }
 ```
+
+:::warning[Static package dependency]
+
+The `cpp-v0.3.0` release is a static library package. Its exported `Img2Num::Img2Num` target does not currently declare the Dawn WebGPU libraries required by the implementation. As a result, applications that call GPU-backed functions such as `img2num::image_to_svg` may fail at link time with missing WebGPU/Dawn symbols.
+
+The package does not include a consumer-facing Dawn dependency archive, so there is no portable additional library list to add to this example. Until the exported target supplies its transitive Dawn dependencies, use a source build for applications that need these functions, or track the corresponding packaging issue in the project repository.
+
+:::
 
 ## Header and target names
 
