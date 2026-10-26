@@ -108,7 +108,7 @@
     "lint:js:fix": "eslint packages/js example-apps/react-js scripts/img2num-dev-scripts docs --fix",
     "editorconfig:check": "editorconfig-checker",
     "readme:generate": "node scripts/generate-package-readme.mjs",
-    "readme:test": "node --test scripts/generate-package-readme.test.mjs"
+    "readme:test": "node --test scripts/generate-package-readme.test.mjs",
     "lint:py": "uv run --with ruff ruff check .",
     "lint:py:fix": "uv run --with ruff ruff check --fix --unsafe-fixes ."
   },
