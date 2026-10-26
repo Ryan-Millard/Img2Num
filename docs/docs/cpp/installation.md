@@ -104,4 +104,4 @@ The package does not include a consumer-facing Dawn dependency archive, so there
 
 ## Build from source instead
 
-Use the [Img2Num repository](https://github.com/Ryan-Millard/Img2Num) and its CMake project directly only when you need to modify Img2Num, test unreleased changes, or contribute to the project. For normal application integration, the packaged release is the recommended option.
+Use the [Img2Num repository](https://github.com/Ryan-Millard/Img2Num) and its CMake project directly for applications that require GPU-backed functions or other Dawn WebGPU features, as well as when you need to modify Img2Num, test unreleased changes, or contribute to the project. The packaged release is suitable for application integration only when those GPU-backed functions are not needed.
