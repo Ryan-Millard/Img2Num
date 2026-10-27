@@ -1,0 +1,116 @@
+# Command-line tool
+
+URL: https://img2num.dev/docs/py/cli
+
+The `img2num` command converts image files or folders into SVGs without requiring you to write Python code. This guide describes the CLI in the repository source.
+
+## Installation
+
+CLI release availability
+PyPI version `0.3.1` does not include the `cli` extra or the `img2num` command. Installing that release provides the Python library, not the CLI. CLI installation from PyPI must wait for a release containing both the extra and the command. The examples below require a source-built CLI until then.
+
+### Install from source
+
+The Python package requires Python 3.10 or newer. Follow theproject setup guide to configure the Docker development environment and initialize the repository's submodules. The commands below use that environment's native build tools, NumPy, and pybind11.
+
+Run these commands from the repository root inside the development container:
+
+Install the CLI from repository source
+
+```bash
+uv pip install "scikit-build-core>=1.0"
+uv pip install ".[cli]" --no-build-isolation
+```
+
+The repository's `[cli]` extra installs Pillow for decoding images. The plain `pip install img2num` command remains sufficient for using the Python library, but does not provide the CLI in version `0.3.1` . Keep the quotes around `.[cli]` so shells do not interpret the brackets as a glob pattern.
+
+Show available options
+
+```sh
+img2num --help
+```
+
+Not the Docker development helper
+The installed `img2num` command converts images. The repository's `./img2num` , `.\img2num.bat` , and `.\img2num.ps1` scripts are separateDocker development helpers .
+
+## Usage
+
+### Single image
+
+```sh
+img2num input.png -o output.svg
+```
+
+Omit `-o` to write an SVG next to the input with the same filename stem:
+
+```sh
+img2num input.png
+```
+
+This writes `input.svg` . Existing output files are skipped unless you use `--overwrite` .
+
+### Folders and batches
+
+```sh
+img2num photos/ -o out/
+img2num "photos/*.jpg" -o out/
+img2num first.png second.jpg -o out/
+```
+
+Folder inputs are scanned recursively for PNG, JPEG, GIF, BMP, TIFF, and WebP images. When converting a folder into an output directory, its subdirectory structure is preserved. Output directories are created as needed.
+
+Glob patterns are expanded by the CLI, including in Windows CMD and PowerShell. For multiple inputs, `-o` must name a directory, not a single SVG file. Without `-o` , each SVG is written next to its input image.
+
+### Standard input and output
+
+Use `-` as the only input to read an image from standard input. The output then defaults to standard output. Use `-o -` to send a single image's SVG to standard output instead of saving it directly to a file:
+
+Bash or Windows CMD
+
+```bash
+img2num - < input.png > output.svg
+img2num input.png -o - > output.svg
+```
+
+The input redirection syntax ( `<` ) above is not supported by PowerShell. CLI progress messages go to standard error. Standard output cannot be used for batch conversion.
+
+### Configure conversion
+
+```sh
+img2num input.png -o output.svg --k 12 --min-cluster-area 50 --color-space 1
+```
+
+This uses 12 colors, a minimum cluster area of 50 pixels, and RGB color space.
+
+## Options
+
+Conversion options map to the fields of `ImageToSvgConfig` :
+
+| Option | Default | Configuration field | Description | `--color-space` , `-c` | `0` | `color_space` | `0` for CIELAB, `1` for RGB. | `--sigma-range` , `-sr` | `50.0` | `bilateral_filter.sigma_range` | Bilateral filter color sigma. | `--sigma-spatial` , `-ss` | `3.0` | `bilateral_filter.sigma_spatial` | Bilateral filter spatial sigma. | `--k` , `-k` | `16` | `kmeans.k` | Number of unique colors. | `--max-iter` | `100` | `kmeans.max_iter` | Number of K-Means iterations. | `--min-cluster-area` , `-area` | `100` | `min_cluster_area` | Minimum cluster area in pixels. | `--min-thickness` , `-thick` | `10` | `min_thickness` | Minimum cluster thickness. 
+
+Other options control input/output and progress:
+
+| Option | Default | Description | `--output` , `-o` | Next to each input; stdout for stdin | Output SVG file, directory, or `-` for standard output. | `--overwrite` , `-f` | Off | Replace existing SVG files instead of skipping them. | `--quiet` , `-q` | Off | Suppress progress messages. | `--jobs` , `-j` | `8` | Number of concurrent jobs; use a positive integer. | `--help` , `-h` | — | Show the help message and exit. 
+
+## Troubleshooting
+
+If `img2num` is not found after installing PyPI version `0.3.1` , this is the release limitation described above. Installing Pillow alone does not add the missing CLI; use the source installation instructions instead.
+
+If Pillow is missing, the CLI displays:
+
+```text
+The img2num CLI requires extra dependencies.
+Install them with: pip install 'img2num[cli]'
+```
+
+The PyPI installation suggested in this message does not provide the CLI in version `0.3.1` . For a source-built CLI, install the extra from the repository root in the same development environment as the `img2num` command:
+
+```sh
+uv pip install ".[cli]" --no-build-isolation
+```
+
+To replace an existing SVG that would otherwise be skipped, pass `--overwrite` :
+
+```sh
+img2num input.png -o output.svg --overwrite
+```

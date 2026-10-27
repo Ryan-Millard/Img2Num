@@ -17,6 +17,9 @@ Install Using pip
 pip install img2num
 ```
 
+CLI release availability
+PyPI version `0.3.1` does not include the `cli` extra or the `img2num` command. CLI installation from PyPI must wait for a release containing both. The repository source includes the CLI; see theCLI guide for source installation, usage examples, options, and troubleshooting.
+
 ## Usage
 
 Input images must be **RGBA** (4 channels).
