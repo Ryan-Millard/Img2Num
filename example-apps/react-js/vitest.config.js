@@ -23,7 +23,6 @@ export default defineConfig({
       "@utils": path.resolve(__dirname, "src/utils"),
       "@hooks": path.resolve(__dirname, "src/hooks"),
       "@global-styles": path.resolve(__dirname, "src/global-styles"),
-      "@data": path.resolve(__dirname, "src/data"),
     },
   },
 });
