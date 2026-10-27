@@ -234,9 +234,7 @@ void bilateral_filter(
     GPU::getClassInstance().init_gpu();
 
     if (GPU::getClassInstance().is_initialized()) {
-        GPU::getClassInstance().with_device([&](auto& dev, auto& q) {
-            bilateral_filter_gpu(image, width, height, sigma_spatial, sigma_range, color_space);
-        });
+        bilateral_filter_gpu(image, width, height, sigma_spatial, sigma_range, color_space);
     } else {
         bilateral_filter_cpu(image, width, height, sigma_spatial, sigma_range, color_space);
     }

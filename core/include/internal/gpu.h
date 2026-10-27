@@ -75,12 +75,6 @@ class GPU {
         return *gpuInstance;
     }
 
-    template <class F>
-    decltype(auto) with_device(F&& f) {
-        ThreadDevice& td = thread_device();
-        return std::forward<F>(f)(td.device, td.queue);
-    }
-
     // Device and queue belonging to the calling thread
     const wgpu::Device& get_device() {
         return thread_device().device;

@@ -1,12 +1,12 @@
 #include <cstdlib>
 #include <img2num.h>
 #include <memory>
+#include <mutex>
 #include <optional>
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <sstream>
-#include <mutex>
 
 inline std::mutex core_mutex;
 
