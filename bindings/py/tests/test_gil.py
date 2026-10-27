@@ -141,7 +141,6 @@ def test_native_exception_restores_gil_and_unlocks_core(controlled_extension):
         controlled_extension,
     )
 
-# NOTE: This test fails for some reason
 def test_config_is_snapshotted_before_release(controlled_extension):
     run_child(
         """

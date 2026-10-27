@@ -49,6 +49,7 @@ class GPU {
     bool instance_attempted = false;
 
     GPU() = default;
+    ~GPU() = default;
 
     void cleanup() {
         instance = nullptr;
@@ -72,12 +73,6 @@ class GPU {
     static GPU& getClassInstance() {
         static GPU gpuInstance;
         return gpuInstance;
-    }
-
-    template <class F>
-    decltype(auto) with_device(F&& f) {
-        ThreadDevice& td = thread_device();
-        return std::forward<F>(f)(td.device, td.queue);
     }
 
     // Device and queue belonging to the calling thread
@@ -207,10 +202,6 @@ class GPU {
         td.queue = device.GetQueue();
         td.device = std::move(device);
         IMG2NUM_LOG_INFO("GPU Fully Initialized.");
-    };
-
-    ~GPU() {
-        cleanup();
     };
 
   private:
