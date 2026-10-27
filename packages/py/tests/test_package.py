@@ -5,7 +5,10 @@ from pathlib import Path
 
 import img2num
 
+# Names users can rely on. Removing one is a breaking change; adding a new
+# export is not, so this is a minimum set rather than an exact snapshot.
 PUBLIC_API = {
+    "__version__",
     "ImageToSvgConfig",
     "bilateral_filter",
     "black_threshold_image",
@@ -18,9 +21,14 @@ PUBLIC_API = {
 }
 
 
-def test_public_api_is_exported():
-    assert set(img2num.__all__) == PUBLIC_API
-    for name in PUBLIC_API:
+def test_public_api_is_still_exported():
+    missing = PUBLIC_API - set(img2num.__all__)
+    assert not missing, f"public names removed from img2num.__all__: {sorted(missing)}"
+
+
+def test_every_name_in_all_exists():
+    # A misspelled or stale entry in __all__ breaks `from img2num import *`.
+    for name in img2num.__all__:
         assert hasattr(img2num, name), name
 
 
