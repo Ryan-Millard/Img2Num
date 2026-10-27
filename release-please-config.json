@@ -9,11 +9,11 @@
     { "type": "perf", "section": "⚡ Performance Improvements" },
     { "type": "revert", "section": "⏪ Reverts" },
     { "type": "docs", "section": "📚 Documentation" },
-    { "type": "chore", "section": "🔧 Miscellaneous", "hidden": true },
-    { "type": "refactor", "section": "♻️ Refactoring", "hidden": true },
-    { "type": "test", "section": "✅ Tests", "hidden": true },
-    { "type": "build", "section": "🏗️ Build System", "hidden": true },
-    { "type": "ci", "section": "👷 CI", "hidden": true }
+    { "type": "chore", "section": "🔧 Miscellaneous" },
+    { "type": "refactor", "section": "♻️ Refactoring" },
+    { "type": "test", "section": "✅ Tests" },
+    { "type": "build", "section": "🏗️ Build System" },
+    { "type": "ci", "section": "👷 CI" }
   ],
   "packages": {
     "core": {
@@ -22,7 +22,19 @@
       "bump-minor-pre-major": true,
       "component": "cpp",
       "package-name": "img2num-c++",
-      "extra-files": [{ "type": "generic", "path": "CMakeLists.txt" }]
+      "extra-files": [
+        { "type": "generic", "path": "CMakeLists.txt" },
+        {
+          "type": "json",
+          "path": "/bindings/c/.versions/img2num-core.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "/packages/py/.versions/img2num-core.json",
+          "jsonpath": "$.version"
+        }
+      ]
     },
     "bindings/c": {
       "release-type": "simple",
@@ -31,14 +43,21 @@
       "component": "bindings-c",
       "dependencies": ["core"],
       "package-name": "img2num-c",
-      "extra-files": [{ "type": "generic", "path": "CMakeLists.txt" }]
+      "extra-files": [
+        { "type": "generic", "path": "CMakeLists.txt" },
+        {
+          "type": "json",
+          "path": "/packages/js/.versions/img2num-bindings-c.json",
+          "jsonpath": "$.version"
+        }
+      ]
     },
     "packages/js": {
       "release-type": "node",
       "initial-version": "0.1.0",
       "bump-minor-pre-major": true,
       "component": "packages-js",
-      "dependencies": ["bindings/c", "core"],
+      "dependencies": ["bindings/c"],
       "package-name": "img2num-js"
     },
     "packages/py": {

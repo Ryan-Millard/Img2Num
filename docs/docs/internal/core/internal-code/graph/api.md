@@ -290,9 +290,3 @@ Returns a read-only reference to the underlying vector of nodes.
 #### `size_t size()`
 
 Returns the number of nodes currently in the graph.
-
-#### `bool all_areas_bigger_than(int32_t min_area)`
-
-Utility check to verify if the graph simplification process (merging small nodes) is complete.
-
-- **Returns:** `true` if every node in the graph has an area greater than `min_area`.
