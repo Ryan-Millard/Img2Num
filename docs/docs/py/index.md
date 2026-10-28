@@ -24,6 +24,15 @@ involved.
 pip install img2num
 ```
 
+:::important[CLI release availability]
+
+PyPI version `0.3.1` does not include the `cli` extra or the `img2num` command.
+CLI installation from PyPI must wait for a release containing both. The
+repository source includes the CLI; see the [CLI guide](./cli.md) for source
+installation, usage examples, options, and troubleshooting.
+
+:::
+
 ## Usage
 
 Input images must be **RGBA** (4 channels).
@@ -57,6 +66,27 @@ print(svg)
 
 See the [Python API Reference](./api-reference) for full
 signatures.
+
+## Threads and asynchronous applications
+
+Native image operations release Python's Global Interpreter Lock (GIL), so
+other Python threads can continue while Img2Num processes an image. Calls into
+the native core are serialized to protect its shared GPU context.
+
+The functions remain synchronous. Run them on a worker thread to keep a GUI or
+an asyncio event loop responsive, for example:
+
+```python
+import asyncio
+from img2num import image_to_svg
+
+svg = await asyncio.to_thread(image_to_svg, img)
+```
+
+Do not mutate or resize input arrays, including through another view, until the
+operation returns. Img2Num retains the input objects but does not lock their
+contents. `image_to_svg` takes a snapshot of the supplied configuration before
+releasing the GIL.
 
 ## Configuration
 
