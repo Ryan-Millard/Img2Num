@@ -97,17 +97,14 @@ int main(int argc, char** argv) {
     std::vector<uint8_t> img_data(byte_count);
     std::vector<uint8_t> out_data(byte_count);
 
-    std::string res_svg;
+    std::string res_svg1;
     std::string res_svg2;
+    std::string res_svg3;
+    std::string res_svg4;
 
-    // Apply bilateral
+
+    // Bilateral sigma_spatial
     const double sigma {width * SIGMA_WIDTH_RATIO};
-
-    std::thread t1( 
-        step_by_step, image_data_original, 
-        std::ref(img_data), std::ref(out_data), width, height, sigma, 50.0,
-        32, 100, 100, 10, 0, std::ref(res_svg)
-    );
 
     // Generate SVG with the full pipeline
     img2num::ImageToSvgConfig config;
@@ -116,9 +113,25 @@ int main(int argc, char** argv) {
     config.kmeans.k = 32;
     config.min_thickness = 10;
 
+    // Basic example - runs each process one at a time
+    step_by_step(
+        image_data_original, img_data, 
+        out_data, width, height, sigma, 50.0,
+        32, 100, 100, 10, 0, res_svg1
+    );
+
+    combined_process(image_data_original, width, height, config, res_svg2);
+
+    // Multithreading example - runs processes in parallel with threading
+    std::thread t1( 
+        step_by_step, image_data_original, 
+        std::ref(img_data), std::ref(out_data), width, height, sigma, 50.0,
+        32, 100, 100, 10, 0, std::ref(res_svg3)
+    );
+
     std::thread t2(
         combined_process, image_data_original, 
-        width, height, std::ref(config), std::ref(res_svg2)
+        width, height, std::ref(config), std::ref(res_svg4)
     );
 
     t1.join();
@@ -126,25 +139,12 @@ int main(int argc, char** argv) {
 
     stbi_image_free(image_data_original);
 
-    /*img2num::bilateral_filter(img_data.data(), width, height, sigma, 50.0, 0);
-    // Apply kmeans
-    img2num::kmeans(img_data.data(), out_data.data(), out_labels.data(), width, height, 32, 100, 1);
-    // Generate SVG from labels
-    std::string res_svg {
-        img2num::labels_to_svg(img_data.data(), out_labels.data(), width, height, 100, 10)
-    };
-
-    // Generate SVG with the full pipeline
-    img2num::ImageToSvgConfig config;
-    config.kmeans.k = 32;
-    config.min_thickness = 10;
-    std::string res_svg2 {img2num::image_to_svg(img_data.data(), width, height, config)};
-    */
-
     const std::string bilateral_path {std::string(OUT_DIR) + "/console-cpp-bilateral.png"};
     const std::string kmeans_path {std::string(OUT_DIR) + "/console-cpp-kmeans.png"};
-    const std::string svg_path {std::string(OUT_DIR) + "/console-cpp-svg.svg"};
+    const std::string svg1_path {std::string(OUT_DIR) + "/console-cpp-svg1.svg"};
     const std::string svg2_path {std::string(OUT_DIR) + "/console-cpp-svg2.svg"};
+    const std::string svg3_path {std::string(OUT_DIR) + "/console-cpp-svg3.svg"};
+    const std::string svg4_path {std::string(OUT_DIR) + "/console-cpp-svg4.svg"};
 
     const bool bilateral_save_success {
         stbi_write_png(
@@ -168,12 +168,19 @@ int main(int argc, char** argv) {
         file.close();
         return !file.fail();
     };
-    const bool svg_save_success {write_text(svg_path, res_svg)};
+    const bool svg1_save_success {write_text(svg1_path, res_svg1)};
     const bool svg2_save_success {write_text(svg2_path, res_svg2)};
+    const bool svg3_save_success {write_text(svg3_path, res_svg3)};
+    const bool svg4_save_success {write_text(svg4_path, res_svg4)};
 
-    if (bilateral_save_success && kmeans_save_success && svg_save_success && svg2_save_success) {
+    if (
+        bilateral_save_success && kmeans_save_success && 
+        svg1_save_success && svg2_save_success &&
+        svg3_save_success && svg4_save_success
+    ) {
         std::cout << "\n\nSUCCESS!\nThe below images have been saved:\n\t- " << bilateral_path
-                  << "\n\t- " << kmeans_path << "\n\t- " << svg_path << "\n\t- " << svg2_path
+                  << "\n\t- " << kmeans_path << "\n\t- " << svg1_path << "\n\t- " << svg2_path
+                  << "\n\t- " << svg3_path << "\n\t- " << svg4_path
                   << std::endl;
         return 0;
     }
