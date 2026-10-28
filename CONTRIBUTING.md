@@ -13,6 +13,7 @@ We wrote a [contribution guide](https://img2num.dev/docs/contributing) to help y
 
 If you're unsure what to change, [open a discussion](https://github.com/Ryan-Millard/Img2Num/discussions/new/choose) and someone will assist you.
 
+
 ## Questions?
 
 If you have questions or need help:

@@ -81,6 +81,14 @@
       "editorconfig:check": {
         "desc": "Check all files against .editorconfig rules"
       }
+    },
+    "Documentation": {
+      "readme:generate": {
+        "desc": "Generate package README examples from canonical example sources"
+      },
+      "readme:test": {
+        "desc": "Test the package README generator"
+      }
     }
   },
   "scripts": {
@@ -98,9 +106,11 @@
     "lint:cpp:fix": "uv run lint_cpp --fix",
     "lint:js": "eslint packages/js example-apps/react-js scripts/img2num-dev-scripts docs",
     "lint:js:fix": "eslint packages/js example-apps/react-js scripts/img2num-dev-scripts docs --fix",
+    "editorconfig:check": "editorconfig-checker",
+    "readme:generate": "node scripts/generate-package-readme.mjs",
+    "readme:test": "node --test scripts/generate-package-readme.test.mjs",
     "lint:py": "uv run --with ruff ruff check .",
-    "lint:py:fix": "uv run --with ruff ruff check --fix --unsafe-fixes .",
-    "editorconfig:check": "editorconfig-checker"
+    "lint:py:fix": "uv run --with ruff ruff check --fix --unsafe-fixes ."
   },
   "devDependencies": {
     "clang-format": "^1.8.0",
