@@ -1,14 +1,10 @@
-include(FetchContent)
-
-FetchContent_Declare(
-  Catch2
-  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG v3.15.3
-  GIT_SHALLOW TRUE
+add_subdirectory(
+  "${PROJECT_SOURCE_DIR}/third_party/tests"
+  "${CMAKE_CURRENT_BINARY_DIR}/catch2_build"
+  EXCLUDE_FROM_ALL
 )
 
-FetchContent_MakeAvailable(Catch2)
-list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/third_party/tests/extras")
 include(Catch)
 
 add_executable(core_cpu_tests

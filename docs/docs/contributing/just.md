@@ -168,6 +168,38 @@ Key files:
   </TabItem>
 </Tabs>
 
+## Testing
+
+Run tests across subsystems:
+
+<Tabs groupId="test-target">
+  <TabItem value="cpp" label="C++ Core">
+
+Run the standalone CPU Catch2 core tests:
+
+```bash title="Paste this inside the Docker shell"
+just cmake test
+```
+
+To delete the test build directory (`build-tests/`):
+
+```bash title="Paste this inside the Docker shell"
+just cmake test-clean
+```
+
+  </TabItem>
+
+  <TabItem value="py" label="Python">
+
+Run the Python bindings test suite with pytest:
+
+```bash title="Paste this inside the Docker shell"
+just py test
+```
+
+  </TabItem>
+</Tabs>
+
 ## Documentation
 
 <Tabs groupId="build-target">
