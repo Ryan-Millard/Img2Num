@@ -187,11 +187,13 @@ const config = {
       {
         redirects: [
           { from: "/docs/faq", to: "/faq" },
+          { from: "/docs/core-concepts", to: "/docs/glossary" },
           { from: "/example-apps", to: "/showcase" },
         ],
       },
     ],
     "./plugins/github-stats/index.js",
+    "./plugins/hallOfFame/index.js",
     [
       "docusaurus-plugin-copy-page-button",
       {
@@ -243,7 +245,7 @@ const config = {
         docs: {
           sidebarPath: "./sidebars.js",
           // Remove this to remove the "edit this page" links.
-          editUrl: "https://github.com/Ryan-Millard/Img2Num/edit/main/docs/",
+          editUrl: "https://github.com/Ryan-Millard/Img2Num/edit/dev/docs/",
           routeBasePath: "docs",
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
@@ -256,7 +258,7 @@ const config = {
           },
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: "https://github.com/Ryan-Millard/Img2Num/edit/main/docs/",
+          editUrl: "https://github.com/Ryan-Millard/Img2Num/edit/dev/docs/",
           // Useful options to enforce blogging best practices
           onInlineTags: "warn",
           onInlineAuthors: "warn",
@@ -467,6 +469,7 @@ const config = {
         darkTheme: prismThemes.dracula,
       },
     }),
+  clientModules: ["./src/clientModules/openDetailsOnHash.js"],
 };
 
 export default config;

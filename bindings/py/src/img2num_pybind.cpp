@@ -1,11 +1,14 @@
 #include <cstdlib>
 #include <img2num.h>
 #include <memory>
+#include <mutex>
 #include <optional>
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <sstream>
+
+inline std::mutex core_mutex;
 
 PYBIND11_MODULE(_img2num, m) {
     m.doc() = R"docstring(
@@ -14,6 +17,11 @@ PYBIND11_MODULE(_img2num, m) {
     This module provides access to Img2Num's image processing capabilities from Python.
     All image functions operate on ``numpy.ndarray`` buffers and return new image data,
     making them easy to integrate into Python-based image processing pipelines.
+
+    Native image operations release the GIL, allowing other Python threads to run.
+    Calls into the core are serialized to protect its shared GPU context. The API
+    remains synchronous. Input arrays and their aliases must not be mutated or
+    resized until the operation returns.
 
     )docstring";
 
@@ -29,7 +37,12 @@ PYBIND11_MODULE(_img2num, m) {
             pybind11::array_t<uint8_t, pybind11::array::c_style> out_image(buf.shape);
             std::memcpy(out_image.mutable_data(), buf.ptr, buf.size * sizeof(uint8_t));
 
-            img2num::gaussian_blur_fft(out_image.mutable_data(), width, height, sigma);
+            auto* output = out_image.mutable_data();
+            {
+                pybind11::gil_scoped_release release;
+                std::lock_guard<std::mutex> lock(core_mutex);
+                img2num::gaussian_blur_fft(output, width, height, sigma);
+            }
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"),
@@ -61,7 +74,12 @@ PYBIND11_MODULE(_img2num, m) {
             pybind11::array_t<uint8_t, pybind11::array::c_style> out_image(buf.shape);
             std::memcpy(out_image.mutable_data(), buf.ptr, buf.size * sizeof(uint8_t));
 
-            img2num::invert_image(out_image.mutable_data(), width, height);
+            auto* output = out_image.mutable_data();
+            {
+                pybind11::gil_scoped_release release;
+                std::lock_guard<std::mutex> lock(core_mutex);
+                img2num::invert_image(output, width, height);
+            }
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"), R"docstring(
@@ -90,7 +108,12 @@ PYBIND11_MODULE(_img2num, m) {
             pybind11::buffer_info buf = image.request();
             pybind11::array_t<uint8_t, pybind11::array::c_style> out_image(buf.shape);
             std::memcpy(out_image.mutable_data(), buf.ptr, buf.size * sizeof(uint8_t));
-            img2num::threshold_image(out_image.mutable_data(), width, height, num_thresholds);
+            auto* output = out_image.mutable_data();
+            {
+                pybind11::gil_scoped_release release;
+                std::lock_guard<std::mutex> lock(core_mutex);
+                img2num::threshold_image(output, width, height, num_thresholds);
+            }
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"),
@@ -123,12 +146,22 @@ PYBIND11_MODULE(_img2num, m) {
             pybind11::array_t<uint8_t, pybind11::array::c_style> out_image(buf.shape);
             std::memcpy(out_image.mutable_data(), buf.ptr, buf.size * sizeof(uint8_t));
 
-            img2num::black_threshold_image(out_image.mutable_data(), width, height, num_thresholds);
+            auto* output = out_image.mutable_data();
+            {
+                pybind11::gil_scoped_release release;
+                std::lock_guard<std::mutex> lock(core_mutex);
+                img2num::black_threshold_image(output, width, height, num_thresholds);
+            }
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"),
         pybind11::arg("num_thresholds"), R"docstring(
-        Apply thresholding with a bias in favor of black to the image.
+        Force near-black pixels to pure black.
+
+        A pixel is set to black when all three of its colour channels are
+        strictly below ``num_thresholds``; every other pixel is left untouched.
+        Because the comparison is applied per channel, ``num_thresholds`` is a
+        brightness cutoff, not a number of output colour levels.
 
         Parameters
         ----------
@@ -139,12 +172,19 @@ PYBIND11_MODULE(_img2num, m) {
         height : int
             Height of the image.
         num_thresholds : int
-            Number of threshold levels to apply.
+            Per-channel brightness cutoff in the 0-255 range. Pixels whose red,
+            green and blue values are all below this value become black. Values
+            of 0 or less leave the image unchanged.
 
         Returns
         -------
         numpy.ndarray
-            Thresholded image as a uint8 numpy array.
+            A copy of the image with near-black pixels darkened to pure black,
+            as a uint8 numpy array.
+
+        Notes
+        -----
+        Darkened pixels also have their alpha channel set to an opaque 255.
         )docstring"
     );
 
@@ -156,9 +196,14 @@ PYBIND11_MODULE(_img2num, m) {
             pybind11::array_t<uint8_t, pybind11::array::c_style> out_image(buf.shape);
             std::memcpy(out_image.mutable_data(), buf.ptr, buf.size * sizeof(uint8_t));
 
-            img2num::bilateral_filter(
-                out_image.mutable_data(), width, height, sigma_spatial, sigma_range, color_space
-            );
+            auto* output = out_image.mutable_data();
+            {
+                pybind11::gil_scoped_release release;
+                std::lock_guard<std::mutex> lock(core_mutex);
+                img2num::bilateral_filter(
+                    output, width, height, sigma_spatial, sigma_range, color_space
+                );
+            }
             return out_image;
         },
         pybind11::arg("image"), pybind11::arg("width"), pybind11::arg("height"),
@@ -200,12 +245,14 @@ PYBIND11_MODULE(_img2num, m) {
                 {static_cast<size_t>(height), static_cast<size_t>(width)}
             );
 
-            img2num::kmeans(
-                static_cast<const uint8_t*>(data_buf.ptr),
-                static_cast<uint8_t*>(out_data.mutable_data()),
-                static_cast<int32_t*>(out_labels.mutable_data()), width, height, k, max_iter,
-                color_space
-            );
+            const auto* input = static_cast<const uint8_t*>(data_buf.ptr);
+            auto* output = out_data.mutable_data();
+            auto* labels = out_labels.mutable_data();
+            {
+                pybind11::gil_scoped_release release;
+                std::lock_guard<std::mutex> lock(core_mutex);
+                img2num::kmeans(input, output, labels, width, height, k, max_iter, color_space);
+            }
             return pybind11::make_tuple(out_data, out_labels);
         },
         pybind11::arg("data"), pybind11::arg("width"), pybind11::arg("height"), pybind11::arg("k"),
@@ -242,9 +289,14 @@ PYBIND11_MODULE(_img2num, m) {
             const uint8_t* data_ptr {static_cast<const uint8_t*>(data.request().ptr)};
             const int32_t* labels_ptr {static_cast<const int32_t*>(labels.request().ptr)};
 
-            std::string svg {
-                img2num::labels_to_svg(data_ptr, labels_ptr, width, height, min_area, min_thickness)
-            };
+            std::string svg;
+            {
+                pybind11::gil_scoped_release release;
+                std::lock_guard<std::mutex> lock(core_mutex);
+                svg = img2num::labels_to_svg(
+                    data_ptr, labels_ptr, width, height, min_area, min_thickness
+                );
+            }
 
             return pybind11::str(std::move(svg));
         },
@@ -323,6 +375,42 @@ PYBIND11_MODULE(_img2num, m) {
         .def(
             pybind11::init([](pybind11::dict bf_dict, pybind11::dict km_dict,
                               pybind11::kwargs kwargs) {
+                // Raise TypeError for unrecognised keys instead of silently ignoring them
+                auto reject_unknown_keys = [](const pybind11::dict& d,
+                                              std::initializer_list<const char*> valid_keys,
+                                              const std::string& noun, const std::string& where) {
+                    for (auto item : d) {
+                        bool known {false};
+                        for (const char* valid_key : valid_keys)
+                            if (pybind11::str(valid_key).equal(item.first))
+                                known = true;
+                        if (known)
+                            continue;
+
+                        std::string valid_list;
+                        for (const char* valid_key : valid_keys) {
+                            if (!valid_list.empty())
+                                valid_list += ", ";
+                            valid_list += std::string("'") + valid_key + "'";
+                        }
+                        throw pybind11::type_error(
+                            "ImageToSvgConfig() got an unexpected " + noun + " " +
+                            pybind11::repr(item.first).cast<std::string>() + where + "; valid " +
+                            noun + "s are: " + valid_list
+                        );
+                    }
+                };
+                reject_unknown_keys(
+                    kwargs,
+                    {"bilateral_filter", "kmeans", "min_cluster_area", "min_thickness",
+                     "color_space"},
+                    "keyword argument", ""
+                );
+                reject_unknown_keys(
+                    bf_dict, {"sigma_spatial", "sigma_range"}, "key", " in bilateral_filter"
+                );
+                reject_unknown_keys(km_dict, {"k", "max_iter"}, "key", " in kmeans");
+
                 // hand over ownership to python
                 std::unique_ptr<img2num::ImageToSvgConfig> c =
                     std::make_unique<img2num::ImageToSvgConfig>();
@@ -350,6 +438,52 @@ PYBIND11_MODULE(_img2num, m) {
             pybind11::arg("bilateral_filter") = pybind11::dict(), // Defaults to empty dict
             pybind11::arg("kmeans") = pybind11::dict()            // Defaults to empty dict
         )
+         .def(pybind11::pickle(
+            // __getstate__: convert to plain Python objects
+            [](const img2num::ImageToSvgConfig& c) {
+                pybind11::dict bf;
+                bf["sigma_spatial"] = c.bilateral_filter.sigma_spatial;
+                bf["sigma_range"] = c.bilateral_filter.sigma_range;
+
+                pybind11::dict km;
+                km["k"] = c.kmeans.k;
+                km["max_iter"] = c.kmeans.max_iter;
+
+                pybind11::dict state;
+                state["bilateral_filter"] = bf;
+                state["kmeans"] = km;
+                state["min_cluster_area"] = c.min_cluster_area;
+                state["min_thickness"] = c.min_thickness;
+                state["color_space"] = static_cast<int>(c.color_space);
+                return state;
+            },
+            // __setstate__: rebuild from that state
+            [](const pybind11::dict& state) {
+                img2num::ImageToSvgConfig c;  // starts from defaults
+
+                if (state.contains("bilateral_filter")) {
+                    auto bf = state["bilateral_filter"].cast<pybind11::dict>();
+                    if (bf.contains("sigma_spatial"))
+                        c.bilateral_filter.sigma_spatial = bf["sigma_spatial"].cast<double>();
+                    if (bf.contains("sigma_range"))
+                        c.bilateral_filter.sigma_range = bf["sigma_range"].cast<double>();
+                }
+                if (state.contains("kmeans")) {
+                    auto km = state["kmeans"].cast<pybind11::dict>();
+                    if (km.contains("k"))
+                        c.kmeans.k = km["k"].cast<int>();
+                    if (km.contains("max_iter"))
+                        c.kmeans.max_iter = km["max_iter"].cast<int>();
+                }
+                if (state.contains("min_cluster_area"))
+                    c.min_cluster_area = state["min_cluster_area"].cast<int>();
+                if (state.contains("min_thickness"))
+                    c.min_thickness = state["min_thickness"].cast<int>();
+                if (state.contains("color_space"))
+                    c.color_space = static_cast<uint8_t>(state["color_space"].cast<int>());
+                return c;
+            }
+        ))
         .def_readwrite("bilateral_filter", &img2num::ImageToSvgConfig::bilateral_filter)
         .def_readwrite("min_cluster_area", &img2num::ImageToSvgConfig::min_cluster_area)
         .def_readwrite("min_thickness", &img2num::ImageToSvgConfig::min_thickness)
@@ -372,10 +506,15 @@ PYBIND11_MODULE(_img2num, m) {
     m.def(
         "image_to_svg",
         [](pybind11::array_t<uint8_t, pybind11::array::c_style> data, int width, int height,
-           const img2num::ImageToSvgConfig& cfg) {
+           img2num::ImageToSvgConfig cfg) {
             const uint8_t* data_ptr {static_cast<const uint8_t*>(data.request().ptr)};
 
-            std::string svg {img2num::image_to_svg(data_ptr, width, height, cfg)};
+            std::string svg;
+            {
+                pybind11::gil_scoped_release release;
+                std::lock_guard<std::mutex> lock(core_mutex);
+                svg = img2num::image_to_svg(data_ptr, width, height, cfg);
+            }
 
             return pybind11::str(std::move(svg));
         },
