@@ -29,14 +29,15 @@ target_include_directories(_img2num PRIVATE
 
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/packages/py/img2num/
     DESTINATION img2num
+    COMPONENT python
     FILES_MATCHING
       PATTERN "*.py"
       PATTERN "py.typed"
 )
 
 install(TARGETS _img2num
-    LIBRARY DESTINATION img2num
-    RUNTIME DESTINATION img2num
+    LIBRARY DESTINATION img2num COMPONENT python
+    RUNTIME DESTINATION img2num COMPONENT python
 )
 
 # ---------------------------------------------------------------
@@ -56,6 +57,7 @@ if(NOT CMAKE_CROSSCOMPILING)
   )
   install(FILES "${CMAKE_CURRENT_BINARY_DIR}/stubs/_img2num.pyi"
     DESTINATION img2num
+    COMPONENT python
   )
 else()
   message(WARNING "Cross-compiling: _img2num.pyi will not be generated; wheel ships without a stub")
