@@ -7,6 +7,7 @@
 #include "internal/RGBAPixel.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstdint>
 #include <cstring>
@@ -112,14 +113,23 @@ void threshold_image(uint8_t* ptr, const int width, const int height, const int 
     }
     const int n = std::min(num_thresholds, 256); // More than 256 levels cannot exist.
 
+    // Only 256 possible channel values: compute each result once, then look it up.
+    const auto lut = [n]() {
+        std::array<uint8_t, 256> table {};
+        for (int v = 0; v < 256; ++v) {
+            table[v] = quantize(static_cast<uint8_t>(v), n);
+        }
+        return table;
+    }();
+
     ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> img;
     img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
     const auto imgWidth {img.getWidth()}, imgHeight {img.getHeight()};
     for (ImageLib::RGBAPixel<uint8_t>& p : img) {
-        p.red = quantize(p.red, n);
-        p.green = quantize(p.green, n);
-        p.blue = quantize(p.blue, n);
+        p.red = lut[p.red];
+        p.green = lut[p.green];
+        p.blue = lut[p.blue];
     }
 
     const auto& modified = img.getData();
