@@ -6,18 +6,18 @@ gaussian_blur_fft(uint8_t* image, size_t width, size_t height, double sigma) {
     img2num_gaussian_blur_fft(image, width, height, sigma);
 }
 
-EMSCRIPTEN_KEEPALIVE void invert_image(uint8_t* ptr, int width, int height) {
-    img2num_invert_image(ptr, width, height);
+EMSCRIPTEN_KEEPALIVE void invert_image(uint8_t* image, int width, int height) {
+    img2num_invert_image(image, width, height);
 }
 
 EMSCRIPTEN_KEEPALIVE void
-threshold_image(uint8_t* ptr, const int width, const int height, const int num_thresholds) {
-    img2num_threshold_image(ptr, width, height, num_thresholds);
+threshold_image(uint8_t* image, const int width, const int height, const int num_thresholds) {
+    img2num_threshold_image(image, width, height, num_thresholds);
 }
 
 EMSCRIPTEN_KEEPALIVE void
-black_threshold_image(uint8_t* ptr, const int width, const int height, const int num_thresholds) {
-    img2num_black_threshold_image(ptr, width, height, num_thresholds);
+black_threshold_image(uint8_t* image, const int width, const int height, const int num_thresholds) {
+    img2num_black_threshold_image(image, width, height, num_thresholds);
 }
 
 EMSCRIPTEN_KEEPALIVE void kmeans(
