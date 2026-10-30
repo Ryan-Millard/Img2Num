@@ -8,6 +8,11 @@ on:
         type: string
         default: '["ubuntu-latest", "macos-latest", "windows-latest"]'
         required: false
+      ref:
+        description: 'Git revision or tag to test (defaults to github.sha)'
+        type: string
+        default: ''
+        required: false
 
 permissions:
   contents: read
@@ -26,7 +31,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
+          ref: ${{ inputs.ref || github.sha }}
           submodules: false
+          persist-credentials: false
 
       - name: Checkout Catch2 test submodule
         run: git submodule update --init third_party/tests

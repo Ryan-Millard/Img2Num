@@ -24,4 +24,4 @@ target_include_directories(core_cpu_tests BEFORE PRIVATE
 target_compile_options(core_cpu_tests PRIVATE ${IMG2NUM_STRICT_CXX_FLAGS})
 target_link_libraries(core_cpu_tests PRIVATE Catch2::Catch2WithMain)
 
-catch_discover_tests(core_cpu_tests)
+catch_discover_tests(core_cpu_tests DISCOVERY_MODE PRE_TEST)
