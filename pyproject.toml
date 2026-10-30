@@ -7,7 +7,7 @@ license = { text = "MIT" }
 readme = "packages/py/README.md"
 authors = [{ name = "Ryan Millard" }]
 dependencies = [
-  "numpy>=1.23.5"
+  "numpy>=1.23.5",
 ]
 classifiers = [
   "Intended Audience :: Developers",
