@@ -18,27 +18,17 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-uint8_t quantize(uint8_t value, uint8_t region_size) {
-    if (region_size == 0) {
-        return value;
-    }
+uint8_t quantize(uint8_t value, int num_thresholds) {
+    const int n = num_thresholds; // Expected range [1 : 256].
 
-    uint8_t bucket = value / region_size; // Narrowing to colour boundary with
-                                          // Range [0 : num_thresholds - 1].
+    const int bucket = value * n / 256; // Range [0 : n - 1], exactly n buckets.
 
-    uint8_t bucket_boundary = (bucket * region_size);
-    uint8_t bucket_midpoint =
-        bucket_boundary + (region_size / 2); // Map to threshold region's midpoint.
+    // Smallest and largest values that fall in this bucket.
+    const int lo = (bucket * 256 + n - 1) / n;
+    const int hi = ((bucket + 1) * 256 + n - 1) / n - 1;
 
-    // In case of bucket_midpoint overflow: revert to a smaller bucket than the
-    // largest possible value.
-    bool overflow = bucket_midpoint < bucket_boundary;
-    if (overflow) {
-        bucket_midpoint = ((bucket - 1) * region_size) +
-                          (region_size / 2); // Correction by reducing the bucket value belongs to.
-    }
-
-    return bucket_midpoint;
+    // Map to the bucket's midpoint (rounded down), which always lies inside it.
+    return static_cast<uint8_t>((lo + hi) / 2);
 }
 
 namespace img2num {
@@ -120,16 +110,16 @@ void threshold_image(uint8_t* ptr, const int width, const int height, const int 
     if (num_thresholds <= 0) {
         return;
     }
-    const uint8_t REGION_SIZE(255 / num_thresholds); // Size of buckets per colour
+    const int n = std::min(num_thresholds, 256); // More than 256 levels cannot exist.
 
     ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> img;
     img.loadFromBuffer(ptr, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
     const auto imgWidth {img.getWidth()}, imgHeight {img.getHeight()};
     for (ImageLib::RGBAPixel<uint8_t>& p : img) {
-        p.red = quantize(p.red, REGION_SIZE);
-        p.green = quantize(p.green, REGION_SIZE);
-        p.blue = quantize(p.blue, REGION_SIZE);
+        p.red = quantize(p.red, n);
+        p.green = quantize(p.green, n);
+        p.blue = quantize(p.blue, n);
     }
 
     const auto& modified = img.getData();

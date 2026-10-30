@@ -3,6 +3,6 @@
 
 #include <cstdint>
 
-uint8_t quantize(uint8_t value, uint8_t region_size);
+uint8_t quantize(uint8_t value, int num_thresholds);
 
 #endif
