@@ -111,6 +111,24 @@ const { svg } = await imageToSvg({ pixels, width, height });`,
     cta: "img2num on npm",
   },
   {
+    lang: "Node TS",
+    slug: "node-ts",
+    dir: "console-ts-esm",
+    codeLang: "typescript",
+    icon: <Hexagon size={22} color="var(--blue)" />,
+    accentVar: "--blue-light",
+    title: "console-ts-esm",
+    desc: "The Node ESM app in strict TypeScript, type-checked against the declarations shipped with img2num.",
+    code: `import { imageToSvg } from "img2num";
+import sharp from "sharp";
+
+const { data, info } = await sharp(imagePath).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+const pixels = new Uint8ClampedArray(data.buffer, data.byteOffset, data.byteLength);
+const { svg } = await imageToSvg({ pixels, width: info.width, height: info.height });`,
+    href: `${repoDir}/console-ts-esm`,
+    cta: "Source on GitHub",
+  },
+  {
     lang: "Python",
     slug: "python",
     dir: "console-py",
