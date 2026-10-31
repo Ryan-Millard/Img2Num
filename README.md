@@ -191,6 +191,23 @@ pip install img2num
 from img2num import image_to_svg
 ```
 
+#### Use Img2Num from the command line
+
+> [!IMPORTANT]
+> PyPI version `0.3.1` does not include the `cli` extra or the `img2num` command.
+> CLI installation from PyPI must wait for a release containing both. The examples below require the CLI built from repository source.
+
+Follow the [CLI guide](docs/docs/py/cli.md#installation) to install from source in the Docker development environment. Then convert images without writing Python code:
+
+```sh
+img2num input.png -o output.svg
+img2num photos/ -o out/
+img2num --help
+```
+
+The plain `pip install img2num` command remains sufficient for library use.
+See the [CLI guide](docs/docs/py/cli.md) for more examples, options, and troubleshooting.
+
 ## License
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?logo=open-source-initiative)](LICENSE)

@@ -58,6 +58,7 @@ cmake.args = [
 # Don't list "img2num" here: at the repo root that is the dev CLI script.
 # Include "benchmarks" so console scripts (corpus-manager) work when installed from wheel.
 wheel.packages = ["benchmarks"]
+install.components = ["python"]
 sdist.inclusion-mode = "explicit"
 sdist.include = [
   "pyproject.toml",
