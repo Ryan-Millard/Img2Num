@@ -66,4 +66,4 @@ This runs pytest against `bindings/py/tests` within the Python virtual environme
 
 ## CI verification
 
-In GitHub Actions, core tests run on Linux, macOS, and Windows runners via `.github/workflows/cmake-tests.yml`. In release builds, any test failure blocks building downstream binary artifacts across operating systems.
+In GitHub Actions, core tests run inside the dev container on Ubuntu via `.github/workflows/cmake-tests.yml`. In release builds, any test failure blocks building downstream binary artifacts across operating systems.

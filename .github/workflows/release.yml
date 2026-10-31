@@ -24,6 +24,7 @@ jobs:
     name: Core C++ tests
     uses: ./.github/workflows/cmake-tests.yml
     with:
+      image: ghcr.io/ryan-millard/img2num-dev:${{ github.ref_name == 'main' && 'main' || 'dev' }}
       ref: ${{ github.event_name == 'workflow_dispatch' && inputs.force_publish_component != 'none' && inputs.force_publish_tag || github.sha }}
 
   release-please:

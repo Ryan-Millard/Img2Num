@@ -128,6 +128,9 @@ jobs:
   core-cpp-tests:
     name: Core C++ tests
     uses: ./.github/workflows/cmake-tests.yml
+    needs: [set-image]
+    with:
+      image: ${{ needs.set-image.outputs.image }}
 
   # Docs now builds react app internally
   build-docs:
