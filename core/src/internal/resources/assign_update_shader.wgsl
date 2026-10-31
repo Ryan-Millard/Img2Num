@@ -68,9 +68,9 @@ fn main(
 
         textureStore(clusters, vec2<i32>(i32(x), i32(y)), vec4<u32>(bestClusterIndex, 0u, 0u, 0u));
         // 3. ATOMIC ADD TO *LOCAL* MEMORY (Extremely fast, no global lock)
-        atomicAdd(&local_sumR[bestClusterIndex], i32(centerVal.r * 1000.0));
-        atomicAdd(&local_sumG[bestClusterIndex], i32(centerVal.g * 1000.0));
-        atomicAdd(&local_sumB[bestClusterIndex], i32(centerVal.b * 1000.0));
+        atomicAdd(&local_sumR[bestClusterIndex], i32(round(centerVal.r * 1000.0)));
+        atomicAdd(&local_sumG[bestClusterIndex], i32(round(centerVal.g * 1000.0)));
+        atomicAdd(&local_sumB[bestClusterIndex], i32(round(centerVal.b * 1000.0)));
         atomicAdd(&local_count[bestClusterIndex], 1u);
     }
 
