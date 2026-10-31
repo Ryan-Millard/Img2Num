@@ -2,13 +2,21 @@
 set -euo pipefail
 
 # ---------------------------------------------------------------------------
-# Argument parsing — strip --img <value> from args before mode dispatch
+# Argument parsing — strip --img <value> and --gpu/--no-gpu from args before mode dispatch
 # ---------------------------------------------------------------------------
 IMG2NUM_IMAGE_FLAG=""
 IMG2NUM_IMAGE_SOURCE_SET=0
+IMG2NUM_GPU_FLAG=""
 FILTERED_ARGS=()
 while [ $# -gt 0 ]; do
+  # Everything after `--` is passed through untouched (e.g. `build -- --progress=plain`)
+  if [ "$1" = "--" ]; then
+    FILTERED_ARGS+=("$@")
+    break
+  fi
   case "$1" in
+    --gpu)    IMG2NUM_GPU_FLAG=1 ;;
+    --no-gpu) IMG2NUM_GPU_FLAG=0 ;;
     --img|--dh-img|--ghcr-img)
       if [ "$IMG2NUM_IMAGE_SOURCE_SET" -eq 1 ]; then
         echo "Error: Only one of --img, --dh-img, or --ghcr-img may be used." >&2
@@ -47,65 +55,97 @@ shift || true
 # Config
 # ---------------------------------------------------------------------------
 IMG2NUM_DEFAULT_IMAGE="ryanmillard/img2num-dev:dev"
+# No GPU image is published, so GPU mode defaults to the one built by `./img2num build --gpu`.
+IMG2NUM_DEFAULT_GPU_IMAGE="img2num-dev:gpu"
 IMG2NUM_STATE_FILE="$(dirname "$0")/.img2num-state"
 
 # ---------------------------------------------------------------------------
 # State helpers
 # ---------------------------------------------------------------------------
 
+# Sets KEY=value in the state file, replacing an existing KEY= line or appending one.
+set_state_value() {
+  local key="$1"
+  local value="$2"
+
+  if [ ! -f "$IMG2NUM_STATE_FILE" ]; then
+    printf '%s\n' \
+      '# This file is managed by the img2num scripts.' \
+      '# Do not edit manually.' > "$IMG2NUM_STATE_FILE"
+  fi
+
+  local content
+  content="$(awk -v key="$key" -v value="$value" '
+    BEGIN { done=0 }
+    index($0, key "=") == 1 && !done {
+      print key "=" value
+      done=1
+      next
+    }
+    { print }
+    END { if (!done) print key "=" value }
+  ' "$IMG2NUM_STATE_FILE")"
+
+  printf '%s\n' "$content" > "$IMG2NUM_STATE_FILE"
+}
+
+# Returns 1 if GPU access is enabled, else 0, in priority order:
+#   1. --gpu / --no-gpu flag
+#   2. State file  (persisted from last build/run/exec/sh that used a GPU flag)
+#   3. Default: 0
+load_gpu() {
+  if [ -n "$IMG2NUM_GPU_FLAG" ]; then
+    printf '%s\n' "$IMG2NUM_GPU_FLAG"
+    return
+  fi
+  if [ -f "$IMG2NUM_STATE_FILE" ]; then
+    local line val
+    line="$(grep -m1 '^GPU=' "$IMG2NUM_STATE_FILE" | tr -d '\r')"
+    val="${line#GPU=}"
+    if [ "$val" = "1" ]; then
+      printf '%s\n' 1
+      return
+    fi
+  fi
+  printf '%s\n' 0
+}
+
+IMG2NUM_GPU="$(load_gpu)"
+
+if [ "$IMG2NUM_GPU" -eq 1 ]; then
+  IMG2NUM_STATE_PREFIX="GPU_"
+  IMG2NUM_DEFAULT_IMAGE="$IMG2NUM_DEFAULT_GPU_IMAGE"
+else
+  IMG2NUM_STATE_PREFIX=""
+fi
+
+# GPU access layers docker-compose.gpu.yml on top of docker-compose.yml to expose NVIDIA GPUs to the container.
+COMPOSE_ARGS=(-f docker-compose.yml)
+if [ "$IMG2NUM_GPU" -eq 1 ]; then
+  COMPOSE_ARGS+=(-f docker-compose.gpu.yml)
+fi
+
+compose() {
+  docker compose "${COMPOSE_ARGS[@]}" "$@"
+}
+
+# Persists the image (and optionally its pull policy). GPU and non-GPU modes use separate keys
+# (GPU_IMAGE/GPU_PULL_POLICY vs IMAGE/PULL_POLICY) so toggling --gpu switches images too.
 save_state() {
   local image="$1"
   local pull_policy="${2:-}"
 
-  local content=""
-
-  if [ -f "$IMG2NUM_STATE_FILE" ]; then
-    content="$(cat "$IMG2NUM_STATE_FILE")"
-  fi
-
-  if ! grep -q '^IMAGE=' "$IMG2NUM_STATE_FILE" 2>/dev/null; then
-    if [ -n "$content" ]; then
-      content="${content}"$'\n'
-    fi
-    content+=$'# This file is managed by the img2num scripts.\n'
-    content+=$'# Do not edit manually.\n'
-    content+="IMAGE=$image"
-  else
-    content="$(printf '%s\n' "$content" | awk -v img="$image" '
-      BEGIN { done=0 }
-      /^IMAGE=/ && !done {
-        print "IMAGE=" img
-        done=1
-        next
-      }
-      { print }
-    ')"
-  fi
-
+  set_state_value "${IMG2NUM_STATE_PREFIX}IMAGE" "$image"
   if [ -n "$pull_policy" ]; then
-    if printf '%s\n' "$content" | grep -q '^PULL_POLICY='; then
-      content="$(printf '%s\n' "$content" | awk -v policy="$pull_policy" '
-        BEGIN { done=0 }
-        /^PULL_POLICY=/ && !done {
-          print "PULL_POLICY=" policy
-          done=1
-          next
-        }
-        { print }
-      ')"
-    else
-      content="${content}"$'\n'"PULL_POLICY=$pull_policy"
-    fi
+    set_state_value "${IMG2NUM_STATE_PREFIX}PULL_POLICY" "$pull_policy"
   fi
-
-  printf '%s\n' "$content" > "$IMG2NUM_STATE_FILE"
 }
 
 # Returns the image to use, in priority order:
 #   1. --img, --ghcr-img, --dh-img flag
 #   2. IMG2NUM_IMAGE env var (caller-supplied override)
-#   3. State file  (persisted from last `up`)
-#   4. Hardcoded default
+#   3. State file  (persisted from last `up`; GPU_IMAGE in GPU mode)
+#   4. Hardcoded default ($IMG2NUM_DEFAULT_GPU_IMAGE in GPU mode)
 load_image() {
   if [ -n "$IMG2NUM_IMAGE_FLAG" ]; then
     printf '%s\n' "$IMG2NUM_IMAGE_FLAG"
@@ -117,8 +157,8 @@ load_image() {
   fi
   if [ -f "$IMG2NUM_STATE_FILE" ]; then
     local line val
-    line="$(grep -m1 '^IMAGE=' "$IMG2NUM_STATE_FILE" | tr -d '\r')"
-    val="${line#IMAGE=}"
+    line="$(grep -m1 "^${IMG2NUM_STATE_PREFIX}IMAGE=" "$IMG2NUM_STATE_FILE" | tr -d '\r')"
+    val="${line#"${IMG2NUM_STATE_PREFIX}"IMAGE=}"
     if [ -n "$val" ]; then
       printf '%s\n' "$val"
       return
@@ -135,12 +175,12 @@ load_pull_policy() {
 
   if [ -f "$IMG2NUM_STATE_FILE" ]; then
     local saved_image line val
-    saved_image="$(grep -m1 '^IMAGE=' "$IMG2NUM_STATE_FILE" | tr -d '\r')"
-    saved_image="${saved_image#IMAGE=}"
+    saved_image="$(grep -m1 "^${IMG2NUM_STATE_PREFIX}IMAGE=" "$IMG2NUM_STATE_FILE" | tr -d '\r')"
+    saved_image="${saved_image#"${IMG2NUM_STATE_PREFIX}"IMAGE=}"
 
     if [ "$saved_image" = "$image" ]; then
-      line="$(grep -m1 '^PULL_POLICY=' "$IMG2NUM_STATE_FILE" | tr -d '\r')"
-      val="${line#PULL_POLICY=}"
+      line="$(grep -m1 "^${IMG2NUM_STATE_PREFIX}PULL_POLICY=" "$IMG2NUM_STATE_FILE" | tr -d '\r')"
+      val="${line#"${IMG2NUM_STATE_PREFIX}"PULL_POLICY=}"
 
       if [ -n "$val" ]; then
         printf '%s\n' "$val"
@@ -151,6 +191,7 @@ load_pull_policy() {
 
   printf '%s\n' "always"
 }
+
 
 
 # ---------------------------------------------------------------------------
@@ -165,27 +206,47 @@ run_in_container() {
 
   image="$(load_image)"
 
-  if [ "$IMG2NUM_IMAGE_SOURCE_SET" -eq 1 ]; then
-    if [ "$image" = "img2num-dev:local" ]; then
-      pull_policy="missing"
-    else
-      pull_policy="always"
+  # Locally built images don't exist on any registry, so never try to pull them.
+  if [[ "$image" == img2num-dev:* ]]; then
+    pull_policy="missing"
+    if ! docker image inspect "$image" >/dev/null 2>&1; then
+      if [ "$IMG2NUM_GPU" -eq 1 ]; then
+        # docker-compose.gpu.yml has a build section, so `compose up` builds the missing image.
+        echo "Local image $image not found; building it from Dockerfile-gpu.dev..." >&2
+        BUILD_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+        GIT_SHA="$(git rev-parse HEAD 2>/dev/null || true)"
+        export BUILD_DATE GIT_SHA
+      else
+        echo "Error: local image $image not found." >&2
+        echo "Run: ./img2num build" >&2
+        exit 1
+      fi
     fi
+  elif [ "$IMG2NUM_IMAGE_SOURCE_SET" -eq 1 ]; then
+    pull_policy="always"
   else
     pull_policy="$(load_pull_policy "$image")"
   fi
 
+  if [ "$IMG2NUM_GPU" -eq 1 ] && docker image inspect "$image" >/dev/null 2>&1 \
+    && [ "$(docker image inspect --format '{{ index .Config.Labels "org.img2num.gpu" }}' "$image" 2>/dev/null)" != "true" ]; then
+    echo "Warning: $image was not built from Dockerfile-gpu.dev; Dawn may not see the NVIDIA GPU." >&2
+  fi
+
   save_state "$image" "$pull_policy"
+  if [ -n "$IMG2NUM_GPU_FLAG" ]; then
+    set_state_value GPU "$IMG2NUM_GPU_FLAG"
+  fi
   export IMG2NUM_IMAGE="$image"
   export IMG2NUM_PULL_POLICY="$pull_policy"
 
-  docker compose up -d dev
-  if [ -z "$(docker compose ps -q --status running dev 2>/dev/null)" ]; then
+  compose up -d dev
+  if [ -z "$(compose ps -q --status running dev 2>/dev/null)" ]; then
     echo "Error: container 'dev' is not running." >&2
     exit 1
   fi
   # No TTY in GitHub Actions
-  docker compose exec ${CI:+-T} dev "$@"
+  compose exec ${CI:+-T} dev "$@"
 }
 
 # ---------------------------------------------------------------------------
@@ -201,6 +262,18 @@ case "$MODE" in
     ;;
 esac
 
+if [ "$IMG2NUM_GPU" -eq 1 ]; then
+  case "$MODE" in
+    run|exec|sh|shell|bash|term|terminal)
+      if ! docker info --format '{{json .Runtimes}}' 2>/dev/null | grep -q nvidia \
+        && ! command -v nvidia-container-runtime-hook >/dev/null 2>&1; then
+        echo "Warning: NVIDIA Container Toolkit not detected; GPU access will likely fail." >&2
+        echo "See https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html" >&2
+      fi
+      ;;
+  esac
+fi
+
 # BuildKit is required for Dockerfile.dev cache mounts.
 if [ "$MODE" = "build" ]; then
   docker buildx version >/dev/null 2>&1 || {
@@ -210,7 +283,8 @@ if [ "$MODE" = "build" ]; then
   }
 fi
 
-if [ "$MODE" = "build" ]; then
+# Dockerfile-gpu.dev only layers on top of a prebuilt Dockerfile.dev image, so it needs neither.
+if [ "$MODE" = "build" ] && [ "$IMG2NUM_GPU" -eq 0 ]; then
   if [ ! -f "./third_party/dawn/CMakeLists.txt" ]; then
     echo "Error: third_party/dawn is not initialized." >&2
     echo "Run: git submodule update --init --recursive" >&2
@@ -229,15 +303,23 @@ case "$MODE" in
       BUILD_IMAGE="$IMG2NUM_IMAGE_FLAG"
     elif [ -n "${IMG2NUM_IMAGE:-}" ]; then
       BUILD_IMAGE="$IMG2NUM_IMAGE"
+    elif [ "$IMG2NUM_GPU" -eq 1 ]; then
+      BUILD_IMAGE="img2num-dev:gpu"
     else
       BUILD_IMAGE="img2num-dev:local"
+    fi
+
+    if [ "$IMG2NUM_GPU" -eq 1 ]; then
+      DOCKERFILE="Dockerfile-gpu.dev"
+    else
+      DOCKERFILE="Dockerfile.dev"
     fi
 
     BUILD_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
     GIT_SHA="$(git rev-parse HEAD)"
 
     DOCKER_BUILD_ARGS=(
-      -f Dockerfile.dev
+      -f "$DOCKERFILE"
       --build-arg "BUILD_DATE=$BUILD_DATE"
       --build-arg "GIT_SHA=$GIT_SHA"
       -t "$BUILD_IMAGE"
@@ -267,6 +349,9 @@ case "$MODE" in
     fi
 
     save_state "$BUILD_IMAGE" "missing"
+    if [ -n "$IMG2NUM_GPU_FLAG" ]; then
+      set_state_value GPU "$IMG2NUM_GPU_FLAG"
+    fi
 
     echo "Successfully built $BUILD_IMAGE"
     ;;
@@ -287,19 +372,19 @@ case "$MODE" in
     ;;
 
   # Docker management shortcuts
-  stop)    docker compose stop ;;
-  restart) docker compose restart ;;
-  down)    docker compose down ;;
+  stop)    compose stop ;;
+  restart) compose restart ;;
+  down)    compose down ;;
 
   purge|destroy)
-    docker compose down --volumes --remove-orphans
+    compose down --volumes --remove-orphans
     if [ "$MODE" = "destroy" ]; then
       IMAGE_TO_REMOVE="$(load_image)"
       echo "Removing $IMAGE_TO_REMOVE in 5s..."
       sleep 5
       docker image inspect "$IMAGE_TO_REMOVE" >/dev/null 2>&1 && \
       docker rmi "$IMAGE_TO_REMOVE" 2>/dev/null || true
-      # Clear the persisted image so the next `up` falls back to the default
+      # Clear the persisted image and GPU setting so the next `up` falls back to the defaults
       if [ -f "$IMG2NUM_STATE_FILE" ]; then
         tmp="$(mktemp)"
         trap 'rm -f "$tmp"' EXIT
@@ -307,6 +392,9 @@ case "$MODE" in
         sed \
           -e 's/^IMAGE=.*/IMAGE=/' \
           -e 's/^PULL_POLICY=.*/PULL_POLICY=/' \
+          -e 's/^GPU_IMAGE=.*/GPU_IMAGE=/' \
+          -e 's/^GPU_PULL_POLICY=.*/GPU_PULL_POLICY=/' \
+          -e 's/^GPU=.*/GPU=/' \
           "$IMG2NUM_STATE_FILE" > "$tmp" && mv "$tmp" "$IMG2NUM_STATE_FILE"
 
         trap - EXIT
@@ -316,13 +404,16 @@ case "$MODE" in
 # Do not edit manually.
 IMAGE=
 PULL_POLICY=
+GPU_IMAGE=
+GPU_PULL_POLICY=
+GPU=
 EOF
       fi
     fi
     ;;
 
   # Tail logs
-  logs) docker compose logs -f ;;
+  logs) compose logs -f ;;
 
   last-img|last-image)
     load_image
@@ -338,12 +429,12 @@ EOF
     fi
     cat <<EOF
 Usage:
-  ./img2num [--img <image:tag>] <command>
+  ./img2num [--img <image:tag>] [--gpu|--no-gpu] <command>
 
 Commands:
-    build               Build the local development Docker image.               [--img]
-    run|exec <args>     Run arbitrary one-off command inside the container.     [--img, --dh-img, --ghcr-img]
-    sh|shell|bash       Opens bash terminal in Docker container.                [--img, --dh-img, --ghcr-img]
+    build               Build the local development Docker image.               [--img, --gpu, --no-gpu]
+    run|exec <args>     Run arbitrary one-off command inside the container.     [--img, --dh-img, --ghcr-img, --gpu, --no-gpu]
+    sh|shell|bash       Opens bash terminal in Docker container.                [--img, --dh-img, --ghcr-img, --gpu, --no-gpu]
 
     stop                Stops running Docker container (keeps containers, volumes & networks).
     restart             Restarts running Docker container.
@@ -365,13 +456,27 @@ Flags:
   --ghcr-img            GitHub shorthand for --img. Prefixes value with ghcr.io/ryan-millard/img2num-dev:
                           E.g.: ./img2num sh --ghcr-img dev
                            Resolves Docker image to ghcr.io/ryan-millard/img2num-dev:dev
+  --gpu                 Enable NVIDIA GPU access (for Dawn/WebGPU via Vulkan).
+                        For build, uses Dockerfile-gpu.dev and defaults the tag to img2num-dev:gpu.
+                        The GPU image is layered on ryanmillard/img2num-dev:latest; to use a local base:
+                          ./img2num build --gpu -- --build-arg IMG2NUM_BASE_IMAGE=img2num-dev:local
+                        For run/exec/sh, adds docker-compose.gpu.yml (needs the NVIDIA Container Toolkit).
+                        Persisted (with build/run/exec/sh): later commands keep GPU access until --no-gpu.
+                          E.g.: ./img2num build --gpu && ./img2num sh
+  --no-gpu              Disable GPU access (and persist that).
+
+GPU Resolution (highest priority first):
+  Applies to: all commands that use Docker Compose
+  1. --gpu / --no-gpu flags
+  2. Last setting used with this script (GPU= in .img2num-state file)
+  3. Default: disabled
 
 Image Resolution (highest priority first):
   Applies to: build, run, exec, sh/shell/bash, destroy
   1. Image flags (--img, --dh-img, --ghcr-img)
   2. IMG2NUM_IMAGE env var
-  3. Last image used with this script (in .img2num-state file)
-  4. Default: $IMG2NUM_DEFAULT_IMAGE
+  3. Last image used with this script (in .img2num-state file, tracked separately for GPU mode)
+  4. Default: ryanmillard/img2num-dev:dev ($IMG2NUM_DEFAULT_GPU_IMAGE in GPU mode)
 EOF
     exit $EXIT_CODE
     ;;

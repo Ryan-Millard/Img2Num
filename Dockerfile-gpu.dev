@@ -1,0 +1,66 @@
+# --------------------------------------------------------------------------------------------------------------
+# Img2Num Dockerfile-gpu.dev
+#
+# GPU layer on top of the Dockerfile.dev image. All tooling (Emscripten, CMake, Dawn, uv, pnpm, ...) is inherited
+# from the base image; only GPU-specific setup belongs here.
+#
+# The NVIDIA driver is NOT installed in the image. It is injected at runtime by the NVIDIA Container Toolkit
+# (see docker-compose.gpu.yml / `./img2num --gpu ...`). Dawn reaches the GPU through Vulkan, so CUDA is not needed.
+#
+# To build on a locally built Dockerfile.dev image instead of the published one:
+#   ./img2num build --gpu -- --build-arg IMG2NUM_BASE_IMAGE=img2num-dev:local
+# --------------------------------------------------------------------------------------------------------------
+
+ARG IMG2NUM_BASE_IMAGE=ryanmillard/img2num-dev:latest
+FROM ${IMG2NUM_BASE_IMAGE}
+
+# --------------------------------------------------------------------------------------------------------------
+# Build metadata
+ARG BUILD_DATE
+ARG GIT_SHA
+
+LABEL org.opencontainers.image.title="Img2Num Dev (GPU)"
+LABEL org.opencontainers.image.description="GPU-enabled development environment for Img2Num"
+LABEL org.opencontainers.image.created=$BUILD_DATE
+LABEL org.opencontainers.image.revision=$GIT_SHA
+# Checked by ./img2num to warn when --gpu is used with a non-GPU image.
+LABEL org.img2num.gpu="true"
+
+# --------------------------------------------------------------------------------------------------------------
+# NVIDIA Vulkan/EGL plumbing
+#
+# The NVIDIA Container Toolkit bind-mounts the host driver's user-space libraries (libGLX_nvidia.so.0,
+# libEGL_nvidia.so.0, ...) into the container, but only when the "graphics" capability is requested.
+# The Vulkan loader and libglvnd then need ICD/vendor manifests pointing at those libraries. Newer toolkits
+# mount these manifests too; these are fallbacks for when they don't. Without the EGL vendor manifest, the
+# NVIDIA Vulkan ICD fails to initialise on headless hosts. Mesa's ICDs (lavapipe etc.) remain available, so
+# Dawn can still fall back to a software adapter when no GPU is attached.
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends \
+      libglvnd0 \
+      libgl1 \
+      libglx0 \
+      libegl1 \
+      libgles2 \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /etc/vulkan/icd.d /usr/share/glvnd/egl_vendor.d \
+  && printf '%s\n' \
+    '{' \
+    '    "file_format_version" : "1.0.1",' \
+    '    "ICD": {' \
+    '        "library_path": "libGLX_nvidia.so.0",' \
+    '        "api_version" : "1.3.277"' \
+    '    }' \
+    '}' > /etc/vulkan/icd.d/nvidia_icd.json \
+  && printf '%s\n' \
+    '{' \
+    '    "file_format_version" : "1.0.0",' \
+    '    "ICD": {' \
+    '        "library_path": "libEGL_nvidia.so.0"' \
+    '    }' \
+    '}' > /usr/share/glvnd/egl_vendor.d/10_nvidia.json
+
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,graphics,utility
