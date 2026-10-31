@@ -12,7 +12,6 @@ add_executable(core_cpu_tests
 )
 
 target_include_directories(core_cpu_tests BEFORE PRIVATE
-  # "${CMAKE_CURRENT_SOURCE_DIR}/stubs"
   "${PROJECT_SOURCE_DIR}/core/include"
   "${PROJECT_SOURCE_DIR}/core/src"
 )
