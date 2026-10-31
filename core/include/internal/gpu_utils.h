@@ -60,31 +60,17 @@ static constexpr uint8_t COLOR_SPACE_RGB {1};
 /// @return Cached wgpu::ComputePipeline.
 inline wgpu::ComputePipeline
 cached_pipeline(const std::string& shader_id, const std::string& label) {
-    // Cache key includes the raw device pointer so that a device recreation
-    // (which yields a different WGPUDevice handle) automatically invalidates
-    // stale entries.  A mutex guards the map against concurrent access.
-    using CacheKey = std::pair<WGPUDevice, std::string>;
-    struct PairHash {
-        size_t operator()(const CacheKey& k) const {
-            auto h1 = std::hash<const void*> {}(static_cast<const void*>(k.first));
-            auto h2 = std::hash<std::string> {}(k.second);
-            return h1 ^ (h2 << 1);
-        }
-    };
+    // Pipelines belong to a device and every thread has its own device, so the
+    // cache is per thread too. No locking needed, and pipelines are released
+    // along with the thread's device when the thread exits.
+    thread_local std::unordered_map<std::string, wgpu::ComputePipeline> cache;
 
-    static std::mutex mtx;
-    static std::unordered_map<CacheKey, wgpu::ComputePipeline, PairHash> cache;
-
-    WGPUDevice raw_device = GPU::getClassInstance().get_device().Get();
-    CacheKey key {raw_device, shader_id};
-
-    std::lock_guard<std::mutex> lock(mtx);
-    auto it = cache.find(key);
+    auto it = cache.find(shader_id);
     if (it != cache.end()) {
         return it->second;
     }
     wgpu::ComputePipeline pipeline = GPU::getClassInstance().createPipeline(shader_id, label);
-    cache[key] = pipeline;
+    cache[shader_id] = pipeline;
     return pipeline;
 }
 
@@ -109,8 +95,8 @@ inline const void* map_and_wait(wgpu::Buffer& buffer, size_t size) {
 
     MapState state;
 
-    buffer.MapAsync(
-        wgpu::MapMode::Read, 0, size, wgpu::CallbackMode::AllowProcessEvents,
+    wgpu::Future future = buffer.MapAsync(
+        wgpu::MapMode::Read, 0, size, GPU::wait_mode(),
         [](wgpu::MapAsyncStatus status, wgpu::StringView /*msg*/, void* userdata) {
             auto* s = static_cast<MapState*>(userdata);
             s->done = true;
@@ -119,12 +105,7 @@ inline const void* map_and_wait(wgpu::Buffer& buffer, size_t size) {
         static_cast<void*>(&state)
     );
 
-    while (!state.done) {
-        GPU::getClassInstance().get_instance().ProcessEvents();
-#if defined(__EMSCRIPTEN__)
-        emscripten_sleep(10);
-#endif
-    }
+    GPU::getClassInstance().wait(future, state.done);
 
     if (!state.success) {
         throw std::runtime_error("gpu::map_and_wait: MapAsync failed");
