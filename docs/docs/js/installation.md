@@ -42,7 +42,7 @@ bun add img2num
 
 ```html title="Paste this into your HTML file"
 <!-- IMPORTANT: this is browser-only -->
-<script src="https://cdn.jsdelivr.net/npm/img2num@0.2.0/dist/browser/img2num.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/img2num@0.4.2/dist/standalone/img2num.iife.js"></script>
 ```
 
 ### unpkg
@@ -51,5 +51,5 @@ bun add img2num
 
 ```html title="Paste this into your HTML file"
 <!-- IMPORTANT: this is browser-only -->
-<script src="https://unpkg.com/img2num@0.2.0/dist/browser/img2num.js"></script>
+<script src="https://unpkg.com/img2num@0.4.2/dist/standalone/img2num.iife.js"></script>
 ```
