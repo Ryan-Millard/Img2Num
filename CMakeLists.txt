@@ -90,11 +90,10 @@ endblock()
 add_subdirectory(core)
 
 if(IMG2NUM_BUILD_TESTS)
-  # This mode builds only the standalone CPU test target. The regular core
-  # target requires Dawn at configure time and is deliberately excluded here.
+  # Tests link the production core target, which may require Dawn at configure time.
   enable_testing()
   add_subdirectory(core/tests)
-  # return()
+  return()
 endif()
 
 if(IMG2NUM_BUILD_PYTHON)
