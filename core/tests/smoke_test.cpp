@@ -70,7 +70,7 @@ TEST_CASE("kmeans succeeds", "[core]") {
     uint8_t out_rgba[64] = {255};
     int32_t labels[16] = {-1};
 
-    img2num::kmeans(rgba, out_rgba, labels, 4, 4, 2, 100, 1);
+    img2num::kmeans(rgba, out_rgba, labels, 4, 4, 2, 100, 0);
 
     std::cout << std::to_string(static_cast<int>(out_rgba[0])) \
     << ", " << std::to_string(static_cast<int>(out_rgba[1])) \
