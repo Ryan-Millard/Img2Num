@@ -160,28 +160,28 @@ class GPU {
                 if (status != wgpu::CompilationInfoRequestStatus::Success || !info)
                     return;
 
-                for (uint32_t i{0}; i < info->messageCount; ++i) {
+                for (uint32_t i {0}; i < info->messageCount; ++i) {
                     const auto& msg = info->messages[i];
                     const std::string_view text(
                         msg.message.data ? msg.message.data : "", msg.message.length
                     );
 
                     switch (msg.type) {
-                        case wgpu::CompilationMessageType::Error:
-                            IMG2NUM_LOG_ERROR(
-                                "Shader Error Line {}:{} - {}", msg.lineNum, msg.linePos, text
-                            );
-                            break;
-                        case wgpu::CompilationMessageType::Warning:
-                            IMG2NUM_LOG_WARN(
-                                "Shader Warning Line {}:{} - {}", msg.lineNum, msg.linePos, text
-                            );
-                            break;
-                        default: // Info
-                            IMG2NUM_LOG_DEBUG(
-                                "Shader Info Line {}:{} - {}", msg.lineNum, msg.linePos, text
-                            );
-                            break;
+                    case wgpu::CompilationMessageType::Error:
+                        IMG2NUM_LOG_ERROR(
+                            "Shader Error Line {}:{} - {}", msg.lineNum, msg.linePos, text
+                        );
+                        break;
+                    case wgpu::CompilationMessageType::Warning:
+                        IMG2NUM_LOG_WARN(
+                            "Shader Warning Line {}:{} - {}", msg.lineNum, msg.linePos, text
+                        );
+                        break;
+                    default: // Info
+                        IMG2NUM_LOG_DEBUG(
+                            "Shader Info Line {}:{} - {}", msg.lineNum, msg.linePos, text
+                        );
+                        break;
                     }
                 }
             }
