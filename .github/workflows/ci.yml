@@ -105,9 +105,8 @@ jobs:
       - name: Lint JS (ESLint)
         run: pnpm run lint:js
 
-      # TODO: uncomment the below when #607 is fixed (https://github.com/Ryan-Millard/Img2Num/issues/607)
-      #- name: Lint C and C++ (clang-tidy)
-        #run: pnpm run lint:cpp
+      - name: Lint C and C++ (clang-tidy)
+        run: pnpm run lint:cpp
 
       - name: Validate format
         run: pnpm run format:check
