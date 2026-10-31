@@ -67,6 +67,9 @@
       }
     },
     "Validation": {
+      "test:release": {
+        "desc": "Test release detection for package and binding changes"
+      },
       "validate-scripts": {
         "desc": "Validate all scripts defined in workspace package.json files"
       }
@@ -91,6 +94,7 @@
     "format:cpp:check": "uv run format_cpp",
     "format:js": "pnpm prettier --write . --ignore-path .prettierignore --config .prettierrc",
     "format:js:check": "pnpm prettier --check . --ignore-path .prettierignore --config .prettierrc",
+    "test:release": "node --test scripts/release-please.test.js",
     "validate-scripts": "node scripts/validate-scripts.js",
     "lint": "pnpm run --filter=. --parallel \"/^lint:(cpp|js|py)$/\"",
     "lint:fix": "pnpm run --filter=. --parallel \"/^lint:(cpp|js|py):fix$/\"",
@@ -110,6 +114,7 @@
     "eslint-plugin-react-refresh": "^0.5.6",
     "globals": "^17.12.0",
     "img2num-dev-scripts": "workspace:*",
-    "prettier": "^3.9.6"
+    "prettier": "^3.9.6",
+    "release-please": "17.6.0"
   }
 }

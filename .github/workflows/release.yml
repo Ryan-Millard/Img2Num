@@ -50,7 +50,8 @@ jobs:
           config-file:   release-please-config.json
           manifest-file: .release-please-manifest.json
           skip-github-release: ${{ github.ref_name != 'main' }}
-          skip-github-pull-request: ${{ github.ref_name != 'main' }}
+          # PR generation uses the binding-aware manifest in the job below.
+          skip-github-pull-request: true
 
       - name: Set Fallback Version
         id: fallback_version
@@ -125,6 +126,37 @@ jobs:
           echo "=== Resolved Release Outputs ==="
           echo "$OUTPUTS" | jq -r 'to_entries[] | "\(.key): \(.value)"'
           echo "Fallback version: $FALLBACK_VERSION"
+
+  release-pull-requests:
+    needs: release-please
+    if: >-
+      github.ref_name == 'main' &&
+      (github.event_name != 'workflow_dispatch' || inputs.force_publish_component == 'none')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@900f2210b1d28bbbd0bd22d17926b9e224e8f231
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@670825a89dc0abd596e7a3abd0f5e3f6e5faf37c
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271
+        with:
+          version: 11.4.0
+
+      - name: Install release tooling
+        run: pnpm install --frozen-lockfile --filter img2num-workspace... --ignore-scripts
+
+      - name: Create binding-aware release PRs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/release-please.js
 
   # C/C++ native artifacts
   build-c-cpp-native:
