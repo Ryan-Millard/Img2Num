@@ -7,7 +7,7 @@ license = { text = "MIT" }
 readme = "packages/py/README.md"
 authors = [{ name = "Ryan Millard" }]
 dependencies = [
-  "numpy>=1.23.5"
+  "numpy>=1.23.5",
 ]
 classifiers = [
   "Intended Audience :: Developers",
@@ -50,6 +50,7 @@ cmake.args = [
 # Python sources are installed by CMake (bindings/py/CMakeLists.txt).
 # Don't list "img2num" here: at the repo root that is the dev CLI script.
 wheel.packages = []
+install.components = ["python"]
 sdist.inclusion-mode = "explicit"
 sdist.include = [
   "pyproject.toml",
