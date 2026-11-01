@@ -52,10 +52,23 @@ jobs:
           clang --version
 
       - name: Run cmake
-        run: cmake -B build-c-cpp/ .
+        run: >-
+          cmake -B build-c-cpp/ . -DCMAKE_BUILD_TYPE=Release
+          -DIMG2NUM_LOG_LEVEL=OFF -DIMG2NUM_BUILD_TESTS=ON
 
       - name: Build C/C++
         run: cmake --build build-c-cpp/
+
+      - name: Test C/C++ (Release, logging OFF)
+        run: ctest --test-dir build-c-cpp/ --output-on-failure --no-tests=error
+
+      - name: Build and test C/C++ (Debug, logging OFF)
+        run: |
+          cmake -B build-c-cpp-debug/ . -DCMAKE_BUILD_TYPE=Debug \
+            -DIMG2NUM_LOG_LEVEL=OFF -DIMG2NUM_BUILD_TESTS=ON \
+            -DIMG2NUM_BUILD_EXAMPLES=OFF -DIMG2NUM_DEBUG_CACHE_VARIABLES_DUMP=OFF
+          cmake --build build-c-cpp-debug/
+          ctest --test-dir build-c-cpp-debug/ --output-on-failure --no-tests=error
 
       - name: Upload C/C++ build artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

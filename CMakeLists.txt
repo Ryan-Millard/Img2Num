@@ -33,6 +33,7 @@ set(IMG2NUM_STRICT_CXX_FLAGS
 option(IMG2NUM_BUILD_C "Build C bindings (required for WASM builds)" ON)
 option(IMG2NUM_BUILD_PYTHON "Build Python bindings" OFF)
 option(IMG2NUM_BUILD_EXAMPLES "Build example applications" ON)
+option(IMG2NUM_BUILD_TESTS "Build native C++ regression tests" OFF)
 option(IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP "Dump CMake environment variables in Debug mode" ON)
 
 # Force a safe default to avoid the weirdness of CMake's `None`
@@ -113,6 +114,11 @@ elseif(EMSCRIPTEN)
   # WebAssembly relies on C
   add_subdirectory(bindings/c)
   add_subdirectory(bindings/js)
+endif()
+
+if(IMG2NUM_BUILD_TESTS AND NOT EMSCRIPTEN)
+  enable_testing()
+  add_subdirectory(core/tests)
 endif()
 
 # ================================================
