@@ -95,6 +95,9 @@ jobs:
         run: |
           pnpm build:types
           pnpm test:types
+          
+      - name: Type-check TypeScript example app
+        run: pnpm --filter console-ts-esm typecheck
 
       - name: Sync Python tooling (skip building img2num)
         run: uv sync --only-group lint
