@@ -27,6 +27,10 @@ format:
     @echo "Format all files"
     pnpm format
 
+lint:
+    @echo "Linting files"
+    pnpm lint:py
+
 # Check REUSE/SPDX license compliance
 reuse-check:
     @echo "Check REUSE/SPDX license compliance"
@@ -40,9 +44,14 @@ build-all build_type="Release" log_level="AUTO":
     just react-js build
     just docs build
 
+# Run the C++ core tests
+test build_type="Release":
+    just cmake test {{ build_type }}
+
 # Delete every generated build folder (the old `just clean <target>`, for all targets)
 clean-all:
     just cmake clean
+    just cmake test-clean
     just js clean
     just js package-clean
     just py clean

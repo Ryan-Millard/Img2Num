@@ -14,7 +14,7 @@
 /// @def IMG2NUM_H_INVERT_IMAGE_DOC
 /// @brief Invert the pixel values of an image.
 /// @ingroup IMG2NUM_H
-/// @param ptr Pointer to the image buffer.
+/// @param image Pointer to the image buffer.
 /// @param width Width of the image in pixels.
 /// @param height Height of the image in pixels.
 /// @note Each pixel value is replaced by 255 - original_value.
@@ -25,7 +25,7 @@
 /// @def IMG2NUM_H_THRESHOLD_IMAGE_DOC
 /// @brief Apply a thresholding operation to an image.
 /// @ingroup IMG2NUM_H
-/// @param ptr Pointer to the image buffer.
+/// @param image Pointer to the image buffer.
 /// @param width Width of the image in pixels.
 /// @param height Height of the image in pixels.
 /// @param num_thresholds Number of thresholds to apply.
@@ -37,7 +37,7 @@
 /// @def IMG2NUM_H_BLACK_THRESHOLD_IMAGE_DOC
 /// @brief Apply black-thresholding to an image.
 /// @ingroup IMG2NUM_H
-/// @param ptr Pointer to the image buffer.
+/// @param image Pointer to the image buffer.
 /// @param width Width of the image in pixels.
 /// @param height Height of the image in pixels.
 /// @param num_thresholds Per-channel brightness cutoff in the 0-255 range.

@@ -1,7 +1,7 @@
 # Run the Python example app on an image
 console-py input="":
     @echo "python example-apps/console-py/main.py {{ input }}"
-    uv pip install opencv-python
+    uv pip install pillow>=12.0.0
     uv run python3 example-apps/console-py/main.py "{{ input }}"
 
 # Run the C++ example app on an image
@@ -15,14 +15,14 @@ console-c input:
     ./build-c-cpp/example-apps/console-c/CImg2NumExample_console_c "{{ input }}"
 
 # Run the Node (CommonJS) example app on an image
-console-js-cjs input:
-    @echo "node example-apps/console-js-cjs/index.cjs {{ input }}"
-    node example-apps/console-js-cjs/index.cjs "{{ input }}"
+console-js-cjs input output="output.svg":
+  @echo "node example-apps/console-js-cjs/index.cjs {{ input }} {{ output }}"
+  node example-apps/console-js-cjs/index.cjs "{{ input }}" "{{ output }}"
 
 # Run the Node (ESM) example app on an image
-console-js-esm input:
-    @echo "node example-apps/console-js-esm/index.mjs {{ input }}"
-    node example-apps/console-js-esm/index.mjs "{{ input }}"
+console-js-esm input output="output.svg":
+  @echo "node example-apps/console-js-esm/index.mjs {{ input }} {{ output }}"
+  node example-apps/console-js-esm/index.mjs "{{ input }}" "{{ output }}"
 
 # Run an npm script from example-apps/html-js/package.json
 html-js script:
