@@ -97,6 +97,9 @@ jobs:
       - name: Verify import
         run: ./img2num run uv run python3 -c "import img2num;"
 
+      - name: Test native Python bindings
+        run: ./img2num run just py test
+
       - name: Build and run example-apps/console-py
         # Uses an image that is guaranteed to exist
         run: ./img2num run uv run --package console-py dev docs/static/img/favicon.png
