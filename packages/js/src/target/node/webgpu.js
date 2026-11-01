@@ -27,6 +27,7 @@ export async function initWebGPU() {
   if (!gpuInitPromise) {
     gpuInitPromise = (async () => {
       const { create } = await import("webgpu");
+      // Allow Dawn to select the platform's default graphics API (see comment above)
       const nativeGpu = create();
       globalThis.navigator ??= {};
       globalThis.navigator.gpu = nativeGpu;
