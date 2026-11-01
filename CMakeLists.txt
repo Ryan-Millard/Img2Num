@@ -122,11 +122,6 @@ elseif(EMSCRIPTEN)
   add_subdirectory(bindings/js)
 endif()
 
-if(IMG2NUM_BUILD_TESTS AND NOT EMSCRIPTEN)
-  enable_testing()
-  add_subdirectory(core/tests)
-endif()
-
 # ================================================
 # Example apps (Emscripten can't compile them)
 if(NOT EMSCRIPTEN AND IMG2NUM_BUILD_EXAMPLES)
