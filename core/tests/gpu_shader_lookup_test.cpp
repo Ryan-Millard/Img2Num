@@ -13,12 +13,27 @@
 #include <type_traits>
 
 namespace {
+/**
+ * @brief Verify a test condition with checks that remain active in Release builds.
+ * @param condition Condition that must hold for the check to pass.
+ * @param message Failure diagnostic to report if the condition is false.
+ * @throws std::runtime_error If @p condition is false.
+ */
 void check(bool condition, const std::string& message) {
     if (!condition) {
         throw std::runtime_error(message);
     }
 }
 
+/**
+ * @brief Verify an operation throws std::invalid_argument with the expected shader diagnostic.
+ * @tparam Func Callable type of the operation under test.
+ * @param operation Operation expected to throw std::invalid_argument.
+ * @param id Complete shader ID expected in the quoted diagnostic.
+ * @return The exception's diagnostic message.
+ * @throws std::runtime_error If no std::invalid_argument is thrown or its diagnostic omits
+ * the function name, quoted shader ID, or lookup failure reason. Other exception types propagate.
+ */
 template <typename Func>
 std::string expect_invalid_argument(Func&& operation, std::string_view id) {
     try {
@@ -45,6 +60,10 @@ std::string expect_invalid_argument(Func&& operation, std::string_view id) {
 }
 } // namespace
 
+/**
+ * @brief Run shader lookup and error-boundary regression checks without initializing a GPU.
+ * @return Zero if all checks pass, or one after reporting a regression failure.
+ */
 int main() {
     try {
         auto& gpu = GPU::getClassInstance();

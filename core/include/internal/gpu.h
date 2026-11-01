@@ -119,6 +119,13 @@ class GPU {
     GPU(GPU&&) = delete;
     GPU& operator=(GPU&&) = delete;
 
+    /**
+     * @brief Look up the WGSL source of an embedded shader.
+     * @param shader_id Embedded shader identifier to look up.
+     * @return An owning copy of the embedded WGSL source.
+     * @throws std::invalid_argument If @p shader_id is not found. The diagnostic includes
+     * the function name and the full supplied ID.
+     */
     std::string readWGSLFile(std::string_view shader_id) {
         // A simple linear search over 9 items is blazingly fast in C++
         for (const auto& entry : embedded_shaders::shaders) {
