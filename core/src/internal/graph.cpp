@@ -1,7 +1,6 @@
 #include "internal/graph.h"
 
 #include "internal/bezier.h"
-#include "internal/douglas_peucker.h"
 #include "internal/Pixel.h"
 #include "internal/shared_contours.h"
 
@@ -15,20 +14,6 @@
  Graph class - manages Node class
 */
 
-static inline float
-colorDistance(const ImageLib::RGBPixel<uint8_t>& a, const ImageLib::RGBPixel<uint8_t>& b) {
-    ImageLib::RGBPixel<float> af {
-        static_cast<float>(a.red), static_cast<float>(a.green), static_cast<float>(a.blue)
-    };
-    ImageLib::RGBPixel<float> bf {
-        static_cast<float>(b.red), static_cast<float>(b.green), static_cast<float>(b.blue)
-    };
-    return std::sqrt(
-        (af.red - bf.red) * (af.red - bf.red) + (af.green - bf.green) * (af.green - bf.green) +
-        (af.blue - bf.blue) * (af.blue - bf.blue)
-    );
-}
-
 /*
 To quickly search m_nodes (std::vector) for the index of a node id
 create an std::unordered_map of node id - index pairs
@@ -40,16 +25,6 @@ void Graph::hash_node_ids() {
         const int32_t key {m_nodes->at(i)->id()};
         m_node_ids[key] = i;
     }
-}
-
-bool Graph::all_areas_bigger_than(int32_t min_area) {
-    for (auto& n : *m_nodes) {
-        if (n->area() < min_area) {
-            return false;
-        }
-    }
-
-    return true;
 }
 
 bool Graph::add_edge(int32_t node_id1, int32_t node_id2) {
@@ -143,124 +118,6 @@ void Graph::discover_edges(
             }
         }
     }
-}
-
-void Graph::process_overlapping_edges() {
-    // 1. Build the Global Label Map ONCE (0 = background, else = node->id())
-    std::vector<int32_t> label_map(static_cast<size_t>(m_width) * static_cast<size_t>(m_height), 0);
-
-    for (const Node_ptr& n : get_nodes()) {
-        if (n->area() == 0)
-            continue;
-
-        for (auto& [_, p] : n->get_pixels()) {
-            label_map[p.y * m_width + p.x] = n->id();
-        }
-    }
-
-    constexpr int8_t dirs[8][2] {{1, 0}, {-1, 0},  {0, 1},  {0, -1},
-                                 {1, 1}, {-1, -1}, {-1, 1}, {1, -1}};
-
-    // 2. Iterate directly over the pixels of each node
-    for (const Node_ptr& n : get_nodes()) {
-        if (n->area() == 0)
-            continue;
-        int32_t val = n->id();
-
-        for (auto& [_, p] : n->get_pixels()) {
-            int x = p.x;
-            int y = p.y;
-
-            // Check 8 neighbors in the global map
-            for (int k = 0; k < 8; ++k) {
-                int nx = x + dirs[k][0];
-                int ny = y + dirs[k][1];
-
-                // Fast boundary check (replaces std::clamp)
-                if (nx < 0 || nx >= m_width || ny < 0 || ny >= m_height)
-                    continue;
-
-                int32_t n_val = label_map[ny * m_width + nx];
-
-                // Is it a neighbor? AND have we not processed this pairing yet?
-                if (n_val != 0 && n_val != val && val < n_val) {
-                    bool is_too_thin = false;
-
-                    // Check around the neighbor pixel for a 3rd region (pinching)
-                    for (int mk = 0; mk < 8; ++mk) {
-                        int mx = nx + dirs[mk][0];
-                        int my = ny + dirs[mk][1];
-
-                        if (mx < 0 || mx >= m_width || my < 0 || my >= m_height)
-                            continue;
-
-                        int32_t m_val = label_map[my * m_width + mx];
-
-                        if (m_val != 0 && m_val != val && m_val != n_val) {
-                            is_too_thin = true;
-                            break; // CRITICAL: Stop checking immediately once proven thin!
-                        }
-                    }
-
-                    if (is_too_thin) {
-                        // Give our pixel to the neighbor
-                        Node_ptr neighbor_node =
-                            m_nodes->at(m_node_ids[n_val]); // get_node_by_id(n_val); // Assuming
-                                                            // you have this lookup
-                        if (neighbor_node) {
-                            neighbor_node->add_edge_pixel(XY {x, y});
-                        }
-                    } else {
-                        // Take the neighbor's pixel
-                        n->add_edge_pixel(XY {nx, ny});
-                    }
-                }
-            }
-        }
-    }
-}
-
-std::vector<uint8_t> Graph::analyzeJunctions(const std::vector<uint8_t>& skel, int w, int h) {
-    std::vector<uint8_t> junction_map(static_cast<size_t>(w) * h, 0);
-
-    // 8-Neighbor Order (Clockwise)
-    // P9 P2 P3
-    // P8 P1 P4
-    // P7 P6 P5
-    int dx[] = {0, 1, 1, 1, 0, -1, -1, -1};
-    int dy[] = {-1, -1, 0, 1, 1, 1, 0, -1};
-
-    for (int y = 0; y < h; ++y) {
-        for (int x = 0; x < w; ++x) {
-            if (getPixel(skel, w, h, x, y) == 0)
-                continue;
-
-            // 1. Get Neighbors in Circular Order
-            int p[8];
-            for (int k = 0; k < 8; ++k) {
-                p[k] = getPixel(skel, w, h, x + dx[k], y + dy[k]) ? 1 : 0;
-            }
-
-            // 2. Count Transitions (0 -> 1)
-            // This is the Crossing Number / 2
-            int transitions = 0;
-            for (int k = 0; k < 8; ++k) {
-                if (p[k] == 0 && p[(k + 1) % 8] == 1)
-                    transitions++;
-            }
-
-            // 3. Count Total Neighbors (for Endpoint check)
-            int neighbors = 0;
-            for (int k = 0; k < 8; ++k)
-                neighbors += p[k];
-
-            // 4. Classify
-            if (transitions >= 3) {
-                junction_map[y * w + x] = 1;
-            }
-        }
-    }
-    return junction_map;
 }
 
 void Graph::compute_contours() {
