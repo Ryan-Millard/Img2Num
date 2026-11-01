@@ -33,6 +33,7 @@ set(IMG2NUM_STRICT_CXX_FLAGS
 option(IMG2NUM_BUILD_C "Build C bindings (required for WASM builds)" ON)
 option(IMG2NUM_BUILD_PYTHON "Build Python bindings" OFF)
 option(IMG2NUM_BUILD_EXAMPLES "Build example applications" ON)
+option(IMG2NUM_BUILD_TESTS "Build the standalone CPU core tests" OFF)
 option(IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP "Dump CMake environment variables in Debug mode" ON)
 
 # Force a safe default to avoid the weirdness of CMake's `None`
@@ -82,12 +83,18 @@ if(IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP)
 endif()
 endblock()
 
-
 # ================================================
 # Library setup
 
 # Always add core because everything depends on it
 add_subdirectory(core)
+
+if(IMG2NUM_BUILD_TESTS)
+  # Tests link the production core target, which may require Dawn at configure time.
+  enable_testing()
+  add_subdirectory(core/tests)
+  return()
+endif()
 
 if(IMG2NUM_BUILD_PYTHON)
   # Python depends only on core

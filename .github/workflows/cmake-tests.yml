@@ -1,0 +1,39 @@
+name: Test C++ Core
+
+on:
+  workflow_call:
+    inputs:
+      image:
+        description: 'Docker image to run tests in'
+        required: true
+        type: string
+      ref:
+        description: 'Git revision or tag to test (defaults to github.sha)'
+        type: string
+        default: ''
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  core-cpp-tests:
+    name: Core C++ tests
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ inputs.image }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          submodules: true
+
+      - name: Run core C++ tests
+        run: just cmake test
+
+      - name: Upload C/C++ test artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: build-tests
+          path: build-tests/
+          if-no-files-found: error
