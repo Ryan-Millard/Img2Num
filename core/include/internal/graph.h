@@ -37,7 +37,6 @@ class Graph {
     std::unordered_map<int32_t, int32_t> m_node_ids;
 
     void hash_node_ids(void);
-    void process_overlapping_edges();
 
     /**
      * `@brief` Safely retrieves a pixel value from a binary image with bounds checking.
@@ -49,11 +48,6 @@ class Graph {
      * `@param` y Pixel y-coordinate
      * `@return` Pixel value at (x, y), or 0 if out of bounds
      */
-    inline uint8_t getPixel(const std::vector<uint8_t>& img, int w, int h, int x, int y) {
-        if (x < 0 || x >= w || y < 0 || y >= h)
-            return 0; // Boundary check
-        return img[y * w + x];
-    }
 
     /**
      * `@brief` Analyzes a skeleton image to detect junction points using 8-neighbor
@@ -67,7 +61,6 @@ class Graph {
      * `@param` h Image height
      * `@return` Junction mask with nonzero entries marking junction pixels
      */
-    std::vector<uint8_t> analyzeJunctions(const std::vector<uint8_t>& skel, int w, int h);
 
   public:
     inline Graph(std::unique_ptr<std::vector<Node_ptr>>& nodes, int width, int height)
@@ -93,7 +86,6 @@ class Graph {
         return *m_nodes;
     }
 
-    bool all_areas_bigger_than(int32_t min_area);
     inline const size_t size() {
         return m_nodes->size();
     }
