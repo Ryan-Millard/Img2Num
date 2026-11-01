@@ -57,7 +57,7 @@ const { pixels, width, height } = await imageToUint8ClampedArray(imageFile);
 ```
 
 :::tip[See how we use it]
-See our [`html-js` example application's code](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/html-js/index.html)
+See our `html-js` example application's code: the shared [`template.html`](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/html-js/template.html) page shell and [`shared/app.js`](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/html-js/shared/app.js) demo logic
 :::
 
 ### Node.js
