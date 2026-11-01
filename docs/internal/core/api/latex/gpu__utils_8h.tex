@@ -114,33 +114,19 @@ Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00062}{62}} of file \m
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00063\ \ \ \ \ \textcolor{comment}{//\ Cache\ key\ includes\ the\ raw\ device\ pointer\ so\ that\ a\ device\ recreation}}
-\DoxyCodeLine{00064\ \ \ \ \ \textcolor{comment}{//\ (which\ yields\ a\ different\ WGPUDevice\ handle)\ automatically\ invalidates}}
-\DoxyCodeLine{00065\ \ \ \ \ \textcolor{comment}{//\ stale\ entries.\ \ A\ mutex\ guards\ the\ map\ against\ concurrent\ access.}}
-\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{using\ }CacheKey\ =\ std::pair<WGPUDevice,\ std::string>;}
-\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{struct\ }PairHash\ \{}
-\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ operator()(\textcolor{keyword}{const}\ CacheKey\&\ k)\textcolor{keyword}{\ const\ }\{}
-\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ h1\ =\ std::hash<const\ void*>\ \{\}(\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }\textcolor{keywordtype}{void}*\textcolor{keyword}{>}(k.first));}
-\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ h2\ =\ std::hash<std::string>\ \{\}(k.second);}
-\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ h1\ \string^\ (h2\ <<\ 1);}
-\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00073\ \ \ \ \ \};}
-\DoxyCodeLine{00074\ }
-\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{static}\ std::mutex\ mtx;}
-\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{static}\ std::unordered\_map<CacheKey,\ wgpu::ComputePipeline,\ PairHash>\ cache;}
-\DoxyCodeLine{00077\ }
-\DoxyCodeLine{00078\ \ \ \ \ WGPUDevice\ raw\_device\ =\ GPU::getClassInstance().get\_device().Get();}
-\DoxyCodeLine{00079\ \ \ \ \ CacheKey\ key\ \{raw\_device,\ shader\_id\};}
-\DoxyCodeLine{00080\ }
-\DoxyCodeLine{00081\ \ \ \ \ std::lock\_guard<std::mutex>\ lock(mtx);}
-\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ cache.find(key);}
-\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ !=\ cache.end())\ \{}
-\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ it-\/>second;}
-\DoxyCodeLine{00085\ \ \ \ \ \}}
-\DoxyCodeLine{00086\ \ \ \ \ wgpu::ComputePipeline\ pipeline\ =\ GPU::getClassInstance().createPipeline(shader\_id,\ label);}
-\DoxyCodeLine{00087\ \ \ \ \ cache[key]\ =\ pipeline;}
-\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{return}\ pipeline;}
-\DoxyCodeLine{00089\ \}}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{comment}{//\ Pipelines\ belong\ to\ a\ device\ and\ every\ thread\ has\ its\ own\ device,\ so\ the}}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{comment}{//\ cache\ is\ per\ thread\ too.\ No\ locking\ needed,\ and\ pipelines\ are\ released}}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{comment}{//\ along\ with\ the\ thread's\ device\ when\ the\ thread\ exits.}}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{thread\_local}\ std::unordered\_map<std::string,\ wgpu::ComputePipeline>\ cache;}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ cache.find(shader\_id);}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ !=\ cache.end())\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ it-\/>second;}
+\DoxyCodeLine{00071\ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \ \ wgpu::ComputePipeline\ pipeline\ =\ GPU::getClassInstance().createPipeline(shader\_id,\ label);}
+\DoxyCodeLine{00073\ \ \ \ \ cache[shader\_id]\ =\ pipeline;}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordflow}{return}\ pipeline;}
+\DoxyCodeLine{00075\ \}}
 
 \end{DoxyCode}
 
@@ -194,25 +180,25 @@ Convenience for kernels that only need one pass.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00542}{542}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00523}{523}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00545\ \ \ \{}
-\DoxyCodeLine{00546\ \ \ \ \ wgpu::CommandEncoder\ encoder\ =\ GPU::getClassInstance().get\_device().CreateCommandEncoder();}
-\DoxyCodeLine{00547\ \ \ \ \ \mbox{\hyperlink{gpu__utils_8h_a1dbdd4527ebabb3eb83e00d0604cfa65}{encode\_pass}}(encoder,\ pipeline,\ bind\_group,\ groups\_x,\ groups\_y,\ groups\_z);}
-\DoxyCodeLine{00548\ \ \ \ \ wgpu::CommandBuffer\ commands\ =\ encoder.Finish();}
-\DoxyCodeLine{00549\ \ \ \ \ GPU::getClassInstance().get\_queue().Submit(1,\ \&commands);}
-\DoxyCodeLine{00550\ \}}
+\DoxyCodeLine{00526\ \ \ \{}
+\DoxyCodeLine{00527\ \ \ \ \ wgpu::CommandEncoder\ encoder\ =\ GPU::getClassInstance().get\_device().CreateCommandEncoder();}
+\DoxyCodeLine{00528\ \ \ \ \ \mbox{\hyperlink{gpu__utils_8h_a1dbdd4527ebabb3eb83e00d0604cfa65}{encode\_pass}}(encoder,\ pipeline,\ bind\_group,\ groups\_x,\ groups\_y,\ groups\_z);}
+\DoxyCodeLine{00529\ \ \ \ \ wgpu::CommandBuffer\ commands\ =\ encoder.Finish();}
+\DoxyCodeLine{00530\ \ \ \ \ GPU::getClassInstance().get\_queue().Submit(1,\ \&commands);}
+\DoxyCodeLine{00531\ \}}
 
 \end{DoxyCode}
 
 
-References \mbox{\hyperlink{gpu__utils_8h_source_l00542}{gpu\+::dispatch()}}, and \mbox{\hyperlink{gpu__utils_8h_source_l00521}{gpu\+::encode\+\_\+pass()}}.
+References \mbox{\hyperlink{gpu__utils_8h_source_l00523}{gpu\+::dispatch()}}, and \mbox{\hyperlink{gpu__utils_8h_source_l00502}{gpu\+::encode\+\_\+pass()}}.
 
 
 
-Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00542}{gpu\+::dispatch()}}.
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00523}{gpu\+::dispatch()}}.
 
 Here is the call graph for this function\+:
 \nopagebreak
@@ -259,26 +245,26 @@ Use this for multi-\/pass work (e.\+g. bilateral filter with color conversion).
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00521}{521}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00502}{502}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00525\ \ \ \{}
-\DoxyCodeLine{00526\ \ \ \ \ wgpu::ComputePassEncoder\ pass\ =\ encoder.BeginComputePass();}
-\DoxyCodeLine{00527\ \ \ \ \ pass.SetPipeline(pipeline);}
-\DoxyCodeLine{00528\ \ \ \ \ pass.SetBindGroup(0,\ bind\_group);}
-\DoxyCodeLine{00529\ \ \ \ \ pass.DispatchWorkgroups(groups\_x,\ groups\_y,\ groups\_z);}
-\DoxyCodeLine{00530\ \ \ \ \ pass.End();}
-\DoxyCodeLine{00531\ \}}
+\DoxyCodeLine{00506\ \ \ \{}
+\DoxyCodeLine{00507\ \ \ \ \ wgpu::ComputePassEncoder\ pass\ =\ encoder.BeginComputePass();}
+\DoxyCodeLine{00508\ \ \ \ \ pass.SetPipeline(pipeline);}
+\DoxyCodeLine{00509\ \ \ \ \ pass.SetBindGroup(0,\ bind\_group);}
+\DoxyCodeLine{00510\ \ \ \ \ pass.DispatchWorkgroups(groups\_x,\ groups\_y,\ groups\_z);}
+\DoxyCodeLine{00511\ \ \ \ \ pass.End();}
+\DoxyCodeLine{00512\ \}}
 
 \end{DoxyCode}
 
 
-References \mbox{\hyperlink{gpu__utils_8h_source_l00521}{gpu\+::encode\+\_\+pass()}}.
+References \mbox{\hyperlink{gpu__utils_8h_source_l00502}{gpu\+::encode\+\_\+pass()}}.
 
 
 
-Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00542}{gpu\+::dispatch()}}, and \mbox{\hyperlink{gpu__utils_8h_source_l00521}{gpu\+::encode\+\_\+pass()}}.
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00523}{gpu\+::dispatch()}}, and \mbox{\hyperlink{gpu__utils_8h_source_l00502}{gpu\+::encode\+\_\+pass()}}.
 
 Here is the call graph for this function\+:
 \nopagebreak
@@ -320,44 +306,44 @@ The constructed wgpu\+::\+Bind\+Group.
 \end{DoxyReturn}
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00478}{478}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00459}{459}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00481\ \ \ \{}
-\DoxyCodeLine{00482\ \ \ \ \ std::vector<wgpu::BindGroupEntry>\ wgpu\_entries;}
-\DoxyCodeLine{00483\ \ \ \ \ wgpu\_entries.reserve(entries.size());}
+\DoxyCodeLine{00462\ \ \ \{}
+\DoxyCodeLine{00463\ \ \ \ \ std::vector<wgpu::BindGroupEntry>\ wgpu\_entries;}
+\DoxyCodeLine{00464\ \ \ \ \ wgpu\_entries.reserve(entries.size());}
+\DoxyCodeLine{00465\ }
+\DoxyCodeLine{00466\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ e\ :\ entries)\ \{}
+\DoxyCodeLine{00467\ \ \ \ \ \ \ \ \ wgpu::BindGroupEntry\ wge\ \{\};}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \ \ wge.binding\ =\ e.binding;}
+\DoxyCodeLine{00469\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (e.texture\_view)\ \{}
+\DoxyCodeLine{00470\ \ \ \ \ \ \ \ \ \ \ \ \ wge.textureView\ =\ e.texture\_view;}
+\DoxyCodeLine{00471\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (e.buffer)\ \{}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \ \ \ \ \ \ wge.buffer\ =\ e.buffer;}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \ \ \ \ \ \ wge.size\ =\ e.buffer\_size;}
+\DoxyCodeLine{00475\ \ \ \ \ \ \ \ \ \ \ \ \ wge.offset\ =\ e.buffer\_offset;}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \ \ wgpu\_entries.push\_back(wge);}
+\DoxyCodeLine{00478\ \ \ \ \ \}}
+\DoxyCodeLine{00479\ }
+\DoxyCodeLine{00480\ \ \ \ \ wgpu::BindGroupDescriptor\ desc\ \{\};}
+\DoxyCodeLine{00481\ \ \ \ \ desc.layout\ =\ pipeline.GetBindGroupLayout(group\_index);}
+\DoxyCodeLine{00482\ \ \ \ \ desc.entryCount\ =\ \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(wgpu\_entries.size());}
+\DoxyCodeLine{00483\ \ \ \ \ desc.entries\ =\ wgpu\_entries.data();}
 \DoxyCodeLine{00484\ }
-\DoxyCodeLine{00485\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ e\ :\ entries)\ \{}
-\DoxyCodeLine{00486\ \ \ \ \ \ \ \ \ wgpu::BindGroupEntry\ wge\ \{\};}
-\DoxyCodeLine{00487\ \ \ \ \ \ \ \ \ wge.binding\ =\ e.binding;}
-\DoxyCodeLine{00488\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (e.texture\_view)\ \{}
-\DoxyCodeLine{00489\ \ \ \ \ \ \ \ \ \ \ \ \ wge.textureView\ =\ e.texture\_view;}
-\DoxyCodeLine{00490\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00491\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (e.buffer)\ \{}
-\DoxyCodeLine{00492\ \ \ \ \ \ \ \ \ \ \ \ \ wge.buffer\ =\ e.buffer;}
-\DoxyCodeLine{00493\ \ \ \ \ \ \ \ \ \ \ \ \ wge.size\ =\ e.buffer\_size;}
-\DoxyCodeLine{00494\ \ \ \ \ \ \ \ \ \ \ \ \ wge.offset\ =\ e.buffer\_offset;}
-\DoxyCodeLine{00495\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00496\ \ \ \ \ \ \ \ \ wgpu\_entries.push\_back(wge);}
-\DoxyCodeLine{00497\ \ \ \ \ \}}
-\DoxyCodeLine{00498\ }
-\DoxyCodeLine{00499\ \ \ \ \ wgpu::BindGroupDescriptor\ desc\ \{\};}
-\DoxyCodeLine{00500\ \ \ \ \ desc.layout\ =\ pipeline.GetBindGroupLayout(group\_index);}
-\DoxyCodeLine{00501\ \ \ \ \ desc.entryCount\ =\ \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(wgpu\_entries.size());}
-\DoxyCodeLine{00502\ \ \ \ \ desc.entries\ =\ wgpu\_entries.data();}
-\DoxyCodeLine{00503\ }
-\DoxyCodeLine{00504\ \ \ \ \ \textcolor{keywordflow}{return}\ GPU::getClassInstance().get\_device().CreateBindGroup(\&desc);}
-\DoxyCodeLine{00505\ \}}
+\DoxyCodeLine{00485\ \ \ \ \ \textcolor{keywordflow}{return}\ GPU::getClassInstance().get\_device().CreateBindGroup(\&desc);}
+\DoxyCodeLine{00486\ \}}
 
 \end{DoxyCode}
 
 
-References \mbox{\hyperlink{gpu__utils_8h_source_l00478}{gpu\+::make\+\_\+bind\+\_\+group()}}.
+References \mbox{\hyperlink{gpu__utils_8h_source_l00459}{gpu\+::make\+\_\+bind\+\_\+group()}}.
 
 
 
-Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00478}{gpu\+::make\+\_\+bind\+\_\+group()}}.
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00459}{gpu\+::make\+\_\+bind\+\_\+group()}}.
 
 Here is the call graph for this function\+:
 \nopagebreak
@@ -404,54 +390,49 @@ Pointer to the mapped data. Valid until buffer.\+Unmap().
 \end{DoxyExceptions}
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00104}{104}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00090}{90}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keyword}{struct\ }MapState\ \{}
-\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ done\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ success\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00108\ \ \ \ \ \};}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keyword}{struct\ }MapState\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ done\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ success\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00094\ \ \ \ \ \};}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \ \ MapState\ state;}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ wgpu::Future\ future\ =\ buffer.MapAsync(}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ wgpu::MapMode::Read,\ 0,\ size,\ GPU::wait\_mode(),}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ [](wgpu::MapAsyncStatus\ status,\ wgpu::StringView\ \textcolor{comment}{/*msg*/},\ \textcolor{keywordtype}{void}*\ userdata)\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}*\ s\ =\ \textcolor{keyword}{static\_cast<}MapState*\textcolor{keyword}{>}(userdata);}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ s-\/>done\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ s-\/>success\ =\ (status\ ==\ wgpu::MapAsyncStatus::Success);}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \},}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{void}*\textcolor{keyword}{>}(\&state)}
+\DoxyCodeLine{00106\ \ \ \ \ );}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \ \ \ \ GPU::getClassInstance().wait(future,\ state.done);}
 \DoxyCodeLine{00109\ }
-\DoxyCodeLine{00110\ \ \ \ \ MapState\ state;}
-\DoxyCodeLine{00111\ }
-\DoxyCodeLine{00112\ \ \ \ \ buffer.MapAsync(}
-\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ wgpu::MapMode::Read,\ 0,\ size,\ wgpu::CallbackMode::AllowProcessEvents,}
-\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ [](wgpu::MapAsyncStatus\ status,\ wgpu::StringView\ \textcolor{comment}{/*msg*/},\ \textcolor{keywordtype}{void}*\ userdata)\ \{}
-\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}*\ s\ =\ \textcolor{keyword}{static\_cast<}MapState*\textcolor{keyword}{>}(userdata);}
-\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ s-\/>done\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ s-\/>success\ =\ (status\ ==\ wgpu::MapAsyncStatus::Success);}
-\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \},}
-\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{void}*\textcolor{keyword}{>}(\&state)}
-\DoxyCodeLine{00120\ \ \ \ \ );}
-\DoxyCodeLine{00121\ }
-\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordflow}{while}\ (!state.done)\ \{}
-\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ GPU::getClassInstance().get\_instance().ProcessEvents();}
-\DoxyCodeLine{00124\ \textcolor{preprocessor}{\#if\ defined(\_\_EMSCRIPTEN\_\_)}}
-\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ emscripten\_sleep(10);}
-\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00127\ \ \ \ \ \}}
-\DoxyCodeLine{00128\ }
-\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{if}\ (!state.success)\ \{}
-\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}gpu::map\_and\_wait:\ MapAsync\ failed"{}});}
-\DoxyCodeLine{00131\ \ \ \ \ \}}
-\DoxyCodeLine{00132\ }
-\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ mapped\ =\ buffer.GetConstMappedRange(0,\ size);}
-\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{if}\ (!mapped)\ \{}
-\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}gpu::map\_and\_wait:\ GetConstMappedRange\ returned\ null"{}});}
-\DoxyCodeLine{00136\ \ \ \ \ \}}
-\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{return}\ mapped;}
-\DoxyCodeLine{00138\ \}}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{if}\ (!state.success)\ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}gpu::map\_and\_wait:\ MapAsync\ failed"{}});}
+\DoxyCodeLine{00112\ \ \ \ \ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ mapped\ =\ buffer.GetConstMappedRange(0,\ size);}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{if}\ (!mapped)\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}gpu::map\_and\_wait:\ GetConstMappedRange\ returned\ null"{}});}
+\DoxyCodeLine{00117\ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordflow}{return}\ mapped;}
+\DoxyCodeLine{00119\ \}}
 
 \end{DoxyCode}
 
 
-References \mbox{\hyperlink{gpu__utils_8h_source_l00104}{gpu\+::map\+\_\+and\+\_\+wait()}}.
+References \mbox{\hyperlink{gpu__utils_8h_source_l00090}{gpu\+::map\+\_\+and\+\_\+wait()}}.
 
 
 
-Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00104}{gpu\+::map\+\_\+and\+\_\+wait()}}, \mbox{\hyperlink{gpu__utils_8h_source_l00185}{gpu\+::\+Buffer$<$ T $>$\+::read()}}, and \mbox{\hyperlink{gpu__utils_8h_source_l00315}{gpu\+::\+Texture\+::read()}}.
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00090}{gpu\+::map\+\_\+and\+\_\+wait()}}, \mbox{\hyperlink{gpu__utils_8h_source_l00166}{gpu\+::\+Buffer$<$ T $>$\+::read()}}, and \mbox{\hyperlink{gpu__utils_8h_source_l00296}{gpu\+::\+Texture\+::read()}}.
 
 Here is the call graph for this function\+:
 \nopagebreak
@@ -481,22 +462,22 @@ Compute the number of workgroups needed to cover {\ttfamily total\+\_\+size} wit
 
 Equivalent to {\ttfamily (total\+\_\+size + workgroup\+\_\+size -\/ 1) / workgroup\+\_\+size}. 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00560}{560}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00541}{541}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00560\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00561\ \ \ \ \ \textcolor{keywordflow}{return}\ (total\_size\ +\ workgroup\_size\ -\/\ 1)\ /\ workgroup\_size;}
-\DoxyCodeLine{00562\ \}}
+\DoxyCodeLine{00541\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00542\ \ \ \ \ \textcolor{keywordflow}{return}\ (total\_size\ +\ workgroup\_size\ -\/\ 1)\ /\ workgroup\_size;}
+\DoxyCodeLine{00543\ \}}
 
 \end{DoxyCode}
 
 
-References \mbox{\hyperlink{gpu__utils_8h_source_l00560}{gpu\+::workgroup\+\_\+count()}}.
+References \mbox{\hyperlink{gpu__utils_8h_source_l00541}{gpu\+::workgroup\+\_\+count()}}.
 
 
 
-Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00560}{gpu\+::workgroup\+\_\+count()}}.
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00541}{gpu\+::workgroup\+\_\+count()}}.
 
 Here is the call graph for this function\+:
 \nopagebreak

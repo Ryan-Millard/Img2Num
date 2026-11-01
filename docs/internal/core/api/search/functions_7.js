@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['handle_0',['handle',['../classgpu_1_1Buffer.html#adcd67b01e45d8fe916a6c4b22b921f2f',1,'gpu::Buffer::handle()'],['../classgpu_1_1Texture.html#ae03091c94de23820e1c5b059b685f08b',1,'gpu::Texture::handle() const']]],
-  ['height_1',['height',['../classgpu_1_1Texture.html#a98d1b416dac9d1cb883efb43ad2c7804',1,'gpu::Texture']]]
+  ['image_5fto_5fsvg_0',['image_to_svg',['../namespaceimg2num.html#a8183e7b7e8a7efb8ce7ab254f81facb1',1,'img2num']]],
+  ['invert_5fimage_1',['invert_image',['../namespaceimg2num.html#ab1906e33330d80eba5399ca2a30e1572',1,'img2num']]]
 ];

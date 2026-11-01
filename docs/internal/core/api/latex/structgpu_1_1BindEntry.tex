@@ -48,7 +48,7 @@ uint64\+\_\+t \mbox{\hyperlink{structgpu_1_1BindEntry_a885df55d02a5a3311b2324d0a
 \doxysubsection{Detailed Description}
 A single entry for bind-\/group construction. 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00430}{430}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00411}{411}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 
@@ -66,22 +66,22 @@ Create a buffer entry (storage or uniform).
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00454}{454}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00435}{435}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00454\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00455\ \ \ \ \ \ \ \ \ BindEntry\ e;}
-\DoxyCodeLine{00456\ \ \ \ \ \ \ \ \ e.binding\ =\ binding;}
-\DoxyCodeLine{00457\ \ \ \ \ \ \ \ \ e.buffer\ =\ buf.handle();}
-\DoxyCodeLine{00458\ \ \ \ \ \ \ \ \ e.buffer\_size\ =\ buf.byte\_size();}
-\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ e;}
-\DoxyCodeLine{00460\ \ \ \ \ \}}
+\DoxyCodeLine{00435\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \ \ BindEntry\ e;}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \ \ e.binding\ =\ binding;}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ e.buffer\ =\ buf.handle();}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ \ \ e.buffer\_size\ =\ buf.byte\_size();}
+\DoxyCodeLine{00440\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ e;}
+\DoxyCodeLine{00441\ \ \ \ \ \}}
 
 \end{DoxyCode}
 
 
-References \mbox{\hyperlink{gpu__utils_8h_source_l00216}{gpu\+::\+Buffer$<$ T $>$\+::byte\+\_\+size()}}, and \mbox{\hyperlink{gpu__utils_8h_source_l00211}{gpu\+::\+Buffer$<$ T $>$\+::handle()}}.
+References \mbox{\hyperlink{gpu__utils_8h_source_l00197}{gpu\+::\+Buffer$<$ T $>$\+::byte\+\_\+size()}}, and \mbox{\hyperlink{gpu__utils_8h_source_l00192}{gpu\+::\+Buffer$<$ T $>$\+::handle()}}.
 
 Here is the call graph for this function\+:
 \nopagebreak
@@ -103,17 +103,17 @@ Create a buffer entry from a raw wgpu\+::\+Buffer and size.
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00463}{463}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00444}{444}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00463\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ BindEntry\ e;}
-\DoxyCodeLine{00465\ \ \ \ \ \ \ \ \ e.binding\ =\ binding;}
-\DoxyCodeLine{00466\ \ \ \ \ \ \ \ \ e.buffer\ =\ std::move(buf);}
-\DoxyCodeLine{00467\ \ \ \ \ \ \ \ \ e.buffer\_size\ =\ size;}
-\DoxyCodeLine{00468\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ e;}
-\DoxyCodeLine{00469\ \ \ \ \ \}}
+\DoxyCodeLine{00444\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00445\ \ \ \ \ \ \ \ \ BindEntry\ e;}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \ \ e.binding\ =\ binding;}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \ \ e.buffer\ =\ std::move(buf);}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \ \ e.buffer\_size\ =\ size;}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ e;}
+\DoxyCodeLine{00450\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{structgpu_1_1BindEntry_ade86aba85ae265fda3d0fa477bbaf5f7}\label{structgpu_1_1BindEntry_ade86aba85ae265fda3d0fa477bbaf5f7} 
@@ -128,21 +128,21 @@ Create a texture-\/view entry.
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00438}{438}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00419}{419}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00439\ \ \ \ \ \ \ \ \ BindEntry\ e;}
-\DoxyCodeLine{00440\ \ \ \ \ \ \ \ \ e.binding\ =\ binding;}
-\DoxyCodeLine{00441\ \ \ \ \ \ \ \ \ e.texture\_view\ =\ tex.view();}
-\DoxyCodeLine{00442\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ e;}
-\DoxyCodeLine{00443\ \ \ \ \ \}}
+\DoxyCodeLine{00419\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \ \ BindEntry\ e;}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \ \ e.binding\ =\ binding;}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \ \ e.texture\_view\ =\ tex.view();}
+\DoxyCodeLine{00423\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ e;}
+\DoxyCodeLine{00424\ \ \ \ \ \}}
 
 \end{DoxyCode}
 
 
-References \mbox{\hyperlink{gpu__utils_8h_source_l00357}{gpu\+::\+Texture\+::view()}}.
+References \mbox{\hyperlink{gpu__utils_8h_source_l00338}{gpu\+::\+Texture\+::view()}}.
 
 Here is the call graph for this function\+:
 \nopagebreak
@@ -164,16 +164,16 @@ Create a texture-\/view entry from a raw wgpu\+::\+Texture\+View.
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00446}{446}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00427}{427}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00446\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00447\ \ \ \ \ \ \ \ \ BindEntry\ e;}
-\DoxyCodeLine{00448\ \ \ \ \ \ \ \ \ e.binding\ =\ binding;}
-\DoxyCodeLine{00449\ \ \ \ \ \ \ \ \ e.texture\_view\ =\ std::move(tv);}
-\DoxyCodeLine{00450\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ e;}
-\DoxyCodeLine{00451\ \ \ \ \ \}}
+\DoxyCodeLine{00427\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00428\ \ \ \ \ \ \ \ \ BindEntry\ e;}
+\DoxyCodeLine{00429\ \ \ \ \ \ \ \ \ e.binding\ =\ binding;}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \ \ e.texture\_view\ =\ std::move(tv);}
+\DoxyCodeLine{00431\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ e;}
+\DoxyCodeLine{00432\ \ \ \ \ \}}
 
 \end{DoxyCode}
 
@@ -187,7 +187,7 @@ Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00446}{446}} of file \
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00431}{431}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00412}{412}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 \Hypertarget{structgpu_1_1BindEntry_ae091fd82a9a8fe2ecee21c0c7ceb887d}\label{structgpu_1_1BindEntry_ae091fd82a9a8fe2ecee21c0c7ceb887d} 
 \index{gpu::BindEntry@{gpu::BindEntry}!buffer@{buffer}}
@@ -197,11 +197,11 @@ Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00431}{431}} of file \
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00433}{433}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00414}{414}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00433\ \{\};}
+\DoxyCodeLine{00414\ \{\};}
 
 \end{DoxyCode}
 \Hypertarget{structgpu_1_1BindEntry_a885df55d02a5a3311b2324d0a1b09d96}\label{structgpu_1_1BindEntry_a885df55d02a5a3311b2324d0a1b09d96} 
@@ -212,11 +212,11 @@ Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00433}{433}} of file \
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00435}{435}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00416}{416}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00435\ \{0\};}
+\DoxyCodeLine{00416\ \{0\};}
 
 \end{DoxyCode}
 \Hypertarget{structgpu_1_1BindEntry_a08940a243973882091d2e180876b2b26}\label{structgpu_1_1BindEntry_a08940a243973882091d2e180876b2b26} 
@@ -227,11 +227,11 @@ Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00435}{435}} of file \
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00434}{434}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00415}{415}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00434\ \{0\};}
+\DoxyCodeLine{00415\ \{0\};}
 
 \end{DoxyCode}
 \Hypertarget{structgpu_1_1BindEntry_a40e28f8e37a8f37aba4d091e7592c65d}\label{structgpu_1_1BindEntry_a40e28f8e37a8f37aba4d091e7592c65d} 
@@ -242,11 +242,11 @@ Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00434}{434}} of file \
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00432}{432}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00413}{413}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00432\ \{\};}
+\DoxyCodeLine{00413\ \{\};}
 
 \end{DoxyCode}
 

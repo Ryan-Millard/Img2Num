@@ -142,7 +142,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A single entry for bind-group construction. </p>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00430">430</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00411">411</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a86772409d7ba64a0cd128f36112a9ec4" name="a86772409d7ba64a0cd128f36112a9ec4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a86772409d7ba64a0cd128f36112a9ec4">&#9670;&#160;</a></span>buffer_entry()</h2>
@@ -182,16 +182,16 @@ template&lt;typename T &gt; </div>
 
 <p>Create a buffer entry (storage or uniform). </p>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00454">454</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  454</span>                                                                                                {</div>
-<div class="line"><span class="lineno">  455</span>        BindEntry e;</div>
-<div class="line"><span class="lineno">  456</span>        e.binding = binding;</div>
-<div class="line"><span class="lineno">  457</span>        e.buffer = buf.handle();</div>
-<div class="line"><span class="lineno">  458</span>        e.buffer_size = buf.byte_size();</div>
-<div class="line"><span class="lineno">  459</span>        <span class="keywordflow">return</span> e;</div>
-<div class="line"><span class="lineno">  460</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00435">435</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  435</span>                                                                                                {</div>
+<div class="line"><span class="lineno">  436</span>        BindEntry e;</div>
+<div class="line"><span class="lineno">  437</span>        e.binding = binding;</div>
+<div class="line"><span class="lineno">  438</span>        e.buffer = buf.handle();</div>
+<div class="line"><span class="lineno">  439</span>        e.buffer_size = buf.byte_size();</div>
+<div class="line"><span class="lineno">  440</span>        <span class="keywordflow">return</span> e;</div>
+<div class="line"><span class="lineno">  441</span>    }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00216">gpu::Buffer&lt; T &gt;::byte_size()</a>, and <a class="el" href="gpu__utils_8h_source.html#l00211">gpu::Buffer&lt; T &gt;::handle()</a>.</p>
+<p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00197">gpu::Buffer&lt; T &gt;::byte_size()</a>, and <a class="el" href="gpu__utils_8h_source.html#l00192">gpu::Buffer&lt; T &gt;::handle()</a>.</p>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
@@ -244,14 +244,14 @@ template&lt;typename T &gt; </div>
 
 <p>Create a buffer entry from a raw wgpu::Buffer and size. </p>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00463">463</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  463</span>                                                                                 {</div>
-<div class="line"><span class="lineno">  464</span>        BindEntry e;</div>
-<div class="line"><span class="lineno">  465</span>        e.binding = binding;</div>
-<div class="line"><span class="lineno">  466</span>        e.buffer = std::move(buf);</div>
-<div class="line"><span class="lineno">  467</span>        e.buffer_size = size;</div>
-<div class="line"><span class="lineno">  468</span>        <span class="keywordflow">return</span> e;</div>
-<div class="line"><span class="lineno">  469</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00444">444</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  444</span>                                                                                 {</div>
+<div class="line"><span class="lineno">  445</span>        BindEntry e;</div>
+<div class="line"><span class="lineno">  446</span>        e.binding = binding;</div>
+<div class="line"><span class="lineno">  447</span>        e.buffer = std::move(buf);</div>
+<div class="line"><span class="lineno">  448</span>        e.buffer_size = size;</div>
+<div class="line"><span class="lineno">  449</span>        <span class="keywordflow">return</span> e;</div>
+<div class="line"><span class="lineno">  450</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -291,15 +291,15 @@ template&lt;typename T &gt; </div>
 
 <p>Create a texture-view entry. </p>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00438">438</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  438</span>                                                                   {</div>
-<div class="line"><span class="lineno">  439</span>        BindEntry e;</div>
-<div class="line"><span class="lineno">  440</span>        e.binding = binding;</div>
-<div class="line"><span class="lineno">  441</span>        e.texture_view = tex.view();</div>
-<div class="line"><span class="lineno">  442</span>        <span class="keywordflow">return</span> e;</div>
-<div class="line"><span class="lineno">  443</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00419">419</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  419</span>                                                                   {</div>
+<div class="line"><span class="lineno">  420</span>        BindEntry e;</div>
+<div class="line"><span class="lineno">  421</span>        e.binding = binding;</div>
+<div class="line"><span class="lineno">  422</span>        e.texture_view = tex.view();</div>
+<div class="line"><span class="lineno">  423</span>        <span class="keywordflow">return</span> e;</div>
+<div class="line"><span class="lineno">  424</span>    }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00357">gpu::Texture::view()</a>.</p>
+<p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00338">gpu::Texture::view()</a>.</p>
 <div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
@@ -346,13 +346,13 @@ template&lt;typename T &gt; </div>
 
 <p>Create a texture-view entry from a raw wgpu::TextureView. </p>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00446">446</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  446</span>                                                                       {</div>
-<div class="line"><span class="lineno">  447</span>        BindEntry e;</div>
-<div class="line"><span class="lineno">  448</span>        e.binding = binding;</div>
-<div class="line"><span class="lineno">  449</span>        e.texture_view = std::move(tv);</div>
-<div class="line"><span class="lineno">  450</span>        <span class="keywordflow">return</span> e;</div>
-<div class="line"><span class="lineno">  451</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00427">427</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  427</span>                                                                       {</div>
+<div class="line"><span class="lineno">  428</span>        BindEntry e;</div>
+<div class="line"><span class="lineno">  429</span>        e.binding = binding;</div>
+<div class="line"><span class="lineno">  430</span>        e.texture_view = std::move(tv);</div>
+<div class="line"><span class="lineno">  431</span>        <span class="keywordflow">return</span> e;</div>
+<div class="line"><span class="lineno">  432</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -369,7 +369,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00431">431</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00412">412</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
 
 </div>
 </div>
@@ -385,8 +385,8 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00433">433</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  433</span>{};</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00414">414</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  414</span>{};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -402,8 +402,8 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00435">435</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  435</span>{0};</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00416">416</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  416</span>{0};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -419,8 +419,8 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00434">434</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  434</span>{0};</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00415">415</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  415</span>{0};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -436,8 +436,8 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00432">432</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  432</span>{};</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00413">413</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  413</span>{};</div>
 </div><!-- fragment -->
 </div>
 </div>

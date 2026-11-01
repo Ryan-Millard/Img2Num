@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['encode_5fpass_0',['encode_pass',['../gpu__utils_8h.html#a1dbdd4527ebabb3eb83e00d0604cfa65',1,'gpu']]]
+  ['format_0',['format',['../classgpu_1_1Texture.html#ad5ad5a589655b309555a50026c2c3e27',1,'gpu::Texture']]]
 ];

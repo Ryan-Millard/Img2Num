@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kmeans_0',['kmeans',['../namespaceimg2num.html#ae73563e9dd25a8dd2120fd519ef87abd',1,'img2num']]]
+  ['labels_5fto_5fsvg_0',['labels_to_svg',['../namespaceimg2num.html#a9ec36449ded405f3480e4cb4ebafbe0e',1,'img2num']]]
 ];

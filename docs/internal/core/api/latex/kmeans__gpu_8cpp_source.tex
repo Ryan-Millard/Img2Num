@@ -417,9 +417,9 @@
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00438}00438\ }
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00439}00439\ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ i\ =\ 0;\ i\ <\ num\_pixels;\ ++i)\ \{}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00440}00440\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ cluster\ =\ labels[i];}
-\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00441}00441\ \ \ \ \ \ \ \ \ out\_data[i\ *\ 4\ +\ 0]\ =\ \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(centroids[cluster].red);}
-\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00442}00442\ \ \ \ \ \ \ \ \ out\_data[i\ *\ 4\ +\ 1]\ =\ \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(centroids[cluster].green);}
-\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00443}00443\ \ \ \ \ \ \ \ \ out\_data[i\ *\ 4\ +\ 2]\ =\ \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(centroids[cluster].blue);}
+\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00441}00441\ \ \ \ \ \ \ \ \ out\_data[i\ *\ 4\ +\ 0]\ =\ \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(std::round(centroids[cluster].red));}
+\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00442}00442\ \ \ \ \ \ \ \ \ out\_data[i\ *\ 4\ +\ 1]\ =\ \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(std::round(centroids[cluster].green));}
+\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00443}00443\ \ \ \ \ \ \ \ \ out\_data[i\ *\ 4\ +\ 2]\ =\ \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(std::round(centroids[cluster].blue));}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00444}00444\ \ \ \ \ \ \ \ \ out\_data[i\ *\ 4\ +\ 3]\ =\ 255;}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00445}00445\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00446}00446\ }

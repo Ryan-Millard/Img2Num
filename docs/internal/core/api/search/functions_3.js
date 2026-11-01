@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['dispatch_0',['dispatch',['../gpu__utils_8h.html#a328a3023ad496b52c54c121a6ba1a2ca',1,'gpu']]]
+  ['encode_5fpass_0',['encode_pass',['../gpu__utils_8h.html#a1dbdd4527ebabb3eb83e00d0604cfa65',1,'gpu']]]
 ];

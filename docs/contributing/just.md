@@ -102,6 +102,29 @@ Key files:
 - [CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/CMakeLists.txt)
 - [bindings/py/CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/bindings/py/CMakeLists.txt) .
 
+## Testing
+
+Run tests across subsystems:
+
+- C++ Core - Python
+Run the standalone CPU Catch2 core tests: Paste this inside the Docker shell
+
+```bash
+just cmake test
+```
+
+To delete the test build directory ( `build-tests/` ): Paste this inside the Docker shell
+
+```bash
+just cmake test-clean
+```
+
+Run the Python bindings test suite with pytest: Paste this inside the Docker shell
+
+```bash
+just py test
+```
+
 ## Documentation
 
 - Build - Server - Clean

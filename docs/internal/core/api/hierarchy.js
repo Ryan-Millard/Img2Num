@@ -37,5 +37,6 @@ var hierarchy =
     [ "RGBXY", "structRGBXY.html", null ],
     [ "SavitzkyGolay", "classSavitzkyGolay.html", null ],
     [ "gpu::Texture", "classgpu_1_1Texture.html", null ],
+    [ "GPU::ThreadDevice", "structGPU_1_1ThreadDevice.html", null ],
     [ "XY", "structXY.html", null ]
 ];

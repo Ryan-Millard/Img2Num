@@ -230,33 +230,19 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00062">62</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   62</span>                                                                    {</div>
-<div class="line"><span class="lineno">   63</span>    <span class="comment">// Cache key includes the raw device pointer so that a device recreation</span></div>
-<div class="line"><span class="lineno">   64</span>    <span class="comment">// (which yields a different WGPUDevice handle) automatically invalidates</span></div>
-<div class="line"><span class="lineno">   65</span>    <span class="comment">// stale entries.  A mutex guards the map against concurrent access.</span></div>
-<div class="line"><span class="lineno">   66</span>    <span class="keyword">using </span>CacheKey = std::pair&lt;WGPUDevice, std::string&gt;;</div>
-<div class="line"><span class="lineno">   67</span>    <span class="keyword">struct </span>PairHash {</div>
-<div class="line"><span class="lineno">   68</span>        <span class="keywordtype">size_t</span> operator()(<span class="keyword">const</span> CacheKey&amp; k)<span class="keyword"> const </span>{</div>
-<div class="line"><span class="lineno">   69</span>            <span class="keyword">auto</span> h1 = std::hash&lt;const void*&gt; {}(<span class="keyword">static_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(k.first));</div>
-<div class="line"><span class="lineno">   70</span>            <span class="keyword">auto</span> h2 = std::hash&lt;std::string&gt; {}(k.second);</div>
-<div class="line"><span class="lineno">   71</span>            <span class="keywordflow">return</span> h1 ^ (h2 &lt;&lt; 1);</div>
-<div class="line"><span class="lineno">   72</span>        }</div>
-<div class="line"><span class="lineno">   73</span>    };</div>
-<div class="line"><span class="lineno">   74</span> </div>
-<div class="line"><span class="lineno">   75</span>    <span class="keyword">static</span> std::mutex mtx;</div>
-<div class="line"><span class="lineno">   76</span>    <span class="keyword">static</span> std::unordered_map&lt;CacheKey, wgpu::ComputePipeline, PairHash&gt; cache;</div>
-<div class="line"><span class="lineno">   77</span> </div>
-<div class="line"><span class="lineno">   78</span>    WGPUDevice raw_device = GPU::getClassInstance().get_device().Get();</div>
-<div class="line"><span class="lineno">   79</span>    CacheKey key {raw_device, shader_id};</div>
-<div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>    std::lock_guard&lt;std::mutex&gt; lock(mtx);</div>
-<div class="line"><span class="lineno">   82</span>    <span class="keyword">auto</span> it = cache.find(key);</div>
-<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">if</span> (it != cache.end()) {</div>
-<div class="line"><span class="lineno">   84</span>        <span class="keywordflow">return</span> it-&gt;second;</div>
-<div class="line"><span class="lineno">   85</span>    }</div>
-<div class="line"><span class="lineno">   86</span>    wgpu::ComputePipeline pipeline = GPU::getClassInstance().createPipeline(shader_id, label);</div>
-<div class="line"><span class="lineno">   87</span>    cache[key] = pipeline;</div>
-<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">return</span> pipeline;</div>
-<div class="line"><span class="lineno">   89</span>}</div>
+<div class="line"><span class="lineno">   63</span>    <span class="comment">// Pipelines belong to a device and every thread has its own device, so the</span></div>
+<div class="line"><span class="lineno">   64</span>    <span class="comment">// cache is per thread too. No locking needed, and pipelines are released</span></div>
+<div class="line"><span class="lineno">   65</span>    <span class="comment">// along with the thread&#39;s device when the thread exits.</span></div>
+<div class="line"><span class="lineno">   66</span>    <span class="keyword">thread_local</span> std::unordered_map&lt;std::string, wgpu::ComputePipeline&gt; cache;</div>
+<div class="line"><span class="lineno">   67</span> </div>
+<div class="line"><span class="lineno">   68</span>    <span class="keyword">auto</span> it = cache.find(shader_id);</div>
+<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">if</span> (it != cache.end()) {</div>
+<div class="line"><span class="lineno">   70</span>        <span class="keywordflow">return</span> it-&gt;second;</div>
+<div class="line"><span class="lineno">   71</span>    }</div>
+<div class="line"><span class="lineno">   72</span>    wgpu::ComputePipeline pipeline = GPU::getClassInstance().createPipeline(shader_id, label);</div>
+<div class="line"><span class="lineno">   73</span>    cache[shader_id] = pipeline;</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">return</span> pipeline;</div>
+<div class="line"><span class="lineno">   75</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00062">gpu::cached_pipeline()</a>.</p>
 
@@ -343,18 +329,18 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00542">542</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  545</span>  {</div>
-<div class="line"><span class="lineno">  546</span>    wgpu::CommandEncoder encoder = GPU::getClassInstance().get_device().CreateCommandEncoder();</div>
-<div class="line"><span class="lineno">  547</span>    <a class="code hl_function" href="gpu__utils_8h.html#a1dbdd4527ebabb3eb83e00d0604cfa65">encode_pass</a>(encoder, pipeline, bind_group, groups_x, groups_y, groups_z);</div>
-<div class="line"><span class="lineno">  548</span>    wgpu::CommandBuffer commands = encoder.Finish();</div>
-<div class="line"><span class="lineno">  549</span>    GPU::getClassInstance().get_queue().Submit(1, &amp;commands);</div>
-<div class="line"><span class="lineno">  550</span>}</div>
-<div class="ttc" id="agpu__utils_8h_html_a1dbdd4527ebabb3eb83e00d0604cfa65"><div class="ttname"><a href="gpu__utils_8h.html#a1dbdd4527ebabb3eb83e00d0604cfa65">gpu::encode_pass</a></div><div class="ttdeci">void encode_pass(wgpu::CommandEncoder &amp;encoder, const wgpu::ComputePipeline &amp;pipeline, const wgpu::BindGroup &amp;bind_group, uint32_t groups_x, uint32_t groups_y=1, uint32_t groups_z=1)</div><div class="ttdoc">Encode a compute pass into an existing command encoder.</div><div class="ttdef"><b>Definition</b> <a href="gpu__utils_8h_source.html#l00521">gpu_utils.h:521</a></div></div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00523">523</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  526</span>  {</div>
+<div class="line"><span class="lineno">  527</span>    wgpu::CommandEncoder encoder = GPU::getClassInstance().get_device().CreateCommandEncoder();</div>
+<div class="line"><span class="lineno">  528</span>    <a class="code hl_function" href="gpu__utils_8h.html#a1dbdd4527ebabb3eb83e00d0604cfa65">encode_pass</a>(encoder, pipeline, bind_group, groups_x, groups_y, groups_z);</div>
+<div class="line"><span class="lineno">  529</span>    wgpu::CommandBuffer commands = encoder.Finish();</div>
+<div class="line"><span class="lineno">  530</span>    GPU::getClassInstance().get_queue().Submit(1, &amp;commands);</div>
+<div class="line"><span class="lineno">  531</span>}</div>
+<div class="ttc" id="agpu__utils_8h_html_a1dbdd4527ebabb3eb83e00d0604cfa65"><div class="ttname"><a href="gpu__utils_8h.html#a1dbdd4527ebabb3eb83e00d0604cfa65">gpu::encode_pass</a></div><div class="ttdeci">void encode_pass(wgpu::CommandEncoder &amp;encoder, const wgpu::ComputePipeline &amp;pipeline, const wgpu::BindGroup &amp;bind_group, uint32_t groups_x, uint32_t groups_y=1, uint32_t groups_z=1)</div><div class="ttdoc">Encode a compute pass into an existing command encoder.</div><div class="ttdef"><b>Definition</b> <a href="gpu__utils_8h_source.html#l00502">gpu_utils.h:502</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00542">gpu::dispatch()</a>, and <a class="el" href="gpu__utils_8h_source.html#l00521">gpu::encode_pass()</a>.</p>
+<p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00523">gpu::dispatch()</a>, and <a class="el" href="gpu__utils_8h_source.html#l00502">gpu::encode_pass()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="gpu__utils_8h_source.html#l00542">gpu::dispatch()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="gpu__utils_8h_source.html#l00523">gpu::dispatch()</a>.</p>
 <div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
@@ -444,18 +430,18 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00521">521</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  525</span>  {</div>
-<div class="line"><span class="lineno">  526</span>    wgpu::ComputePassEncoder pass = encoder.BeginComputePass();</div>
-<div class="line"><span class="lineno">  527</span>    pass.SetPipeline(pipeline);</div>
-<div class="line"><span class="lineno">  528</span>    pass.SetBindGroup(0, bind_group);</div>
-<div class="line"><span class="lineno">  529</span>    pass.DispatchWorkgroups(groups_x, groups_y, groups_z);</div>
-<div class="line"><span class="lineno">  530</span>    pass.End();</div>
-<div class="line"><span class="lineno">  531</span>}</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00502">502</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  506</span>  {</div>
+<div class="line"><span class="lineno">  507</span>    wgpu::ComputePassEncoder pass = encoder.BeginComputePass();</div>
+<div class="line"><span class="lineno">  508</span>    pass.SetPipeline(pipeline);</div>
+<div class="line"><span class="lineno">  509</span>    pass.SetBindGroup(0, bind_group);</div>
+<div class="line"><span class="lineno">  510</span>    pass.DispatchWorkgroups(groups_x, groups_y, groups_z);</div>
+<div class="line"><span class="lineno">  511</span>    pass.End();</div>
+<div class="line"><span class="lineno">  512</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00521">gpu::encode_pass()</a>.</p>
+<p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00502">gpu::encode_pass()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="gpu__utils_8h_source.html#l00542">gpu::dispatch()</a>, and <a class="el" href="gpu__utils_8h_source.html#l00521">gpu::encode_pass()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="gpu__utils_8h_source.html#l00523">gpu::dispatch()</a>, and <a class="el" href="gpu__utils_8h_source.html#l00502">gpu::encode_pass()</a>.</p>
 <div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
@@ -524,36 +510,36 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The constructed wgpu::BindGroup. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00478">478</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  481</span>  {</div>
-<div class="line"><span class="lineno">  482</span>    std::vector&lt;wgpu::BindGroupEntry&gt; wgpu_entries;</div>
-<div class="line"><span class="lineno">  483</span>    wgpu_entries.reserve(entries.size());</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00459">459</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  462</span>  {</div>
+<div class="line"><span class="lineno">  463</span>    std::vector&lt;wgpu::BindGroupEntry&gt; wgpu_entries;</div>
+<div class="line"><span class="lineno">  464</span>    wgpu_entries.reserve(entries.size());</div>
+<div class="line"><span class="lineno">  465</span> </div>
+<div class="line"><span class="lineno">  466</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; e : entries) {</div>
+<div class="line"><span class="lineno">  467</span>        wgpu::BindGroupEntry wge {};</div>
+<div class="line"><span class="lineno">  468</span>        wge.binding = e.binding;</div>
+<div class="line"><span class="lineno">  469</span>        <span class="keywordflow">if</span> (e.texture_view) {</div>
+<div class="line"><span class="lineno">  470</span>            wge.textureView = e.texture_view;</div>
+<div class="line"><span class="lineno">  471</span>        }</div>
+<div class="line"><span class="lineno">  472</span>        <span class="keywordflow">if</span> (e.buffer) {</div>
+<div class="line"><span class="lineno">  473</span>            wge.buffer = e.buffer;</div>
+<div class="line"><span class="lineno">  474</span>            wge.size = e.buffer_size;</div>
+<div class="line"><span class="lineno">  475</span>            wge.offset = e.buffer_offset;</div>
+<div class="line"><span class="lineno">  476</span>        }</div>
+<div class="line"><span class="lineno">  477</span>        wgpu_entries.push_back(wge);</div>
+<div class="line"><span class="lineno">  478</span>    }</div>
+<div class="line"><span class="lineno">  479</span> </div>
+<div class="line"><span class="lineno">  480</span>    wgpu::BindGroupDescriptor desc {};</div>
+<div class="line"><span class="lineno">  481</span>    desc.layout = pipeline.GetBindGroupLayout(group_index);</div>
+<div class="line"><span class="lineno">  482</span>    desc.entryCount = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(wgpu_entries.size());</div>
+<div class="line"><span class="lineno">  483</span>    desc.entries = wgpu_entries.data();</div>
 <div class="line"><span class="lineno">  484</span> </div>
-<div class="line"><span class="lineno">  485</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; e : entries) {</div>
-<div class="line"><span class="lineno">  486</span>        wgpu::BindGroupEntry wge {};</div>
-<div class="line"><span class="lineno">  487</span>        wge.binding = e.binding;</div>
-<div class="line"><span class="lineno">  488</span>        <span class="keywordflow">if</span> (e.texture_view) {</div>
-<div class="line"><span class="lineno">  489</span>            wge.textureView = e.texture_view;</div>
-<div class="line"><span class="lineno">  490</span>        }</div>
-<div class="line"><span class="lineno">  491</span>        <span class="keywordflow">if</span> (e.buffer) {</div>
-<div class="line"><span class="lineno">  492</span>            wge.buffer = e.buffer;</div>
-<div class="line"><span class="lineno">  493</span>            wge.size = e.buffer_size;</div>
-<div class="line"><span class="lineno">  494</span>            wge.offset = e.buffer_offset;</div>
-<div class="line"><span class="lineno">  495</span>        }</div>
-<div class="line"><span class="lineno">  496</span>        wgpu_entries.push_back(wge);</div>
-<div class="line"><span class="lineno">  497</span>    }</div>
-<div class="line"><span class="lineno">  498</span> </div>
-<div class="line"><span class="lineno">  499</span>    wgpu::BindGroupDescriptor desc {};</div>
-<div class="line"><span class="lineno">  500</span>    desc.layout = pipeline.GetBindGroupLayout(group_index);</div>
-<div class="line"><span class="lineno">  501</span>    desc.entryCount = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(wgpu_entries.size());</div>
-<div class="line"><span class="lineno">  502</span>    desc.entries = wgpu_entries.data();</div>
-<div class="line"><span class="lineno">  503</span> </div>
-<div class="line"><span class="lineno">  504</span>    <span class="keywordflow">return</span> GPU::getClassInstance().get_device().CreateBindGroup(&amp;desc);</div>
-<div class="line"><span class="lineno">  505</span>}</div>
+<div class="line"><span class="lineno">  485</span>    <span class="keywordflow">return</span> GPU::getClassInstance().get_device().CreateBindGroup(&amp;desc);</div>
+<div class="line"><span class="lineno">  486</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00478">gpu::make_bind_group()</a>.</p>
+<p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00459">gpu::make_bind_group()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="gpu__utils_8h_source.html#l00478">gpu::make_bind_group()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="gpu__utils_8h_source.html#l00459">gpu::make_bind_group()</a>.</p>
 <div id="dynsection-8" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-8-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-8-summary" class="dynsummary" style="display:block;">
@@ -622,46 +608,41 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00104">104</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  104</span>                                                                 {</div>
-<div class="line"><span class="lineno">  105</span>    <span class="keyword">struct </span>MapState {</div>
-<div class="line"><span class="lineno">  106</span>        <span class="keywordtype">bool</span> done = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  107</span>        <span class="keywordtype">bool</span> success = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  108</span>    };</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00090">90</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   90</span>                                                                 {</div>
+<div class="line"><span class="lineno">   91</span>    <span class="keyword">struct </span>MapState {</div>
+<div class="line"><span class="lineno">   92</span>        <span class="keywordtype">bool</span> done = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   93</span>        <span class="keywordtype">bool</span> success = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   94</span>    };</div>
+<div class="line"><span class="lineno">   95</span> </div>
+<div class="line"><span class="lineno">   96</span>    MapState state;</div>
+<div class="line"><span class="lineno">   97</span> </div>
+<div class="line"><span class="lineno">   98</span>    wgpu::Future future = buffer.MapAsync(</div>
+<div class="line"><span class="lineno">   99</span>        wgpu::MapMode::Read, 0, size, GPU::wait_mode(),</div>
+<div class="line"><span class="lineno">  100</span>        [](wgpu::MapAsyncStatus status, wgpu::StringView <span class="comment">/*msg*/</span>, <span class="keywordtype">void</span>* userdata) {</div>
+<div class="line"><span class="lineno">  101</span>            <span class="keyword">auto</span>* s = <span class="keyword">static_cast&lt;</span>MapState*<span class="keyword">&gt;</span>(userdata);</div>
+<div class="line"><span class="lineno">  102</span>            s-&gt;done = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  103</span>            s-&gt;success = (status == wgpu::MapAsyncStatus::Success);</div>
+<div class="line"><span class="lineno">  104</span>        },</div>
+<div class="line"><span class="lineno">  105</span>        <span class="keyword">static_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(&amp;state)</div>
+<div class="line"><span class="lineno">  106</span>    );</div>
+<div class="line"><span class="lineno">  107</span> </div>
+<div class="line"><span class="lineno">  108</span>    GPU::getClassInstance().wait(future, state.done);</div>
 <div class="line"><span class="lineno">  109</span> </div>
-<div class="line"><span class="lineno">  110</span>    MapState state;</div>
-<div class="line"><span class="lineno">  111</span> </div>
-<div class="line"><span class="lineno">  112</span>    buffer.MapAsync(</div>
-<div class="line"><span class="lineno">  113</span>        wgpu::MapMode::Read, 0, size, wgpu::CallbackMode::AllowProcessEvents,</div>
-<div class="line"><span class="lineno">  114</span>        [](wgpu::MapAsyncStatus status, wgpu::StringView <span class="comment">/*msg*/</span>, <span class="keywordtype">void</span>* userdata) {</div>
-<div class="line"><span class="lineno">  115</span>            <span class="keyword">auto</span>* s = <span class="keyword">static_cast&lt;</span>MapState*<span class="keyword">&gt;</span>(userdata);</div>
-<div class="line"><span class="lineno">  116</span>            s-&gt;done = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  117</span>            s-&gt;success = (status == wgpu::MapAsyncStatus::Success);</div>
-<div class="line"><span class="lineno">  118</span>        },</div>
-<div class="line"><span class="lineno">  119</span>        <span class="keyword">static_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(&amp;state)</div>
-<div class="line"><span class="lineno">  120</span>    );</div>
-<div class="line"><span class="lineno">  121</span> </div>
-<div class="line"><span class="lineno">  122</span>    <span class="keywordflow">while</span> (!state.done) {</div>
-<div class="line"><span class="lineno">  123</span>        GPU::getClassInstance().get_instance().ProcessEvents();</div>
-<div class="line"><span class="lineno">  124</span><span class="preprocessor">#if defined(__EMSCRIPTEN__)</span></div>
-<div class="line"><span class="lineno">  125</span>        emscripten_sleep(10);</div>
-<div class="line"><span class="lineno">  126</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">  127</span>    }</div>
-<div class="line"><span class="lineno">  128</span> </div>
-<div class="line"><span class="lineno">  129</span>    <span class="keywordflow">if</span> (!state.success) {</div>
-<div class="line"><span class="lineno">  130</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;gpu::map_and_wait: MapAsync failed&quot;</span>);</div>
-<div class="line"><span class="lineno">  131</span>    }</div>
-<div class="line"><span class="lineno">  132</span> </div>
-<div class="line"><span class="lineno">  133</span>    <span class="keyword">const</span> <span class="keywordtype">void</span>* mapped = buffer.GetConstMappedRange(0, size);</div>
-<div class="line"><span class="lineno">  134</span>    <span class="keywordflow">if</span> (!mapped) {</div>
-<div class="line"><span class="lineno">  135</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;gpu::map_and_wait: GetConstMappedRange returned null&quot;</span>);</div>
-<div class="line"><span class="lineno">  136</span>    }</div>
-<div class="line"><span class="lineno">  137</span>    <span class="keywordflow">return</span> mapped;</div>
-<div class="line"><span class="lineno">  138</span>}</div>
+<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">if</span> (!state.success) {</div>
+<div class="line"><span class="lineno">  111</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;gpu::map_and_wait: MapAsync failed&quot;</span>);</div>
+<div class="line"><span class="lineno">  112</span>    }</div>
+<div class="line"><span class="lineno">  113</span> </div>
+<div class="line"><span class="lineno">  114</span>    <span class="keyword">const</span> <span class="keywordtype">void</span>* mapped = buffer.GetConstMappedRange(0, size);</div>
+<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">if</span> (!mapped) {</div>
+<div class="line"><span class="lineno">  116</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;gpu::map_and_wait: GetConstMappedRange returned null&quot;</span>);</div>
+<div class="line"><span class="lineno">  117</span>    }</div>
+<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">return</span> mapped;</div>
+<div class="line"><span class="lineno">  119</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00104">gpu::map_and_wait()</a>.</p>
+<p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00090">gpu::map_and_wait()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="gpu__utils_8h_source.html#l00104">gpu::map_and_wait()</a>, <a class="el" href="gpu__utils_8h_source.html#l00185">gpu::Buffer&lt; T &gt;::read()</a>, and <a class="el" href="gpu__utils_8h_source.html#l00315">gpu::Texture::read()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="gpu__utils_8h_source.html#l00090">gpu::map_and_wait()</a>, <a class="el" href="gpu__utils_8h_source.html#l00166">gpu::Buffer&lt; T &gt;::read()</a>, and <a class="el" href="gpu__utils_8h_source.html#l00296">gpu::Texture::read()</a>.</p>
 <div id="dynsection-10" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-10-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-10-summary" class="dynsummary" style="display:block;">
@@ -716,14 +697,14 @@ Variables</h2></td></tr>
 <p>Compute the number of workgroups needed to cover <code>total_size</code> with workgroups of <code>workgroup_size</code>. </p>
 <p>Equivalent to <code>(total_size + workgroup_size - 1) / workgroup_size</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00560">560</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  560</span>                                                                                   {</div>
-<div class="line"><span class="lineno">  561</span>    <span class="keywordflow">return</span> (total_size + workgroup_size - 1) / workgroup_size;</div>
-<div class="line"><span class="lineno">  562</span>}</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00541">541</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  541</span>                                                                                   {</div>
+<div class="line"><span class="lineno">  542</span>    <span class="keywordflow">return</span> (total_size + workgroup_size - 1) / workgroup_size;</div>
+<div class="line"><span class="lineno">  543</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00560">gpu::workgroup_count()</a>.</p>
+<p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00541">gpu::workgroup_count()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="gpu__utils_8h_source.html#l00560">gpu::workgroup_count()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="gpu__utils_8h_source.html#l00541">gpu::workgroup_count()</a>.</p>
 <div id="dynsection-12" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-12-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-12-summary" class="dynsummary" style="display:block;">

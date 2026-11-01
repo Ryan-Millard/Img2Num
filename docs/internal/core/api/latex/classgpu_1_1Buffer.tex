@@ -73,7 +73,7 @@ T must be a trivially copyable type. The buffer is destroyed when this object go
 \end{DoxyTemplParams}
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00150}{150}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00131}{131}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 
@@ -98,17 +98,17 @@ Create a \doxylink{classGPU}{GPU} buffer holding {\ttfamily count} elements of T
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00157}{157}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00138}{138}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ :\ count\_(count)}
-\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ ,\ byte\_size\_(count\ *\ \textcolor{keyword}{sizeof}(T))\ \{}
-\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ wgpu::BufferDescriptor\ desc\ \{\};}
-\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ desc.size\ =\ byte\_size\_;}
-\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ desc.usage\ =\ usage;}
-\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ buffer\_\ =\ GPU::getClassInstance().get\_device().CreateBuffer(\&desc);}
-\DoxyCodeLine{00164\ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ :\ count\_(count)}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ ,\ byte\_size\_(count\ *\ \textcolor{keyword}{sizeof}(T))\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ wgpu::BufferDescriptor\ desc\ \{\};}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ desc.size\ =\ byte\_size\_;}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ desc.usage\ =\ usage;}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ buffer\_\ =\ GPU::getClassInstance().get\_device().CreateBuffer(\&desc);}
+\DoxyCodeLine{00145\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{classgpu_1_1Buffer_a369651c685644cdf6eb0d26b28177877}\label{classgpu_1_1Buffer_a369651c685644cdf6eb0d26b28177877} 
@@ -124,17 +124,17 @@ Move constructor. Transfers ownership of the \doxylink{classGPU}{GPU} buffer.
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00230}{230}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00211}{211}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ :\ buffer\_(std::move(other.buffer\_))}
-\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ ,\ count\_(other.count\_)}
-\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ ,\ byte\_size\_(other.byte\_size\_)\ \{}
-\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ other.buffer\_\ =\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ other.count\_\ =\ 0;}
-\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ other.byte\_size\_\ =\ 0;}
-\DoxyCodeLine{00237\ \ \ \ \ \}}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ :\ buffer\_(std::move(other.buffer\_))}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ ,\ count\_(other.count\_)}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ ,\ byte\_size\_(other.byte\_size\_)\ \{}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ other.buffer\_\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ other.count\_\ =\ 0;}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ other.byte\_size\_\ =\ 0;}
+\DoxyCodeLine{00218\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{classgpu_1_1Buffer_a965fd7bbec4e414d413e403ea349595b}\label{classgpu_1_1Buffer_a965fd7bbec4e414d413e403ea349595b} 
@@ -150,15 +150,15 @@ Destructor. Releases the \doxylink{classGPU}{GPU} buffer.
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00256}{256}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00237}{237}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer\_)\ \{}
-\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \ \ buffer\_.Destroy();}
-\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00260\ \ \ \ \ \}}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer\_)\ \{}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \ \ \ \ buffer\_.Destroy();}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00241\ \ \ \ \ \}}
 
 \end{DoxyCode}
 
@@ -177,18 +177,18 @@ Size in bytes.
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00216}{216}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00197}{197}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ byte\_size\_;}
-\DoxyCodeLine{00218\ \ \ \ \ \}}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ byte\_size\_;}
+\DoxyCodeLine{00199\ \ \ \ \ \}}
 
 \end{DoxyCode}
 
 
-Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00454}{gpu\+::\+Bind\+Entry\+::buffer\+\_\+entry()}}.
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00435}{gpu\+::\+Bind\+Entry\+::buffer\+\_\+entry()}}.
 
 Here is the caller graph for this function\+:
 \nopagebreak
@@ -211,18 +211,18 @@ Returns the underlying wgpu\+::\+Buffer handle.
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00211}{211}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00192}{192}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ buffer\_;}
-\DoxyCodeLine{00213\ \ \ \ \ \}}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ buffer\_;}
+\DoxyCodeLine{00194\ \ \ \ \ \}}
 
 \end{DoxyCode}
 
 
-Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00454}{gpu\+::\+Bind\+Entry\+::buffer\+\_\+entry()}}.
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00435}{gpu\+::\+Bind\+Entry\+::buffer\+\_\+entry()}}.
 
 Here is the caller graph for this function\+:
 \nopagebreak
@@ -245,24 +245,24 @@ Move assignment. Destroys the current buffer and takes ownership.
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00240}{240}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00221}{221}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{this}\ !=\ \&other)\ \{}
-\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer\_)\ \{}
-\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ buffer\_.Destroy();}
-\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \ \ \ \ buffer\_\ =\ std::move(other.buffer\_);}
-\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ count\_\ =\ other.count\_;}
-\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \ \ \ \ byte\_size\_\ =\ other.byte\_size\_;}
-\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ other.buffer\_\ =\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ other.count\_\ =\ 0;}
-\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \ \ \ \ other.byte\_size\_\ =\ 0;}
-\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
-\DoxyCodeLine{00253\ \ \ \ \ \}}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{this}\ !=\ \&other)\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer\_)\ \{}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ buffer\_.Destroy();}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \ \ buffer\_\ =\ std::move(other.buffer\_);}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \ \ \ \ count\_\ =\ other.count\_;}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ \ \ byte\_size\_\ =\ other.byte\_size\_;}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ \ \ other.buffer\_\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ other.count\_\ =\ 0;}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \ \ other.byte\_size\_\ =\ 0;}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00234\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{classgpu_1_1Buffer_af23f433dfce1f517c38575ce35683f65}\label{classgpu_1_1Buffer_af23f433dfce1f517c38575ce35683f65} 
@@ -278,39 +278,39 @@ Blocking readback\+: \doxylink{classGPU}{GPU} → CPU.
 
 Creates an internal staging buffer, copies, maps, waits, and returns the data. Works on both native Dawn and Emscripten. 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00185}{185}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00166}{166}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ staging\ buffer}}
-\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ wgpu::BufferDescriptor\ staging\_desc\ \{\};}
-\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ staging\_desc.size\ =\ byte\_size\_;}
-\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ staging\_desc.usage\ =\ wgpu::BufferUsage::MapRead\ |\ wgpu::BufferUsage::CopyDst;}
-\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ wgpu::Buffer\ staging\ =\ GPU::getClassInstance().get\_device().CreateBuffer(\&staging\_desc);}
-\DoxyCodeLine{00191\ }
-\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ GPU\ buffer\ →\ staging}}
-\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ wgpu::CommandEncoder\ encoder\ =\ GPU::getClassInstance().get\_device().CreateCommandEncoder();}
-\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ encoder.CopyBufferToBuffer(buffer\_,\ 0,\ staging,\ 0,\ byte\_size\_);}
-\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ wgpu::CommandBuffer\ commands\ =\ encoder.Finish();}
-\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ GPU::getClassInstance().get\_queue().Submit(1,\ \&commands);}
-\DoxyCodeLine{00197\ }
-\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Map\ and\ wait}}
-\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ mapped\ =\ \mbox{\hyperlink{gpu__utils_8h_aa8083a6a628c8a891771e104257607b9}{map\_and\_wait}}(staging,\ byte\_size\_);}
-\DoxyCodeLine{00200\ }
-\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ to\ vector}}
-\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ std::vector<T>\ result(count\_);}
-\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ std::memcpy(result.data(),\ mapped,\ byte\_size\_);}
-\DoxyCodeLine{00204\ }
-\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ staging.Unmap();}
-\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ staging.Destroy();}
-\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
-\DoxyCodeLine{00208\ \ \ \ \ \}}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ staging\ buffer}}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ wgpu::BufferDescriptor\ staging\_desc\ \{\};}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ staging\_desc.size\ =\ byte\_size\_;}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ staging\_desc.usage\ =\ wgpu::BufferUsage::MapRead\ |\ wgpu::BufferUsage::CopyDst;}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ wgpu::Buffer\ staging\ =\ GPU::getClassInstance().get\_device().CreateBuffer(\&staging\_desc);}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ GPU\ buffer\ →\ staging}}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ wgpu::CommandEncoder\ encoder\ =\ GPU::getClassInstance().get\_device().CreateCommandEncoder();}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ encoder.CopyBufferToBuffer(buffer\_,\ 0,\ staging,\ 0,\ byte\_size\_);}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ wgpu::CommandBuffer\ commands\ =\ encoder.Finish();}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ GPU::getClassInstance().get\_queue().Submit(1,\ \&commands);}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Map\ and\ wait}}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ mapped\ =\ \mbox{\hyperlink{gpu__utils_8h_aa8083a6a628c8a891771e104257607b9}{map\_and\_wait}}(staging,\ byte\_size\_);}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ to\ vector}}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ std::vector<T>\ result(count\_);}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ std::memcpy(result.data(),\ mapped,\ byte\_size\_);}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ staging.Unmap();}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ staging.Destroy();}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00189\ \ \ \ \ \}}
 
 \end{DoxyCode}
 
 
-References \mbox{\hyperlink{gpu__utils_8h_source_l00104}{gpu\+::map\+\_\+and\+\_\+wait()}}.
+References \mbox{\hyperlink{gpu__utils_8h_source_l00090}{gpu\+::map\+\_\+and\+\_\+wait()}}.
 
 Here is the call graph for this function\+:
 \nopagebreak
@@ -333,13 +333,13 @@ Element count.
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00221}{221}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00202}{202}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ count\_;}
-\DoxyCodeLine{00223\ \ \ \ \ \}}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ count\_;}
+\DoxyCodeLine{00204\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{classgpu_1_1Buffer_a9244e03f65819da73715d91f33af4bca}\label{classgpu_1_1Buffer_a9244e03f65819da73715d91f33af4bca} 
@@ -355,18 +355,18 @@ Upload an entire vector to \doxylink{classGPU}{GPU}.
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00177}{177}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00158}{158}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classgpu_1_1Buffer_a4b305b7a5112aac8017666547e78fa7e}{write}}(data.data(),\ data.size());}
-\DoxyCodeLine{00179\ \ \ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classgpu_1_1Buffer_a4b305b7a5112aac8017666547e78fa7e}{write}}(data.data(),\ data.size());}
+\DoxyCodeLine{00160\ \ \ \ \ \}}
 
 \end{DoxyCode}
 
 
-References \mbox{\hyperlink{gpu__utils_8h_source_l00170}{gpu\+::\+Buffer$<$ T $>$\+::write()}}.
+References \mbox{\hyperlink{gpu__utils_8h_source_l00151}{gpu\+::\+Buffer$<$ T $>$\+::write()}}.
 
 Here is the call graph for this function\+:
 \nopagebreak
@@ -398,20 +398,20 @@ Upload data from CPU to \doxylink{classGPU}{GPU}.
 \end{DoxyParams}
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00170}{170}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00151}{151}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ GPU::getClassInstance().get\_queue().WriteBuffer(}
-\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ \ \ buffer\_,\ offset\_elements\ *\ \textcolor{keyword}{sizeof}(T),\ data,\ count\ *\ \textcolor{keyword}{sizeof}(T)}
-\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ );}
-\DoxyCodeLine{00174\ \ \ \ \ \}}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ GPU::getClassInstance().get\_queue().WriteBuffer(}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \ \ buffer\_,\ offset\_elements\ *\ \textcolor{keyword}{sizeof}(T),\ data,\ count\ *\ \textcolor{keyword}{sizeof}(T)}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{00155\ \ \ \ \ \}}
 
 \end{DoxyCode}
 
 
-Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00177}{gpu\+::\+Buffer$<$ T $>$\+::write()}}.
+Referenced by \mbox{\hyperlink{gpu__utils_8h_source_l00158}{gpu\+::\+Buffer$<$ T $>$\+::write()}}.
 
 Here is the caller graph for this function\+:
 \nopagebreak
@@ -433,11 +433,11 @@ wgpu\+::\+Buffer \mbox{\hyperlink{classgpu_1_1Buffer}{gpu\+::\+Buffer}}$<$ T $>$
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00263}{263}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00244}{244}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00263\ \{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{00244\ \{\textcolor{keyword}{nullptr}\};}
 
 \end{DoxyCode}
 \Hypertarget{classgpu_1_1Buffer_afbcfdc94314bcdf177ffc8bac9afdb0d}\label{classgpu_1_1Buffer_afbcfdc94314bcdf177ffc8bac9afdb0d} 
@@ -449,11 +449,11 @@ size\+\_\+t \mbox{\hyperlink{classgpu_1_1Buffer}{gpu\+::\+Buffer}}$<$ T $>$\+::b
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00265}{265}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00246}{246}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00265\ \{0\};}
+\DoxyCodeLine{00246\ \{0\};}
 
 \end{DoxyCode}
 \Hypertarget{classgpu_1_1Buffer_af5cc9fdd8de9f2ca9289f849dfc07e8a}\label{classgpu_1_1Buffer_af5cc9fdd8de9f2ca9289f849dfc07e8a} 
@@ -465,11 +465,11 @@ size\+\_\+t \mbox{\hyperlink{classgpu_1_1Buffer}{gpu\+::\+Buffer}}$<$ T $>$\+::c
 
 
 
-Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00264}{264}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
+Definition at line \mbox{\hyperlink{gpu__utils_8h_source_l00245}{245}} of file \mbox{\hyperlink{gpu__utils_8h_source}{gpu\+\_\+utils.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00264\ \{0\};}
+\DoxyCodeLine{00245\ \{0\};}
 
 \end{DoxyCode}
 

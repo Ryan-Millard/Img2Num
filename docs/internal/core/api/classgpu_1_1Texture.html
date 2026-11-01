@@ -167,7 +167,7 @@ Private Attributes</h2></td></tr>
 <div class="textblock"><p>RAII wrapper around a wgpu::Texture with upload and aligned readback. </p>
 <p>Handles the 256-byte row-alignment requirement for CopyTextureToBuffer automatically during readback. </p>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00276">276</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00257">257</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab2a8e483a16d01d7479593297529fad8" name="ab2a8e483a16d01d7479593297529fad8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab2a8e483a16d01d7479593297529fad8">&#9670;&#160;</a></span>Texture() <span class="overload">[1/2]</span></h2>
@@ -226,21 +226,21 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00283">283</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  284</span>        : width_(<a class="code hl_function" href="classgpu_1_1Texture.html#a10691a74815853df462d26c7e16d0b95">width</a>)</div>
-<div class="line"><span class="lineno">  285</span>        , height_(<a class="code hl_function" href="classgpu_1_1Texture.html#a98d1b416dac9d1cb883efb43ad2c7804">height</a>)</div>
-<div class="line"><span class="lineno">  286</span>        , format_(<a class="code hl_function" href="classgpu_1_1Texture.html#ad5ad5a589655b309555a50026c2c3e27">format</a>) {</div>
-<div class="line"><span class="lineno">  287</span>        wgpu::TextureDescriptor desc {};</div>
-<div class="line"><span class="lineno">  288</span>        desc.size = {<a class="code hl_function" href="classgpu_1_1Texture.html#a10691a74815853df462d26c7e16d0b95">width</a>, <a class="code hl_function" href="classgpu_1_1Texture.html#a98d1b416dac9d1cb883efb43ad2c7804">height</a>, 1};</div>
-<div class="line"><span class="lineno">  289</span>        desc.format = <a class="code hl_function" href="classgpu_1_1Texture.html#ad5ad5a589655b309555a50026c2c3e27">format</a>;</div>
-<div class="line"><span class="lineno">  290</span>        desc.usage = usage;</div>
-<div class="line"><span class="lineno">  291</span>        texture_ = GPU::getClassInstance().get_device().CreateTexture(&amp;desc);</div>
-<div class="line"><span class="lineno">  292</span>    }</div>
-<div class="ttc" id="aclassgpu_1_1Texture_html_a10691a74815853df462d26c7e16d0b95"><div class="ttname"><a href="classgpu_1_1Texture.html#a10691a74815853df462d26c7e16d0b95">gpu::Texture::width</a></div><div class="ttdeci">uint32_t width() const</div><div class="ttdoc">Width of the texture in pixels.</div><div class="ttdef"><b>Definition</b> <a href="gpu__utils_8h_source.html#l00367">gpu_utils.h:367</a></div></div>
-<div class="ttc" id="aclassgpu_1_1Texture_html_a98d1b416dac9d1cb883efb43ad2c7804"><div class="ttname"><a href="classgpu_1_1Texture.html#a98d1b416dac9d1cb883efb43ad2c7804">gpu::Texture::height</a></div><div class="ttdeci">uint32_t height() const</div><div class="ttdoc">Height of the texture in pixels.</div><div class="ttdef"><b>Definition</b> <a href="gpu__utils_8h_source.html#l00371">gpu_utils.h:371</a></div></div>
-<div class="ttc" id="aclassgpu_1_1Texture_html_ad5ad5a589655b309555a50026c2c3e27"><div class="ttname"><a href="classgpu_1_1Texture.html#ad5ad5a589655b309555a50026c2c3e27">gpu::Texture::format</a></div><div class="ttdeci">wgpu::TextureFormat format() const</div><div class="ttdoc">Texel format of the texture.</div><div class="ttdef"><b>Definition</b> <a href="gpu__utils_8h_source.html#l00375">gpu_utils.h:375</a></div></div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00264">264</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  265</span>        : width_(<a class="code hl_function" href="classgpu_1_1Texture.html#a10691a74815853df462d26c7e16d0b95">width</a>)</div>
+<div class="line"><span class="lineno">  266</span>        , height_(<a class="code hl_function" href="classgpu_1_1Texture.html#a98d1b416dac9d1cb883efb43ad2c7804">height</a>)</div>
+<div class="line"><span class="lineno">  267</span>        , format_(<a class="code hl_function" href="classgpu_1_1Texture.html#ad5ad5a589655b309555a50026c2c3e27">format</a>) {</div>
+<div class="line"><span class="lineno">  268</span>        wgpu::TextureDescriptor desc {};</div>
+<div class="line"><span class="lineno">  269</span>        desc.size = {<a class="code hl_function" href="classgpu_1_1Texture.html#a10691a74815853df462d26c7e16d0b95">width</a>, <a class="code hl_function" href="classgpu_1_1Texture.html#a98d1b416dac9d1cb883efb43ad2c7804">height</a>, 1};</div>
+<div class="line"><span class="lineno">  270</span>        desc.format = <a class="code hl_function" href="classgpu_1_1Texture.html#ad5ad5a589655b309555a50026c2c3e27">format</a>;</div>
+<div class="line"><span class="lineno">  271</span>        desc.usage = usage;</div>
+<div class="line"><span class="lineno">  272</span>        texture_ = GPU::getClassInstance().get_device().CreateTexture(&amp;desc);</div>
+<div class="line"><span class="lineno">  273</span>    }</div>
+<div class="ttc" id="aclassgpu_1_1Texture_html_a10691a74815853df462d26c7e16d0b95"><div class="ttname"><a href="classgpu_1_1Texture.html#a10691a74815853df462d26c7e16d0b95">gpu::Texture::width</a></div><div class="ttdeci">uint32_t width() const</div><div class="ttdoc">Width of the texture in pixels.</div><div class="ttdef"><b>Definition</b> <a href="gpu__utils_8h_source.html#l00348">gpu_utils.h:348</a></div></div>
+<div class="ttc" id="aclassgpu_1_1Texture_html_a98d1b416dac9d1cb883efb43ad2c7804"><div class="ttname"><a href="classgpu_1_1Texture.html#a98d1b416dac9d1cb883efb43ad2c7804">gpu::Texture::height</a></div><div class="ttdeci">uint32_t height() const</div><div class="ttdoc">Height of the texture in pixels.</div><div class="ttdef"><b>Definition</b> <a href="gpu__utils_8h_source.html#l00352">gpu_utils.h:352</a></div></div>
+<div class="ttc" id="aclassgpu_1_1Texture_html_ad5ad5a589655b309555a50026c2c3e27"><div class="ttname"><a href="classgpu_1_1Texture.html#ad5ad5a589655b309555a50026c2c3e27">gpu::Texture::format</a></div><div class="ttdeci">wgpu::TextureFormat format() const</div><div class="ttdoc">Texel format of the texture.</div><div class="ttdef"><b>Definition</b> <a href="gpu__utils_8h_source.html#l00356">gpu_utils.h:356</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00375">format()</a>, <a class="el" href="gpu__utils_8h_source.html#l00371">height()</a>, and <a class="el" href="gpu__utils_8h_source.html#l00367">width()</a>.</p>
+<p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00356">format()</a>, <a class="el" href="gpu__utils_8h_source.html#l00352">height()</a>, and <a class="el" href="gpu__utils_8h_source.html#l00348">width()</a>.</p>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-1-summary" class="dynsummary" style="display:block;">
@@ -277,15 +277,15 @@ Private Attributes</h2></td></tr>
 
 <p>Move constructor. Transfers ownership of the <a class="el" href="classGPU.html">GPU</a> texture. </p>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00384">384</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  385</span>        : texture_(std::move(other.texture_))</div>
-<div class="line"><span class="lineno">  386</span>        , width_(other.width_)</div>
-<div class="line"><span class="lineno">  387</span>        , height_(other.height_)</div>
-<div class="line"><span class="lineno">  388</span>        , format_(other.format_) {</div>
-<div class="line"><span class="lineno">  389</span>        other.texture_ = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  390</span>        other.width_ = 0;</div>
-<div class="line"><span class="lineno">  391</span>        other.height_ = 0;</div>
-<div class="line"><span class="lineno">  392</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00365">365</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  366</span>        : texture_(std::move(other.texture_))</div>
+<div class="line"><span class="lineno">  367</span>        , width_(other.width_)</div>
+<div class="line"><span class="lineno">  368</span>        , height_(other.height_)</div>
+<div class="line"><span class="lineno">  369</span>        , format_(other.format_) {</div>
+<div class="line"><span class="lineno">  370</span>        other.texture_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  371</span>        other.width_ = 0;</div>
+<div class="line"><span class="lineno">  372</span>        other.height_ = 0;</div>
+<div class="line"><span class="lineno">  373</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -314,12 +314,12 @@ Private Attributes</h2></td></tr>
 
 <p>Destructor. Releases the <a class="el" href="classGPU.html">GPU</a> texture. </p>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00412">412</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  412</span>               {</div>
-<div class="line"><span class="lineno">  413</span>        <span class="keywordflow">if</span> (texture_) {</div>
-<div class="line"><span class="lineno">  414</span>            texture_.Destroy();</div>
-<div class="line"><span class="lineno">  415</span>        }</div>
-<div class="line"><span class="lineno">  416</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00393">393</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  393</span>               {</div>
+<div class="line"><span class="lineno">  394</span>        <span class="keywordflow">if</span> (texture_) {</div>
+<div class="line"><span class="lineno">  395</span>            texture_.Destroy();</div>
+<div class="line"><span class="lineno">  396</span>        }</div>
+<div class="line"><span class="lineno">  397</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -349,12 +349,12 @@ Private Attributes</h2></td></tr>
 
 <p>Texel format of the texture. </p>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00375">375</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  375</span>                                     {</div>
-<div class="line"><span class="lineno">  376</span>        <span class="keywordflow">return</span> format_;</div>
-<div class="line"><span class="lineno">  377</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00356">356</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  356</span>                                     {</div>
+<div class="line"><span class="lineno">  357</span>        <span class="keywordflow">return</span> format_;</div>
+<div class="line"><span class="lineno">  358</span>    }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="gpu__utils_8h_source.html#l00283">Texture()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="gpu__utils_8h_source.html#l00264">Texture()</a>.</p>
 <div id="dynsection-2" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-2-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-2-summary" class="dynsummary" style="display:block;">
@@ -390,10 +390,10 @@ Private Attributes</h2></td></tr>
 
 <p>Underlying wgpu::Texture handle. </p>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00362">362</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  362</span>                                      {</div>
-<div class="line"><span class="lineno">  363</span>        <span class="keywordflow">return</span> texture_;</div>
-<div class="line"><span class="lineno">  364</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00343">343</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  343</span>                                      {</div>
+<div class="line"><span class="lineno">  344</span>        <span class="keywordflow">return</span> texture_;</div>
+<div class="line"><span class="lineno">  345</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -422,12 +422,12 @@ Private Attributes</h2></td></tr>
 
 <p>Height of the texture in pixels. </p>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00371">371</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  371</span>                            {</div>
-<div class="line"><span class="lineno">  372</span>        <span class="keywordflow">return</span> height_;</div>
-<div class="line"><span class="lineno">  373</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00352">352</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  352</span>                            {</div>
+<div class="line"><span class="lineno">  353</span>        <span class="keywordflow">return</span> height_;</div>
+<div class="line"><span class="lineno">  354</span>    }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="gpu__utils_8h_source.html#l00283">Texture()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="gpu__utils_8h_source.html#l00264">Texture()</a>.</p>
 <div id="dynsection-3" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-3-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-3-summary" class="dynsummary" style="display:block;">
@@ -464,22 +464,22 @@ Private Attributes</h2></td></tr>
 
 <p>Move assignment. Destroys the current texture and takes ownership. </p>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00395">395</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  395</span>                                                 {</div>
-<div class="line"><span class="lineno">  396</span>        <span class="keywordflow">if</span> (<span class="keyword">this</span> != &amp;other) {</div>
-<div class="line"><span class="lineno">  397</span>            <span class="keywordflow">if</span> (texture_) {</div>
-<div class="line"><span class="lineno">  398</span>                texture_.Destroy();</div>
-<div class="line"><span class="lineno">  399</span>            }</div>
-<div class="line"><span class="lineno">  400</span>            texture_ = std::move(other.texture_);</div>
-<div class="line"><span class="lineno">  401</span>            width_ = other.width_;</div>
-<div class="line"><span class="lineno">  402</span>            height_ = other.height_;</div>
-<div class="line"><span class="lineno">  403</span>            format_ = other.format_;</div>
-<div class="line"><span class="lineno">  404</span>            other.texture_ = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  405</span>            other.width_ = 0;</div>
-<div class="line"><span class="lineno">  406</span>            other.height_ = 0;</div>
-<div class="line"><span class="lineno">  407</span>        }</div>
-<div class="line"><span class="lineno">  408</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">  409</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00376">376</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  376</span>                                                 {</div>
+<div class="line"><span class="lineno">  377</span>        <span class="keywordflow">if</span> (<span class="keyword">this</span> != &amp;other) {</div>
+<div class="line"><span class="lineno">  378</span>            <span class="keywordflow">if</span> (texture_) {</div>
+<div class="line"><span class="lineno">  379</span>                texture_.Destroy();</div>
+<div class="line"><span class="lineno">  380</span>            }</div>
+<div class="line"><span class="lineno">  381</span>            texture_ = std::move(other.texture_);</div>
+<div class="line"><span class="lineno">  382</span>            width_ = other.width_;</div>
+<div class="line"><span class="lineno">  383</span>            height_ = other.height_;</div>
+<div class="line"><span class="lineno">  384</span>            format_ = other.format_;</div>
+<div class="line"><span class="lineno">  385</span>            other.texture_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  386</span>            other.width_ = 0;</div>
+<div class="line"><span class="lineno">  387</span>            other.height_ = 0;</div>
+<div class="line"><span class="lineno">  388</span>        }</div>
+<div class="line"><span class="lineno">  389</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><span class="lineno">  390</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -517,50 +517,50 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Tightly-packed pixel data. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00315">315</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  315</span>                                                      {</div>
-<div class="line"><span class="lineno">  316</span>        uint32_t aligned_bpr = GPU::getAlignedBytesPerRow(width_, bytes_per_pixel);</div>
-<div class="line"><span class="lineno">  317</span>        uint32_t staging_size = aligned_bpr * height_;</div>
-<div class="line"><span class="lineno">  318</span> </div>
-<div class="line"><span class="lineno">  319</span>        <span class="comment">// Create staging buffer</span></div>
-<div class="line"><span class="lineno">  320</span>        wgpu::BufferDescriptor staging_desc {};</div>
-<div class="line"><span class="lineno">  321</span>        staging_desc.size = staging_size;</div>
-<div class="line"><span class="lineno">  322</span>        staging_desc.usage = wgpu::BufferUsage::MapRead | wgpu::BufferUsage::CopyDst;</div>
-<div class="line"><span class="lineno">  323</span>        wgpu::Buffer staging = GPU::getClassInstance().get_device().CreateBuffer(&amp;staging_desc);</div>
-<div class="line"><span class="lineno">  324</span> </div>
-<div class="line"><span class="lineno">  325</span>        <span class="comment">// Encode copy</span></div>
-<div class="line"><span class="lineno">  326</span>        wgpu::CommandEncoder encoder = GPU::getClassInstance().get_device().CreateCommandEncoder();</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00296">296</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  296</span>                                                      {</div>
+<div class="line"><span class="lineno">  297</span>        uint32_t aligned_bpr = GPU::getAlignedBytesPerRow(width_, bytes_per_pixel);</div>
+<div class="line"><span class="lineno">  298</span>        uint32_t staging_size = aligned_bpr * height_;</div>
+<div class="line"><span class="lineno">  299</span> </div>
+<div class="line"><span class="lineno">  300</span>        <span class="comment">// Create staging buffer</span></div>
+<div class="line"><span class="lineno">  301</span>        wgpu::BufferDescriptor staging_desc {};</div>
+<div class="line"><span class="lineno">  302</span>        staging_desc.size = staging_size;</div>
+<div class="line"><span class="lineno">  303</span>        staging_desc.usage = wgpu::BufferUsage::MapRead | wgpu::BufferUsage::CopyDst;</div>
+<div class="line"><span class="lineno">  304</span>        wgpu::Buffer staging = GPU::getClassInstance().get_device().CreateBuffer(&amp;staging_desc);</div>
+<div class="line"><span class="lineno">  305</span> </div>
+<div class="line"><span class="lineno">  306</span>        <span class="comment">// Encode copy</span></div>
+<div class="line"><span class="lineno">  307</span>        wgpu::CommandEncoder encoder = GPU::getClassInstance().get_device().CreateCommandEncoder();</div>
+<div class="line"><span class="lineno">  308</span> </div>
+<div class="line"><span class="lineno">  309</span>        wgpu::TexelCopyTextureInfo src {};</div>
+<div class="line"><span class="lineno">  310</span>        src.texture = texture_;</div>
+<div class="line"><span class="lineno">  311</span>        wgpu::TexelCopyBufferInfo dst {};</div>
+<div class="line"><span class="lineno">  312</span>        dst.buffer = staging;</div>
+<div class="line"><span class="lineno">  313</span>        dst.layout.bytesPerRow = aligned_bpr;</div>
+<div class="line"><span class="lineno">  314</span>        dst.layout.rowsPerImage = height_;</div>
+<div class="line"><span class="lineno">  315</span>        wgpu::Extent3D extent {width_, height_, 1};</div>
+<div class="line"><span class="lineno">  316</span>        encoder.CopyTextureToBuffer(&amp;src, &amp;dst, &amp;extent);</div>
+<div class="line"><span class="lineno">  317</span> </div>
+<div class="line"><span class="lineno">  318</span>        wgpu::CommandBuffer commands = encoder.Finish();</div>
+<div class="line"><span class="lineno">  319</span>        GPU::getClassInstance().get_queue().Submit(1, &amp;commands);</div>
+<div class="line"><span class="lineno">  320</span> </div>
+<div class="line"><span class="lineno">  321</span>        <span class="comment">// Map and wait</span></div>
+<div class="line"><span class="lineno">  322</span>        <span class="keyword">const</span> <span class="keyword">auto</span>* mapped = <span class="keyword">static_cast&lt;</span><span class="keyword">const </span>uint8_t*<span class="keyword">&gt;</span>(<a class="code hl_function" href="gpu__utils_8h.html#aa8083a6a628c8a891771e104257607b9">map_and_wait</a>(staging, staging_size));</div>
+<div class="line"><span class="lineno">  323</span> </div>
+<div class="line"><span class="lineno">  324</span>        <span class="comment">// Strip row alignment padding</span></div>
+<div class="line"><span class="lineno">  325</span>        uint32_t tight_bpr = width_ * bytes_per_pixel;</div>
+<div class="line"><span class="lineno">  326</span>        std::vector&lt;uint8_t&gt; result(tight_bpr * height_);</div>
 <div class="line"><span class="lineno">  327</span> </div>
-<div class="line"><span class="lineno">  328</span>        wgpu::TexelCopyTextureInfo src {};</div>
-<div class="line"><span class="lineno">  329</span>        src.texture = texture_;</div>
-<div class="line"><span class="lineno">  330</span>        wgpu::TexelCopyBufferInfo dst {};</div>
-<div class="line"><span class="lineno">  331</span>        dst.buffer = staging;</div>
-<div class="line"><span class="lineno">  332</span>        dst.layout.bytesPerRow = aligned_bpr;</div>
-<div class="line"><span class="lineno">  333</span>        dst.layout.rowsPerImage = height_;</div>
-<div class="line"><span class="lineno">  334</span>        wgpu::Extent3D extent {width_, height_, 1};</div>
-<div class="line"><span class="lineno">  335</span>        encoder.CopyTextureToBuffer(&amp;src, &amp;dst, &amp;extent);</div>
-<div class="line"><span class="lineno">  336</span> </div>
-<div class="line"><span class="lineno">  337</span>        wgpu::CommandBuffer commands = encoder.Finish();</div>
-<div class="line"><span class="lineno">  338</span>        GPU::getClassInstance().get_queue().Submit(1, &amp;commands);</div>
-<div class="line"><span class="lineno">  339</span> </div>
-<div class="line"><span class="lineno">  340</span>        <span class="comment">// Map and wait</span></div>
-<div class="line"><span class="lineno">  341</span>        <span class="keyword">const</span> <span class="keyword">auto</span>* mapped = <span class="keyword">static_cast&lt;</span><span class="keyword">const </span>uint8_t*<span class="keyword">&gt;</span>(<a class="code hl_function" href="gpu__utils_8h.html#aa8083a6a628c8a891771e104257607b9">map_and_wait</a>(staging, staging_size));</div>
-<div class="line"><span class="lineno">  342</span> </div>
-<div class="line"><span class="lineno">  343</span>        <span class="comment">// Strip row alignment padding</span></div>
-<div class="line"><span class="lineno">  344</span>        uint32_t tight_bpr = width_ * bytes_per_pixel;</div>
-<div class="line"><span class="lineno">  345</span>        std::vector&lt;uint8_t&gt; result(tight_bpr * height_);</div>
-<div class="line"><span class="lineno">  346</span> </div>
-<div class="line"><span class="lineno">  347</span>        <span class="keywordflow">for</span> (uint32_t y = 0; y &lt; height_; ++y) {</div>
-<div class="line"><span class="lineno">  348</span>            std::memcpy(result.data() + y * tight_bpr, mapped + y * aligned_bpr, tight_bpr);</div>
-<div class="line"><span class="lineno">  349</span>        }</div>
-<div class="line"><span class="lineno">  350</span> </div>
-<div class="line"><span class="lineno">  351</span>        staging.Unmap();</div>
-<div class="line"><span class="lineno">  352</span>        staging.Destroy();</div>
-<div class="line"><span class="lineno">  353</span>        <span class="keywordflow">return</span> result;</div>
-<div class="line"><span class="lineno">  354</span>    }</div>
-<div class="ttc" id="agpu__utils_8h_html_aa8083a6a628c8a891771e104257607b9"><div class="ttname"><a href="gpu__utils_8h.html#aa8083a6a628c8a891771e104257607b9">gpu::map_and_wait</a></div><div class="ttdeci">const void * map_and_wait(wgpu::Buffer &amp;buffer, size_t size)</div><div class="ttdoc">Block until a MapAsync on buffer completes.</div><div class="ttdef"><b>Definition</b> <a href="gpu__utils_8h_source.html#l00104">gpu_utils.h:104</a></div></div>
+<div class="line"><span class="lineno">  328</span>        <span class="keywordflow">for</span> (uint32_t y = 0; y &lt; height_; ++y) {</div>
+<div class="line"><span class="lineno">  329</span>            std::memcpy(result.data() + y * tight_bpr, mapped + y * aligned_bpr, tight_bpr);</div>
+<div class="line"><span class="lineno">  330</span>        }</div>
+<div class="line"><span class="lineno">  331</span> </div>
+<div class="line"><span class="lineno">  332</span>        staging.Unmap();</div>
+<div class="line"><span class="lineno">  333</span>        staging.Destroy();</div>
+<div class="line"><span class="lineno">  334</span>        <span class="keywordflow">return</span> result;</div>
+<div class="line"><span class="lineno">  335</span>    }</div>
+<div class="ttc" id="agpu__utils_8h_html_aa8083a6a628c8a891771e104257607b9"><div class="ttname"><a href="gpu__utils_8h.html#aa8083a6a628c8a891771e104257607b9">gpu::map_and_wait</a></div><div class="ttdeci">const void * map_and_wait(wgpu::Buffer &amp;buffer, size_t size)</div><div class="ttdoc">Block until a MapAsync on buffer completes.</div><div class="ttdef"><b>Definition</b> <a href="gpu__utils_8h_source.html#l00090">gpu_utils.h:90</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00104">gpu::map_and_wait()</a>.</p>
+<p class="reference">References <a class="el" href="gpu__utils_8h_source.html#l00090">gpu::map_and_wait()</a>.</p>
 <div id="dynsection-4" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-4-trigger" src="closed.png" alt="+"/> Here is the call graph for this function:</div>
 <div id="dynsection-4-summary" class="dynsummary" style="display:block;">
@@ -596,12 +596,12 @@ Private Attributes</h2></td></tr>
 
 <p>Create a default texture view. </p>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00357">357</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  357</span>                                 {</div>
-<div class="line"><span class="lineno">  358</span>        <span class="keywordflow">return</span> texture_.CreateView();</div>
-<div class="line"><span class="lineno">  359</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00338">338</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  338</span>                                 {</div>
+<div class="line"><span class="lineno">  339</span>        <span class="keywordflow">return</span> texture_.CreateView();</div>
+<div class="line"><span class="lineno">  340</span>    }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="gpu__utils_8h_source.html#l00438">gpu::BindEntry::texture()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="gpu__utils_8h_source.html#l00419">gpu::BindEntry::texture()</a>.</p>
 <div id="dynsection-5" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-5-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-5-summary" class="dynsummary" style="display:block;">
@@ -637,12 +637,12 @@ Private Attributes</h2></td></tr>
 
 <p>Width of the texture in pixels. </p>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00367">367</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  367</span>                           {</div>
-<div class="line"><span class="lineno">  368</span>        <span class="keywordflow">return</span> width_;</div>
-<div class="line"><span class="lineno">  369</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00348">348</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  348</span>                           {</div>
+<div class="line"><span class="lineno">  349</span>        <span class="keywordflow">return</span> width_;</div>
+<div class="line"><span class="lineno">  350</span>    }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="gpu__utils_8h_source.html#l00283">Texture()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="gpu__utils_8h_source.html#l00264">Texture()</a>.</p>
 <div id="dynsection-6" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-6-trigger" src="closed.png" alt="+"/> Here is the caller graph for this function:</div>
 <div id="dynsection-6-summary" class="dynsummary" style="display:block;">
@@ -703,17 +703,17 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00298">298</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  298</span>                                                                             {</div>
-<div class="line"><span class="lineno">  299</span>        wgpu::TexelCopyTextureInfo dst {};</div>
-<div class="line"><span class="lineno">  300</span>        dst.texture = texture_;</div>
-<div class="line"><span class="lineno">  301</span>        wgpu::TexelCopyBufferLayout layout {};</div>
-<div class="line"><span class="lineno">  302</span>        layout.offset = 0;</div>
-<div class="line"><span class="lineno">  303</span>        layout.bytesPerRow = width_ * bytes_per_pixel;</div>
-<div class="line"><span class="lineno">  304</span>        layout.rowsPerImage = height_;</div>
-<div class="line"><span class="lineno">  305</span>        wgpu::Extent3D extent {width_, height_, 1};</div>
-<div class="line"><span class="lineno">  306</span>        GPU::getClassInstance().get_queue().WriteTexture(&amp;dst, data, data_size, &amp;layout, &amp;extent);</div>
-<div class="line"><span class="lineno">  307</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00279">279</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  279</span>                                                                             {</div>
+<div class="line"><span class="lineno">  280</span>        wgpu::TexelCopyTextureInfo dst {};</div>
+<div class="line"><span class="lineno">  281</span>        dst.texture = texture_;</div>
+<div class="line"><span class="lineno">  282</span>        wgpu::TexelCopyBufferLayout layout {};</div>
+<div class="line"><span class="lineno">  283</span>        layout.offset = 0;</div>
+<div class="line"><span class="lineno">  284</span>        layout.bytesPerRow = width_ * bytes_per_pixel;</div>
+<div class="line"><span class="lineno">  285</span>        layout.rowsPerImage = height_;</div>
+<div class="line"><span class="lineno">  286</span>        wgpu::Extent3D extent {width_, height_, 1};</div>
+<div class="line"><span class="lineno">  287</span>        GPU::getClassInstance().get_queue().WriteTexture(&amp;dst, data, data_size, &amp;layout, &amp;extent);</div>
+<div class="line"><span class="lineno">  288</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -738,8 +738,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00422">422</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  422</span>{};</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00403">403</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  403</span>{};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -763,8 +763,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00421">421</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  421</span>{0};</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00402">402</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  402</span>{0};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -788,8 +788,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00419">419</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  419</span>{<span class="keyword">nullptr</span>};</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00400">400</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  400</span>{<span class="keyword">nullptr</span>};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -813,8 +813,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00420">420</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  420</span>{0};</div>
+<p class="definition">Definition at line <a class="el" href="gpu__utils_8h_source.html#l00401">401</a> of file <a class="el" href="gpu__utils_8h_source.html">gpu_utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  401</span>{0};</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -26,7 +26,7 @@ var annotated_dup =
     [ "ColoredContours", "structColoredContours.html", null ],
     [ "ContoursResult", "structContoursResult.html", null ],
     [ "FilterParams", "structFilterParams.html", null ],
-    [ "GPU", "classGPU.html", null ],
+    [ "GPU", "classGPU.html", "classGPU" ],
     [ "Graph", "classGraph.html", "classGraph" ],
     [ "Node", "classNode.html", null ],
     [ "NodeIdLess", "structNodeIdLess.html", null ],

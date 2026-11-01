@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['format_0',['format',['../classgpu_1_1Texture.html#ad5ad5a589655b309555a50026c2c3e27',1,'gpu::Texture']]]
+  ['gaussian_5fblur_5ffft_0',['gaussian_blur_fft',['../namespaceimg2num.html#a365bbbd4976477bdf515be023a73d63f',1,'img2num']]],
+  ['graph_1',['Graph',['../classGraph.html#ad59c1ba2086dca5837eeffdb477bd60b',1,'Graph']]]
 ];

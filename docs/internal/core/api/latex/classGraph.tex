@@ -23,8 +23,6 @@ void \mbox{\hyperlink{classGraph_a4afc62de7246b056801e6be84b4ff1ae}{clear\+\_\+u
 \item 
 const std\+::vector$<$ Node\+\_\+ptr $>$ \& \mbox{\hyperlink{classGraph_aa2f900b5467bdf657c7826f69950217a}{get\+\_\+nodes}} () const
 \item 
-bool \mbox{\hyperlink{classGraph_aee9e3173fd33141ff7fa1921d4a88ce3}{all\+\_\+areas\+\_\+bigger\+\_\+than}} (int32\+\_\+t min\+\_\+area)
-\item 
 const size\+\_\+t \mbox{\hyperlink{classGraph_a00d5dc799ce5961393f9724188ad75c6}{size}} ()
 \item 
 void \mbox{\hyperlink{classGraph_ac084db90d7f3e8448bb069069d8cabd2}{discover\+\_\+edges}} (const std\+::vector$<$ int32\+\_\+t $>$ \&region\+\_\+labels, const int32\+\_\+t width, const int32\+\_\+t height)
@@ -37,12 +35,6 @@ void \mbox{\hyperlink{classGraph_affd42be5a82f5c58192b4682d3b2202e}{compute\+\_\
 \begin{DoxyCompactItemize}
 \item 
 void \mbox{\hyperlink{classGraph_ad525b30787e9784e86e20f2b9596d7c9}{hash\+\_\+node\+\_\+ids}} (void)
-\item 
-void \mbox{\hyperlink{classGraph_a7b0d97f549b1b34ab2b64d5868f3e2db}{process\+\_\+overlapping\+\_\+edges}} ()
-\item 
-uint8\+\_\+t \mbox{\hyperlink{classGraph_a0c88d5759816a622560c8d18da2b7902}{get\+Pixel}} (const std\+::vector$<$ uint8\+\_\+t $>$ \&img, int w, int h, int x, int y)
-\item 
-std\+::vector$<$ uint8\+\_\+t $>$ \mbox{\hyperlink{classGraph_a1982ce64f98221e8055578fe5c93f5e1}{analyze\+Junctions}} (const std\+::vector$<$ uint8\+\_\+t $>$ \&skel, int w, int h)
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
@@ -71,17 +63,23 @@ Definition at line \mbox{\hyperlink{graph_8h_source_l00033}{33}} of file \mbox{\
 \doxysubsubsection{\texorpdfstring{Graph()}{Graph()}}
 {\footnotesize\ttfamily Graph\+::\+Graph (\begin{DoxyParamCaption}\item[{std\+::unique\+\_\+ptr$<$ std\+::vector$<$ Node\+\_\+ptr $>$ $>$ \&}]{nodes,  }\item[{int}]{width,  }\item[{int}]{height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
+{\ttfamily @brief} Safely retrieves a pixel value from a binary image with bounds checking.
 
+{\ttfamily @param} img Binary image buffer {\ttfamily @param} w Image width {\ttfamily @param} h Image height {\ttfamily @param} x Pixel x-\/coordinate {\ttfamily @param} y Pixel y-\/coordinate {\ttfamily @return} Pixel value at (x, y), or 0 if out of bounds {\ttfamily @brief} Analyzes a skeleton image to detect junction points using 8-\/neighbor crossing-\/number.
 
-Definition at line \mbox{\hyperlink{graph_8h_source_l00073}{73}} of file \mbox{\hyperlink{graph_8h_source}{graph.\+h}}.
+Scans the skeleton image and marks pixels as junctions where three or more branches meet, using the crossing-\/number method (counts 0→1 transitions in the 8-\/neighbor ring).
+
+{\ttfamily @param} skel Binary skeleton image (nonzero = skeleton pixel) {\ttfamily @param} w Image width {\ttfamily @param} h Image height {\ttfamily @return} Junction mask with nonzero entries marking junction pixels 
+
+Definition at line \mbox{\hyperlink{graph_8h_source_l00066}{66}} of file \mbox{\hyperlink{graph_8h_source}{graph.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ :\ m\_nodes(std::move(nodes))}
-\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ ,\ m\_width(width)}
-\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ ,\ m\_height(height)\ \{}
-\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ hash\_node\_ids();}
-\DoxyCodeLine{00078\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ :\ m\_nodes(std::move(nodes))}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ ,\ m\_width(width)}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ ,\ m\_height(height)\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ hash\_node\_ids();}
+\DoxyCodeLine{00071\ \ \ \ \ \}}
 
 \end{DoxyCode}
 \Hypertarget{classGraph_a902c5b3eacb66d60752525ab23297a95}\label{classGraph_a902c5b3eacb66d60752525ab23297a95} 
@@ -92,16 +90,16 @@ Definition at line \mbox{\hyperlink{graph_8h_source_l00073}{73}} of file \mbox{\
 
 
 
-Definition at line \mbox{\hyperlink{graph_8h_source_l00080}{80}} of file \mbox{\hyperlink{graph_8h_source}{graph.\+h}}.
+Definition at line \mbox{\hyperlink{graph_8h_source_l00073}{73}} of file \mbox{\hyperlink{graph_8h_source}{graph.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Break\ the\ circular\ references\ so\ the\ shared\_ptrs\ can\ reach\ 0}}
-\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ node\ :\ *m\_nodes)\ \{}
-\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>clear\_all();}
-\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00085\ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Break\ the\ circular\ references\ so\ the\ shared\_ptrs\ can\ reach\ 0}}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ node\ :\ *m\_nodes)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ node-\/>clear\_all();}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \ \ \}}
 
 \end{DoxyCode}
 
@@ -115,123 +113,28 @@ Definition at line \mbox{\hyperlink{graph_8h_source_l00080}{80}} of file \mbox{\
 
 
 
-Definition at line \mbox{\hyperlink{graph_8cpp_source_l00055}{55}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
+Definition at line \mbox{\hyperlink{graph_8cpp_source_l00030}{30}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{auto}\ end\_node\_ids\ \{m\_node\_ids.end()\};}
-\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{auto}\ node1\_it\ \{m\_node\_ids.find(node\_id1)\};}
-\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{auto}\ node2\_it\ \{m\_node\_ids.find(node\_id2)\};}
-\DoxyCodeLine{00059\ }
-\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{if}\ (node1\_it\ ==\ end\_node\_ids\ ||\ node2\_it\ ==\ end\_node\_ids)\ \{}
-\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00062\ \ \ \ \ \}}
-\DoxyCodeLine{00063\ }
-\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ idx1\ \{node1\_it-\/>second\};}
-\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ idx2\ \{node2\_it-\/>second\};}
-\DoxyCodeLine{00066\ }
-\DoxyCodeLine{00067\ \ \ \ \ m\_nodes-\/>at(idx1)-\/>add\_edge(m\_nodes-\/>at(idx2));}
-\DoxyCodeLine{00068\ \ \ \ \ m\_nodes-\/>at(idx2)-\/>add\_edge(m\_nodes-\/>at(idx1));}
-\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00070\ \}}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{auto}\ end\_node\_ids\ \{m\_node\_ids.end()\};}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{auto}\ node1\_it\ \{m\_node\_ids.find(node\_id1)\};}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{auto}\ node2\_it\ \{m\_node\_ids.find(node\_id2)\};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{if}\ (node1\_it\ ==\ end\_node\_ids\ ||\ node2\_it\ ==\ end\_node\_ids)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00037\ \ \ \ \ \}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ idx1\ \{node1\_it-\/>second\};}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ idx2\ \{node2\_it-\/>second\};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ m\_nodes-\/>at(idx1)-\/>add\_edge(m\_nodes-\/>at(idx2));}
+\DoxyCodeLine{00043\ \ \ \ \ m\_nodes-\/>at(idx2)-\/>add\_edge(m\_nodes-\/>at(idx1));}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00045\ \}}
 
 \end{DoxyCode}
-\Hypertarget{classGraph_aee9e3173fd33141ff7fa1921d4a88ce3}\label{classGraph_aee9e3173fd33141ff7fa1921d4a88ce3} 
-\index{Graph@{Graph}!all\_areas\_bigger\_than@{all\_areas\_bigger\_than}}
-\index{all\_areas\_bigger\_than@{all\_areas\_bigger\_than}!Graph@{Graph}}
-\doxysubsubsection{\texorpdfstring{all\_areas\_bigger\_than()}{all\_areas\_bigger\_than()}}
-{\footnotesize\ttfamily bool Graph\+::all\+\_\+areas\+\_\+bigger\+\_\+than (\begin{DoxyParamCaption}\item[{int32\+\_\+t}]{min\+\_\+area }\end{DoxyParamCaption})}
-
-
-
-Definition at line \mbox{\hyperlink{graph_8cpp_source_l00045}{45}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
-
-
-\begin{DoxyCode}{0}
-\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ n\ :\ *m\_nodes)\ \{}
-\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ <\ min\_area)\ \{}
-\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00050\ \ \ \ \ \}}
-\DoxyCodeLine{00051\ }
-\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00053\ \}}
-
-\end{DoxyCode}
-\Hypertarget{classGraph_a1982ce64f98221e8055578fe5c93f5e1}\label{classGraph_a1982ce64f98221e8055578fe5c93f5e1} 
-\index{Graph@{Graph}!analyzeJunctions@{analyzeJunctions}}
-\index{analyzeJunctions@{analyzeJunctions}!Graph@{Graph}}
-\doxysubsubsection{\texorpdfstring{analyzeJunctions()}{analyzeJunctions()}}
-{\footnotesize\ttfamily std\+::vector$<$ uint8\+\_\+t $>$ Graph\+::analyze\+Junctions (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ uint8\+\_\+t $>$ \&}]{skel,  }\item[{int}]{w,  }\item[{int}]{h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
-
-{\ttfamily @brief} Analyzes a skeleton image to detect junction points using 8-\/neighbor crossing-\/number.
-
-Scans the skeleton image and marks pixels as junctions where three or more branches meet, using the crossing-\/number method (counts 0→1 transitions in the 8-\/neighbor ring).
-
-{\ttfamily @param} skel Binary skeleton image (nonzero = skeleton pixel) {\ttfamily @param} w Image width {\ttfamily @param} h Image height {\ttfamily @return} Junction mask with nonzero entries marking junction pixels 
-
-Definition at line \mbox{\hyperlink{graph_8cpp_source_l00223}{223}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
-
-
-\begin{DoxyCode}{0}
-\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00224\ \ \ \ \ std::vector<uint8\_t>\ junction\_map(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(w)\ *\ h,\ 0);}
-\DoxyCodeLine{00225\ }
-\DoxyCodeLine{00226\ \ \ \ \ \textcolor{comment}{//\ 8-\/Neighbor\ Order\ (Clockwise)}}
-\DoxyCodeLine{00227\ \ \ \ \ \textcolor{comment}{//\ P9\ P2\ P3}}
-\DoxyCodeLine{00228\ \ \ \ \ \textcolor{comment}{//\ P8\ P1\ P4}}
-\DoxyCodeLine{00229\ \ \ \ \ \textcolor{comment}{//\ P7\ P6\ P5}}
-\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keywordtype}{int}\ dx[]\ =\ \{0,\ 1,\ 1,\ 1,\ 0,\ -\/1,\ -\/1,\ -\/1\};}
-\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keywordtype}{int}\ dy[]\ =\ \{-\/1,\ -\/1,\ 0,\ 1,\ 1,\ 1,\ 0,\ -\/1\};}
-\DoxyCodeLine{00232\ }
-\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ y\ =\ 0;\ y\ <\ h;\ ++y)\ \{}
-\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ x\ =\ 0;\ x\ <\ w;\ ++x)\ \{}
-\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classGraph_a0c88d5759816a622560c8d18da2b7902}{getPixel}}(skel,\ w,\ h,\ x,\ y)\ ==\ 0)}
-\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{00237\ }
-\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 1.\ Get\ Neighbors\ in\ Circular\ Order}}
-\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ p[8];}
-\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ 8;\ ++k)\ \{}
-\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ p[k]\ =\ \mbox{\hyperlink{classGraph_a0c88d5759816a622560c8d18da2b7902}{getPixel}}(skel,\ w,\ h,\ x\ +\ dx[k],\ y\ +\ dy[k])\ ?\ 1\ :\ 0;}
-\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00243\ }
-\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 2.\ Count\ Transitions\ (0\ -\/>\ 1)}}
-\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ This\ is\ the\ Crossing\ Number\ /\ 2}}
-\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ transitions\ =\ 0;}
-\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ 8;\ ++k)\ \{}
-\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p[k]\ ==\ 0\ \&\&\ p[(k\ +\ 1)\ \%\ 8]\ ==\ 1)}
-\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ transitions++;}
-\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00251\ }
-\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 3.\ Count\ Total\ Neighbors\ (for\ Endpoint\ check)}}
-\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ neighbors\ =\ 0;}
-\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ 8;\ ++k)}
-\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ neighbors\ +=\ p[k];}
-\DoxyCodeLine{00256\ }
-\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 4.\ Classify}}
-\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (transitions\ >=\ 3)\ \{}
-\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ junction\_map[y\ *\ w\ +\ x]\ =\ 1;}
-\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00262\ \ \ \ \ \}}
-\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keywordflow}{return}\ junction\_map;}
-\DoxyCodeLine{00264\ \}}
-
-\end{DoxyCode}
-
-
-References \mbox{\hyperlink{graph_8h_source_l00052}{get\+Pixel()}}.
-
-Here is the call graph for this function\+:
-\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=341pt]{classGraph_a1982ce64f98221e8055578fe5c93f5e1_cgraph}
-\end{center}
-\end{figure}
 \Hypertarget{classGraph_a4afc62de7246b056801e6be84b4ff1ae}\label{classGraph_a4afc62de7246b056801e6be84b4ff1ae} 
 \index{Graph@{Graph}!clear\_unconnected\_nodes@{clear\_unconnected\_nodes}}
 \index{clear\_unconnected\_nodes@{clear\_unconnected\_nodes}!Graph@{Graph}}
@@ -240,22 +143,22 @@ Here is the call graph for this function\+:
 
 
 
-Definition at line \mbox{\hyperlink{graph_8cpp_source_l00101}{101}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
+Definition at line \mbox{\hyperlink{graph_8cpp_source_l00076}{76}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00102\ \ \ \ \ std::vector<Node\_ptr>\&\ nodes\ \{*m\_nodes\};}
-\DoxyCodeLine{00103\ }
-\DoxyCodeLine{00104\ \ \ \ \ nodes.erase(}
-\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ std::remove\_if(}
-\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ nodes.begin(),\ nodes.end(),\ [](\textcolor{keyword}{const}\ Node\_ptr\&\ n)\ \{\ return\ n-\/>area()\ ==\ 0;\ \}}
-\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ ),}
-\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ nodes.end()}
-\DoxyCodeLine{00109\ \ \ \ \ );}
-\DoxyCodeLine{00110\ }
-\DoxyCodeLine{00111\ \ \ \ \ hash\_node\_ids();}
-\DoxyCodeLine{00112\ \}}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00077\ \ \ \ \ std::vector<Node\_ptr>\&\ nodes\ \{*m\_nodes\};}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ nodes.erase(}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ std::remove\_if(}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ nodes.begin(),\ nodes.end(),\ [](\textcolor{keyword}{const}\ Node\_ptr\&\ n)\ \{\ return\ n-\/>area()\ ==\ 0;\ \}}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ ),}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ nodes.end()}
+\DoxyCodeLine{00084\ \ \ \ \ );}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ hash\_node\_ids();}
+\DoxyCodeLine{00087\ \}}
 
 \end{DoxyCode}
 \Hypertarget{classGraph_affd42be5a82f5c58192b4682d3b2202e}\label{classGraph_affd42be5a82f5c58192b4682d3b2202e} 
@@ -266,54 +169,54 @@ Definition at line \mbox{\hyperlink{graph_8cpp_source_l00101}{101}} of file \mbo
 
 
 
-Definition at line \mbox{\hyperlink{graph_8cpp_source_l00266}{266}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
+Definition at line \mbox{\hyperlink{graph_8cpp_source_l00123}{123}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00267\ }
-\DoxyCodeLine{00268\ \ \ \ \ \textcolor{comment}{/*}}
-\DoxyCodeLine{00269\ \textcolor{comment}{\ \ \ \ Shared-\/edge\ mode:\ build\ region\ boundaries\ on\ the\ crack\ grid\ so}}
-\DoxyCodeLine{00270\ \textcolor{comment}{\ \ \ \ neighbouring\ contours\ are\ exactly\ coincident\ along\ shared\ edges\ -\/-\/\ no}}
-\DoxyCodeLine{00271\ \textcolor{comment}{\ \ \ \ overlap\ band,\ no\ gaps}}
-\DoxyCodeLine{00272\ \textcolor{comment}{\ \ \ \ */}}
-\DoxyCodeLine{00273\ }
-\DoxyCodeLine{00274\ \ \ \ \ \textcolor{keywordtype}{float}\ eps\ =\ 0.25f;}
-\DoxyCodeLine{00275\ }
-\DoxyCodeLine{00276\ \ \ \ \ std::vector<int32\_t>\ labels(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(m\_width)\ *\ m\_height,\ -\/1);}
-\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ Node\_ptr\&\ n\ :\ get\_nodes())\ \{}
-\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)}
-\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ p\ :\ n-\/>get\_pixels())}
-\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \ \ labels[static\_cast<size\_t>(p.position.y)\ *\ m\_width\ +\ p.position.x]\ =\ n-\/>id();}
-\DoxyCodeLine{00282\ \ \ \ \ \}}
-\DoxyCodeLine{00283\ }
-\DoxyCodeLine{00284\ \ \ \ \ \textcolor{keyword}{auto}\ loops\ =\ build\_shared\_loops(labels,\ m\_width,\ m\_height,\ eps);}
-\DoxyCodeLine{00285\ }
-\DoxyCodeLine{00286\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ Node\_ptr\&\ n\ :\ get\_nodes())\ \{}
-\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)}
-\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ n-\/>clear\_contour();}
-\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ loops.find(n-\/>id());}
-\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ ==\ loops.end())}
-\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{ImageLib::RGBPixel<uint8\_t>}}\ c\ =\ n-\/>color();}
-\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\ col\ \{c.red,\ c.green,\ c.blue,\ 255\};}
-\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (std::vector<QuadBezier>\&\ curve\ :\ it-\/>second)\ \{}
-\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<Point>\ anchors;\ \textcolor{comment}{//\ keep\ contours[]\ parallel\ to\ curves[]}}
-\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \ \ \ \ anchors.reserve(curve.size()\ +\ 1);}
-\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{structQuadBezier}{QuadBezier}}\&\ q\ :\ curve)}
-\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ anchors.push\_back(q.p0);}
-\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!curve.empty())}
-\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ anchors.push\_back(curve.back().p2);}
-\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ \ \ \ \ n-\/>m\_contours.contours.push\_back(std::move(anchors));}
-\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \ \ \ \ n-\/>m\_contours.curves.push\_back(std::move(curve));}
-\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ \ \ \ \ n-\/>m\_contours.colors.push\_back(col);}
-\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \ \ \ \ n-\/>m\_contours.hierarchy.push\_back(\{-\/1,\ -\/1,\ -\/1,\ -\/1\});}
-\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ \ \ \ \ n-\/>m\_contours.is\_hole.push\_back(\textcolor{keyword}{false});}
-\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00308\ \ \ \ \ \}}
-\DoxyCodeLine{00309\ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00126\ \textcolor{comment}{\ \ \ \ Shared-\/edge\ mode:\ build\ region\ boundaries\ on\ the\ crack\ grid\ so}}
+\DoxyCodeLine{00127\ \textcolor{comment}{\ \ \ \ neighbouring\ contours\ are\ exactly\ coincident\ along\ shared\ edges\ -\/-\/\ no}}
+\DoxyCodeLine{00128\ \textcolor{comment}{\ \ \ \ overlap\ band,\ no\ gaps}}
+\DoxyCodeLine{00129\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordtype}{float}\ eps\ =\ 0.25f;}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \ \ std::vector<int32\_t>\ labels(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(m\_width)\ *\ m\_height,\ -\/1);}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ Node\_ptr\&\ n\ :\ get\_nodes())\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ p\ :\ n-\/>get\_pixels())}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ labels[static\_cast<size\_t>(p.position.y)\ *\ m\_width\ +\ p.position.x]\ =\ n-\/>id();}
+\DoxyCodeLine{00139\ \ \ \ \ \}}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keyword}{auto}\ loops\ =\ build\_shared\_loops(labels,\ m\_width,\ m\_height,\ eps);}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ Node\_ptr\&\ n\ :\ get\_nodes())\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ n-\/>clear\_contour();}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ loops.find(n-\/>id());}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ ==\ loops.end())}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{ImageLib::RGBPixel<uint8\_t>}}\ c\ =\ n-\/>color();}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageLib_1_1RGBAPixel}{ImageLib::RGBAPixel<uint8\_t>}}\ col\ \{c.red,\ c.green,\ c.blue,\ 255\};}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (std::vector<QuadBezier>\&\ curve\ :\ it-\/>second)\ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<Point>\ anchors;\ \textcolor{comment}{//\ keep\ contours[]\ parallel\ to\ curves[]}}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ anchors.reserve(curve.size()\ +\ 1);}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{structQuadBezier}{QuadBezier}}\&\ q\ :\ curve)}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ anchors.push\_back(q.p0);}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!curve.empty())}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ anchors.push\_back(curve.back().p2);}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ n-\/>m\_contours.contours.push\_back(std::move(anchors));}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ n-\/>m\_contours.curves.push\_back(std::move(curve));}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \ \ n-\/>m\_contours.colors.push\_back(col);}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \ \ n-\/>m\_contours.hierarchy.push\_back(\{-\/1,\ -\/1,\ -\/1,\ -\/1\});}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ \ \ n-\/>m\_contours.is\_hole.push\_back(\textcolor{keyword}{false});}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00165\ \ \ \ \ \}}
+\DoxyCodeLine{00166\ \}}
 
 \end{DoxyCode}
 \Hypertarget{classGraph_ac084db90d7f3e8448bb069069d8cabd2}\label{classGraph_ac084db90d7f3e8448bb069069d8cabd2} 
@@ -324,41 +227,41 @@ Definition at line \mbox{\hyperlink{graph_8cpp_source_l00266}{266}} of file \mbo
 
 
 
-Definition at line \mbox{\hyperlink{graph_8cpp_source_l00114}{114}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
+Definition at line \mbox{\hyperlink{graph_8cpp_source_l00089}{89}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00116\ \ \ \{}
-\DoxyCodeLine{00117\ \ \ \ \ \textcolor{comment}{//\ Moore\ 8-\/connected\ neighbourhood}}
-\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keyword}{constexpr}\ int8\_t\ dirs[8][2]\ \{\{1,\ 0\},\ \{-\/1,\ 0\},\ \ \{0,\ 1\},\ \ \{0,\ -\/1\},}
-\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{1,\ 1\},\ \{-\/1,\ -\/1\},\ \{-\/1,\ 1\},\ \{1,\ -\/1\}\};}
-\DoxyCodeLine{00120\ }
-\DoxyCodeLine{00121\ \ \ \ \ int32\_t\ rneigh[8];}
-\DoxyCodeLine{00122\ }
-\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ y\ \{0\};\ y\ <\ height;\ ++y)\ \{}
-\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ x\ \{0\};\ x\ <\ width;\ ++x)\ \{}
-\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ idx\ \{y\ *\ width\ +\ x\};}
-\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ rid\ \{region\_labels[idx]\};}
-\DoxyCodeLine{00127\ }
-\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ k\ \{0\};\ k\ <\ 8;\ ++k)\ \{}
-\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ nx\ \{x\ +\ dirs[k][0]\};}
-\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ ny\ \{y\ +\ dirs[k][1]\};}
-\DoxyCodeLine{00131\ }
-\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (nx\ >=\ 0\ \&\&\ nx\ <\ width\ \&\&\ ny\ >=\ 0\ \&\&\ ny\ <\ height)\ \{}
-\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rneigh[k]\ =\ region\_labels[ny\ *\ width\ +\ nx];}
-\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rneigh[k]\ =\ rid;\ \textcolor{comment}{//\ ignore\ out-\/of-\/bounds}}
-\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00138\ }
-\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ r\ :\ rneigh)\ \{}
-\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (r\ !=\ rid)\ \{}
-\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ add\_edge(rid,\ r);}
-\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00145\ \ \ \ \ \}}
-\DoxyCodeLine{00146\ \}}
+\DoxyCodeLine{00091\ \ \ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{comment}{//\ Moore\ 8-\/connected\ neighbourhood}}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keyword}{constexpr}\ int8\_t\ dirs[8][2]\ \{\{1,\ 0\},\ \{-\/1,\ 0\},\ \ \{0,\ 1\},\ \ \{0,\ -\/1\},}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{1,\ 1\},\ \{-\/1,\ -\/1\},\ \{-\/1,\ 1\},\ \{1,\ -\/1\}\};}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \ \ int32\_t\ rneigh[8];}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ y\ \{0\};\ y\ <\ height;\ ++y)\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ x\ \{0\};\ x\ <\ width;\ ++x)\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ idx\ \{y\ *\ width\ +\ x\};}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ rid\ \{region\_labels[idx]\};}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ k\ \{0\};\ k\ <\ 8;\ ++k)\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ nx\ \{x\ +\ dirs[k][0]\};}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ ny\ \{y\ +\ dirs[k][1]\};}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (nx\ >=\ 0\ \&\&\ nx\ <\ width\ \&\&\ ny\ >=\ 0\ \&\&\ ny\ <\ height)\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rneigh[k]\ =\ region\_labels[ny\ *\ width\ +\ nx];}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rneigh[k]\ =\ rid;\ \textcolor{comment}{//\ ignore\ out-\/of-\/bounds}}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ r\ :\ rneigh)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (r\ !=\ rid)\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ add\_edge(rid,\ r);}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ \}}
+\DoxyCodeLine{00121\ \}}
 
 \end{DoxyCode}
 \Hypertarget{classGraph_aa2f900b5467bdf657c7826f69950217a}\label{classGraph_aa2f900b5467bdf657c7826f69950217a} 
@@ -369,48 +272,15 @@ Definition at line \mbox{\hyperlink{graph_8cpp_source_l00114}{114}} of file \mbo
 
 
 
-Definition at line \mbox{\hyperlink{graph_8h_source_l00092}{92}} of file \mbox{\hyperlink{graph_8h_source}{graph.\+h}}.
+Definition at line \mbox{\hyperlink{graph_8h_source_l00085}{85}} of file \mbox{\hyperlink{graph_8h_source}{graph.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *m\_nodes;}
-\DoxyCodeLine{00094\ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *m\_nodes;}
+\DoxyCodeLine{00087\ \ \ \ \ \}}
 
 \end{DoxyCode}
-\Hypertarget{classGraph_a0c88d5759816a622560c8d18da2b7902}\label{classGraph_a0c88d5759816a622560c8d18da2b7902} 
-\index{Graph@{Graph}!getPixel@{getPixel}}
-\index{getPixel@{getPixel}!Graph@{Graph}}
-\doxysubsubsection{\texorpdfstring{getPixel()}{getPixel()}}
-{\footnotesize\ttfamily uint8\+\_\+t Graph\+::get\+Pixel (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ uint8\+\_\+t $>$ \&}]{img,  }\item[{int}]{w,  }\item[{int}]{h,  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
-
-{\ttfamily @brief} Safely retrieves a pixel value from a binary image with bounds checking.
-
-{\ttfamily @param} img Binary image buffer {\ttfamily @param} w Image width {\ttfamily @param} h Image height {\ttfamily @param} x Pixel x-\/coordinate {\ttfamily @param} y Pixel y-\/coordinate {\ttfamily @return} Pixel value at (x, y), or 0 if out of bounds 
-
-Definition at line \mbox{\hyperlink{graph_8h_source_l00052}{52}} of file \mbox{\hyperlink{graph_8h_source}{graph.\+h}}.
-
-
-\begin{DoxyCode}{0}
-\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (x\ <\ 0\ ||\ x\ >=\ w\ ||\ y\ <\ 0\ ||\ y\ >=\ h)}
-\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;\ \textcolor{comment}{//\ Boundary\ check}}
-\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ img[y\ *\ w\ +\ x];}
-\DoxyCodeLine{00056\ \ \ \ \ \}}
-
-\end{DoxyCode}
-
-
-Referenced by \mbox{\hyperlink{graph_8cpp_source_l00223}{analyze\+Junctions()}}.
-
-Here is the caller graph for this function\+:
-\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=341pt]{classGraph_a0c88d5759816a622560c8d18da2b7902_icgraph}
-\end{center}
-\end{figure}
 \Hypertarget{classGraph_ad525b30787e9784e86e20f2b9596d7c9}\label{classGraph_ad525b30787e9784e86e20f2b9596d7c9} 
 \index{Graph@{Graph}!hash\_node\_ids@{hash\_node\_ids}}
 \index{hash\_node\_ids@{hash\_node\_ids}!Graph@{Graph}}
@@ -419,16 +289,16 @@ Here is the caller graph for this function\+:
 
 
 
-Definition at line \mbox{\hyperlink{graph_8cpp_source_l00038}{38}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
+Definition at line \mbox{\hyperlink{graph_8cpp_source_l00023}{23}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ i\ \{0\};\ i\ <\ m\_nodes-\/>size();\ i++)\ \{}
-\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ key\ \{m\_nodes-\/>at(i)-\/>id()\};}
-\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ m\_node\_ids[key]\ =\ i;}
-\DoxyCodeLine{00042\ \ \ \ \ \}}
-\DoxyCodeLine{00043\ \}}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ i\ \{0\};\ i\ <\ m\_nodes-\/>size();\ i++)\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ key\ \{m\_nodes-\/>at(i)-\/>id()\};}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ m\_node\_ids[key]\ =\ i;}
+\DoxyCodeLine{00027\ \ \ \ \ \}}
+\DoxyCodeLine{00028\ \}}
 
 \end{DoxyCode}
 \Hypertarget{classGraph_a056e736f6c68d2fca6be26e8d93b6243}\label{classGraph_a056e736f6c68d2fca6be26e8d93b6243} 
@@ -439,38 +309,38 @@ Definition at line \mbox{\hyperlink{graph_8cpp_source_l00038}{38}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{graph_8cpp_source_l00072}{72}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
+Definition at line \mbox{\hyperlink{graph_8cpp_source_l00047}{47}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{auto}\ end\_node\_ids\ \{m\_node\_ids.end()\};}
-\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{auto}\ node1\_it\ \{m\_node\_ids.find(node\_to\_keep-\/>id())\};}
-\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{auto}\ node2\_it\ \{m\_node\_ids.find(node\_to\_remove-\/>id())\};}
-\DoxyCodeLine{00076\ }
-\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordflow}{if}\ (node1\_it\ ==\ end\_node\_ids\ ||\ node2\_it\ ==\ end\_node\_ids)\ \{}
-\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00079\ \ \ \ \ \}}
-\DoxyCodeLine{00080\ }
-\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ idx\_k\ \{node1\_it-\/>second\};}
-\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ idx\_r\ \{node2\_it-\/>second\};}
-\DoxyCodeLine{00083\ }
-\DoxyCodeLine{00084\ \ \ \ \ \textcolor{comment}{//\ transfer\ edges\ from\ node\_to\_remove\ to\ node\_to\_keep}}
-\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{for}\ (Node\_ptr\ n\ :\ m\_nodes-\/>at(idx\_r)-\/>edges())\ \{}
-\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>id()\ !=\ node\_to\_keep-\/>id())\ \{}
-\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ prevents\ self\ referencing}}
-\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ n-\/>remove\_edge(node\_to\_remove);}
-\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ n-\/>add\_edge(node\_to\_keep);}
-\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ node\_to\_keep-\/>add\_edge(n);}
-\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00092\ \ \ \ \ \}}
-\DoxyCodeLine{00093\ }
-\DoxyCodeLine{00094\ \ \ \ \ node\_to\_keep-\/>add\_pixels(node\_to\_remove-\/>get\_pixels());}
-\DoxyCodeLine{00095\ }
-\DoxyCodeLine{00096\ \ \ \ \ node\_to\_remove-\/>clear\_all();}
-\DoxyCodeLine{00097\ }
-\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00099\ \}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{auto}\ end\_node\_ids\ \{m\_node\_ids.end()\};}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{auto}\ node1\_it\ \{m\_node\_ids.find(node\_to\_keep-\/>id())\};}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{auto}\ node2\_it\ \{m\_node\_ids.find(node\_to\_remove-\/>id())\};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordflow}{if}\ (node1\_it\ ==\ end\_node\_ids\ ||\ node2\_it\ ==\ end\_node\_ids)\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00054\ \ \ \ \ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ idx\_k\ \{node1\_it-\/>second\};}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ idx\_r\ \{node2\_it-\/>second\};}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{comment}{//\ transfer\ edges\ from\ node\_to\_remove\ to\ node\_to\_keep}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{for}\ (Node\_ptr\ n\ :\ m\_nodes-\/>at(idx\_r)-\/>edges())\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>id()\ !=\ node\_to\_keep-\/>id())\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ prevents\ self\ referencing}}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ n-\/>remove\_edge(node\_to\_remove);}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ n-\/>add\_edge(node\_to\_keep);}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ node\_to\_keep-\/>add\_edge(n);}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ node\_to\_keep-\/>add\_pixels(node\_to\_remove-\/>get\_pixels());}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ node\_to\_remove-\/>clear\_all();}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00074\ \}}
 
 \end{DoxyCode}
 \Hypertarget{classGraph_aa6c32ac1b29e148e882c4d8d5fd65506}\label{classGraph_aa6c32ac1b29e148e882c4d8d5fd65506} 
@@ -481,150 +351,62 @@ Definition at line \mbox{\hyperlink{graph_8cpp_source_l00072}{72}} of file \mbox
 
 
 
-Definition at line \mbox{\hyperlink{graph_8cpp_source_l00401}{401}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
+Definition at line \mbox{\hyperlink{graph_8cpp_source_l00258}{258}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00401\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00402\ \ \ \ \ \textcolor{comment}{//\ Keep\ merging\ while\ any\ pass\ still\ makes\ progress.\ Using\ "{}did\ this\ pass}}
-\DoxyCodeLine{00403\ \ \ \ \ \textcolor{comment}{//\ merge\ anything?"{}\ as\ the\ loop\ guard\ (instead\ of\ re-\/testing\ every\ node)}}
-\DoxyCodeLine{00404\ \ \ \ \ \textcolor{comment}{//\ also\ avoids\ spinning\ forever\ on\ a\ node\ that\ is\ too\ small/thin\ but\ has\ no}}
-\DoxyCodeLine{00405\ \ \ \ \ \textcolor{comment}{//\ valid\ neighbour\ to\ merge\ into.}}
-\DoxyCodeLine{00406\ \ \ \ \ \textcolor{keywordtype}{bool}\ merged\_any\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00407\ \ \ \ \ \textcolor{keywordflow}{while}\ (merged\_any)\ \{}
-\DoxyCodeLine{00408\ \ \ \ \ \ \ \ \ merged\_any\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00409\ }
-\DoxyCodeLine{00410\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ Node\_ptr\&\ n\ :\ get\_nodes())\ \{}
-\DoxyCodeLine{00411\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)}
-\DoxyCodeLine{00412\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{00413\ }
-\DoxyCodeLine{00414\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ needs\_merge\ =\ n-\/>area()\ <\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(min\_area);}
-\DoxyCodeLine{00415\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!needs\_merge\ \&\&\ min\_thickness\ >\ 0)\ \{}
-\DoxyCodeLine{00416\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ too\ thin\ ==\ no\ inscribed\ disk\ of\ radius\ min\_thickness/2\ fits.}}
-\DoxyCodeLine{00417\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ needs\_merge\ =\ 2.0f\ *\ max\_inscribed\_radius(n)\ <\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(min\_thickness);}
-\DoxyCodeLine{00418\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00419\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!needs\_merge)}
-\DoxyCodeLine{00420\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{00421\ }
-\DoxyCodeLine{00422\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{ImageLib::RGBPixel<uint8\_t>}}\ col\ =\ n-\/>color();}
-\DoxyCodeLine{00423\ }
-\DoxyCodeLine{00424\ \ \ \ \ \ \ \ \ \ \ \ \ Node\_ptr\ best\_neighbor\ =\ \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{00425\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ best\_score\ =\ std::numeric\_limits<float>::max();}
-\DoxyCodeLine{00426\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ Node\_ptr\&\ ne\ :\ n-\/>edges())\ \{}
-\DoxyCodeLine{00427\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ne-\/>area()\ >\ 0)\ \{}
-\DoxyCodeLine{00428\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ cdist\ =\ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{ImageLib::RGBPixel<uint8\_t>::colorDistance}}(ne-\/>color(),\ col);}
-\DoxyCodeLine{00429\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ score\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(ne-\/>area())\ +\ 10.f\ *\ cdist;}
-\DoxyCodeLine{00430\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (score\ <\ best\_score)\ \{}
-\DoxyCodeLine{00431\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ best\_score\ =\ score;}
-\DoxyCodeLine{00432\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ best\_neighbor\ =\ ne;}
-\DoxyCodeLine{00433\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00434\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00435\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00436\ }
-\DoxyCodeLine{00437\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ no\ valid\ neighbor\ found,\ skip\ this\ node}}
-\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!best\_neighbor)\ \{}
-\DoxyCodeLine{00439\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{00440\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00441\ }
-\DoxyCodeLine{00442\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (best\_neighbor-\/>area()\ >=\ n-\/>area())\ \{}
-\DoxyCodeLine{00443\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ merge\_nodes(best\_neighbor,\ n);}
-\DoxyCodeLine{00444\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00445\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ merge\_nodes(n,\ best\_neighbor);}
-\DoxyCodeLine{00446\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00447\ \ \ \ \ \ \ \ \ \ \ \ \ merged\_any\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00448\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00449\ }
-\DoxyCodeLine{00450\ \ \ \ \ \ \ \ \ clear\_unconnected\_nodes();}
-\DoxyCodeLine{00451\ \ \ \ \ \}}
-\DoxyCodeLine{00452\ \}}
-
-\end{DoxyCode}
-\Hypertarget{classGraph_a7b0d97f549b1b34ab2b64d5868f3e2db}\label{classGraph_a7b0d97f549b1b34ab2b64d5868f3e2db} 
-\index{Graph@{Graph}!process\_overlapping\_edges@{process\_overlapping\_edges}}
-\index{process\_overlapping\_edges@{process\_overlapping\_edges}!Graph@{Graph}}
-\doxysubsubsection{\texorpdfstring{process\_overlapping\_edges()}{process\_overlapping\_edges()}}
-{\footnotesize\ttfamily void Graph\+::process\+\_\+overlapping\+\_\+edges (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
-
-
-
-Definition at line \mbox{\hyperlink{graph_8cpp_source_l00148}{148}} of file \mbox{\hyperlink{graph_8cpp_source}{graph.\+cpp}}.
-
-
-\begin{DoxyCode}{0}
-\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00149\ \ \ \ \ \textcolor{comment}{//\ 1.\ Build\ the\ Global\ Label\ Map\ ONCE\ (0\ =\ background,\ else\ =\ node-\/>id())}}
-\DoxyCodeLine{00150\ \ \ \ \ std::vector<int32\_t>\ label\_map(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(m\_width)\ *\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(m\_height),\ 0);}
-\DoxyCodeLine{00151\ }
-\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ Node\_ptr\&\ n\ :\ get\_nodes())\ \{}
-\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)}
-\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{00155\ }
-\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ [\_,\ p]\ :\ n-\/>get\_pixels())\ \{}
-\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ label\_map[p.y\ *\ m\_width\ +\ p.x]\ =\ n-\/>id();}
-\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00159\ \ \ \ \ \}}
-\DoxyCodeLine{00160\ }
-\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keyword}{constexpr}\ int8\_t\ dirs[8][2]\ \{\{1,\ 0\},\ \{-\/1,\ 0\},\ \ \{0,\ 1\},\ \ \{0,\ -\/1\},}
-\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{1,\ 1\},\ \{-\/1,\ -\/1\},\ \{-\/1,\ 1\},\ \{1,\ -\/1\}\};}
-\DoxyCodeLine{00163\ }
-\DoxyCodeLine{00164\ \ \ \ \ \textcolor{comment}{//\ 2.\ Iterate\ directly\ over\ the\ pixels\ of\ each\ node}}
-\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ Node\_ptr\&\ n\ :\ get\_nodes())\ \{}
-\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)}
-\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ int32\_t\ val\ =\ n-\/>id();}
-\DoxyCodeLine{00169\ }
-\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ [\_,\ p]\ :\ n-\/>get\_pixels())\ \{}
-\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ x\ =\ p.x;}
-\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ y\ =\ p.y;}
-\DoxyCodeLine{00173\ }
-\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ 8\ neighbors\ in\ the\ global\ map}}
-\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ 8;\ ++k)\ \{}
-\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ nx\ =\ x\ +\ dirs[k][0];}
-\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ ny\ =\ y\ +\ dirs[k][1];}
-\DoxyCodeLine{00178\ }
-\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fast\ boundary\ check\ (replaces\ std::clamp)}}
-\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (nx\ <\ 0\ ||\ nx\ >=\ m\_width\ ||\ ny\ <\ 0\ ||\ ny\ >=\ m\_height)}
-\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{00182\ }
-\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int32\_t\ n\_val\ =\ label\_map[ny\ *\ m\_width\ +\ nx];}
-\DoxyCodeLine{00184\ }
-\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Is\ it\ a\ neighbor?\ AND\ have\ we\ not\ processed\ this\ pairing\ yet?}}
-\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n\_val\ !=\ 0\ \&\&\ n\_val\ !=\ val\ \&\&\ val\ <\ n\_val)\ \{}
-\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_too\_thin\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00188\ }
-\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ around\ the\ neighbor\ pixel\ for\ a\ 3rd\ region\ (pinching)}}
-\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ mk\ =\ 0;\ mk\ <\ 8;\ ++mk)\ \{}
-\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ mx\ =\ nx\ +\ dirs[mk][0];}
-\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ my\ =\ ny\ +\ dirs[mk][1];}
-\DoxyCodeLine{00193\ }
-\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mx\ <\ 0\ ||\ mx\ >=\ m\_width\ ||\ my\ <\ 0\ ||\ my\ >=\ m\_height)}
-\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
-\DoxyCodeLine{00196\ }
-\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int32\_t\ m\_val\ =\ label\_map[my\ *\ m\_width\ +\ mx];}
-\DoxyCodeLine{00198\ }
-\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_val\ !=\ 0\ \&\&\ m\_val\ !=\ val\ \&\&\ m\_val\ !=\ n\_val)\ \{}
-\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ is\_too\_thin\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ \textcolor{comment}{//\ CRITICAL:\ Stop\ checking\ immediately\ once\ proven\ thin!}}
-\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00204\ }
-\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (is\_too\_thin)\ \{}
-\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Give\ our\ pixel\ to\ the\ neighbor}}
-\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Node\_ptr\ neighbor\_node\ =}
-\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_nodes-\/>at(m\_node\_ids[n\_val]);\ \textcolor{comment}{//\ get\_node\_by\_id(n\_val);\ //\ Assuming}}
-\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ you\ have\ this\ lookup}}
-\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (neighbor\_node)\ \{}
-\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ neighbor\_node-\/>add\_edge\_pixel(\mbox{\hyperlink{structXY}{XY}}\ \{x,\ y\});}
-\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Take\ the\ neighbor's\ pixel}}
-\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ n-\/>add\_edge\_pixel(\mbox{\hyperlink{structXY}{XY}}\ \{nx,\ ny\});}
-\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00220\ \ \ \ \ \}}
-\DoxyCodeLine{00221\ \}}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{comment}{//\ Keep\ merging\ while\ any\ pass\ still\ makes\ progress.\ Using\ "{}did\ this\ pass}}
+\DoxyCodeLine{00260\ \ \ \ \ \textcolor{comment}{//\ merge\ anything?"{}\ as\ the\ loop\ guard\ (instead\ of\ re-\/testing\ every\ node)}}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{comment}{//\ also\ avoids\ spinning\ forever\ on\ a\ node\ that\ is\ too\ small/thin\ but\ has\ no}}
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{comment}{//\ valid\ neighbour\ to\ merge\ into.}}
+\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keywordtype}{bool}\ merged\_any\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{keywordflow}{while}\ (merged\_any)\ \{}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ merged\_any\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00266\ }
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ Node\_ptr\&\ n\ :\ get\_nodes())\ \{}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (n-\/>area()\ ==\ 0)}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00270\ }
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ needs\_merge\ =\ n-\/>area()\ <\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{size\_t}\textcolor{keyword}{>}(min\_area);}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!needs\_merge\ \&\&\ min\_thickness\ >\ 0)\ \{}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ too\ thin\ ==\ no\ inscribed\ disk\ of\ radius\ min\_thickness/2\ fits.}}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ needs\_merge\ =\ 2.0f\ *\ max\_inscribed\_radius(n)\ <\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(min\_thickness);}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!needs\_merge)}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{ImageLib::RGBPixel<uint8\_t>}}\ col\ =\ n-\/>color();}
+\DoxyCodeLine{00280\ }
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \ \ Node\_ptr\ best\_neighbor\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ best\_score\ =\ std::numeric\_limits<float>::max();}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ Node\_ptr\&\ ne\ :\ n-\/>edges())\ \{}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ne-\/>area()\ >\ 0)\ \{}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ cdist\ =\ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{ImageLib::RGBPixel<uint8\_t>::colorDistance}}(ne-\/>color(),\ col);}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ score\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(ne-\/>area())\ +\ 10.f\ *\ cdist;}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (score\ <\ best\_score)\ \{}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ best\_score\ =\ score;}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ best\_neighbor\ =\ ne;}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ no\ valid\ neighbor\ found,\ skip\ this\ node}}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!best\_neighbor)\ \{}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00298\ }
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (best\_neighbor-\/>area()\ >=\ n-\/>area())\ \{}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ merge\_nodes(best\_neighbor,\ n);}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ merge\_nodes(n,\ best\_neighbor);}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ \ \ \ \ merged\_any\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00306\ }
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ clear\_unconnected\_nodes();}
+\DoxyCodeLine{00308\ \ \ \ \ \}}
+\DoxyCodeLine{00309\ \}}
 
 \end{DoxyCode}
 \Hypertarget{classGraph_a00d5dc799ce5961393f9724188ad75c6}\label{classGraph_a00d5dc799ce5961393f9724188ad75c6} 
@@ -635,13 +417,13 @@ Definition at line \mbox{\hyperlink{graph_8cpp_source_l00148}{148}} of file \mbo
 
 
 
-Definition at line \mbox{\hyperlink{graph_8h_source_l00097}{97}} of file \mbox{\hyperlink{graph_8h_source}{graph.\+h}}.
+Definition at line \mbox{\hyperlink{graph_8h_source_l00089}{89}} of file \mbox{\hyperlink{graph_8h_source}{graph.\+h}}.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_nodes-\/>size();}
-\DoxyCodeLine{00099\ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_nodes-\/>size();}
+\DoxyCodeLine{00091\ \ \ \ \ \}}
 
 \end{DoxyCode}
 
