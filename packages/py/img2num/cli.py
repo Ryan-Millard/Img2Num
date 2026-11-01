@@ -17,6 +17,7 @@ import sys
 import contextlib
 import img2num
 import numpy as np
+import multiprocessing as mp
 try:
     from PIL import Image
 except Exception:
@@ -25,7 +26,7 @@ except Exception:
     Install them with: pip install 'img2num[cli]'
     """)
     exit()
-from concurrent.futures import ThreadPoolExecutor, Executor, Future
+from concurrent.futures import ProcessPoolExecutor, Executor, Future
 
 import tempfile
 
@@ -288,7 +289,10 @@ def main(argv=None):
 
     say(f"Starting processing with {nproc} job{'s' if nproc > 1 else ''}")
 
-    ctx = ThreadPoolExecutor(max_workers=nproc) if nproc > 1 else SyncExecutor()
+    ctx = (
+        ProcessPoolExecutor(max_workers=nproc, mp_context=mp.get_context("spawn"))
+        if nproc > 1 else SyncExecutor()
+    )
 
     with ctx as executor:
         ft = []
