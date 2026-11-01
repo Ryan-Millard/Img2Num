@@ -87,12 +87,18 @@ if(IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP)
 endif()
 endblock()
 
-
 # ================================================
 # Library setup
 
 # Always add core because everything depends on it
 add_subdirectory(core)
+
+if(IMG2NUM_BUILD_TESTS)
+  # Tests link the production core target, which may require Dawn at configure time.
+  enable_testing()
+  add_subdirectory(core/tests)
+  return()
+endif()
 
 if(IMG2NUM_BUILD_PYTHON)
   # Python depends only on core
