@@ -29,6 +29,12 @@ The `init_gpu()` function handles the asynchronous handshake with the browser or
 2. Requests the **Device** (Logical connection).
 3. Extracts the **Queue** (Submission line).
 
+`readWGSLFile(shader_id)` returns an owning `std::string` containing the embedded WGSL source.
+An unknown ID throws `std::invalid_argument` with the function name and supplied ID, including
+in Release builds with logging disabled. `createPipeline` propagates this exception before
+creating a shader module or compute pipeline. The C error boundary preserves the diagnostic
+as `INVALID_ARGUMENT` and exposes it through `img2num_get_last_error_message()`.
+
 :::note
 The `emscripten_sleep(10)` loop is required in WebAssembly builds to yield the main thread back to the browser so the JavaScript
 promises resolving the WebGPU hardware can actually fire.
