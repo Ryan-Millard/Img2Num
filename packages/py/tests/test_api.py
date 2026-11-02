@@ -127,14 +127,25 @@ def test_arguments_can_be_passed_by_keyword(name, fake_extension, image):
     assert args[0] is image
     assert args[1:] == expected(WIDTH, HEIGHT)
 
+@pytest.mark.parametrize(
+    "shape",
+    [
+        (),
+        (16,),
+        (HEIGHT, WIDTH),
+        (HEIGHT, WIDTH, 3),
+        (HEIGHT, WIDTH, 5),
+    ],
+)
+@pytest.mark.parametrize("name", ALL_WRAPPERS)
+def test_invalid_image_shapes_are_rejected(name, shape, fake_extension):
+    fn = getattr(img2num, name)
+    extra = WRAPPERS[name][1] if name in WRAPPERS else ()
 
-def test_two_dimensional_input_uses_its_shape(fake_extension):
-    grey = np.zeros((HEIGHT, WIDTH), dtype=np.uint8)
+    with pytest.raises(ValueError, match="Expected an RGBA image"):
+        fn(np.zeros(shape, dtype=np.uint8), *extra)
 
-    img2num.invert_image(grey)
-
-    args, _ = fake_extension["invert_image"].calls[0]
-    assert args == (grey, WIDTH, HEIGHT)
+    assert fake_extension[name].calls == []
 
 
 # ---- input checks done in Python ---------------------------------------------
@@ -146,7 +157,7 @@ def test_input_with_fewer_than_two_dimensions_is_rejected(name, shape, fake_exte
     fn = getattr(img2num, name)
     extra = WRAPPERS[name][1] if name in WRAPPERS else ()
 
-    with pytest.raises(ValueError, match=r"\(H, W\)"):
+    with pytest.raises(ValueError, match="Expected an RGBA image"):
         fn(np.zeros(shape, dtype=np.uint8), *extra)
     assert fake_extension[name].calls == []
 
