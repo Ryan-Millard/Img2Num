@@ -6,6 +6,10 @@ on:
   push:
     branches: [main, dev]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || format('{0}-{1}', github.ref, github.sha) }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 permissions:
   contents: read
   packages: read
@@ -85,14 +89,18 @@ jobs:
 
       - name: Install PNPM dependencies
         run: pnpm install
+        
+      - name: Build and test TypeScript types (packages/js)
+        working-directory: packages/js
+        run: |
+          pnpm build:types
+          pnpm test:types
 
-      # TODO: uncomment the below when #606 is fixed
-      #- name: Sync Python tooling (skip building img2num)
-        #run: uv sync --group lint
+      - name: Sync Python tooling (skip building img2num)
+        run: uv sync --only-group lint
 
-      # TODO: uncomment the below when #606 is fixed (https://github.com/Ryan-Millard/Img2Num/issues/606)
-      #- name: Lint Py (ruff)
-        #run: uv run ruff check .
+      - name: Lint Py (ruff)
+        run: uv run --no-sync ruff check .
 
       - name: Lint JS (ESLint)
         run: pnpm run lint:js
@@ -113,6 +121,13 @@ jobs:
   cmake-build:
     name: Build C/C++
     uses: ./.github/workflows/cmake-build.yml
+    needs: [set-image]
+    with:
+      image: ${{ needs.set-image.outputs.image }}
+
+  core-cpp-tests:
+    name: Core C++ tests
+    uses: ./.github/workflows/cmake-tests.yml
     needs: [set-image]
     with:
       image: ${{ needs.set-image.outputs.image }}

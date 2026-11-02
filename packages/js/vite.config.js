@@ -68,7 +68,7 @@ const T = TARGETS[TARGET];
 // every "wasm build missing" error.
 const glueDir = path.join(here, "build-wasm", T.glue);
 const outDir = T.outDir;
-const WASM_BUILD_HINT = "Run the CMake wasm build first (just build js, or emcmake cmake -B build-wasm && cmake --build build-wasm).";
+const WASM_BUILD_HINT = "Run the CMake wasm build first (just js build, or emcmake cmake -B build-wasm && cmake --build build-wasm).";
 
 // Config-time guard: a missing build-wasm/ otherwise dies later as a cryptic
 // "@wasm" alias resolution error, and closeBundle-time checks never run on a

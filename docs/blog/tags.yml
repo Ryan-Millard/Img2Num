@@ -27,3 +27,23 @@ wasm:
   label: WebAssembly
   permalink: /wasm
   description: WebAssembly builds and browser usage
+
+hacktoberfest:
+  label: Hacktoberfest
+  permalink: /hacktoberfest
+  description: Hacktoberfest events, issues, and participation
+
+open-source:
+  label: Open Source
+  permalink: /open-source
+  description: Open-source development and the wider ecosystem
+
+community:
+  label: Community
+  permalink: /community
+  description: Community news, events, and highlights
+
+contributing:
+  label: Contributing
+  permalink: /contributing
+  description: How to contribute, good first issues, and contributor guides
