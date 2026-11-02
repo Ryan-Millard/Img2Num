@@ -183,7 +183,8 @@ export const blackThreshold = async ({ pixels, width, height, num_colors }) => {
  * You can provide the `out_pixels` and `out_labels` arrays,
  * however this is atypical in JavaScript (since it is modified in-place and you will need to allocate a sufficiently large array),
  * so it is recommended to use the default arguments and returns.
- * Iteration stops early when no pixel changes cluster; otherwise it stops after `max_iter` iterations.
+ * The CPU implementation stops early when no pixel changes cluster. The WebGPU implementation
+ * runs for `max_iter` iterations without an early-stop check.
  *
  * @async
  * @function kmeans
