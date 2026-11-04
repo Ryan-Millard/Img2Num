@@ -1,7 +1,7 @@
 ---
 id: testing
 title: Testing
-sidebar_label: 🧪 Testing
+sidebar_label: Testing
 sidebar_position: 5
 ---
 
@@ -53,13 +53,15 @@ just cmake test-clean
 
 ### Python bindings tests
 
-To run the Python bindings test suite:
+To run the Python test suite:
 
 ```bash title="Run Python tests"
 just py test
 ```
 
-This runs pytest against `bindings/py/tests` within the Python virtual environment.
+This runs pytest against
+[`bindings/py/tests`](https://github.com/Ryan-Millard/Img2Num/blob/dev/bindings/py/tests) and
+[`packages/py/tests`](https://github.com/Ryan-Millard/Img2Num/blob/dev/packages/py/tests) within the Python virtual environment.
 
   </TabItem>
 </Tabs>

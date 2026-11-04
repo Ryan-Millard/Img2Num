@@ -20,6 +20,11 @@ add_library(CImg2Num ${C_BINDINGS_SRC})
 
 target_compile_options(CImg2Num PRIVATE ${IMG2NUM_STRICT_CXX_FLAGS})
 
+if(EMSCRIPTEN)
+  # The exception boundary is compiled here, not in the final JS executable.
+  target_compile_options(CImg2Num PRIVATE -fexceptions)
+endif()
+
 set_target_properties(CImg2Num PROPERTIES
   VERSION ${PROJECT_VERSION}
   SOVERSION 1
