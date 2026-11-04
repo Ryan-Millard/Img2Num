@@ -36,10 +36,6 @@ option(IMG2NUM_BUILD_EXAMPLES "Build example applications" ON)
 option(IMG2NUM_BUILD_TESTS "Build Img2Num tests" OFF)
 option(IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP "Dump CMake environment variables in Debug mode" ON)
 
-if(IMG2NUM_BUILD_TESTS)
-  enable_testing()
-endif()
-
 # Force a safe default to avoid the weirdness of CMake's `None`
 if(NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
   message(STATUS "CMAKE_BUILD_TYPE unspecified - defaulting to \"Release\"")
@@ -96,7 +92,15 @@ add_subdirectory(core)
 if(IMG2NUM_BUILD_TESTS)
   # Tests link the production core target, which may require Dawn at configure time.
   enable_testing()
+  add_subdirectory(
+    third_party/tests
+    ${CMAKE_BINARY_DIR}/catch2_build
+    EXCLUDE_FROM_ALL
+  )
   add_subdirectory(core/tests)
+  
+  add_subdirectory(bindings/c)
+  add_subdirectory(bindings/c/tests)
   return()
 endif()
 
