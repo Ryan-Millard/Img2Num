@@ -98,9 +98,12 @@ if(IMG2NUM_BUILD_TESTS)
     EXCLUDE_FROM_ALL
   )
   add_subdirectory(core/tests)
+
+  if(IMG2NUM_BUILD_C)
+    add_subdirectory(bindings/c)
+    add_subdirectory(bindings/c/tests)
+  endif()
   
-  add_subdirectory(bindings/c)
-  add_subdirectory(bindings/c/tests)
   return()
 endif()
 
