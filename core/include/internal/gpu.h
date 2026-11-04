@@ -73,8 +73,8 @@ class GPU {
   public:
     // makes a single global instance that other files can reference
     static GPU& getClassInstance() {
-        static GPU gpuInstance;
-        return gpuInstance;
+        static GPU* gpuInstance = new GPU();
+        return *gpuInstance;
     }
 
     // Device and queue belonging to the calling thread

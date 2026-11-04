@@ -2,6 +2,7 @@
 # Img2Num Dockerfile.dev
 #
 # Be careful of how you update this file. Updating layer 2 forces the layers below it to rebuild, too!
+# Dockerfile-gpu.dev builds FROM this image, so changes here also flow into the GPU image.
 # --------------------------------------------------------------------------------------------------------------
 
 # Node 26 = Active LTS in Oct 2026 (>= 24.14 required by editorconfig-checker 7.x: see package.json).
