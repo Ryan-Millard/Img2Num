@@ -3,19 +3,11 @@
 #include "internal/contours.h"
 #include "internal/graph.h"
 
-#include <array>
 #include <cmath>
 #include <cstdint>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
 #include <iomanip>
-#include <limits>
-#include <map>
 #include <memory>
 #include <queue>
-#include <random>
-#include <set>
 #include <sstream>
 #include <vector>
 
@@ -94,63 +86,12 @@ void region_labeling(
                 // track pixels for this region
                 // std::vector<RGBXY> pixels;
                 std::unique_ptr<std::vector<RGBXY>> p_ptr = std::make_unique<std::vector<RGBXY>>();
-                int counts =
-                    flood_fill(labels, regions, data, i, j, label, r_lbl, width, height, p_ptr);
-                int num_pixels = p_ptr->size();
-
-                // num_pixels == counts always
+                flood_fill(labels, regions, data, i, j, label, r_lbl, width, height, p_ptr);
                 Node_ptr n_ptr = std::make_shared<Node>(r_lbl, p_ptr);
                 nodes.push_back(n_ptr);
             }
         }
     }
-}
-
-void visualize_contours(
-    const std::vector<std::vector<Point>>& contours,
-    ImageLib::Image<ImageLib::RGBAPixel<uint8_t>>& results, int width, int height, int xmin = 0,
-    int ymin = 0
-) {
-    // Random generator for colors
-    static std::mt19937 rng(std::random_device {}());
-    static std::uniform_int_distribution<int32_t> dist(0, 255);
-    for (const auto& c : contours) {
-        ImageLib::RGBAPixel<uint8_t> rand_color {
-            static_cast<uint8_t>(dist(rng)), static_cast<uint8_t>(dist(rng)),
-            static_cast<uint8_t>(dist(rng)), 255
-        };
-
-        for (const auto& p : c) {
-            int32_t _x {static_cast<int32_t>(p.x) + xmin};
-            int32_t _y {static_cast<int32_t>(p.y) + ymin};
-
-            // Ensure within bounds
-            if (_x < 0 || _x >= width || _y < 0 || _y >= height)
-                continue;
-
-            results(_x, _y) = rand_color;
-        }
-    }
-}
-
-std::string contourToSVGPath(const std::vector<Point>& contour) {
-    if (contour.empty())
-        return "";
-
-    std::ostringstream path;
-    path << std::fixed << std::setprecision(2);
-
-    // Move to the first point
-    path << "M " << contour[0].x << " " << contour[0].y << " ";
-
-    // Draw lines to the remaining points
-    for (size_t i = 1; i < contour.size(); ++i) {
-        path << "L " << contour[i].x << " " << contour[i].y << " ";
-    }
-
-    // Close the path
-    path << "Z";
-    return path.str();
 }
 
 std::string contourToSVGCurve(const std::vector<QuadBezier>& curves) {
@@ -225,18 +166,6 @@ std::string labels_to_svg(
 
     // 4. Merge small area nodes until all nodes are minArea or larger
     G.merge_small_area_nodes(min_area, min_thickness);
-
-    // 5. recolor image on new regions
-    ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> results {width, height};
-    for (auto& n : G.get_nodes()) {
-        if (n->area() == 0)
-            continue;
-
-        auto [r, g, b] = n->color();
-        for (auto& [_, p] : n->get_pixels()) {
-            results(p.x, p.y) = {r, g, b};
-        }
-    }
 
     // 6. Contours
     // graph will manage computing contours
