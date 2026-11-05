@@ -4,26 +4,20 @@ title: 🔍 Lint Scripts
 sidebar_position: 6
 ---
 
-## `npm run lint`
+Img2Num uses linters to enforce code quality, catch common bugs, and ensure consistency across C++, JavaScript, and configuration files.
 
-Runs ESLint on the entire project.
+---
 
-```bash
-eslint .
-```
+## Root Workspace Scripts (`package.json`)
 
-## `npm run lint:fix`
+The root `package.json` coordinates linting across all workspace packages and languages.
 
-Automatically fixes issues where possible:
+### Parallel Linting
 
-```bash
-eslint . --fix
-```
+#### `pnpm lint`
 
-## `npm run lint:style`
-
-Checks EditorConfig formatting rules:
+Runs all linters (`lint:cpp`, `lint:js`, and `lint:py`) in parallel across the workspace:
 
 ```bash
-editorconfig-checker
+pnpm run --filter=. --parallel "/^lint:(cpp|js|py)$/"
 ```
