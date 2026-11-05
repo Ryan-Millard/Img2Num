@@ -1,4 +1,4 @@
-import { gaussianBlur, bilateralFilter, blackThreshold, kmeans, findContours, imageToSvg, imageToUint8ClampedArray, terminateWasmModule } from "img2num";
+import { gaussianBlur, bilateralFilter, blackThreshold, invert_image, threshold_image, kmeans, findContours, imageToSvg, imageToUint8ClampedArray, terminateWasmModule } from "img2num";
 
 type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends <T>() => T extends B ? 1 : 2 ? true : false;
 type Expect<T extends true> = T;
@@ -11,6 +11,8 @@ export type Returns = [
   Expect<Equal<ReturnType<typeof gaussianBlur>, Promise<Pixels>>>,
   Expect<Equal<ReturnType<typeof bilateralFilter>, Promise<Pixels>>>,
   Expect<Equal<ReturnType<typeof blackThreshold>, Promise<Pixels>>>,
+  Expect<Equal<ReturnType<typeof invert_image>, Promise<Pixels>>>,
+  Expect<Equal<ReturnType<typeof threshold_image>, Promise<Pixels>>>,
   Expect<Equal<ReturnType<typeof kmeans>, Promise<{ pixels: Pixels; labels: Int32Array }>>>,
   Expect<Equal<ReturnType<typeof findContours>, Promise<{ svg: string }>>>,
   Expect<Equal<ReturnType<typeof imageToSvg>, Promise<{ svg: string }>>>,
@@ -31,6 +33,8 @@ declare const labels: Int32Array;
 gaussianBlur({ pixels, width: 1, height: 1 });
 bilateralFilter({ pixels, width: 1, height: 1, color_space: 1 });
 blackThreshold({ pixels, width: 1, height: 1, num_colors: 8 });
+invert_image({ pixels, width: 1, height: 1 });
+threshold_image({ pixels, width: 1, height: 1, num_thresholds: 4 });
 kmeans({ pixels, width: 1, height: 1, num_colors: 8, max_iter: 10 });
 findContours({ pixels, labels, width: 1, height: 1 });
 imageToSvg({ pixels, width: 1, height: 1, num_colors: 16 });
@@ -42,3 +46,5 @@ bilateralFilter({ pixels, width: 1, height: 1, color_space: 2 });
 blackThreshold({ pixels, width: 1, height: 1 });
 // @ts-expect-error labels is required
 findContours({ pixels, width: 1, height: 1 });
+// @ts-expect-error num_thresholds is required
+threshold_image({ pixels, width: 1, height: 1 });

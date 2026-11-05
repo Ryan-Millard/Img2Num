@@ -176,6 +176,73 @@ export const blackThreshold = async ({ pixels, width, height, num_colors }) => {
 };
 
 /**
+ * Options for inverting an image.
+ * @typedef {Object} InvertOptions
+ * @property {Uint8ClampedArray} pixels - The image pixel data (flat RGBA array).
+ * @property {number} width - The width of the image.
+ * @property {number} height - The height of the image.
+ */
+
+/**
+ * @summary Invert the RGB color channels of an image using WASM.
+ *
+ * @description
+ * Takes an RGBA `Uint8ClampedArray` and replaces each red, green, and blue
+ * channel value with `255 - value`. The alpha channel is preserved.
+ *
+ * @async
+ * @function invert_image
+ * @param {InvertOptions} options - The input image and its dimensions.
+ * @returns {Promise<Uint8ClampedArray>} The inverted image pixels.
+ * @throws {Error} If the WASM function fails.
+ * @example
+ * const inverted = await invert_image({ pixels, width, height });
+ * @since 0.4.3
+ */
+export const invert_image = async ({ pixels, width, height }) => {
+  const result = await callWasm({
+    funcName: "invert_image",
+    args: { pixels, width, height },
+    bufferKeys: [{ key: "pixels", type: "Uint8ClampedArray" }],
+  });
+  return result.output.pixels;
+};
+
+/**
+ * Options for applying thresholding to an image.
+ * @typedef {Object} ThresholdOptions
+ * @property {Uint8ClampedArray} pixels - The image pixel data (flat RGBA array).
+ * @property {number} width - The width of the image.
+ * @property {number} height - The height of the image.
+ * @property {number} num_thresholds - The number of thresholds to apply.
+ */
+
+/**
+ * @summary Apply thresholding to an image using WASM.
+ *
+ * @description
+ * Quantizes the RGB channels using the requested number of thresholds. When
+ * `num_thresholds` is 0 or less, the image is returned unchanged.
+ *
+ * @async
+ * @function threshold_image
+ * @param {ThresholdOptions} options - The input image, dimensions, and threshold count.
+ * @returns {Promise<Uint8ClampedArray>} The thresholded image pixels.
+ * @throws {Error} If the WASM function fails.
+ * @example
+ * const thresholded = await threshold_image({ pixels, width, height, num_thresholds: 4 });
+ * @since 0.4.3
+ */
+export const threshold_image = async ({ pixels, width, height, num_thresholds }) => {
+  const result = await callWasm({
+    funcName: "threshold_image",
+    args: { pixels, width, height, num_thresholds },
+    bufferKeys: [{ key: "pixels", type: "Uint8ClampedArray" }],
+  });
+  return result.output.pixels;
+};
+
+/**
  * @summary Cluster pixels using the K-Means algorithm in WASM.
  *
  * @description
