@@ -3,6 +3,7 @@
 
 #include "internal/RGBPixel.h"
 
+
 namespace ImageLib {
 
 #ifdef _MSC_VER
@@ -41,13 +42,24 @@ __attribute__((packed))
 #pragma pack(pop)
 #endif
 
-template <typename NumberT>
-std::ostream& operator<<(std::ostream& out, const ImageLib::RGBAPixel<NumberT>& pixel) {
-    out << "( " << pixel.red << "," << pixel.green << "," << pixel.blue << "," << pixel.alpha
-        << " )";
-    return out;
-}
-
 } // namespace ImageLib
+
+namespace fmt {
+template <typename NumberT> struct formatter<ImageLib::RGBAPixel<NumberT>> {
+    constexpr auto parse(format_parse_context& ctx) {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const ImageLib::RGBAPixel<NumberT>& pixel, FormatContext& ctx) const {
+        // Copy members out: the struct is packed, so no references to them.
+        const NumberT red = pixel.red;
+        const NumberT green = pixel.green;
+        const NumberT blue = pixel.blue;
+        const NumberT alpha = pixel.alpha;
+        return format_to(ctx.out(), "( {},{},{},{} )", red, green, blue, alpha);
+    }
+};
+} // namespace fmt
 
 #endif // RGBAPIXEL_H
