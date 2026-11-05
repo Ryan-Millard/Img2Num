@@ -43,25 +43,54 @@
  * Link against `CImg2Num` in your CMake project:
  *
  * \code{.cmake}
- * find_package(Img2Num REQUIRED)
- * target_link_libraries(your_app PRIVATE CImg2Num)
+ * find_package(CImg2Num REQUIRED)
+ * target_link_libraries(your_app PRIVATE CImg2Num::CImg2Num)
  * \endcode
  *
  * \section usage_sec Usage Example
  *
+ * \warning **Buffer Format Requirement:** All Img2Num C functions expect a 32-bit
+ * **RGBA buffer** (4 bytes per pixel: Red, Green, Blue, Alpha) in row-major order.
+ * A buffer of dimensions `width * height` requires `(size_t)width * (size_t)height * 4`
+ * bytes. Passing RGB (3 bytes/pixel) or grayscale (1 byte/pixel) buffers will cause
+ * buffer overflow and memory corruption.
+ *
+ * \subsection memory_sec Memory Ownership
+ * Functions that return strings, such as img2num_image_to_svg() and
+ * img2num_labels_to_svg(), allocate the returned `char*` via `malloc()`.
+ * **The caller owns the returned string and must release it using `free()`.**
+ *
+ * \subsection error_sec Error Handling
+ * When a function fails (e.g. returns `NULL`), error details can be retrieved
+ * using img2num_get_last_error() and img2num_get_last_error_message() from
+ * `<cimg2num/img2num_error_t.h>`. Use img2num_clear_last_error() to reset the error state.
+ *
  * \code{.c}
  * #include <cimg2num.h>
- * #include <stdint.h>
+ * #include <cimg2num/img2num_error_t.h>
+ * #include <stdio.h>
+ * #include <stdlib.h>
  *
- * int main() {
- *     uint8_t image[256 * 256 * 3];  // RGB image buffer
+ * int main(void) {
+ *     const int width = 256, height = 256;
  *
- *     // Apply Gaussian blur with sigma = 1.5
- *     img2num_gaussian_blur_fft(image, 256, 256, 1.5);
+ *     /* RGBA: 4 bytes per pixel */
+ *     uint8_t* image = calloc((size_t)width * (size_t)height * 4, 1);
+ *     if (!image) return 1;
  *
- *     // Invert the image
- *     img2num_invert_image(image, 256, 256);
+ *     /* ... fill `image` with your pixel data ... */
  *
+ *     img2num_ImageToSvgConfig config = img2num_ImageToSvgConfig_default();
+ *     char* svg = img2num_image_to_svg(image, width, height, &config);
+ *     if (!svg) {
+ *         fprintf(stderr, "img2num: %s\n", img2num_get_last_error_message());
+ *         free(image);
+ *         return 1;
+ *     }
+ *
+ *     puts(svg);
+ *     free(svg);   /* the caller owns the returned string */
+ *     free(image);
  *     return 0;
  * }
  * \endcode
