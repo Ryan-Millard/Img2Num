@@ -24,8 +24,10 @@ def _inject_dimensions(image_arg="image"):
         @functools.wraps(fn)
         def wrapper(*args, **kwargs):
             image = kwargs[image_arg] if image_arg in kwargs else args[idx]
-            if image.ndim < 2:
-                raise ValueError("Expected (H, W) or (H, W, C)")
+            if image.ndim != 3 or image.shape[2] != 4:
+                raise ValueError("Expected an RGBA image with shape (H, W, 4)")
+            if image.dtype != np.uint8:
+                raise ValueError("Expected an RGBA image with np.uint8 data type")
             height, width = image.shape[:2]
             return fn(*args, width=width, height=height, **kwargs)
 
