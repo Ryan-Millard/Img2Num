@@ -3,8 +3,8 @@
 #include <catch2/catch_test_macros.hpp>
 #include <cstdint>
 #include <cstring>
-#include <unordered_set>
 #include <iostream>
+#include <unordered_set>
 
 TEST_CASE("invert_image preserves alpha", "[core]") {
     uint8_t rgba[] {10, 20, 30, 40};
@@ -18,24 +18,10 @@ TEST_CASE("invert_image preserves alpha", "[core]") {
 };
 
 TEST_CASE("bilateral filter succeeds", "[core]") {
-    uint8_t rgba[] {
-        128, 128, 128, 255,
-        128, 128, 128, 255,
-        128, 128, 128, 255,
-        128, 128, 128, 255,
-        128, 128, 128, 255,
-        128, 128, 128, 255,
-        128, 128, 128, 255,
-        128, 128, 128, 255,
-        128, 128, 128, 255,
-        128, 128, 128, 255,
-        128, 128, 128, 255,
-        128, 128, 128, 255,
-        128, 128, 128, 255,
-        128, 128, 128, 255,
-        128, 128, 128, 255,
-        128, 128, 128, 255
-    };
+    uint8_t rgba[] {128, 128, 128, 255, 128, 128, 128, 255, 128, 128, 128, 255, 128, 128, 128, 255,
+                    128, 128, 128, 255, 128, 128, 128, 255, 128, 128, 128, 255, 128, 128, 128, 255,
+                    128, 128, 128, 255, 128, 128, 128, 255, 128, 128, 128, 255, 128, 128, 128, 255,
+                    128, 128, 128, 255, 128, 128, 128, 255, 128, 128, 128, 255, 128, 128, 128, 255};
 
     img2num::bilateral_filter(rgba, 4, 4, 1, 1, 1);
 
@@ -46,36 +32,22 @@ TEST_CASE("bilateral filter succeeds", "[core]") {
 };
 
 TEST_CASE("kmeans succeeds", "[core]") {
-    uint8_t rgba[] {
-        127, 127, 127, 255,
-        127, 127, 127, 255,
-        127, 127, 127, 255,
-        127, 127, 127, 255,
+    uint8_t rgba[] {127, 127, 127, 255, 127, 127, 127, 255, 127, 127, 127, 255, 127, 127, 127, 255,
 
-        127, 127, 127, 255,
-        255, 255, 255, 255,
-        255, 255, 255, 255,
-        127, 127, 127, 255,
+                    127, 127, 127, 255, 255, 255, 255, 255, 255, 255, 255, 255, 127, 127, 127, 255,
 
-        127, 127, 127, 255,
-        255, 255, 255, 255,
-        255, 255, 255, 255,
-        127, 127, 127, 255,
+                    127, 127, 127, 255, 255, 255, 255, 255, 255, 255, 255, 255, 127, 127, 127, 255,
 
-        127, 127, 127, 255,
-        127, 127, 127, 255,
-        127, 127, 127, 255,
-        127, 127, 127, 255
-    };
+                    127, 127, 127, 255, 127, 127, 127, 255, 127, 127, 127, 255, 127, 127, 127, 255};
     uint8_t out_rgba[64] = {255};
     int32_t labels[16] = {-1};
 
     img2num::kmeans(rgba, out_rgba, labels, 4, 4, 2, 100, 0);
 
-    std::cout << std::to_string(static_cast<int>(out_rgba[0])) \
-    << ", " << std::to_string(static_cast<int>(out_rgba[1])) \
-    << ", " << std::to_string(static_cast<int>(out_rgba[2])) \
-    << ", " << std::to_string(static_cast<int>(out_rgba[3])) << std::endl;
+    std::cout << std::to_string(static_cast<int>(out_rgba[0])) << ", "
+              << std::to_string(static_cast<int>(out_rgba[1])) << ", "
+              << std::to_string(static_cast<int>(out_rgba[2])) << ", "
+              << std::to_string(static_cast<int>(out_rgba[3])) << std::endl;
 
     // unique labels
     size_t length = sizeof(labels) / sizeof(int32_t);
@@ -93,30 +65,16 @@ TEST_CASE("kmeans succeeds", "[core]") {
 };
 
 TEST_CASE("image to svg succeeds", "[core]") {
-    uint8_t rgba[] {
-        0, 0, 0, 255,
-        0, 0, 0, 255,
-        0, 0, 0, 255,
-        0, 0, 0, 255,
+    uint8_t rgba[] {0, 0, 0, 255, 0,   0,   0,   255, 0,   0,   0,   255, 0, 0, 0, 255,
 
-        0, 0, 0, 255,
-        255, 255, 255, 255,
-        255, 255, 255, 255,
-        0, 0, 0, 255,
+                    0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255,
 
-        0, 0, 0, 255,
-        255, 255, 255, 255,
-        255, 255, 255, 255,
-        0, 0, 0, 255,
+                    0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255,
 
-        0, 0, 0, 255,
-        0, 0, 0, 255,
-        0, 0, 0, 255,
-        0, 0, 0, 255
-    };
-    
+                    0, 0, 0, 255, 0,   0,   0,   255, 0,   0,   0,   255, 0, 0, 0, 255};
+
     img2num::ImageToSvgConfig cfg;
-    cfg.bilateral_filter.sigma_spatial=1.0;
+    cfg.bilateral_filter.sigma_spatial = 1.0;
     cfg.kmeans.k = 2;
     cfg.min_thickness = 0;
     cfg.min_cluster_area = 0;
