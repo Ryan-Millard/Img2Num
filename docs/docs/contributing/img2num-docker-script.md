@@ -47,7 +47,7 @@ values={[
 
 <TabItem value="cmd">
 
-```bat title="Paste this in your terminal"
+```batch title="Paste this in your terminal"
 .\img2num.bat sh
 ```
 
@@ -85,7 +85,7 @@ values={[
 
 <TabItem value="cmd">
 
-```bat title="Paste this in your terminal"
+```batch title="Paste this in your terminal"
 .\img2num.bat run <command>
 ```
 
@@ -131,7 +131,7 @@ values={[
 
 <TabItem value="cmd">
 
-```bat
+```batch
 .\img2num.bat stop
 ```
 
@@ -223,7 +223,7 @@ values={[
 
 <TabItem value="cmd">
 
-```bat
+```batch
 .\img2num.bat help
 ```
 
