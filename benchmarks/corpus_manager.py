@@ -1,0 +1,955 @@
+#!/usr/bin/env python3
+"""Manage and inspect the local benchmark corpus."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import io
+import json
+import os
+import re
+import sys
+import tempfile
+from dataclasses import dataclass
+from pathlib import Path
+from pathlib import PurePosixPath
+from typing import Any, Callable
+from urllib.error import URLError
+from urllib.parse import unquote, urlsplit
+from urllib.request import Request, urlopen
+
+try:
+    import tomllib
+except ModuleNotFoundError:  # Python 3.10
+    import tomli as tomllib
+
+def default_cache_root(platform: str | None = None) -> Path:
+    """Return the platform-appropriate default cache root directory."""
+    target_platform = platform if platform is not None else sys.platform
+    if target_platform == "win32":
+        local_app_data = os.environ.get("LOCALAPPDATA")
+        if local_app_data and local_app_data.strip():
+            return Path(local_app_data.strip()) / "img2num-bench"
+        return Path.home() / "AppData" / "Local" / "img2num-bench"
+    if target_platform == "darwin":
+        return Path.home() / "Library" / "Caches" / "img2num-bench"
+    xdg_cache_home = os.environ.get("XDG_CACHE_HOME")
+    if xdg_cache_home and xdg_cache_home.strip():
+        return Path(xdg_cache_home.strip()) / "img2num-bench"
+    return Path.home() / ".cache" / "img2num-bench"
+
+
+def cache_dir(platform: str | None = None) -> Path:
+    """Return the active cache directory, respecting IMG2NUM_BENCH_CACHE."""
+    override = os.environ.get("IMG2NUM_BENCH_CACHE")
+    if override and override.strip():
+        return Path(override.strip()).expanduser()
+    return default_cache_root(platform)
+
+
+DEFAULT_CACHE_ROOT = default_cache_root()
+DEFAULT_CORPUS_DIR = Path(__file__).resolve().parent
+SUPPORTED_SCHEMA_VERSIONS = {1}
+ALLOWED_LICENSES = {
+    "CC0-1.0",
+    "CC-BY-2.0",
+    "CC-BY-4.0",
+    "CC-BY-SA-2.0",
+    "CC-BY-SA-4.0",
+    "Public-Domain",
+}
+SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
+ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+MAX_DOWNLOAD_BYTES = 50 * 1024 * 1024
+DOWNLOAD_TIMEOUT_SECONDS = 30
+USER_AGENT = "Img2Num-Benchmark-Corpus/1.0"
+STRING_FIELDS = (
+    "id",
+    "dataset",
+    "url",
+    "sha256",
+    "license",
+    "author",
+    "source",
+)
+REQUIRED_FIELDS = {*STRING_FIELDS, "size", "tags"}
+
+
+@dataclass(frozen=True)
+class Entry:
+    """Metadata describing one benchmark image."""
+
+    id: str
+    dataset: str
+    url: str
+    sha256: str
+    size: tuple[int, int]
+    license: str
+    author: str
+    source: str
+    tags: list[str]
+
+
+class CorpusManagerError(ValueError):
+    """Raised when an add request cannot safely create a corpus entry."""
+
+
+def _entry_from_data(data: dict[str, Any], path: Path) -> Entry:
+    try:
+        size = data["size"]
+        if (
+            not isinstance(size, list)
+            or len(size) != 2
+            or not all(type(value) is int for value in size)
+        ):
+            raise ValueError("size must be a list of two integers")
+        tags = data["tags"]
+        if not isinstance(tags, list) or not all(isinstance(tag, str) for tag in tags):
+            raise ValueError("tags must be a list of strings")
+        return Entry(
+            id=data["id"],
+            dataset=data["dataset"],
+            url=data["url"],
+            sha256=data["sha256"],
+            size=(size[0], size[1]),
+            license=data["license"],
+            author=data["author"],
+            source=data["source"],
+            tags=tags,
+        )
+    except (KeyError, TypeError, ValueError) as error:
+        raise ValueError(f"{path.name}: invalid entry: {error}") from error
+
+
+def load_entries(images_dir: Path) -> list[tuple[Entry, Path]]:
+    """Load TOML image entries, pairing each parsed entry with its file path."""
+    loaded: list[tuple[Entry, Path]] = []
+    for path in sorted(images_dir.glob("*.toml"), key=lambda item: item.name):
+        try:
+            data = tomllib.loads(path.read_text(encoding="utf-8"))
+            loaded.append((_entry_from_data(data, path), path))
+        except (OSError, tomllib.TOMLDecodeError, ValueError) as error:
+            if isinstance(error, ValueError) and str(error).startswith(f"{path.name}:"):
+                raise
+            raise ValueError(f"{path.name}: {error}") from error
+    return loaded
+
+
+def cache_path(sha256: str) -> Path:
+    """Return the image cache location for a content digest."""
+    return cache_dir() / sha256
+
+
+def corpus_hash(images_dir: Path) -> str:
+    """Hash corpus configuration and entry files in stable name order."""
+    digest = hashlib.sha256()
+    files = [*images_dir.glob("*.toml"), images_dir.parent / "corpus.toml"]
+    entry_paths = sorted(
+        (path for path in files if path.is_file()),
+        key=lambda item: item.name,
+    )
+    for path in entry_paths:
+        digest.update(path.name.encode("utf-8"))
+        digest.update(b"\0")
+        content = path.read_text(encoding="utf-8").replace("\r\n", "\n")
+        digest.update(content.encode("utf-8"))
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def verify_corpus(corpus_dir: Path, *, hashes: bool = False) -> list[str]:
+    """Validate corpus metadata offline, returning every actionable error."""
+    errors: list[str] = []
+    config_path = corpus_dir / "corpus.toml"
+    images_dir = corpus_dir / "images"
+
+    if not config_path.is_file():
+        errors.append("corpus.toml: file is missing; add schema_version = 1")
+    else:
+        try:
+            config = tomllib.loads(config_path.read_text(encoding="utf-8"))
+        except (OSError, tomllib.TOMLDecodeError) as error:
+            errors.append(f"corpus.toml: cannot parse config: {error}")
+        else:
+            version = config.get("schema_version")
+            if type(version) is not int or version not in SUPPORTED_SCHEMA_VERSIONS:
+                errors.append(
+                    "corpus.toml: schema_version must be a supported integer "
+                    f"({', '.join(map(str, sorted(SUPPORTED_SCHEMA_VERSIONS)))})"
+                )
+
+    if not images_dir.is_dir():
+        errors.append("images/: directory is missing; create it for corpus entries")
+        return errors
+
+    seen_ids: dict[str, str] = {}
+    for path in sorted(images_dir.glob("*.toml"), key=lambda item: item.name):
+        try:
+            data = tomllib.loads(path.read_text(encoding="utf-8"))
+        except (OSError, tomllib.TOMLDecodeError) as error:
+            errors.append(f"{path.name}: cannot parse TOML: {error}")
+            continue
+        if not isinstance(data, dict):
+            errors.append(f"{path.name}: entry must be a TOML table")
+            continue
+
+        entry_errors: list[str] = []
+        for field in sorted(REQUIRED_FIELDS):
+            if field not in data:
+                entry_errors.append(f"missing required field '{field}'")
+
+        for field in STRING_FIELDS:
+            if field in data and not isinstance(data[field], str):
+                entry_errors.append(f"'{field}' must be a string")
+
+        entry_id = data.get("id")
+        if isinstance(entry_id, str):
+            if not entry_id.strip():
+                entry_errors.append("'id' must not be empty")
+            elif path.name != f"{entry_id}.toml":
+                entry_errors.append(
+                    f"'id' must match this file name; expected '{entry_id}.toml'"
+                )
+            if entry_id in seen_ids:
+                entry_errors.append(
+                    f"'id' {entry_id!r} is duplicated; already used by "
+                    f"{seen_ids[entry_id]}"
+                )
+            else:
+                seen_ids[entry_id] = path.name
+
+        sha256 = data.get("sha256")
+        if isinstance(sha256, str) and not SHA256_PATTERN.fullmatch(sha256):
+            entry_errors.append(
+                "'sha256' must be exactly 64 lowercase hexadecimal characters"
+            )
+
+        size = data.get("size")
+        if "size" in data:
+            if (
+                not isinstance(size, list)
+                or len(size) != 2
+                or not all(type(value) is int for value in size)
+            ):
+                entry_errors.append(
+                    "'size' must be a list of two integers [width, height]"
+                )
+            elif any(value <= 0 for value in size):
+                entry_errors.append("'size' width and height must both be positive")
+
+        for field in ("license", "author", "source", "dataset"):
+            value = data.get(field)
+            if isinstance(value, str) and not value.strip():
+                entry_errors.append(f"'{field}' must not be empty")
+
+        url = data.get("url")
+        if isinstance(url, str) and not url.startswith(("http://", "https://")):
+            entry_errors.append("'url' must start with http:// or https://")
+
+        tags = data.get("tags")
+        if "tags" in data and (
+            not isinstance(tags, list)
+            or not all(isinstance(tag, str) for tag in tags)
+        ):
+            entry_errors.append("'tags' must be a list of strings")
+
+        license_id = data.get("license")
+        if isinstance(license_id, str):
+            license_message = license_error(license_id)
+            if license_message:
+                entry_errors.append(license_message)
+
+        errors.extend(f"{path.name}: {message}" for message in entry_errors)
+
+    if hashes:
+        errors.extend(verify_cached_hashes(images_dir))
+    return errors
+
+
+def verify_cached_hashes(images_dir: Path) -> list[str]:
+    """Check that every parseable entry has a matching content-addressed cache."""
+    errors: list[str] = []
+    for path in sorted(images_dir.glob("*.toml"), key=lambda item: item.name):
+        try:
+            data = tomllib.loads(path.read_text(encoding="utf-8"))
+        except (OSError, tomllib.TOMLDecodeError):
+            # The offline verifier already reports the parse error.
+            continue
+        if not isinstance(data, dict):
+            continue
+        entry_id = data.get("id", path.stem)
+        expected = data.get("sha256")
+        if not isinstance(expected, str) or not SHA256_PATTERN.fullmatch(expected):
+            continue
+        image_path = cache_path(expected)
+        if not image_path.is_file():
+            errors.append(
+                f"{path.name}: cache for entry '{entry_id}' is missing; run fetch first"
+            )
+            continue
+        try:
+            image_bytes = image_path.read_bytes()
+            actual = hashlib.sha256(image_bytes).hexdigest()
+        except OSError as error:
+            errors.append(
+                f"{path.name}: cannot read cache for entry '{entry_id}': {error}"
+            )
+            continue
+        if actual != expected:
+            errors.append(
+                f"{path.name}: cache hash mismatch for entry '{entry_id}': "
+                f"expected {expected}, actual {actual}"
+            )
+            continue
+
+        declared_size = data.get("size")
+        if (
+            isinstance(declared_size, list)
+            and len(declared_size) == 2
+            and all(type(value) is int and value > 0 for value in declared_size)
+        ):
+            try:
+                actual_dimensions = image_dimensions(image_bytes)
+            except CorpusManagerError as error:
+                errors.append(
+                    f"{path.name}: cannot decode cached image for entry '{entry_id}': {error}"
+                )
+                continue
+            expected_dimensions = (declared_size[0], declared_size[1])
+            if actual_dimensions != expected_dimensions:
+                errors.append(
+                    f"{path.name}: cache size mismatch for entry '{entry_id}': "
+                    f"expected {list(expected_dimensions)}, actual {list(actual_dimensions)}"
+                )
+    return errors
+
+
+def fetch_corpus(corpus_dir: Path) -> list[str]:
+    """Populate missing image cache objects, collecting failures by entry."""
+    images_dir = corpus_dir / "images"
+    if not images_dir.is_dir():
+        return ["images/: directory is missing; create it for corpus entries"]
+
+    errors: list[str] = []
+    for path in sorted(images_dir.glob("*.toml"), key=lambda item: item.name):
+        try:
+            data = tomllib.loads(path.read_text(encoding="utf-8"))
+        except (OSError, tomllib.TOMLDecodeError) as error:
+            errors.append(f"{path.name}: cannot parse TOML: {error}")
+            continue
+        if not isinstance(data, dict):
+            errors.append(f"{path.name}: entry must be a TOML table")
+            continue
+
+        entry_id = data.get("id", path.stem)
+        url = data.get("url", "")
+        expected = data.get("sha256", "")
+        if not isinstance(expected, str) or not SHA256_PATTERN.fullmatch(expected):
+            errors.append(
+                f"{path.name}: entry '{entry_id}' has an invalid expected hash; "
+                f"URL {url!r}, expected {expected!r}, actual unavailable"
+            )
+            continue
+
+        target = cache_path(expected)
+        if target.is_file():
+            continue
+        if not isinstance(url, str):
+            url = str(url)
+        try:
+            downloaded = download_url(url)
+        except Exception as error:
+            errors.append(
+                f"{path.name}: entry '{entry_id}' URL {url!r} download failed; "
+                f"expected {expected}, actual unavailable: {error}"
+            )
+            continue
+
+        actual = hashlib.sha256(downloaded).hexdigest()
+        if actual != expected:
+            errors.append(
+                f"{path.name}: entry '{entry_id}' URL {url!r} hash mismatch; "
+                f"expected {expected}, actual {actual}"
+            )
+            continue
+
+        try:
+            _write_atomically(target, downloaded)
+        except OSError as error:
+            errors.append(
+                f"{path.name}: entry '{entry_id}' URL {url!r} could not be cached; "
+                f"expected {expected}, actual {actual}: {error}"
+            )
+    return errors
+
+
+def license_error(license_id: str) -> str | None:
+    """Return a shared allow-list error message, if the license is rejected."""
+    if "ND" in license_id.upper().split("-"):
+        return (
+            "NoDerivs licenses are not allowed because benchmark SVGs are "
+            "derivatives of their source images"
+        )
+    if license_id not in ALLOWED_LICENSES:
+        return (
+            f"license '{license_id}' is not allowed; "
+            "use an identifier from the allow-list"
+        )
+    return None
+
+
+def download_url(url: str) -> bytes:
+    """Download one image URL with a user agent, timeout, and size cap."""
+    if not url.startswith(("http://", "https://")):
+        raise CorpusManagerError("URL must start with http:// or https://")
+    request = Request(url, headers={"User-Agent": USER_AGENT})
+    try:
+        with urlopen(request, timeout=DOWNLOAD_TIMEOUT_SECONDS) as response:
+            content_length = response.headers.get("Content-Length")
+            if content_length and int(content_length) > MAX_DOWNLOAD_BYTES:
+                raise CorpusManagerError(
+                    f"download exceeds the {MAX_DOWNLOAD_BYTES}-byte size limit"
+                )
+            data = response.read(MAX_DOWNLOAD_BYTES + 1)
+    except CorpusManagerError:
+        raise
+    except (URLError, TimeoutError, OSError, ValueError) as error:
+        raise CorpusManagerError(f"download failed: {error}") from error
+    if len(data) > MAX_DOWNLOAD_BYTES:
+        raise CorpusManagerError(
+            f"download exceeds the {MAX_DOWNLOAD_BYTES}-byte size limit"
+        )
+    return data
+
+
+def image_dimensions(image_bytes: bytes) -> tuple[int, int]:
+    """Read and validate image dimensions using Pillow."""
+    try:
+        from PIL import Image, UnidentifiedImageError
+    except ImportError as error:
+        raise CorpusManagerError(
+            "Pillow is required to inspect and add benchmark images; "
+            "install the script dependencies"
+        ) from error
+
+    try:
+        with Image.open(io.BytesIO(image_bytes)) as image:
+            width, height = image.size
+            image.verify()
+    except (
+        EOFError,
+        OSError,
+        SyntaxError,
+        ValueError,
+        UnidentifiedImageError,
+        Image.DecompressionBombError,
+    ) as error:
+        raise CorpusManagerError(
+            "downloaded data is not a supported or valid image"
+        ) from error
+    if width <= 0 or height <= 0:
+        raise CorpusManagerError("image width and height must both be positive")
+    return width, height
+
+
+def _slug(value: str) -> str:
+    return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", value.lower())).strip("-")
+
+
+def derive_id(dataset: str, url: str) -> str:
+    """Derive a lowercase slug from the dataset and URL path filename."""
+    filename = PurePosixPath(unquote(urlsplit(url).path)).name
+    if not filename:
+        raise CorpusManagerError("URL must include a file name, or provide --id")
+    dataset_slug = _slug(dataset)
+    filename_slug = _slug(filename)
+    if not dataset_slug or not filename_slug:
+        raise CorpusManagerError(
+            "dataset and URL file name must contain letters or digits to derive an id"
+        )
+    return f"{dataset_slug}-{filename_slug}"
+
+
+def _toml_string(value: str) -> str:
+    return json.dumps(value, ensure_ascii=False)
+
+
+def render_entry(entry: Entry) -> str:
+    """Serialize an entry with a fixed, deterministic TOML field order."""
+    tags = ", ".join(_toml_string(tag) for tag in entry.tags)
+    return (
+        f"id = {_toml_string(entry.id)}\n"
+        f"dataset = {_toml_string(entry.dataset)}\n"
+        f"url = {_toml_string(entry.url)}\n"
+        f"sha256 = {_toml_string(entry.sha256)}\n"
+        f"size = [{entry.size[0]}, {entry.size[1]}]\n"
+        f"license = {_toml_string(entry.license)}\n"
+        f"author = {_toml_string(entry.author)}\n"
+        f"source = {_toml_string(entry.source)}\n"
+        f"tags = [{tags}]\n"
+    )
+
+
+def _write_atomically(path: Path, data: bytes) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary_path: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(dir=path.parent, delete=False) as temporary:
+            temporary_path = Path(temporary.name)
+            temporary.write(data)
+        os.replace(temporary_path, path)
+    finally:
+        if temporary_path is not None and temporary_path.exists():
+            temporary_path.unlink()
+
+
+def _write_new_atomically(path: Path, data: bytes) -> None:
+    """Atomically create a new file without replacing an existing entry."""
+    temporary_path: Path | None = None
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with tempfile.NamedTemporaryFile(dir=path.parent, delete=False) as temporary:
+            temporary_path = Path(temporary.name)
+            temporary.write(data)
+        os.link(temporary_path, path)
+    except FileExistsError as error:
+        raise CorpusManagerError(f"entry id '{path.stem}' already exists") from error
+    except OSError as error:
+        raise CorpusManagerError(
+            f"cannot write entry '{path.name}': {error}"
+        ) from error
+    finally:
+        if temporary_path is not None and temporary_path.exists():
+            temporary_path.unlink()
+
+
+def add_entry(
+    url: str,
+    *,
+    dataset: str,
+    license_id: str,
+    author: str,
+    source: str,
+    tags: list[str] | None = None,
+    entry_id: str | None = None,
+    corpus_dir: Path = DEFAULT_CORPUS_DIR,
+) -> Entry:
+    """Download an image and write its cache object and metadata entry."""
+    license_message = license_error(license_id)
+    if license_message:
+        raise CorpusManagerError(license_message)
+    for field, value in (("dataset", dataset), ("author", author), ("source", source)):
+        if not value.strip():
+            raise CorpusManagerError(f"--{field} must not be empty")
+    if not url.startswith(("http://", "https://")):
+        raise CorpusManagerError("URL must start with http:// or https://")
+
+    resolved_id = entry_id if entry_id is not None else derive_id(dataset, url)
+    if not ID_PATTERN.fullmatch(resolved_id) or resolved_id in {".", ".."}:
+        raise CorpusManagerError(
+            "id must contain only letters, digits, '.', '_' or '-'")
+
+    images_dir = corpus_dir / "images"
+    entry_path = images_dir / f"{resolved_id}.toml"
+    if entry_path.exists():
+        raise CorpusManagerError(f"entry id '{resolved_id}' already exists")
+
+    try:
+        downloaded = download_url(url)
+    except CorpusManagerError:
+        raise
+    except Exception as error:
+        raise CorpusManagerError(f"download failed: {error}") from error
+    width, height = image_dimensions(downloaded)
+    sha256 = hashlib.sha256(downloaded).hexdigest()
+
+    try:
+        existing_entries = load_entries(images_dir)
+    except (OSError, ValueError) as error:
+        raise CorpusManagerError(f"cannot inspect existing entries: {error}") from error
+    for existing, existing_path in existing_entries:
+        if existing.sha256 == sha256:
+            raise CorpusManagerError(
+                f"image hash already exists under id '{existing.id}' "
+                f"({existing_path.name})"
+            )
+
+    entry = Entry(
+        id=resolved_id,
+        dataset=dataset,
+        url=url,
+        sha256=sha256,
+        size=(width, height),
+        license=license_id,
+        author=author,
+        source=source,
+        tags=tags or [],
+    )
+    cache_file = cache_path(sha256)
+    _write_new_atomically(entry_path, render_entry(entry).encode("utf-8"))
+    try:
+        _write_atomically(cache_file, downloaded)
+    except OSError as error:
+        entry_path.unlink(missing_ok=True)
+        raise CorpusManagerError(f"cannot write image cache: {error}") from error
+    return entry
+
+
+def interactive_add_entry(
+    corpus_dir: Path = DEFAULT_CORPUS_DIR,
+    *,
+    initial_url: str | None = None,
+    initial_dataset: str | None = None,
+    initial_license_id: str | None = None,
+    initial_author: str | None = None,
+    initial_source: str | None = None,
+    initial_tags: str | None = None,
+    initial_entry_id: str | None = None,
+    input_fn: Callable[[str], str] | None = None,
+    print_fn: Callable[..., None] | None = None,
+) -> Entry | None:
+    """Interactively prompt for image metadata and write a corpus entry."""
+    _input = input_fn if input_fn is not None else input
+    _print = print_fn if print_fn is not None else print
+
+    _print()
+    _print("Img2Num Benchmark Corpus")
+    _print("────────────────────────")
+    _print()
+
+    # 1. Image URL
+    url = (initial_url or "").strip()
+    while True:
+        prompt = f"Image URL [{url}]: " if url else "Image URL: "
+        entered = _input(prompt).strip()
+        if not entered and url:
+            entered = url
+        if not entered:
+            _print("  Error: Image URL must not be empty.")
+            continue
+        if not entered.startswith(("http://", "https://")):
+            _print("  Error: URL must start with http:// or https://")
+            continue
+        url = entered
+        break
+
+    # 2. Dataset name
+    dataset = (initial_dataset or "").strip()
+    while True:
+        prompt = f"Dataset name [{dataset}]: " if dataset else "Dataset name: "
+        entered = _input(prompt).strip()
+        if not entered and dataset:
+            entered = dataset
+        if not entered:
+            _print("  Error: Dataset name must not be empty.")
+            continue
+        dataset = entered
+        break
+
+    # 3. License identifier
+    license_id = (initial_license_id or "").strip()
+    while True:
+        prompt = (
+            f"License identifier [{license_id}]: "
+            if license_id
+            else "License identifier: "
+        )
+        entered = _input(prompt).strip()
+        if not entered and license_id:
+            entered = license_id
+        if not entered:
+            _print("  Error: License identifier must not be empty.")
+            _print(f"  Allowed: {', '.join(sorted(ALLOWED_LICENSES))}")
+            continue
+        err = license_error(entered)
+        if err:
+            _print(f"  Error: {err}")
+            _print(f"  Allowed: {', '.join(sorted(ALLOWED_LICENSES))}")
+            continue
+        license_id = entered
+        break
+
+    # 4. Author / rights holder
+    author = (initial_author or "").strip()
+    while True:
+        prompt = (
+            f"Author / rights holder [{author}]: "
+            if author
+            else "Author / rights holder: "
+        )
+        entered = _input(prompt).strip()
+        if not entered and author:
+            entered = author
+        if not entered:
+            _print("  Error: Author / rights holder must not be empty.")
+            continue
+        author = entered
+        break
+
+    # 5. Source / attribution reference
+    source = (initial_source or "").strip()
+    while True:
+        prompt = (
+            f"Source / attribution reference [{source}]: "
+            if source
+            else "Source / attribution reference: "
+        )
+        entered = _input(prompt).strip()
+        if not entered and source:
+            entered = source
+        if not entered:
+            _print("  Error: Source / attribution reference must not be empty.")
+            continue
+        source = entered
+        break
+
+    # 6. Tags (comma-separated, optional)
+    tags_default = (initial_tags or "").strip()
+    prompt = (
+        f"Tags (comma-separated, optional) [{tags_default}]: "
+        if tags_default
+        else "Tags (comma-separated, optional): "
+    )
+    entered = _input(prompt).strip()
+    if not entered and tags_default:
+        entered = tags_default
+    tags = [tag.strip() for tag in entered.split(",") if tag.strip()] if entered else []
+
+    # 7. Entry ID (optional)
+    try:
+        auto_id = derive_id(dataset, url)
+    except CorpusManagerError:
+        auto_id = None
+
+    entry_id = (initial_entry_id or "").strip()
+    while True:
+        if entry_id:
+            prompt = f"Entry ID (optional, press Enter for '{entry_id}'): "
+        elif auto_id:
+            prompt = f"Entry ID (optional, press Enter for auto '{auto_id}'): "
+        else:
+            prompt = "Entry ID: "
+        entered = _input(prompt).strip()
+        if not entered:
+            resolved_id = entry_id or auto_id
+            if not resolved_id:
+                _print(
+                    "  Error: Could not derive ID automatically; please provide an explicit ID."
+                )
+                continue
+        else:
+            resolved_id = entered
+
+        if not ID_PATTERN.fullmatch(resolved_id) or resolved_id in {".", ".."}:
+            _print(
+                "  Error: ID must contain only letters, digits, '.', '_' or '-'."
+            )
+            continue
+
+        images_dir = corpus_dir / "images"
+        if (images_dir / f"{resolved_id}.toml").exists():
+            _print(
+                f"  Error: Entry ID '{resolved_id}' already exists; please choose a different ID."
+            )
+            continue
+        break
+
+    # Review summary
+    _print()
+    _print("Review your entry:")
+    _print(f"  Image URL: {url}")
+    _print(f"  Dataset:   {dataset}")
+    _print(f"  License:   {license_id}")
+    _print(f"  Author:    {author}")
+    _print(f"  Source:    {source}")
+    _print(f"  Tags:      {', '.join(tags) if tags else '(none)'}")
+    _print(f"  Entry ID:  {resolved_id}")
+    _print()
+
+    # Confirmation
+    while True:
+        confirm = _input("Add this entry? (Y/n): ").strip().lower()
+        if confirm in ("", "y", "yes"):
+            break
+        if confirm in ("n", "no"):
+            _print("\nCancelled. No entry was added.")
+            return None
+        _print("  Please enter 'y' to confirm or 'n' to cancel.")
+
+    entry = add_entry(
+        url,
+        dataset=dataset,
+        license_id=license_id,
+        author=author,
+        source=source,
+        tags=tags,
+        entry_id=resolved_id,
+        corpus_dir=corpus_dir,
+    )
+    _print(f"\nAdded {entry.id} ({entry.sha256})")
+    return entry
+
+
+def main(
+    argv: list[str] | None = None,
+    *,
+    input_fn: Callable[[str], str] | None = None,
+    print_fn: Callable[..., None] | None = None,
+) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers(dest="command", required=True)
+    add_parser = subparsers.add_parser("add")
+    add_parser.add_argument(
+        "url",
+        nargs="?",
+        default=None,
+        help="Direct HTTP or HTTPS image URL",
+    )
+    add_parser.add_argument(
+        "--dataset",
+        default=None,
+        help="Name of the dataset",
+    )
+    add_parser.add_argument(
+        "--license",
+        dest="license_id",
+        default=None,
+        help="Allow-listed license identifier",
+    )
+    add_parser.add_argument(
+        "--author",
+        default=None,
+        help="Image author or rights holder",
+    )
+    add_parser.add_argument(
+        "--source",
+        default=None,
+        help="Source or attribution reference",
+    )
+    add_parser.add_argument(
+        "--tags",
+        default="",
+        help="Optional comma-separated tags",
+    )
+    add_parser.add_argument(
+        "--id",
+        dest="entry_id",
+        default=None,
+        help="Explicit entry ID (derived automatically if omitted)",
+    )
+    add_parser.add_argument(
+        "-i",
+        "--interactive",
+        action="store_true",
+        help="Interactively prompt for entry metadata",
+    )
+    add_parser.add_argument(
+        "--corpus-dir",
+        type=Path,
+        default=DEFAULT_CORPUS_DIR,
+        help="Path to corpus directory (default: benchmarks)",
+    )
+    fetch_parser = subparsers.add_parser("fetch")
+    fetch_parser.add_argument("--corpus-dir", type=Path, default=DEFAULT_CORPUS_DIR)
+    verify_parser = subparsers.add_parser("verify")
+    verify_parser.add_argument("--corpus-dir", type=Path, default=DEFAULT_CORPUS_DIR)
+    verify_parser.add_argument("--hashes", action="store_true")
+
+    args = parser.parse_args(argv)
+
+    if args.command == "add":
+        is_interactive = args.interactive
+        no_required_args = (
+            args.url is None
+            and args.dataset is None
+            and args.license_id is None
+            and args.author is None
+            and args.source is None
+        )
+        if not is_interactive and no_required_args and sys.stdin.isatty():
+            is_interactive = True
+
+        if is_interactive:
+            try:
+                entry = interactive_add_entry(
+                    corpus_dir=args.corpus_dir,
+                    initial_url=args.url,
+                    initial_dataset=args.dataset,
+                    initial_license_id=args.license_id,
+                    initial_author=args.author,
+                    initial_source=args.source,
+                    initial_tags=args.tags,
+                    initial_entry_id=args.entry_id,
+                    input_fn=input_fn,
+                    print_fn=print_fn,
+                )
+            except CorpusManagerError as error:
+                print(f"Error: {error}", file=sys.stderr)
+                return 1
+            except KeyboardInterrupt:
+                print("\nOperation cancelled.", file=sys.stderr)
+                return 130
+            except EOFError:
+                print("\nOperation cancelled.", file=sys.stderr)
+                return 1
+            return 0 if entry is not None else 0
+
+        # Non-interactive mode validation
+        missing = []
+        if not args.url:
+            missing.append("url")
+        if not args.dataset:
+            missing.append("--dataset")
+        if not args.license_id:
+            missing.append("--license")
+        if not args.author:
+            missing.append("--author")
+        if not args.source:
+            missing.append("--source")
+        if missing:
+            print(
+                f"Error: missing required arguments: {', '.join(missing)}\n"
+                "Pass --interactive (or run 'add' without arguments in a terminal) for guided entry.",
+                file=sys.stderr,
+            )
+            return 2
+
+        try:
+            entry = add_entry(
+                args.url,
+                dataset=args.dataset,
+                license_id=args.license_id,
+                author=args.author,
+                source=args.source,
+                tags=[tag.strip() for tag in args.tags.split(",") if tag.strip()],
+                entry_id=args.entry_id,
+                corpus_dir=args.corpus_dir,
+            )
+        except CorpusManagerError as error:
+            print(f"Error: {error}", file=sys.stderr)
+            return 1
+        print(f"Added {entry.id} ({entry.sha256})")
+        return 0
+
+    if args.command == "fetch":
+        errors = fetch_corpus(args.corpus_dir)
+        if errors:
+            for error in errors:
+                print(f"Error: {error}", file=sys.stderr)
+            return 1
+        print("Corpus images are cached")
+        return 0
+
+    errors = verify_corpus(args.corpus_dir, hashes=args.hashes)
+    if errors:
+        for error in errors:
+            print(f"Error: {error}", file=sys.stderr)
+        return 1
+    print("Corpus verification passed")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+

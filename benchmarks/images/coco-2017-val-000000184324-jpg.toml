@@ -1,0 +1,9 @@
+id = "coco-2017-val-000000184324-jpg"
+dataset = "COCO 2017 val"
+url = "http://images.cocodataset.org/val2017/000000184324.jpg"
+sha256 = "5bfec85c40197744fc7fa8262a0a0e14ad1a6fc0e11cee4b7b0c5df97a146107"
+size = [640, 425]
+license = "CC-BY-2.0"
+author = "Serge Melki"
+source = "https://www.flickr.com/photos/sergemelki/3364389746/"
+tags = ["natural"]
