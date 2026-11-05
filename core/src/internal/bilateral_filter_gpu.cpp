@@ -56,7 +56,7 @@ void bilateral_filter_gpu(
     const uint32_t h = static_cast<uint32_t>(height);
     constexpr uint32_t bpp = 4; // RGBA8 = 4 bytes per pixel
 
-    IMG2NUM_LOG_INFO("begin wgpu portion");
+    IMG2NUM_LOG_DEBUG("begin wgpu portion");
 
     // 1. Create textures (RAII — destroyed automatically on scope exit)
     gpu::Texture inputTexture(
@@ -64,10 +64,10 @@ void bilateral_filter_gpu(
         wgpu::TextureUsage::TextureBinding | wgpu::TextureUsage::CopyDst
     );
 
-    IMG2NUM_LOG_INFO("upload texture");
+    IMG2NUM_LOG_DEBUG("upload texture");
     inputTexture.write(image, bpp * width * height, bpp);
 
-    IMG2NUM_LOG_INFO("create output texture");
+    IMG2NUM_LOG_DEBUG("create output texture");
     gpu::Texture outputTexture(
         w, h, wgpu::TextureFormat::RGBA8Unorm,
         wgpu::TextureUsage::StorageBinding | wgpu::TextureUsage::CopySrc
@@ -83,7 +83,7 @@ void bilateral_filter_gpu(
         wgpu::TextureUsage::StorageBinding | wgpu::TextureUsage::TextureBinding
     );
 
-    IMG2NUM_LOG_INFO("create buffer");
+    IMG2NUM_LOG_DEBUG("create buffer");
     // 2. Create uniform buffer with filter parameters
     gpu::Buffer<FilterParams> paramBuffer(
         1, wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst
@@ -169,12 +169,12 @@ void bilateral_filter_gpu(
 
     wgpu::CommandBuffer commands = encoder.Finish();
     GPU::getClassInstance().get_queue().Submit(1, &commands);
-    IMG2NUM_LOG_INFO("queue submit");
+    IMG2NUM_LOG_DEBUG("queue submit");
 
     // 6. Readback — handles staging buffer, MapAsync, alignment stripping automatically
     std::vector<uint8_t> result = outputTexture.read(bpp);
     std::memcpy(image, result.data(), result.size());
-    IMG2NUM_LOG_INFO("done memcpy");
+    IMG2NUM_LOG_DEBUG("done memcpy");
 
     // All textures and buffers are destroyed automatically by RAII destructors
 #if defined(__EMSCRIPTEN__)

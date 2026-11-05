@@ -248,7 +248,7 @@ void kmeans_gpu(
         }
     }
 
-    IMG2NUM_LOG_INFO("starting");
+    IMG2NUM_LOG_DEBUG("starting");
 
     // Step 2: Initialize centroids via K-Means++
     switch (color_space) {
@@ -260,7 +260,7 @@ void kmeans_gpu(
         break;
     }
 
-    IMG2NUM_LOG_INFO("kmeans++ init done");
+    IMG2NUM_LOG_DEBUG("kmeans++ init done");
 
     // =========================================================================
     // GPU resource setup (previously in setup() function)
@@ -377,7 +377,7 @@ void kmeans_gpu(
     // =========================================================================
     // Main K-Means loop — all iterations batched into one submission
     // =========================================================================
-    IMG2NUM_LOG_INFO("start iterations");
+    IMG2NUM_LOG_DEBUG("start iterations");
     uint32_t wgX = gpu::workgroup_count(w);
     uint32_t wgY = gpu::workgroup_count(h);
 
@@ -388,17 +388,17 @@ void kmeans_gpu(
     }
     wgpu::CommandBuffer commands = encoder.Finish();
     GPU::getClassInstance().get_queue().Submit(1, &commands);
-    IMG2NUM_LOG_INFO("done iterations");
+    IMG2NUM_LOG_DEBUG("done iterations");
 
     // =========================================================================
     // Readback — alignment stripping handled automatically
     // =========================================================================
 
     // Read labels (RGBA32Uint, 16 bytes/pixel — extract R channel as label)
-    IMG2NUM_LOG_INFO("read out");
+    IMG2NUM_LOG_DEBUG("read out");
     std::vector<uint8_t> labelData = labelTexture.read(bpp);
 
-    IMG2NUM_LOG_INFO("mapping labels");
+    IMG2NUM_LOG_DEBUG("mapping labels");
     for (int32_t i = 0; i < num_pixels; ++i) {
         uint32_t r = 0;
         std::memcpy(&r, &labelData[i * bpp], sizeof(uint32_t));
@@ -409,7 +409,7 @@ void kmeans_gpu(
     std::vector<uint8_t> centroidData = centroidTexture.read(bpp);
     const float* centroidFloats = reinterpret_cast<const float*>(centroidData.data());
 
-    IMG2NUM_LOG_INFO("mapping centroids");
+    IMG2NUM_LOG_DEBUG("mapping centroids");
     for (int i = 0; i < k; i++) {
         float cr = centroidFloats[i * 4];
         float cg = centroidFloats[i * 4 + 1];
@@ -445,7 +445,7 @@ void kmeans_gpu(
     }
 
     // Write labels to out_labels
-    IMG2NUM_LOG_INFO("copying labels out");
+    IMG2NUM_LOG_DEBUG("copying labels out");
     std::memcpy(out_labels, labels.data(), labels.size() * sizeof(int32_t));
 
 #if defined(__EMSCRIPTEN__)
