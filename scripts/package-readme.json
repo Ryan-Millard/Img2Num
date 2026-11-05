@@ -1,0 +1,21 @@
+{
+  "readmes": [
+    {
+      "path": "packages/js/README.md",
+      "sections": [
+        {
+          "name": "console-js-esm",
+          "source": "example-apps/console-js-esm/index.mjs",
+          "type": "code",
+          "language": "js"
+        },
+        {
+          "name": "console-js-cjs",
+          "source": "example-apps/console-js-cjs/index.cjs",
+          "type": "code",
+          "language": "js"
+        }
+      ]
+    }
+  ]
+}
