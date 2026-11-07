@@ -33,7 +33,7 @@
 * - `width`: Width of the image in pixels.
 * - `height`: Height of the image in pixels.
 *
-* @throws {Error} Will not throw in current implementation, but could reject if the image fails to load.
+* @throws {Error} The returned promise rejects with an `Error("Failed to load image")` if the file cannot be decoded as an image.
 *
 * @example
 * const fileInput = document.querySelector("#fileInput");
@@ -44,7 +44,6 @@
 *   console.log("Pixels:", pixels);
 * });
 *
-* @todo Add error handling for invalid or corrupt image files.
 * @variation Standard image file input
 */
 function imageToUint8ClampedArray(file) {
@@ -184,7 +183,7 @@ async function createImg2NumModule(moduleArg = {}) {
 		callRuntimeCallbacks(onPreRuns);
 	}
 	function initRuntime() {
-		wasmExports["na"]();
+		wasmExports["Fa"]();
 	}
 	function postRun() {
 		var postRun = Module["postRun"];
@@ -375,6 +374,20 @@ async function createImg2NumModule(moduleArg = {}) {
 	function ___cxa_find_matching_catch_3(arg0) {
 		arg0 >>>= 0;
 		return findMatchingCatch([arg0]);
+	}
+	function ___cxa_find_matching_catch_7(arg0, arg1, arg2, arg3, arg4) {
+		arg0 >>>= 0;
+		arg1 >>>= 0;
+		arg2 >>>= 0;
+		arg3 >>>= 0;
+		arg4 >>>= 0;
+		return findMatchingCatch([
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+			arg4
+		]);
 	}
 	var __Unwind_RaiseException = (ex) => {
 		throw ex;
@@ -1776,6 +1789,10 @@ async function createImg2NumModule(moduleArg = {}) {
 		HEAPU32[penviron_buf_size >>> 2 >>> 0] = bufSize;
 		return 0;
 	}
+	function _llvm_eh_typeid_for(type) {
+		type >>>= 0;
+		return type;
+	}
 	var initRandomFill = () => (view) => (crypto.getRandomValues(view), 0);
 	var randomFill = (view) => (randomFill = initRandomFill())(view);
 	function _random_get(buffer, size) {
@@ -2300,164 +2317,194 @@ async function createImg2NumModule(moduleArg = {}) {
 	Module["UTF8ToString"] = UTF8ToString;
 	Module["stringToUTF8"] = stringToUTF8;
 	Module["lengthBytesUTF8"] = lengthBytesUTF8;
-	var _malloc, _emwgpuCreateBindGroup, _emwgpuCreateBindGroupLayout, _emwgpuCreateCommandBuffer, _emwgpuCreateCommandEncoder, _emwgpuCreateComputePassEncoder, _emwgpuCreateComputePipeline, _emwgpuCreateExternalTexture, _emwgpuCreatePipelineLayout, _emwgpuCreateQuerySet, _emwgpuCreateRenderBundle, _emwgpuCreateRenderBundleEncoder, _emwgpuCreateRenderPassEncoder, _emwgpuCreateRenderPipeline, _emwgpuCreateSampler, _emwgpuCreateSurface, _emwgpuCreateTexture, _emwgpuCreateTextureView, _emwgpuCreateAdapter, _emwgpuImportBuffer, _emwgpuCreateDevice, _emwgpuCreateQueue, _emwgpuCreateShaderModule, _emwgpuOnDeviceLostCompleted, _emwgpuOnMapAsyncCompleted, _emwgpuOnRequestAdapterCompleted, _emwgpuOnRequestDeviceCompleted, _emwgpuOnUncapturedError, _free, _memalign, _setThrew, __emscripten_tempret_set, __emscripten_stack_restore, __emscripten_stack_alloc, _emscripten_stack_get_current, ___cxa_decrement_exception_refcount, ___cxa_increment_exception_refcount, ___cxa_can_catch, ___cxa_get_exception_ptr, dynCall_vi, dynCall_ii, dynCall_viii, dynCall_viiii, dynCall_vii, dynCall_iii, dynCall_iiii, dynCall_v, dynCall_iiiiiiii, dynCall_fiii, dynCall_diii, dynCall_viiiiiii, dynCall_i, dynCall_iiiii, dynCall_iiiiiii, dynCall_iiiiiiiiiiii, dynCall_viiiiiiiiii, dynCall_viiiiiiiiiiiiiii, dynCall_iiiiii, dynCall_iiiiid, _asyncify_start_unwind, _asyncify_stop_unwind, _asyncify_start_rewind, _asyncify_stop_rewind, wasmMemory;
+	var _malloc, _emwgpuCreateBindGroup, _emwgpuCreateBindGroupLayout, _emwgpuCreateCommandBuffer, _emwgpuCreateCommandEncoder, _emwgpuCreateComputePassEncoder, _emwgpuCreateComputePipeline, _emwgpuCreateExternalTexture, _emwgpuCreatePipelineLayout, _emwgpuCreateQuerySet, _emwgpuCreateRenderBundle, _emwgpuCreateRenderBundleEncoder, _emwgpuCreateRenderPassEncoder, _emwgpuCreateRenderPipeline, _emwgpuCreateSampler, _emwgpuCreateSurface, _emwgpuCreateTexture, _emwgpuCreateTextureView, _emwgpuCreateAdapter, _emwgpuImportBuffer, _emwgpuCreateDevice, _emwgpuCreateQueue, _emwgpuCreateShaderModule, _emwgpuOnDeviceLostCompleted, _emwgpuOnMapAsyncCompleted, _emwgpuOnRequestAdapterCompleted, _emwgpuOnRequestDeviceCompleted, _emwgpuOnUncapturedError, _free, _memalign, _setThrew, __emscripten_tempret_set, __emscripten_stack_restore, __emscripten_stack_alloc, _emscripten_stack_get_current, ___cxa_decrement_exception_refcount, ___cxa_increment_exception_refcount, ___cxa_can_catch, ___cxa_get_exception_ptr, dynCall_viiid, dynCall_iii, dynCall_vii, dynCall_v, dynCall_viii, dynCall_viiii, dynCall_viiiiiiii, dynCall_viiiddi, dynCall_viiiiiii, dynCall_viiiii, dynCall_ii, dynCall_vi, dynCall_jiii, dynCall_iiiiij, dynCall_iiij, dynCall_viijii, dynCall_viiiiii, dynCall_iiii, dynCall_vfffiii, dynCall_viijijj, dynCall_viiiif, dynCall_iiiiiiiiiii, dynCall_iiiiiii, dynCall_iif, dynCall_iiiii, dynCall_vifi, dynCall_viif, dynCall_iiiiiiii, dynCall_fiii, dynCall_diii, dynCall_i, dynCall_iiiiiiiiiiii, dynCall_viiiiiiiiii, dynCall_viiiiiiiiiiiiiii, dynCall_iiiiii, dynCall_iiiiid, _asyncify_start_unwind, _asyncify_stop_unwind, _asyncify_start_rewind, _asyncify_stop_rewind, wasmMemory;
 	function assignWasmExports(wasmExports) {
-		Module["_gaussian_blur_fft"] = wasmExports["oa"];
-		Module["_invert_image"] = wasmExports["pa"];
-		Module["_threshold_image"] = wasmExports["qa"];
-		Module["_black_threshold_image"] = wasmExports["ra"];
-		Module["_kmeans"] = wasmExports["sa"];
-		Module["_bilateral_filter"] = wasmExports["ta"];
-		Module["_labels_to_svg"] = wasmExports["ua"];
-		Module["_image_to_svg"] = wasmExports["va"];
-		_malloc = Module["_malloc"] = wasmExports["xa"];
-		_emwgpuCreateBindGroup = wasmExports["ya"];
-		_emwgpuCreateBindGroupLayout = wasmExports["za"];
-		_emwgpuCreateCommandBuffer = wasmExports["Aa"];
-		_emwgpuCreateCommandEncoder = wasmExports["Ba"];
-		_emwgpuCreateComputePassEncoder = wasmExports["Ca"];
-		_emwgpuCreateComputePipeline = wasmExports["Da"];
-		_emwgpuCreateExternalTexture = wasmExports["Ea"];
-		_emwgpuCreatePipelineLayout = wasmExports["Fa"];
-		_emwgpuCreateQuerySet = wasmExports["Ga"];
-		_emwgpuCreateRenderBundle = wasmExports["Ha"];
-		_emwgpuCreateRenderBundleEncoder = wasmExports["Ia"];
-		_emwgpuCreateRenderPassEncoder = wasmExports["Ja"];
-		_emwgpuCreateRenderPipeline = wasmExports["Ka"];
-		_emwgpuCreateSampler = wasmExports["La"];
-		_emwgpuCreateSurface = wasmExports["Ma"];
-		_emwgpuCreateTexture = wasmExports["Na"];
-		_emwgpuCreateTextureView = wasmExports["Oa"];
-		_emwgpuCreateAdapter = wasmExports["Pa"];
-		_emwgpuImportBuffer = wasmExports["Qa"];
-		_emwgpuCreateDevice = wasmExports["Ra"];
-		_emwgpuCreateQueue = wasmExports["Sa"];
-		_emwgpuCreateShaderModule = wasmExports["Ta"];
-		_emwgpuOnDeviceLostCompleted = wasmExports["Ua"];
-		_emwgpuOnMapAsyncCompleted = wasmExports["Va"];
-		_emwgpuOnRequestAdapterCompleted = wasmExports["Wa"];
-		_emwgpuOnRequestDeviceCompleted = wasmExports["Xa"];
-		_emwgpuOnUncapturedError = wasmExports["Ya"];
-		_free = Module["_free"] = wasmExports["Za"];
-		_memalign = wasmExports["_a"];
-		_setThrew = wasmExports["$a"];
-		__emscripten_tempret_set = wasmExports["ab"];
-		__emscripten_stack_restore = wasmExports["bb"];
-		__emscripten_stack_alloc = wasmExports["cb"];
-		_emscripten_stack_get_current = wasmExports["db"];
-		___cxa_decrement_exception_refcount = wasmExports["eb"];
-		___cxa_increment_exception_refcount = wasmExports["fb"];
-		___cxa_can_catch = wasmExports["gb"];
-		___cxa_get_exception_ptr = wasmExports["hb"];
-		dynCall_vi = dynCalls["vi"] = wasmExports["ib"];
-		dynCall_ii = dynCalls["ii"] = wasmExports["jb"];
-		dynCalls["viiiii"] = wasmExports["kb"];
-		dynCall_viii = dynCalls["viii"] = wasmExports["lb"];
-		dynCall_viiii = dynCalls["viiii"] = wasmExports["mb"];
-		dynCall_vii = dynCalls["vii"] = wasmExports["nb"];
-		dynCall_iii = dynCalls["iii"] = wasmExports["ob"];
-		dynCalls["viji"] = wasmExports["pb"];
-		dynCall_iiii = dynCalls["iiii"] = wasmExports["qb"];
-		dynCall_v = dynCalls["v"] = wasmExports["rb"];
-		dynCalls["viijii"] = wasmExports["sb"];
-		dynCalls["iidiiiii"] = wasmExports["tb"];
-		dynCall_iiiiiiii = dynCalls["iiiiiiii"] = wasmExports["ub"];
-		dynCalls["iiiiiiiiiiiii"] = wasmExports["vb"];
-		dynCall_fiii = dynCalls["fiii"] = wasmExports["wb"];
-		dynCall_diii = dynCalls["diii"] = wasmExports["xb"];
-		dynCall_viiiiiii = dynCalls["viiiiiii"] = wasmExports["yb"];
-		dynCall_i = dynCalls["i"] = wasmExports["zb"];
-		dynCall_iiiii = dynCalls["iiiii"] = wasmExports["Ab"];
-		dynCall_iiiiiii = dynCalls["iiiiiii"] = wasmExports["Bb"];
-		dynCall_iiiiiiiiiiii = dynCalls["iiiiiiiiiiii"] = wasmExports["Cb"];
-		dynCall_viiiiiiiiii = dynCalls["viiiiiiiiii"] = wasmExports["Db"];
-		dynCall_viiiiiiiiiiiiiii = dynCalls["viiiiiiiiiiiiiii"] = wasmExports["Eb"];
-		dynCall_iiiiii = dynCalls["iiiiii"] = wasmExports["Fb"];
-		dynCalls["iiiiiiiii"] = wasmExports["Gb"];
-		dynCalls["iiiiij"] = wasmExports["Hb"];
-		dynCall_iiiiid = dynCalls["iiiiid"] = wasmExports["Ib"];
-		dynCalls["iiiiijj"] = wasmExports["Jb"];
-		dynCalls["iiiiiijj"] = wasmExports["Kb"];
-		dynCalls["viiiiii"] = wasmExports["Lb"];
-		_asyncify_start_unwind = wasmExports["Mb"];
-		_asyncify_stop_unwind = wasmExports["Nb"];
-		_asyncify_start_rewind = wasmExports["Ob"];
-		_asyncify_stop_rewind = wasmExports["Pb"];
-		wasmMemory = wasmExports["ma"];
-		wasmExports["wa"];
+		Module["_gaussian_blur_fft"] = wasmExports["Ga"];
+		Module["_invert_image"] = wasmExports["Ha"];
+		Module["_threshold_image"] = wasmExports["Ia"];
+		Module["_black_threshold_image"] = wasmExports["Ja"];
+		Module["_kmeans"] = wasmExports["Ka"];
+		Module["_bilateral_filter"] = wasmExports["La"];
+		Module["_labels_to_svg"] = wasmExports["Ma"];
+		Module["_image_to_svg"] = wasmExports["Na"];
+		_malloc = Module["_malloc"] = wasmExports["Pa"];
+		_emwgpuCreateBindGroup = wasmExports["Qa"];
+		_emwgpuCreateBindGroupLayout = wasmExports["Ra"];
+		_emwgpuCreateCommandBuffer = wasmExports["Sa"];
+		_emwgpuCreateCommandEncoder = wasmExports["Ta"];
+		_emwgpuCreateComputePassEncoder = wasmExports["Ua"];
+		_emwgpuCreateComputePipeline = wasmExports["Va"];
+		_emwgpuCreateExternalTexture = wasmExports["Wa"];
+		_emwgpuCreatePipelineLayout = wasmExports["Xa"];
+		_emwgpuCreateQuerySet = wasmExports["Ya"];
+		_emwgpuCreateRenderBundle = wasmExports["Za"];
+		_emwgpuCreateRenderBundleEncoder = wasmExports["_a"];
+		_emwgpuCreateRenderPassEncoder = wasmExports["$a"];
+		_emwgpuCreateRenderPipeline = wasmExports["ab"];
+		_emwgpuCreateSampler = wasmExports["bb"];
+		_emwgpuCreateSurface = wasmExports["cb"];
+		_emwgpuCreateTexture = wasmExports["db"];
+		_emwgpuCreateTextureView = wasmExports["eb"];
+		_emwgpuCreateAdapter = wasmExports["fb"];
+		_emwgpuImportBuffer = wasmExports["gb"];
+		_emwgpuCreateDevice = wasmExports["hb"];
+		_emwgpuCreateQueue = wasmExports["ib"];
+		_emwgpuCreateShaderModule = wasmExports["jb"];
+		_emwgpuOnDeviceLostCompleted = wasmExports["kb"];
+		_emwgpuOnMapAsyncCompleted = wasmExports["lb"];
+		_emwgpuOnRequestAdapterCompleted = wasmExports["mb"];
+		_emwgpuOnRequestDeviceCompleted = wasmExports["nb"];
+		_emwgpuOnUncapturedError = wasmExports["ob"];
+		_free = Module["_free"] = wasmExports["pb"];
+		_memalign = wasmExports["qb"];
+		_setThrew = wasmExports["rb"];
+		__emscripten_tempret_set = wasmExports["sb"];
+		__emscripten_stack_restore = wasmExports["tb"];
+		__emscripten_stack_alloc = wasmExports["ub"];
+		_emscripten_stack_get_current = wasmExports["vb"];
+		___cxa_decrement_exception_refcount = wasmExports["wb"];
+		___cxa_increment_exception_refcount = wasmExports["xb"];
+		___cxa_can_catch = wasmExports["yb"];
+		___cxa_get_exception_ptr = wasmExports["zb"];
+		dynCall_viiid = dynCalls["viiid"] = wasmExports["Ab"];
+		dynCall_iii = dynCalls["iii"] = wasmExports["Bb"];
+		dynCall_vii = dynCalls["vii"] = wasmExports["Cb"];
+		dynCall_v = dynCalls["v"] = wasmExports["Db"];
+		dynCall_viii = dynCalls["viii"] = wasmExports["Eb"];
+		dynCall_viiii = dynCalls["viiii"] = wasmExports["Fb"];
+		dynCall_viiiiiiii = dynCalls["viiiiiiii"] = wasmExports["Gb"];
+		dynCall_viiiddi = dynCalls["viiiddi"] = wasmExports["Hb"];
+		dynCall_viiiiiii = dynCalls["viiiiiii"] = wasmExports["Ib"];
+		dynCall_viiiii = dynCalls["viiiii"] = wasmExports["Jb"];
+		dynCall_ii = dynCalls["ii"] = wasmExports["Kb"];
+		dynCall_vi = dynCalls["vi"] = wasmExports["Lb"];
+		dynCall_jiii = dynCalls["jiii"] = wasmExports["Mb"];
+		dynCall_iiiiij = dynCalls["iiiiij"] = wasmExports["Nb"];
+		dynCall_iiij = dynCalls["iiij"] = wasmExports["Ob"];
+		dynCall_viijii = dynCalls["viijii"] = wasmExports["Pb"];
+		dynCall_viiiiii = dynCalls["viiiiii"] = wasmExports["Qb"];
+		dynCall_iiii = dynCalls["iiii"] = wasmExports["Rb"];
+		dynCall_vfffiii = dynCalls["vfffiii"] = wasmExports["Sb"];
+		dynCall_viijijj = dynCalls["viijijj"] = wasmExports["Tb"];
+		dynCall_viiiif = dynCalls["viiiif"] = wasmExports["Ub"];
+		dynCall_iiiiiiiiiii = dynCalls["iiiiiiiiiii"] = wasmExports["Vb"];
+		dynCall_iiiiiii = dynCalls["iiiiiii"] = wasmExports["Wb"];
+		dynCall_iif = dynCalls["iif"] = wasmExports["Xb"];
+		dynCall_iiiii = dynCalls["iiiii"] = wasmExports["Yb"];
+		dynCall_vifi = dynCalls["vifi"] = wasmExports["Zb"];
+		dynCall_viif = dynCalls["viif"] = wasmExports["_b"];
+		dynCalls["viji"] = wasmExports["$b"];
+		dynCalls["iidiiiii"] = wasmExports["ac"];
+		dynCall_iiiiiiii = dynCalls["iiiiiiii"] = wasmExports["bc"];
+		dynCalls["iiiiiiiiiiiii"] = wasmExports["cc"];
+		dynCall_fiii = dynCalls["fiii"] = wasmExports["dc"];
+		dynCall_diii = dynCalls["diii"] = wasmExports["ec"];
+		dynCall_i = dynCalls["i"] = wasmExports["fc"];
+		dynCall_iiiiiiiiiiii = dynCalls["iiiiiiiiiiii"] = wasmExports["gc"];
+		dynCall_viiiiiiiiii = dynCalls["viiiiiiiiii"] = wasmExports["hc"];
+		dynCall_viiiiiiiiiiiiiii = dynCalls["viiiiiiiiiiiiiii"] = wasmExports["ic"];
+		dynCall_iiiiii = dynCalls["iiiiii"] = wasmExports["jc"];
+		dynCalls["iiiiiiiii"] = wasmExports["kc"];
+		dynCall_iiiiid = dynCalls["iiiiid"] = wasmExports["lc"];
+		dynCalls["iiiiijj"] = wasmExports["mc"];
+		dynCalls["iiiiiijj"] = wasmExports["nc"];
+		_asyncify_start_unwind = wasmExports["oc"];
+		_asyncify_stop_unwind = wasmExports["pc"];
+		_asyncify_start_rewind = wasmExports["qc"];
+		_asyncify_stop_rewind = wasmExports["rc"];
+		wasmMemory = wasmExports["Ea"];
+		wasmExports["Oa"];
 	}
 	var wasmImports = {
-		u: ___cxa_begin_catch,
-		D: ___cxa_end_catch,
-		b: ___cxa_find_matching_catch_2,
-		f: ___cxa_find_matching_catch_3,
-		T: ___cxa_rethrow,
-		n: ___cxa_throw,
-		S: ___cxa_uncaught_exceptions,
-		d: ___resumeException,
-		V: __abort_js,
-		Q: __tzset_js,
-		_: _emscripten_has_asyncify,
-		U: _emscripten_resize_heap,
-		w: _emscripten_sleep,
-		Z: _emwgpuAdapterRequestDevice,
-		da: _emwgpuBufferDestroy,
-		ca: _emwgpuBufferGetConstMappedRange,
-		ba: _emwgpuBufferMapAsync,
-		aa: _emwgpuBufferUnmap,
-		g: _emwgpuDelete,
-		Y: _emwgpuDeviceCreateBuffer,
-		X: _emwgpuDeviceCreateShaderModule,
-		$: _emwgpuDeviceDestroy,
-		W: _emwgpuInstanceRequestAdapter,
-		O: _environ_get,
-		P: _environ_sizes_get,
-		I: invoke_diii,
-		J: invoke_fiii,
-		k: invoke_i,
-		a: invoke_ii,
-		c: invoke_iii,
-		j: invoke_iiii,
-		h: invoke_iiiii,
-		R: invoke_iiiiid,
-		L: invoke_iiiiii,
-		p: invoke_iiiiiii,
-		K: invoke_iiiiiiii,
-		H: invoke_iiiiiiiiiiii,
-		i: invoke_v,
-		q: invoke_vi,
-		e: invoke_vii,
-		o: invoke_viii,
-		M: invoke_viiii,
-		m: invoke_viiiiiii,
-		y: invoke_viiiiiiiiii,
-		G: invoke_viiiiiiiiiiiiiii,
-		N: _random_get,
-		la: _wgpuAdapterGetInfo,
-		ga: _wgpuAdapterGetLimits,
-		x: _wgpuCommandEncoderBeginComputePass,
-		ea: _wgpuCommandEncoderCopyBufferToBuffer,
-		ha: _wgpuCommandEncoderCopyTextureToBuffer,
-		F: _wgpuCommandEncoderFinish,
-		A: _wgpuComputePassEncoderDispatchWorkgroups,
-		z: _wgpuComputePassEncoderEnd,
-		v: _wgpuComputePassEncoderSetBindGroup,
-		t: _wgpuComputePassEncoderSetPipeline,
-		ja: _wgpuComputePipelineGetBindGroupLayout,
-		ia: _wgpuDeviceCreateBindGroup,
-		B: _wgpuDeviceCreateCommandEncoder,
-		fa: _wgpuDeviceCreateComputePipeline,
-		r: _wgpuDeviceCreateTexture,
-		E: _wgpuQueueSubmit,
-		C: _wgpuQueueWriteBuffer,
-		ka: _wgpuQueueWriteTexture,
-		l: _wgpuTextureCreateView,
-		s: _wgpuTextureDestroy
+		k: ___cxa_begin_catch,
+		r: ___cxa_end_catch,
+		a: ___cxa_find_matching_catch_2,
+		h: ___cxa_find_matching_catch_3,
+		A: ___cxa_find_matching_catch_7,
+		W: ___cxa_rethrow,
+		s: ___cxa_throw,
+		V: ___cxa_uncaught_exceptions,
+		f: ___resumeException,
+		Y: __abort_js,
+		T: __tzset_js,
+		ba: _emscripten_has_asyncify,
+		X: _emscripten_resize_heap,
+		M: _emscripten_sleep,
+		aa: _emwgpuAdapterRequestDevice,
+		ga: _emwgpuBufferDestroy,
+		fa: _emwgpuBufferGetConstMappedRange,
+		ea: _emwgpuBufferMapAsync,
+		da: _emwgpuBufferUnmap,
+		m: _emwgpuDelete,
+		$: _emwgpuDeviceCreateBuffer,
+		_: _emwgpuDeviceCreateShaderModule,
+		ca: _emwgpuDeviceDestroy,
+		Z: _emwgpuInstanceRequestAdapter,
+		R: _environ_get,
+		S: _environ_sizes_get,
+		G: invoke_diii,
+		H: invoke_fiii,
+		p: invoke_i,
+		b: invoke_ii,
+		u: invoke_iif,
+		d: invoke_iii,
+		i: invoke_iiii,
+		o: invoke_iiiii,
+		U: invoke_iiiiid,
+		J: invoke_iiiiii,
+		v: invoke_iiiiiii,
+		I: invoke_iiiiiiii,
+		ia: invoke_iiiiiiiiiii,
+		D: invoke_iiiiiiiiiiii,
+		x: invoke_iiiiij,
+		z: invoke_iiij,
+		N: invoke_jiii,
+		e: invoke_v,
+		E: invoke_vfffiii,
+		c: invoke_vi,
+		F: invoke_vifi,
+		g: invoke_vii,
+		ha: invoke_viif,
+		j: invoke_viii,
+		Da: invoke_viiid,
+		O: invoke_viiiddi,
+		l: invoke_viiii,
+		K: invoke_viiiif,
+		w: invoke_viiiii,
+		t: invoke_viiiiii,
+		q: invoke_viiiiiii,
+		P: invoke_viiiiiiii,
+		B: invoke_viiiiiiiiii,
+		C: invoke_viiiiiiiiiiiiiii,
+		y: invoke_viijii,
+		ja: invoke_viijijj,
+		n: _llvm_eh_typeid_for,
+		Q: _random_get,
+		Ca: _wgpuAdapterGetInfo,
+		Ba: _wgpuAdapterGetLimits,
+		ya: _wgpuCommandEncoderBeginComputePass,
+		ka: _wgpuCommandEncoderCopyBufferToBuffer,
+		ma: _wgpuCommandEncoderCopyTextureToBuffer,
+		ta: _wgpuCommandEncoderFinish,
+		va: _wgpuComputePassEncoderDispatchWorkgroups,
+		ua: _wgpuComputePassEncoderEnd,
+		wa: _wgpuComputePassEncoderSetBindGroup,
+		xa: _wgpuComputePassEncoderSetPipeline,
+		oa: _wgpuComputePipelineGetBindGroupLayout,
+		na: _wgpuDeviceCreateBindGroup,
+		L: _wgpuDeviceCreateCommandEncoder,
+		la: _wgpuDeviceCreateComputePipeline,
+		qa: _wgpuDeviceCreateTexture,
+		sa: _wgpuQueueSubmit,
+		Aa: _wgpuQueueWriteBuffer,
+		pa: _wgpuQueueWriteTexture,
+		za: _wgpuTextureCreateView,
+		ra: _wgpuTextureDestroy
 	};
-	function invoke_iiii(index, a1, a2, a3) {
+	function invoke_viiid(index, a1, a2, a3, a4) {
 		var sp = stackSave();
 		try {
-			return dynCall_iiii(index, a1, a2, a3);
+			dynCall_viiid(index, a1, a2, a3, a4);
 		} catch (e) {
 			stackRestore(sp);
 			if (!(e instanceof EmscriptenEH)) throw e;
@@ -2484,6 +2531,76 @@ async function createImg2NumModule(moduleArg = {}) {
 			_setThrew(1, 0);
 		}
 	}
+	function invoke_v(index) {
+		var sp = stackSave();
+		try {
+			dynCall_v(index);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+		}
+	}
+	function invoke_viii(index, a1, a2, a3) {
+		var sp = stackSave();
+		try {
+			dynCall_viii(index, a1, a2, a3);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+		}
+	}
+	function invoke_viiii(index, a1, a2, a3, a4) {
+		var sp = stackSave();
+		try {
+			dynCall_viiii(index, a1, a2, a3, a4);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+		}
+	}
+	function invoke_viiiiiiii(index, a1, a2, a3, a4, a5, a6, a7, a8) {
+		var sp = stackSave();
+		try {
+			dynCall_viiiiiiii(index, a1, a2, a3, a4, a5, a6, a7, a8);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+		}
+	}
+	function invoke_viiiddi(index, a1, a2, a3, a4, a5, a6) {
+		var sp = stackSave();
+		try {
+			dynCall_viiiddi(index, a1, a2, a3, a4, a5, a6);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+		}
+	}
+	function invoke_viiiiiii(index, a1, a2, a3, a4, a5, a6, a7) {
+		var sp = stackSave();
+		try {
+			dynCall_viiiiiii(index, a1, a2, a3, a4, a5, a6, a7);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+		}
+	}
+	function invoke_viiiii(index, a1, a2, a3, a4, a5) {
+		var sp = stackSave();
+		try {
+			dynCall_viiiii(index, a1, a2, a3, a4, a5);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+		}
+	}
 	function invoke_ii(index, a1) {
 		var sp = stackSave();
 		try {
@@ -2504,10 +2621,121 @@ async function createImg2NumModule(moduleArg = {}) {
 			_setThrew(1, 0);
 		}
 	}
-	function invoke_v(index) {
+	function invoke_jiii(index, a1, a2, a3) {
 		var sp = stackSave();
 		try {
-			dynCall_v(index);
+			return dynCall_jiii(index, a1, a2, a3);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+			return 0n;
+		}
+	}
+	function invoke_iiiiij(index, a1, a2, a3, a4, a5) {
+		var sp = stackSave();
+		try {
+			return dynCall_iiiiij(index, a1, a2, a3, a4, a5);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+		}
+	}
+	function invoke_iiij(index, a1, a2, a3) {
+		var sp = stackSave();
+		try {
+			return dynCall_iiij(index, a1, a2, a3);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+		}
+	}
+	function invoke_viijii(index, a1, a2, a3, a4, a5) {
+		var sp = stackSave();
+		try {
+			dynCall_viijii(index, a1, a2, a3, a4, a5);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+		}
+	}
+	function invoke_viiiiii(index, a1, a2, a3, a4, a5, a6) {
+		var sp = stackSave();
+		try {
+			dynCall_viiiiii(index, a1, a2, a3, a4, a5, a6);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+		}
+	}
+	function invoke_iiii(index, a1, a2, a3) {
+		var sp = stackSave();
+		try {
+			return dynCall_iiii(index, a1, a2, a3);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+		}
+	}
+	function invoke_vfffiii(index, a1, a2, a3, a4, a5, a6) {
+		var sp = stackSave();
+		try {
+			dynCall_vfffiii(index, a1, a2, a3, a4, a5, a6);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+		}
+	}
+	function invoke_viijijj(index, a1, a2, a3, a4, a5, a6) {
+		var sp = stackSave();
+		try {
+			dynCall_viijijj(index, a1, a2, a3, a4, a5, a6);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+		}
+	}
+	function invoke_iiiiiiiiiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10) {
+		var sp = stackSave();
+		try {
+			return dynCall_iiiiiiiiiii(index, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+		}
+	}
+	function invoke_iif(index, a1, a2) {
+		var sp = stackSave();
+		try {
+			return dynCall_iif(index, a1, a2);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+		}
+	}
+	function invoke_viiiif(index, a1, a2, a3, a4, a5) {
+		var sp = stackSave();
+		try {
+			dynCall_viiiif(index, a1, a2, a3, a4, a5);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+		}
+	}
+	function invoke_iiiii(index, a1, a2, a3, a4) {
+		var sp = stackSave();
+		try {
+			return dynCall_iiiii(index, a1, a2, a3, a4);
 		} catch (e) {
 			stackRestore(sp);
 			if (!(e instanceof EmscriptenEH)) throw e;
@@ -2524,10 +2752,20 @@ async function createImg2NumModule(moduleArg = {}) {
 			_setThrew(1, 0);
 		}
 	}
-	function invoke_viiii(index, a1, a2, a3, a4) {
+	function invoke_viif(index, a1, a2, a3) {
 		var sp = stackSave();
 		try {
-			dynCall_viiii(index, a1, a2, a3, a4);
+			dynCall_viif(index, a1, a2, a3);
+		} catch (e) {
+			stackRestore(sp);
+			if (!(e instanceof EmscriptenEH)) throw e;
+			_setThrew(1, 0);
+		}
+	}
+	function invoke_vifi(index, a1, a2, a3) {
+		var sp = stackSave();
+		try {
+			dynCall_vifi(index, a1, a2, a3);
 		} catch (e) {
 			stackRestore(sp);
 			if (!(e instanceof EmscriptenEH)) throw e;
@@ -2548,16 +2786,6 @@ async function createImg2NumModule(moduleArg = {}) {
 		var sp = stackSave();
 		try {
 			return dynCall_iiiiid(index, a1, a2, a3, a4, a5);
-		} catch (e) {
-			stackRestore(sp);
-			if (!(e instanceof EmscriptenEH)) throw e;
-			_setThrew(1, 0);
-		}
-	}
-	function invoke_viii(index, a1, a2, a3) {
-		var sp = stackSave();
-		try {
-			dynCall_viii(index, a1, a2, a3);
 		} catch (e) {
 			stackRestore(sp);
 			if (!(e instanceof EmscriptenEH)) throw e;
@@ -2588,26 +2816,6 @@ async function createImg2NumModule(moduleArg = {}) {
 		var sp = stackSave();
 		try {
 			return dynCall_diii(index, a1, a2, a3);
-		} catch (e) {
-			stackRestore(sp);
-			if (!(e instanceof EmscriptenEH)) throw e;
-			_setThrew(1, 0);
-		}
-	}
-	function invoke_iiiii(index, a1, a2, a3, a4) {
-		var sp = stackSave();
-		try {
-			return dynCall_iiiii(index, a1, a2, a3, a4);
-		} catch (e) {
-			stackRestore(sp);
-			if (!(e instanceof EmscriptenEH)) throw e;
-			_setThrew(1, 0);
-		}
-	}
-	function invoke_viiiiiii(index, a1, a2, a3, a4, a5, a6, a7) {
-		var sp = stackSave();
-		try {
-			dynCall_viiiiiii(index, a1, a2, a3, a4, a5, a6, a7);
 		} catch (e) {
 			stackRestore(sp);
 			if (!(e instanceof EmscriptenEH)) throw e;
@@ -2659,11 +2867,11 @@ async function createImg2NumModule(moduleArg = {}) {
 		var makeWrapper_pp = (f) => (a0) => f(a0) >>> 0;
 		var makeWrapper_ppp = (f) => (a0, a1) => f(a0, a1) >>> 0;
 		var makeWrapper_p = (f) => () => f() >>> 0;
-		wasmExports["xa"] = makeWrapper_pp(wasmExports["xa"]);
-		wasmExports["_a"] = makeWrapper_ppp(wasmExports["_a"]);
-		wasmExports["cb"] = makeWrapper_pp(wasmExports["cb"]);
-		wasmExports["db"] = makeWrapper_p(wasmExports["db"]);
-		wasmExports["hb"] = makeWrapper_pp(wasmExports["hb"]);
+		wasmExports["Pa"] = makeWrapper_pp(wasmExports["Pa"]);
+		wasmExports["qb"] = makeWrapper_ppp(wasmExports["qb"]);
+		wasmExports["ub"] = makeWrapper_pp(wasmExports["ub"]);
+		wasmExports["vb"] = makeWrapper_p(wasmExports["vb"]);
+		wasmExports["zb"] = makeWrapper_pp(wasmExports["zb"]);
 		return wasmExports;
 	}
 	async function run() {

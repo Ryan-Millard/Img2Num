@@ -40,13 +40,13 @@ just cmake test-clean
 
 ### Python bindings tests
 
-To run the Python bindings test suite: Run Python tests
+To run the Python test suite: Run Python tests
 
 ```bash
 just py test
 ```
 
-This runs pytest against `bindings/py/tests` within the Python virtual environment.
+This runs pytest against [`bindings/py/tests`](https://github.com/Ryan-Millard/Img2Num/blob/dev/bindings/py/tests) and [`packages/py/tests`](https://github.com/Ryan-Millard/Img2Num/blob/dev/packages/py/tests) within the Python virtual environment.
 
 ## CI verification
 

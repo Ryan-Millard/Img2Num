@@ -4,7 +4,7 @@ URL: https://img2num.dev/docs/js/api/functions/imageToUint8ClampedArray
 
 > **imageToUint8ClampedArray** ( `file` ): `Promise` <{ `height` : `number` ; `pixels` : `Uint8ClampedArray` ; `width` : `number` ; }>
 
-Defined in: [imageToUint8ClampedArray.js:50](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/imageToUint8ClampedArray.js#L50)
+Defined in: [imageToUint8ClampedArray.js:49](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/imageToUint8ClampedArray.js#L49)
 
 **`Function`**
 
@@ -34,7 +34,7 @@ Reads an image file (PNG, JPEG, etc.) and returns its pixel data as a `Uint8Clam
 
 ## Throws
 
-Will not throw in current implementation, but could reject if the image fails to load.
+The returned promise rejects with an `Error("Failed to load image")` if the file cannot be decoded as an image.
 
 ## Example
 
@@ -47,10 +47,6 @@ fileInput.addEventListener("change", async (event) => {
   console.log("Pixels:", pixels);
 });
 ```
-
-## Todo
-
-Add error handling for invalid or corrupt image files.
 
 ## Variation
 

@@ -2559,9 +2559,9 @@
 			"sources": [
 				{
 					"fileName": "imageToUint8ClampedArray.js",
-					"line": 50,
+					"line": 49,
 					"character": 16,
-					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/imageToUint8ClampedArray.js#L50"
+					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/imageToUint8ClampedArray.js#L49"
 				}
 			],
 			"signatures": [
@@ -2658,7 +2658,15 @@
 								"content": [
 									{
 										"kind": "text",
-										"text": "Will not throw in current implementation, but could reject if the image fails to load."
+										"text": "The returned promise rejects with an "
+									},
+									{
+										"kind": "code",
+										"text": "`Error(\"Failed to load image\")`"
+									},
+									{
+										"kind": "text",
+										"text": " if the file cannot be decoded as an image."
 									}
 								]
 							},
@@ -2668,15 +2676,6 @@
 									{
 										"kind": "code",
 										"text": "```ts\nconst fileInput = document.querySelector(\"#fileInput\");\nfileInput.addEventListener(\"change\", async (event) => {\n  const file = event.target.files[0];\n  const { pixels, width, height } = await imageToUint8ClampedArray(file);\n  console.log(\"Width:\", width, \"Height:\", height);\n  console.log(\"Pixels:\", pixels);\n});\n```"
-									}
-								]
-							},
-							{
-								"tag": "@todo",
-								"content": [
-									{
-										"kind": "text",
-										"text": "Add error handling for invalid or corrupt image files."
 									}
 								]
 							},
@@ -2697,9 +2696,9 @@
 					"sources": [
 						{
 							"fileName": "imageToUint8ClampedArray.js",
-							"line": 50,
+							"line": 49,
 							"character": 16,
-							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/imageToUint8ClampedArray.js#L50"
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/imageToUint8ClampedArray.js#L49"
 						}
 					],
 					"parameters": [
