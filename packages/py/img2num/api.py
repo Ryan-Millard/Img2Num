@@ -24,8 +24,10 @@ def _inject_dimensions(image_arg="image"):
         @functools.wraps(fn)
         def wrapper(*args, **kwargs):
             image = kwargs[image_arg] if image_arg in kwargs else args[idx]
-            if image.ndim < 2:
-                raise ValueError("Expected (H, W) or (H, W, C)")
+            if image.ndim != 3 or image.shape[2] != 4:
+                raise ValueError("Expected an RGBA image with shape (H, W, 4)")
+            if image.dtype != np.uint8:
+                raise ValueError("Expected an RGBA image with np.uint8 data type")
             height, width = image.shape[:2]
             return fn(*args, width=width, height=height, **kwargs)
 
@@ -110,19 +112,31 @@ def black_threshold_image(
     image: npt.NDArray[np.uint8], num_thresholds: int, *, width: int, height: int
 ) -> npt.NDArray[np.uint8]:
     """
-    Apply thresholding with a bias in favor of black to the image.
+    Force near-black pixels to pure black.
+
+    A pixel is set to black when all three of its colour channels are strictly
+    below ``num_thresholds``; every other pixel is left untouched. Because the
+    comparison is applied per channel, ``num_thresholds`` is a brightness
+    cutoff, not a number of output colour levels.
 
     Parameters
     ----------
     image : numpy.ndarray
         Input image as a uint8 numpy array.
     num_thresholds : int
-        Number of threshold levels to apply.
+        Per-channel brightness cutoff in the 0-255 range. Pixels whose red,
+        green and blue values are all below this value become black. Values
+        of 0 or less leave the image unchanged.
 
     Returns
     -------
     numpy.ndarray
-        Thresholded image as a uint8 numpy array.
+        A copy of the image with near-black pixels darkened to pure black, as
+        a uint8 numpy array.
+
+    Notes
+    -----
+    Darkened pixels also have their alpha channel set to an opaque 255.
     """
     return _black_threshold_image(image, width, height, num_thresholds)
 

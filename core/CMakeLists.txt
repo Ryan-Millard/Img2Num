@@ -4,7 +4,7 @@
 project(Img2Num
   LANGUAGES CXX
   # Don't change the inline comment below - release-please needs it
-  VERSION 0.2.0 # x-release-please-version
+  VERSION 0.3.0 # x-release-please-version
 )
 
 include(CMakePackageConfigHelpers)
@@ -110,7 +110,7 @@ target_include_directories(Img2Num
 
 if (EMSCRIPTEN)
   message("using emdawnwebgpu port")
-  target_compile_options(Img2Num PRIVATE "--use-port=emdawnwebgpu")
+  target_compile_options(Img2Num PRIVATE "--use-port=emdawnwebgpu" -fexceptions)
   target_link_options(Img2Num PRIVATE "--use-port=emdawnwebgpu" "SHELL:-s ASYNCIFY=1")
 else()
 
