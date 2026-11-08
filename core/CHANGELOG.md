@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.4.0](https://github.com/Ryan-Millard/Img2Num/compare/cpp-v0.3.0...cpp-v0.4.0) (2026-11-08)
+
+
+### ✨ Features
+
+* **gpu:** truly parallel execution ([#784](https://github.com/Ryan-Millard/Img2Num/issues/784)) ([dfeec90](https://github.com/Ryan-Millard/Img2Num/commit/dfeec90a26d83d29584a96f0f0b5f7e2e8f31e93))
+
+
+### 🐛 Bug Fixes
+
+* **gpu:** fail clearly on missing embedded shader IDs ([#813](https://github.com/Ryan-Millard/Img2Num/issues/813)) ([69a4f5f](https://github.com/Ryan-Millard/Img2Num/commit/69a4f5fb62cb34befd8a800a95819df641dab462))
+
+
+### 🔧 Miscellaneous
+
+* **core:** add Catch2 test infrastructure for the C++ core ([#698](https://github.com/Ryan-Millard/Img2Num/issues/698)) ([5e2da72](https://github.com/Ryan-Millard/Img2Num/commit/5e2da729c97d263f7fdc64761f3c91a48aed90a4))
+
+
+### ♻️ Refactoring
+
+* **contours:** remove unreachable contour-tracing code ([#768](https://github.com/Ryan-Millard/Img2Num/issues/768)) ([80c2a13](https://github.com/Ryan-Millard/Img2Num/commit/80c2a13ac5d57feb088315206a44d75bbb817f6b)), closes [#733](https://github.com/Ryan-Millard/Img2Num/issues/733)
+
+
+### ✅ Tests
+
+* add C++ and C ABI test coverage ([#702](https://github.com/Ryan-Millard/Img2Num/issues/702)) ([4cf8ec0](https://github.com/Ryan-Millard/Img2Num/commit/4cf8ec0e1ee479c9f78f6cce2665392c92271fe9))
+
 ## [0.3.0](https://github.com/Ryan-Millard/Img2Num/compare/cpp-v0.2.0...cpp-v0.3.0) (2026-10-21)
 
 
