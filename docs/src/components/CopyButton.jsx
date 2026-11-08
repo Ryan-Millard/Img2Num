@@ -14,6 +14,7 @@ export default function CopyButton({ text, label = "Copy", className }) {
   }, [copied]);
 
   async function copy() {
+    let ok = true;
     try {
       await navigator.clipboard.writeText(text);
     } catch {
@@ -24,11 +25,16 @@ export default function CopyButton({ text, label = "Copy", className }) {
       area.style.position = "fixed";
       area.style.opacity = "0";
       document.body.appendChild(area);
-      area.select();
-      document.execCommand("copy");
-      document.body.removeChild(area);
+      try {
+        area.select();
+        ok = document.execCommand("copy");
+      } catch {
+        ok = false;
+      } finally {
+        document.body.removeChild(area);
+      }
     }
-    setCopied(true);
+    if (ok) setCopied(true);
   }
 
   return (

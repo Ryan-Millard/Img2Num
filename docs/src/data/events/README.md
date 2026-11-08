@@ -10,7 +10,8 @@ and never calls the GitHub API, so the pages cannot break on a rate limit or a m
 1. Copy `hacktoberfest-2026.json` to `<slug>.json` (for example `24-pull-requests-2026.json`) and change `slug`,
    `title`, `tagline`, `start`, `end` and `maintainers`. The file name must match the slug. `repo` is the GitHub
    repository the pull requests were merged into; the headline numbers on the page link to its merged pull requests
-   and contributors graph filtered to the event's dates.
+   and contributors graph filtered to the event's dates. Make sure to update the file as the contributors, etc.
+   may have changed.
 2. Put the badge artwork in `static/img/events/<slug>/` — an SVG, plus a PNG for sites that refuse SVG — and point
    `badge.image` and `badge.png` at it. Optional `badge.imageDark` / `badge.pngDark` are dark-mode variants: the site
    then switches badges with its theme and the README snippet becomes `<picture>` markup that follows the reader's

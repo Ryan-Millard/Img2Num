@@ -19,7 +19,7 @@ t-shirt at the end of it. A reviewed and merged pull request in a real project w
 
 <strong>twenty-eight of you took it!</strong>
 
-Between 3 and 30 October we merged **46 pull requests from 28 contributors**. None of the contributors had contributors to
+Between 3 and 30 October we merged **46 pull requests from 28 contributors**. None of the contributors had contributed to
 Img2Num before October. They fixed output bugs in the C++ core, made the Python bindings release the GIL,
 gave the npm package TypeScript types, rebuilt pages of this site, and deleted more than 1 300 lines of code that was no longer
 needed. Every one of them is now listed on the [Hacktoberfest 2026 event page](/events/hacktoberfest-2026/), along with
@@ -41,7 +41,7 @@ This post is the long version that explains what got built, what it changed, and
 - **At least 29 issues closed** by those pull requests.
 - **Under four days** from opening a pull request to merging it, at the median. Twelve merged within a day; 37 of the
   46 within a week.
-- **10 contributors opened more than one pull request.** Two of them, [@Lothnic](https://github.com/Lothnic),
+- **10 contributors opened more than one pull request.** Three of them, [@Lothnic](https://github.com/Lothnic),
   [@saptadeep12](https://github.com/saptadeep12), and [@nitin-kumar-code](https://github.com/nitin-kumar-code) opened five each.
 
 ## What got built
@@ -198,8 +198,8 @@ dark versions, with ready-made Markdown and HTML snippets for a README or a prof
 into LinkedIn's _Licenses & certifications_. Everything is at the top of the
 [event page](/events/hacktoberfest-2026/).
 
-Hacktoberfest did not hand out anything this year. We thought 28 first merged pull requests deserved something you can
-keep.
+Hacktoberfest did not count pull requests toward rewards this year. We thought 28 first merged pull requests deserved
+something you can keep.
 
 ## How it went from our side
 

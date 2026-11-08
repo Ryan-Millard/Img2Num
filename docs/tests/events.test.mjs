@@ -1,249 +1,247 @@
-/**
- * Contributor events (Hacktoberfest, 24 Pull Requests, sprints, ...).
- *
- * Each event is one JSON file in `src/data/events/`, dated with `start` and
- * `end` like a blog post is dated with `date`. The events plugin validates the
- * files at build time with `validateEvent`, derives what the pages render with
- * `prepareEvent`, and sorts newest first with `byNewest`. Nothing here touches
- * Node or browser APIs, so it runs in the plugin, in React, and in the tests.
- */
+import assert from "node:assert/strict";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
+import test from "node:test";
+import {
+  badgeSnippets,
+  byNewest,
+  contributorsGraphUrl,
+  eventPath,
+  formatDateRange,
+  mergedPrsUrl,
+  prepareEvent,
+  validateEvent,
+} from "../src/utils/events.js";
 
-export const EVENTS_PATH = "/events/";
+const REPO_URL = "https://github.com/Ryan-Millard/Img2Num";
+/** The encoded GitHub search for pull requests merged during the fixture event. */
+const MERGED_QUERY = "is%3Apr%20is%3Amerged%20merged%3A2026-10-01..2026-10-31";
 
-const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
-const GITHUB_LOGIN_PATTERN = /^[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}$/;
-const GITHUB_REPO_PATTERN = /^[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}\/[\w.-]+$/;
-const EVENT_IMAGE_PATTERN = /^\/img\/events\/[\w-]+\/[\w-]+\.(png|jpe?g|webp|svg)$/i;
+const pr = (number, title = `fix(core): change ${number}`) => ({
+  number,
+  title,
+  url: `${REPO_URL}/pull/${number}`,
+  mergedAt: "2026-10-12",
+});
 
-function isText(value) {
-  return typeof value === "string" && value.trim().length > 0;
+const event = {
+  slug: "hacktoberfest-2026",
+  title: "Hacktoberfest 2026",
+  tagline: "Everyone who had a pull request merged during Hacktoberfest 2026.",
+  repo: "Ryan-Millard/Img2Num",
+  start: "2026-10-01",
+  end: "2026-10-31",
+  badge: {
+    image: "/img/events/hacktoberfest-2026/badge.svg",
+    png: "/img/events/hacktoberfest-2026/badge.png",
+    alt: "Img2Num contributor — Hacktoberfest 2026",
+  },
+  maintainers: ["Ryan-Millard"],
+  contributors: [
+    { username: "zed", firstTime: false, prs: [pr(3), pr(1)] },
+    { username: "Ryan-Millard", prs: [pr(7)] },
+    { username: "Alice", firstTime: true, prs: [pr(2)] },
+  ],
+};
+
+/** A valid event each test can adjust. */
+function withEvent(overrides = {}) {
+  return { ...structuredClone(event), ...overrides };
 }
 
-function isIsoDate(value) {
-  return ISO_DATE_PATTERN.test(value ?? "") && !Number.isNaN(Date.parse(value));
-}
+test("a complete event validates and optional fields may be omitted", () => {
+  assert.equal(validateEvent(event), event);
+  const minimal = withEvent({ badge: { image: event.badge.image, alt: event.badge.alt }, contributors: [] });
+  assert.equal(validateEvent(minimal), minimal);
+  const linked = withEvent({
+    links: [
+      { label: "Recap", to: "/blog/recap" },
+      { label: "Hacktoberfest", href: "https://hacktoberfest.com/" },
+    ],
+  });
+  assert.equal(validateEvent(linked), linked);
+});
 
-function isWebUrl(value) {
-  try {
-    return ["http:", "https:"].includes(new URL(value).protocol);
-  } catch {
-    return false;
-  }
-}
+test("incomplete or malformed events fail with the field named", () => {
+  for (const entry of [undefined, null, [], "event"])
+    assert.throws(() => validateEvent(entry, "events.json"), /events\.json: invalid or missing event object/);
+  for (const [field, value] of [
+    ["slug", "Hacktoberfest 2026"],
+    ["slug", ""],
+    ["title", "  "],
+    ["tagline", 7],
+    ["repo", "Img2Num"],
+    ["repo", "https://github.com/Ryan-Millard/Img2Num"],
+    ["repo", undefined],
+    ["start", "1 October 2026"],
+    ["end", "2026-13-01"],
+    ["maintainers", "Ryan-Millard"],
+    ["contributors", {}],
+  ])
+    assert.throws(() => validateEvent(withEvent({ [field]: value })), new RegExp(`invalid or missing ${field}`));
+  assert.throws(() => validateEvent(withEvent({ end: "2026-09-30" })), /end \(must not be before start\)/);
+  assert.throws(() => validateEvent(withEvent({ maintainers: ["not a login"] })), /maintainer login/);
+});
 
-/**
- * Throw a message naming the broken field, so a typo fails the build instead
- * of shipping a half-rendered page. Returns the event so calls can chain.
- */
-export function validateEvent(event, source = "event") {
-  const fail = (what) => {
-    throw new Error(`${source}: invalid or missing ${what}.`);
-  };
+test("badges must be local event images with alt text", () => {
+  for (const badge of [
+    undefined,
+    { alt: "x" },
+    { image: "https://example.com/badge.svg", alt: "x" },
+    { image: "/img/badge.svg", alt: "x" },
+    { image: "/img/events/hacktoberfest-2026/../badge.svg", alt: "x" },
+    { image: event.badge.image, png: "/img/events/x/badge.gif", alt: "x" },
+    { image: event.badge.image, imageDark: "badge-dark.svg", alt: "x" },
+    { image: event.badge.image, alt: "" },
+  ])
+    assert.throws(() => validateEvent(withEvent({ badge })), /badge/);
+});
 
-  if (!event || typeof event !== "object" || Array.isArray(event)) fail("event object");
-  if (!isText(event.slug) || !SLUG_PATTERN.test(event.slug)) fail("slug (lowercase words joined by hyphens)");
-  if (!isText(event.title)) fail("title");
-  if (!isText(event.tagline)) fail("tagline");
-  if (!GITHUB_REPO_PATTERN.test(event.repo ?? "")) fail('repo ("owner/name" on GitHub)');
-  if (!isIsoDate(event.start)) fail("start (YYYY-MM-DD)");
-  if (!isIsoDate(event.end)) fail("end (YYYY-MM-DD)");
-  if (event.end < event.start) fail("end (must not be before start)");
+test("links need a label and either an internal path or a web URL", () => {
+  for (const links of [
+    {},
+    [{ to: "/blog" }],
+    [{ label: "x" }],
+    [{ label: "x", href: "javascript:alert(1)" }],
+    [{ label: "x", to: "blog/recap" }],
+  ])
+    assert.throws(() => validateEvent(withEvent({ links })), /link/);
+});
 
-  const badge = event.badge;
-  if (!badge || typeof badge !== "object") fail("badge");
-  if (!EVENT_IMAGE_PATTERN.test(badge.image ?? "")) fail("badge.image (an image under /img/events/<slug>/)");
-  for (const optional of ["imageDark", "png", "pngDark"]) {
-    if (badge[optional] !== undefined && !EVENT_IMAGE_PATTERN.test(badge[optional]))
-      fail(`badge.${optional} (an image under /img/events/<slug>/)`);
-  }
-  if (!isText(badge.alt)) fail("badge.alt");
+test("contributors need a unique GitHub login and at least one well-formed pull request", () => {
+  const bad = (contributor, pattern) =>
+    assert.throws(() => validateEvent(withEvent({ contributors: [contributor] })), pattern);
+  bad({ username: "Mayank Joshi", prs: [pr(1)] }, /contributor 1 username/);
+  bad({ username: "octocat", prs: [] }, /at least one merged pull request/);
+  bad({ username: "octocat", firstTime: "yes", prs: [pr(1)] }, /firstTime \(boolean\)/);
+  bad({ username: "octocat", prs: [{ ...pr(1), number: "1" }] }, /pull request number/);
+  bad({ username: "octocat", prs: [{ ...pr(1), title: "" }] }, /pull request #1 title/);
+  bad({ username: "octocat", prs: [{ ...pr(1), url: "/pull/1" }] }, /pull request #1 url/);
+  bad({ username: "octocat", prs: [{ ...pr(1), mergedAt: "12 Oct" }] }, /pull request #1 mergedAt/);
+  const duplicates = [
+    { username: "octocat", prs: [pr(1)] },
+    { username: "OctoCat", prs: [pr(2)] },
+  ];
+  assert.throws(() => validateEvent(withEvent({ contributors: duplicates })), /duplicate "OctoCat"/);
+});
 
-  if (!Array.isArray(event.maintainers)) fail("maintainers array");
-  for (const login of event.maintainers) {
-    if (!GITHUB_LOGIN_PATTERN.test(login ?? "")) fail(`maintainer login "${login}"`);
-  }
+test("prepareEvent removes maintainers, sorts contributors and pull requests, and derives the numbers", () => {
+  const prepared = prepareEvent(event);
 
-  if (event.links !== undefined) {
-    if (!Array.isArray(event.links)) fail("links array");
-    for (const link of event.links) {
-      if (!link || !isText(link.label)) fail("link label");
-      const internal = typeof link.to === "string" && link.to.startsWith("/");
-      if (!internal && !isWebUrl(link.href))
-        fail(`link "${link.label}" (needs an internal "to" path or an HTTP(S) "href")`);
+  assert.equal(prepared.path, "/events/hacktoberfest-2026/");
+  assert.equal(prepared.year, "2026");
+  assert.equal(prepared.dateRange, "1–31 October 2026");
+  assert.equal(prepared.endText, "31 October 2026");
+  assert.deepEqual(
+    prepared.contributors.map((c) => c.username),
+    ["Alice", "zed"],
+  );
+  assert.deepEqual(
+    prepared.contributors[1].prs.map((p) => p.number),
+    [1, 3],
+  );
+  assert.equal(prepared.contributors[0].anchor, "alice");
+  assert.equal(prepared.contributors[0].avatarUrl, "https://github.com/Alice.png?size=96");
+  assert.equal(prepared.contributors[0].profileUrl, "https://github.com/Alice");
+  assert.equal(prepared.contributors[0].allPrsUrl, `${REPO_URL}/pulls?q=${MERGED_QUERY}%20author%3AAlice`);
+  assert.deepEqual(prepared.stats, { contributors: 2, prs: 3, firstTime: 1 });
+  assert.deepEqual(prepared.urls, {
+    repo: REPO_URL,
+    mergedPrs: `${REPO_URL}/pulls?q=${MERGED_QUERY}%20-author%3ARyan-Millard`,
+    contributors: `${REPO_URL}/graphs/contributors?from=2026-10-01&to=2026-10-31&type=c`,
+  });
+  assert.deepEqual(prepared.maintainers, [{ username: "Ryan-Millard", profileUrl: "https://github.com/Ryan-Millard" }]);
+  assert.deepEqual(prepared.links, []);
+  assert.equal(prepared.badge.png, event.badge.png);
+  assert.equal(prepared.badge.imageDark, null);
+});
+
+test("the first-time count is null when no contributor records it, so the page can hide it", () => {
+  const prepared = prepareEvent(withEvent({ contributors: [{ username: "zed", prs: [pr(1)] }] }));
+  assert.equal(prepared.stats.firstTime, null);
+  assert.equal(prepared.contributors[0].firstTime, false);
+  assert.equal(prepareEvent(withEvent({ badge: { image: event.badge.image, alt: "x" } })).badge.png, null);
+});
+
+test("the GitHub links are filtered to the event's dates, and the merged list leaves the maintainers out", () => {
+  const twoMaintainers = withEvent({ maintainers: ["Ryan-Millard", "krasner"] });
+  assert.equal(
+    decodeURIComponent(mergedPrsUrl(twoMaintainers).split("?q=")[1]),
+    "is:pr is:merged merged:2026-10-01..2026-10-31 -author:Ryan-Millard -author:krasner",
+  );
+  assert.equal(
+    decodeURIComponent(mergedPrsUrl(twoMaintainers, "octocat").split("?q=")[1]),
+    "is:pr is:merged merged:2026-10-01..2026-10-31 author:octocat",
+  );
+  assert.equal(contributorsGraphUrl(event), `${REPO_URL}/graphs/contributors?from=2026-10-01&to=2026-10-31&type=c`);
+});
+
+test("events sort newest first by end date, like blog posts by date", () => {
+  const sorted = [
+    { start: "2026-10-01", end: "2026-10-31" },
+    { start: "2026-12-01", end: "2026-12-24" },
+    { start: "2026-10-11", end: "2026-10-18" },
+    { start: "2025-10-01", end: "2025-10-31" },
+  ].sort(byNewest);
+  assert.deepEqual(
+    sorted.map((e) => e.end),
+    ["2026-12-24", "2026-10-31", "2026-10-18", "2025-10-31"],
+  );
+});
+
+test("date ranges read naturally inside and across months and years", () => {
+  assert.equal(formatDateRange("2026-10-01", "2026-10-31"), "1–31 October 2026");
+  assert.equal(formatDateRange("2026-11-25", "2026-12-24"), "25 November – 24 December 2026");
+  assert.equal(formatDateRange("2026-12-01", "2027-01-15"), "1 December 2026 – 15 January 2027");
+  assert.equal(formatDateRange("2026-10-10", "2026-10-10"), "10 October 2026");
+});
+
+test("every badge option links back to the event page, and HTML uses <picture> when there is a dark variant", () => {
+  const site = "https://img2num.dev";
+  const page = `${site}/events/hacktoberfest-2026/`;
+  const light = `${site}/img/events/hacktoberfest-2026/badge.svg`;
+  const dark = `${site}/img/events/hacktoberfest-2026/badge-dark.svg`;
+  const img = `<img alt="Img2Num contributor — Hacktoberfest 2026" src="${light}" width="160">`;
+
+  // A trailing slash on the site URL must not double up in the addresses.
+  const plain = badgeSnippets(`${site}/`, prepareEvent(event));
+  assert.equal(plain.pageUrl, page);
+  assert.equal(plain.markdown, `[![Img2Num contributor — Hacktoberfest 2026](${light})](${page})`);
+  assert.equal(plain.html, `<a href="${page}">${img}</a>`);
+  assert.deepEqual(plain.images, [
+    { label: "SVG", url: light },
+    { label: "PNG", url: `${site}/img/events/hacktoberfest-2026/badge.png` },
+  ]);
+
+  const darkPath = "/img/events/hacktoberfest-2026/badge-dark.svg";
+  const themed = badgeSnippets(site, prepareEvent(withEvent({ badge: { ...event.badge, imageDark: darkPath } })));
+  assert.equal(
+    themed.html,
+    [
+      `<a href="${page}">`,
+      "  <picture>",
+      `    <source media="(prefers-color-scheme: dark)" srcset="${dark}">`,
+      `    ${img}`,
+      "  </picture>",
+      "</a>",
+    ].join("\n"),
+  );
+  assert.equal(themed.markdown, plain.markdown, "Markdown cannot switch images, so it always uses the light badge");
+  assert.deepEqual(
+    themed.images.map((i) => i.label),
+    ["SVG", "Dark SVG", "PNG"],
+  );
+  assert.equal(eventPath("24-pull-requests-2026"), "/events/24-pull-requests-2026/");
+});
+
+test("every committed event validates, is named after its slug, and has its badge images", () => {
+  const dir = new URL("../src/data/events/", import.meta.url);
+  const files = readdirSync(dir).filter((file) => file.endsWith(".json"));
+  assert.ok(files.length > 0, "no event files found");
+  for (const file of files) {
+    const data = validateEvent(JSON.parse(readFileSync(new URL(file, dir), "utf8")), file);
+    assert.equal(`${data.slug}.json`, file, `${file} should be named after its slug`);
+    for (const image of [data.badge.image, data.badge.imageDark, data.badge.png, data.badge.pngDark].filter(Boolean)) {
+      assert.ok(existsSync(new URL(`../static${image}`, import.meta.url)), `Missing image: ${image}`);
     }
   }
-
-  if (!Array.isArray(event.contributors)) fail("contributors array");
-  const seen = new Set();
-  event.contributors.forEach((contributor, index) => {
-    const where = `contributor ${index + 1}`;
-    if (!contributor || typeof contributor !== "object") fail(`${where} object`);
-    if (!GITHUB_LOGIN_PATTERN.test(contributor.username ?? "")) fail(`${where} username (GitHub login)`);
-    const key = contributor.username.toLowerCase();
-    if (seen.has(key)) fail(`${where} username (duplicate "${contributor.username}")`);
-    seen.add(key);
-    if (contributor.firstTime !== undefined && typeof contributor.firstTime !== "boolean")
-      fail(`${where} firstTime (boolean)`);
-    if (!Array.isArray(contributor.prs) || contributor.prs.length === 0)
-      fail(`${where} prs (at least one merged pull request)`);
-    for (const pr of contributor.prs) {
-      if (!pr || !Number.isInteger(pr.number) || pr.number <= 0) fail(`${where} pull request number`);
-      if (!isText(pr.title)) fail(`${where} pull request #${pr.number} title`);
-      if (!isWebUrl(pr.url)) fail(`${where} pull request #${pr.number} url`);
-      if (pr.mergedAt !== undefined && !isIsoDate(pr.mergedAt))
-        fail(`${where} pull request #${pr.number} mergedAt (YYYY-MM-DD)`);
-    }
-  });
-
-  return event;
-}
-
-export function eventPath(slug) {
-  return `${EVENTS_PATH}${slug}/`;
-}
-
-/** Newest event first: by end date, then start date. */
-export function byNewest(a, b) {
-  return b.end.localeCompare(a.end) || b.start.localeCompare(a.start);
-}
-
-/** "1 October 2026", in UTC so the build machine's time zone cannot shift the day. */
-export function formatDate(iso, options = {}) {
-  return new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    timeZone: "UTC",
-    ...options,
-  });
-}
-
-/** "1–31 October 2026", "25 November – 24 December 2026", or two full dates across years. */
-export function formatDateRange(start, end) {
-  if (start === end) return formatDate(start);
-  const sameYear = start.slice(0, 4) === end.slice(0, 4);
-  const sameMonth = sameYear && start.slice(5, 7) === end.slice(5, 7);
-  if (sameMonth) return `${Number(start.slice(8, 10))}–${formatDate(end)}`;
-  if (sameYear) return `${formatDate(start, { year: undefined })} – ${formatDate(end)}`;
-  return `${formatDate(start)} – ${formatDate(end)}`;
-}
-
-export function repoUrl(event) {
-  return `https://github.com/${event.repo}`;
-}
-
-/**
- * The GitHub search for the pull requests merged during the event: everyone's, minus the
- * maintainers' (the pages do not count those), or one contributor's with `author`.
- */
-export function mergedPrsUrl(event, author) {
-  const terms = [`is:pr is:merged merged:${event.start}..${event.end}`];
-  if (author) terms.push(`author:${author}`);
-  else terms.push(...event.maintainers.map((login) => `-author:${login}`));
-  return `${repoUrl(event)}/pulls?q=${encodeURIComponent(terms.join(" "))}`;
-}
-
-/** GitHub's contributors graph, narrowed to the event's dates. */
-export function contributorsGraphUrl(event) {
-  return `${repoUrl(event)}/graphs/contributors?from=${event.start}&to=${event.end}&type=c`;
-}
-
-/**
- * Everything the pages render, derived once at build time: maintainers taken
- * out of the contributor list, contributors sorted alphabetically, pull
- * requests sorted by number, the headline numbers and the GitHub links behind them.
- */
-export function prepareEvent(event) {
-  const maintainers = new Set(event.maintainers.map((login) => login.toLowerCase()));
-  const hasFirstTimeData = event.contributors.some((c) => c.firstTime !== undefined);
-
-  const contributors = event.contributors
-    .filter((c) => !maintainers.has(c.username.toLowerCase()))
-    .map((c) => ({
-      username: c.username,
-      anchor: c.username.toLowerCase(),
-      profileUrl: `https://github.com/${c.username}`,
-      // GitHub serves avatars at this address without an API call or a token.
-      avatarUrl: `https://github.com/${c.username}.png?size=96`,
-      firstTime: c.firstTime === true,
-      prs: [...c.prs].sort((a, b) => a.number - b.number),
-      allPrsUrl: mergedPrsUrl(event, c.username),
-    }))
-    .sort((a, b) => a.username.localeCompare(b.username, "en", { sensitivity: "base" }));
-
-  return {
-    slug: event.slug,
-    path: eventPath(event.slug),
-    title: event.title,
-    tagline: event.tagline,
-    repo: event.repo,
-    start: event.start,
-    end: event.end,
-    year: event.end.slice(0, 4),
-    dateRange: formatDateRange(event.start, event.end),
-    endText: formatDate(event.end),
-    urls: {
-      repo: repoUrl(event),
-      mergedPrs: mergedPrsUrl(event),
-      contributors: contributorsGraphUrl(event),
-    },
-    badge: {
-      image: event.badge.image,
-      imageDark: event.badge.imageDark ?? null,
-      png: event.badge.png ?? null,
-      pngDark: event.badge.pngDark ?? null,
-      alt: event.badge.alt,
-    },
-    links: event.links ?? [],
-    maintainers: event.maintainers.map((login) => ({ username: login, profileUrl: `https://github.com/${login}` })),
-    contributors,
-    stats: {
-      contributors: contributors.length,
-      prs: contributors.reduce((sum, c) => sum + c.prs.length, 0),
-      // null means "not recorded", so the page hides the number instead of showing 0.
-      firstTime: hasFirstTimeData ? contributors.filter((c) => c.firstTime).length : null,
-    },
-  };
-}
-
-/**
- * Every way a contributor can use the badge, all pointing back at the event page (that
- * link is how anyone verifies it):
- * - `markdown`: for a GitHub profile README, GitLab, Dev.to — anywhere Markdown works.
- * - `html`: for websites, and GitHub READMEs too. With a dark variant it is the <picture>
- *   markup GitHub supports, so the badge follows the reader's colour scheme.
- * - `images`: the direct addresses, for anywhere that takes an image URL or an upload.
- * - `pageUrl`: the event page, e.g. as the credential URL of a LinkedIn certification.
- */
-export function badgeSnippets(siteUrl, event) {
-  const base = siteUrl.replace(/\/+$/, "");
-  const { image, imageDark, png, pngDark, alt } = event.badge;
-  const pageUrl = `${base}${event.path}`;
-  const img = `<img alt="${alt}" src="${base}${image}" width="160">`;
-  const html = imageDark
-    ? [
-        `<a href="${pageUrl}">`,
-        "  <picture>",
-        `    <source media="(prefers-color-scheme: dark)" srcset="${base}${imageDark}">`,
-        `    ${img}`,
-        "  </picture>",
-        "</a>",
-      ].join("\n")
-    : `<a href="${pageUrl}">${img}</a>`;
-  const images = [
-    ["SVG", image],
-    ["Dark SVG", imageDark],
-    ["PNG", png],
-    ["Dark PNG", pngDark],
-  ]
-    .filter(([, path]) => path)
-    .map(([label, path]) => ({ label, url: `${base}${path}` }));
-
-  return {
-    pageUrl,
-    markdown: `[![${alt}](${base}${image})](${pageUrl})`,
-    html,
-    images,
-  };
-}
+});
