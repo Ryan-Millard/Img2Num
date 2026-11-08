@@ -2,24 +2,21 @@
 
 URL: https://img2num.dev/blog/authors/ryan-millard
 
-## Img2Num JS 0.4.2: One npm Package, Five Purpose-Built WebAssembly Bundles
+## Hacktoberfest 2026: 28 first-time contributors, 46 merged pull requests 🦔
 
-August 19, 2026 · 12 min read
+November 8, 2026 · 13 min read
 ![Ryan Millard](https://avatars.githubusercontent.com/u/142347829?v=4) Ryan Millard
 Img2Num Author
 
-![Ayush Jaiswal](https://github.com/jazayush.png) Ayush Jaiswal
-Img2Num Contributor
+![Hero](/assets/images/social-9c8b3283247cf041e50460bce0894b6d.webp)
 
-![Hero](/assets/images/social-9580fa15e2a6c4708fca1760c765ffc5.png)
+At the end of September weasked you to contribute to Img2Num this Hacktoberfest , and we were upfront about the deal: Hacktoberfest 2026 stopped counting pull requests, so there was no counter to climb and no t-shirt at the end of it. A reviewed and merged pull request in a real project was the whole prize and
 
-Img2Num's [JavaScript package v0.4.2](https://www.npmjs.com/package/img2num) is out on npm, and it's the biggest change to the npm distribution since we first shipped WebAssembly builds.
+**twenty-eight of you took it!**Between 3 and 30 October we merged **46 pull requests from 28 contributors** . None of the contributors had contributed to Img2Num before October. They fixed output bugs in the C++ core, made the Python bindings release the GIL, gave the npm package TypeScript types, rebuilt pages of this site, and deleted more than 1 300 lines of code that was no longer needed. Every one of them is now listed on theHacktoberfest 2026 event page , along with their pull requests.
 
-In short, instead of one compromise bundle, the package now ships five purpose-built bundles, each backed by its own Emscripten glue variant, and getting started no longer requires knowing anything about Emscripten - regardless of whether you're in a bundled web app, a plain `<script>` tag, or Node.js.
-
-**If you're new here:** Img2Num is a C++-based library for converting raster images into clean SVGs, with bindings for C, Python, and JavaScript. This release is about the [JavaScript](https://www.npmjs.com/package/img2num) and WebAssembly side of the library - the [C++ core](https://github.com/Ryan-Millard/Img2Num/releases?q=cpp) , [C API](https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c) , and [Python package](https://pypi.org/project/img2num/) are unchanged.
+This post is the long version that explains what got built, what it changed, and what happens next.
 
 **Tags:**
-- Release - JavaScript - WebAssembly
+- Hacktoberfest - Community - Open Source - Contributing
 
 **Read more**

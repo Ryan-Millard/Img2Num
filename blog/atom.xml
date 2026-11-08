@@ -2,11 +2,228 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://img2num.dev/blog/</id>
     <title>Img2Num Blog</title>
-    <updated>2026-09-30T00:00:00.000Z</updated>
+    <updated>2026-11-08T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://img2num.dev/blog/"/>
     <subtitle>Img2Num Blog</subtitle>
     <icon>https://img2num.dev/img/favicon.svg</icon>
+    <entry>
+        <title type="html"><![CDATA[Hacktoberfest 2026: 28 first-time contributors, 46 merged pull requests 🦔]]></title>
+        <id>https://img2num.dev/blog/hacktoberfest-2026-recap/</id>
+        <link href="https://img2num.dev/blog/hacktoberfest-2026-recap/"/>
+        <updated>2026-11-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The Img2Num Hacktoberfest 2026 recap: what 28 first-time contributors shipped in 46 merged pull requests across the C++ core, the GPU path, the Python and JavaScript packages, the example apps, the docs and CI - and where to collect your badge.]]></summary>
+        <content type="html"><![CDATA[<p><img decoding="async" loading="lazy" alt="Hero" src="https://img2num.dev/assets/images/social-9c8b3283247cf041e50460bce0894b6d.webp" width="1200" height="630" class="img__Cxp"></p>
+<p>At the end of September we <a class="" href="https://img2num.dev/blog/hacktoberfest-2026/">asked you to contribute to Img2Num this Hacktoberfest</a>, and we were
+upfront about the deal: Hacktoberfest 2026 stopped counting pull requests, so there was no counter to climb and no
+t-shirt at the end of it. A reviewed and merged pull request in a real project was the whole prize and</p>
+<strong>twenty-eight of you took it!</strong>
+<p>Between 3 and 30 October we merged <strong>46 pull requests from 28 contributors</strong>. None of the contributors had contributed to
+Img2Num before October. They fixed output bugs in the C++ core, made the Python bindings release the GIL,
+gave the npm package TypeScript types, rebuilt pages of this site, and deleted more than 1 300 lines of code that was no longer
+needed. Every one of them is now listed on the <a class="" href="https://img2num.dev/events/hacktoberfest-2026/">Hacktoberfest 2026 event page</a>, along with
+their pull requests.</p>
+<p>This post is the long version that explains what got built, what it changed, and what happens next.</p>
+<!-- -->
+<h2 class="anchor anchorTargetStickyNavbar_QOB6" id="the-numbers">The numbers<a href="https://img2num.dev/blog/hacktoberfest-2026-recap/#the-numbers" class="hash-link" aria-label="Direct link to The numbers" title="Direct link to The numbers" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>28 contributors</strong>, every one of them merging into Img2Num for the first time.
+<a href="https://github.com/Ryan-Millard/Img2Num/graphs/contributors?from=2026-10-01&amp;to=2026-10-31&amp;type=c" target="_blank" rel="noopener noreferrer" class="">GitHub's contributor graph for October</a>
+has the same names.</li>
+<li class=""><strong>46 pull requests merged</strong> between 3 and 30 October
+(<a href="https://github.com/Ryan-Millard/Img2Num/pulls?q=is%3Apr%20is%3Amerged%20merged%3A2026-10-01..2026-10-31%20-author%3ARyan-Millard%20-author%3Akrasner%20-author%3APrachi-Gupta2808" target="_blank" rel="noopener noreferrer" class="">the full list on GitHub</a>).
+Maintainers' own pull requests (five, including the new CLI) are not counted.</li>
+<li class=""><strong>177 files changed, <span style="color:var(--ifm-color-success)">+5 232</span>, and <span style="color:var(--ifm-color-danger)">−2 959</span> lines.</strong></li>
+<li class=""><strong>At least 29 issues closed</strong> by those pull requests.</li>
+<li class=""><strong>Under four days</strong> from opening a pull request to merging it, at the median. Twelve merged within a day; 37 of the
+46 within a week.</li>
+<li class=""><strong>10 contributors opened more than one pull request.</strong> Three of them, <a href="https://github.com/Lothnic" target="_blank" rel="noopener noreferrer" class="">@Lothnic</a>,
+<a href="https://github.com/saptadeep12" target="_blank" rel="noopener noreferrer" class="">@saptadeep12</a>, and <a href="https://github.com/nitin-kumar-code" target="_blank" rel="noopener noreferrer" class="">@nitin-kumar-code</a> opened five each.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_QOB6" id="what-got-built">What got built<a href="https://img2num.dev/blog/hacktoberfest-2026-recap/#what-got-built" class="hash-link" aria-label="Direct link to What got built" title="Direct link to What got built" translate="no">​</a></h2>
+<p>This section groups the changes according to where they were made in the project. Pull request numbers link to GitHub, and the
+<a class="" href="https://img2num.dev/events/hacktoberfest-2026/">event page</a> has the same work grouped by person.</p>
+<h3 class="anchor anchorTargetStickyNavbar_QOB6" id="c-core-and-gpu-8">C++ core and GPU (8)<a href="https://img2num.dev/blog/hacktoberfest-2026-recap/#c-core-and-gpu-8" class="hash-link" aria-label="Direct link to C++ core and GPU (8)" title="Direct link to C++ core and GPU (8)" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>A reusable WebGPU helper layer</strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/658" target="_blank" rel="noopener noreferrer" class="">#658</a> by
+<a href="https://github.com/siddharth1407" target="_blank" rel="noopener noreferrer" class="">@siddharth1407</a>. RAII wrappers over Dawn (<code>gpu::Buffer&lt;T&gt;</code>, <code>gpu::Texture</code>,
+bind-group and compute-pass helpers), then both GPU kernels ported onto them: the bilateral filter went from 313
+lines to 120 with identical behaviour. <a href="https://github.com/Ryan-Millard/Img2Num/pull/694" target="_blank" rel="noopener noreferrer" class="">#694</a> documented the new
+layer the same week.</li>
+<li class=""><strong>Two more ways to fall back to the CPU</strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/663" target="_blank" rel="noopener noreferrer" class="">#663</a> by
+<a href="https://github.com/ayusharora07" target="_blank" rel="noopener noreferrer" class="">@ayusharora07</a> stops the WebGPU device being initialised twice and falls back when
+device creation fails; <a href="https://github.com/Ryan-Millard/Img2Num/pull/696" target="_blank" rel="noopener noreferrer" class="">#696</a> by
+<a href="https://github.com/BhoomiMahna" target="_blank" rel="noopener noreferrer" class="">@BhoomiMahna</a> does the same when the only adapter Dawn can find is the Null backend.
+A machine without a usable GPU now gets the CPU path instead of a failed conversion.</li>
+<li class=""><strong>Correct output at the edges</strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/659" target="_blank" rel="noopener noreferrer" class="">#659</a> by
+<a href="https://github.com/RahulKumarBaldia" target="_blank" rel="noopener noreferrer" class="">@RahulKumarBaldia</a>. <code>gaussian_blur_fft</code> now uses reflect padding, which fixes
+darkened borders and content wrapping around from the opposite edge.</li>
+<li class=""><strong>k-means with k = 1</strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/682" target="_blank" rel="noopener noreferrer" class="">#682</a> by
+<a href="https://github.com/nitin-kumar-code" target="_blank" rel="noopener noreferrer" class="">@nitin-kumar-code</a> fixed the CPU path's output when there is only one cluster.
+A two-line change; wrong output before, right output after.</li>
+<li class=""><strong>Fewer run-to-run differences</strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/765" target="_blank" rel="noopener noreferrer" class="">#765</a> by
+<a href="https://github.com/saptadeep12" target="_blank" rel="noopener noreferrer" class="">@saptadeep12</a> orders each graph node's neighbours by id, so the contour graph no
+longer depends on the order they happened to be inserted in.</li>
+<li class=""><strong><code>ptr</code> became <code>image</code></strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/749" target="_blank" rel="noopener noreferrer" class="">#749</a> by
+<a href="https://github.com/MiyaMango" target="_blank" rel="noopener noreferrer" class="">@MiyaMango</a> renamed the parameter across the C++ core, the C ABI and the JavaScript
+glue. Small, and the API reference reads better now!</li>
+<li class=""><strong>157 lines of unreachable contour-tracing code removed</strong> -
+<a href="https://github.com/Ryan-Millard/Img2Num/pull/768" target="_blank" rel="noopener noreferrer" class="">#768</a> by
+<a href="https://github.com/shivangmathur2008-stack" target="_blank" rel="noopener noreferrer" class="">@shivangmathur2008-stack</a>, with the matching internal docs.</li>
+</ul>
+<p>Most of this shipped in <a href="https://github.com/Ryan-Millard/Img2Num/releases/tag/cpp-v0.3.0" target="_blank" rel="noopener noreferrer" class="">cpp 0.3.0</a> and
+<a href="https://github.com/Ryan-Millard/Img2Num/releases/tag/bindings-c-v0.2.1" target="_blank" rel="noopener noreferrer" class="">bindings-c 0.2.1</a> on 23 October.</p>
+<h3 class="anchor anchorTargetStickyNavbar_QOB6" id="python-6">Python (6)<a href="https://img2num.dev/blog/hacktoberfest-2026-recap/#python-6" class="hash-link" aria-label="Direct link to Python (6)" title="Direct link to Python (6)" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>The GIL is released while the C++ core runs</strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/777" target="_blank" rel="noopener noreferrer" class="">#777</a> by
+<a href="https://github.com/Lothnic" target="_blank" rel="noopener noreferrer" class="">@Lothnic</a>. Python threads that call Img2Num now run the native work in parallel instead
+of taking turns, and the console example gained a two-worker <code>ThreadPoolExecutor</code> demo to prove it. <a href="https://github.com/Krasner" target="_blank" rel="noopener noreferrer" class="">Krasner</a>'s
+<a href="https://github.com/Ryan-Millard/Img2Num/pull/784" target="_blank" rel="noopener noreferrer" class="">#784</a> built on it a week later to make the GPU path parallel too.</li>
+<li class=""><strong><code>img2num.__version__</code></strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/758" target="_blank" rel="noopener noreferrer" class="">#758</a>, and <strong>Python 3.13</strong> declared
+in the package classifiers - <a href="https://github.com/Ryan-Millard/Img2Num/pull/754" target="_blank" rel="noopener noreferrer" class="">#754</a>, both by
+<a href="https://github.com/Lothnic" target="_blank" rel="noopener noreferrer" class="">@Lothnic</a>.</li>
+<li class=""><strong>Typos in config are errors now</strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/766" target="_blank" rel="noopener noreferrer" class="">#766</a> by
+<a href="https://github.com/IvanGiovany" target="_blank" rel="noopener noreferrer" class="">@IvanGiovany</a>: an unknown key in <code>ImageToSvgConfig</code> raises <code>TypeError</code>.</li>
+<li class=""><strong>A one-line fix for a double move</strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/665" target="_blank" rel="noopener noreferrer" class="">#665</a> by
+<a href="https://github.com/Gracy769" target="_blank" rel="noopener noreferrer" class="">@Gracy769</a> removed a <code>std::move</code> that moved the SVG string twice in <code>labels_to_svg</code>.</li>
+<li class=""><strong>Wheels carry only the Python component</strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/767" target="_blank" rel="noopener noreferrer" class="">#767</a> by
+<a href="https://github.com/Farhan-Alam-Jamal" target="_blank" rel="noopener noreferrer" class="">@Farhan-Alam-Jamal</a> scoped the CMake install to the <code>python</code> component, so
+wheels stop picking up files that belong to other parts of the build.</li>
+</ul>
+<p>None of this is on PyPI yet - the current release is 0.3.1. It ships with the next Python release, together with the
+new <a class="" href="https://img2num.dev/docs/py/cli/"><code>img2num</code> command-line tool</a> that <a href="https://github.com/Krasner" target="_blank" rel="noopener noreferrer" class="">Krasner</a> built in
+<a href="https://github.com/Ryan-Millard/Img2Num/pull/703" target="_blank" rel="noopener noreferrer" class="">#703</a> and <a href="https://github.com/Adithya6721" target="_blank" rel="noopener noreferrer" class="">@Adithya6721</a> documented
+in <a href="https://github.com/Ryan-Millard/Img2Num/pull/801" target="_blank" rel="noopener noreferrer" class="">#801</a>.</p>
+<h3 class="anchor anchorTargetStickyNavbar_QOB6" id="javascript-and-c-2">JavaScript and C (2)<a href="https://img2num.dev/blog/hacktoberfest-2026-recap/#javascript-and-c-2" class="hash-link" aria-label="Direct link to JavaScript and C (2)" title="Direct link to JavaScript and C (2)" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>TypeScript declarations for the npm package</strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/670" target="_blank" rel="noopener noreferrer" class="">#670</a> by
+<a href="https://github.com/saptadeep12" target="_blank" rel="noopener noreferrer" class="">@saptadeep12</a>. The declarations are generated from tightened JSDoc with
+<code>tsc --allowJs --declaration</code>, so the JSDoc stays the single source of truth; <code>types</code> comes first in every <code>exports</code>
+branch; and a strict-mode <code>tsc --noEmit</code> type test runs in CI so they cannot drift. Ships in the next npm release.</li>
+<li class=""><strong>The C error API got real prototypes</strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/764" target="_blank" rel="noopener noreferrer" class="">#764</a> by
+<a href="https://github.com/Ayushrawatcy009" target="_blank" rel="noopener noreferrer" class="">@Ayushrawatcy009</a>. In C, <code>img2num_get_last_error()</code> declares a function taking
+unspecified arguments; <code>img2num_get_last_error(void)</code> is a prototype. Shipped in bindings-c 0.2.1.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_QOB6" id="example-apps-7">Example apps (7)<a href="https://img2num.dev/blog/hacktoberfest-2026-recap/#example-apps-7" class="hash-link" aria-label="Direct link to Example apps (7)" title="Direct link to Example apps (7)" translate="no">​</a></h3>
+<ul>
+<li class="">The React example's <strong>Vitest suite runs again</strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/713" target="_blank" rel="noopener noreferrer" class="">#713</a> by
+<a href="https://github.com/Lothnic" target="_blank" rel="noopener noreferrer" class="">@Lothnic</a>. It also lost <strong>1,370 lines</strong> of About and credits pages that had nothing to do
+with the library - <a href="https://github.com/Ryan-Millard/Img2Num/pull/789" target="_blank" rel="noopener noreferrer" class="">#789</a> by
+<a href="https://github.com/mrunalC27" target="_blank" rel="noopener noreferrer" class="">@mrunalC27</a>; its <code>/credits</code> redirect now points at the <a class="" href="https://img2num.dev/hall-of-fame/">Hall of Fame</a> -
+<a href="https://github.com/Ryan-Millard/Img2Num/pull/793" target="_blank" rel="noopener noreferrer" class="">#793</a> by
+<a href="https://github.com/slopgobblercobbler" target="_blank" rel="noopener noreferrer" class="">@slopgobblercobbler</a>; and it has a README -
+<a href="https://github.com/Ryan-Millard/Img2Num/pull/660" target="_blank" rel="noopener noreferrer" class="">#660</a> by <a href="https://github.com/PrathamRanka" target="_blank" rel="noopener noreferrer" class="">@PrathamRanka</a>.</li>
+<li class="">The console apps: the Python one <strong>validates its image input</strong> -
+<a href="https://github.com/Ryan-Millard/Img2Num/pull/661" target="_blank" rel="noopener noreferrer" class="">#661</a> by <a href="https://github.com/PrathamRanka" target="_blank" rel="noopener noreferrer" class="">@PrathamRanka</a>; the C++
+one was <strong>tidied up</strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/687" target="_blank" rel="noopener noreferrer" class="">#687</a> by
+<a href="https://github.com/saptadeep12" target="_blank" rel="noopener noreferrer" class="">@saptadeep12</a>; and the Node ones (ESM and CJS) have a <strong>correct usage message and an
+output-path option</strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/677" target="_blank" rel="noopener noreferrer" class="">#677</a> by
+<a href="https://github.com/Astrolyte" target="_blank" rel="noopener noreferrer" class="">@Astrolyte</a>.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_QOB6" id="docs-and-this-website-15">Docs and this website (15)<a href="https://img2num.dev/blog/hacktoberfest-2026-recap/#docs-and-this-website-15" class="hash-link" aria-label="Direct link to Docs and this website (15)" title="Direct link to Docs and this website (15)" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>The Hall of Fame</strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/679" target="_blank" rel="noopener noreferrer" class="">#679</a> by
+<a href="https://github.com/08abhinav" target="_blank" rel="noopener noreferrer" class="">@08abhinav</a>. The page that honours contributors was itself built by a first-time
+contributor: a data file of featured members, GitHub profile and merged-PR data fetched at build time, bot filtering,
+and fallbacks so an API hiccup cannot break the build. The <a class="" href="https://img2num.dev/events/">events pages</a> sit on top of it.</li>
+<li class=""><strong>The Showcase</strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/644" target="_blank" rel="noopener noreferrer" class="">#644</a> by
+<a href="https://github.com/dr-nullptr" target="_blank" rel="noopener noreferrer" class="">@dr-nullptr</a> turned the example-apps index into <a class="" href="https://img2num.dev/showcase/">/showcase</a>, with a
+"Built with Img2Num" section for third-party projects and a <a class="" href="https://img2num.dev/showcase/submit/">submission page</a> that opens a
+prefilled Discussion.</li>
+<li class=""><strong>The FAQ</strong> redesigned with accordions - <a href="https://github.com/Ryan-Millard/Img2Num/pull/623" target="_blank" rel="noopener noreferrer" class="">#623</a> by
+<a href="https://github.com/flodrick" target="_blank" rel="noopener noreferrer" class="">@flodrick</a>; <strong>Core Concepts became a glossary</strong> -
+<a href="https://github.com/Ryan-Millard/Img2Num/pull/646" target="_blank" rel="noopener noreferrer" class="">#646</a> by <a href="https://github.com/FathimaManal" target="_blank" rel="noopener noreferrer" class="">@FathimaManal</a>;
+<strong>Discord</strong> in the navbar, footer and contributing guide - <a href="https://github.com/Ryan-Millard/Img2Num/pull/689" target="_blank" rel="noopener noreferrer" class="">#689</a>
+by <a href="https://github.com/saptadeep12" target="_blank" rel="noopener noreferrer" class="">@saptadeep12</a>; <strong>site styles and the navbar blur</strong> fixed -
+<a href="https://github.com/Ryan-Millard/Img2Num/pull/680" target="_blank" rel="noopener noreferrer" class="">#680</a> by <a href="https://github.com/thilakshan2003" target="_blank" rel="noopener noreferrer" class="">@thilakshan2003</a>;
+<strong>"Edit this page" links point at <code>dev</code></strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/770" target="_blank" rel="noopener noreferrer" class="">#770</a> by
+<a href="https://github.com/satyaharendrarushidayaka-sudo" target="_blank" rel="noopener noreferrer" class="">@satyaharendrarushidayaka-sudo</a>.</li>
+<li class=""><strong>Docs that match the code</strong>: <code>min_thickness</code> defaults documented -
+<a href="https://github.com/Ryan-Millard/Img2Num/pull/655" target="_blank" rel="noopener noreferrer" class="">#655</a> by <a href="https://github.com/Yipjunwei" target="_blank" rel="noopener noreferrer" class="">@Yipjunwei</a>;
+<code>black_threshold_image</code> described as the per-channel brightness cutoff it is, in the C++ header, the Python docstring
+and the docs - <a href="https://github.com/Ryan-Millard/Img2Num/pull/692" target="_blank" rel="noopener noreferrer" class="">#692</a> by <a href="https://github.com/Lothnic" target="_blank" rel="noopener noreferrer" class="">@Lothnic</a>; the
+<code>gpu_utils</code> layer documented - <a href="https://github.com/Ryan-Millard/Img2Num/pull/694" target="_blank" rel="noopener noreferrer" class="">#694</a> by
+<a href="https://github.com/siddharth1407" target="_blank" rel="noopener noreferrer" class="">@siddharth1407</a>; the Debug Logging guide rewritten to match the actual code -
+<a href="https://github.com/Ryan-Millard/Img2Num/pull/771" target="_blank" rel="noopener noreferrer" class="">#771</a> by <a href="https://github.com/Ayushrawatcy009" target="_blank" rel="noopener noreferrer" class="">@Ayushrawatcy009</a>;
+the swapped C and JavaScript rows in the API bindings tables -
+<a href="https://github.com/Ryan-Millard/Img2Num/pull/762" target="_blank" rel="noopener noreferrer" class="">#762</a> by
+<a href="https://github.com/mayanksingh-7974" target="_blank" rel="noopener noreferrer" class="">@mayanksingh-7974</a>; the synchronous-API migration guidance in our own blog
+post corrected - <a href="https://github.com/Ryan-Millard/Img2Num/pull/760" target="_blank" rel="noopener noreferrer" class="">#760</a> by
+<a href="https://github.com/jazayush" target="_blank" rel="noopener noreferrer" class="">@jazayush</a>; what happens when several people claim one issue, in the contributing
+guide - <a href="https://github.com/Ryan-Millard/Img2Num/pull/795" target="_blank" rel="noopener noreferrer" class="">#795</a> by <a href="https://github.com/saptadeep12" target="_blank" rel="noopener noreferrer" class="">@saptadeep12</a>;
+and the new <a class="" href="https://img2num.dev/docs/py/cli/">CLI guide</a> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/801" target="_blank" rel="noopener noreferrer" class="">#801</a> by
+<a href="https://github.com/Adithya6721" target="_blank" rel="noopener noreferrer" class="">@Adithya6721</a>.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_QOB6" id="build-ci-and-tooling-8">Build, CI and tooling (8)<a href="https://img2num.dev/blog/hacktoberfest-2026-recap/#build-ci-and-tooling-8" class="hash-link" aria-label="Direct link to Build, CI and tooling (8)" title="Direct link to Build, CI and tooling (8)" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>CMake pinned</strong> in <code>.versions/cmake.json</code>, with the minimum version derived from it -
+<a href="https://github.com/Ryan-Millard/Img2Num/pull/666" target="_blank" rel="noopener noreferrer" class="">#666</a> by
+<a href="https://github.com/Farhan-Alam-Jamal" target="_blank" rel="noopener noreferrer" class="">@Farhan-Alam-Jamal</a>.</li>
+<li class=""><strong>A Docker build command</strong> in the dev script - <a href="https://github.com/Ryan-Millard/Img2Num/pull/669" target="_blank" rel="noopener noreferrer" class="">#669</a> by
+<a href="https://github.com/thisisparth187" target="_blank" rel="noopener noreferrer" class="">@thisisparth187</a>.</li>
+<li class=""><strong>The justfile split into modules</strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/695" target="_blank" rel="noopener noreferrer" class="">#695</a> by
+<a href="https://github.com/mrunalC27" target="_blank" rel="noopener noreferrer" class="">@mrunalC27</a>, with the console binary paths corrected afterwards -
+<a href="https://github.com/Ryan-Millard/Img2Num/pull/750" target="_blank" rel="noopener noreferrer" class="">#750</a> by <a href="https://github.com/Yipjunwei" target="_blank" rel="noopener noreferrer" class="">@Yipjunwei</a>.</li>
+<li class=""><strong>Stray dependencies removed</strong> from the root and dev-scripts packages -
+<a href="https://github.com/Ryan-Millard/Img2Num/pull/759" target="_blank" rel="noopener noreferrer" class="">#759</a>, and <code>validate-scripts</code> handling an optional
+<code>_meta.ignore</code> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/774" target="_blank" rel="noopener noreferrer" class="">#774</a>, both by
+<a href="https://github.com/mayanksingh-7974" target="_blank" rel="noopener noreferrer" class="">@mayanksingh-7974</a>.</li>
+<li class=""><strong>CI cancels superseded runs</strong> when you push again to an open pull request -
+<a href="https://github.com/Ryan-Millard/Img2Num/pull/757" target="_blank" rel="noopener noreferrer" class="">#757</a> by <a href="https://github.com/nitin-kumar-code" target="_blank" rel="noopener noreferrer" class="">@nitin-kumar-code</a>.</li>
+<li class=""><strong>111 lines of dead release workflow removed</strong> - <a href="https://github.com/Ryan-Millard/Img2Num/pull/799" target="_blank" rel="noopener noreferrer" class="">#799</a> by
+<a href="https://github.com/mrunalC27" target="_blank" rel="noopener noreferrer" class="">@mrunalC27</a>.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_QOB6" id="the-badge">The badge<a href="https://img2num.dev/blog/hacktoberfest-2026-recap/#the-badge" class="hash-link" aria-label="Direct link to The badge" title="Direct link to The badge" translate="no">​</a></h2>
+<img src="https://img2num.dev/img/events/hacktoberfest-2026/badge.svg" alt="Img2Num contributor — Hacktoberfest 2026" class="themedComponent_Cy3S themedComponent--light_iUAq" width="240" height="240"><img src="https://img2num.dev/img/events/hacktoberfest-2026/badge-dark.svg" alt="Img2Num contributor — Hacktoberfest 2026" class="themedComponent_Cy3S themedComponent--dark_TrZi" width="240" height="240">
+<p>If your name is on the <a class="" href="https://img2num.dev/events/hacktoberfest-2026/">event page</a>, this is yours. It comes as SVG and PNG in light and
+dark versions, with ready-made Markdown and HTML snippets for a README or a profile, and a credential URL you can paste
+into LinkedIn's <em>Licenses &amp; certifications</em>. Everything is at the top of the
+<a class="" href="https://img2num.dev/events/hacktoberfest-2026/">event page</a>.</p>
+<p>Hacktoberfest did not count pull requests toward rewards this year. We thought 28 first merged pull requests deserved
+something you can keep.</p>
+<h2 class="anchor anchorTargetStickyNavbar_QOB6" id="how-it-went-from-our-side">How it went from our side<a href="https://img2num.dev/blog/hacktoberfest-2026-recap/#how-it-went-from-our-side" class="hash-link" aria-label="Direct link to How it went from our side" title="Direct link to How it went from our side" translate="no">​</a></h2>
+<p>A few things we noticed reviewing 46 pull requests in a month:</p>
+<ul>
+<li class=""><strong>The first three days set the pace.</strong> Fourteen pull requests were opened on 1–3 October, on top of three that had
+been waiting since the last days of September. By 11 October, 20 had merged.</li>
+<li class=""><strong>Small and specific merged fastest.</strong> Twelve pull requests merged within a day of being opened, and each of them
+did one clearly described thing. A good title and a <code>Fixes #...</code> line are most of the work of getting reviewed
+quickly.</li>
+<li class=""><strong>Big changes landed too.</strong> The GIL release, the TypeScript declarations and the WebGPU helper layer were each
+several hundred lines, and all three changed what the library can do. This was not a month of typo fixes.</li>
+<li class=""><strong>Deleting is contributing.</strong> More than a third of the changed lines were deletions. The biggest pull request of the
+month by lines, <a href="https://github.com/Ryan-Millard/Img2Num/pull/789" target="_blank" rel="noopener noreferrer" class="">#789</a>, removed 1,370 of them.</li>
+<li class=""><strong>People stayed.</strong> Ten of the 28 opened more than one pull request.</li>
+</ul>
+<p>Thanks to <a href="https://github.com/Krasner" target="_blank" rel="noopener noreferrer" class="">Krasner</a>, who reviewed and co-authored several of these and shipped the CLI
+(<a href="https://github.com/Ryan-Millard/Img2Num/pull/703" target="_blank" rel="noopener noreferrer" class="">#703</a>) and truly parallel GPU execution
+(<a href="https://github.com/Ryan-Millard/Img2Num/pull/784" target="_blank" rel="noopener noreferrer" class="">#784</a>) in between, and to
+<a href="https://github.com/Prachi-Gupta2808" target="_blank" rel="noopener noreferrer" class="">Prachi</a>, who wrote <a class="" href="https://img2num.dev/blog/hacktoberfest-2026/">the post that started it</a> and
+posted about it on <a href="https://lnkd.in/p/g4Xh3KbQ" target="_blank" rel="noopener noreferrer" class="">LinkedIn</a>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_QOB6" id="whats-next">What's next<a href="https://img2num.dev/blog/hacktoberfest-2026-recap/#whats-next" class="hash-link" aria-label="Direct link to What's next" title="Direct link to What's next" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Releases.</strong> cpp 0.3.0 and bindings-c 0.2.1 are out with the core and C work. The Python and JavaScript work
+above - the GIL release, <code>__version__</code>, the <code>TypeError</code>, Python 3.13, the TypeScript declarations and the CLI - ships
+in the next PyPI and npm releases.</li>
+<li class=""><strong>The October cohort is not done.</strong> <a href="https://github.com/BhoomiMahna" target="_blank" rel="noopener noreferrer" class="">@BhoomiMahna</a>'s
+<a href="https://github.com/Ryan-Millard/Img2Num/pull/702" target="_blank" rel="noopener noreferrer" class="">#702</a>, adding C++ and C ABI test coverage, merged on 4 November -
+the first post-Hacktoberfest pull request from someone who started in October. We hope for far more!</li>
+<li class=""><strong>Discord.</strong> Contributors get the Contributor role and the private channel. Post your GitHub username in
+<a href="https://discord.gg/BHjxcCqAnU" target="_blank" rel="noopener noreferrer" class="">Discord</a> and we will match it to the list.</li>
+<li class=""><strong>You do not have to wait for next October.</strong> The
+<a href="https://github.com/Ryan-Millard/Img2Num/issues/views/MDI0OlJlcG9zaXRvcnlTZWFyY2hTaG9ydGN1dDExNTU%3D" target="_blank" rel="noopener noreferrer" class="">good first issues</a>
+are still there, and so are we.</li>
+</ul>
+<p>Thank you, all 28 of you. 🦔</p>]]></content>
+        <author>
+            <name>Ryan Millard</name>
+            <uri>https://github.com/Ryan-Millard</uri>
+        </author>
+        <category label="Hacktoberfest" term="Hacktoberfest"/>
+        <category label="Community" term="Community"/>
+        <category label="Open Source" term="Open Source"/>
+        <category label="Contributing" term="Contributing"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Contribute to Img2Num this October 🦔]]></title>
         <id>https://img2num.dev/blog/hacktoberfest-2026/</id>
