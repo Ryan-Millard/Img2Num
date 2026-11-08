@@ -6,18 +6,6 @@
   color: var(--white) !important;
 }
 
-/*
- * Year groups sit side by side when there is room (e.g. 2026 | 2025), and stack on
- * narrower screens, so wide monitors are not left mostly empty.
- * 664px = two 320px cards + the 24px gap between them.
- */
-.years {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 664px), 1fr));
-  column-gap: clamp(24px, 3vw, 64px);
-  align-items: start;
-}
-
 /* Featured member cards (four aligned subgrid rows) */
 
 .featuredHeader {

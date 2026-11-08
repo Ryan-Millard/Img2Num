@@ -53,10 +53,10 @@ export default function BadgeCard({ event }) {
                   <code className={styles.fileUrl}>{url}</code>
                   <span className={styles.fileActions}>
                     <CopyButton text={url} label="Copy link" />
-                    <a href={url} target="_blank" rel="noopener noreferrer">
+                    <a href={url} target="_blank" rel="noopener noreferrer" aria-label={`Open ${label}`}>
                       Open
                     </a>
-                    <a href={url} download>
+                    <a href={url} download aria-label={`Download ${label}`}>
                       Download
                     </a>
                   </span>
