@@ -15,4 +15,3 @@ export default function BackgroundBand({ as: Tag = "section", rows, className, i
     </Tag>
   );
 }
-

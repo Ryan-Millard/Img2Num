@@ -54,7 +54,8 @@ export function validateEvent(event, source = "event") {
   if (!badge || typeof badge !== "object") fail("badge");
   if (!EVENT_IMAGE_PATTERN.test(badge.image ?? "")) fail("badge.image (an image under /img/events/<slug>/)");
   for (const optional of ["imageDark", "png", "pngDark"]) {
-    if (badge[optional] !== undefined && !EVENT_IMAGE_PATTERN.test(badge[optional])) fail(`badge.${optional} (an image under /img/events/<slug>/)`);
+    if (badge[optional] !== undefined && !EVENT_IMAGE_PATTERN.test(badge[optional]))
+      fail(`badge.${optional} (an image under /img/events/<slug>/)`);
   }
   if (!isText(badge.alt)) fail("badge.alt");
 
@@ -68,7 +69,8 @@ export function validateEvent(event, source = "event") {
     for (const link of event.links) {
       if (!link || !isText(link.label)) fail("link label");
       const internal = typeof link.to === "string" && link.to.startsWith("/");
-      if (!internal && !isWebUrl(link.href)) fail(`link "${link.label}" (needs an internal "to" path or an HTTP(S) "href")`);
+      if (!internal && !isWebUrl(link.href))
+        fail(`link "${link.label}" (needs an internal "to" path or an HTTP(S) "href")`);
     }
   }
 
@@ -81,13 +83,16 @@ export function validateEvent(event, source = "event") {
     const key = contributor.username.toLowerCase();
     if (seen.has(key)) fail(`${where} username (duplicate "${contributor.username}")`);
     seen.add(key);
-    if (contributor.firstTime !== undefined && typeof contributor.firstTime !== "boolean") fail(`${where} firstTime (boolean)`);
-    if (!Array.isArray(contributor.prs) || contributor.prs.length === 0) fail(`${where} prs (at least one merged pull request)`);
+    if (contributor.firstTime !== undefined && typeof contributor.firstTime !== "boolean")
+      fail(`${where} firstTime (boolean)`);
+    if (!Array.isArray(contributor.prs) || contributor.prs.length === 0)
+      fail(`${where} prs (at least one merged pull request)`);
     for (const pr of contributor.prs) {
       if (!pr || !Number.isInteger(pr.number) || pr.number <= 0) fail(`${where} pull request number`);
       if (!isText(pr.title)) fail(`${where} pull request #${pr.number} title`);
       if (!isWebUrl(pr.url)) fail(`${where} pull request #${pr.number} url`);
-      if (pr.mergedAt !== undefined && !isIsoDate(pr.mergedAt)) fail(`${where} pull request #${pr.number} mergedAt (YYYY-MM-DD)`);
+      if (pr.mergedAt !== undefined && !isIsoDate(pr.mergedAt))
+        fail(`${where} pull request #${pr.number} mergedAt (YYYY-MM-DD)`);
     }
   });
 
@@ -105,7 +110,13 @@ export function byNewest(a, b) {
 
 /** "1 October 2026", in UTC so the build machine's time zone cannot shift the day. */
 export function formatDate(iso, options = {}) {
-  return new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC", ...options });
+  return new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+    ...options,
+  });
 }
 
 /** "1–31 October 2026", "25 November – 24 December 2026", or two full dates across years. */
@@ -211,7 +222,14 @@ export function badgeSnippets(siteUrl, event) {
   const pageUrl = `${base}${event.path}`;
   const img = `<img alt="${alt}" src="${base}${image}" width="160">`;
   const html = imageDark
-    ? [`<a href="${pageUrl}">`, "  <picture>", `    <source media="(prefers-color-scheme: dark)" srcset="${base}${imageDark}">`, `    ${img}`, "  </picture>", "</a>"].join("\n")
+    ? [
+        `<a href="${pageUrl}">`,
+        "  <picture>",
+        `    <source media="(prefers-color-scheme: dark)" srcset="${base}${imageDark}">`,
+        `    ${img}`,
+        "  </picture>",
+        "</a>",
+      ].join("\n")
     : `<a href="${pageUrl}">${img}</a>`;
   const images = [
     ["SVG", image],

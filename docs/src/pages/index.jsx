@@ -65,66 +65,66 @@ function HeroSection() {
 
   return (
     <BackgroundBand innerWrapper={{ className: styles.heroInner }}>
-        <div className={styles.heroLeft}>
-          <Eyebrow>filter · segment · trace</Eyebrow>
+      <div className={styles.heroLeft}>
+        <Eyebrow>filter · segment · trace</Eyebrow>
 
-          <h1 className={styles.heroTitle}>
-            Raster to <em className={styles.heroTitleAccent}>SVG</em>
-            <br />
-            in C++, Python,
-            <br />
-            JavaScript &amp; C
-          </h1>
+        <h1 className={styles.heroTitle}>
+          Raster to <em className={styles.heroTitleAccent}>SVG</em>
+          <br />
+          in C++, Python,
+          <br />
+          JavaScript &amp; C
+        </h1>
 
-          <p className={styles.heroLead}>
-            Img2Num is a cross-platform raster-to-SVG conversion library - it converts bitmap images like PNGs and JPEGs into clean, scalable SVG paths. Built for speed, minimal dependencies, and
-            multi-language bindings.
-          </p>
+        <p className={styles.heroLead}>
+          Img2Num is a cross-platform raster-to-SVG conversion library - it converts bitmap images like PNGs and JPEGs into clean, scalable SVG paths. Built for speed, minimal dependencies, and
+          multi-language bindings.
+        </p>
 
-          <div className={styles.heroActionsWrapper}>
-            <div className={styles.heroActions} style={{ marginBottom: 0 }}>
-              <Link className={styles.btnPrimary} to="./docs">
-                <Package size={16} style={{ marginRight: "6px" }} /> Installation and Setup
-              </Link>
-              <Link className={styles.btnGhost} to="/changelog">
-                Changelog
-              </Link>
-              <Link className={styles.btnGhost} to="/faq">
-                FAQ
-              </Link>
-              <Link className={styles.btnGhost} to="https://github.com/Ryan-Millard/Img2Num">
-                GitHub <MoveRight size={15} />
-              </Link>
-            </div>
-            <Hedgehog size={60} />
+        <div className={styles.heroActionsWrapper}>
+          <div className={styles.heroActions} style={{ marginBottom: 0 }}>
+            <Link className={styles.btnPrimary} to="./docs">
+              <Package size={16} style={{ marginRight: "6px" }} /> Installation and Setup
+            </Link>
+            <Link className={styles.btnGhost} to="/changelog">
+              Changelog
+            </Link>
+            <Link className={styles.btnGhost} to="/faq">
+              FAQ
+            </Link>
+            <Link className={styles.btnGhost} to="https://github.com/Ryan-Millard/Img2Num">
+              GitHub <MoveRight size={15} />
+            </Link>
           </div>
-
-          <div className={styles.statsBar}>
-            <div className={styles.stat}>
-              <span className={styles.statNum}>★ {stats.stars !== null ? stats.stars : "—"}</span>
-              <span className={styles.statLabel}>stars</span>
-            </div>
-            <div className={styles.stat}>
-              <span className={styles.statNum}>⑂ {stats.forks !== null ? stats.forks : "—"}</span>
-              <span className={styles.statLabel}>forks</span>
-            </div>
-            <div className={styles.stat}>
-              <span className={styles.statNum}>◉ {stats.contributors !== null ? stats.contributors : "—"}</span>
-              <span className={styles.statLabel}>contributors</span>
-            </div>
-            <div className={styles.stat}>
-              <span className={styles.statNum}>C++/C/Py/JS</span>
-              <span className={styles.statLabel}>bindings</span>
-            </div>
-          </div>
+          <Hedgehog size={60} />
         </div>
 
-        <div className={styles.heroRight}>
-          <RasterToSvgDemo />
-          <Link className={styles.btnPrimary} to="/showcase">
-            View Showcase <MoveRight size={15} />
-          </Link>
+        <div className={styles.statsBar}>
+          <div className={styles.stat}>
+            <span className={styles.statNum}>★ {stats.stars !== null ? stats.stars : "—"}</span>
+            <span className={styles.statLabel}>stars</span>
+          </div>
+          <div className={styles.stat}>
+            <span className={styles.statNum}>⑂ {stats.forks !== null ? stats.forks : "—"}</span>
+            <span className={styles.statLabel}>forks</span>
+          </div>
+          <div className={styles.stat}>
+            <span className={styles.statNum}>◉ {stats.contributors !== null ? stats.contributors : "—"}</span>
+            <span className={styles.statLabel}>contributors</span>
+          </div>
+          <div className={styles.stat}>
+            <span className={styles.statNum}>C++/C/Py/JS</span>
+            <span className={styles.statLabel}>bindings</span>
+          </div>
         </div>
+      </div>
+
+      <div className={styles.heroRight}>
+        <RasterToSvgDemo />
+        <Link className={styles.btnPrimary} to="/showcase">
+          View Showcase <MoveRight size={15} />
+        </Link>
+      </div>
     </BackgroundBand>
   );
 }

@@ -16,6 +16,7 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 At the end of September we [asked you to contribute to Img2Num this Hacktoberfest](/blog/hacktoberfest-2026), and we were
 upfront about the deal: Hacktoberfest 2026 stopped counting pull requests, so there was no counter to climb and no
 t-shirt at the end of it. A reviewed and merged pull request in a real project was the whole prize and
+
 <strong>twenty-eight of you took it!</strong>
 
 Between 3 and 30 October we merged **46 pull requests from 28 contributors**. None of the contributors had contributors to
