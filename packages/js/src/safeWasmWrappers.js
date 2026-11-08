@@ -191,15 +191,15 @@ export const blackThreshold = async ({ pixels, width, height, num_colors }) => {
  * channel value with `255 - value`. The alpha channel is preserved.
  *
  * @async
- * @function invert_image
+ * @function invertImage
  * @param {InvertOptions} options - The input image and its dimensions.
  * @returns {Promise<Uint8ClampedArray>} The inverted image pixels.
  * @throws {Error} If the WASM function fails.
  * @example
- * const inverted = await invert_image({ pixels, width, height });
+ * const inverted = await invertImage({ pixels, width, height });
  * @since 0.4.3
  */
-export const invert_image = async ({ pixels, width, height }) => {
+export const invertImage = async ({ pixels, width, height }) => {
   const result = await callWasm({
     funcName: "invert_image",
     args: { pixels, width, height },
@@ -225,15 +225,15 @@ export const invert_image = async ({ pixels, width, height }) => {
  * `num_thresholds` is 0 or less, the image is returned unchanged.
  *
  * @async
- * @function threshold_image
+ * @function thresholdImage
  * @param {ThresholdOptions} options - The input image, dimensions, and threshold count.
  * @returns {Promise<Uint8ClampedArray>} The thresholded image pixels.
  * @throws {Error} If the WASM function fails.
  * @example
- * const thresholded = await threshold_image({ pixels, width, height, num_thresholds: 4 });
+ * const thresholded = await thresholdImage({ pixels, width, height, num_thresholds: 4 });
  * @since 0.4.3
  */
-export const threshold_image = async ({ pixels, width, height, num_thresholds }) => {
+export const thresholdImage = async ({ pixels, width, height, num_thresholds }) => {
   const result = await callWasm({
     funcName: "threshold_image",
     args: { pixels, width, height, num_thresholds },
