@@ -176,6 +176,35 @@ export const blackThreshold = async ({ pixels, width, height, num_colors }) => {
 };
 
 /**
+ * Validates that image dimensions are positive integers and the pixel buffer contains enough bytes.
+ *
+ * @param {Object} options
+ * @param {Uint8ClampedArray} options.pixels - The image pixel data.
+ * @param {number} options.width - The width of the image.
+ * @param {number} options.height - The height of the image.
+ * @throws {Error} If dimensions or pixel buffer length are invalid.
+ */
+function validateImageBuffer({ pixels, width, height }) {
+  if (
+    !Number.isInteger(width) ||
+    width <= 0 ||
+    !Number.isInteger(height) ||
+    height <= 0
+  ) {
+    throw new Error(
+      `Invalid image dimensions: width and height must be positive integers (got width=${width}, height=${height})`
+    );
+  }
+
+  const requiredBytes = width * height * 4;
+  if (!pixels || pixels.length < requiredBytes) {
+    throw new Error(
+      `Invalid pixel buffer length: expected at least ${requiredBytes} bytes for a ${width}x${height} RGBA image (got ${pixels?.length ?? 0})`
+    );
+  }
+}
+
+/**
  * Options for inverting an image.
  * @typedef {Object} InvertOptions
  * @property {Uint8ClampedArray} pixels - The image pixel data (flat RGBA array).
@@ -194,12 +223,13 @@ export const blackThreshold = async ({ pixels, width, height, num_colors }) => {
  * @function invertImage
  * @param {InvertOptions} options - The input image and its dimensions.
  * @returns {Promise<Uint8ClampedArray>} The inverted image pixels.
- * @throws {Error} If the WASM function fails.
+ * @throws {Error} If dimensions or pixel buffer are invalid, or if the WASM function fails.
  * @example
  * const inverted = await invertImage({ pixels, width, height });
  * @since 0.4.3
  */
 export const invertImage = async ({ pixels, width, height }) => {
+  validateImageBuffer({ pixels, width, height });
   const result = await callWasm({
     funcName: "invert_image",
     args: { pixels, width, height },
@@ -228,12 +258,16 @@ export const invertImage = async ({ pixels, width, height }) => {
  * @function thresholdImage
  * @param {ThresholdOptions} options - The input image, dimensions, and threshold count.
  * @returns {Promise<Uint8ClampedArray>} The thresholded image pixels.
- * @throws {Error} If the WASM function fails.
+ * @throws {Error} If dimensions or pixel buffer are invalid, or if the WASM function fails.
  * @example
  * const thresholded = await thresholdImage({ pixels, width, height, num_thresholds: 4 });
  * @since 0.4.3
  */
 export const thresholdImage = async ({ pixels, width, height, num_thresholds }) => {
+  if (num_thresholds <= 0) {
+    return pixels;
+  }
+  validateImageBuffer({ pixels, width, height });
   const result = await callWasm({
     funcName: "threshold_image",
     args: { pixels, width, height, num_thresholds },
