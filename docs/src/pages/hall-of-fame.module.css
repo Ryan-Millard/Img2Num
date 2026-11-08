@@ -1,0 +1,99 @@
+.featureSectionHeader {
+  border-bottom: 2px solid var(--ifm-toc-border-color);
+}
+
+.allContributorsSectionHeader h2 {
+  color: var(--white) !important;
+}
+
+/*
+ * Year groups sit side by side when there is room (e.g. 2026 | 2025), and stack on
+ * narrower screens, so wide monitors are not left mostly empty.
+ * 664px = two 320px cards + the 24px gap between them.
+ */
+.years {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 664px), 1fr));
+  column-gap: clamp(24px, 3vw, 64px);
+  align-items: start;
+}
+
+/* Featured member cards (four aligned subgrid rows) */
+
+.featuredHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.featuredDetails {
+  flex: 1;
+  min-width: 0;
+}
+
+.featuredName {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.featuredLogin {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.blurb {
+  margin: 16px 0 0;
+  font-size: 15px;
+  font-style: italic;
+}
+
+.prCount {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--success);
+}
+
+.prList {
+  margin: 8px 0 0;
+  padding-left: 20px;
+  font-size: 13px;
+}
+
+.prList li {
+  margin-bottom: 4px;
+}
+
+/* "All Contributors" cards */
+
+.contributor {
+  --card-padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.contributorDetails {
+  min-width: 0;
+}
+
+.contributorName {
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contributorCommits {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: var(--ink-3);
+}

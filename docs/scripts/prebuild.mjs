@@ -19,7 +19,7 @@ async function run(command, args) {
   });
 }
 
-await run("node", ["--test", "tests/showcase.test.mjs"]);
+await run("node", ["--test", "tests/showcase.test.mjs", "tests/events.test.mjs"]);
 
 // Build the library before generating documentation that depends on it.
 await run("pnpm", ["-F", "img2num", "run", "build"]);

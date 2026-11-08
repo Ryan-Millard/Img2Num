@@ -194,6 +194,7 @@ const config = {
     ],
     "./plugins/github-stats/index.js",
     "./plugins/hallOfFame/index.js",
+    "./plugins/events/index.js",
     [
       "docusaurus-plugin-copy-page-button",
       {
@@ -380,6 +381,10 @@ const config = {
               {
                 label: "Discord",
                 href: "https://discord.com/invite/BHjxcCqAnU",
+              },
+              {
+                label: "Events",
+                to: "/events/",
               },
               {
                 label: "Issues",
