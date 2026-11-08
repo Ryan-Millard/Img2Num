@@ -7,7 +7,7 @@ license = { text = "MIT" }
 readme = "packages/py/README.md"
 authors = [{ name = "Ryan Millard" }]
 dependencies = [
-  "numpy>=1.23.5"
+  "numpy>=1.23.5",
 ]
 classifiers = [
   "Intended Audience :: Developers",
@@ -50,6 +50,7 @@ cmake.args = [
 # Python sources are installed by CMake (bindings/py/CMakeLists.txt).
 # Don't list "img2num" here: at the repo root that is the dev CLI script.
 wheel.packages = []
+install.components = ["python"]
 sdist.inclusion-mode = "explicit"
 sdist.include = [
   "pyproject.toml",
@@ -129,6 +130,14 @@ ignore = []
 
 [tool.ruff.lint.per-file-ignores]
 "**/__init__.py" = ["F401"] # Allow re-exports in __init__.py
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["packages/py/tests", "bindings/py/tests"]
+# importlib mode stops pytest from putting packages/py on sys.path, which would
+# shadow the installed (compiled) img2num package with the source tree.
+addopts = ["--import-mode=importlib", "-ra", "--strict-markers", "--strict-config"]
+xfail_strict = true
 
 [tool.cibuildwheel]
 build-verbosity = 1
