@@ -9,7 +9,7 @@ import CardGrid from "@site/src/components/CardGrid";
 import EventList from "@site/src/components/events/EventList";
 import PageHeader from "@site/src/components/PageHeader";
 import Section from "@site/src/components/Section";
-import BackgroundBand from "@site/s@site/src/components/BackgroundBand";
+import BackgroundBand from "@site/src/components/BackgroundBand";
 import SectionHeader from "@site/src/components/SectionHeader";
 import styles from "./hall-of-fame.module.css";
 
