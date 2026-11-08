@@ -264,10 +264,10 @@ export const invertImage = async ({ pixels, width, height }) => {
  * @since 0.4.3
  */
 export const thresholdImage = async ({ pixels, width, height, num_thresholds }) => {
-  if (num_thresholds <= 0) {
-    return pixels;
-  }
   validateImageBuffer({ pixels, width, height });
+  if (num_thresholds <= 0) {
+    return pixels.slice();
+  }
   const result = await callWasm({
     funcName: "threshold_image",
     args: { pixels, width, height, num_thresholds },
