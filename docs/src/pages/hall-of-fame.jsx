@@ -1,7 +1,6 @@
 import Link from "@docusaurus/Link";
 import { usePluginData } from "@docusaurus/useGlobalData";
 import Layout from "@theme/Layout";
-import clsx from "clsx";
 import { ExternalLink, GitCommit, GitPullRequest } from "lucide-react";
 import React from "react";
 import Avatar from "../components/Avatar";
