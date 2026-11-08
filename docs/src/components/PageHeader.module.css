@@ -1,0 +1,16 @@
+.header {
+  margin-bottom: 56px;
+}
+
+/* A header that is the only thing in its section needs no space below it. */
+.header:last-child {
+  margin-bottom: 0;
+}
+
+.lead {
+  max-width: 820px;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink-2);
+}

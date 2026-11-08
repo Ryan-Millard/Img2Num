@@ -1,0 +1,91 @@
+.card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 24px 32px;
+  margin-bottom: 64px;
+}
+
+.image {
+  flex: 0 0 auto;
+  width: min(100%, 240px);
+  height: auto;
+  /* Centre the badge beside the text block (its first screen or so) rather than the whole column. */
+  align-self: center;
+}
+
+.body {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.heading {
+  margin-bottom: 8px;
+  font-size: 20px;
+}
+
+.tabs {
+  margin-top: 16px;
+}
+
+.hint {
+  margin: 4px 0 12px;
+  font-size: 14px;
+  color: var(--ink-3);
+}
+
+/* Image addresses */
+
+.files {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.file {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--surface-3);
+}
+
+.file:last-child {
+  border-bottom: 1px solid var(--surface-3);
+}
+
+.fileLabel {
+  flex: 0 0 72px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.fileUrl {
+  flex: 1 1 240px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+
+.fileActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+
+/* The page as a credential link */
+
+.credential {
+  margin: 20px 0 8px;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+
+.credentialRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
