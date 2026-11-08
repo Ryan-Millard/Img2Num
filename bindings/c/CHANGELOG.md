@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.2](https://github.com/Ryan-Millard/Img2Num/compare/bindings-c-v0.2.1...bindings-c-v0.2.2) (2026-11-08)
+
+
+### 🐛 Bug Fixes
+
+* **gpu:** fail clearly on missing embedded shader IDs ([#813](https://github.com/Ryan-Millard/Img2Num/issues/813)) ([69a4f5f](https://github.com/Ryan-Millard/Img2Num/commit/69a4f5fb62cb34befd8a800a95819df641dab462))
+
+
+### ✅ Tests
+
+* add C++ and C ABI test coverage ([#702](https://github.com/Ryan-Millard/Img2Num/issues/702)) ([4cf8ec0](https://github.com/Ryan-Millard/Img2Num/commit/4cf8ec0e1ee479c9f78f6cce2665392c92271fe9))
+
 ## [0.2.1](https://github.com/Ryan-Millard/Img2Num/compare/bindings-c-v0.2.0...bindings-c-v0.2.1) (2026-10-23)
 
 
