@@ -4,7 +4,7 @@ import { spawn } from "node:child_process";
 
 async function run(command, args) {
   return new Promise((resolve, reject) => {
-    const child = spawn(command, args, {
+    const child = spawn([command, ...args].join(" "), {
       stdio: "inherit",
       shell: true,
     });
