@@ -29,7 +29,7 @@ format:
 
 lint:
     @echo "Linting files"
-    pnpm lint:py
+    pnpm lint
 
 # Check REUSE/SPDX license compliance
 reuse-check:

@@ -3,7 +3,12 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import { BookOpen, Cpu, FileText, GitBranch, Globe, Layers, Package, Palette, Target, Terminal, Zap, Mailbox, MoveRight } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import Card from "../components/Card";
+import BackgroundBand from "../components/BackgroundBand";
+import Eyebrow from "../components/Eyebrow";
 import Hedgehog from "../components/Hedgehog";
+import Section from "../components/Section";
+import SectionHeader from "../components/SectionHeader";
 import styles from "./index.module.css";
 import CodeBlock from "@theme/CodeBlock";
 import { usePluginData } from "@docusaurus/useGlobalData";
@@ -59,73 +64,68 @@ function HeroSection() {
   }, []);
 
   return (
-    <section className={styles.hero}>
-      <div className={styles.heroInner}>
-        <div className={styles.heroLeft}>
-          <div className={styles.eyebrow}>
-            <span className={styles.eyebrowBar}></span>
-            filter · segment · trace
+    <BackgroundBand innerWrapper={{ className: styles.heroInner }}>
+      <div className={styles.heroLeft}>
+        <Eyebrow>filter · segment · trace</Eyebrow>
+
+        <h1 className={styles.heroTitle}>
+          Raster to <em className={styles.heroTitleAccent}>SVG</em>
+          <br />
+          in C++, Python,
+          <br />
+          JavaScript &amp; C
+        </h1>
+
+        <p className={styles.heroLead}>
+          Img2Num is a cross-platform raster-to-SVG conversion library - it converts bitmap images like PNGs and JPEGs into clean, scalable SVG paths. Built for speed, minimal dependencies, and
+          multi-language bindings.
+        </p>
+
+        <div className={styles.heroActionsWrapper}>
+          <div className={styles.heroActions} style={{ marginBottom: 0 }}>
+            <Link className={styles.btnPrimary} to="./docs">
+              <Package size={16} style={{ marginRight: "6px" }} /> Installation and Setup
+            </Link>
+            <Link className={styles.btnGhost} to="/changelog">
+              Changelog
+            </Link>
+            <Link className={styles.btnGhost} to="/faq">
+              FAQ
+            </Link>
+            <Link className={styles.btnGhost} to="https://github.com/Ryan-Millard/Img2Num">
+              GitHub <MoveRight size={15} />
+            </Link>
           </div>
-
-          <h1 className={styles.heroTitle}>
-            Raster to <em className={styles.heroTitleAccent}>SVG</em>
-            <br />
-            in C++, Python,
-            <br />
-            JavaScript &amp; C
-          </h1>
-
-          <p className={styles.heroLead}>
-            Img2Num is a cross-platform raster-to-SVG conversion library - it converts bitmap images like PNGs and JPEGs into clean, scalable SVG paths. Built for speed, minimal dependencies, and
-            multi-language bindings.
-          </p>
-
-          <div className={styles.heroActionsWrapper}>
-            <div className={styles.heroActions} style={{ marginBottom: 0 }}>
-              <Link className={styles.btnPrimary} to="./docs">
-                <Package size={16} style={{ marginRight: "6px" }} /> Installation and Setup
-              </Link>
-              <Link className={styles.btnGhost} to="/changelog">
-                Changelog
-              </Link>
-              <Link className={styles.btnGhost} to="/faq">
-                FAQ
-              </Link>
-              <Link className={styles.btnGhost} to="https://github.com/Ryan-Millard/Img2Num">
-                GitHub <MoveRight size={15} />
-              </Link>
-            </div>
-            <Hedgehog size={60} />
-          </div>
-
-          <div className={styles.statsBar}>
-            <div className={styles.stat}>
-              <span className={styles.statNum}>★ {stats.stars !== null ? stats.stars : "—"}</span>
-              <span className={styles.statLabel}>stars</span>
-            </div>
-            <div className={styles.stat}>
-              <span className={styles.statNum}>⑂ {stats.forks !== null ? stats.forks : "—"}</span>
-              <span className={styles.statLabel}>forks</span>
-            </div>
-            <div className={styles.stat}>
-              <span className={styles.statNum}>◉ {stats.contributors !== null ? stats.contributors : "—"}</span>
-              <span className={styles.statLabel}>contributors</span>
-            </div>
-            <div className={styles.stat}>
-              <span className={styles.statNum}>C++/C/Py/JS</span>
-              <span className={styles.statLabel}>bindings</span>
-            </div>
-          </div>
+          <Hedgehog size={60} />
         </div>
 
-        <div className={styles.heroRight}>
-          <RasterToSvgDemo />
-          <Link className={styles.btnPrimary} to="/showcase">
-            View Showcase <MoveRight size={15} />
-          </Link>
+        <div className={styles.statsBar}>
+          <div className={styles.stat}>
+            <span className={styles.statNum}>★ {stats.stars !== null ? stats.stars : "—"}</span>
+            <span className={styles.statLabel}>stars</span>
+          </div>
+          <div className={styles.stat}>
+            <span className={styles.statNum}>⑂ {stats.forks !== null ? stats.forks : "—"}</span>
+            <span className={styles.statLabel}>forks</span>
+          </div>
+          <div className={styles.stat}>
+            <span className={styles.statNum}>◉ {stats.contributors !== null ? stats.contributors : "—"}</span>
+            <span className={styles.statLabel}>contributors</span>
+          </div>
+          <div className={styles.stat}>
+            <span className={styles.statNum}>C++/C/Py/JS</span>
+            <span className={styles.statLabel}>bindings</span>
+          </div>
         </div>
       </div>
-    </section>
+
+      <div className={styles.heroRight}>
+        <RasterToSvgDemo />
+        <Link className={styles.btnPrimary} to="/showcase">
+          View Showcase <MoveRight size={15} />
+        </Link>
+      </div>
+    </BackgroundBand>
   );
 }
 
@@ -175,16 +175,11 @@ function BindingsSection() {
   ];
 
   return (
-    <section className={styles.section}>
-      <div className={styles.sectionHeader}>
-        <h2 className={styles.sectionTitle}>Use it anywhere</h2>
-        <Link className={styles.sectionLink} to="./docs">
-          See all bindings <MoveRight size={15} />
-        </Link>
-      </div>
+    <Section>
+      <SectionHeader title="Use it anywhere" link={{ to: "./docs", label: "See all bindings" }} />
       <div className={styles.bindingsGrid}>
         {bindings.map((b) => (
-          <div key={b.lang} className={styles.bindingCard}>
+          <Card key={b.lang} className={styles.bindingCard}>
             <span className={styles.bindingLang}>{b.lang}</span>
             <div className={styles.bindingIcon} style={{ background: `var(${b.accentVar})` }}>
               {b.icon}
@@ -202,10 +197,10 @@ function BindingsSection() {
                 </React.Fragment>
               ))}
             </p>
-          </div>
+          </Card>
         ))}
       </div>
-    </section>
+    </Section>
   );
 }
 
@@ -238,37 +233,33 @@ function FeaturesSection() {
   ];
 
   return (
-    <section className={styles.featuresSectionBg}>
-      <div className={styles.featuresInner}>
-        <h2 className={styles.featuresSectionTitle}>Designed for developers</h2>
-        <div className={styles.featuresGrid}>
-          {features.map((f) => (
-            <div key={f.title} className={styles.featureCardDark}>
-              <h4 className={styles.featureTitleDark}>
-                <span className={styles.featureIconDark} style={{ background: f.color }}>
-                  {f.icon}
-                </span>
-                {f.title}
-              </h4>
-              <p className={styles.featureDescDark}>{f.desc}</p>
-            </div>
-          ))}
-        </div>
+    <BackgroundBand className={styles.featuresSectionBg}>
+      <h2 className={styles.featuresSectionTitle}>Designed for developers</h2>
+      <div className={styles.featuresGrid}>
+        {features.map((f) => (
+          <div key={f.title} className={styles.featureCardDark}>
+            <h4 className={styles.featureTitleDark}>
+              <span className={styles.featureIconDark} style={{ background: f.color }}>
+                {f.icon}
+              </span>
+              {f.title}
+            </h4>
+            <p className={styles.featureDescDark}>{f.desc}</p>
+          </div>
+        ))}
       </div>
-    </section>
+    </BackgroundBand>
   );
 }
 
 function CtaBand() {
   return (
-    <section className={styles.ctaBand}>
-      <div className={styles.ctaInner}>
-        <h2 className={styles.ctaTitle}>Ready to integrate SVG vectorization into your stack?</h2>
-        <Link className={styles.ctaBtn} to="./docs">
-          Get started <MoveRight size={15} />
-        </Link>
-      </div>
-    </section>
+    <BackgroundBand style={{ backgroundColor: "var(--accent)" }} innerWrapper={{ className: styles.ctaInner }}>
+      <h2 className={styles.ctaTitle}>Ready to integrate SVG vectorization into your stack?</h2>
+      <Link className={styles.ctaBtn} to="./docs">
+        Get started <MoveRight size={15} />
+      </Link>
+    </BackgroundBand>
   );
 }
 
@@ -320,10 +311,8 @@ function LinksSection() {
   ];
 
   return (
-    <section className={styles.section}>
-      <div className={styles.sectionHeader}>
-        <h2 className={styles.sectionTitle}>Ecosystem</h2>
-      </div>
+    <Section>
+      <SectionHeader title="Ecosystem" />
       <div className={styles.linksGrid}>
         {links.map((l) => (
           <Link key={l.title} className={styles.linkCard} to={l.to}>
@@ -338,7 +327,7 @@ function LinksSection() {
           </Link>
         ))}
       </div>
-    </section>
+    </Section>
   );
 }
 

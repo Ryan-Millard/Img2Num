@@ -1,9 +1,3 @@
-add_subdirectory(
-  "${PROJECT_SOURCE_DIR}/third_party/tests"
-  "${CMAKE_CURRENT_BINARY_DIR}/catch2_build"
-  EXCLUDE_FROM_ALL
-)
-
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/third_party/tests/extras")
 include(Catch)
 

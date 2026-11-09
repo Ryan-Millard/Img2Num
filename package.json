@@ -66,6 +66,11 @@
         "desc": "Run ruff to apply formatting issues"
       }
     },
+    "Testing": {
+      "test:py": {
+        "desc": "Run the Python package test suite (pytest)"
+      }
+    },
     "Validation": {
       "validate-scripts": {
         "desc": "Validate all scripts defined in workspace package.json files"
@@ -100,7 +105,8 @@
     "lint:js:fix": "eslint packages/js example-apps/react-js scripts/img2num-dev-scripts docs --fix",
     "lint:py": "uv run --with ruff ruff check .",
     "lint:py:fix": "uv run --with ruff ruff check --fix --unsafe-fixes .",
-    "editorconfig:check": "editorconfig-checker"
+    "editorconfig:check": "editorconfig-checker",
+    "test:py": "uv run --group test pytest"
   },
   "devDependencies": {
     "clang-format": "^1.8.0",
