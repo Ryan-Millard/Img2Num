@@ -20,13 +20,16 @@
 #endif
 
 uint8_t quantize(uint8_t value, int num_thresholds) {
-    const int n = num_thresholds; // Expected range [1 : 256].
-
-    const int bucket = value * n / 256; // Range [0 : n - 1], exactly n buckets.
+    // num_thresholds is expected in [1 : 256]. Arithmetic below happens in int, so
+    // nothing overflows before the (checked) narrowing into uint8_t.
+    const uint8_t bucket {static_cast<uint8_t>(
+        value * num_thresholds / 256
+    )}; // Range [0 : num_thresholds - 1], exactly num_thresholds buckets.
 
     // Smallest and largest values that fall in this bucket.
-    const int lo = (bucket * 256 + n - 1) / n;
-    const int hi = ((bucket + 1) * 256 + n - 1) / n - 1;
+    const uint8_t lo {static_cast<uint8_t>((bucket * 256 + num_thresholds - 1) / num_thresholds)};
+    const uint8_t hi {
+        static_cast<uint8_t>(((bucket + 1) * 256 + num_thresholds - 1) / num_thresholds - 1)};
 
     // Map to the bucket's midpoint (rounded down), which always lies inside it.
     return static_cast<uint8_t>((lo + hi) / 2);
@@ -172,16 +175,12 @@ void threshold_image(uint8_t* image, const int width, const int height, const in
     if (num_thresholds <= 0) {
         return;
     }
-    const int n = std::min(num_thresholds, 256); // More than 256 levels cannot exist.
-
     // Only 256 possible channel values: compute each result once, then look it up.
-    const auto lut = [n]() {
-        std::array<uint8_t, 256> table {};
-        for (int v = 0; v < 256; ++v) {
-            table[v] = quantize(static_cast<uint8_t>(v), n);
-        }
-        return table;
-    }();
+    // More than 256 levels cannot exist, so clamp.
+    std::array<uint8_t, 256> lut {};
+    for (int v {0}, n {std::min(num_thresholds, 256)}; v < 256; ++v) {
+        lut[v] = quantize(static_cast<uint8_t>(v), n);
+    }
 
     ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> img;
     img.loadFromBuffer(image, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
