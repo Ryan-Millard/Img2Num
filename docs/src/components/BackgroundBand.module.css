@@ -1,0 +1,10 @@
+.parent {
+  background: var(--surface);
+  padding: 72px 32px 64px;
+  border-bottom: 1px solid var(--surface-3);
+}
+
+.inner {
+  max-width: 1400px;
+  margin: 0 auto;
+}

@@ -1,6 +1,8 @@
 import Layout from "@theme/Layout";
 import { CheckCircle2, MoveRight } from "lucide-react";
 import React, { useState } from "react";
+import PageHeader from "../../components/PageHeader";
+import Section from "../../components/Section";
 import { createShowcaseDiscussionUrl } from "../../utils/showcase";
 import styles from "../index.module.css";
 import submitStyles from "./submit.module.css";
@@ -30,16 +32,8 @@ export default function ShowcaseSubmit() {
   return (
     <Layout title="Submit your project" description="Submit a project built with Img2Num for consideration in the community showcase.">
       <main>
-        <section className={styles.section}>
-          <div className={styles.eyebrow}>
-            <span className={styles.eyebrowBar}></span>
-            community showcase
-          </div>
-
-          <div className={submitStyles.header}>
-            <h1 className={styles.heroTitle}>Submit your project</h1>
-            <p className={submitStyles.lead}>Built something with Img2Num? Share it with the community and apply to have it listed in the showcase.</p>
-          </div>
+        <Section>
+          <PageHeader eyebrow="community showcase" title="Submit your project" lead="Built something with Img2Num? Share it with the community and apply to have it listed in the showcase." />
 
           <div className={submitStyles.layout}>
             <aside className={submitStyles.criteriaCard}>
@@ -150,7 +144,7 @@ export default function ShowcaseSubmit() {
               </div>
             </form>
           </div>
-        </section>
+        </Section>
       </main>
     </Layout>
   );

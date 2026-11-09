@@ -194,6 +194,7 @@ const config = {
     ],
     "./plugins/github-stats/index.js",
     "./plugins/hallOfFame/index.js",
+    "./plugins/events/index.js",
     [
       "docusaurus-plugin-copy-page-button",
       {
@@ -374,32 +375,28 @@ const config = {
             title: "Community",
             items: [
               {
-                label: "GitHub",
-                href: "https://github.com/Ryan-Millard/Img2Num",
-              },
-              {
-                label: "Discord",
-                href: "https://discord.com/invite/BHjxcCqAnU",
-              },
-              {
-                label: "Issues",
-                href: "https://github.com/Ryan-Millard/Img2Num/issues",
-              },
-              {
-                label: "Discussions",
-                href: "https://github.com/Ryan-Millard/Img2Num/discussions",
-              },
-              {
-                label: "Good First Issues",
-                href: "https://github.com/Ryan-Millard/Img2Num/issues/views/1155",
-              },
-              {
                 label: "Blog",
                 to: "/blog",
               },
               {
                 label: "FAQ",
                 to: "/faq",
+              },
+              {
+                label: "Events",
+                to: "/events/",
+              },
+              {
+                label: "Hall of Fame",
+                to: "/hall-of-fame/",
+              },
+              {
+                label: "GitHub",
+                href: "https://github.com/Ryan-Millard/Img2Num",
+              },
+              {
+                label: "Discord",
+                href: "https://discord.com/invite/BHjxcCqAnU",
               },
             ],
           },
