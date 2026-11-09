@@ -20,7 +20,15 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
+  core-cpp-tests:
+    name: Core C++ tests
+    uses: ./.github/workflows/cmake-tests.yml
+    with:
+      image: ghcr.io/ryan-millard/img2num-dev:${{ github.ref_name == 'main' && 'main' || 'dev' }}
+      ref: ${{ github.event_name == 'workflow_dispatch' && inputs.force_publish_component != 'none' && inputs.force_publish_tag || github.sha }}
+
   release-please:
+    needs: core-cpp-tests
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -128,7 +136,7 @@ jobs:
 
   # C/C++ native artifacts
   build-c-cpp-native:
-    needs: release-please
+    needs: [release-please, core-cpp-tests]
     runs-on: ${{ matrix.os }}
     permissions:
       contents: write
@@ -232,7 +240,7 @@ jobs:
 
   # WASM + JS
   build-js:
-    needs: release-please
+    needs: [release-please, core-cpp-tests]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -320,7 +328,7 @@ jobs:
   # Full 3-OS x 4-Python matrix only on main or when an actual Python release
   # was created; dev pushes build a single smoke wheel to save CI minutes.
   build-py:
-    needs: release-please
+    needs: [release-please, core-cpp-tests]
     runs-on: ${{ matrix.os }}
     permissions:
       contents: read
@@ -350,7 +358,7 @@ jobs:
           path: wheelhouse/*.whl
 
   build-py-sdist:
-    needs: release-please
+    needs: [release-please, core-cpp-tests]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -425,6 +433,7 @@ jobs:
           packages-dir: wheelhouse/
           repository-url: https://test.pypi.org/legacy/
           skip-existing: true   # version may already exist on TestPyPI from previous runs
+
 
   # Garbage-collect the draft releases created by the dry-run paths.
   # Only drafts whose tag matches the fallback format (contains '@') are

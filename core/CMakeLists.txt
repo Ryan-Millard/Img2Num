@@ -110,7 +110,7 @@ target_include_directories(Img2Num
 
 if (EMSCRIPTEN)
   message("using emdawnwebgpu port")
-  target_compile_options(Img2Num PRIVATE "--use-port=emdawnwebgpu")
+  target_compile_options(Img2Num PRIVATE "--use-port=emdawnwebgpu" -fexceptions)
   target_link_options(Img2Num PRIVATE "--use-port=emdawnwebgpu" "SHELL:-s ASYNCIFY=1")
 else()
 

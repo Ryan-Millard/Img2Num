@@ -1,0 +1,68 @@
+.card {
+  box-sizing: border-box;
+  min-width: 0;
+  padding: var(--card-padding, 24px);
+  background: var(--white);
+  border: 1.5px solid var(--surface-3);
+  border-radius: var(--radius-lg);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s;
+}
+
+.card:hover {
+  border-color: var(--accent-2);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.09);
+  transform: translateY(-3px);
+}
+
+/* A card that is a link keeps its own colours instead of the global link styling. */
+.link,
+.link:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/*
+ * Subgrid cards: inside an aligned CardGrid (row-gap 0) each card spans N rows of the
+ * grid and lays its parts out on those rows, so the same part sits at the same height
+ * across every card in a row. The vertical gap moves onto the card as a margin.
+ */
+.rows2,
+.rows3,
+.rows4 {
+  display: grid;
+  /* minmax(0, 1fr) keeps the column at the card's width, so long unbreakable text
+   * (a GitHub login, say) gets its ellipsis instead of pushing the card wider. */
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  margin-bottom: var(--card-grid-gap, 24px);
+}
+
+.rows2 {
+  grid-row: span 2;
+}
+
+.rows3 {
+  grid-row: span 3;
+}
+
+.rows4 {
+  grid-row: span 4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+  .card:hover {
+    transform: none;
+  }
+}

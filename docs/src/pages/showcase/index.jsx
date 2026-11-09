@@ -4,6 +4,11 @@ import Layout from "@theme/Layout";
 import CodeBlock from "@theme/CodeBlock";
 import { Atom, Box, Braces, Code2, Cpu, Hexagon, Layers, MoveRight, Terminal, Zap } from "lucide-react";
 import React from "react";
+import Card from "../../components/Card";
+import PageHeader from "../../components/PageHeader";
+import Section from "../../components/Section";
+import BackgroundBand from "../../components/BackgroundBand";
+import SectionHeader from "../../components/SectionHeader";
 import { showcaseProjects } from "../../data/showcase";
 import styles from "../index.module.css";
 import showcaseStyles from "./showcase.module.css";
@@ -162,7 +167,7 @@ function CommunityProjectCard({ project }) {
   const screenshot = useBaseUrl(project.screenshot || "/");
   const logo = useBaseUrl(project.logo || "/");
   return (
-    <div className={styles.bindingCard}>
+    <Card className={styles.bindingCard}>
       <span className={styles.bindingLang}>{project.binding}</span>
       <div className={showcaseStyles.projectHeader}>
         <div className={`${styles.bindingIcon} ${showcaseStyles.projectIcon}`}>
@@ -183,7 +188,7 @@ function CommunityProjectCard({ project }) {
           </Link>
         ))}
       </p>
-    </div>
+    </Card>
   );
 }
 
@@ -192,38 +197,31 @@ export default function Showcase() {
   return (
     <Layout title="Showcase" description="Runnable example applications showing how to use Img2Num in the browser (React, ESM, IIFE, UMD) and from the command line (C, C++, Python, Node.js).">
       <main>
-        <section className={styles.section}>
-          <div className={styles.eyebrow}>
-            <span className={styles.eyebrowBar}></span>
-            upload · convert · copy the code
-          </div>
+        <BackgroundBand>
+          <PageHeader
+            eyebrow="upload · convert · copy the code"
+            title="Showcase"
+            link={{ to: "/docs", label: "All Docs" }}
+            lead={
+              <>
+                One conversion pipeline - filter, segment, trace - run from every binding. The browser apps are live: upload a raster image, get an SVG back, and see the exact code that did it. The
+                console apps run the same pipeline from the command line in <Link to="/docs/c">C</Link>, <Link to="/docs/cpp">C++</Link>, <Link to="/docs/py">Python</Link>, and{" "}
+                <Link to="/docs/js">JavaScript</Link>. Pick whichever matches your stack and copy it as a starting point.
+              </>
+            }
+          />
+        </BackgroundBand>
 
-          <div className={styles.sectionHeader} style={{ marginBottom: "auto" }}>
-            <h1 className={styles.heroTitle}>Showcase</h1>
-            <Link className={styles.sectionLink} to="/docs">
-              All Docs <MoveRight size={15} />
-            </Link>
-          </div>
-
-          <p>
-            One conversion pipeline - filter, segment, trace - run from every binding. The browser apps are live: upload a raster image, get an SVG back, and see the exact code that did it. The
-            console apps run the same pipeline from the command line in <Link to="/docs/c">C</Link>, <Link to="/docs/cpp">C++</Link>, <Link to="/docs/py">Python</Link>, and{" "}
-            <Link to="/docs/js">JavaScript</Link>. Pick whichever matches your stack and copy it as a starting point.
-          </p>
-        </section>
-
-        <section className={styles.section}>
-          <div className={styles.sectionHeader}>
-            <h2>Official Examples</h2>
-          </div>
+        <Section>
+          <SectionHeader title="Official Examples" />
 
           <p>Officially supported and recommended ways to use Img2Num across its available bindings.</p>
 
           <div className={styles.bindingsGrid}>
             {apps.map((app) => (
-              <div key={app.title} id={app.slug} className={styles.bindingCard}>
+              <Card key={app.title} id={app.slug} className={styles.bindingCard}>
                 <span className={styles.bindingLang}>{app.lang}</span>
-                <div style={{ display: "flex", alignItems: "center", gap: "1em" }}>
+                <div className={showcaseStyles.projectHeader}>
                   <div className={styles.bindingIcon} style={{ background: `var(${app.accentVar})` }}>
                     {app.icon}
                   </div>
@@ -243,7 +241,7 @@ export default function Showcase() {
                     {app.cta} <MoveRight size={15} style={{ verticalAlign: "middle" }} />
                   </a>
                 </p>
-              </div>
+              </Card>
             ))}
           </div>
 
@@ -257,12 +255,10 @@ export default function Showcase() {
             </Link>
             .
           </p>
-        </section>
+        </Section>
 
-        <section className={styles.section}>
-          <div className={styles.sectionHeader}>
-            <h2>Built with Img2Num</h2>
-          </div>
+        <BackgroundBand>
+          <SectionHeader title="Built with Img2Num" />
 
           <p>Community projects created by people outside the Img2Num project. These are third-party implementations, separate from the official examples above.</p>
 
@@ -281,7 +277,7 @@ export default function Showcase() {
               ))}
             </div>
           )}
-        </section>
+        </BackgroundBand>
       </main>
     </Layout>
   );
