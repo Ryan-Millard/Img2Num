@@ -89,7 +89,13 @@ jobs:
 
       - name: Install PNPM dependencies
         run: pnpm install
-        
+
+      - name: Lint and test release detection
+        run: |
+          pnpm exec eslint scripts/release-please.js scripts/release-please.test.js
+          pnpm exec prettier --check scripts/release-please.js scripts/release-please.test.js --ignore-path .gitignore
+          pnpm run test:release
+
       - name: Build and test TypeScript types (packages/js)
         working-directory: packages/js
         run: |
