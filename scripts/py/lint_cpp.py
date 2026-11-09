@@ -98,7 +98,10 @@ def extra_args(build_dir: Path) -> list[str]:
         return []
     inc = emscripten_sysroot_include()
     assert inc is not None  # wasm dirs are filtered out earlier when None
-    return [f"--extra-arg=-isystem{inc}"]
+    return [
+        f"--extra-arg=-isystem{inc}",
+        "--extra-arg=--target=wasm32-unknown-emscripten",
+    ]
 
 
 def usable_build_dirs(candidates: list[Path], *, explicit: bool) -> list[Path]:

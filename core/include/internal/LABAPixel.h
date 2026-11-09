@@ -3,6 +3,7 @@
 
 #include "internal/LABPixel.h"
 
+
 namespace ImageLib {
 
 #ifdef _MSC_VER
@@ -41,12 +42,23 @@ __attribute__((packed))
 #pragma pack(pop)
 #endif
 
-template <typename NumberT>
-std::ostream& operator<<(std::ostream& out, const ImageLib::LABAPixel<NumberT>& pixel) {
-    out << "( " << pixel.l << "," << pixel.a << "," << pixel.b << "," << pixel.alpha << " )";
-    return out;
-}
-
 } // namespace ImageLib
+
+namespace fmt {
+template <typename NumberT> struct formatter<ImageLib::LABAPixel<NumberT>> {
+    constexpr auto parse(format_parse_context& ctx) {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const ImageLib::LABAPixel<NumberT>& pixel, FormatContext& ctx) const {
+        const NumberT l = pixel.l;
+        const NumberT a = pixel.a;
+        const NumberT b = pixel.b;
+        const NumberT alpha = pixel.alpha;
+        return format_to(ctx.out(), "( {},{},{},{} )", l, a, b, alpha);
+    }
+};
+} // namespace fmt
 
 #endif // LABAPixel_H
