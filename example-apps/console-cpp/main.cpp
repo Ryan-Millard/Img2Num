@@ -1,23 +1,22 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
+
 #define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <stb/stb_image_write.h>
+
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
 #include <filesystem>
 #include <fstream>
-#include <img2num.h>
 #include <iostream>
-#include <stb/stb_image_write.h>
 #include <string>
 #include <vector>
 #include <thread>
 
-#ifndef OUTPUT_DIR
-#define OUTPUT_DIR "./console-cpp-outputs"
-#endif
+#include <img2num.h>
 
-constexpr const char* OUT_DIR {OUTPUT_DIR};
+constexpr const char* OUT_DIR {"./console-cpp-outputs"};
 
 constexpr int NUM_CHANNELS {4};
 constexpr double SIGMA_WIDTH_RATIO {0.005};
@@ -62,35 +61,66 @@ void combined_process(
 
 int main(int argc, char** argv) {
     if (argc < 2) {
-        std::cerr << "Usage: " << argv[0] << " <image_file>" << std::endl;
+        std::cerr << "Usage: "
+                  << argv[0]
+                  << " <image_file> [optional] synthetic flag"
+                  << std::endl;
         return 1;
     }
 
-    std::string image_path {argv[1]};
-    int width {0}, height {0}, channels {0};
-    // Force load as RGBA (NUM_CHANNELS = 4)
-    uint8_t* image_data_original {
-        stbi_load(image_path.c_str(), &width, &height, &channels, NUM_CHANNELS)
+    const bool is_synthetic {
+        (argc == 3) ? (std::stoi(argv[2]) > 0) : false
     };
+
+    const std::string image_path {argv[1]};
+
+    int width {0};
+    int height {0};
+    int channels {0};
+
+    uint8_t* image_data_original {
+        stbi_load(
+            image_path.c_str(),
+            &width,
+            &height,
+            &channels,
+            NUM_CHANNELS
+        )
+    };
+
     if (!image_data_original) {
-        std::cerr << "Failed to load image: " << stbi_failure_reason() << std::endl;
+        std::cerr << "Failed to load image: "
+                  << stbi_failure_reason()
+                  << std::endl;
         return 1;
     }
 
-    // Ensure output directory exists
     std::error_code ec;
     std::filesystem::create_directories(OUT_DIR, ec);
+
     if (ec) {
-        std::cerr << "Failed to create directory: " << ec.message() << "\n";
+        std::cerr << "Failed to create output directory: "
+                  << ec.message()
+                  << std::endl;
+
         stbi_image_free(image_data_original);
         return 1;
     }
 
     const size_t pixel_count {static_cast<size_t>(width) * static_cast<size_t>(height)};
+
     const size_t byte_count {pixel_count * NUM_CHANNELS};
 
-    std::cout << "Image loaded: " << width << "x" << height << " with " << NUM_CHANNELS
-              << " channel(s)." << std::endl;
+    std::cout
+        << "Image loaded: "
+        << width << "x" << height
+        << " with "
+        << NUM_CHANNELS << " channels."
+        << std::endl;
+
+    std::vector<uint8_t> img_data {image_data_original, image_data_original + byte_count};
+
+    stbi_image_free(image_data_original);
 
     // Working copy of the original image
     // std::vector<uint8_t> img_data(image_data_original, image_data_original + byte_count);
@@ -106,7 +136,6 @@ int main(int argc, char** argv) {
     // Bilateral sigma_spatial
     const double sigma {width * SIGMA_WIDTH_RATIO};
 
-    // Generate SVG with the full pipeline
     img2num::ImageToSvgConfig config;
     config.color_space = 0;
     config.bilateral_filter.sigma_spatial = sigma;
@@ -148,13 +177,23 @@ int main(int argc, char** argv) {
 
     const bool bilateral_save_success {
         stbi_write_png(
-            bilateral_path.c_str(), width, height, NUM_CHANNELS, img_data.data(),
+            bilateral_path.c_str(),
+            width,
+            height,
+            NUM_CHANNELS,
+            img_data.data(),
             width * NUM_CHANNELS
         ) == 1
     };
-    const bool kmeans_save_success {
+
+    const bool clustered_save_success {
         stbi_write_png(
-            kmeans_path.c_str(), width, height, NUM_CHANNELS, out_data.data(), width * NUM_CHANNELS
+            clustered_path.c_str(),
+            width,
+            height,
+            NUM_CHANNELS,
+            out_data.data(),
+            width * NUM_CHANNELS
         ) == 1
     };
 
@@ -185,6 +224,6 @@ int main(int argc, char** argv) {
         return 0;
     }
 
-    std::cerr << "Failed to save images!" << std::endl;
+    std::cerr << "Failed to save one or more outputs." << std::endl;
     return 1;
 }

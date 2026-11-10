@@ -5,9 +5,9 @@ console-py input="":
     uv run python3 example-apps/console-py/main.py "{{ input }}"
 
 # Run the C++ example app on an image
-console-cpp input:
-    @echo "./build-c-cpp/example-apps/console-cpp/Img2NumExample_console_cpp {{ input }}"
-    ./build-c-cpp/example-apps/console-cpp/Img2NumExample_console_cpp "{{ input }}"
+console-cpp input synthetic="0":
+    @echo "./build-c-cpp/example-apps/console-cpp/Img2NumExample_console_cpp {{ input }} {{ synthetic }}"
+    ./build-c-cpp/example-apps/console-cpp/Img2NumExample_console_cpp "{{ input }}" "{{ synthetic }}"
 
 # Run the C example app on an image
 console-c input:
