@@ -56,6 +56,40 @@ find_package(CImg2Num REQUIRED)
 target_link_libraries(your_app PRIVATE CImg2Num::CImg2Num)
 ```
 
+## Usage Example
+
+```c title="Converting an RGBA image to SVG using the C API"
+#include <cimg2num.h>
+#include <cimg2num/img2num_error_t.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void) {
+    const int width = 256, height = 256;
+
+    /* RGBA: 4 bytes per pixel */
+    uint8_t* image = calloc((size_t)width * (size_t)height * 4, 1);
+    if (!image) return 1;
+
+    /* ... fill `image` with your pixel data ... */
+
+    img2num_ImageToSvgConfig config = img2num_ImageToSvgConfig_default();
+    char* svg = img2num_image_to_svg(image, width, height, &config);
+    if (!svg) {
+        const char* err = img2num_get_last_error_message();
+        fprintf(stderr, "img2num: %s\n", (err && *err) ? err : "SVG conversion or allocation failed");
+        img2num_clear_last_error();
+        free(image);
+        return 1;
+    }
+
+    puts(svg);
+    free(svg);   /* the caller owns the returned string */
+    free(image);
+    return 0;
+}
+```
+
 ## Documentation
 
 The Doxygen documentation provides detailed descriptions of all functions, their parameters, and usage examples.
