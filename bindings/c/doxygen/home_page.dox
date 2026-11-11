@@ -52,8 +52,10 @@
  * \warning **Buffer Format Requirement:** All Img2Num C functions expect a 32-bit
  * **RGBA buffer** (4 bytes per pixel: Red, Green, Blue, Alpha) in row-major order.
  * A buffer of dimensions `width * height` requires `(size_t)width * (size_t)height * 4`
- * bytes. Passing RGB (3 bytes/pixel) or grayscale (1 byte/pixel) buffers will cause
- * buffer overflow and memory corruption.
+ * bytes. Passing RGB (3 bytes/pixel) or grayscale (1 byte/pixel) buffers may cause
+ * buffer overflows and corrupted memory.
+ *
+ * Img2Num plans to add support for RGB and grayscale images in the future, however we currently do not support them.
  *
  * \subsection memory_sec Memory Ownership
  * Functions that return strings, such as img2num_image_to_svg() and
@@ -84,6 +86,7 @@
  *     char* svg = img2num_image_to_svg(image, width, height, &config);
  *     if (!svg) {
  *         fprintf(stderr, "img2num: %s\n", img2num_get_last_error_message());
+ *         img2num_clear_last_error();
  *         free(image);
  *         return 1;
  *     }

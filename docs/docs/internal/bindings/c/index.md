@@ -15,7 +15,7 @@ The **Img2Num C Bindings** provide a C-friendly interface to the core Img2Num im
 
 The bindings wrap the underlying C++ functions (from [`core/`](../../core)) in a C interface using `extern "C"`. 
 
-:::caution Buffer Format: RGBA Only
+:::caution[Buffer Format: RGBA Only]
 All Img2Num functions operate on raw row-major image buffers (`uint8_t*`) and strictly require **RGBA format (4 bytes per pixel)**. A buffer of size `width * height` requires `(size_t)width * (size_t)height * 4` bytes. Passing RGB (3 bytes/pixel) or grayscale (1 byte/pixel) buffers will cause out-of-bounds memory corruption.
 :::
 
