@@ -56,16 +56,22 @@
  * buffer overflows and corrupted memory.
  *
  * Img2Num plans to add support for RGB and grayscale images in the future, however we currently do not support them.
+ * Note that SVG conversion functions (img2num_image_to_svg() and img2num_labels_to_svg()) use only the RGB channels and discard alpha, rendering paths as fully opaque.
  *
  * \subsection memory_sec Memory Ownership
  * Functions that return strings, such as img2num_image_to_svg() and
  * img2num_labels_to_svg(), allocate the returned `char*` via `malloc()`.
  * **The caller owns the returned string and must release it using `free()`.**
  *
+ * Note that img2num_get_last_error_message() returns a borrowed pointer to
+ * thread-local storage; **do not free this pointer**.
+ *
  * \subsection error_sec Error Handling
  * When a function fails (e.g. returns `NULL`), error details can be retrieved
  * using img2num_get_last_error() and img2num_get_last_error_message() from
  * `<cimg2num/img2num_error_t.h>`. Use img2num_clear_last_error() to reset the error state.
+ * If img2num_image_to_svg() returns `NULL` while img2num_get_last_error() is `IMG2NUM_OK`,
+ * this indicates an allocation failure for the output string buffer.
  *
  * \code{.c}
  * #include <cimg2num.h>
@@ -85,7 +91,8 @@
  *     img2num_ImageToSvgConfig config = img2num_ImageToSvgConfig_default();
  *     char* svg = img2num_image_to_svg(image, width, height, &config);
  *     if (!svg) {
- *         fprintf(stderr, "img2num: %s\n", img2num_get_last_error_message());
+ *         const char* err = img2num_get_last_error_message();
+ *         fprintf(stderr, "img2num: %s\n", (err && *err) ? err : "SVG conversion or allocation failed");
  *         img2num_clear_last_error();
  *         free(image);
  *         return 1;

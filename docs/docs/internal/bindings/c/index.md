@@ -21,8 +21,8 @@ All Img2Num functions operate on raw row-major image buffers (`uint8_t*`) and st
 
 ## Key Functions
 
-* `img2num_image_to_svg` — Full pipeline: converts an RGBA raster image to an SVG string
-* `img2num_labels_to_svg` — Converts segmented label buffers to SVG paths
+* `img2num_image_to_svg` — Full pipeline: converts an RGBA raster image to an SVG string (alpha channel is discarded; paths are rendered opaque)
+* `img2num_labels_to_svg` — Converts segmented label buffers to SVG paths (paths are rendered opaque)
 * `img2num_gaussian_blur_fft` — Applies FFT-based Gaussian blur
 * `img2num_invert_image` — Inverts pixel values in an image
 * `img2num_threshold_image` — Applies thresholding to an image
@@ -38,11 +38,13 @@ Functions that return a dynamic string (`char*`), such as `img2num_image_to_svg(
 
 **The caller owns the returned string and must release it using `free()`.**
 
+Note that `img2num_get_last_error_message()` returns a borrowed pointer to thread-local storage; **callers must not free this pointer**.
+
 ## Error Handling
 
 Error codes and diagnostic messages are managed through `<cimg2num/img2num_error_t.h>`:
 - `img2num_get_last_error()` — Returns the last `img2num_error_t` status code (`IMG2NUM_OK`, `IMG2NUM_ERROR_BAD_ALLOC`, `IMG2NUM_ERROR_INVALID_ARGUMENT`, etc.).
-- `img2num_get_last_error_message()` — Returns a human-readable string describing the error.
+- `img2num_get_last_error_message()` — Returns a borrowed human-readable string describing the error (thread-local; do not free).
 - `img2num_clear_last_error()` — Resets the thread-local error state.
 
 ## CMake Integration
