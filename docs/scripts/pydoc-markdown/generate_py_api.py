@@ -41,14 +41,7 @@ from pathlib import Path
 
 import docspec
 import docspec_python
-from pybind11_stubgen import (
-    Printer,
-    Writer,
-    arg_parser,
-    run,
-    stub_parser_from_args,
-    to_output_and_subdir,
-)
+from pybind11_stubgen import main as stubgen_main
 from pydoc_markdown import PydocMarkdown
 from pydoc_markdown.contrib.loaders.python import PythonLoader
 from pydoc_markdown.contrib.processors.filter import FilterProcessor
@@ -365,23 +358,9 @@ def regenerate_native_stub() -> None:
     # so they reach stderr (which the Node wrapper always surfaces).
     logging.basicConfig(level=logging.INFO, stream=sys.stderr)
 
-    # Reuse stubgen's own arg wiring so parser/printer/writer are configured
-    # exactly as the CLI would configure them.
-    args = arg_parser().parse_args(["-o", str(PKG_DIR), "img2num._img2num"])
-    out_dir, sub_dir = to_output_and_subdir(
-        output_dir=args.output_dir,
-        module_name=args.module_name,
-        root_suffix=args.root_suffix,
-    )
-    run(
-        parser=stub_parser_from_args(args),
-        printer=Printer(invalid_expr_as_ellipses=not args.print_invalid_expressions_as_is),
-        module_name=args.module_name,
-        out_dir=out_dir,
-        sub_dir=sub_dir,
-        dry_run=False,
-        writer=Writer(stub_ext=args.stub_extension),
-    )
+    # Run stubgen's own CLI entry point so parser/printer/writer are configured
+    # exactly as `pybind11-stubgen` would configure them.
+    stubgen_main(["-o", str(PKG_DIR), "img2num._img2num"])
     if not NATIVE_STUB.exists():
         raise FileNotFoundError(f"stubgen ran but did not produce {NATIVE_STUB}")
 
