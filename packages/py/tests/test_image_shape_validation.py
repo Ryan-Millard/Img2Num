@@ -1,7 +1,13 @@
 import numpy as np
 import pytest
 
-from img2num.api import _inject_dimensions
+import img2num
+
+FUNCTIONS = [
+    ("invert_image", ()),
+    ("threshold_image", (4,)),
+    ("black_threshold_image", (4,)),
+]
 
 INVALID_SHAPES = [
     (64, 64),  # GREYSCALE
@@ -10,21 +16,21 @@ INVALID_SHAPES = [
 ]
 
 
-@_inject_dimensions(image_arg="image")
-def dummy_image_fn(image, *, width: int, height: int):
-    return image
-
-
+@pytest.mark.parametrize("fn_name, extra_args", FUNCTIONS)
 @pytest.mark.parametrize("shape", INVALID_SHAPES)
-def test_non_rgba_shapes_raise_value_error(shape):
+def test_non_rgba_shapes_raise_value_error(fn_name, extra_args, shape):
+    fn = getattr(img2num, fn_name)
     invalid_array = np.zeros(shape, dtype=np.uint8)
 
     with pytest.raises(ValueError, match="Expected an RGBA image with shape"):
-        dummy_image_fn(invalid_array)
+        fn(invalid_array, *extra_args)
 
 
-def test_valid_rgba_shape_succeeds():
+@pytest.mark.parametrize("fn_name, extra_args", FUNCTIONS)
+def test_valid_rgba_shape_succeeds(fn_name, extra_args):
+    fn = getattr(img2num, fn_name)
     valid_array = np.zeros((64, 64, 4), dtype=np.uint8)
-    result = dummy_image_fn(valid_array)
+
+    result = fn(valid_array, *extra_args)
 
     assert result.shape == (64, 64, 4)
