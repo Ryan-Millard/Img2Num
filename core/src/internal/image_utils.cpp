@@ -7,6 +7,7 @@
 #include "internal/RGBAPixel.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstdint>
 #include <cstring>
@@ -18,27 +19,20 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-uint8_t quantize(uint8_t value, uint8_t region_size) {
-    if (region_size == 0) {
-        return value;
-    }
+uint8_t quantize(uint8_t value, int num_thresholds) {
+    // num_thresholds is expected in [1 : 256]. Arithmetic below happens in int, so
+    // nothing overflows before the (checked) narrowing into uint8_t.
+    const uint8_t bucket {static_cast<uint8_t>(
+        value * num_thresholds / 256
+    )}; // Range [0 : num_thresholds - 1], exactly num_thresholds buckets.
 
-    uint8_t bucket = value / region_size; // Narrowing to colour boundary with
-                                          // Range [0 : num_thresholds - 1].
+    // Smallest and largest values that fall in this bucket.
+    const uint8_t lo {static_cast<uint8_t>((bucket * 256 + num_thresholds - 1) / num_thresholds)};
+    const uint8_t hi {
+        static_cast<uint8_t>(((bucket + 1) * 256 + num_thresholds - 1) / num_thresholds - 1)};
 
-    uint8_t bucket_boundary = (bucket * region_size);
-    uint8_t bucket_midpoint =
-        bucket_boundary + (region_size / 2); // Map to threshold region's midpoint.
-
-    // In case of bucket_midpoint overflow: revert to a smaller bucket than the
-    // largest possible value.
-    bool overflow = bucket_midpoint < bucket_boundary;
-    if (overflow) {
-        bucket_midpoint = ((bucket - 1) * region_size) +
-                          (region_size / 2); // Correction by reducing the bucket value belongs to.
-    }
-
-    return bucket_midpoint;
+    // Map to the bucket's midpoint (rounded down), which always lies inside it.
+    return static_cast<uint8_t>((lo + hi) / 2);
 }
 
 /**
@@ -181,16 +175,21 @@ void threshold_image(uint8_t* image, const int width, const int height, const in
     if (num_thresholds <= 0) {
         return;
     }
-    const uint8_t REGION_SIZE(255 / num_thresholds); // Size of buckets per colour
+    // Only 256 possible channel values: compute each result once, then look it up.
+    // More than 256 levels cannot exist, so clamp.
+    std::array<uint8_t, 256> lut {};
+    for (int v {0}, n {std::min(num_thresholds, 256)}; v < 256; ++v) {
+        lut[v] = quantize(static_cast<uint8_t>(v), n);
+    }
 
     ImageLib::Image<ImageLib::RGBAPixel<uint8_t>> img;
     img.loadFromBuffer(image, width, height, ImageLib::RGBA_CONVERTER<uint8_t>);
 
     const auto imgWidth {img.getWidth()}, imgHeight {img.getHeight()};
     for (ImageLib::RGBAPixel<uint8_t>& p : img) {
-        p.red = quantize(p.red, REGION_SIZE);
-        p.green = quantize(p.green, REGION_SIZE);
-        p.blue = quantize(p.blue, REGION_SIZE);
+        p.red = lut[p.red];
+        p.green = lut[p.green];
+        p.blue = lut[p.blue];
     }
 
     const auto& modified = img.getData();
