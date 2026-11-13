@@ -21,8 +21,8 @@ It is powered by WebAssembly (WASM) for speed, while providing easy-to-use JavaS
 
 ## Resources
 
-- [HTML demo app](https://img2num.dev/example-apps/html-js/) (low-code)
-- [Node.js console demo app](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/console-js/index.js) (low-code)
+- HTML demo app (low-code): <a href="/example-apps/esm/" target="_blank">ESM variant</a>) &middot; <a href="/example-apps/iife/" target="_blank">IIFE variant</a>) &middot; <a href="/example-apps/iife/" target="_blank">UMD variant</a>)
+- Node.js console demo app (low-code): [ESM variant](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/console-js-esm/index.mjs) &middot; [CommonJS variant](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/console-js-cjs/index.cjs)
 - [React.js demo app](https://img2num.dev/example-apps/react-js/)
 
 ## License
