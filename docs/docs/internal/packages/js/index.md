@@ -1,8 +1,9 @@
 ---
-title: JavaScript WASM Client
-sidebar_title: js
+sidebar_label: js
 description: The low-level client that marshals data between JavaScript and the Image WebAssembly module — TypedArray memory allocation, async function calls, and readback, all on the caller's thread.
 ---
+
+# JavaScript Package
 
 [`wasmClient.js`](https://github.com/Ryan-Millard/Img2Num/tree/main/packages/js/src/wasmClient.js) exposes
 `callWasm`, the low-level bridge between JavaScript and the **Image WASM module**.
@@ -12,13 +13,13 @@ allocates WASM memory for buffer arguments, marshals JavaScript values into the
 WASM heap, invokes the exported function asynchronously, reads modified buffers
 and return values back into JavaScript, and frees every allocation.
 
-:::tip JS-to-WASM Memory
+:::tip[JS-to-WASM Memory]
 All data is copied between JavaScript and WASM - this avoids unexpected use-after-free bugs in JS.
 
 | Language   | Memory type                    | Data supplier                                                                                                                                      | Who manages it                |
 | ---------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
 | JavaScript | Detached Copy of WASM data     | [`wasmClient.js`](https://github.com/Ryan-Millard/Img2Num/tree/main/packages/js/src/wasmClient.js): copies return & out parameter values to JS variables | Garbage Collector (automatic) |
-| WASM (C++) | Linear Independent WASM memory | [`wasmClient.js`](https://github.com/Ryan-Millard/Img2Num/tree/main/packages/js/src/wasmClient.js): copies args & bufferKeys to WASM memory              | Programmer (manual)           |
+| WASM (C++) | Linear Independent WASM memory | [`wasmClient.js`](https://github.com/Ryan-Millard/Img2Num/tree/main/packages/js/src/wasmClient.js): copies the buffer arguments selected by `bufferKeys` to WASM memory | `callWasm` (automatic, managed inside the function) |
 
 :::
 
@@ -26,48 +27,22 @@ All data is copied between JavaScript and WASM - this avoids unexpected use-afte
 
 ### Key responsibilities
 
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
-
-<Tabs groupId="wasm-client" defaultValue="flow">
-<TabItem value="flow" label="Flow diagram">
-
-<div>
+<center>
 
 ```mermaid
 flowchart TD
     A[Lazily initialize the Image WASM module]
-    B[Receive a callWasm request]
+    B["Receive a callWasm request<ul style="color:gray;text-align:left;"><li>The exported function to call in WASM (`funcName`).</li><li>Arguments to pass (`args`), including TypedArrays.</li><li>Which arguments are buffers needing allocation (`bufferKeys`).</li><li>The expected `returnType`.</li></ul>"]
     C[Allocate and copy JS arrays into WASM buffers]
-    D[Invoke the WASM function via Module.ccall with async: true]
+    D["Invoke the WASM function via Module.ccall with async: true (<a href="https://github.com/Ryan-Millard/Img2Num/tree/main/packages/js/src/ccall.js">`ccall.js`</a>)"]
     E[Read back modified buffers from WASM memory]
-    F[Free allocated memory to prevent leaks]
+    F["Free allocated memory to prevent leaks <span style="color:gray;">(this keeps the code written in JavaScript looking more like JavaScript and prevents forgotten memory frees).</span>"]
     G[Return results, or throw a wrapped error]
 
     A --> B --> C --> D --> E --> F --> G
 ```
 
-</div>
-
-</TabItem>
-
-<TabItem value="overview" label="Overview">
-
-- Lazily initialize the **Image WASM module** on the first call ([`wasmModule.js`](https://github.com/Ryan-Millard/Img2Num/tree/main/packages/js/src/wasmModule.js)).
-- Accept a `callWasm` request describing:
-  - The exported function to call in WASM (`funcName`).
-  - Arguments to pass (`args`), including TypedArrays.
-  - Which arguments are buffers needing allocation (`bufferKeys`).
-  - The expected `returnType`.
-- Allocate and copy memory for JS arrays into WASM.
-- Invoke the WASM function asynchronously ([`ccall.js`](https://github.com/Ryan-Millard/Img2Num/tree/main/packages/js/src/ccall.js)).
-- Read back any modified buffers from WASM memory.
-- Free allocated memory to prevent leaks.
-  - This keeps the code written in JavaScript looking more like JavaScript and prevents forgotten memory frees.
-- Return results to the caller, or throw a wrapped error.
-
-</TabItem>
-</Tabs>
+</center>
 
 ## TypedArray and Value Handling (`WASM_TYPES`)
 

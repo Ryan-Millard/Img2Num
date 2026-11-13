@@ -1,6 +1,7 @@
-# JavaScript Binding Documentation
+# Bindings
 
-The JavaScript binding wraps Img2Num's WASM core in a clean, async API. It runs in browsers and Node.js. Every call runs on the thread that invokes it — the package does not use a Web Worker.
+The JavaScript binding wraps Img2Num's WASM core in a clean, async API. It runs in browsers and Node.js. Every call
+runs on the thread that invokes it: the package does not use a Web Worker (since [v0.3.0](/changelog/js/2026-07-31_0-3-0/)).
 
 ## Architecture
 
@@ -28,10 +29,10 @@ Key files:
 
 | File                  | Purpose                                                                              |
 | :-------------------- | :----------------------------------------------------------------------------------- |
-| `safeWasmWrappers.js` | Public API — imageToSvg, bilateralFilter, blackThreshold, kmeans, findContours, etc. |
-| `wasmClient.js`       | `callWasm` — memory allocation, data marshalling, and guaranteed cleanup             |
-| `wasmTypes.js`        | `WASM_TYPES` — per-type `alloc`/`read` handlers for the WASM heap                     |
-| `ccall.js`            | `ccallAsync` — invokes exports via `Module.ccall(..., { async: true })`              |
+| `safeWasmWrappers.js` | Public API: imageToSvg, bilateralFilter, blackThreshold, kmeans, findContours, etc. |
+| `wasmClient.js`       | `callWasm`: memory allocation, data marshalling, and guaranteed cleanup             |
+| `wasmTypes.js`        | `WASM_TYPES`: per-type `alloc`/`read` handlers for the WASM heap                     |
+| `ccall.js`            | `ccallAsync`: invokes exports via `Module.ccall(..., { async: true })`              |
 | `wasmModule.js`       | Lazy module initialization (`initWasmModule`) and teardown (`terminateWasmModule`)   |
 | `index.js`            | Package exports                                                                      |
 
@@ -48,18 +49,22 @@ This is the interface between C++ and JavaScript.
 `callWasm` (in `wasmClient.js`) moves typed arrays between JavaScript and WASM
 memory using the handlers defined in `WASM_TYPES` (`wasmTypes.js`):
 
-1. **Allocation** — `_malloc` in WASM for the buffer size.
-2. **Copy** — `HEAPU8.set()` / `HEAP32.set()` depending on array type.
-3. **Call** — Invoke the exported WASM function with the pointers via `ccallAsync`, which calls `Module.ccall(funcName, retType, argTypes, args, { async: true })`.
-4. **Read back** — `HEAPU8.slice()` / `HEAP32.slice()` (and `UTF8ToString` for strings) into detached JavaScript copies.
-5. **Free** — `_free(ptr)` in a `finally` block so allocations are released even when a call throws.
+1. **Allocation**: `_malloc` in WASM for the buffer size.
+2. **Copy**: `HEAPU8.set()` / `HEAP32.set()` depending on array type.
+3. **Call**: Invoke the exported WASM function with the pointers via `ccallAsync`, which calls `Module.ccall(funcName, retType, argTypes, args, { async: true })`.
+4. **Read back**: `HEAPU8.slice()` / `HEAP32.slice()` (and `UTF8ToString` for strings) into detached JavaScript copies.
+5. **Free**: `_free(ptr)` in a `finally` block so allocations are released even when a call throws.
 
 ## Module Lifecycle
 
-- The WASM module is initialized on the first API call (lazy loading via `initWasmModule`); concurrent callers share a single in-flight initialization promise.
+- The WASM module is initialized on the first API call (lazy loading via `initWasmModule`) and
+concurrent callers share a single in-flight initialization promise.
 - A single module instance is cached and reused for all subsequent calls.
-- `terminateWasmModule` optionally releases held resources (such as a WebGPU device) and resets the module to an uninitialized state; the next call re-initializes it.
-- No external dependencies — pure JS + WASM.
+- `terminateWasmModule` optionally releases held resources (such as a WebGPU device) and resets the module to an
+uninitialized state. The next call re-initializes it. Call it only after all `callWasm` calls have settled. Calling it
+during a pending initialization or an active call can create a second module instance or release resources that an
+active call still uses.
+- No external dependencies: pure JS + WASM.
 
 ## Error Handling
 
