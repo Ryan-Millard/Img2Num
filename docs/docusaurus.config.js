@@ -464,6 +464,7 @@ const config = {
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
+        additionalLanguages: ["bash", "powershell", "batch", "cmake"],
       },
     }),
   clientModules: ["./src/clientModules/openDetailsOnHash.js"],
