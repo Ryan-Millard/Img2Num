@@ -87,28 +87,12 @@ TEST_CASE("image to svg succeeds", "[core]") {
     CHECK(res_svg.rfind("<svg", 0) == 0);
 };
 
-TEST_CASE("labels_to_svg converts a simple labeled image to SVG")
-{
-    const uint8_t data[] = {
-        255, 0, 0, 255,
-        255, 0, 0, 255,
-        255, 0, 0, 255,
-        255, 0, 0, 255
-    };
+TEST_CASE("labels_to_svg converts a simple labeled image to SVG") {
+    const uint8_t data[] = {255, 0, 0, 255, 255, 0, 0, 255, 255, 0, 0, 255, 255, 0, 0, 255};
 
-    const int32_t labels[] = {
-        0, 0,
-        0, 0
-    };
+    const int32_t labels[] = {0, 0, 0, 0};
 
-    const std::string svg = img2num::labels_to_svg(
-        data,
-        labels,
-        2,
-        2,
-        1,
-        0
-    );
+    const std::string svg = img2num::labels_to_svg(data, labels, 2, 2, 1, 0);
 
     REQUIRE_FALSE(svg.empty());
     REQUIRE(svg.find("<svg") != std::string::npos);
@@ -117,29 +101,12 @@ TEST_CASE("labels_to_svg converts a simple labeled image to SVG")
     REQUIRE(svg.find("</svg>") != std::string::npos);
 }
 
+TEST_CASE("labels_to_svg handles multiple labeled regions") {
+    const uint8_t data[] = {255, 0, 0, 255, 0, 0, 255, 255, 255, 0, 0, 255, 0, 0, 255, 255};
 
-TEST_CASE("labels_to_svg handles multiple labeled regions")
-{
-    const uint8_t data[] = {
-        255, 0, 0, 255,
-        0, 0, 255, 255,
-        255, 0, 0, 255,
-        0, 0, 255, 255
-    };
+    const int32_t labels[] = {0, 1, 0, 1};
 
-    const int32_t labels[] = {
-        0, 1,
-        0, 1
-    };
-
-    const std::string svg = img2num::labels_to_svg(
-        data,
-        labels,
-        2,
-        2,
-        1,
-        0
-    );
+    const std::string svg = img2num::labels_to_svg(data, labels, 2, 2, 1, 0);
 
     REQUIRE_FALSE(svg.empty());
     REQUIRE(svg.find("<svg") != std::string::npos);
@@ -150,8 +117,7 @@ TEST_CASE("labels_to_svg handles multiple labeled regions")
     std::size_t path_count = 0;
     std::size_t position = 0;
 
-    while ((position = svg.find("<path", position)) != std::string::npos)
-    {
+    while ((position = svg.find("<path", position)) != std::string::npos) {
         ++path_count;
         position += 5;
     }

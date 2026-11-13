@@ -4,7 +4,6 @@
 #include "internal/Pixel.h"
 
 #include <cmath>
-#include <cmath>
 #include <spdlog/fmt/fmt.h>
 
 namespace ImageLib {
@@ -58,7 +57,6 @@ __attribute__((packed))
 #endif
 
 } // namespace ImageLib
-
 
 namespace fmt {
 template <typename NumberT> struct formatter<ImageLib::RGBPixel<NumberT>> {
