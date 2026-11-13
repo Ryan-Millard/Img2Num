@@ -16,9 +16,9 @@ and return values back into JavaScript, and frees every allocation.
 :::tip[JS-to-WASM Memory]
 All data is copied between JavaScript and WASM - this avoids unexpected use-after-free bugs in JS.
 
-| Language   | Memory type                    | Data supplier                                                                                                                                      | Who manages it                |
-| ---------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| JavaScript | Detached Copy of WASM data     | [`wasmClient.js`](https://github.com/Ryan-Millard/Img2Num/tree/main/packages/js/src/wasmClient.js): copies return & out parameter values to JS variables | Garbage Collector (automatic) |
+| Language   | Memory type                    | Data supplier                                                                                                                                                           | Who manages it                                      |
+| ---------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| JavaScript | Detached Copy of WASM data     | [`wasmClient.js`](https://github.com/Ryan-Millard/Img2Num/tree/main/packages/js/src/wasmClient.js): copies return & out parameter values to JS variables                | Garbage Collector (automatic)                       |
 | WASM (C++) | Linear Independent WASM memory | [`wasmClient.js`](https://github.com/Ryan-Millard/Img2Num/tree/main/packages/js/src/wasmClient.js): copies the buffer arguments selected by `bufferKeys` to WASM memory | `callWasm` (automatic, managed inside the function) |
 
 :::

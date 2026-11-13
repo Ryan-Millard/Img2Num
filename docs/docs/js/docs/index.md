@@ -27,14 +27,14 @@ style G stroke:#03a9f4,stroke-width:2px
 
 Key files:
 
-| File                  | Purpose                                                                              |
-| :-------------------- | :----------------------------------------------------------------------------------- |
+| File                  | Purpose                                                                             |
+| :-------------------- | :---------------------------------------------------------------------------------- |
 | `safeWasmWrappers.js` | Public API: imageToSvg, bilateralFilter, blackThreshold, kmeans, findContours, etc. |
 | `wasmClient.js`       | `callWasm`: memory allocation, data marshalling, and guaranteed cleanup             |
-| `wasmTypes.js`        | `WASM_TYPES`: per-type `alloc`/`read` handlers for the WASM heap                     |
+| `wasmTypes.js`        | `WASM_TYPES`: per-type `alloc`/`read` handlers for the WASM heap                    |
 | `ccall.js`            | `ccallAsync`: invokes exports via `Module.ccall(..., { async: true })`              |
-| `wasmModule.js`       | Lazy module initialization (`initWasmModule`) and teardown (`terminateWasmModule`)   |
-| `index.js`            | Package exports                                                                      |
+| `wasmModule.js`       | Lazy module initialization (`initWasmModule`) and teardown (`terminateWasmModule`)  |
+| `index.js`            | Package exports                                                                     |
 
 ## WASM Memory Handling
 
@@ -58,12 +58,12 @@ memory using the handlers defined in `WASM_TYPES` (`wasmTypes.js`):
 ## Module Lifecycle
 
 - The WASM module is initialized on the first API call (lazy loading via `initWasmModule`) and
-concurrent callers share a single in-flight initialization promise.
+  concurrent callers share a single in-flight initialization promise.
 - A single module instance is cached and reused for all subsequent calls.
 - `terminateWasmModule` optionally releases held resources (such as a WebGPU device) and resets the module to an
-uninitialized state. The next call re-initializes it. Call it only after all `callWasm` calls have settled. Calling it
-during a pending initialization or an active call can create a second module instance or release resources that an
-active call still uses.
+  uninitialized state. The next call re-initializes it. Call it only after all `callWasm` calls have settled. Calling it
+  during a pending initialization or an active call can create a second module instance or release resources that an
+  active call still uses.
 - No external dependencies: pure JS + WASM.
 
 ## Error Handling
@@ -76,6 +76,6 @@ try {
   await imageToSvg({ pixels, width, height });
 } catch (err) {
   console.error(err.message); // e.g. "[Img2Num wasmClient] Error: Unsupported type: ..."
-  console.error(err.cause);   // the underlying error
+  console.error(err.cause); // the underlying error
 }
 ```
