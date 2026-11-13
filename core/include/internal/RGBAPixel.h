@@ -3,7 +3,6 @@
 
 #include "internal/RGBPixel.h"
 
-
 namespace ImageLib {
 
 #ifdef _MSC_VER
