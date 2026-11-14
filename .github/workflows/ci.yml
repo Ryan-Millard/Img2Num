@@ -15,6 +15,46 @@ permissions:
   packages: read
 
 jobs:
+  benchmark-corpus:
+    name: Verify benchmark corpus
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: python -m pip install uv==0.13.0
+
+      - name: Install Python tooling
+        run: uv sync --only-group dev --no-install-project
+
+      - name: Run corpus manager tests
+        run: uv run --no-sync python -m pytest -q benchmarks/tests/test_corpus_manager.py
+
+      - name: Verify corpus metadata
+        run: uv run --no-sync python benchmarks/corpus_manager.py verify
+
+      - name: Restore benchmark image cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830  # v4.3.0
+        with:
+          path: ~/.cache/img2num-bench
+          key: img2num-bench-${{ hashFiles('benchmarks/images/*.toml') }}
+
+      - name: Fetch and verify benchmark image hashes
+        if: ${{ hashFiles('benchmarks/images/*.toml') != '' }}
+        run: |
+          uv run --no-sync python benchmarks/corpus_manager.py fetch
+          uv run --no-sync python benchmarks/corpus_manager.py verify --hashes
+
   set-image:
     name: Set Docker image
     runs-on: ubuntu-latest

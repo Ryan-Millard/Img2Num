@@ -1,0 +1,9 @@
+id = "coco-2017-val-000000039769-jpg"
+dataset = "COCO 2017 val"
+url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+sha256 = "dea9e7ef97386345f7cff32f9055da4982da5471c48d575146c796ab4563b04e"
+size = [640, 480]
+license = "CC-BY-SA-2.0"
+author = "DocChewbacca"
+source = "https://www.flickr.com/photos/st3f4n/210383891/"
+tags = ["natural", "smoke"]

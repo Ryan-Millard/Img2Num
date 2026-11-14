@@ -1,0 +1,17 @@
+# This .gitkeep ensures the benchmarks/images/ directory is tracked by Git,
+# even when no image metadata files are present.
+#
+# Raw image binary files are never stored or committed in this directory.
+# Instead, this directory contains only image metadata entries in TOML format (<id>.toml).
+# Downloaded image bytes reside outside the repository in the local hash-addressed cache
+# (the platform-specific cache directory or $IMG2NUM_BENCH_CACHE; see benchmarks/README.md).
+#
+# What controls the values in this directory:
+# - Entries are managed and validated by `corpus-manager` (`benchmarks/corpus_manager.py`).
+# - Entries should not be created or edited by hand; use:
+#     uv run corpus-manager add --interactive
+#     (or non-interactively: uv run corpus-manager add <url> [options])
+# - Metadata schema and integrity are verified by:
+#     uv run corpus-manager verify
+# - Shared corpus configuration and schema version are defined in `benchmarks/corpus.toml`.
+# - See `benchmarks/README.md` for full documentation and usage guidelines.
