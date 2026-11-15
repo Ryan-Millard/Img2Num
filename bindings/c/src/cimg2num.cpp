@@ -10,11 +10,14 @@ extern "C" {
 static img2num::ImageToSvgConfig to_cpp(const img2num_ImageToSvgConfig& c) {
     img2num::ImageToSvgConfig cfg {};
 
-    cfg.bilateral_filter.sigma_spatial = c.bilateral_filter.sigma_spatial;
-    cfg.bilateral_filter.sigma_range = c.bilateral_filter.sigma_range;
+    cfg.natural_image_config.bilateral_filter.sigma_spatial = c.natural_image_config.bilateral_filter.sigma_spatial;
+    cfg.natural_image_config.bilateral_filter.sigma_range = c.natural_image_config.bilateral_filter.sigma_range;
 
-    cfg.kmeans.k = c.kmeans.k;
-    cfg.kmeans.max_iter = c.kmeans.max_iter;
+    cfg.natural_image_config.kmeans.k = c.natural_image_config.kmeans.k;
+    cfg.natural_image_config.kmeans.max_iter = c.natural_image_config.kmeans.max_iter;
+
+    cfg.synthetic_image_config.quantize.k = c.synthetic_image_config.quantize.k;
+    cfg.synthetic_image_config.quantize.coverage = c.synthetic_image_config.quantize.coverage;
 
     cfg.min_cluster_area = c.min_cluster_area;
     cfg.min_thickness = c.min_thickness;
@@ -26,11 +29,14 @@ static img2num::ImageToSvgConfig to_cpp(const img2num_ImageToSvgConfig& c) {
 static img2num_ImageToSvgConfig to_c(const img2num::ImageToSvgConfig& cpp) {
     img2num_ImageToSvgConfig cfg {};
 
-    cfg.bilateral_filter.sigma_spatial = cpp.bilateral_filter.sigma_spatial;
-    cfg.bilateral_filter.sigma_range = cpp.bilateral_filter.sigma_range;
+    cfg.natural_image_config.bilateral_filter.sigma_spatial = cpp.natural_image_config.bilateral_filter.sigma_spatial;
+    cfg.natural_image_config.bilateral_filter.sigma_range = cpp.natural_image_config.bilateral_filter.sigma_range;
 
-    cfg.kmeans.k = cpp.kmeans.k;
-    cfg.kmeans.max_iter = cpp.kmeans.max_iter;
+    cfg.natural_image_config.kmeans.k = cpp.natural_image_config.kmeans.k;
+    cfg.natural_image_config.kmeans.max_iter = cpp.natural_image_config.kmeans.max_iter;
+
+    cfg.synthetic_image_config.quantize.k = cpp.synthetic_image_config.quantize.k;
+    cfg.synthetic_image_config.quantize.coverage = cpp.synthetic_image_config.quantize.coverage;
 
     cfg.min_cluster_area = cpp.min_cluster_area;
     cfg.min_thickness = cpp.min_thickness;
@@ -74,6 +80,15 @@ void img2num_kmeans(
 ) {
     img2num::clear_last_error_and_catch(
         img2num::kmeans, data, out_data, out_labels, width, height, k, max_iter, color_space
+    );
+}
+
+void img2num_color_quantize(
+    const uint8_t* data, uint8_t* out_data, int32_t* out_labels, const int32_t width,
+    const int32_t height, const int32_t k, const float coverage, const uint8_t color_space
+) {
+    img2num::clear_last_error_and_catch(
+        img2num::color_quantize, data, out_data, out_labels, width, height, k, coverage, color_space
     );
 }
 

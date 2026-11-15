@@ -109,6 +109,31 @@ template <typename PixelT> class Image {
         return data.at(index(x, y));
     } // get
 
+    void resize(int new_width, int new_height, PixelT fill_value = PixelT()) {
+        // In rare cases we may want to dynamically change the size of the Image container
+        if (new_width == width && new_height == height)
+            return;
+
+        // 1. Allocate the new blank canvas
+        std::vector<PixelT> new_data(new_width * new_height, fill_value);
+
+        // 2. Copy the intersection of the old and new dimensions
+        int min_width = std::min(width, new_width);
+        int min_height = std::min(height, new_height);
+
+        for (int y = 0; y < min_height; ++y) {
+            for (int x = 0; x < min_width; ++x) {
+                // Map old 1D index to new 1D index
+                new_data[y * new_width + x] = data[y * width + x];
+            }
+        }
+
+        // 3. Commit the changes
+        data = std::move(new_data);
+        width = new_width;
+        height = new_height;
+    }
+
   private:
     std::vector<PixelT> data;
     int width, height;
