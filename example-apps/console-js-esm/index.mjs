@@ -36,5 +36,3 @@ try {
 } finally {
   await terminateWasmModule();
 }
-
-process.exit();

@@ -117,6 +117,12 @@ jobs:
       - name: Validate scriptsInfo in package.json
         run: pnpm run validate-scripts
 
+      - name: Validate package README examples
+        run: pnpm readme:check
+
+      - name: Test package README generator
+        run: pnpm readme:test
+
   cmake-build:
     name: Build C/C++
     uses: ./.github/workflows/cmake-build.yml

@@ -273,6 +273,19 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Validate package README examples
+        env:
+          FORCE_COMPONENT: ${{ github.event_name == 'workflow_dispatch' && inputs.force_publish_component || 'none' }}
+        run: |
+          if [[ -f scripts/generate-package-readme.mjs ]]; then
+            pnpm readme:check
+          elif [[ "$FORCE_COMPONENT" == "js" ]]; then
+            echo "Historical JS release tag predates README generation; skipping synchronization check."
+          else
+            echo "::error::Package README generator is missing."
+            exit 1
+          fi
+
       - name: Configure
         run: |
           emcmake cmake -B build-wasm \

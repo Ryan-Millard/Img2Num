@@ -86,6 +86,17 @@
       "editorconfig:check": {
         "desc": "Check all files against .editorconfig rules"
       }
+    },
+    "Documentation": {
+      "readme:generate": {
+        "desc": "Generate package README examples from canonical example sources"
+      },
+      "readme:check": {
+        "desc": "Check package README examples are synchronized without modifying files"
+      },
+      "readme:test": {
+        "desc": "Test the package README generator"
+      }
     }
   },
   "scripts": {

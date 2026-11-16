@@ -14,5 +14,6 @@ This section explains each script category in detail:
 - Formatting scripts
 - Linting scripts
 - Documentation scripts
+  - [README generation](./readme-generation.md)
 
 Use these pages to understand how each script fits into the workflow.
