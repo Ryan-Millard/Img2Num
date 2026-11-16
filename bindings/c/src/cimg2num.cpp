@@ -53,18 +53,18 @@ void img2num_invert_image(uint8_t* image, int width, int height) {
 }
 
 void img2num_threshold_image(
-    uint8_t* ptr, const int width, const int height, const int num_thresholds
+    uint8_t* image, const int width, const int height, const int num_thresholds
 ) {
     img2num::clear_last_error_and_catch(
-        img2num::threshold_image, ptr, width, height, num_thresholds
+        img2num::threshold_image, image, width, height, num_thresholds
     );
 }
 
 void img2num_black_threshold_image(
-    uint8_t* ptr, const int width, const int height, const int num_thresholds
+    uint8_t* image, const int width, const int height, const int num_thresholds
 ) {
     img2num::clear_last_error_and_catch(
-        img2num::black_threshold_image, ptr, width, height, num_thresholds
+        img2num::black_threshold_image, image, width, height, num_thresholds
     );
 }
 

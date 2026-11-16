@@ -62,6 +62,13 @@ reviews:
           memory-safety and style standards as the core. Formatting via `./img2num format-cpp`.
         - Doxygen docstrings are required.
 
+    - path: "**/CMakeLists.txt"
+      instructions: |
+        Review target-scoped compile, include, and link requirements; generated-file
+        dependencies; native versus Emscripten conditions; and CTest registration and
+        execution. Keep internal dependencies private. Validate configure, build, and
+        test steps through the repository's Docker wrapper scripts.
+
     - path: "docs/docs/**"
       instructions: |
         All documentation must follow Docusaurus conventions (docs/docs/ folder structure).
@@ -254,6 +261,7 @@ reviews:
       enabled: true # Useful for the C++ core
 
   tools:
+    # CMake files use the path instructions above; no CMake-specific tool is supported.
     # ── Relevant to Img2Num's stack ──────────────────────────────────────────
     clang:
       enabled: true # C/C++ static analysis (core, bindings, wasm)

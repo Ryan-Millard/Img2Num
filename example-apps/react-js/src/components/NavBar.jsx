@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Home, Users, Info, SquareArrowOutUpRight, Menu, X } from "lucide-react";
+import { Home, Info, BookOpen, LayoutGrid, SquareArrowOutUpRight, Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./NavBar.module.css";
 import GlassCard from "@components/GlassCard";
@@ -9,14 +9,12 @@ import GitHubSvg from "@assets/GitHub.svg?react";
 
 const GitHub = ({ size = 16, ...props }) => <GitHubSvg width={size} height={size} {...props} />;
 
-const INTERNAL_LINKS = [
-  { path: "/", label: "Home", icon: Home, tooltip: "Go to the home page" },
-  { path: "/credits", label: "Credits", icon: Users, tooltip: "View project credits" },
-  { path: "/about", label: "About", icon: Info, tooltip: "Learn more about Img2Num" },
-];
+const INTERNAL_LINKS = [{ path: "/", label: "Home", icon: Home, tooltip: "Go to the home page" }];
 
 const EXTERNAL_LINKS = [
   { href: "https://img2num.dev/", label: "Docs", icon: Info, tooltip: "View documentation" },
+  { href: "https://img2num.dev/example-apps/", label: "Example apps", icon: LayoutGrid, tooltip: "Browse all example apps" },
+  { href: "https://img2num.dev/docs/js/", label: "JS docs", icon: BookOpen, tooltip: "Read the JavaScript documentation" },
   {
     href: "https://github.com/Ryan-Millard/Img2Num",
     label: "GitHub",

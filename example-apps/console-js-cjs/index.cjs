@@ -1,12 +1,14 @@
 const { writeFileSync } = require("fs");
+const { resolve } = require("path");
 const { imageToSvg, terminateWasmModule } = require("img2num");
 const sharp = require("sharp");
 
 async function main() {
   const imagePath = process.argv[2];
+  const outputPath = process.argv[3] ?? "output.svg";
 
   if (!imagePath) {
-    console.error("Usage: node index.cjs <image-path>");
+    console.error("Usage: node index.cjs <image-path> [output-path]");
     process.exit(1);
   }
 
@@ -23,8 +25,10 @@ async function main() {
   try {
     const { svg } = await imageToSvg({ pixels, width, height });
 
-    writeFileSync("output.svg", svg);
-    console.log("Done! SVG saved to output.svg");
+    const outputFilePath = resolve(outputPath);
+
+    writeFileSync(outputFilePath, svg);
+    console.log(`Done! SVG saved to ${outputFilePath}`);
   } finally {
     await terminateWasmModule();
   }

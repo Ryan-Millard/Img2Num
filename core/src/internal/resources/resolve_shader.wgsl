@@ -26,9 +26,9 @@ fn main(@builtin(global_invocation_id) global_id : vec3<u32>) {
         let sumB = atomicLoad(&accumulators[i].sumB);
 
         // 3. Do the math
-        let r = (f32(sumR) / 1000.0) / fCount;
-        let g = (f32(sumG) / 1000.0) / fCount;
-        let b = (f32(sumB) / 1000.0) / fCount;
+        let r = (f32(sumR) / 1020.0) / fCount;
+        let g = (f32(sumG) / 1020.0) / fCount;
+        let b = (f32(sumB) / 1020.0) / fCount;
         
         textureStore(centroids, vec2<i32>(i32(i), 0), vec4<f32>(r, g, b, 1.0));
     }

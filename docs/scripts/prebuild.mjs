@@ -4,7 +4,7 @@ import { spawn } from "node:child_process";
 
 async function run(command, args) {
   return new Promise((resolve, reject) => {
-    const child = spawn(command, args, {
+    const child = spawn([command, ...args].join(" "), {
       stdio: "inherit",
       shell: true,
     });
@@ -19,7 +19,7 @@ async function run(command, args) {
   });
 }
 
-await run("node", ["--test", "tests/showcase.test.mjs"]);
+await run("node", ["--test", "tests/showcase.test.mjs", "tests/events.test.mjs"]);
 
 // Build the library before generating documentation that depends on it.
 await run("pnpm", ["-F", "img2num", "run", "build"]);

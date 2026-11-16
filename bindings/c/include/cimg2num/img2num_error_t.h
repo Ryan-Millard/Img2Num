@@ -14,12 +14,12 @@ typedef enum {
     IMG2NUM_ERROR_UNKNOWN = 4
 } img2num_error_t;
 
-img2num_error_t img2num_get_last_error();
-const char* img2num_get_last_error_message();
-void img2num_clear_last_error();
+img2num_error_t img2num_get_last_error(void);
+const char* img2num_get_last_error_message(void);
+void img2num_clear_last_error(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // IMG2NUM_ERROR_T_H
+#endif // CIMG2NUM_ERROR_T_H

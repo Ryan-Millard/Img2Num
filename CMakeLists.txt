@@ -1,7 +1,19 @@
 # =================================================================
 # Img2Num Top-Level (Manages all libs and apps)
 # =================================================================
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.19)
+
+file(READ "${CMAKE_CURRENT_LIST_DIR}/.versions/cmake.json" IMG2NUM_CMAKE_VERSION_JSON)
+string(JSON IMG2NUM_CMAKE_VERSION_TYPE ERROR_VARIABLE IMG2NUM_CMAKE_VERSION_ERROR
+  TYPE "${IMG2NUM_CMAKE_VERSION_JSON}" version)
+if(IMG2NUM_CMAKE_VERSION_ERROR OR NOT IMG2NUM_CMAKE_VERSION_TYPE STREQUAL "STRING")
+  message(FATAL_ERROR "Could not read a valid version from .versions/cmake.json")
+endif()
+string(JSON IMG2NUM_CMAKE_VERSION GET "${IMG2NUM_CMAKE_VERSION_JSON}" version)
+if(NOT IMG2NUM_CMAKE_VERSION MATCHES "^[0-9]+([.][0-9]+)*$")
+  message(FATAL_ERROR "Could not read a valid version from .versions/cmake.json")
+endif()
+cmake_minimum_required(VERSION "${IMG2NUM_CMAKE_VERSION}")
 project(Img2NumRootManager LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -21,6 +33,7 @@ set(IMG2NUM_STRICT_CXX_FLAGS
 option(IMG2NUM_BUILD_C "Build C bindings (required for WASM builds)" ON)
 option(IMG2NUM_BUILD_PYTHON "Build Python bindings" OFF)
 option(IMG2NUM_BUILD_EXAMPLES "Build example applications" ON)
+option(IMG2NUM_BUILD_TESTS "Build Img2Num tests" OFF)
 option(IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP "Dump CMake environment variables in Debug mode" ON)
 
 # Force a safe default to avoid the weirdness of CMake's `None`
@@ -70,12 +83,29 @@ if(IMG2NUM_DEBUG_CACHE_VARIABLES_DUMP)
 endif()
 endblock()
 
-
 # ================================================
 # Library setup
 
 # Always add core because everything depends on it
 add_subdirectory(core)
+
+if(IMG2NUM_BUILD_TESTS)
+  # Tests link the production core target, which may require Dawn at configure time.
+  enable_testing()
+  add_subdirectory(
+    third_party/tests
+    ${CMAKE_BINARY_DIR}/catch2_build
+    EXCLUDE_FROM_ALL
+  )
+  add_subdirectory(core/tests)
+
+  if(IMG2NUM_BUILD_C)
+    add_subdirectory(bindings/c)
+    add_subdirectory(bindings/c/tests)
+  endif()
+  
+  return()
+endif()
 
 if(IMG2NUM_BUILD_PYTHON)
   # Python depends only on core

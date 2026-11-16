@@ -1,0 +1,49 @@
+.stat {
+  --card-padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius);
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+.text {
+  min-width: 0;
+}
+
+.value {
+  display: block;
+  font-family: "DM Mono", monospace;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.label {
+  display: block;
+  margin-top: 3px;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.arrow {
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--ink-4);
+  transition: color 0.2s;
+}
+
+.stat:hover .arrow {
+  color: var(--accent);
+}

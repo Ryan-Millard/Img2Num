@@ -4,7 +4,7 @@ description: "Img2Num 0.4.2 ships five purpose-built WASM bundles on npm - brows
 keywords: [img2num, image to svg, raster to svg, javascript svg converter, webassembly, wasm, npm, commonjs, esm, vectorization]
 image: ./img/social.png
 slug: img2num_js_0_4_2
-authors: [ryan-millard]
+authors: [ryan-millard, ayush-jaiswal]
 tags: [release, javascript, wasm]
 ---
 
@@ -267,20 +267,24 @@ Two quieter improvements ride along:
 
 :::
 
-## What about the synchronous API?
+## What happened to the Web Worker?
 
 That was last release.
-[0.3.0](https://www.npmjs.com/package/img2num/v/0.3.0) removed the internal Web Worker and made the API fully synchronous -
+[0.3.0](https://www.npmjs.com/package/img2num/v/0.3.0) removed the internal Web Worker, so every call now runs on the thread that makes it -
 Img2Num does the math, you decide where it runs.
+The functions are still `async`, though, so **keep your `await`**: without it you get a `Promise` back instead of a result.
 If you're moving from an earlier version straight to [v0.4.2](https://www.npmjs.com/package/img2num),
 the [0.3.0](https://www.npmjs.com/package/img2num/v/0.3.0)
-migration still applies: delete the `await`, and wrap calls in your own worker if you need to keep the main thread free:
+migration still applies: if you need to keep the main thread free, wrap calls in your own worker:
 
 ```js
 // worker.js
-import { process } from "img2num";
-self.onmessage = ({ data }) => {
-  self.postMessage(process(data.imageData, data.options));
+import { imageToSvg } from "img2num";
+
+self.onmessage = async ({ data }) => {
+  const { pixels, width, height } = data;
+  const { svg } = await imageToSvg({ pixels, width, height });
+  self.postMessage(svg);
 };
 ```
 
@@ -290,7 +294,7 @@ with no worker plumbing forced into every artifact, each target could finally ge
 :::tip[Why did [0.3.0](https://www.npmjs.com/package/img2num/v/0.3.0) remove the workers?]
 
 Cross-environment compatibility. A hidden worker only made sense in some targets, and it
-fought any worker architecture you already had. Running synchronously works everywhere -
+fought any worker architecture you already had. Running on the calling thread works everywhere -
 Img2Num does the math, and you decide which thread it runs on.
 
 :::
@@ -302,18 +306,8 @@ Talking about build targets is abstract, so the examples got a matching overhaul
 - `console-js` is now split into <a href="/showcase/#node-esm"><code>console-js-esm</code></a> and <a href="/showcase/#node-cjs"><code>console-js-cjs</code></a>,
   so the `import` and `require` export conditions are each exercised by a real consumer (and we fixed a byte-offset bug in the pixel-buffer construction while we were in there).
 - The `html-js` example was rebuilt as a single shared template compiled into three self-contained variants -
-  <Link to="/example-apps/esm/" target="_blank">
-    ESM
-  </Link>
-  &comma;&nbsp;
-  <Link to="/example-apps/iife/" target="_blank">
-    IIFE
-  </Link>
-  &comma; and&nbsp;
-  <Link to="/example-apps/umd/" target="_blank">
-    UMD
-  </Link>
-  &nbsp;- each deployable as plain static files with no build tooling at runtime.
+  [ESM variant](pathname:///example-apps/esm/), [IIFE variant](pathname:///example-apps/iife/), [UMD variant](pathname:///example-apps/iife/) - each deployable as plain static files with no build tooling at runtime.
+
 - The docs site now has an [example apps index](https://img2num.dev/showcase/) with a card and representative snippet for every binding:
   React, browser ESM, IIFE, UMD, Node ESM/CJS - and Python, C++, and C, because Img2Num was never just a JavaScript library.
 - Every JS target is also runnable in your browser right now - the CodeSandbox links in the

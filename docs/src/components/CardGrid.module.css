@@ -1,0 +1,23 @@
+.grid {
+  --card-grid-gap: 24px;
+  display: grid;
+  gap: var(--card-grid-gap);
+}
+
+/* min(100%, …) keeps a single column from overflowing very narrow screens. */
+.sm {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+}
+
+.md {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+}
+
+.lg {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+}
+
+/* Subgrid cards carry the vertical gap themselves (see Card `rows`). */
+.aligned {
+  row-gap: 0;
+}
