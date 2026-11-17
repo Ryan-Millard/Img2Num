@@ -350,6 +350,10 @@ name = "img2num"
 source = { editable = "." }
 dependencies = [
     { name = "numpy" },
+]
+
+[package.optional-dependencies]
+cli = [
     { name = "pillow", version = "12.3.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "pillow", version = "13.0.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
 ]
@@ -376,8 +380,9 @@ test = [
 [package.metadata]
 requires-dist = [
     { name = "numpy", specifier = ">=1.23.5" },
-    { name = "pillow", specifier = ">=12.0.0" },
+    { name = "pillow", marker = "extra == 'cli'", specifier = ">=12.0.0" },
 ]
+provides-extras = ["cli"]
 
 [package.metadata.requires-dev]
 dev = [

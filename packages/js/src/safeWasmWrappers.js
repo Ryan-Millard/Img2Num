@@ -185,22 +185,13 @@ export const blackThreshold = async ({ pixels, width, height, num_colors }) => {
  * @throws {Error} If dimensions or pixel buffer length are invalid.
  */
 function validateImageBuffer({ pixels, width, height }) {
-  if (
-    !Number.isInteger(width) ||
-    width <= 0 ||
-    !Number.isInteger(height) ||
-    height <= 0
-  ) {
-    throw new Error(
-      `Invalid image dimensions: width and height must be positive integers (got width=${width}, height=${height})`
-    );
+  if (!Number.isInteger(width) || width <= 0 || !Number.isInteger(height) || height <= 0) {
+    throw new Error(`Invalid image dimensions: width and height must be positive integers (got width=${width}, height=${height})`);
   }
 
   const requiredBytes = width * height * 4;
   if (!pixels || pixels.length < requiredBytes) {
-    throw new Error(
-      `Invalid pixel buffer length: expected at least ${requiredBytes} bytes for a ${width}x${height} RGBA image (got ${pixels?.length ?? 0})`
-    );
+    throw new Error(`Invalid pixel buffer length: expected at least ${requiredBytes} bytes for a ${width}x${height} RGBA image (got ${pixels?.length ?? 0})`);
   }
 }
 
