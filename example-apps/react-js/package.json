@@ -141,7 +141,7 @@
     "jsdom": "^30.1.0",
     "rimraf": "^6.1.3",
     "standard-version": "^9.5.0",
-    "vite": "^8.3.0",
+    "vite": "^8.3.3",
     "vite-imagetools": "^12.0.1",
     "vite-plugin-svgr": "^5.2.0",
     "vitest": "^5.0.1"
