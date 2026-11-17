@@ -51,7 +51,10 @@ const { pixels, width, height } = await imageToUint8ClampedArray(imageFile);
 ```
 
 See how we use it
-See our [`html-js` example application's code](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/html-js/index.html)
+See our `html-js` example applications - we have three `html-js` examples that share the same code ( [`template.html`](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/html-js/template.html) and [`shared/app.js`](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/html-js/shared/app.js) ):
+- [ESM variant](/example-apps/esm/)
+- [IIFE variant](/example-apps/iife/)
+- [UMD variant](/example-apps/iife/)
 
 ### Node.js
 
@@ -83,6 +86,11 @@ const { width, height } = info;
 
 `fs.readFile` is insufficient
 Reading the file with `fs.readFile` alone is not enough - the bytes must be decoded into raw RGBA format.
+
+See how we use it
+See our `console-js` example applications -
+- [ESM variant](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/console-js-esm/index.mjs)
+- [CommonJS variant](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/console-js-cjs/index.cjs)
 
 ## 2. Raster toSVG
 

@@ -4,11 +4,10 @@ URL: https://img2num.dev/docs/c
 
 ## Features
 
-- **Fast raster vectorization** with WASM backend.
-- **Typed array support** : Works with `Uint8Array` , `Uint8ClampedArray` , and `Int32Array` .
-- **String outputs** : Converts results directly into SVG strings.
-- **Worker-friendly** : Supports offloading heavy computations to Web Workers.
-- **Zero dependencies** : Pure WASM + JS with no external libraries required.
+- **Fast raster vectorization** powered by the native C++ core.
+- **GPU acceleration** via WebGPU (Google's [Dawn](https://github.com/google/dawn) ) where available, with a CPU fallback.
+- **SVG output** : Converts images directly into SVG.
+- **Embeddable via CMake** : Add Img2Num as a Git submodule or with `find_package` .
 The C bindings ( `cimg2num.h` ) expose the Img2Num library as plain C functions. This is useful for:
 
 - Embedding Img2Num in C projects

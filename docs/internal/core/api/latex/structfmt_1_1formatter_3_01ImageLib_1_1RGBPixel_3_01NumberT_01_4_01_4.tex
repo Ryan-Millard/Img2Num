@@ -1,0 +1,78 @@
+\doxysection{fmt\+::formatter\texorpdfstring{$<$}{<} Image\+Lib\+::RGBPixel\texorpdfstring{$<$}{<} NumberT \texorpdfstring{$>$}{>} \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structfmt_1_1formatter_3_01ImageLib_1_1RGBPixel_3_01NumberT_01_4_01_4}{}\label{structfmt_1_1formatter_3_01ImageLib_1_1RGBPixel_3_01NumberT_01_4_01_4}\index{fmt::formatter$<$ ImageLib::RGBPixel$<$ NumberT $>$ $>$@{fmt::formatter$<$ ImageLib::RGBPixel$<$ NumberT $>$ $>$}}
+
+
+Collaboration diagram for fmt\+::formatter\texorpdfstring{$<$}{<} Image\+Lib\+::RGBPixel\texorpdfstring{$<$}{<} NumberT \texorpdfstring{$>$}{>} \texorpdfstring{$>$}{>}\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=220pt]{structfmt_1_1formatter_3_01ImageLib_1_1RGBPixel_3_01NumberT_01_4_01_4__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+constexpr auto \mbox{\hyperlink{structfmt_1_1formatter_3_01ImageLib_1_1RGBPixel_3_01NumberT_01_4_01_4_a54b3fb97fc841366615cd861967dcef0}{parse}} (format\+\_\+parse\+\_\+context \&ctx)
+\item 
+{\footnotesize template$<$typename Format\+Context $>$ }\\auto \mbox{\hyperlink{structfmt_1_1formatter_3_01ImageLib_1_1RGBPixel_3_01NumberT_01_4_01_4_ae57e00370e487813e8575ec6f4193b4f}{format}} (const \mbox{\hyperlink{structImageLib_1_1RGBPixel}{Image\+Lib\+::\+RGBPixel}}$<$ NumberT $>$ \&pixel, Format\+Context \&ctx) const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename NumberT$>$\newline
+struct fmt\+::formatter$<$ Image\+Lib\+::\+RGBPixel$<$ Number\+T $>$ $>$}
+
+
+Definition at line \mbox{\hyperlink{RGBPixel_8h_source_l00062}{62}} of file \mbox{\hyperlink{RGBPixel_8h_source}{RGBPixel.\+h}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structfmt_1_1formatter_3_01ImageLib_1_1RGBPixel_3_01NumberT_01_4_01_4_ae57e00370e487813e8575ec6f4193b4f}\label{structfmt_1_1formatter_3_01ImageLib_1_1RGBPixel_3_01NumberT_01_4_01_4_ae57e00370e487813e8575ec6f4193b4f} 
+\index{fmt::formatter$<$ ImageLib::RGBPixel$<$ NumberT $>$ $>$@{fmt::formatter$<$ ImageLib::RGBPixel$<$ NumberT $>$ $>$}!format@{format}}
+\index{format@{format}!fmt::formatter$<$ ImageLib::RGBPixel$<$ NumberT $>$ $>$@{fmt::formatter$<$ ImageLib::RGBPixel$<$ NumberT $>$ $>$}}
+\doxysubsubsection{\texorpdfstring{format()}{format()}}
+{\footnotesize\ttfamily template$<$typename NumberT $>$ \\
+template$<$typename Format\+Context $>$ \\
+auto fmt\+::formatter$<$ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{Image\+Lib\+::\+RGBPixel}}$<$ NumberT $>$ $>$\+::format (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structImageLib_1_1RGBPixel}{Image\+Lib\+::\+RGBPixel}}$<$ NumberT $>$ \&}]{pixel,  }\item[{Format\+Context \&}]{ctx }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{RGBPixel_8h_source_l00068}{68}} of file \mbox{\hyperlink{RGBPixel_8h_source}{RGBPixel.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ The\ struct\ is\ packed,\ so\ copy\ the\ members\ out\ instead\ of}}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ binding\ references\ to\ them.}}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ NumberT\ red\ =\ pixel.red;}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ NumberT\ green\ =\ pixel.green;}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ NumberT\ blue\ =\ pixel.blue;}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ format\_to(ctx.out(),\ \textcolor{stringliteral}{"{}(\ \{\},\{\},\{\}\ )"{}},\ red,\ green,\ blue);}
+\DoxyCodeLine{00075\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{structfmt_1_1formatter_3_01ImageLib_1_1RGBPixel_3_01NumberT_01_4_01_4_a54b3fb97fc841366615cd861967dcef0}\label{structfmt_1_1formatter_3_01ImageLib_1_1RGBPixel_3_01NumberT_01_4_01_4_a54b3fb97fc841366615cd861967dcef0} 
+\index{fmt::formatter$<$ ImageLib::RGBPixel$<$ NumberT $>$ $>$@{fmt::formatter$<$ ImageLib::RGBPixel$<$ NumberT $>$ $>$}!parse@{parse}}
+\index{parse@{parse}!fmt::formatter$<$ ImageLib::RGBPixel$<$ NumberT $>$ $>$@{fmt::formatter$<$ ImageLib::RGBPixel$<$ NumberT $>$ $>$}}
+\doxysubsubsection{\texorpdfstring{parse()}{parse()}}
+{\footnotesize\ttfamily template$<$typename NumberT $>$ \\
+constexpr auto fmt\+::formatter$<$ \mbox{\hyperlink{structImageLib_1_1RGBPixel}{Image\+Lib\+::\+RGBPixel}}$<$ NumberT $>$ $>$\+::parse (\begin{DoxyParamCaption}\item[{format\+\_\+parse\+\_\+context \&}]{ctx }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+
+
+
+Definition at line \mbox{\hyperlink{RGBPixel_8h_source_l00063}{63}} of file \mbox{\hyperlink{RGBPixel_8h_source}{RGBPixel.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ctx.begin();}
+\DoxyCodeLine{00065\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/internal/RGBPixel.\+h\end{DoxyCompactItemize}

@@ -12,13 +12,13 @@ Img2Num is a high-performance raster-to-vector conversion library that transform
 - **Fast raster vectorization** with WASM backend.
 - **Typed array support** : Works with `Uint8Array` , `Uint8ClampedArray` , and `Int32Array` .
 - **String outputs** : Converts results directly into SVG strings.
-- **Worker-friendly** : Supports offloading heavy computations to Web Workers.
+- **Runs on the calling thread** : no hidden threads — wrap it in a Web Worker of your own if you want to keep the UI responsive.
 - **Zero dependencies** : Pure WASM + JS with no external libraries required.
 
 ## Resources
 
-- [HTML demo app](https://img2num.dev/example-apps/html-js/) (low-code)
-- [Node.js console demo app](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/console-js/index.js) (low-code)
+- HTML demo app (low-code): [ESM variant](/example-apps/esm/) ) · [IIFE variant](/example-apps/iife/) ) · [UMD variant](/example-apps/iife/) )
+- Node.js console demo app (low-code): [ESM variant](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/console-js-esm/index.mjs) · [CommonJS variant](https://github.com/Ryan-Millard/Img2Num/blob/main/example-apps/console-js-cjs/index.cjs)
 - [React.js demo app](https://img2num.dev/example-apps/react-js/)
 
 ## License

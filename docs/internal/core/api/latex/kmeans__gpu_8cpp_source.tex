@@ -227,7 +227,7 @@
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00248}00248\ \ \ \ \ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00249}00249\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00250}00250\ }
-\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00251}00251\ \ \ \ \ IMG2NUM\_LOG\_INFO(\textcolor{stringliteral}{"{}starting"{}});}
+\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00251}00251\ \ \ \ \ IMG2NUM\_LOG\_DEBUG(\textcolor{stringliteral}{"{}starting"{}});}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00252}00252\ }
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00253}00253\ \ \ \ \ \textcolor{comment}{//\ Step\ 2:\ Initialize\ centroids\ via\ K-\/Means++}}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00254}00254\ \ \ \ \ \textcolor{keywordflow}{switch}\ (color\_space)\ \{}
@@ -239,7 +239,7 @@
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00260}00260\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00261}00261\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00262}00262\ }
-\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00263}00263\ \ \ \ \ IMG2NUM\_LOG\_INFO(\textcolor{stringliteral}{"{}kmeans++\ init\ done"{}});}
+\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00263}00263\ \ \ \ \ IMG2NUM\_LOG\_DEBUG(\textcolor{stringliteral}{"{}kmeans++\ init\ done"{}});}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00264}00264\ }
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00265}00265\ \ \ \ \ \textcolor{comment}{//\ =========================================================================}}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00266}00266\ \ \ \ \ \textcolor{comment}{//\ GPU\ resource\ setup\ (previously\ in\ setup()\ function)}}
@@ -356,7 +356,7 @@
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00377}00377\ \ \ \ \ \textcolor{comment}{//\ =========================================================================}}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00378}00378\ \ \ \ \ \textcolor{comment}{//\ Main\ K-\/Means\ loop\ —\ all\ iterations\ batched\ into\ one\ submission}}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00379}00379\ \ \ \ \ \textcolor{comment}{//\ =========================================================================}}
-\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00380}00380\ \ \ \ \ IMG2NUM\_LOG\_INFO(\textcolor{stringliteral}{"{}start\ iterations"{}});}
+\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00380}00380\ \ \ \ \ IMG2NUM\_LOG\_DEBUG(\textcolor{stringliteral}{"{}start\ iterations"{}});}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00381}00381\ \ \ \ \ uint32\_t\ wgX\ =\ \mbox{\hyperlink{gpu__utils_8h_a47a39a01c11b36be1bca18a771c85886}{gpu::workgroup\_count}}(w);}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00382}00382\ \ \ \ \ uint32\_t\ wgY\ =\ \mbox{\hyperlink{gpu__utils_8h_a47a39a01c11b36be1bca18a771c85886}{gpu::workgroup\_count}}(h);}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00383}00383\ }
@@ -367,17 +367,17 @@
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00388}00388\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00389}00389\ \ \ \ \ wgpu::CommandBuffer\ commands\ =\ encoder.Finish();}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00390}00390\ \ \ \ \ GPU::getClassInstance().get\_queue().Submit(1,\ \&commands);}
-\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00391}00391\ \ \ \ \ IMG2NUM\_LOG\_INFO(\textcolor{stringliteral}{"{}done\ iterations"{}});}
+\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00391}00391\ \ \ \ \ IMG2NUM\_LOG\_DEBUG(\textcolor{stringliteral}{"{}done\ iterations"{}});}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00392}00392\ }
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00393}00393\ \ \ \ \ \textcolor{comment}{//\ =========================================================================}}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00394}00394\ \ \ \ \ \textcolor{comment}{//\ Readback\ —\ alignment\ stripping\ handled\ automatically}}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00395}00395\ \ \ \ \ \textcolor{comment}{//\ =========================================================================}}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00396}00396\ }
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00397}00397\ \ \ \ \ \textcolor{comment}{//\ Read\ labels\ (RGBA32Uint,\ 16\ bytes/pixel\ —\ extract\ R\ channel\ as\ label)}}
-\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00398}00398\ \ \ \ \ IMG2NUM\_LOG\_INFO(\textcolor{stringliteral}{"{}read\ out"{}});}
+\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00398}00398\ \ \ \ \ IMG2NUM\_LOG\_DEBUG(\textcolor{stringliteral}{"{}read\ out"{}});}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00399}00399\ \ \ \ \ std::vector<uint8\_t>\ labelData\ =\ labelTexture.read(bpp);}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00400}00400\ }
-\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00401}00401\ \ \ \ \ IMG2NUM\_LOG\_INFO(\textcolor{stringliteral}{"{}mapping\ labels"{}});}
+\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00401}00401\ \ \ \ \ IMG2NUM\_LOG\_DEBUG(\textcolor{stringliteral}{"{}mapping\ labels"{}});}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00402}00402\ \ \ \ \ \textcolor{keywordflow}{for}\ (int32\_t\ i\ =\ 0;\ i\ <\ num\_pixels;\ ++i)\ \{}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00403}00403\ \ \ \ \ \ \ \ \ uint32\_t\ r\ =\ 0;}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00404}00404\ \ \ \ \ \ \ \ \ std::memcpy(\&r,\ \&labelData[i\ *\ bpp],\ \textcolor{keyword}{sizeof}(uint32\_t));}
@@ -388,7 +388,7 @@
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00409}00409\ \ \ \ \ std::vector<uint8\_t>\ centroidData\ =\ centroidTexture.read(bpp);}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00410}00410\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}*\ centroidFloats\ =\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }\textcolor{keywordtype}{float}*\textcolor{keyword}{>}(centroidData.data());}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00411}00411\ }
-\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00412}00412\ \ \ \ \ IMG2NUM\_LOG\_INFO(\textcolor{stringliteral}{"{}mapping\ centroids"{}});}
+\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00412}00412\ \ \ \ \ IMG2NUM\_LOG\_DEBUG(\textcolor{stringliteral}{"{}mapping\ centroids"{}});}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00413}00413\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ k;\ i++)\ \{}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00414}00414\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ cr\ =\ centroidFloats[i\ *\ 4];}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00415}00415\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ cg\ =\ centroidFloats[i\ *\ 4\ +\ 1];}
@@ -424,7 +424,7 @@
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00445}00445\ \ \ \ \ \}}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00446}00446\ }
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00447}00447\ \ \ \ \ \textcolor{comment}{//\ Write\ labels\ to\ out\_labels}}
-\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00448}00448\ \ \ \ \ IMG2NUM\_LOG\_INFO(\textcolor{stringliteral}{"{}copying\ labels\ out"{}});}
+\DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00448}00448\ \ \ \ \ IMG2NUM\_LOG\_DEBUG(\textcolor{stringliteral}{"{}copying\ labels\ out"{}});}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00449}00449\ \ \ \ \ std::memcpy(out\_labels,\ labels.data(),\ labels.size()\ *\ \textcolor{keyword}{sizeof}(int32\_t));}
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00450}00450\ }
 \DoxyCodeLine{\Hypertarget{kmeans__gpu_8cpp_source_l00451}00451\ \textcolor{preprocessor}{\#if\ defined(\_\_EMSCRIPTEN\_\_)}}

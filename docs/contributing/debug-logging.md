@@ -108,7 +108,4 @@ just console-cpp <path-to-image>
 
 Raw `iostream` and `stdio` output is banned in library code. The rule is enforced by **clang-tidy** , configured in `.clang-tidy` - not by a GitHub Actions workflow that greps for `std::cout` . Two checks do the work, and both are treated as errors:
 
-| Check | What it blocks | `portability-restrict-system-includes` | `<iostream>` , `<ostream>` , `<istream>` , `<cstdio>` , `<stdio.h>` , `<print>` , `<syncstream>` - i.e. `std::cout` and `std::cerr` | `bugprone-unsafe-functions` | `printf` , `fprintf` , `puts` , `putchar` , `vprintf` , `perror` - and points you to the logging macros 
-
-CI step currently disabled
-The clang-tidy step in `.github/workflows/ci.yml` is commented out until [#607](https://github.com/Ryan-Millard/Img2Num/issues/607) is resolved, so CI does **not** currently catch these violations. Please avoid them anyway and use the logging macros.
+| Check | What it blocks | `portability-restrict-system-includes` | `<iostream>` , `<ostream>` , `<istream>` , `<cstdio>` , `<stdio.h>` , `<print>` , `<syncstream>` - i.e. `std::cout` and `std::cerr` | `bugprone-unsafe-functions` | `printf` , `fprintf` , `puts` , `putchar` , `vprintf` , `perror` - and points you to the logging macros

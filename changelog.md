@@ -4,7 +4,7 @@ URL: https://img2num.dev/changelog
 
 ## [C++](/changelog/cpp)
 
-Changelog:[`img2num`](/changelog/cpp) Latest:[v0.3.0 - 2026-10-21](/changelog/cpp/2026-10-21_0-3-0)
+Changelog:[`img2num`](/changelog/cpp) Latest:[v0.4.0 - 2026-11-17](/changelog/cpp/2026-11-17_0-4-0)
 
 [![C++](https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg)](/changelog/cpp)
 

@@ -442,108 +442,110 @@
 \DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00438}00438\ \ \ \ \ \ \ \ \ \ \ \ \ pybind11::arg(\textcolor{stringliteral}{"{}bilateral\_filter"{}})\ =\ pybind11::dict(),\ \textcolor{comment}{//\ Defaults\ to\ empty\ dict}}
 \DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00439}00439\ \ \ \ \ \ \ \ \ \ \ \ \ pybind11::arg(\textcolor{stringliteral}{"{}kmeans"{}})\ =\ pybind11::dict()\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Defaults\ to\ empty\ dict}}
 \DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00440}00440\ \ \ \ \ \ \ \ \ )}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00441}00441\ \ \ \ \ \ \ \ \ \ .def(pybind11::pickle(}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00442}00442\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \_\_getstate\_\_:\ convert\ to\ plain\ Python\ objects}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00443}00443\ \ \ \ \ \ \ \ \ \ \ \ \ [](\textcolor{keyword}{const}\ img2num::ImageToSvgConfig\&\ c)\ \{}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00444}00444\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pybind11::dict\ bf;}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00445}00445\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bf[\textcolor{stringliteral}{"{}sigma\_spatial"{}}]\ =\ c.bilateral\_filter.sigma\_spatial;}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00446}00446\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bf[\textcolor{stringliteral}{"{}sigma\_range"{}}]\ =\ c.bilateral\_filter.sigma\_range;}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00447}00447\ }
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00448}00448\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pybind11::dict\ km;}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00449}00449\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ km[\textcolor{stringliteral}{"{}k"{}}]\ =\ c.kmeans.k;}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00450}00450\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ km[\textcolor{stringliteral}{"{}max\_iter"{}}]\ =\ c.kmeans.max\_iter;}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00451}00451\ }
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00452}00452\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pybind11::dict\ state;}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00453}00453\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ state[\textcolor{stringliteral}{"{}bilateral\_filter"{}}]\ =\ bf;}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00454}00454\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ state[\textcolor{stringliteral}{"{}kmeans"{}}]\ =\ km;}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00455}00455\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ state[\textcolor{stringliteral}{"{}min\_cluster\_area"{}}]\ =\ c.min\_cluster\_area;}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00456}00456\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ state[\textcolor{stringliteral}{"{}min\_thickness"{}}]\ =\ c.min\_thickness;}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00457}00457\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ state[\textcolor{stringliteral}{"{}color\_space"{}}]\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(c.color\_space);}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00458}00458\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ state;}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00459}00459\ \ \ \ \ \ \ \ \ \ \ \ \ \},}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00460}00460\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \_\_setstate\_\_:\ rebuild\ from\ that\ state}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00461}00461\ \ \ \ \ \ \ \ \ \ \ \ \ [](\textcolor{keyword}{const}\ pybind11::dict\&\ state)\ \{}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00462}00462\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ img2num::ImageToSvgConfig\ c;\ \ \textcolor{comment}{//\ starts\ from\ defaults}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00463}00463\ }
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00464}00464\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (state.contains(\textcolor{stringliteral}{"{}bilateral\_filter"{}}))\ \{}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00465}00465\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ bf\ =\ state[\textcolor{stringliteral}{"{}bilateral\_filter"{}}].cast<pybind11::dict>();}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00466}00466\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bf.contains(\textcolor{stringliteral}{"{}sigma\_spatial"{}}))}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00467}00467\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.bilateral\_filter.sigma\_spatial\ =\ bf[\textcolor{stringliteral}{"{}sigma\_spatial"{}}].cast<\textcolor{keywordtype}{double}>();}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00468}00468\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bf.contains(\textcolor{stringliteral}{"{}sigma\_range"{}}))}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00469}00469\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.bilateral\_filter.sigma\_range\ =\ bf[\textcolor{stringliteral}{"{}sigma\_range"{}}].cast<\textcolor{keywordtype}{double}>();}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00470}00470\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00471}00471\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (state.contains(\textcolor{stringliteral}{"{}kmeans"{}}))\ \{}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00472}00472\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ km\ =\ state[\textcolor{stringliteral}{"{}kmeans"{}}].cast<pybind11::dict>();}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00473}00473\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (km.contains(\textcolor{stringliteral}{"{}k"{}}))}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00474}00474\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.kmeans.k\ =\ km[\textcolor{stringliteral}{"{}k"{}}].cast<\textcolor{keywordtype}{int}>();}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00475}00475\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (km.contains(\textcolor{stringliteral}{"{}max\_iter"{}}))}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00476}00476\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.kmeans.max\_iter\ =\ km[\textcolor{stringliteral}{"{}max\_iter"{}}].cast<\textcolor{keywordtype}{int}>();}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00477}00477\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00478}00478\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (state.contains(\textcolor{stringliteral}{"{}min\_cluster\_area"{}}))}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00479}00479\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.min\_cluster\_area\ =\ state[\textcolor{stringliteral}{"{}min\_cluster\_area"{}}].cast<\textcolor{keywordtype}{int}>();}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00480}00480\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (state.contains(\textcolor{stringliteral}{"{}min\_thickness"{}}))}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00481}00481\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.min\_thickness\ =\ state[\textcolor{stringliteral}{"{}min\_thickness"{}}].cast<\textcolor{keywordtype}{int}>();}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00482}00482\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (state.contains(\textcolor{stringliteral}{"{}color\_space"{}}))}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00483}00483\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.color\_space\ =\ \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(state[\textcolor{stringliteral}{"{}color\_space"{}}].cast<\textcolor{keywordtype}{int}>());}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00484}00484\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ c;}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00485}00485\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00486}00486\ \ \ \ \ \ \ \ \ ))}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00487}00487\ \ \ \ \ \ \ \ \ .def\_readwrite(\textcolor{stringliteral}{"{}bilateral\_filter"{}},\ \&img2num::ImageToSvgConfig::bilateral\_filter)}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00488}00488\ \ \ \ \ \ \ \ \ .def\_readwrite(\textcolor{stringliteral}{"{}min\_cluster\_area"{}},\ \&img2num::ImageToSvgConfig::min\_cluster\_area)}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00489}00489\ \ \ \ \ \ \ \ \ .def\_readwrite(\textcolor{stringliteral}{"{}min\_thickness"{}},\ \&img2num::ImageToSvgConfig::min\_thickness)}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00490}00490\ \ \ \ \ \ \ \ \ .def\_readwrite(\textcolor{stringliteral}{"{}color\_space"{}},\ \&img2num::ImageToSvgConfig::color\_space)}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00491}00491\ \ \ \ \ \ \ \ \ .def\_readwrite(\textcolor{stringliteral}{"{}kmeans"{}},\ \&img2num::ImageToSvgConfig::kmeans)}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00492}00492\ \ \ \ \ \ \ \ \ .def(\textcolor{stringliteral}{"{}\_\_repr\_\_"{}},\ [](\textcolor{keyword}{const}\ img2num::ImageToSvgConfig\&\ c)\ \{}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00493}00493\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ We\ use\ pybind11::repr()\ to\ trigger\ the\ \_\_repr\_\_\ of\ the\ nested\ objects}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00494}00494\ \ \ \ \ \ \ \ \ \ \ \ \ std::stringstream\ ss;}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00495}00495\ \ \ \ \ \ \ \ \ \ \ \ \ ss\ <<\ \textcolor{stringliteral}{"{}<ImageToSvgConfig\ \{"{}}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00496}00496\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}bilateral\_filter:\ "{}}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00497}00497\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ pybind11::repr(pybind11::cast(c.bilateral\_filter)).cast<std::string>()\ <<\ \textcolor{stringliteral}{"{},\ "{}}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00498}00498\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}min\_cluster\_area:\ "{}}\ <<\ c.min\_cluster\_area\ <<\ \textcolor{stringliteral}{"{},\ "{}}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00499}00499\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}min\_thickness:\ "{}}\ <<\ c.min\_thickness\ <<\ \textcolor{stringliteral}{"{},\ "{}}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00500}00500\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}color\_space:\ "{}}\ <<\ (\textcolor{keywordtype}{int})c.color\_space\ <<\ \textcolor{stringliteral}{"{},\ "{}}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00501}00501\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}kmeans:\ "{}}\ <<\ pybind11::repr(pybind11::cast(c.kmeans)).cast<std::string>()}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00502}00502\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}\}>"{}};}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00503}00503\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ss.str();}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00504}00504\ \ \ \ \ \ \ \ \ \});}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00505}00505\ }
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00506}00506\ \ \ \ \ m.def(}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00507}00507\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}image\_to\_svg"{}},}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00508}00508\ \ \ \ \ \ \ \ \ [](pybind11::array\_t<uint8\_t,\ pybind11::array::c\_style>\ data,\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keywordtype}{int}\ height,}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00509}00509\ \ \ \ \ \ \ \ \ \ \ \ img2num::ImageToSvgConfig\ cfg)\ \{}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00510}00510\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t*\ data\_ptr\ \{\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }uint8\_t*\textcolor{keyword}{>}(data.request().ptr)\};}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00511}00511\ }
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00512}00512\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ svg;}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00513}00513\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00514}00514\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pybind11::gil\_scoped\_release\ release;}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00515}00515\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::lock\_guard<std::mutex>\ lock(core\_mutex);}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00516}00516\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ svg\ =\ img2num::image\_to\_svg(data\_ptr,\ width,\ height,\ cfg);}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00517}00517\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00518}00518\ }
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00519}00519\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pybind11::str(std::move(svg));}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00520}00520\ \ \ \ \ \ \ \ \ \},}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00521}00521\ \ \ \ \ \ \ \ \ pybind11::arg(\textcolor{stringliteral}{"{}data"{}}),\ pybind11::arg(\textcolor{stringliteral}{"{}width"{}}),\ pybind11::arg(\textcolor{stringliteral}{"{}height"{}}),}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00522}00522\ \ \ \ \ \ \ \ \ pybind11::arg(\textcolor{stringliteral}{"{}cfg"{}}),}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00523}00523\ \ \ \ \ \ \ \ \ R\textcolor{stringliteral}{"{}docstring(}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00524}00524\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Convert\ Image\ to\ SVG\ string.}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00525}00525\ \textcolor{stringliteral}{}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00526}00526\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Parameters}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00527}00527\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00528}00528\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ data\ :\ numpy.ndarray}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00529}00529\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ Input\ image\ buffer.}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00530}00530\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ width\ :\ int}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00531}00531\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ Width\ of\ the\ image.}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00532}00532\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ height\ :\ int}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00533}00533\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ Height\ of\ the\ image.}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00534}00534\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ cfg\ :\ ImageToSvgConfig}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00535}00535\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ Configuration\ object\ containing\ filter\ and\ clustering\ parameters.}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00536}00536\ \textcolor{stringliteral}{}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00537}00537\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Returns}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00538}00538\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ -\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00539}00539\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ str}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00540}00540\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ SVG\ string\ representation\ of\ the\ image.}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00541}00541\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ )docstring"{}}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00542}00542\ \textcolor{stringliteral}{\ \ \ \ );}}
-\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00543}00543\ \textcolor{stringliteral}{\}}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00441}00441\ \ \ \ \ \ \ \ \ .def(}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00442}00442\ \ \ \ \ \ \ \ \ \ \ \ \ pybind11::pickle(}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00443}00443\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \_\_getstate\_\_:\ convert\ to\ plain\ Python\ objects}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00444}00444\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ [](\textcolor{keyword}{const}\ img2num::ImageToSvgConfig\&\ c)\ \{}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00445}00445\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pybind11::dict\ bf;}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00446}00446\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bf[\textcolor{stringliteral}{"{}sigma\_spatial"{}}]\ =\ c.bilateral\_filter.sigma\_spatial;}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00447}00447\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bf[\textcolor{stringliteral}{"{}sigma\_range"{}}]\ =\ c.bilateral\_filter.sigma\_range;}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00448}00448\ }
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00449}00449\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pybind11::dict\ km;}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00450}00450\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ km[\textcolor{stringliteral}{"{}k"{}}]\ =\ c.kmeans.k;}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00451}00451\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ km[\textcolor{stringliteral}{"{}max\_iter"{}}]\ =\ c.kmeans.max\_iter;}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00452}00452\ }
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00453}00453\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pybind11::dict\ state;}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00454}00454\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ state[\textcolor{stringliteral}{"{}bilateral\_filter"{}}]\ =\ bf;}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00455}00455\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ state[\textcolor{stringliteral}{"{}kmeans"{}}]\ =\ km;}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00456}00456\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ state[\textcolor{stringliteral}{"{}min\_cluster\_area"{}}]\ =\ c.min\_cluster\_area;}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00457}00457\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ state[\textcolor{stringliteral}{"{}min\_thickness"{}}]\ =\ c.min\_thickness;}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00458}00458\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ state[\textcolor{stringliteral}{"{}color\_space"{}}]\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(c.color\_space);}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00459}00459\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ state;}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00460}00460\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \},}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00461}00461\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \_\_setstate\_\_:\ rebuild\ from\ that\ state}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00462}00462\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ [](\textcolor{keyword}{const}\ pybind11::dict\&\ state)\ \{}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00463}00463\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ img2num::ImageToSvgConfig\ c;\ \textcolor{comment}{//\ starts\ from\ defaults}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00464}00464\ }
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00465}00465\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (state.contains(\textcolor{stringliteral}{"{}bilateral\_filter"{}}))\ \{}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00466}00466\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ bf\ =\ state[\textcolor{stringliteral}{"{}bilateral\_filter"{}}].cast<pybind11::dict>();}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00467}00467\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bf.contains(\textcolor{stringliteral}{"{}sigma\_spatial"{}}))}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00468}00468\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.bilateral\_filter.sigma\_spatial\ =\ bf[\textcolor{stringliteral}{"{}sigma\_spatial"{}}].cast<\textcolor{keywordtype}{double}>();}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00469}00469\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bf.contains(\textcolor{stringliteral}{"{}sigma\_range"{}}))}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00470}00470\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.bilateral\_filter.sigma\_range\ =\ bf[\textcolor{stringliteral}{"{}sigma\_range"{}}].cast<\textcolor{keywordtype}{double}>();}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00471}00471\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00472}00472\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (state.contains(\textcolor{stringliteral}{"{}kmeans"{}}))\ \{}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00473}00473\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ km\ =\ state[\textcolor{stringliteral}{"{}kmeans"{}}].cast<pybind11::dict>();}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00474}00474\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (km.contains(\textcolor{stringliteral}{"{}k"{}}))}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00475}00475\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.kmeans.k\ =\ km[\textcolor{stringliteral}{"{}k"{}}].cast<\textcolor{keywordtype}{int}>();}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00476}00476\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (km.contains(\textcolor{stringliteral}{"{}max\_iter"{}}))}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00477}00477\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.kmeans.max\_iter\ =\ km[\textcolor{stringliteral}{"{}max\_iter"{}}].cast<\textcolor{keywordtype}{int}>();}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00478}00478\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00479}00479\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (state.contains(\textcolor{stringliteral}{"{}min\_cluster\_area"{}}))}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00480}00480\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.min\_cluster\_area\ =\ state[\textcolor{stringliteral}{"{}min\_cluster\_area"{}}].cast<\textcolor{keywordtype}{int}>();}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00481}00481\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (state.contains(\textcolor{stringliteral}{"{}min\_thickness"{}}))}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00482}00482\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.min\_thickness\ =\ state[\textcolor{stringliteral}{"{}min\_thickness"{}}].cast<\textcolor{keywordtype}{int}>();}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00483}00483\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (state.contains(\textcolor{stringliteral}{"{}color\_space"{}}))}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00484}00484\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c.color\_space\ =\ \textcolor{keyword}{static\_cast<}uint8\_t\textcolor{keyword}{>}(state[\textcolor{stringliteral}{"{}color\_space"{}}].cast<\textcolor{keywordtype}{int}>());}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00485}00485\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ c;}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00486}00486\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00487}00487\ \ \ \ \ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00488}00488\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00489}00489\ \ \ \ \ \ \ \ \ .def\_readwrite(\textcolor{stringliteral}{"{}bilateral\_filter"{}},\ \&img2num::ImageToSvgConfig::bilateral\_filter)}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00490}00490\ \ \ \ \ \ \ \ \ .def\_readwrite(\textcolor{stringliteral}{"{}min\_cluster\_area"{}},\ \&img2num::ImageToSvgConfig::min\_cluster\_area)}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00491}00491\ \ \ \ \ \ \ \ \ .def\_readwrite(\textcolor{stringliteral}{"{}min\_thickness"{}},\ \&img2num::ImageToSvgConfig::min\_thickness)}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00492}00492\ \ \ \ \ \ \ \ \ .def\_readwrite(\textcolor{stringliteral}{"{}color\_space"{}},\ \&img2num::ImageToSvgConfig::color\_space)}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00493}00493\ \ \ \ \ \ \ \ \ .def\_readwrite(\textcolor{stringliteral}{"{}kmeans"{}},\ \&img2num::ImageToSvgConfig::kmeans)}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00494}00494\ \ \ \ \ \ \ \ \ .def(\textcolor{stringliteral}{"{}\_\_repr\_\_"{}},\ [](\textcolor{keyword}{const}\ img2num::ImageToSvgConfig\&\ c)\ \{}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00495}00495\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ We\ use\ pybind11::repr()\ to\ trigger\ the\ \_\_repr\_\_\ of\ the\ nested\ objects}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00496}00496\ \ \ \ \ \ \ \ \ \ \ \ \ std::stringstream\ ss;}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00497}00497\ \ \ \ \ \ \ \ \ \ \ \ \ ss\ <<\ \textcolor{stringliteral}{"{}<ImageToSvgConfig\ \{"{}}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00498}00498\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}bilateral\_filter:\ "{}}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00499}00499\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ pybind11::repr(pybind11::cast(c.bilateral\_filter)).cast<std::string>()\ <<\ \textcolor{stringliteral}{"{},\ "{}}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00500}00500\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}min\_cluster\_area:\ "{}}\ <<\ c.min\_cluster\_area\ <<\ \textcolor{stringliteral}{"{},\ "{}}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00501}00501\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}min\_thickness:\ "{}}\ <<\ c.min\_thickness\ <<\ \textcolor{stringliteral}{"{},\ "{}}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00502}00502\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}color\_space:\ "{}}\ <<\ (\textcolor{keywordtype}{int})c.color\_space\ <<\ \textcolor{stringliteral}{"{},\ "{}}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00503}00503\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}kmeans:\ "{}}\ <<\ pybind11::repr(pybind11::cast(c.kmeans)).cast<std::string>()}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00504}00504\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ \textcolor{stringliteral}{"{}\}>"{}};}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00505}00505\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ss.str();}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00506}00506\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00507}00507\ }
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00508}00508\ \ \ \ \ m.def(}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00509}00509\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}image\_to\_svg"{}},}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00510}00510\ \ \ \ \ \ \ \ \ [](pybind11::array\_t<uint8\_t,\ pybind11::array::c\_style>\ data,\ \textcolor{keywordtype}{int}\ width,\ \textcolor{keywordtype}{int}\ height,}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00511}00511\ \ \ \ \ \ \ \ \ \ \ \ img2num::ImageToSvgConfig\ cfg)\ \{}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00512}00512\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t*\ data\_ptr\ \{\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }uint8\_t*\textcolor{keyword}{>}(data.request().ptr)\};}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00513}00513\ }
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00514}00514\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ svg;}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00515}00515\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00516}00516\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pybind11::gil\_scoped\_release\ release;}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00517}00517\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::lock\_guard<std::mutex>\ lock(core\_mutex);}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00518}00518\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ svg\ =\ img2num::image\_to\_svg(data\_ptr,\ width,\ height,\ cfg);}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00519}00519\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00520}00520\ }
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00521}00521\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pybind11::str(std::move(svg));}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00522}00522\ \ \ \ \ \ \ \ \ \},}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00523}00523\ \ \ \ \ \ \ \ \ pybind11::arg(\textcolor{stringliteral}{"{}data"{}}),\ pybind11::arg(\textcolor{stringliteral}{"{}width"{}}),\ pybind11::arg(\textcolor{stringliteral}{"{}height"{}}),}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00524}00524\ \ \ \ \ \ \ \ \ pybind11::arg(\textcolor{stringliteral}{"{}cfg"{}}),}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00525}00525\ \ \ \ \ \ \ \ \ R\textcolor{stringliteral}{"{}docstring(}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00526}00526\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Convert\ Image\ to\ SVG\ string.}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00527}00527\ \textcolor{stringliteral}{}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00528}00528\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Parameters}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00529}00529\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00530}00530\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ data\ :\ numpy.ndarray}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00531}00531\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ Input\ image\ buffer.}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00532}00532\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ width\ :\ int}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00533}00533\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ Width\ of\ the\ image.}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00534}00534\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ height\ :\ int}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00535}00535\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ Height\ of\ the\ image.}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00536}00536\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ cfg\ :\ ImageToSvgConfig}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00537}00537\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ Configuration\ object\ containing\ filter\ and\ clustering\ parameters.}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00538}00538\ \textcolor{stringliteral}{}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00539}00539\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Returns}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00540}00540\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ -\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00541}00541\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ str}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00542}00542\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ SVG\ string\ representation\ of\ the\ image.}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00543}00543\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ )docstring"{}}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00544}00544\ \textcolor{stringliteral}{\ \ \ \ );}}
+\DoxyCodeLine{\Hypertarget{img2num__pybind_8cpp_source_l00545}00545\ \textcolor{stringliteral}{\}}}
 
 \end{DoxyCode}

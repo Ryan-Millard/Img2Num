@@ -1,0 +1,76 @@
+\doxysection{fmt\+::formatter\texorpdfstring{$<$}{<} Image\+Lib\+::LABPixel\texorpdfstring{$<$}{<} NumberT \texorpdfstring{$>$}{>} \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structfmt_1_1formatter_3_01ImageLib_1_1LABPixel_3_01NumberT_01_4_01_4}{}\label{structfmt_1_1formatter_3_01ImageLib_1_1LABPixel_3_01NumberT_01_4_01_4}\index{fmt::formatter$<$ ImageLib::LABPixel$<$ NumberT $>$ $>$@{fmt::formatter$<$ ImageLib::LABPixel$<$ NumberT $>$ $>$}}
+
+
+Collaboration diagram for fmt\+::formatter\texorpdfstring{$<$}{<} Image\+Lib\+::LABPixel\texorpdfstring{$<$}{<} NumberT \texorpdfstring{$>$}{>} \texorpdfstring{$>$}{>}\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=218pt]{structfmt_1_1formatter_3_01ImageLib_1_1LABPixel_3_01NumberT_01_4_01_4__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+constexpr auto \mbox{\hyperlink{structfmt_1_1formatter_3_01ImageLib_1_1LABPixel_3_01NumberT_01_4_01_4_a824df229262565f995cc94f92f737061}{parse}} (format\+\_\+parse\+\_\+context \&ctx)
+\item 
+{\footnotesize template$<$typename Format\+Context $>$ }\\auto \mbox{\hyperlink{structfmt_1_1formatter_3_01ImageLib_1_1LABPixel_3_01NumberT_01_4_01_4_af980369f22b078c97ec60d9e065e197d}{format}} (const \mbox{\hyperlink{structImageLib_1_1LABPixel}{Image\+Lib\+::\+LABPixel}}$<$ NumberT $>$ \&pixel, Format\+Context \&ctx) const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename NumberT$>$\newline
+struct fmt\+::formatter$<$ Image\+Lib\+::\+LABPixel$<$ Number\+T $>$ $>$}
+
+
+Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00066}{66}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structfmt_1_1formatter_3_01ImageLib_1_1LABPixel_3_01NumberT_01_4_01_4_af980369f22b078c97ec60d9e065e197d}\label{structfmt_1_1formatter_3_01ImageLib_1_1LABPixel_3_01NumberT_01_4_01_4_af980369f22b078c97ec60d9e065e197d} 
+\index{fmt::formatter$<$ ImageLib::LABPixel$<$ NumberT $>$ $>$@{fmt::formatter$<$ ImageLib::LABPixel$<$ NumberT $>$ $>$}!format@{format}}
+\index{format@{format}!fmt::formatter$<$ ImageLib::LABPixel$<$ NumberT $>$ $>$@{fmt::formatter$<$ ImageLib::LABPixel$<$ NumberT $>$ $>$}}
+\doxysubsubsection{\texorpdfstring{format()}{format()}}
+{\footnotesize\ttfamily template$<$typename NumberT $>$ \\
+template$<$typename Format\+Context $>$ \\
+auto fmt\+::formatter$<$ \mbox{\hyperlink{structImageLib_1_1LABPixel}{Image\+Lib\+::\+LABPixel}}$<$ NumberT $>$ $>$\+::format (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structImageLib_1_1LABPixel}{Image\+Lib\+::\+LABPixel}}$<$ NumberT $>$ \&}]{pixel,  }\item[{Format\+Context \&}]{ctx }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00072}{72}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ NumberT\ l\ =\ pixel.l;}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ NumberT\ a\ =\ pixel.a;}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ NumberT\ b\ =\ pixel.b;}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ format\_to(ctx.out(),\ \textcolor{stringliteral}{"{}(\ \{\},\{\},\{\}\ )"{}},\ l,\ a,\ b);}
+\DoxyCodeLine{00077\ \ \ \ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{structfmt_1_1formatter_3_01ImageLib_1_1LABPixel_3_01NumberT_01_4_01_4_a824df229262565f995cc94f92f737061}\label{structfmt_1_1formatter_3_01ImageLib_1_1LABPixel_3_01NumberT_01_4_01_4_a824df229262565f995cc94f92f737061} 
+\index{fmt::formatter$<$ ImageLib::LABPixel$<$ NumberT $>$ $>$@{fmt::formatter$<$ ImageLib::LABPixel$<$ NumberT $>$ $>$}!parse@{parse}}
+\index{parse@{parse}!fmt::formatter$<$ ImageLib::LABPixel$<$ NumberT $>$ $>$@{fmt::formatter$<$ ImageLib::LABPixel$<$ NumberT $>$ $>$}}
+\doxysubsubsection{\texorpdfstring{parse()}{parse()}}
+{\footnotesize\ttfamily template$<$typename NumberT $>$ \\
+constexpr auto fmt\+::formatter$<$ \mbox{\hyperlink{structImageLib_1_1LABPixel}{Image\+Lib\+::\+LABPixel}}$<$ NumberT $>$ $>$\+::parse (\begin{DoxyParamCaption}\item[{format\+\_\+parse\+\_\+context \&}]{ctx }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+
+
+
+Definition at line \mbox{\hyperlink{LABPixel_8h_source_l00067}{67}} of file \mbox{\hyperlink{LABPixel_8h_source}{LABPixel.\+h}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ctx.begin();}
+\DoxyCodeLine{00069\ \ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/internal/LABPixel.\+h\end{DoxyCompactItemize}

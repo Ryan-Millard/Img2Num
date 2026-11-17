@@ -143,17 +143,30 @@ $(document).ready(function(){initNavTree('LABAPixel_8h_source.html',''); initRes
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#pragma pack(pop)</span></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> NumberT&gt;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, <span class="keyword">const</span> <a class="code hl_struct" href="structImageLib_1_1LABAPixel.html">ImageLib::LABAPixel&lt;NumberT&gt;</a>&amp; pixel) {</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    out &lt;&lt; <span class="stringliteral">&quot;( &quot;</span> &lt;&lt; pixel.l &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; pixel.a &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; pixel.b &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; pixel.alpha &lt;&lt; <span class="stringliteral">&quot; )&quot;</span>;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">return</span> out;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>}</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>} <span class="comment">// namespace ImageLib</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>} <span class="comment">// namespace ImageLib</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">namespace </span>fmt {</div>
+<div class="foldopen" id="foldopen00047" data-start="{" data-end="};">
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="structfmt_1_1formatter_3_01ImageLib_1_1LABAPixel_3_01NumberT_01_4_01_4.html">   47</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> NumberT&gt; <span class="keyword">struct </span>formatter&lt;ImageLib::LABAPixel&lt;NumberT&gt;&gt; {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keyword">constexpr</span> <span class="keyword">auto</span> parse(format_parse_context&amp; ctx) {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="keywordflow">return</span> ctx.begin();</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    }</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#endif </span><span class="comment">// LABAPixel_H</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> FormatContext&gt;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keyword">auto</span> format(<span class="keyword">const</span> <a class="code hl_struct" href="structImageLib_1_1LABAPixel.html">ImageLib::LABAPixel&lt;NumberT&gt;</a>&amp; pixel, FormatContext&amp; ctx)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <span class="keyword">const</span> NumberT l = pixel.l;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="keyword">const</span> NumberT a = pixel.a;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keyword">const</span> NumberT b = pixel.b;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="keyword">const</span> NumberT alpha = pixel.alpha;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        <span class="keywordflow">return</span> format_to(ctx.out(), <span class="stringliteral">&quot;( {},{},{},{} )&quot;</span>, l, a, b, alpha);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    }</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>};</div>
+</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>} <span class="comment">// namespace fmt</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">#endif </span><span class="comment">// LABAPixel_H</span></div>
 <div class="ttc" id="astructImageLib_1_1LABAPixel_html"><div class="ttname"><a href="structImageLib_1_1LABAPixel.html">ImageLib::LABAPixel</a></div><div class="ttdef"><b>Definition</b> <a href="LABAPixel_8h_source.html#l00011">LABAPixel.h:11</a></div></div>
-<div class="ttc" id="astructImageLib_1_1LABPixel_html"><div class="ttname"><a href="structImageLib_1_1LABPixel.html">ImageLib::LABPixel</a></div><div class="ttdef"><b>Definition</b> <a href="LABPixel_8h_source.html#l00019">LABPixel.h:19</a></div></div>
+<div class="ttc" id="astructImageLib_1_1LABPixel_html"><div class="ttname"><a href="structImageLib_1_1LABPixel.html">ImageLib::LABPixel</a></div><div class="ttdef"><b>Definition</b> <a href="LABPixel_8h_source.html#l00018">LABPixel.h:18</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

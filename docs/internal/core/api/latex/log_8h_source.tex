@@ -12,7 +12,7 @@
 \DoxyCodeLine{\Hypertarget{log_8h_source_l00008}00008\ \textcolor{comment}{//\ Lazily-\/created\ library\ logger.}}
 \DoxyCodeLine{\Hypertarget{log_8h_source_l00009}00009\ \textcolor{keyword}{inline}\ spdlog::logger\&\ logger()\ \{}
 \DoxyCodeLine{\Hypertarget{log_8h_source_l00010}00010\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ instance\ =\ []\ \{}
-\DoxyCodeLine{\Hypertarget{log_8h_source_l00011}00011\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ l\ =\ spdlog::stdout\_color\_mt(\textcolor{stringliteral}{"{}img2num"{}});}
+\DoxyCodeLine{\Hypertarget{log_8h_source_l00011}00011\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ l\ =\ spdlog::stderr\_color\_mt(\textcolor{stringliteral}{"{}img2num"{}});}
 \DoxyCodeLine{\Hypertarget{log_8h_source_l00012}00012\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Sync\ runtime\ filtering\ with\ compile-\/time\ stripping}}
 \DoxyCodeLine{\Hypertarget{log_8h_source_l00013}00013\ \ \ \ \ \ \ \ \ l-\/>set\_level(\textcolor{keyword}{static\_cast<}spdlog::level::level\_enum\textcolor{keyword}{>}(SPDLOG\_ACTIVE\_LEVEL));}
 \DoxyCodeLine{\Hypertarget{log_8h_source_l00014}00014\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ l;}

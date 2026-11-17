@@ -4,6 +4,12 @@ var annotated_dup =
       [ "Coord", "structcontours_1_1Coord.html", null ],
       [ "PointID", "structcontours_1_1PointID.html", null ]
     ] ],
+    [ "fmt", null, [
+      [ "formatter< ImageLib::LABAPixel< NumberT > >", "structfmt_1_1formatter_3_01ImageLib_1_1LABAPixel_3_01NumberT_01_4_01_4.html", null ],
+      [ "formatter< ImageLib::LABPixel< NumberT > >", "structfmt_1_1formatter_3_01ImageLib_1_1LABPixel_3_01NumberT_01_4_01_4.html", null ],
+      [ "formatter< ImageLib::RGBAPixel< NumberT > >", "structfmt_1_1formatter_3_01ImageLib_1_1RGBAPixel_3_01NumberT_01_4_01_4.html", null ],
+      [ "formatter< ImageLib::RGBPixel< NumberT > >", "structfmt_1_1formatter_3_01ImageLib_1_1RGBPixel_3_01NumberT_01_4_01_4.html", null ]
+    ] ],
     [ "gpu", null, [
       [ "BindEntry", "structgpu_1_1BindEntry.html", "structgpu_1_1BindEntry" ],
       [ "Buffer", "classgpu_1_1Buffer.html", "classgpu_1_1Buffer" ],

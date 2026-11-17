@@ -48,7 +48,7 @@
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00056}00056\ \ \ \ \ \textcolor{keyword}{const}\ uint32\_t\ h\ =\ \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(height);}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00057}00057\ \ \ \ \ \textcolor{keyword}{constexpr}\ uint32\_t\ bpp\ =\ 4;\ \textcolor{comment}{//\ RGBA8\ =\ 4\ bytes\ per\ pixel}}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00058}00058\ }
-\DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00059}00059\ \ \ \ \ IMG2NUM\_LOG\_INFO(\textcolor{stringliteral}{"{}begin\ wgpu\ portion"{}});}
+\DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00059}00059\ \ \ \ \ IMG2NUM\_LOG\_DEBUG(\textcolor{stringliteral}{"{}begin\ wgpu\ portion"{}});}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00060}00060\ }
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00061}00061\ \ \ \ \ \textcolor{comment}{//\ 1.\ Create\ textures\ (RAII\ —\ destroyed\ automatically\ on\ scope\ exit)}}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00062}00062\ \ \ \ \ \mbox{\hyperlink{classgpu_1_1Texture}{gpu::Texture}}\ inputTexture(}
@@ -56,10 +56,10 @@
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00064}00064\ \ \ \ \ \ \ \ \ wgpu::TextureUsage::TextureBinding\ |\ wgpu::TextureUsage::CopyDst}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00065}00065\ \ \ \ \ );}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00066}00066\ }
-\DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00067}00067\ \ \ \ \ IMG2NUM\_LOG\_INFO(\textcolor{stringliteral}{"{}upload\ texture"{}});}
+\DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00067}00067\ \ \ \ \ IMG2NUM\_LOG\_DEBUG(\textcolor{stringliteral}{"{}upload\ texture"{}});}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00068}00068\ \ \ \ \ inputTexture.write(image,\ bpp\ *\ width\ *\ height,\ bpp);}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00069}00069\ }
-\DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00070}00070\ \ \ \ \ IMG2NUM\_LOG\_INFO(\textcolor{stringliteral}{"{}create\ output\ texture"{}});}
+\DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00070}00070\ \ \ \ \ IMG2NUM\_LOG\_DEBUG(\textcolor{stringliteral}{"{}create\ output\ texture"{}});}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00071}00071\ \ \ \ \ \mbox{\hyperlink{classgpu_1_1Texture}{gpu::Texture}}\ outputTexture(}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00072}00072\ \ \ \ \ \ \ \ \ w,\ h,\ wgpu::TextureFormat::RGBA8Unorm,}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00073}00073\ \ \ \ \ \ \ \ \ wgpu::TextureUsage::StorageBinding\ |\ wgpu::TextureUsage::CopySrc}
@@ -75,7 +75,7 @@
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00083}00083\ \ \ \ \ \ \ \ \ wgpu::TextureUsage::StorageBinding\ |\ wgpu::TextureUsage::TextureBinding}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00084}00084\ \ \ \ \ );}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00085}00085\ }
-\DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00086}00086\ \ \ \ \ IMG2NUM\_LOG\_INFO(\textcolor{stringliteral}{"{}create\ buffer"{}});}
+\DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00086}00086\ \ \ \ \ IMG2NUM\_LOG\_DEBUG(\textcolor{stringliteral}{"{}create\ buffer"{}});}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00087}00087\ \ \ \ \ \textcolor{comment}{//\ 2.\ Create\ uniform\ buffer\ with\ filter\ parameters}}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00088}00088\ \ \ \ \ \mbox{\hyperlink{classgpu_1_1Buffer}{gpu::Buffer<FilterParams>}}\ paramBuffer(}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00089}00089\ \ \ \ \ \ \ \ \ 1,\ wgpu::BufferUsage::Uniform\ |\ wgpu::BufferUsage::CopyDst}
@@ -161,12 +161,12 @@
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00169}00169\ }
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00170}00170\ \ \ \ \ wgpu::CommandBuffer\ commands\ =\ encoder.Finish();}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00171}00171\ \ \ \ \ GPU::getClassInstance().get\_queue().Submit(1,\ \&commands);}
-\DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00172}00172\ \ \ \ \ IMG2NUM\_LOG\_INFO(\textcolor{stringliteral}{"{}queue\ submit"{}});}
+\DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00172}00172\ \ \ \ \ IMG2NUM\_LOG\_DEBUG(\textcolor{stringliteral}{"{}queue\ submit"{}});}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00173}00173\ }
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00174}00174\ \ \ \ \ \textcolor{comment}{//\ 6.\ Readback\ —\ handles\ staging\ buffer,\ MapAsync,\ alignment\ stripping\ automatically}}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00175}00175\ \ \ \ \ std::vector<uint8\_t>\ result\ =\ outputTexture.read(bpp);}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00176}00176\ \ \ \ \ std::memcpy(image,\ result.data(),\ result.size());}
-\DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00177}00177\ \ \ \ \ IMG2NUM\_LOG\_INFO(\textcolor{stringliteral}{"{}done\ memcpy"{}});}
+\DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00177}00177\ \ \ \ \ IMG2NUM\_LOG\_DEBUG(\textcolor{stringliteral}{"{}done\ memcpy"{}});}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00178}00178\ }
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00179}00179\ \ \ \ \ \textcolor{comment}{//\ All\ textures\ and\ buffers\ are\ destroyed\ automatically\ by\ RAII\ destructors}}
 \DoxyCodeLine{\Hypertarget{bilateral__filter__gpu_8cpp_source_l00180}00180\ \textcolor{preprocessor}{\#if\ defined(\_\_EMSCRIPTEN\_\_)}}

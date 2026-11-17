@@ -329,7 +329,7 @@ $(document).ready(function(){initNavTree('kmeans__gpu_8cpp_source.html',''); ini
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        }</div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    }</div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    IMG2NUM_LOG_INFO(<span class="stringliteral">&quot;starting&quot;</span>);</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    IMG2NUM_LOG_DEBUG(<span class="stringliteral">&quot;starting&quot;</span>);</div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    <span class="comment">// Step 2: Initialize centroids via K-Means++</span></div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    <span class="keywordflow">switch</span> (color_space) {</div>
@@ -341,7 +341,7 @@ $(document).ready(function(){initNavTree('kmeans__gpu_8cpp_source.html',''); ini
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>        <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    }</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    IMG2NUM_LOG_INFO(<span class="stringliteral">&quot;kmeans++ init done&quot;</span>);</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    IMG2NUM_LOG_DEBUG(<span class="stringliteral">&quot;kmeans++ init done&quot;</span>);</div>
 <div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span> </div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    <span class="comment">// =========================================================================</span></div>
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    <span class="comment">// GPU resource setup (previously in setup() function)</span></div>
@@ -458,7 +458,7 @@ $(document).ready(function(){initNavTree('kmeans__gpu_8cpp_source.html',''); ini
 <div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>    <span class="comment">// =========================================================================</span></div>
 <div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>    <span class="comment">// Main K-Means loop — all iterations batched into one submission</span></div>
 <div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>    <span class="comment">// =========================================================================</span></div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>    IMG2NUM_LOG_INFO(<span class="stringliteral">&quot;start iterations&quot;</span>);</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>    IMG2NUM_LOG_DEBUG(<span class="stringliteral">&quot;start iterations&quot;</span>);</div>
 <div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>    uint32_t wgX = <a class="code hl_function" href="gpu__utils_8h.html#a47a39a01c11b36be1bca18a771c85886">gpu::workgroup_count</a>(w);</div>
 <div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>    uint32_t wgY = <a class="code hl_function" href="gpu__utils_8h.html#a47a39a01c11b36be1bca18a771c85886">gpu::workgroup_count</a>(h);</div>
 <div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span> </div>
@@ -469,17 +469,17 @@ $(document).ready(function(){initNavTree('kmeans__gpu_8cpp_source.html',''); ini
 <div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>    }</div>
 <div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>    wgpu::CommandBuffer commands = encoder.Finish();</div>
 <div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    GPU::getClassInstance().get_queue().Submit(1, &amp;commands);</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    IMG2NUM_LOG_INFO(<span class="stringliteral">&quot;done iterations&quot;</span>);</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    IMG2NUM_LOG_DEBUG(<span class="stringliteral">&quot;done iterations&quot;</span>);</div>
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span> </div>
 <div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>    <span class="comment">// =========================================================================</span></div>
 <div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>    <span class="comment">// Readback — alignment stripping handled automatically</span></div>
 <div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>    <span class="comment">// =========================================================================</span></div>
 <div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span> </div>
 <div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>    <span class="comment">// Read labels (RGBA32Uint, 16 bytes/pixel — extract R channel as label)</span></div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>    IMG2NUM_LOG_INFO(<span class="stringliteral">&quot;read out&quot;</span>);</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>    IMG2NUM_LOG_DEBUG(<span class="stringliteral">&quot;read out&quot;</span>);</div>
 <div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>    std::vector&lt;uint8_t&gt; labelData = labelTexture.read(bpp);</div>
 <div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span> </div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>    IMG2NUM_LOG_INFO(<span class="stringliteral">&quot;mapping labels&quot;</span>);</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>    IMG2NUM_LOG_DEBUG(<span class="stringliteral">&quot;mapping labels&quot;</span>);</div>
 <div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>    <span class="keywordflow">for</span> (int32_t i = 0; i &lt; num_pixels; ++i) {</div>
 <div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>        uint32_t r = 0;</div>
 <div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>        std::memcpy(&amp;r, &amp;labelData[i * bpp], <span class="keyword">sizeof</span>(uint32_t));</div>
@@ -490,7 +490,7 @@ $(document).ready(function(){initNavTree('kmeans__gpu_8cpp_source.html',''); ini
 <div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>    std::vector&lt;uint8_t&gt; centroidData = centroidTexture.read(bpp);</div>
 <div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>    <span class="keyword">const</span> <span class="keywordtype">float</span>* centroidFloats = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span>*<span class="keyword">&gt;</span>(centroidData.data());</div>
 <div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span> </div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>    IMG2NUM_LOG_INFO(<span class="stringliteral">&quot;mapping centroids&quot;</span>);</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>    IMG2NUM_LOG_DEBUG(<span class="stringliteral">&quot;mapping centroids&quot;</span>);</div>
 <div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; k; i++) {</div>
 <div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>        <span class="keywordtype">float</span> cr = centroidFloats[i * 4];</div>
 <div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>        <span class="keywordtype">float</span> cg = centroidFloats[i * 4 + 1];</div>
@@ -526,7 +526,7 @@ $(document).ready(function(){initNavTree('kmeans__gpu_8cpp_source.html',''); ini
 <div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>    }</div>
 <div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span> </div>
 <div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>    <span class="comment">// Write labels to out_labels</span></div>
-<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>    IMG2NUM_LOG_INFO(<span class="stringliteral">&quot;copying labels out&quot;</span>);</div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>    IMG2NUM_LOG_DEBUG(<span class="stringliteral">&quot;copying labels out&quot;</span>);</div>
 <div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>    std::memcpy(out_labels, labels.data(), labels.size() * <span class="keyword">sizeof</span>(int32_t));</div>
 <div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span> </div>
 <div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span><span class="preprocessor">#if defined(__EMSCRIPTEN__)</span></div>

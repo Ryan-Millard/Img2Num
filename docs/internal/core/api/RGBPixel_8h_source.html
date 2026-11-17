@@ -104,7 +104,7 @@ $(document).ready(function(){initNavTree('RGBPixel_8h_source.html',''); initResi
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;internal/Pixel.h&quot;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;cmath&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;spdlog/fmt/fmt.h&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span>ImageLib {</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
@@ -158,15 +158,29 @@ $(document).ready(function(){initNavTree('RGBPixel_8h_source.html',''); initResi
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#pragma pack(pop)</span></div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> NumberT&gt;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>std::ostream&amp; operator&lt;&lt;(std::ostream&amp; out, <span class="keyword">const</span> <a class="code hl_struct" href="structImageLib_1_1RGBPixel.html">ImageLib::RGBPixel&lt;NumberT&gt;</a>&amp; pixel) {</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    out &lt;&lt; <span class="stringliteral">&quot;( &quot;</span> &lt;&lt; pixel.red &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; pixel.green &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; pixel.blue &lt;&lt; <span class="stringliteral">&quot; )&quot;</span>;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keywordflow">return</span> out;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>}</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>} <span class="comment">// namespace ImageLib</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>} <span class="comment">// namespace ImageLib</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword">namespace </span>fmt {</div>
+<div class="foldopen" id="foldopen00062" data-start="{" data-end="};">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="structfmt_1_1formatter_3_01ImageLib_1_1RGBPixel_3_01NumberT_01_4_01_4.html">   62</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> NumberT&gt; <span class="keyword">struct </span>formatter&lt;ImageLib::RGBPixel&lt;NumberT&gt;&gt; {</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keyword">constexpr</span> <span class="keyword">auto</span> parse(format_parse_context&amp; ctx) {</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordflow">return</span> ctx.begin();</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    }</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">#endif </span><span class="comment">// RGBPIXEL_H</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> FormatContext&gt;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keyword">auto</span> format(<span class="keyword">const</span> <a class="code hl_struct" href="structImageLib_1_1RGBPixel.html">ImageLib::RGBPixel&lt;NumberT&gt;</a>&amp; pixel, FormatContext&amp; ctx)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <span class="comment">// The struct is packed, so copy the members out instead of</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="comment">// binding references to them.</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        <span class="keyword">const</span> NumberT red = pixel.red;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="keyword">const</span> NumberT green = pixel.green;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <span class="keyword">const</span> NumberT blue = pixel.blue;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="keywordflow">return</span> format_to(ctx.out(), <span class="stringliteral">&quot;( {},{},{} )&quot;</span>, red, green, blue);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    }</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>};</div>
+</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>} <span class="comment">// namespace fmt</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="preprocessor">#endif </span><span class="comment">// RGBPIXEL_H</span></div>
 <div class="ttc" id="astructImageLib_1_1Pixel_html"><div class="ttname"><a href="structImageLib_1_1Pixel.html">ImageLib::Pixel</a></div><div class="ttdef"><b>Definition</b> <a href="Pixel_8h_source.html#l00007">Pixel.h:7</a></div></div>
 <div class="ttc" id="astructImageLib_1_1RGBPixel_html"><div class="ttname"><a href="structImageLib_1_1RGBPixel.html">ImageLib::RGBPixel</a></div><div class="ttdef"><b>Definition</b> <a href="RGBPixel_8h_source.html#l00014">RGBPixel.h:14</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
