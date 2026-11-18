@@ -1,12 +1,4 @@
-.hero {
-  background: var(--surface);
-  padding: 72px 32px 64px;
-  border-bottom: 1px solid var(--surface-3);
-}
-
 .heroInner {
-  max-width: 1400px;
-  margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 64px;
@@ -18,26 +10,6 @@
     grid-template-columns: 1fr;
     gap: 40px;
   }
-}
-
-.eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: "DM Mono", monospace;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 20px;
-}
-
-.eyebrowBar {
-  display: inline-block;
-  width: 28px;
-  height: 2px;
-  background: var(--accent);
-  flex-shrink: 0;
 }
 
 .heroTitle {
@@ -154,46 +126,6 @@
   margin-bottom: 8px;
 }
 
-.section {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 72px 32px;
-}
-
-.sectionHeader {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 40px;
-}
-
-@media (max-width: 640px) {
-  .sectionHeader {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 24px;
-  }
-}
-
-.sectionTitle {
-  font-family: "DM Serif Display", serif;
-  font-size: 28px;
-  font-weight: 400;
-  color: var(--ink);
-}
-
-.sectionLink {
-  font-size: 14px;
-  color: var(--accent) !important;
-  text-decoration: none !important;
-  font-weight: 500;
-}
-
-.sectionLink:hover {
-  text-decoration: underline !important;
-}
-
 .bindingsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -206,25 +138,12 @@
   }
 }
 
+/* Inside of a binding Card (the frame and hover come from the Card component) */
 .bindingCard {
-  background: var(--white);
-  border: 1.5px solid var(--surface-3);
-  border-radius: var(--radius-lg);
-  padding: 28px 24px 24px;
+  --card-padding: 28px 24px 24px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  min-width: 0;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s,
-    transform 0.2s;
-}
-
-.bindingCard:hover {
-  border-color: var(--accent-2);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.09);
-  transform: translateY(-3px);
 }
 
 .bindingLang {
@@ -342,21 +261,13 @@
   margin: 0;
 }
 
-.ctaBand {
-  background: var(--accent);
-  padding: 48px 32px;
-  margin: 0;
-  width: 100%;
-}
-
 .ctaInner {
-  max-width: 1400px;
-  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
   flex-wrap: wrap;
+  padding: 0 32px;
 }
 
 @media (max-width: 750px) {

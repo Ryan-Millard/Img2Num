@@ -1,0 +1,46 @@
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 640px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+}
+
+.title {
+  font-family: "DM Serif Display", serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+/* The page title: the title's own margin provides the spacing below it. */
+.page {
+  margin-bottom: 0;
+}
+
+.pageTitle {
+  font-size: clamp(36px, 5vw, 58px);
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.link {
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--accent) !important;
+  text-decoration: none !important;
+}
+
+.link:hover {
+  text-decoration: underline !important;
+}

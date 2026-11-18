@@ -7,3 +7,6 @@
 [submodule "third_party/spdlog"]
 	path = third_party/spdlog
 	url = https://github.com/gabime/spdlog.git
+[submodule "third_party/tests"]
+	path = third_party/tests
+	url = https://github.com/catchorg/Catch2.git
