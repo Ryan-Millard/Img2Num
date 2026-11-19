@@ -1,0 +1,9 @@
+id = "coco-2017-val-000000064499-jpg"
+dataset = "COCO 2017 val"
+url = "http://images.cocodataset.org/val2017/000000064499.jpg"
+sha256 = "59e1d75bb19d61b4e6935e1701ca3a4e3abfa4cca546f81a2ca965992f4c9535"
+size = [640, 480]
+license = "CC-BY-2.0"
+author = "Yortw"
+source = "https://www.flickr.com/photos/yortw/5083031191/"
+tags = ["natural", "smoke"]
