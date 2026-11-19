@@ -19,7 +19,7 @@ Download the archive for your operating system from the [Img2Num GitHub releases
 | macOS ARM64 | `img2num-cpp-v<version>-macos-arm64.tar.gz` |
 | Windows x64 | `img2num-cpp-v<version>-windows-x64.zip` |
 
-For example, the latest release at the time of writing is [`cpp-v0.3.0`](https://github.com/Ryan-Millard/Img2Num/releases/tag/cpp-v0.3.0).
+For example, the latest release at the time of writing is [`cpp-v0.4.0`](https://github.com/Ryan-Millard/Img2Num/releases/tag/cpp-v0.4.0).
 
 Extract the archive to a directory you control. The package has this layout:
 
@@ -90,7 +90,7 @@ int main() {
 
 :::warning[Static package dependency]
 
-The `cpp-v0.3.0` release is a static library package. Its exported `Img2Num::Img2Num` target does not currently declare the Dawn WebGPU libraries required by the implementation. As a result, applications that call GPU-backed functions such as `img2num::image_to_svg` may fail at link time with missing WebGPU/Dawn symbols.
+The `cpp-v0.4.0` release is a static library package. Its exported `Img2Num::Img2Num` target does not currently declare the Dawn WebGPU libraries required by the implementation. As a result, applications that call GPU-backed functions such as `img2num::image_to_svg` may fail at link time with missing WebGPU/Dawn symbols.
 
 The package does not include a consumer-facing Dawn dependency archive, so there is no portable additional library list to add to this example. Until the exported target supplies its transitive Dawn dependencies, use a source build for applications that need these functions, or track the corresponding packaging issue in the project repository.
 
