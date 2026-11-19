@@ -16,6 +16,9 @@ The C bindings (`cimg2num.h`) expose the Img2Num library as plain C functions. T
 - Writing custom FFI wrappers
 - Minimal overhead in systems programming
 
-import InstallingCoreOrCFromSrc from "@site/src/md/\_partials/IntsallingCoreOrCFromSrc.md";
+## Installation
 
-<InstallingCoreOrCFromSrc />
+Install the packaged C library from a [GitHub release](https://github.com/Ryan-Millard/Img2Num/releases), or build from source when developing Img2Num or contributing to the project.
+
+- [Install from a packaged GitHub release](./installation)
+- [C API reference](./api-reference)
