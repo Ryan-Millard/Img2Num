@@ -208,6 +208,42 @@ img2num --help
 The plain `pip install img2num` command remains sufficient for library use.
 See the [CLI guide](docs/docs/py/cli.md) for more examples, options, and troubleshooting.
 
+### React Example App
+
+Img2Num includes a full-featured React color-by-number web application in [`example-apps/react-js`](example-apps/react-js/) demonstrating client-side WASM vectorization and SVG rendering.
+
+#### Run with pnpm (from repository root)
+
+```sh
+pnpm install
+pnpm -F react-example dev
+```
+
+Open <http://localhost:5173/example-apps/react-js/>.
+
+#### Run with npm scripts (after repository root install)
+
+After running `pnpm install` at the repository root, you can also start the Vite development server directly from the app directory:
+
+```sh
+cd example-apps/react-js
+npm run dev
+# or: pnpm dev
+```
+
+#### Test SVG Output Conversions
+
+```sh
+# Run automated Vitest suite from repository root
+pnpm -F react-example test
+
+# After `pnpm install` at the repository root, from example-apps/react-js
+npm test
+# or: pnpm test
+```
+
+For full details and interactive testing instructions, see the [React example README](example-apps/react-js/README.md).
+
 ## License
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?logo=open-source-initiative)](LICENSE)
