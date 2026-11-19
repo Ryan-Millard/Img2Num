@@ -3,7 +3,6 @@
 
 #include "internal/LABPixel.h"
 
-
 namespace ImageLib {
 
 #ifdef _MSC_VER
