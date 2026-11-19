@@ -20,6 +20,11 @@ add_library(CImg2Num ${C_BINDINGS_SRC})
 
 target_compile_options(CImg2Num PRIVATE ${IMG2NUM_STRICT_CXX_FLAGS})
 
+if(EMSCRIPTEN)
+  # The exception boundary is compiled here, not in the final JS executable.
+  target_compile_options(CImg2Num PRIVATE -fexceptions)
+endif()
+
 set_target_properties(CImg2Num PROPERTIES
   VERSION ${PROJECT_VERSION}
   SOVERSION 1
@@ -71,3 +76,25 @@ install(DIRECTORY include/
 )
 
 message(STATUS "C bindings library configured with ${C_BINDINGS_SRC}")
+
+# Tests
+# if(IMG2NUM_BUILD_TESTS)
+#   add_executable(test_cimg2num
+#     tests/test_cimg2num.cpp
+#     ../../third_party/tests/extras/catch_amalgamated.cpp
+#   )
+# 
+#   target_include_directories(test_cimg2num PRIVATE
+#     ${CMAKE_CURRENT_SOURCE_DIR}/include
+#     ${CMAKE_CURRENT_SOURCE_DIR}/../../third_party/tests/extras
+#   )
+# 
+#   target_link_libraries(test_cimg2num PRIVATE
+#     CImg2Num
+#   )
+# 
+#   add_test(
+#     NAME cimg2num
+#     COMMAND test_cimg2num
+#   )
+# endif()

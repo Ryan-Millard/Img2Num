@@ -1,153 +1,52 @@
-import React from "react";
-import Layout from "@theme/Layout";
+import Link from "@docusaurus/Link";
 import { usePluginData } from "@docusaurus/useGlobalData";
-import { GitPullRequest, ExternalLink, GitCommit } from "lucide-react";
+import Layout from "@theme/Layout";
+import { ExternalLink, GitCommit, GitPullRequest } from "lucide-react";
+import React from "react";
+import Avatar from "@site/src/components/Avatar";
+import Card from "@site/src/components/Card";
+import CardGrid from "@site/src/components/CardGrid";
+import EventList from "@site/src/components/events/EventList";
+import PageHeader from "@site/src/components/PageHeader";
+import Section from "@site/src/components/Section";
+import BackgroundBand from "@site/src/components/BackgroundBand";
+import SectionHeader from "@site/src/components/SectionHeader";
+import styles from "./hall-of-fame.module.css";
 
 const CONTRIBUTORS_URL = "https://github.com/Ryan-Millard/Img2Num/graphs/contributors";
 
-/**
- * Each featured card has 4 stacked parts: header, blurb, PR count, PR list.
- * Cards use CSS subgrid across these rows, so the same part lines up across
- * every card in a row regardless of how much content each card has.
- */
-const ROWS_PER_CARD = 4;
-
-const cardBase = {
-  backgroundColor: "var(--ifm-card-background-color)",
-  border: "1px solid var(--ifm-toc-border-color)",
-  borderRadius: "12px",
-  boxShadow: "var(--ifm-global-shadow-lw)",
-};
-
-const sectionHeadingStyle = {
-  fontSize: "1.75rem",
-  borderBottom: "2px solid var(--ifm-toc-border-color)",
-  paddingBottom: "0.5rem",
-  marginBottom: "1.5rem",
-};
-
-// Year groups sit side by side when there is room (e.g. 2026 | 2025), and
-// stack on narrower screens, so wide monitors are not left mostly empty.
-const yearsLayoutStyle = {
-  display: "grid",
-  // 664px = two 320px cards + the 24px gap between them
-  gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 664px), 1fr))",
-  columnGap: "clamp(1.5rem, 3vw, 4rem)",
-  alignItems: "start",
-  marginBottom: "2rem",
-};
-
-const featuredGridStyle = {
-  display: "grid",
-  // min(100%, 320px) stops a single column overflowing very narrow screens
-  gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))",
-  columnGap: "1.5rem",
-  rowGap: 0, // vertical spacing comes from each card's margin-bottom
-};
-
-const featuredCardStyle = {
-  ...cardBase,
-  padding: "1.5rem",
-  marginBottom: "1.5rem",
-  display: "grid",
-  gridRow: `span ${ROWS_PER_CARD}`,
-  gridTemplateRows: "subgrid",
-  rowGap: 0,
-};
-
-const contributorGridStyle = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 260px), 1fr))",
-  gap: "1rem",
-};
-
-/** Round avatar with an initial-letter fallback when no image URL exists. */
-function Avatar({ src, name, size }) {
-  if (src) {
-    return <img src={src} alt={`${name}'s avatar`} loading="lazy" width={size} height={size} style={{ borderRadius: "50%", objectFit: "cover", flexShrink: 0 }} />;
-  }
-
-  return (
-    <div
-      aria-hidden="true"
-      style={{
-        width: `${size}px`,
-        height: `${size}px`,
-        borderRadius: "50%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "var(--ifm-color-emphasis-200)",
-        fontWeight: 700,
-        flexShrink: 0,
-      }}
-    >
-      {name.charAt(0).toUpperCase()}
-    </div>
-  );
-}
+/** How many of the newest events the Hall of Fame shows before pointing at /events/. */
+const RECENT_EVENTS = 3;
 
 /**
- * A featured member card. Always renders all 4 grid rows (empty ones as
- * placeholders) so the subgrid stays aligned with neighbouring cards.
+ * A featured member. The card has four parts (header, blurb, PR count, PR list) on
+ * aligned subgrid rows, so the same part lines up across every card in a row however
+ * much each member has to show; empty parts render as placeholders to keep the rows.
  */
 function FeaturedCard({ member }) {
   const prs = member.recentPRs.slice(0, 3);
 
   return (
-    <div style={featuredCardStyle}>
+    <Card rows={4}>
       {/* Row 1: profile header */}
-      <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-        <Avatar src={member.avatarUrl} name={member.name} size={48} />
+      <div className={styles.featuredHeader}>
+        <Avatar src={member.avatarUrl} name={member.name} size="md" />
 
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <a
-            href={member.profileUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              fontWeight: "bold",
-              fontSize: "1.1rem",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.25rem",
-            }}
-          >
+        <div className={styles.featuredDetails}>
+          <Link className={styles.featuredName} to={member.profileUrl}>
             {member.name}
             <ExternalLink size={14} />
-          </a>
-          <div style={{ fontSize: "0.85rem", opacity: 0.7 }}>@{member.username}</div>
+          </Link>
+          <div className={styles.featuredLogin}>@{member.username}</div>
         </div>
       </div>
 
       {/* Row 2: blurb */}
-      {member.blurb ? (
-        <p
-          style={{
-            margin: "1rem 0 0",
-            fontStyle: "italic",
-            fontSize: "0.95rem",
-          }}
-        >
-          "{member.blurb}"
-        </p>
-      ) : (
-        <div aria-hidden="true" />
-      )}
+      {member.blurb ? <p className={styles.blurb}>"{member.blurb}"</p> : <div aria-hidden="true" />}
 
       {/* Row 3: merged PR count */}
       {member.mergedPRCount !== null ? (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "0.4rem",
-            fontSize: "0.875rem",
-            fontWeight: 600,
-            marginTop: "1rem",
-            color: "var(--ifm-color-success)",
-          }}
-        >
+        <div className={styles.prCount}>
           <GitPullRequest size={16} />
           <span>
             {member.mergedPRCount} Merged Pull Request
@@ -160,26 +59,19 @@ function FeaturedCard({ member }) {
 
       {/* Row 4: recent PRs */}
       {prs.length > 0 ? (
-        <ul
-          style={{
-            margin: "0.5rem 0 0",
-            paddingLeft: "1.2rem",
-            fontSize: "0.85rem",
-            opacity: 0.85,
-          }}
-        >
+        <ul className={styles.prList}>
           {prs.map((pr) => (
-            <li key={pr.number} style={{ marginBottom: "0.25rem" }}>
-              <a href={pr.url} target="_blank" rel="noopener noreferrer">
+            <li key={pr.number}>
+              <Link to={pr.url}>
                 #{pr.number}: {pr.title}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
       ) : (
         <div aria-hidden="true" />
       )}
-    </div>
+    </Card>
   );
 }
 
@@ -188,115 +80,75 @@ function ContributorCard({ contributor }) {
   const { username, avatarUrl, profileUrl, contributions } = contributor;
 
   return (
-    <a
-      href={profileUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      title={`Open ${username}'s GitHub profile`}
-      style={{
-        ...cardBase,
-        padding: "0.75rem 1rem",
-        display: "flex",
-        alignItems: "center",
-        gap: "0.75rem",
-        textDecoration: "none",
-        color: "inherit",
-      }}
-    >
-      <Avatar src={avatarUrl} name={username} size={40} />
+    <Card to={profileUrl} className={styles.contributor} title={`Open ${username}'s GitHub profile`}>
+      <Avatar src={avatarUrl} name={username} size="sm" />
 
-      <div style={{ minWidth: 0 }}>
-        <div
-          style={{
-            fontWeight: 600,
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {username}
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "0.3rem",
-            fontSize: "0.8rem",
-            opacity: 0.7,
-          }}
-        >
+      <div className={styles.contributorDetails}>
+        <div className={styles.contributorName}>{username}</div>
+        <div className={styles.contributorCommits}>
           <GitCommit size={14} />
           {contributions} {contributions === 1 ? "commit" : "commits"}
         </div>
       </div>
-    </a>
+    </Card>
   );
 }
 
 export default function HallOfFame() {
   const { featured = [], contributors = [] } = usePluginData("hall-of-fame");
+  const { events = [] } = usePluginData("contributor-events");
 
   return (
     <Layout title="Hall of Fame" description="Honoring top contributors and featured community members of Img2Num.">
-      <main
-        style={{
-          // Docusaurus renders pages inside a flex column wrapper. Without an
-          // explicit width, `margin: auto` makes <main> shrink to its content
-          // (the 700px intro paragraph) instead of filling the screen.
-          width: "100%",
-          boxSizing: "border-box",
-          padding: "3rem clamp(1rem, 4vw, 4rem)",
-          maxWidth: "2400px", // use wide screens instead of a narrow column
-          margin: "0 auto",
-        }}
-      >
-        <header style={{ marginBottom: "3rem", textAlign: "center" }}>
-          <h1 style={{ fontSize: "2.5rem", fontWeight: 800 }}>Hall of Fame</h1>
+      <BackgroundBand>
+        <PageHeader
+          eyebrow="featured members · every contributor"
+          title="Hall of Fame"
+          lead={
+            <>
+              Celebrating the key contributors whose efforts helped build, refine, and expand Img2Num. Featured members are hand-picked by the maintainers. See everyone on the{" "}
+              <Link to={CONTRIBUTORS_URL}>full contributors list</Link>.
+            </>
+          }
+        />
+      </BackgroundBand>
 
-          <p
-            style={{
-              fontSize: "1.15rem",
-              opacity: 0.8,
-              maxWidth: "700px",
-              margin: "0.5rem auto 0",
-            }}
-          >
-            Celebrating the key contributors whose efforts helped build, refine, and expand Img2Num. Featured members are hand-picked by the maintainers. See everyone on the{" "}
-            <a href={CONTRIBUTORS_URL} target="_blank" rel="noopener noreferrer">
-              full contributors list
-            </a>
-            .
-          </p>
-        </header>
+      <main>
+        {/* The newest contributor events (Hacktoberfest, ...). Every event has a page under /events/ */}
+        {events.length > 0 && (
+          <Section>
+            <SectionHeader title="Recent events" link={{ to: "/events/", label: "All events" }} />
+            <EventList events={events.slice(0, RECENT_EVENTS)} />
+          </Section>
+        )}
 
         {/* Featured members, grouped by year */}
-        <div style={yearsLayoutStyle}>
+        <BackgroundBand>
           {featured.map(({ year, members }) => (
-            <section key={year}>
-              <h2 style={sectionHeadingStyle}>{year}</h2>
-
-              <div style={featuredGridStyle}>
+            <Section key={year}>
+              <SectionHeader title={year} className={styles.featureSectionHeader} />
+              <CardGrid size="md" aligned>
                 {members.map((member) => (
                   <FeaturedCard key={member.username} member={member} />
                 ))}
-              </div>
-            </section>
+              </CardGrid>
+            </Section>
           ))}
-        </div>
+        </BackgroundBand>
 
         {/* Every contributor to the repository */}
-        {contributors.length > 0 && (
-          <section style={{ marginBottom: "3.5rem" }}>
-            <h2 style={sectionHeadingStyle}>All Contributors ({contributors.length})</h2>
-
-            <div style={contributorGridStyle}>
-              {contributors.map((c) => (
-                <ContributorCard key={c.username} contributor={c} />
-              ))}
-            </div>
-          </section>
-        )}
+        <BackgroundBand style={{ backgroundColor: "var(--accent)" }}>
+          {contributors.length > 0 && (
+            <section>
+              <SectionHeader title={`All Contributors (${contributors.length})`} className={styles.allContributorsSectionHeader} />
+              <CardGrid size="sm">
+                {contributors.map((c) => (
+                  <ContributorCard key={c.username} contributor={c} />
+                ))}
+              </CardGrid>
+            </section>
+          )}
+        </BackgroundBand>
       </main>
     </Layout>
   );

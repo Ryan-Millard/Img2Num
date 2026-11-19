@@ -8,7 +8,7 @@ namespace img2num::third_party_wrappers {
 // Lazily-created library logger.
 inline spdlog::logger& logger() {
     static const auto instance = [] {
-        auto l = spdlog::stdout_color_mt("img2num");
+        auto l = spdlog::stderr_color_mt("img2num");
         // Sync runtime filtering with compile-time stripping
         l->set_level(static_cast<spdlog::level::level_enum>(SPDLOG_ACTIVE_LEVEL));
         return l;

@@ -1,0 +1,29 @@
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "DM Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+
+.bar {
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.compact {
+  gap: 8px;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.compact .bar {
+  width: 18px;
+}
