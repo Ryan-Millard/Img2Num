@@ -10,8 +10,8 @@
 #include <iostream>
 #include <stb/stb_image_write.h>
 #include <string>
-#include <vector>
 #include <thread>
+#include <vector>
 
 #ifndef OUTPUT_DIR
 #define OUTPUT_DIR "./console-cpp-outputs"
@@ -24,33 +24,33 @@ constexpr double SIGMA_WIDTH_RATIO {0.005};
 constexpr int MAX_ITER {100};
 
 void step_by_step(
-    uint8_t* image_data_original,
-    std::vector<uint8_t>& bilateral_data, 
-    std::vector<uint8_t>& kmeans_data,
-    int width, int height,
-    double sigma_spatial, double sigma_range,
-    int k, int max_iter,
-    int min_cluster_area, int min_thickness,
-    uint8_t color_space,
-    std::string& res_svg
-){
+    uint8_t* image_data_original, std::vector<uint8_t>& bilateral_data,
+    std::vector<uint8_t>& kmeans_data, int width, int height, double sigma_spatial,
+    double sigma_range, int k, int max_iter, int min_cluster_area, int min_thickness,
+    uint8_t color_space, std::string& res_svg
+) {
     const size_t pixel_count {static_cast<size_t>(width) * static_cast<size_t>(height)};
     const size_t byte_count {pixel_count * NUM_CHANNELS};
 
     std::memcpy(bilateral_data.data(), image_data_original, byte_count);
     std::vector<int32_t> out_labels(pixel_count);
 
-    img2num::bilateral_filter(bilateral_data.data(), width, height, sigma_spatial, sigma_range, color_space);
+    img2num::bilateral_filter(
+        bilateral_data.data(), width, height, sigma_spatial, sigma_range, color_space
+    );
     // Apply kmeans
-    img2num::kmeans(bilateral_data.data(), kmeans_data.data(), out_labels.data(), width, height, k, max_iter, color_space);
+    img2num::kmeans(
+        bilateral_data.data(), kmeans_data.data(), out_labels.data(), width, height, k, max_iter,
+        color_space
+    );
     // Generate SVG from labels
-    res_svg = img2num::labels_to_svg(bilateral_data.data(), out_labels.data(), width, height, min_cluster_area, min_thickness); 
+    res_svg = img2num::labels_to_svg(
+        bilateral_data.data(), out_labels.data(), width, height, min_cluster_area, min_thickness
+    );
 }
 
 void combined_process(
-    uint8_t* image_data_original,
-    int width, int height,
-    img2num::ImageToSvgConfig& cfg,
+    uint8_t* image_data_original, int width, int height, img2num::ImageToSvgConfig& cfg,
     std::string& res_svg
 ) {
     const size_t pixel_count {static_cast<size_t>(width) * static_cast<size_t>(height)};
@@ -102,7 +102,6 @@ int main(int argc, char** argv) {
     std::string res_svg3;
     std::string res_svg4;
 
-
     // Bilateral sigma_spatial
     const double sigma {width * SIGMA_WIDTH_RATIO};
 
@@ -115,23 +114,20 @@ int main(int argc, char** argv) {
 
     // Basic example - runs each process one at a time
     step_by_step(
-        image_data_original, img_data, 
-        out_data, width, height, sigma, 50.0,
-        32, 100, 100, 10, 0, res_svg1
+        image_data_original, img_data, out_data, width, height, sigma, 50.0, 32, 100, 100, 10, 0,
+        res_svg1
     );
 
     combined_process(image_data_original, width, height, config, res_svg2);
 
     // Multithreading example - runs processes in parallel with threading
-    std::thread t1( 
-        step_by_step, image_data_original, 
-        std::ref(img_data), std::ref(out_data), width, height, sigma, 50.0,
-        32, 100, 100, 10, 0, std::ref(res_svg3)
+    std::thread t1(
+        step_by_step, image_data_original, std::ref(img_data), std::ref(out_data), width, height,
+        sigma, 50.0, 32, 100, 100, 10, 0, std::ref(res_svg3)
     );
 
     std::thread t2(
-        combined_process, image_data_original, 
-        width, height, std::ref(config), std::ref(res_svg4)
+        combined_process, image_data_original, width, height, std::ref(config), std::ref(res_svg4)
     );
 
     t1.join();
@@ -173,15 +169,11 @@ int main(int argc, char** argv) {
     const bool svg3_save_success {write_text(svg3_path, res_svg3)};
     const bool svg4_save_success {write_text(svg4_path, res_svg4)};
 
-    if (
-        bilateral_save_success && kmeans_save_success && 
-        svg1_save_success && svg2_save_success &&
-        svg3_save_success && svg4_save_success
-    ) {
+    if (bilateral_save_success && kmeans_save_success && svg1_save_success && svg2_save_success &&
+        svg3_save_success && svg4_save_success) {
         std::cout << "\n\nSUCCESS!\nThe below images have been saved:\n\t- " << bilateral_path
                   << "\n\t- " << kmeans_path << "\n\t- " << svg1_path << "\n\t- " << svg2_path
-                  << "\n\t- " << svg3_path << "\n\t- " << svg4_path
-                  << std::endl;
+                  << "\n\t- " << svg3_path << "\n\t- " << svg4_path << std::endl;
         return 0;
     }
 
