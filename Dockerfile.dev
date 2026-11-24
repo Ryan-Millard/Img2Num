@@ -103,11 +103,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 # --------------------------------------------------------------------------------------------------------------
 # Dawn build (expensive layer)
 COPY .versions/dawn.json .versions/dawn.json
-COPY scripts/build-dawn.sh scripts/build-dawn.sh
-COPY scripts/read-version.js scripts/read-version.js
+COPY scripts/build_dawn.py scripts/build_dawn.py
 COPY third_party/dawn third_party/dawn
 
-RUN bash scripts/build-dawn.sh --prefix=/usr/local
+RUN python3 scripts/build_dawn.py --prefix /usr/local
 
 # --------------------------------------------------------------------------------------------------------------
 # Doxygen

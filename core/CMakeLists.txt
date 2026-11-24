@@ -115,7 +115,7 @@ if (EMSCRIPTEN)
 else()
 
   # Dawn WebGPU (prefer installed Dawn over building it — baked into Dockerfile.dev)
-  # Build flags come from .versions/dawn.json, shared with scripts/build-dawn.sh.
+  # Build flags come from .versions/dawn.json, shared with scripts/build_dawn.py.
   # DAWN_ENABLE_INSTALL stays script-side: the fallback never installs.
   file(READ "${CMAKE_CURRENT_SOURCE_DIR}/../.versions/dawn.json" IMG2NUM_DAWN_JSON)
   set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/../.versions/dawn.json")
