@@ -1,0 +1,11 @@
+.year {
+  margin-bottom: 64px;
+}
+
+.year:last-child {
+  margin-bottom: 0;
+}
+
+.empty {
+  color: var(--ink-3);
+}
