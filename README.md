@@ -140,13 +140,18 @@ Try one of our [example-apps](https://img2num.dev/showcase/)!
 
 ### C and C++
 
+> [!TIP]
+> You can install the library from our GitHub releases:
+>
+> - [C](https://github.com/Ryan-Millard/Img2Num/releases?q=bindings-c&expanded=true)
+> - [C++](https://github.com/Ryan-Millard/Img2Num/releases?q=cpp&expanded=true)
+
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" width="28" alt="C" />
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" width="28" alt="C++" />
 
-- [![Documentation](https://img.shields.io/badge/Documentation-C-A8B9CC?logo=gitbook&logoColor=white)](https://img2num.dev/docs/c/)
-- [![Documentation](https://img.shields.io/badge/Documentation-C++-00599C?logo=gitbook&logoColor=white)](https://img2num.dev/docs/cpp/)
+[![C Documentation](https://img.shields.io/badge/Documentation-C-A8B9CC?logo=gitbook&logoColor=white)](https://img2num.dev/docs/c/)
 
-### C Example
+<details>
+<summary>C Console Example App</summary>
 
 <!-- BEGIN GENERATED: example-apps/console-c/main.c -->
 ```c
@@ -295,7 +300,14 @@ int main(int argc, char** argv) {
 ```
 <!-- END GENERATED: example-apps/console-c/main.c -->
 
-### C++ Example
+</details>
+
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" width="28" alt="C++" />
+
+[![C++ Documentation](https://img.shields.io/badge/Documentation-C++-00599C?logo=gitbook&logoColor=white)](https://img2num.dev/docs/cpp/)
+
+<details>
+<summary>C++ Console Example App</summary>
 
 <!-- BEGIN GENERATED: example-apps/console-cpp/main.cpp -->
 ```cpp
@@ -491,6 +503,8 @@ int main(int argc, char** argv) {
 }
 ```
 <!-- END GENERATED: example-apps/console-cpp/main.cpp -->
+
+</details>
 
 ### JavaScript
 
