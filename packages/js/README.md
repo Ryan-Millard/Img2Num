@@ -1,6 +1,6 @@
 <div align="center">
 
-<!-- BEGIN GENERATED: hero -->
+<!-- BEGIN GENERATED: @partials/hero -->
 <img src="https://github.com/user-attachments/assets/d75b402e-03af-403f-8637-f9eb8a24c8c0" alt="Logo" height="100px" />
 
 # Img2Num
@@ -25,9 +25,9 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 [![Changelog](https://img.shields.io/badge/changelog-full-orange?logo=git&logoColor=white)](https://img2num.dev/changelog/)
 
 [![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/Ryan-Millard)
-[![Security Policy](https://img.shields.io/badge/Security-Policy-red?logo=github)](SECURITY.md)
+[![Security Policy](https://img.shields.io/badge/Security-Policy-red?logo=github)](https://github.com/Ryan-Millard/Img2Num/blob/main/SECURITY.md)
 [![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.com/invite/BHjxcCqAnU)
-<!-- END GENERATED: hero -->
+<!-- END GENERATED: @partials/hero -->	
 
 ## Contents
 
@@ -57,23 +57,23 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 </tr>
 </table>
 
-<!-- BEGIN GENERATED: before-vs-after -->
+<!-- BEGIN GENERATED: @partials/before-vs-after -->
 ## Before vs After
 
 | Input (Original Raster) | Output (SVG) |
 |----------|------------------|
-| <img src="docs/static/img/readme-demo/aerial-view-mountains_pexels-pixabay-51373.jpg" width="300" alt="Original input raster image (Aerial view of mountains)"> | <img src="docs/static/img/readme-demo/output-aerial-view-mountains_pexels-pixabay-51373.svg" width="300" alt="Final output SVG image (Aerial view of mountains)"> |
-| <img src="docs/static/img/readme-demo/margate-garden.jpg" width="300" alt="Original input raster image (A garden in Margate, South Africa)" /> | <img width="300" alt="Final output SVG image (A garden in Margate, South Africa)" src="docs/static/img/readme-demo/output-margate-garden.svg" /> |
-| <img src="docs/static/img/readme-demo/ring-on-hand.jpg" width="300" alt="Original input raster image (A ring on a woman's hand)" /> | <img width="300" alt="Final output SVG image  (A ring on a woman's hand)" src="docs/static/img/readme-demo/output-ring-on-hand.svg" /> |
+| <img src="https://raw.githubusercontent.com/Ryan-Millard/Img2Num/2e71ee9c2018bba9dc214f0d58b3cadfb0a4fe2f/docs/static/img/readme-demo/aerial-view-mountains_pexels-pixabay-51373.jpg" width="300" alt="Original input raster image (Aerial view of mountains)"> | <img src="https://raw.githubusercontent.com/Ryan-Millard/Img2Num/2e71ee9c2018bba9dc214f0d58b3cadfb0a4fe2f/docs/static/img/readme-demo/output-aerial-view-mountains_pexels-pixabay-51373.svg" width="300" alt="Final output SVG image (Aerial view of mountains)"> |
+| <img src="https://raw.githubusercontent.com/Ryan-Millard/Img2Num/2e71ee9c2018bba9dc214f0d58b3cadfb0a4fe2f/docs/static/img/readme-demo/margate-garden.jpg" width="300" alt="Original input raster image (A garden in Margate, South Africa)" /> | <img width="300" alt="Final output SVG image (A garden in Margate, South Africa)" src="https://raw.githubusercontent.com/Ryan-Millard/Img2Num/2e71ee9c2018bba9dc214f0d58b3cadfb0a4fe2f/docs/static/img/readme-demo/output-margate-garden.svg" /> |
+| <img src="https://raw.githubusercontent.com/Ryan-Millard/Img2Num/2e71ee9c2018bba9dc214f0d58b3cadfb0a4fe2f/docs/static/img/readme-demo/ring-on-hand.jpg" width="300" alt="Original input raster image (A ring on a woman's hand)" /> | <img width="300" alt="Final output SVG image  (A ring on a woman's hand)" src="https://raw.githubusercontent.com/Ryan-Millard/Img2Num/2e71ee9c2018bba9dc214f0d58b3cadfb0a4fe2f/docs/static/img/readme-demo/output-ring-on-hand.svg" /> |
 
 ### What are you waiting for?
 
 Try one of our [example-apps](https://img2num.dev/showcase/)!
-<!-- END GENERATED: before-vs-after -->
+<!-- END GENERATED: @partials/before-vs-after -->	
 
 </div>
 
-<!-- BEGIN GENERATED: why-img2num -->
+<!-- BEGIN GENERATED: @partials/why-img2num -->
 > [!IMPORTANT]
 > ### Why Img2Num?
 >
@@ -85,12 +85,12 @@ Try one of our [example-apps](https://img2num.dev/showcase/)!
 > If your input images are photographs rather than logos or illustrations, Img2Num was built specifically for that use case.
 >
 > <sub><b>What is Img2Num?</b> Think of tools like [Potrace](https://potrace.sourceforge.net/) or [imagetracerjs](https://github.com/jankovicsandras/imagetracerjs/), but designed with first-class support for natural photographs and other real-world imagery.</sub>
-<!-- END GENERATED: why-img2num -->
+<!-- END GENERATED: @partials/why-img2num -->	
 
 <br />
 <br />
 
-<!-- BEGIN GENERATED: features -->
+<!-- BEGIN GENERATED: @partials/features -->
 ## Features
 
 - **Built for real-world photos** - Designed from the ground up to handle natural, noisy raster images (photographs, scans, etc.), unlike many vectorization libraries that are optimized for clean, synthetic source images (icons, logos, flat illustrations).
@@ -108,9 +108,9 @@ Try one of our [example-apps](https://img2num.dev/showcase/)!
 - **Cross-platform CI** - Tested on Linux, macOS, Windows, and WASM.
 - **Flexible distribution** - Available via PyPI, npm, and Docker Hub.
 - **Permissive licensing** - MIT-licensed core (libraries, packages, build tools), with AGPLv3 covering docs, example apps, and CI/config - see [below](#license) for details.
-<!-- END GENERATED: features -->
+<!-- END GENERATED: @partials/features -->	
 
-<!-- BEGIN GENERATED: multi-language-support -->
+<!-- BEGIN GENERATED: @partials/multi-language-support -->
 ## Multi-Language Support
 
 | Language | Package Info |
@@ -119,22 +119,22 @@ Try one of our [example-apps](https://img2num.dev/showcase/)!
 | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=cpp"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" width="30" alt="C++ logo" /></a> | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=cpp"><img src="https://img.shields.io/badge/GitHub_Releases-C++-00599C?logo=github" alt="C++ package releases" /></a> [![Docs](https://img.shields.io/badge/docs-C++-00599C?logo=gitbook&logoColor=white)](https://img2num.dev/docs/cpp/) [![C++ Changelog](https://img.shields.io/badge/changelog-C%2B%2B-00599C?logo=c%2B%2B&logoColor=white)](https://img2num.dev/changelog/cpp/) |
 | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-js"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="30" alt="JavaScript logo" /></a> | [![npm](https://img.shields.io/npm/v/img2num?logo=npm)](https://www.npmjs.com/package/img2num) [![jsDelivr CDN](https://img.shields.io/badge/CDN-jsDelivr-%23f7df1e?logo=jsdelivr&amp;logoColor=black)](https://www.jsdelivr.com/package/npm/img2num) [![unpkg CDN](https://img.shields.io/badge/CDN-unpkg-%23cb3837?logo=npm&amp;logoColor=white)](https://app.unpkg.com/img2num) [![Downloads](https://img.shields.io/npm/dm/img2num?logo=npm)](https://www.npmjs.com/package/img2num) <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-js"><img src="https://img.shields.io/badge/GitHub_Releases-JavaScript_Package-F7DF1E?logo=github" alt="JavaScript package releases" /></a>  [![Docs](https://img.shields.io/badge/docs-JavaScript-F7DF1E?logo=gitbook&logoColor=white)](https://img2num.dev/docs/js/) [![JavaScript Changelog](https://img.shields.io/badge/changelog-JavaScript-F7DF1E?logo=javascript)](https://img2num.dev/changelog/js/) |
 | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" width="30" alt="Python logo" /></a> | [![PyPI](https://img.shields.io/pypi/v/img2num?logo=pypi)](https://pypi.org/project/img2num/) [![PyPI Downloads](https://img.shields.io/pypi/dm/img2num?logo=pypi)](https://pypi.org/project/img2num/) [![Supported Versions](https://img.shields.io/pypi/pyversions/img2num?logo=python)](https://pypi.org/project/img2num/) <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py"><img src="https://img.shields.io/badge/GitHub_Releases-Python_Package-3776AB?logo=github" alt="Python package releases" /></a> [![Docs](https://img.shields.io/badge/docs-Python-3776AB?logo=gitbook&logoColor=white)](https://img2num.dev/docs/py/) [![Python Changelog](https://img.shields.io/badge/changelog-Python-3776AB?logo=python)](https://img2num.dev/changelog/py/) |
-<!-- END GENERATED: multi-language-support -->
+<!-- END GENERATED: @partials/multi-language-support -->	
 
-<!-- BEGIN GENERATED: community-links -->
+<!-- BEGIN GENERATED: @partials/community-links -->
 ## Community Links
 
 [![Changelog](https://img.shields.io/badge/Changelog-Full-orange?logo=git&logoColor=white)](https://img2num.dev/changelog/)
-[![Contributing](https://img.shields.io/badge/Contributing-Guide-blue?logo=github)](CONTRIBUTING.md)
-[![Security Policy](https://img.shields.io/badge/Security-Policy-red?logo=github)](SECURITY.md)
-[![License](https://img.shields.io/badge/License-MIT-blue?logo=open-source-initiative&logoColor=white)](LICENSE)
+[![Contributing](https://img.shields.io/badge/Contributing-Guide-blue?logo=github)](https://github.com/Ryan-Millard/Img2Num/blob/main/CONTRIBUTING.md)
+[![Security Policy](https://img.shields.io/badge/Security-Policy-red?logo=github)](https://github.com/Ryan-Millard/Img2Num/blob/main/SECURITY.md)
+[![License](https://img.shields.io/badge/License-MIT-blue?logo=open-source-initiative&logoColor=white)](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE)
 [![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/Ryan-Millard)
 [![Issues](https://img.shields.io/badge/Issues-Available-brightgreen?logo=github)](https://github.com/Ryan-Millard/Img2Num/issues/views/1151)
 [![Good First Issues](https://img.shields.io/badge/Good%20First%20Issues-Welcome-6cc644?logo=github)](https://github.com/Ryan-Millard/Img2Num/issues/views/1155)
 [![Blog](https://img.shields.io/badge/Blog-Updates-ff6f00?logo=githubpages)](https://img2num.dev/blog/)
 [![GitHub Discussions](https://img.shields.io/badge/discussions-join_the_chat-4c1?logo=github)](https://github.com/Ryan-Millard/Img2Num/discussions)
 [![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.com/invite/BHjxcCqAnU)
-<!-- END GENERATED: community-links -->
+<!-- END GENERATED: @partials/community-links -->	
 
 ## Supported Runtimes
 
@@ -344,12 +344,31 @@ Try the [live demo (`React example`)](https://img2num.dev/example-apps/react-js/
 >
 > We welcome new [example apps](https://github.com/Ryan-Millard/Img2Num/tree/main/example-apps).
 
+<!-- BEGIN GENERATED: @partials/license -->
 ## License
 
-[MIT](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE) © Ryan Millard
+This package (the library you install) is [MIT-licensed](https://github.com/Ryan-Millard/Img2Num/blob/main/LICENSE).
+Documentation, example apps, and CI/config in the main repository are AGPLv3.
 
-> This package (the library you install from npm) is MIT-licensed. Documentation, example apps, and CI/config in the main repository are AGPLv3 — see the [repository license overview](https://github.com/Ryan-Millard/Img2Num#license) for details.
+> Prior to [#250](https://github.com/Ryan-Millard/Img2Num/pull/250), the project used AGPLv3.
+> The core library was relicensed to MIT to make it easier to embed in commercial and
+> closed-source projects, while documentation, example apps, and CI/config retained AGPLv3 to discourage
+> unattributed reuse of project infrastructure that isn't part of the redistributable library itself.
 
+For more information, refer to the [`REUSE.toml` file](https://github.com/Ryan-Millard/Img2Num/blob/main/REUSE.toml).
+<!-- END GENERATED: @partials/license -->
+
+<!-- BEGIN GENERATED: @partials/security -->
+## Security
+
+[![Security Policy](https://img.shields.io/badge/Security-Policy-red?logo=github)](SECURITY.md)
+
+Found a vulnerability? Please **do not** open a public issue.
+
+Report it privately by following our [Security Policy](SECURITY.md).
+<!-- END GENERATED: @partials/security -->
+
+<!-- BEGIN GENERATED: @partials/supporting-us -->
 ## Supporting Us
 
 [![GitHub Sponsors](https://img.shields.io/badge/GitHub_Sponsors-%E2%9D%A4-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/Ryan-Millard)
@@ -360,6 +379,23 @@ Img2Num is free and open source. If it saves you time or you'd like to support i
 - ⭐ [Star the repository](https://github.com/Ryan-Millard/Img2Num) - it helps others discover the project
 - ❤️ Sponsor us via [GitHub Sponsors](https://github.com/sponsors/Ryan-Millard) or [Ko-fi](https://ko-fi.com/ryan_millard) (it'll help us keep the [img2num.dev](https://img2num.dev/) domain)
 - 🛠️ Contribute - see our [Contributing Guide](https://github.com/Ryan-Millard/Img2Num/blob/main/CONTRIBUTING.md) and [good first issues](https://github.com/Ryan-Millard/Img2Num/issues/views/1155)
+<!-- END GENERATED: @partials/supporting-us -->
+
+<!-- BEGIN GENERATED: @partials/cant-find-something -->
+## Can't find something?
+
+If you need something, see [our documentation](https://img2num.dev/docs/) or check our [FAQ](https://img2num.dev/faq/).
+
+If you can't find it, feel free to open an [issue](https://github.com/Ryan-Millard/Img2Num/issues/new) to request assistance with finding or creating what you need.
+Alternatively, ask us on [Discord](https://discord.com/invite/BHjxcCqAnU)!
+<!-- END GENERATED: @partials/cant-find-something -->
+
+<!-- BEGIN GENERATED: @partials/footer -->
+## Maintainers
+
+[![@Ryan-Millard](https://img.shields.io/badge/@Ryan--Millard-black?logo=github)](https://github.com/Ryan-Millard)
+[![@krasner](https://img.shields.io/badge/@krasner-black?logo=github)](https://github.com/krasner)
+[![@Prachi](https://img.shields.io/badge/@Prachi--Gupta2808-black?logo=github)](https://github.com/Prachi-Gupta2808)
 
 ---
 
@@ -368,9 +404,9 @@ Img2Num is free and open source. If it saves you time or you'd like to support i
 <p>
   <a href="https://github.com/Ryan-Millard/Img2Num">GitHub</a>
   &middot;
-  <a href="https://img2num.dev/docs/js/">Documentation</a>
+  <a href="https://img2num.dev/docs/">Documentation</a>
   &middot;
-  <a href="https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/CHANGELOG.md">Changelog</a>
+  <a href="https://img2num.dev/changelog/">Changelog</a>
   &middot;
   <a href="https://github.com/Ryan-Millard/Img2Num/blob/main/CONTRIBUTING.md">Contributing</a>
   &middot;
@@ -386,8 +422,11 @@ Img2Num is free and open source. If it saves you time or you'd like to support i
 </p>
 
 <p>
+  Thanks to all of our contributors:
+
   <a href="https://github.com/Ryan-Millard/Img2Num/graphs/contributors">
     <img src="https://contrib.rocks/image?repo=Ryan-Millard/Img2Num" alt="Contributors">
   </a>
 </p>
 </div>
+<!-- END GENERATED: @partials/footer -->
