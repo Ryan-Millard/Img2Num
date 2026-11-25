@@ -2,8 +2,9 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CONFIG_PATH = path.join(ROOT, "scripts", "package-readme.json");
+const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(SCRIPT_DIR, "..", "..");
+const CONFIG_PATH = path.join(SCRIPT_DIR, "package-readme.json");
 
 function resolveRootPath(relativePath, root = ROOT) {
   return path.join(root, relativePath);

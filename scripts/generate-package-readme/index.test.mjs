@@ -9,7 +9,7 @@ import {
   replaceGeneratedSection,
   loadConfig,
   generateReadme,
-} from "./generate-package-readme.mjs";
+} from "./index.mjs";
 
 test("generates a README section from canonical source content", () => {
   const section = generatedSection(

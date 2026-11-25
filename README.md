@@ -1,5 +1,6 @@
 <div align="center">
 
+<!-- BEGIN GENERATED: hero -->
 <img src="https://github.com/user-attachments/assets/d75b402e-03af-403f-8637-f9eb8a24c8c0" alt="Logo" height="100px" />
 
 # Img2Num
@@ -26,6 +27,7 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 [![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/Ryan-Millard)
 [![Security Policy](https://img.shields.io/badge/Security-Policy-red?logo=github)](SECURITY.md)
 [![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.com/invite/BHjxcCqAnU)
+<!-- END GENERATED: hero -->
 
 ## Contents
 
@@ -54,6 +56,7 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 </tr>
 </table>
 
+<!-- BEGIN GENERATED: before-vs-after -->
 ## Before vs After
 
 | Input (Original Raster) | Output (SVG) |
@@ -64,10 +67,12 @@ It converts raster images (like PNGs and JPGs) into clean SVGs with _high accura
 
 ### What are you waiting for?
 
-Try our [image to color-by-number demo](https://img2num.dev/example-apps/react-js/)!
+Try one of our [example-apps](https://img2num.dev/showcase/)!
+<!-- END GENERATED: before-vs-after -->
 
 </div>
 
+<!-- BEGIN GENERATED: why-img2num -->
 > [!IMPORTANT]
 > ### Why Img2Num?
 >
@@ -79,11 +84,13 @@ Try our [image to color-by-number demo](https://img2num.dev/example-apps/react-j
 > If your input images are photographs rather than logos or illustrations, Img2Num was built specifically for that use case.
 >
 > <sub><b>What is Img2Num?</b> Think of tools like [Potrace](https://potrace.sourceforge.net/) or [imagetracerjs](https://github.com/jankovicsandras/imagetracerjs/), but designed with first-class support for natural photographs and other real-world imagery.</sub>
+<!-- END GENERATED: why-img2num -->
 
 <br />
 <br />
 <br />
 
+<!-- BEGIN GENERATED: features -->
 ## Features
 
 - **Built for real-world photos** - Designed from the ground up to handle natural, noisy raster images (photographs, scans, etc.), unlike many vectorization libraries that are optimized for clean, synthetic source images (icons, logos, flat illustrations).
@@ -101,7 +108,9 @@ Try our [image to color-by-number demo](https://img2num.dev/example-apps/react-j
 - **Cross-platform CI** - Tested on Linux, macOS, Windows, and WASM.
 - **Flexible distribution** - Available via PyPI, npm, and Docker Hub.
 - **Permissive licensing** - MIT-licensed core (libraries, packages, build tools), with AGPLv3 covering docs, example apps, and CI/config - see [below](#license) for details.
+<!-- END GENERATED: features -->
 
+<!-- BEGIN GENERATED: multi-language-support -->
 ## Multi-Language Support
 
 | Language | Package Info |
@@ -110,8 +119,11 @@ Try our [image to color-by-number demo](https://img2num.dev/example-apps/react-j
 | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=cpp"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" width="30" alt="C++ logo" /></a> | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=cpp"><img src="https://img.shields.io/badge/GitHub_Releases-C++-00599C?logo=github" alt="C++ package releases" /></a> [![Docs](https://img.shields.io/badge/docs-C++-00599C?logo=gitbook&logoColor=white)](https://img2num.dev/docs/cpp/) [![C++ Changelog](https://img.shields.io/badge/changelog-C%2B%2B-00599C?logo=c%2B%2B&logoColor=white)](https://img2num.dev/changelog/cpp/) |
 | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-js"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="30" alt="JavaScript logo" /></a> | [![npm](https://img.shields.io/npm/v/img2num?logo=npm)](https://www.npmjs.com/package/img2num) [![jsDelivr CDN](https://img.shields.io/badge/CDN-jsDelivr-%23f7df1e?logo=jsdelivr&amp;logoColor=black)](https://www.jsdelivr.com/package/npm/img2num) [![unpkg CDN](https://img.shields.io/badge/CDN-unpkg-%23cb3837?logo=npm&amp;logoColor=white)](https://app.unpkg.com/img2num) [![Downloads](https://img.shields.io/npm/dm/img2num?logo=npm)](https://www.npmjs.com/package/img2num) <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-js"><img src="https://img.shields.io/badge/GitHub_Releases-JavaScript_Package-F7DF1E?logo=github" alt="JavaScript package releases" /></a>  [![Docs](https://img.shields.io/badge/docs-JavaScript-F7DF1E?logo=gitbook&logoColor=white)](https://img2num.dev/docs/js/) [![JavaScript Changelog](https://img.shields.io/badge/changelog-JavaScript-F7DF1E?logo=javascript)](https://img2num.dev/changelog/js/) |
 | <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" width="30" alt="Python logo" /></a> | [![PyPI](https://img.shields.io/pypi/v/img2num?logo=pypi)](https://pypi.org/project/img2num/) [![PyPI Downloads](https://img.shields.io/pypi/dm/img2num?logo=pypi)](https://pypi.org/project/img2num/) [![Supported Versions](https://img.shields.io/pypi/pyversions/img2num?logo=python)](https://pypi.org/project/img2num/) <a href="https://github.com/Ryan-Millard/Img2Num/releases?q=packages-py"><img src="https://img.shields.io/badge/GitHub_Releases-Python_Package-3776AB?logo=github" alt="Python package releases" /></a> [![Docs](https://img.shields.io/badge/docs-Python-3776AB?logo=gitbook&logoColor=white)](https://img2num.dev/docs/py/) [![Python Changelog](https://img.shields.io/badge/changelog-Python-3776AB?logo=python)](https://img2num.dev/changelog/py/) |
+<!-- END GENERATED: multi-language-support -->
 
+<!-- BEGIN GENERATED: community-links -->
 ## Community Links
+
 [![Changelog](https://img.shields.io/badge/Changelog-Full-orange?logo=git&logoColor=white)](https://img2num.dev/changelog/)
 [![Contributing](https://img.shields.io/badge/Contributing-Guide-blue?logo=github)](CONTRIBUTING.md)
 [![Security Policy](https://img.shields.io/badge/Security-Policy-red?logo=github)](SECURITY.md)
@@ -122,6 +134,7 @@ Try our [image to color-by-number demo](https://img2num.dev/example-apps/react-j
 [![Blog](https://img.shields.io/badge/Blog-Updates-ff6f00?logo=githubpages)](https://img2num.dev/blog/)
 [![GitHub Discussions](https://img.shields.io/badge/discussions-join_the_chat-4c1?logo=github)](https://github.com/Ryan-Millard/Img2Num/discussions)
 [![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.com/invite/BHjxcCqAnU)
+<!-- END GENERATED: community-links -->
 
 ## Quick Start
 

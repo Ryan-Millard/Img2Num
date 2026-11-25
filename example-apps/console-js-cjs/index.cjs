@@ -9,7 +9,8 @@ async function main() {
 
   if (!imagePath) {
     console.error("Usage: node index.cjs <image-path> [output-path]");
-    process.exit(1);
+    process.exitCode = 1;
+    return;
   }
 
   console.log(`Processing image: ${imagePath}`);
@@ -34,7 +35,8 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error(err);
+main().catch((error) => {
+  console.error("Failed to convert image:");
+  console.error(error);
   process.exitCode = 1;
 });

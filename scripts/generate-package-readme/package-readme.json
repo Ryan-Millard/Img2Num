@@ -1,0 +1,121 @@
+{
+  "readmes": [
+    {
+      "path": "README.md",
+      "sections": [
+        {
+          "name": "hero",
+          "source": "scripts/generate-package-readme/partials/hero.md",
+          "type": "markdown"
+        },
+        {
+          "name": "before-vs-after",
+          "source": "scripts/generate-package-readme/partials/before-vs-after.md",
+          "type": "markdown"
+        },
+        {
+          "name": "why-img2num",
+          "source": "scripts/generate-package-readme/partials/why-img2num.md",
+          "type": "markdown"
+        },
+        {
+          "name": "features",
+          "source": "scripts/generate-package-readme/partials/features.md",
+          "type": "markdown"
+        },
+        {
+          "name": "multi-language-support",
+          "source": "scripts/generate-package-readme/partials/multi-language-support.md",
+          "type": "markdown"
+        },
+        {
+          "name": "community-links",
+          "source": "scripts/generate-package-readme/partials/community-links.md",
+          "type": "markdown"
+        }
+      ]
+    },
+    {
+      "path": "packages/js/README.md",
+      "sections": [
+        {
+          "name": "example-apps/console-js-esm/index.mjs",
+          "source": "example-apps/console-js-esm/index.mjs",
+          "type": "code",
+          "language": "js"
+        },
+        {
+          "name": "example-apps/console-js-cjs/index.cjs",
+          "source": "example-apps/console-js-cjs/index.cjs",
+          "type": "code",
+          "language": "js"
+        },
+        {
+          "name": "hero",
+          "source": "scripts/generate-package-readme/partials/hero.md",
+          "type": "markdown"
+        },
+        {
+          "name": "before-vs-after",
+          "source": "scripts/generate-package-readme/partials/before-vs-after.md",
+          "type": "markdown"
+        },
+        {
+          "name": "why-img2num",
+          "source": "scripts/generate-package-readme/partials/why-img2num.md",
+          "type": "markdown"
+        },
+        {
+          "name": "features",
+          "source": "scripts/generate-package-readme/partials/features.md",
+          "type": "markdown"
+        },
+        {
+          "name": "multi-language-support",
+          "source": "scripts/generate-package-readme/partials/multi-language-support.md",
+          "type": "markdown"
+        },
+        {
+          "name": "community-links",
+          "source": "scripts/generate-package-readme/partials/community-links.md",
+          "type": "markdown"
+        }
+      ]
+    },
+    {
+      "path": "packages/py/README.md",
+      "sections": [
+        {
+          "name": "hero",
+          "source": "scripts/generate-package-readme/partials/hero.md",
+          "type": "markdown"
+        },
+        {
+          "name": "before-vs-after",
+          "source": "scripts/generate-package-readme/partials/before-vs-after.md",
+          "type": "markdown"
+        },
+        {
+          "name": "why-img2num",
+          "source": "scripts/generate-package-readme/partials/why-img2num.md",
+          "type": "markdown"
+        },
+        {
+          "name": "features",
+          "source": "scripts/generate-package-readme/partials/features.md",
+          "type": "markdown"
+        },
+        {
+          "name": "multi-language-support",
+          "source": "scripts/generate-package-readme/partials/multi-language-support.md",
+          "type": "markdown"
+        },
+        {
+          "name": "community-links",
+          "source": "scripts/generate-package-readme/partials/community-links.md",
+          "type": "markdown"
+        }
+      ]
+    }
+  ]
+}
