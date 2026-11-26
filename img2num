@@ -192,7 +192,17 @@ load_pull_policy() {
   printf '%s\n' "always"
 }
 
+# Refreshes the Dockerfile-gpu.dev base image. `docker build` and compose builds otherwise reuse a stale local copy
+# (e.g. an old bullseye-based image whose apt mirrors are gone). Locally built bases can't be pulled, so they're skipped.
+pull_gpu_base_image() {
+  local base="${1:-${IMG2NUM_BASE_IMAGE:-ryanmillard/img2num-dev:latest}}"
 
+  if [[ "$base" == img2num-dev:* ]]; then
+    return 0
+  fi
+  echo "Pulling GPU base image $base..." >&2
+  docker pull "$base" || echo "Warning: could not pull $base; using the local copy if there is one." >&2
+}
 
 # ---------------------------------------------------------------------------
 # Container helpers
@@ -216,6 +226,7 @@ run_in_container() {
         BUILD_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
         GIT_SHA="$(git rev-parse HEAD 2>/dev/null || true)"
         export BUILD_DATE GIT_SHA
+        pull_gpu_base_image
       else
         echo "Error: local image $image not found." >&2
         echo "Run: ./img2num build" >&2
@@ -338,7 +349,22 @@ case "$MODE" in
       fi
     done
 
-    DOCKER_BUILD_ARGS+=("${EXTRA_ARGS[@]}")
+    if [ "$IMG2NUM_GPU" -eq 1 ]; then
+      # The base can come from `-- --build-arg IMG2NUM_BASE_IMAGE=...` or the IMG2NUM_BASE_IMAGE env var.
+      BASE_IMAGE=""
+      for arg in "${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"}"; do
+        if [[ "$arg" == IMG2NUM_BASE_IMAGE=* ]]; then
+          BASE_IMAGE="${arg#IMG2NUM_BASE_IMAGE=}"
+        fi
+      done
+      if [ -z "$BASE_IMAGE" ] && [ -n "${IMG2NUM_BASE_IMAGE:-}" ]; then
+        BASE_IMAGE="$IMG2NUM_BASE_IMAGE"
+        DOCKER_BUILD_ARGS+=(--build-arg "IMG2NUM_BASE_IMAGE=$BASE_IMAGE")
+      fi
+      pull_gpu_base_image "$BASE_IMAGE"
+    fi
+
+    DOCKER_BUILD_ARGS+=("${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"}")
     DOCKER_BUILD_ARGS+=(".")
 
     docker build "${DOCKER_BUILD_ARGS[@]}"
@@ -460,6 +486,7 @@ Flags:
                         For build, uses Dockerfile-gpu.dev and defaults the tag to img2num-dev:gpu.
                         The GPU image is layered on ryanmillard/img2num-dev:latest; to use a local base:
                           ./img2num build --gpu -- --build-arg IMG2NUM_BASE_IMAGE=img2num-dev:local
+                        or set the IMG2NUM_BASE_IMAGE env var. Registry base images are re-pulled on each GPU build.
                         For run/exec/sh, adds docker-compose.gpu.yml (needs the NVIDIA Container Toolkit).
                         Persisted (with build/run/exec/sh): later commands keep GPU access until --no-gpu.
                           E.g.: ./img2num build --gpu && ./img2num sh

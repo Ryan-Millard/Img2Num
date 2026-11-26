@@ -206,6 +206,24 @@ function Get-PullPolicy {
     return "always"
 }
 
+# Refreshes the Dockerfile-gpu.dev base image. `docker build` and compose builds otherwise reuse a stale local copy
+# (e.g. an old bullseye-based image whose apt mirrors are gone). Locally built bases can't be pulled, so they're skipped.
+function Update-GpuBaseImage {
+    param([string]$BaseImage)
+
+    if (-not $BaseImage) {
+        $BaseImage = if ($env:IMG2NUM_BASE_IMAGE) { $env:IMG2NUM_BASE_IMAGE } else { "ryanmillard/img2num-dev:latest" }
+    }
+    if ($BaseImage -like "img2num-dev:*") {
+        return
+    }
+    Write-Host "Pulling GPU base image $BaseImage..."
+    docker pull $BaseImage
+    if ($LASTEXITCODE -ne 0) {
+        Write-Warning "Could not pull $BaseImage; using the local copy if there is one."
+    }
+}
+
 function Test-DockerImage {
     param([string]$Image)
 
@@ -234,6 +252,7 @@ function Run-InContainer {
                 $env:BUILD_DATE = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
                 $gitSha = git rev-parse HEAD 2>$null
                 $env:GIT_SHA = if ($LASTEXITCODE -eq 0) { "$gitSha" } else { "" }
+                Update-GpuBaseImage
             } else {
                 Write-Error "Error: local image $image not found."
                 Write-Host "Run: ./img2num.ps1 build"
@@ -366,9 +385,26 @@ switch ($Mode) {
             $dockerBuildArgs += "--no-cache"
         }
 
+        $passThroughArgs = @()
         if ($separatorIndex -ge 0 -and $separatorIndex -lt ($RemainingArgs.Count - 1)) {
-            $dockerBuildArgs += $RemainingArgs[($separatorIndex + 1)..($RemainingArgs.Count - 1)]
+            $passThroughArgs = @($RemainingArgs[($separatorIndex + 1)..($RemainingArgs.Count - 1)])
         }
+
+        if ($IMG2NUM_GPU) {
+            # The base can come from `-- --build-arg IMG2NUM_BASE_IMAGE=...` or the IMG2NUM_BASE_IMAGE env var
+            # (handy on Windows, where PowerShell may swallow `--`).
+            $baseImage = ""
+            foreach ($a in $passThroughArgs) {
+                if ($a -like "IMG2NUM_BASE_IMAGE=*") { $baseImage = $a.Substring("IMG2NUM_BASE_IMAGE=".Length) }
+            }
+            if (-not $baseImage -and $env:IMG2NUM_BASE_IMAGE) {
+                $baseImage = $env:IMG2NUM_BASE_IMAGE
+                $dockerBuildArgs += @("--build-arg", "IMG2NUM_BASE_IMAGE=$baseImage")
+            }
+            Update-GpuBaseImage -BaseImage $baseImage
+        }
+
+        $dockerBuildArgs += $passThroughArgs
 
         $dockerBuildArgs += $PSScriptRoot
 
@@ -492,6 +528,7 @@ Flags:
                           For build, uses Dockerfile-gpu.dev and defaults the tag to $IMG2NUM_DEFAULT_GPU_IMAGE.
                           The GPU image is layered on ryanmillard/img2num-dev:latest; to use a local base:
                             ./img2num.ps1 build --gpu -- --build-arg IMG2NUM_BASE_IMAGE=img2num-dev:local
+                          or set the IMG2NUM_BASE_IMAGE env var. Registry base images are re-pulled on each GPU build.
                           For run/exec/sh, adds docker-compose.gpu.yml (needs the NVIDIA Container Toolkit).
                           Persisted (with build/run/exec/sh): later commands keep GPU access until --no-gpu.
                             E.g.: ./img2num.ps1 build --gpu; ./img2num.ps1 sh
