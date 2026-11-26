@@ -171,16 +171,29 @@ class GPU {
                 if (status != wgpu::CompilationInfoRequestStatus::Success || !info)
                     return;
 
-                for (uint32_t i = 0; i < info->messageCount; ++i) {
+                for (uint32_t i {0}; i < info->messageCount; ++i) {
                     const auto& msg = info->messages[i];
-                    IMG2NUM_LOG_INFO(
-                        "Shader Error [{}] Line {}:{} - {}",
-                        msg.type == wgpu::CompilationMessageType::Error ? "ERR" : "WARN",
-                        msg.lineNum, msg.linePos,
-                        std::string_view(
-                            msg.message.data ? msg.message.data : "", msg.message.length
-                        )
+                    const std::string_view text(
+                        msg.message.data ? msg.message.data : "", msg.message.length
                     );
+
+                    switch (msg.type) {
+                    case wgpu::CompilationMessageType::Error:
+                        IMG2NUM_LOG_ERROR(
+                            "Shader Error Line {}:{} - {}", msg.lineNum, msg.linePos, text
+                        );
+                        break;
+                    case wgpu::CompilationMessageType::Warning:
+                        IMG2NUM_LOG_WARN(
+                            "Shader Warning Line {}:{} - {}", msg.lineNum, msg.linePos, text
+                        );
+                        break;
+                    default: // Info
+                        IMG2NUM_LOG_DEBUG(
+                            "Shader Info Line {}:{} - {}", msg.lineNum, msg.linePos, text
+                        );
+                        break;
+                    }
                 }
             }
         );
@@ -206,7 +219,7 @@ class GPU {
 
         wgpu::Device device = request_device(adapter);
         if (!validate_device(device)) {
-            IMG2NUM_LOG_INFO("Fatal: Could not get WebGPU Device. Falling back to CPU.");
+            IMG2NUM_LOG_WARN("Fatal: Could not get WebGPU Device. Falling back to CPU.");
             return;
         }
 
@@ -233,7 +246,7 @@ class GPU {
         instance = wgpu::CreateInstance(&instanceDesc);
 
         if (!instance) {
-            IMG2NUM_LOG_INFO("Fatal: WebGPU instance creation failed. Falling back to CPU.");
+            IMG2NUM_LOG_WARN("Fatal: WebGPU instance creation failed. Falling back to CPU.");
             cleanup();
             return false;
         }
@@ -242,7 +255,7 @@ class GPU {
 
     // Requests a new adapter from the shared instance. Caller must hold mutex_.
     wgpu::Adapter request_adapter() {
-        IMG2NUM_LOG_INFO("Requesting Adapter...");
+        IMG2NUM_LOG_DEBUG("Requesting Adapter...");
         wgpu::Adapter adapter;
         bool adapter_ready = false;
         wgpu::Future future = instance.RequestAdapter(
@@ -252,7 +265,7 @@ class GPU {
                     adapter = std::move(a);
                     IMG2NUM_LOG_INFO("Adapter Acquired");
                 } else {
-                    IMG2NUM_LOG_INFO(
+                    IMG2NUM_LOG_WARN(
                         "Adapter Failed: {}", std::string_view(msg.data ? msg.data : "", msg.length)
                     );
                 }
@@ -262,12 +275,12 @@ class GPU {
         wait(future, adapter_ready);
 
         if (!adapter) {
-            IMG2NUM_LOG_INFO("Fatal: Could not get WebGPU Adapter. Falling back to CPU.");
+            IMG2NUM_LOG_WARN("Fatal: Could not get WebGPU Adapter. Falling back to CPU.");
             return nullptr;
         }
         if (wgpu::AdapterInfo info; adapter.GetInfo(&info) != wgpu::Status::Success ||
                                     info.backendType == wgpu::BackendType::Null) {
-            IMG2NUM_LOG_INFO("No usable WebGPU adapter found. Falling back to CPU.");
+            IMG2NUM_LOG_WARN("No usable WebGPU adapter found. Falling back to CPU.");
             return nullptr;
         }
         return adapter;
@@ -275,7 +288,7 @@ class GPU {
 
     // Requests a new device from `adapter`. Caller must hold mutex_.
     wgpu::Device request_device(const wgpu::Adapter& adapter) {
-        IMG2NUM_LOG_INFO("Requesting Device...");
+        IMG2NUM_LOG_DEBUG("Requesting Device...");
 
         wgpu::DeviceDescriptor deviceDesc = {};
         deviceDesc.SetUncapturedErrorCallback([](const wgpu::Device&, wgpu::ErrorType type,
@@ -285,7 +298,7 @@ class GPU {
                                                                : "Unknown Error (Null message)";
 
             // 2. Print it safely
-            IMG2NUM_LOG_INFO(
+            IMG2NUM_LOG_ERROR(
                 "\n[WEBGPU FATAL ERROR] Type: {} | Msg: {}\n", static_cast<uint32_t>(type), err_str
             );
         });
@@ -305,7 +318,7 @@ class GPU {
                     reason == wgpu::DeviceLostReason::Destroyed) {
                     return;
                 }
-                IMG2NUM_LOG_INFO(
+                IMG2NUM_LOG_ERROR(
                     "[DEVICE LOST] Reason: {} Msg: {}", static_cast<int>(reason), err_msg
                 );
             }
@@ -331,8 +344,8 @@ class GPU {
             // Copy the adapter's physical limits over to your requested limits
             requiredLimits = supportedLimits;
 
-            IMG2NUM_LOG_INFO("maxBufferSize: {}", requiredLimits.maxBufferSize);
-            IMG2NUM_LOG_INFO(
+            IMG2NUM_LOG_DEBUG("maxBufferSize: {}", requiredLimits.maxBufferSize);
+            IMG2NUM_LOG_DEBUG(
                 "maxStorageBufferBindingSize: {}", requiredLimits.maxStorageBufferBindingSize
             );
 
@@ -348,7 +361,7 @@ class GPU {
                     device = std::move(d);
                     IMG2NUM_LOG_INFO("Device Acquired");
                 } else {
-                    IMG2NUM_LOG_INFO(
+                    IMG2NUM_LOG_WARN(
                         "Device Failed: {}", msg.data && msg.length > 0
                                                  ? std::string(msg.data, msg.length)
                                                  : "Unknown error"
