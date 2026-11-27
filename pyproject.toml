@@ -57,6 +57,7 @@ sdist.include = [
   "LICENSE",
   "CMakeLists.txt",
   ".versions/cmake.json",
+  ".versions/dawn.json",
   "core/**",
   "bindings/py/**",
   "packages/py/**",
