@@ -173,6 +173,8 @@ jobs:
           DH="${{ env.DH_IMAGE }}"
           EVENT="${{ github.event_name }}"
           BRANCH="${GITHUB_REF_NAME}"
+          # Dockerfile-gpu.dev image, only published alongside :latest
+          GPU_TAGS=""
 
           if [[ "$EVENT" == "issue_comment" ]]; then
             PR="${{ needs.guard.outputs.pr_number }}"
@@ -184,6 +186,7 @@ jobs:
             VERSION="${GITHUB_REF_NAME}"
             CLEAN_CORE_TAG="$VERSION"
             TAGS="${GHCR}:${VERSION},${GHCR}:latest,${DH}:${VERSION},${DH}:latest"
+            GPU_TAGS="${GHCR}:gpu,${DH}:gpu"
             CACHE_REF="${GHCR}:buildcache"
 
           elif [[ "$BRANCH" == "dev" ]]; then
@@ -194,15 +197,18 @@ jobs:
           elif [[ "$BRANCH" == "main" ]]; then
             CLEAN_CORE_TAG="main"
             TAGS="${GHCR}:main,${GHCR}:latest,${DH}:main,${DH}:latest"
+            GPU_TAGS="${GHCR}:gpu,${DH}:gpu"
             CACHE_REF="${GHCR}:buildcache"
 
           fi
 
           echo "clean_core_tag=$CLEAN_CORE_TAG" >> $GITHUB_OUTPUT
           echo "tags=$TAGS"                     >> $GITHUB_OUTPUT
+          echo "gpu_tags=$GPU_TAGS"             >> $GITHUB_OUTPUT
           echo "cache_ref=$CACHE_REF"           >> $GITHUB_OUTPUT
 
       - name: Build & Push Docker image
+        id: build
         uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f
         with:
           context: .
@@ -213,6 +219,25 @@ jobs:
             type=registry,ref=${{ steps.meta.outputs.cache_ref }}
             type=registry,ref=${{ env.GHCR_IMAGE }}:buildcache
           cache-to: type=registry,ref=${{ steps.meta.outputs.cache_ref }},mode=max
+
+      - name: Compute GPU build metadata
+        id: gpu_meta
+        if: steps.meta.outputs.gpu_tags != ''
+        run: echo "build_date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_OUTPUT
+
+      # Layered on the image pushed above, pinned by digest so a concurrent push to :latest can't race it.
+      - name: Build & Push GPU Docker image
+        if: steps.meta.outputs.gpu_tags != ''
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f
+        with:
+          context: .
+          file: Dockerfile-gpu.dev
+          push: true
+          tags: ${{ steps.meta.outputs.gpu_tags }}
+          build-args: |
+            IMG2NUM_BASE_IMAGE=${{ env.GHCR_IMAGE }}@${{ steps.build.outputs.digest }}
+            BUILD_DATE=${{ steps.gpu_meta.outputs.build_date }}
+            GIT_SHA=${{ needs.guard.outputs.sha }}
 
 
   notify:
