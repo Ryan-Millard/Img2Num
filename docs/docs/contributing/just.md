@@ -5,340 +5,235 @@ sidebar_label: Just
 sidebar_position: 4
 ---
 
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
+`just` is the project's task runner. It provides a consistent interface for
+building, running, testing, cleaning and linting the project.
 
-`just` is the project's task runner. It provides a consistent interface for building,
-running and cleaning the project.
+:::tip[For experienced Just users]
 
-:::tip
+The recipes are defined in `Justfile` and in the files under `just/`:
 
-To see every available command at any time, run:
+```sh title="List the Just configuration files"
+$ ls Justfile just/
+Justfile
 
-```bash title="Show available Just commands"
-just help
+just/:
+cmake.just  console.just  docs.just  js.just  py.just  react-js.just
 ```
 
-Commands are grouped by subsystem and follow the pattern `just <subsystem> <action>`
-(for example `just cmake build` or `just js clean`). To list only one subsystem's
-commands, run `just <subsystem> help` (for example `just cmake help`).
-
 :::
 
-## Initialise the project
+Run `just help` to see every available recipe, or `just <subsystem> help` to see
+only one subsystem (for example, `just cmake help`). Unless stated otherwise,
+the commands below are meant to be run inside the project's development
+container; see the [Project Setup Guide](../project-setup) if you have not set
+that up yet.
 
-:::info
+## Project-wide commands
 
-If you have already run `just init` before (like when following the [Project Setup Guide](../project-setup)),
-you don't need to run it again.
+### Initialise the project (`just init`)
 
-There is no harm in re-running it, though.
+Run this once after cloning the repository. It pulls the Git submodules,
+installs dependencies and builds everything.
 
-:::
-
-Run this once after cloning the repository.
-
-```bash title="Paste this in the Docker shell"
+```bash title="Initialise the project"
 just init
 ```
 
-This:
+Re-running it is safe if you need to refresh your environment.
 
-- Pulls the required Git submodules.
-- Installs project dependencies.
-- Builds the entire project.
+### Build everything (`just build-all`)
 
-## Build the project
+Builds the C/C++ core, JS/WASM bindings and packages, Python bindings and
+package, the React example app and the documentation in one go.
 
-<Tabs groupId="build-target">
-  <TabItem value="all" label="Everything">
-
-**Build Everything (C++, C, JS, WASM, Python, React App, ...).**
-
-```bash title="Paste this inside the Docker shell"
+```bash title="Build all targets"
 just build-all
 ```
 
-  </TabItem>
+Optional arguments are `build_type` (default `Release`) and `log_level`
+(default `AUTO`), for example `just build-all Debug INFO`.
 
-  <TabItem value="cpp" label="C++ and C">
+### Run the core tests (`just test`)
 
-**Build C++ Core and C Bindings.**
+Builds and runs the standalone C++ core tests using CTest.
 
-This is CMake-based with GCC / MSVC.
+```bash title="Run the C++ core tests"
+just test
+```
 
-> `build-c-cpp/` CMake build folder.
+An optional `build_type` can be supplied (default `Release`), for example
+`just test Debug`.
 
-```bash title="Paste this inside the Docker shell"
+### Clean everything (`just clean-all`)
+
+Removes every generated build folder and the generated documentation files.
+This is the broad cleanup command; use the subsystem `clean` commands below if
+you only want to clean one part of the project.
+
+```bash title="Clean all generated output"
+just clean-all
+```
+
+### Format files (`just format`)
+
+Runs the repository formatter over all supported file types.
+
+```bash title="Format all files"
+just format
+```
+
+### Lint files (`just lint`)
+
+Runs the project's linters across the codebase.
+
+```bash title="Lint all files"
+just lint
+```
+
+### Check licence compliance (`just reuse-check`)
+
+Checks REUSE/SPDX licence compliance. Run this before opening a pull request
+that adds or changes source files.
+
+```bash title="Check REUSE/SPDX compliance"
+just reuse-check
+```
+
+### List commands (`just help`)
+
+Lists every recipe, including recipes inside each subsystem.
+
+```bash title="List all commands"
+just help
+```
+
+## Subsystem commands
+
+Commands are grouped by subsystem and follow the pattern
+`just <subsystem> <action>`.
+
+### CMake (`cmake`)
+
+Builds the C++ core and C bindings with CMake. The main build output is placed
+in `build-c-cpp/` and the test build in `build-tests/`.
+
+| Command                                     | Description                                                                 |
+| ------------------------------------------- | --------------------------------------------------------------------------- |
+| `just cmake build [build_type] [log_level]` | Configure and build C/C++. Defaults: `Release`, `AUTO`.                     |
+| `just cmake test [build_type]`              | Configure, build and run the C++ core tests with CTest. Default: `Release`. |
+| `just cmake clean`                          | Delete `build-c-cpp/`.                                                      |
+| `just cmake test-clean`                     | Delete `build-tests/`.                                                      |
+| `just cmake help`                           | List the CMake commands.                                                    |
+
+```bash title="Build and test the C++ core"
 just cmake build
-```
-
-Key files:
-
-- [CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/CMakeLists.txt)
-- [core/CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/core/CMakeLists.txt).
-- [bindings/c/CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/bindings/c/CMakeLists.txt).
-
-{/* Docusaurus has problems with the list above, so just keep this empty div */}
-
-<div />
-
-  </TabItem>
-
-  <TabItem value="js" label="JS / WASM">
-
-**Build JavaScript / WASM Bindings.**
-
-This is CMake-based with Emscripten (to compile to WebAssembly).
-
-> - `build-wasm/` CMake build folder.
-> - `packages/js/build-wasm/` copied folder (from `build-wasm/`).
-
-```bash title="Paste this inside the Docker shell"
-just js build
-```
-
-Key Files:
-
-- [CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/CMakeLists.txt)
-- [bindings/js/CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/bindings/js/CMakeLists.txt).
-
-{/* Docusaurus has problems with the list above, so just keep this empty div */}
-
-<div />
-
-**Build _Browser_ & _Node.js_ npm packages.**
-
-This is pnpm-based, yet it requires the outputs from the
-`just js build` command.
-
-> `packages/js/dist` folder.
-
-```bash title="Paste this inside the Docker shell"
-just js package
-```
-
-Key files:
-
-- [package.json](https://github.com/Ryan-Millard/Img2Num/blob/main/package.json)
-- [pnpm-workspace.yaml](https://github.com/Ryan-Millard/Img2Num/blob/main/pnpm-workspace.yaml)
-- [packages/js/package.json](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/package.json)
-- [packages/js/vite.config.js](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/vite.config.js)
-
-{/* Docusaurus has problems with the list above, so just keep this empty div */}
-
-<div />
-
-:::caution[Common Confusion]
-
-`just js build` only produces the raw WASM/JS bindings. To build the publishable
-`img2num` npm package — which targets **both the browser and Node.js** — run
-`just js package`. It compiles the WASM bindings first (so it works from a
-clean checkout) and then bundles the browser and Node builds into
-`packages/js/dist/`.
-
-:::
-
-  </TabItem>
-
-  <TabItem value="py" label="Python">
-
-**Build Python Bindings + Wheel**
-
-This uses uv and scikit-build-core to build the Pybind11 Python bindings
-in `bindings/py` alongside the Python wrapper in `packages/py`.
-
-> `dist` folder.
-
-```bash title="Paste this inside the Docker shell"
-just py build
-```
-
-Key files:
-
-- [pyproject.toml](https://github.com/Ryan-Millard/Img2Num/blob/main/pyproject.toml)
-- [packages/py/pyproject.toml](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/py/pyproject.toml)
-- [CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/CMakeLists.txt)
-- [bindings/py/CMakeLists.txt](https://github.com/Ryan-Millard/Img2Num/blob/main/bindings/py/CMakeLists.txt).
-
-{/* Docusaurus has problems with the list above, so just keep this empty div */}
-
-<div />
-
-  </TabItem>
-</Tabs>
-
-## Testing
-
-Run tests across subsystems:
-
-<Tabs groupId="test-target">
-  <TabItem value="cpp" label="C++ Core">
-
-Run the standalone CPU Catch2 core tests:
-
-```bash title="Paste this inside the Docker shell"
 just cmake test
 ```
 
-To delete the test build directory (`build-tests/`):
+### JavaScript / WASM (`js`)
 
-```bash title="Paste this inside the Docker shell"
-just cmake test-clean
-```
+Builds the Emscripten-based JS/WASM bindings and the publishable npm packages.
 
-  </TabItem>
+| Command                                    | Description                                                                                       |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| `just js build [build_type] [log_level]`   | Build the raw WASM/JS bindings into `build-wasm/`. Defaults: `Release`, `AUTO`.                   |
+| `just js package [build_type] [log_level]` | Build the browser and Node.js packages into `packages/js/dist/`. This runs `just js build` first. |
+| `just js clean`                            | Delete `build-wasm/`.                                                                             |
+| `just js package-clean`                    | Delete `packages/js/dist/`.                                                                       |
+| `just js help`                             | List the JS/WASM commands.                                                                        |
 
-  <TabItem value="py" label="Python">
+:::caution[Raw bindings vs. packages]
 
-Run the Python bindings test suite with pytest:
+`just js build` only produces the raw WASM/JS bindings. To build the
+publishable `img2num` npm package, which targets both browsers and Node.js,
+run `just js package`. It builds the bindings first, so it works from a clean
+checkout.
 
-```bash title="Paste this inside the Docker shell"
-just py test
-```
+:::
 
-  </TabItem>
-</Tabs>
+### Python (`py`)
 
-## Documentation
+Builds the Pybind11 bindings and Python wheel with `uv` and
+`scikit-build-core`.
 
-<Tabs groupId="build-target">
-  <TabItem value="build" label="Build">
+| Command                                  | Description                                                       |
+| ---------------------------------------- | ----------------------------------------------------------------- |
+| `just py build [build_type] [log_level]` | Build the Python bindings and wheel. Defaults: `Release`, `AUTO`. |
+| `just py test`                           | Run the Python test suites with pytest.                           |
+| `just py clean`                          | Delete the Python build folder (`build-py/`).                     |
+| `just py package-clean`                  | Delete `packages/py/build-py/`.                                   |
+| `just py help`                           | List the Python commands.                                         |
 
-Build the documentation:
+### Documentation (`docs`)
 
-```bash title="Paste this in the Docker shell"
-just docs build
-```
+Builds and serves the Docusaurus site.
 
-  </TabItem>
+| Command           | Description                                   |
+| ----------------- | --------------------------------------------- |
+| `just docs build` | Build the Docusaurus site.                    |
+| `just docs start` | Serve the site locally on port 3000.          |
+| `just docs clean` | Delete `docs/build/` and `docs/.docusaurus/`. |
+| `just docs help`  | List the documentation commands.              |
 
-  <TabItem value="server" label="Server">
+### React example app (`react-js`)
 
-Start the documentation server:
+Builds and serves the React example application.
 
-```bash title="Paste this in the Docker shell"
-just docs start
-```
-
-  </TabItem>
-
-  <TabItem value="clean" label="Clean">
-
-Remove the generated documentation files:
-
-```bash title="Paste this in the Docker shell"
-just docs clean
-```
-
-  </TabItem>
-
-</Tabs>
+| Command               | Description                      |
+| --------------------- | -------------------------------- |
+| `just react-js build` | Build the React example app.     |
+| `just react-js start` | Start the app on port 5173.      |
+| `just react-js help`  | List the React example commands. |
 
 ## Example applications
 
 :::important[Build first]
 
-Excluding the React.js example application,
-the respective projects must be built first before you can
-run them or see the latest changes you made.
+Except for the React.js example app, build the relevant target before running
+an example so you can see your latest changes.
 
 :::
 
-<Tabs groupId="example-apps">
-  <TabItem value="console-cpp" label="C++ console app">
+### C++ console app (`console-cpp`)
 
-    ```sh title="Run it"
-    just console-cpp <path-to-image>
-    ```
-
-  </TabItem>
-
-  <TabItem value="console-c" label="C console app">
-
-    ```sh title="Run it"
-    just console-c <path-to-image>
-    ```
-
-  </TabItem>
-
-  <TabItem value="react-js" label="React.js web app">
-
-    ```sh title="Run it"
-    just react-js start
-    ```
-
-    Next open [http://localhost:5173/example-apps/react-js/](http://localhost:5173/example-apps/react-js/)
-    in your browser.
-
-  </TabItem>
-
-  <TabItem value="console-py" label="Python console app">
-
-    ```sh title="Run it"
-    just console-py <path-to-image>
-    ```
-
-  </TabItem>
-
-  <TabItem value="console-js" label="Node.js console app">
-
-    ```sh title="Run it (CommonJS)"
-    just console-js-cjs <path-to-image>
-    ```
-
-    ```sh title="Run it (ES modules)"
-    just console-js-esm <path-to-image>
-    ```
-
-  </TabItem>
-
-</Tabs>
-
-## Cleaning
-
-Remove generated build files:
-
-<Tabs groupId="clean-target">
-  <TabItem value="all" label="Everything">
-
-Removes every generated build folder below (and the cleaned documentation files).
-
-```bash title="Paste this inside the Docker shell"
-just clean-all
+```sh title="Run the C++ console app"
+just console-cpp <path-to-image>
 ```
 
-  </TabItem>
+### C console app (`console-c`)
 
-  <TabItem value="cpp" label="C++">
-
-```bash title="Paste this inside the Docker shell"
-just cmake clean
+```sh title="Run the C console app"
+just console-c <path-to-image>
 ```
 
-  </TabItem>
+### Python console app (`console-py`)
 
-  <TabItem value="js" label="JS / WASM">
-
-```bash title="Paste this inside the Docker shell"
-just js clean
+```sh title="Run the Python console app"
+just console-py <path-to-image>
 ```
 
-  </TabItem>
+The input is optional; omit it to use the app's default behaviour.
 
-  <TabItem value="packages-js" label="JS Packages">
+### Node.js CommonJS app (`console-js-cjs`)
 
-```bash title="Paste this inside the Docker shell"
-just js package-clean
+```sh title="Run the CommonJS app"
+just console-js-cjs <path-to-image> [output.svg]
 ```
 
-  </TabItem>
+The optional second argument sets the output path (default `output.svg`).
 
-  <TabItem value="packages-py" label="Python Packages">
+### Node.js ES modules app (`console-js-esm`)
 
-```bash title="Paste this inside the Docker shell"
-just py clean
+```sh title="Run the ES modules app"
+just console-js-esm <path-to-image> [output.svg]
 ```
 
-  </TabItem>
-</Tabs>
+The optional second argument sets the output path (default `output.svg`).
+
+### HTML/JS example (`html-js`)
+
+Runs a script from `example-apps/html-js/package.json` through pnpm.
+
+```sh title="Run an html-js script"
+just html-js <script-name>
+```
