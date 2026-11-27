@@ -1,0 +1,144 @@
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* Headline numbers, under the lead */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: 16px;
+  max-width: 900px;
+  margin-top: 32px;
+}
+
+/* Each part of the page below the header */
+.block {
+  margin-bottom: 64px;
+}
+
+.block:last-child {
+  margin-bottom: 0;
+}
+
+/* Contributor cards: three aligned subgrid rows (header, pull requests, footer),
+ * so each part lines up across a row of cards. The list shows at most VISIBLE_PRS entries. */
+
+.contributor {
+  --card-padding: 20px;
+  /* Keep the card clear of the fixed navbar when it is the link target. */
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 16px);
+}
+
+.contributorHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.contributorDetails {
+  flex: 1;
+  min-width: 0;
+}
+
+.contributorName {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.contributorLogin {
+  min-width: 0; /* lets a long login shrink and get its ellipsis inside the inline-flex link */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contributorMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  margin-top: 2px;
+  font-size: 13px;
+}
+
+.prCount {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+  color: var(--success);
+}
+
+.firstTime {
+  padding: 1px 9px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background-color: var(--accent-light);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.prList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+}
+
+.pr {
+  display: flex;
+  gap: 8px;
+  line-height: 1.4;
+}
+
+.prNumber {
+  flex-shrink: 0;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 13px;
+}
+
+.prTitle {
+  color: var(--ink-2);
+}
+
+.morePrs {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+  font-size: 13px;
+}
+
+.empty {
+  margin: 0;
+  color: var(--ink-3);
+}
+
+/* Maintainers, links, Discord */
+
+.asideHeading {
+  font-size: 17px;
+}
+
+.asideNote {
+  margin-bottom: 0;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.asideList {
+  margin-bottom: 0;
+  padding-left: 20px;
+}

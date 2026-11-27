@@ -1,0 +1,11 @@
+.section {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 72px 32px;
+}
+
+.wide {
+  max-width: 2400px;
+}

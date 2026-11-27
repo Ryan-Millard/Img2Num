@@ -1,0 +1,508 @@
+{
+  "slug": "hacktoberfest-2026",
+  "title": "Hacktoberfest 2026",
+  "tagline": "Everyone who had a pull request reviewed and merged into Img2Num during Hacktoberfest 2026. Thank you — this page is yours.",
+  "repo": "Ryan-Millard/Img2Num",
+  "start": "2026-10-01",
+  "end": "2026-10-31",
+  "badge": {
+    "image": "/img/events/hacktoberfest-2026/badge.svg",
+    "imageDark": "/img/events/hacktoberfest-2026/badge-dark.svg",
+    "png": "/img/events/hacktoberfest-2026/badge.png",
+    "pngDark": "/img/events/hacktoberfest-2026/badge-dark.png",
+    "alt": "Img2Num contributor — Hacktoberfest 2026"
+  },
+  "links": [
+    { "label": "Hacktoberfest 2026 recap", "to": "/blog/hacktoberfest-2026-recap" },
+    { "label": "Hacktoberfest", "href": "https://hacktoberfest.com/" }
+  ],
+  "maintainers": ["Ryan-Millard", "krasner", "Prachi-Gupta2808"],
+  "contributors": [
+    {
+      "username": "08abhinav",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 679,
+          "title": "feat(docs): add Hall of Fame contributor page",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/679",
+          "mergedAt": "2026-10-15"
+        }
+      ]
+    },
+    {
+      "username": "Adithya6721",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 801,
+          "title": "docs(cli): document installation and usage",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/801",
+          "mergedAt": "2026-10-22"
+        }
+      ]
+    },
+    {
+      "username": "Astrolyte",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 677,
+          "title": "fix(example-app): correct the usage message and add an output path option to the Node console apps",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/677",
+          "mergedAt": "2026-10-30"
+        }
+      ]
+    },
+    {
+      "username": "ayusharora07",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 663,
+          "title": "fix(core): prevent duplicate WebGPU init and fall back to CPU on device failure (#662)",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/663",
+          "mergedAt": "2026-10-03"
+        }
+      ]
+    },
+    {
+      "username": "Ayushrawatcy009",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 764,
+          "title": "fix(bindings/c): use (void) in error-API declarations to make them prototypes",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/764",
+          "mergedAt": "2026-10-14"
+        },
+        {
+          "number": 771,
+          "title": "docs(contributing): fix Debug Logging guide to match actual code",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/771",
+          "mergedAt": "2026-10-18"
+        }
+      ]
+    },
+    {
+      "username": "BhoomiMahna",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 696,
+          "title": "fix(gpu): fall back to CPU for Null adapter",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/696",
+          "mergedAt": "2026-10-09"
+        }
+      ]
+    },
+    {
+      "username": "dr-nullptr",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 644,
+          "title": "docs(examples): add community showcase",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/644",
+          "mergedAt": "2026-10-03"
+        }
+      ]
+    },
+    {
+      "username": "Farhan-Alam-Jamal",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 666,
+          "title": "build: pin CMake in .versions/cmake.json and derive minimum from it",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/666",
+          "mergedAt": "2026-10-07"
+        },
+        {
+          "number": 767,
+          "title": "fix(packages-py): limit wheel installs to Python component",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/767",
+          "mergedAt": "2026-10-30"
+        }
+      ]
+    },
+    {
+      "username": "FathimaManal",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 646,
+          "title": "docs(glossary): convert Core Concepts page into glossary under docs/glossary",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/646",
+          "mergedAt": "2026-10-10"
+        }
+      ]
+    },
+    {
+      "username": "flodrick",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 623,
+          "title": "style(faq): redesign FAQ with minimalist accordions and softened typography",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/623",
+          "mergedAt": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "username": "Gracy769",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 665,
+          "title": "fix(bindings/py): resolve double-move of SVG string in labels_to_svg",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/665",
+          "mergedAt": "2026-10-06"
+        }
+      ]
+    },
+    {
+      "username": "IvanGiovany",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 766,
+          "title": "fix(bindings/py): raise TypeError for unknown ImageToSvgConfig keys",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/766",
+          "mergedAt": "2026-10-14"
+        }
+      ]
+    },
+    {
+      "username": "jazayush",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 760,
+          "title": "docs(blog): fix synchronous API migration guidance",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/760",
+          "mergedAt": "2026-10-18"
+        }
+      ]
+    },
+    {
+      "username": "Krasner",
+      "firstTime": false,
+      "prs": [
+        {
+          "number": 701,
+          "title": "fix rgb sigma range",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/701",
+          "mergedAt": "2026-10-09"
+        },
+        {
+          "number": 703,
+          "title": "feat: cli tool",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/703",
+          "mergedAt": "2026-10-20"
+        },
+        {
+          "number": 784,
+          "title": "feat(gpu): truly parallel execution",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/784",
+          "mergedAt": "2026-10-28"
+        }
+      ]
+    },
+    {
+      "username": "Lothnic",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 692,
+          "title": "docs(api): describe black_threshold_image as a per-channel brightness cutoff",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/692",
+          "mergedAt": "2026-10-09"
+        },
+        {
+          "number": 713,
+          "title": "fix(examples): repair the React example app Vitest setup so its suite runs",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/713",
+          "mergedAt": "2026-10-19"
+        },
+        {
+          "number": 754,
+          "title": "chore(py): declare Python 3.13 support in package classifiers",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/754",
+          "mergedAt": "2026-10-14"
+        },
+        {
+          "number": 758,
+          "title": "feat(py): expose img2num.__version__",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/758",
+          "mergedAt": "2026-10-18"
+        },
+        {
+          "number": 777,
+          "title": "perf(bindings/py): release the GIL while the C++ core runs",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/777",
+          "mergedAt": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "username": "mayanksingh-7974",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 759,
+          "title": "chore(deps): remove stray dependencies from the root and dev-scripts packages",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/759",
+          "mergedAt": "2026-10-14"
+        },
+        {
+          "number": 762,
+          "title": "docs: fix swapped C and JavaScript rows in API bindings tables",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/762",
+          "mergedAt": "2026-10-21"
+        },
+        {
+          "number": 774,
+          "title": "fix(scripts): handle optional _meta.ignore in validate-scripts",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/774",
+          "mergedAt": "2026-10-18"
+        }
+      ]
+    },
+    {
+      "username": "MiyaMango",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 749,
+          "title": "refactor(api): rename `ptr` to `image`",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/749",
+          "mergedAt": "2026-10-13"
+        }
+      ]
+    },
+    {
+      "username": "mrunalC27",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 695,
+          "title": "chore: split justfile",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/695",
+          "mergedAt": "2026-10-07"
+        },
+        {
+          "number": 789,
+          "title": "refactor(react-example): remove irrelevant pages",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/789",
+          "mergedAt": "2026-10-19"
+        },
+        {
+          "number": 799,
+          "title": "ci(release): remove outdated propagate job from release.yml",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/799",
+          "mergedAt": "2026-10-25"
+        }
+      ]
+    },
+    {
+      "username": "nitin-kumar-code",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 682,
+          "title": "fix: CPU k-means output when k is 1",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/682",
+          "mergedAt": "2026-10-07"
+        },
+        {
+          "number": 757,
+          "title": "ci: cancel superseded pull request runs",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/757",
+          "mergedAt": "2026-10-18"
+        }
+      ]
+    },
+    {
+      "username": "PrathamRanka",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 660,
+          "title": "docs(examples): add README for React example app",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/660",
+          "mergedAt": "2026-10-06"
+        },
+        {
+          "number": 661,
+          "title": "fix(examples): validate console Python image input",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/661",
+          "mergedAt": "2026-10-06"
+        }
+      ]
+    },
+    {
+      "username": "RahulKumarBaldia",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 659,
+          "title": "fix(core): gaussian_blur_fft reflect padding to prevent border darkening and edge wrapping",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/659",
+          "mergedAt": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "username": "Ryan-Millard",
+      "firstTime": false,
+      "prs": [
+        {
+          "number": 747,
+          "title": "fix(py): stop packaging root dev script into the wheel",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/747",
+          "mergedAt": "2026-10-14"
+        },
+        {
+          "number": 787,
+          "title": "chore(release): add version propagation tracking files (#787)",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/787",
+          "mergedAt": "2026-10-20"
+        }
+      ]
+    },
+    {
+      "username": "saptadeep12",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 670,
+          "title": "feat(Types): Ship TypeScript type definitions for the npm package",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/670",
+          "mergedAt": "2026-10-10"
+        },
+        {
+          "number": 687,
+          "title": "refactor(examples): tidy up the C++ console example app",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/687",
+          "mergedAt": "2026-10-06"
+        },
+        {
+          "number": 689,
+          "title": "docs(website): added the Discord server to the navbar, footer and contributing guide",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/689",
+          "mergedAt": "2026-10-05"
+        },
+        {
+          "number": 765,
+          "title": "fix(graph): order node neighbours by id for deterministic output",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/765",
+          "mergedAt": "2026-10-14"
+        },
+        {
+          "number": 795,
+          "title": "docs(contributing): issue with multiple claims",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/795",
+          "mergedAt": "2026-10-20"
+        }
+      ]
+    },
+    {
+      "username": "satyaharendrarushidayaka-sudo",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 770,
+          "title": "docs(website): point edit links at dev and fix alignItems typo",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/770",
+          "mergedAt": "2026-10-15"
+        }
+      ]
+    },
+    {
+      "username": "shivangmathur2008-stack",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 768,
+          "title": "refactor(contours): remove unreachable contour-tracing code",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/768",
+          "mergedAt": "2026-10-27"
+        }
+      ]
+    },
+    {
+      "username": "siddharth1407",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 658,
+          "title": "refactor(gpu): reusable WebGPU helper layer + port both kernels (#636)",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/658",
+          "mergedAt": "2026-10-06"
+        },
+        {
+          "number": 694,
+          "title": "docs(internal): add documentation for gpu_utils layer",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/694",
+          "mergedAt": "2026-10-06"
+        }
+      ]
+    },
+    {
+      "username": "slopgobblercobbler",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 793,
+          "title": "fix(react-example): update /credits redirect target to /hall-of-fame",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/793",
+          "mergedAt": "2026-10-19"
+        }
+      ]
+    },
+    {
+      "username": "thilakshan2003",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 680,
+          "title": "style(website): improve website styles and fix navbar blur",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/680",
+          "mergedAt": "2026-10-18"
+        }
+      ]
+    },
+    {
+      "username": "thisisparth187",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 669,
+          "title": "chore(Dev Script): add Docker build command",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/669",
+          "mergedAt": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "username": "Yipjunwei",
+      "firstTime": true,
+      "prs": [
+        {
+          "number": 655,
+          "title": "docs(common API): document min_thickness defaults",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/655",
+          "mergedAt": "2026-10-03"
+        },
+        {
+          "number": 750,
+          "title": "fix(just): correct console binary paths",
+          "url": "https://github.com/Ryan-Millard/Img2Num/pull/750",
+          "mergedAt": "2026-10-13"
+        }
+      ]
+    }
+  ]
+}

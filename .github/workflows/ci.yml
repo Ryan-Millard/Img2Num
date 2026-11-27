@@ -89,7 +89,7 @@ jobs:
 
       - name: Install PNPM dependencies
         run: pnpm install
-        
+
       - name: Build and test TypeScript types (packages/js)
         working-directory: packages/js
         run: |
@@ -105,9 +105,8 @@ jobs:
       - name: Lint JS (ESLint)
         run: pnpm run lint:js
 
-      # TODO: uncomment the below when #607 is fixed (https://github.com/Ryan-Millard/Img2Num/issues/607)
-      #- name: Lint C and C++ (clang-tidy)
-        #run: pnpm run lint:cpp
+      - name: Lint C and C++ (clang-tidy)
+        run: pnpm run lint:cpp
 
       - name: Validate format
         run: pnpm run format:check
@@ -118,9 +117,19 @@ jobs:
       - name: Validate scriptsInfo in package.json
         run: pnpm run validate-scripts
 
+      - name: Validate README.md generation
+        run: pnpm readme:generate --check
+
   cmake-build:
     name: Build C/C++
     uses: ./.github/workflows/cmake-build.yml
+    needs: [set-image]
+    with:
+      image: ${{ needs.set-image.outputs.image }}
+
+  core-cpp-tests:
+    name: Core C++ tests
+    uses: ./.github/workflows/cmake-tests.yml
     needs: [set-image]
     with:
       image: ${{ needs.set-image.outputs.image }}
