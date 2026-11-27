@@ -66,9 +66,11 @@ An optional `build_type` can be supplied (default `Release`), for example
 
 ### Clean everything (`just clean-all`)
 
-Removes every generated build folder and the generated documentation files.
-This is the broad cleanup command; use the subsystem `clean` commands below if
-you only want to clean one part of the project.
+Removes `build-c-cpp/`, `build-tests/`, `build-wasm/`, `packages/js/dist/`,
+`build-py/`, `packages/py/build-py/`, `docs/build/` and `docs/.docusaurus/`.
+It does not remove the built React example in
+`docs/static/example-apps/react-js/`; use the subsystem `clean` commands below
+if you only want to clean one part of the project.
 
 ```bash title="Clean all generated output"
 just clean-all
@@ -171,9 +173,13 @@ Builds and serves the Docusaurus site.
 | Command           | Description                                   |
 | ----------------- | --------------------------------------------- |
 | `just docs build` | Build the Docusaurus site.                    |
-| `just docs start` | Serve the site locally on port 3000.          |
+| `just docs start` | Serve the built site locally on port 3000.    |
 | `just docs clean` | Delete `docs/build/` and `docs/.docusaurus/`. |
 | `just docs help`  | List the documentation commands.              |
+
+`just docs start` serves the existing production build in `docs/build/`, not
+live edits. Run `just docs build` first (otherwise the server exits because
+`docs/build/` is missing), and rebuild after making changes to see them.
 
 ### React example app (`react-js`)
 
@@ -212,7 +218,7 @@ just console-c <path-to-image>
 just console-py <path-to-image>
 ```
 
-The input is optional; omit it to use the app's default behaviour.
+An image path is required; the app tries to open it as an image file.
 
 ### Node.js CommonJS app (`console-js-cjs`)
 
