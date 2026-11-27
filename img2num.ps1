@@ -149,6 +149,8 @@ if ($IMG2NUM_GPU) {
 $ComposeArgs = @("-f", (Join-Path $PSScriptRoot "docker-compose.yml"))
 if ($IMG2NUM_GPU) {
     $ComposeArgs += @("-f", (Join-Path $PSScriptRoot "docker-compose.gpu.yml"))
+    # WSL2 (Docker Desktop) passthrough: --device=/dev/dxg -v /usr/lib/wsl:/usr/lib/wsl -e LD_LIBRARY_PATH=/usr/lib/wsl/lib
+    $ComposeArgs += @("-f", (Join-Path $PSScriptRoot "docker-compose.wsl.yml"))
 }
 
 function Invoke-Compose {
@@ -529,7 +531,8 @@ Flags:
                           The GPU image is layered on ryanmillard/img2num-dev:latest; to use a local base:
                             ./img2num.ps1 build --gpu -- --build-arg IMG2NUM_BASE_IMAGE=img2num-dev:local
                           or set the IMG2NUM_BASE_IMAGE env var. Registry base images are re-pulled on each GPU build.
-                          For run/exec/sh, adds docker-compose.gpu.yml (needs the NVIDIA Container Toolkit).
+                          For run/exec/sh, adds docker-compose.gpu.yml (needs the NVIDIA Container Toolkit) and
+                          docker-compose.wsl.yml (WSL2 GPU passthrough: /dev/dxg, /usr/lib/wsl, LD_LIBRARY_PATH).
                           Persisted (with build/run/exec/sh): later commands keep GPU access until --no-gpu.
                             E.g.: ./img2num.ps1 build --gpu; ./img2num.ps1 sh
   --no-gpu              Disable GPU access (and persist that).

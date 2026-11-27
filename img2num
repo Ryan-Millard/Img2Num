@@ -123,6 +123,10 @@ fi
 COMPOSE_ARGS=(-f docker-compose.yml)
 if [ "$IMG2NUM_GPU" -eq 1 ]; then
   COMPOSE_ARGS+=(-f docker-compose.gpu.yml)
+  # WSL2 passthrough: --device=/dev/dxg -v /usr/lib/wsl:/usr/lib/wsl -e LD_LIBRARY_PATH=/usr/lib/wsl/lib
+  if [ -n "${WSL_DISTRO_NAME:-}" ] || grep -qi microsoft /proc/version 2>/dev/null; then
+    COMPOSE_ARGS+=(-f docker-compose.wsl.yml)
+  fi
 fi
 
 compose() {
@@ -488,6 +492,7 @@ Flags:
                           ./img2num build --gpu -- --build-arg IMG2NUM_BASE_IMAGE=img2num-dev:local
                         or set the IMG2NUM_BASE_IMAGE env var. Registry base images are re-pulled on each GPU build.
                         For run/exec/sh, adds docker-compose.gpu.yml (needs the NVIDIA Container Toolkit).
+                        Under WSL2, also adds docker-compose.wsl.yml (/dev/dxg, /usr/lib/wsl, LD_LIBRARY_PATH).
                         Persisted (with build/run/exec/sh): later commands keep GPU access until --no-gpu.
                           E.g.: ./img2num build --gpu && ./img2num sh
   --no-gpu              Disable GPU access (and persist that).
