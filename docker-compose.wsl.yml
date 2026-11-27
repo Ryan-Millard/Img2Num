@@ -12,3 +12,7 @@ services:
       - /usr/lib/wsl:/usr/lib/wsl:ro
     environment:
       LD_LIBRARY_PATH: /usr/lib/wsl/lib
+      # NVIDIA ships no Linux Vulkan driver for WSL2, so the fallback /etc/vulkan/icd.d/nvidia_icd.json from
+      # Dockerfile-gpu.dev points at a missing libGLX_nvidia.so.0 and the loader warns on every instance creation.
+      # Restrict the loader to Mesa's drivers (llvmpipe/lavapipe software Vulkan) to avoid that.
+      VK_DRIVER_FILES: /usr/share/vulkan/icd.d
