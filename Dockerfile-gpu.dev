@@ -28,8 +28,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       python3-mako python3-yaml python3-packaging bison flex glslang-tools \
       libexpat1-dev zlib1g-dev libzstd-dev libdrm-dev libvulkan-dev \
     && rm -rf /var/lib/apt/lists/*
+# Dawn refuses Vulkan adapters without fullDrawIndexUint32, which dzn hardcodes to false (keeping Vulkan's
+# minimum 2^24-1 index value). Img2Num only uses compute pipelines, so advertise it (and the matching
+# maxDrawIndexedIndexValue) to let Dawn initialise; this only affects indexed draws with indices >= 2^24.
+# grep -q makes the build fail loudly if a Mesa bump changes these lines.
 RUN curl -fsSL "https://archive.mesa3d.org/mesa-${MESA_VERSION}.tar.xz" | tar -xJ -C /tmp \
     && cd "/tmp/mesa-${MESA_VERSION}" \
+    && sed -i \
+      -e 's/\.fullDrawIndexUint32 = false,/.fullDrawIndexUint32 = true,/' \
+      -e 's/\.maxDrawIndexedIndexValue = 0x00ffffff,/.maxDrawIndexedIndexValue = UINT32_MAX,/' \
+      src/microsoft/vulkan/dzn_device.c \
+    && grep -q '\.fullDrawIndexUint32 = true,' src/microsoft/vulkan/dzn_device.c \
+    && grep -q '\.maxDrawIndexedIndexValue = UINT32_MAX,' src/microsoft/vulkan/dzn_device.c \
     && meson setup build --prefix=/opt/mesa-dzn --libdir=lib --buildtype=release \
       -Dvulkan-drivers=microsoft-experimental -Dgallium-drivers= -Dplatforms= \
       -Dglx=disabled -Degl=disabled -Dgles1=disabled -Dgles2=disabled -Dopengl=false -Dgbm=disabled \

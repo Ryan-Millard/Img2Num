@@ -17,3 +17,5 @@ services:
       # Restrict the loader to Mesa's drivers to avoid that: dzn (Vulkan on D3D12 via /dev/dxg, the real GPU,
       # built by Dockerfile-gpu.dev) plus the stock ones (llvmpipe software fallback).
       VK_DRIVER_FILES: /opt/mesa-dzn/share/vulkan/icd.d:/usr/share/vulkan/icd.d
+      # Silences dzn's "not a conformant Vulkan implementation" warning, printed on every instance creation.
+      MESA_VK_IGNORE_CONFORMANCE_WARNING: "true"
