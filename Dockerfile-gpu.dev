@@ -12,6 +12,31 @@
 # --------------------------------------------------------------------------------------------------------------
 
 ARG IMG2NUM_BASE_IMAGE=ryanmillard/img2num-dev:latest
+
+# --------------------------------------------------------------------------------------------------------------
+# Mesa "dzn" (Vulkan on Direct3D 12) for WSL2
+#
+# NVIDIA ships no Linux Vulkan driver for WSL2; the GPU is only reachable through /dev/dxg + /usr/lib/wsl/lib
+# (libd3d12.so, libdxcore.so). Debian doesn't package dzn, so build just that driver from Mesa source.
+# It is installed to /opt/mesa-dzn, which the Vulkan loader does NOT scan by default, so native Linux hosts are
+# unaffected; docker-compose.wsl.yml adds it via VK_DRIVER_FILES.
+# Must match the base image's Debian release (the Dockerfile.dev image is node:*-trixie).
+FROM debian:trixie-slim AS mesa-dzn
+ARG MESA_VERSION=26.2.8
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      ca-certificates curl xz-utils build-essential meson ninja-build pkg-config git \
+      python3-mako python3-yaml python3-packaging bison flex glslang-tools \
+      libexpat1-dev zlib1g-dev libzstd-dev libdrm-dev libvulkan-dev \
+    && rm -rf /var/lib/apt/lists/*
+RUN curl -fsSL "https://archive.mesa3d.org/mesa-${MESA_VERSION}.tar.xz" | tar -xJ -C /tmp \
+    && cd "/tmp/mesa-${MESA_VERSION}" \
+    && meson setup build --prefix=/opt/mesa-dzn --libdir=lib --buildtype=release \
+      -Dvulkan-drivers=microsoft-experimental -Dgallium-drivers= -Dplatforms= \
+      -Dglx=disabled -Degl=disabled -Dgles1=disabled -Dgles2=disabled -Dopengl=false -Dgbm=disabled \
+      -Dllvm=disabled -Dvalgrind=disabled -Dlibunwind=disabled -Dzstd=enabled \
+      --force-fallback-for=directx-headers \
+    && ninja -C build install
+
 FROM ${IMG2NUM_BASE_IMAGE}
 
 # --------------------------------------------------------------------------------------------------------------
@@ -61,6 +86,9 @@ RUN mkdir -p /etc/vulkan/icd.d /usr/share/glvnd/egl_vendor.d \
     '        "library_path": "libEGL_nvidia.so.0"' \
     '    }' \
     '}' > /usr/share/glvnd/egl_vendor.d/10_nvidia.json
+
+COPY --from=mesa-dzn /opt/mesa-dzn/lib/libvulkan_dzn.so /opt/mesa-dzn/lib/libspirv_to_dxil.so /opt/mesa-dzn/lib/
+COPY --from=mesa-dzn /opt/mesa-dzn/share/vulkan/icd.d/ /opt/mesa-dzn/share/vulkan/icd.d/
 
 ENV NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=compute,graphics,utility
