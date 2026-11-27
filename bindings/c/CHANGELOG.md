@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.2.2](https://github.com/Ryan-Millard/Img2Num/compare/bindings-c-v0.2.1...bindings-c-v0.2.2) (2026-11-27)
+
+
+### 🐛 Bug Fixes
+
+* **gpu:** fail clearly on missing embedded shader IDs ([#813](https://github.com/Ryan-Millard/Img2Num/issues/813)) ([69a4f5f](https://github.com/Ryan-Millard/Img2Num/commit/69a4f5fb62cb34befd8a800a95819df641dab462))
+* **scripts:** make `format:cpp:check` actually check without changing files ([#756](https://github.com/Ryan-Millard/Img2Num/issues/756)) ([589d9e9](https://github.com/Ryan-Millard/Img2Num/commit/589d9e9830da68dd058ad4e61521d0364e14268d)), closes [#718](https://github.com/Ryan-Millard/Img2Num/issues/718)
+
+
+### 🔧 Miscellaneous
+
+* **main:** release cpp 0.4.0 ([#814](https://github.com/Ryan-Millard/Img2Num/issues/814)) ([7cdf6c0](https://github.com/Ryan-Millard/Img2Num/commit/7cdf6c0dad888a00820184c3b4fdf0ba373879f2))
+
+
+### ✅ Tests
+
+* add C++ and C ABI test coverage ([#702](https://github.com/Ryan-Millard/Img2Num/issues/702)) ([4cf8ec0](https://github.com/Ryan-Millard/Img2Num/commit/4cf8ec0e1ee479c9f78f6cce2665392c92271fe9))
+
 ## [0.2.1](https://github.com/Ryan-Millard/Img2Num/compare/bindings-c-v0.2.0...bindings-c-v0.2.1) (2026-10-23)
 
 
