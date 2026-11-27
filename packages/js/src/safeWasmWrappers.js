@@ -87,6 +87,63 @@ import { callWasm } from "./wasmClient.js";
 /** @typedef {{ svg: string }} SvgResult */
 
 /**
+ * Validates that image dimensions are positive integers and the pixel buffer contains enough bytes.
+ *
+ * @param {Object} options
+ * @param {Uint8ClampedArray} options.pixels - The image pixel data.
+ * @param {number} options.width - The width of the image.
+ * @param {number} options.height - The height of the image.
+ * @throws {Error} If dimensions or pixel buffer length are invalid.
+ */
+function validateImageBuffer({ pixels, width, height }) {
+  if (!Number.isInteger(width) || width <= 0 || !Number.isInteger(height) || height <= 0) {
+    throw new Error(`Invalid image dimensions: width and height must be positive integers (got width=${width}, height=${height})`);
+  }
+
+  const requiredBytes = width * height * 4;
+  if (!pixels || pixels.length < requiredBytes) {
+    throw new Error(`Invalid pixel buffer length: expected at least ${requiredBytes} bytes for a ${width}x${height} RGBA image (got ${pixels?.length ?? 0})`);
+  }
+}
+
+/**
+ * Validates the image buffer, then synchronously copies it.
+ *
+ * `callWasm` awaits WASM initialization before it allocates and copies its
+ * buffers. The caller still owns the original array during that wait and could
+ * shrink or detach it. Copying here, before any `await`, means the WASM call
+ * always works on an independent buffer of the validated size.
+ *
+ * @param {Object} options
+ * @param {Uint8ClampedArray} options.pixels - The image pixel data.
+ * @param {number} options.width - The width of the image.
+ * @param {number} options.height - The height of the image.
+ * @returns {Uint8ClampedArray} An independent copy of `pixels`.
+ * @throws {Error} If dimensions or pixel buffer length are invalid.
+ */
+function snapshotPixels({ pixels, width, height }) {
+  validateImageBuffer({ pixels, width, height });
+  return pixels.slice();
+}
+
+/**
+ * Validates a typed array has at least `minLength` elements, then synchronously
+ * copies it. See {@link snapshotPixels} for why the copy must happen before any `await`.
+ *
+ * @param {ArrayBufferView} arr - The typed array to copy.
+ * @param {string} name - Argument name, used in the error message.
+ * @param {number} minLength - Minimum number of elements required.
+ * @returns {ArrayBufferView} An independent copy of `arr`.
+ * @throws {Error} If `arr` is not a typed array or is too short.
+ */
+function snapshotBuffer(arr, name, minLength) {
+  if (!ArrayBuffer.isView(arr) || !(arr.length >= minLength)) {
+    throw new Error(`Invalid ${name}: expected a typed array with at least ${minLength} elements (got ${arr?.length ?? 0})`);
+  }
+  return arr.slice();
+}
+
+/**
  * @summary Apply a Gaussian blur to an image using FFT in WASM.
  *
  * @description
@@ -106,9 +163,10 @@ import { callWasm } from "./wasmClient.js";
  * @since 0.0.0
  */
 export const gaussianBlur = async ({ pixels, width, height, sigma_pixels = width * 0.005 }) => {
+  const safePixels = snapshotPixels({ pixels, width, height });
   const result = await callWasm({
     funcName: "gaussian_blur_fft",
-    args: { pixels, width, height, sigma_pixels },
+    args: { pixels: safePixels, width, height, sigma_pixels },
     bufferKeys: [{ key: "pixels", type: "Uint8ClampedArray" }],
   });
   return result.output.pixels;
@@ -135,9 +193,10 @@ export const gaussianBlur = async ({ pixels, width, height, sigma_pixels = width
  * @since 0.0.0
  */
 export const bilateralFilter = async ({ pixels, width, height, sigma_spatial = 3, sigma_range = 50, color_space = 0 }) => {
+  const safePixels = snapshotPixels({ pixels, width, height });
   const result = await callWasm({
     funcName: "bilateral_filter",
-    args: { pixels, width, height, sigma_spatial, sigma_range, color_space },
+    args: { pixels: safePixels, width, height, sigma_spatial, sigma_range, color_space },
     bufferKeys: [{ key: "pixels", type: "Uint8ClampedArray" }],
   });
   return result.output.pixels;
@@ -167,9 +226,82 @@ export const bilateralFilter = async ({ pixels, width, height, sigma_spatial = 3
  * @since 0.0.0
  */
 export const blackThreshold = async ({ pixels, width, height, num_colors }) => {
+  const safePixels = snapshotPixels({ pixels, width, height });
   const result = await callWasm({
     funcName: "black_threshold_image",
-    args: { pixels, width, height, num_colors },
+    args: { pixels: safePixels, width, height, num_colors },
+    bufferKeys: [{ key: "pixels", type: "Uint8ClampedArray" }],
+  });
+  return result.output.pixels;
+};
+
+/**
+ * Options for inverting an image.
+ * @typedef {Object} InvertOptions
+ * @property {Uint8ClampedArray} pixels - The image pixel data (flat RGBA array).
+ * @property {number} width - The width of the image.
+ * @property {number} height - The height of the image.
+ */
+
+/**
+ * @summary Invert the RGB color channels of an image using WASM.
+ *
+ * @description
+ * Takes an RGBA `Uint8ClampedArray` and replaces each red, green, and blue
+ * channel value with `255 - value`. The alpha channel is preserved.
+ *
+ * @async
+ * @function invertImage
+ * @param {InvertOptions} options - The input image and its dimensions.
+ * @returns {Promise<Uint8ClampedArray>} The inverted image pixels.
+ * @throws {Error} If dimensions or pixel buffer are invalid, or if the WASM function fails.
+ * @example
+ * const inverted = await invertImage({ pixels, width, height });
+ * @since 0.4.3
+ */
+export const invertImage = async ({ pixels, width, height }) => {
+  const safePixels = snapshotPixels({ pixels, width, height });
+  const result = await callWasm({
+    funcName: "invert_image",
+    args: { pixels: safePixels, width, height },
+    bufferKeys: [{ key: "pixels", type: "Uint8ClampedArray" }],
+  });
+  return result.output.pixels;
+};
+
+/**
+ * Options for applying thresholding to an image.
+ * @typedef {Object} ThresholdOptions
+ * @property {Uint8ClampedArray} pixels - The image pixel data (flat RGBA array).
+ * @property {number} width - The width of the image.
+ * @property {number} height - The height of the image.
+ * @property {number} num_thresholds - The number of thresholds to apply.
+ */
+
+/**
+ * @summary Apply thresholding to an image using WASM.
+ *
+ * @description
+ * Quantizes the RGB channels using the requested number of thresholds. When
+ * `num_thresholds` is 0 or less, the image is returned unchanged.
+ *
+ * @async
+ * @function thresholdImage
+ * @param {ThresholdOptions} options - The input image, dimensions, and threshold count.
+ * @returns {Promise<Uint8ClampedArray>} The thresholded image pixels.
+ * @throws {Error} If dimensions or pixel buffer are invalid, or if the WASM function fails.
+ * @example
+ * const thresholded = await thresholdImage({ pixels, width, height, num_thresholds: 4 });
+ * @since 0.4.3
+ */
+export const thresholdImage = async ({ pixels, width, height, num_thresholds }) => {
+  const safePixels = snapshotPixels({ pixels, width, height });
+  if (num_thresholds <= 0) {
+    return safePixels;
+  }
+  const result = await callWasm({
+    funcName: "threshold_image",
+    args: { pixels: safePixels, width, height, num_thresholds },
     bufferKeys: [{ key: "pixels", type: "Uint8ClampedArray" }],
   });
   return result.output.pixels;
@@ -297,9 +429,12 @@ export const kmeans = async ({
   max_iter = 100,
   color_space = 0,
 }) => {
+  const safePixels = snapshotPixels({ pixels, width, height });
+  const safeOutPixels = snapshotBuffer(out_pixels, "out_pixels", width * height * 4);
+  const safeOutLabels = snapshotBuffer(out_labels, "out_labels", width * height);
   const result = await callWasm({
     funcName: "kmeans",
-    args: { pixels, out_pixels, out_labels, width, height, num_colors, max_iter, color_space },
+    args: { pixels: safePixels, out_pixels: safeOutPixels, out_labels: safeOutLabels, width, height, num_colors, max_iter, color_space },
     bufferKeys: [
       { key: "pixels", type: "Uint8ClampedArray" },
       { key: "out_pixels", type: "Uint8ClampedArray" },
@@ -326,9 +461,11 @@ export const kmeans = async ({
  * @since 0.0.0
  */
 export const findContours = async ({ pixels, labels, width, height, min_area = 100, min_thickness = 10 }) => {
+  const safePixels = snapshotPixels({ pixels, width, height });
+  const safeLabels = snapshotBuffer(labels, "labels", width * height);
   const result = await callWasm({
     funcName: "labels_to_svg",
-    args: { pixels, labels, width, height, min_area, min_thickness },
+    args: { pixels: safePixels, labels: safeLabels, width, height, min_area, min_thickness },
     bufferKeys: [
       { key: "pixels", type: "Uint8ClampedArray" },
       { key: "labels", type: "Int32Array" },
@@ -355,9 +492,10 @@ export const findContours = async ({ pixels, labels, width, height, min_area = 1
  * @since 0.0.0
  */
 export const imageToSvg = async ({ pixels, width, height, sigma_spatial = 3, sigma_range = 50, num_colors = 16, max_iter = 100, min_area = 100, min_thickness = 10, color_space = 0 }) => {
+  const safePixels = snapshotPixels({ pixels, width, height });
   const result = await callWasm({
     funcName: "image_to_svg",
-    args: { pixels, width, height, sigma_spatial, sigma_range, num_colors, max_iter, min_area, min_thickness, color_space },
+    args: { pixels: safePixels, width, height, sigma_spatial, sigma_range, num_colors, max_iter, min_area, min_thickness, color_space },
     bufferKeys: [{ key: "pixels", type: "Uint8ClampedArray" }],
     returnType: "string",
   });
