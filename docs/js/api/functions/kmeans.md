@@ -4,7 +4,7 @@ URL: https://img2num.dev/docs/js/api/functions/kmeans
 
 > **kmeans** ( `options` ): `Promise` <`KMeansResult` >
 
-Defined in: [safeWasmWrappers.js:198](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L198)
+Defined in: [safeWasmWrappers.js:290](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L290)
 
 ## Parameters
 

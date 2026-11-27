@@ -26,14 +26,14 @@
 	},
 	"children": [
 		{
-			"id": 32,
+			"id": 38,
 			"name": "BilateralFilterOptions",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 38,
+					"id": 44,
 					"name": "color_space",
 					"variant": "declaration",
 					"kind": 1024,
@@ -58,13 +58,13 @@
 					],
 					"type": {
 						"type": "reference",
-						"target": 26,
+						"target": 32,
 						"name": "ColorSpace",
 						"package": "img2num"
 					}
 				},
 				{
-					"id": 35,
+					"id": 41,
 					"name": "height",
 					"variant": "declaration",
 					"kind": 1024,
@@ -91,7 +91,7 @@
 					}
 				},
 				{
-					"id": 33,
+					"id": 39,
 					"name": "pixels",
 					"variant": "declaration",
 					"kind": 1024,
@@ -136,7 +136,7 @@
 					}
 				},
 				{
-					"id": 37,
+					"id": 43,
 					"name": "sigma_range",
 					"variant": "declaration",
 					"kind": 1024,
@@ -165,7 +165,7 @@
 					}
 				},
 				{
-					"id": 36,
+					"id": 42,
 					"name": "sigma_spatial",
 					"variant": "declaration",
 					"kind": 1024,
@@ -194,7 +194,7 @@
 					}
 				},
 				{
-					"id": 34,
+					"id": 40,
 					"name": "width",
 					"variant": "declaration",
 					"kind": 1024,
@@ -225,12 +225,12 @@
 				{
 					"title": "Properties",
 					"children": [
-						38,
-						35,
-						33,
-						37,
-						36,
-						34
+						44,
+						41,
+						39,
+						43,
+						42,
+						40
 					]
 				}
 			],
@@ -244,14 +244,14 @@
 			]
 		},
 		{
-			"id": 39,
+			"id": 45,
 			"name": "BlackThresholdOptions",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 42,
+					"id": 48,
 					"name": "height",
 					"variant": "declaration",
 					"kind": 1024,
@@ -278,7 +278,7 @@
 					}
 				},
 				{
-					"id": 43,
+					"id": 49,
 					"name": "num_colors",
 					"variant": "declaration",
 					"kind": 1024,
@@ -313,7 +313,7 @@
 					}
 				},
 				{
-					"id": 40,
+					"id": 46,
 					"name": "pixels",
 					"variant": "declaration",
 					"kind": 1024,
@@ -358,7 +358,7 @@
 					}
 				},
 				{
-					"id": 41,
+					"id": 47,
 					"name": "width",
 					"variant": "declaration",
 					"kind": 1024,
@@ -389,10 +389,10 @@
 				{
 					"title": "Properties",
 					"children": [
-						42,
-						43,
-						40,
-						41
+						48,
+						49,
+						46,
+						47
 					]
 				}
 			],
@@ -406,14 +406,14 @@
 			]
 		},
 		{
-			"id": 57,
+			"id": 63,
 			"name": "FindContoursOptions",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 61,
+					"id": 67,
 					"name": "height",
 					"variant": "declaration",
 					"kind": 1024,
@@ -440,7 +440,7 @@
 					}
 				},
 				{
-					"id": 59,
+					"id": 65,
 					"name": "labels",
 					"variant": "declaration",
 					"kind": 1024,
@@ -485,7 +485,7 @@
 					}
 				},
 				{
-					"id": 62,
+					"id": 68,
 					"name": "min_area",
 					"variant": "declaration",
 					"kind": 1024,
@@ -514,7 +514,7 @@
 					}
 				},
 				{
-					"id": 63,
+					"id": 69,
 					"name": "min_thickness",
 					"variant": "declaration",
 					"kind": 1024,
@@ -543,7 +543,7 @@
 					}
 				},
 				{
-					"id": 58,
+					"id": 64,
 					"name": "pixels",
 					"variant": "declaration",
 					"kind": 1024,
@@ -588,7 +588,7 @@
 					}
 				},
 				{
-					"id": 60,
+					"id": 66,
 					"name": "width",
 					"variant": "declaration",
 					"kind": 1024,
@@ -619,12 +619,12 @@
 				{
 					"title": "Properties",
 					"children": [
-						61,
-						59,
-						62,
-						63,
-						58,
-						60
+						67,
+						65,
+						68,
+						69,
+						64,
+						66
 					]
 				}
 			],
@@ -638,14 +638,14 @@
 			]
 		},
 		{
-			"id": 27,
+			"id": 33,
 			"name": "GaussianBlurOptions",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 30,
+					"id": 36,
 					"name": "height",
 					"variant": "declaration",
 					"kind": 1024,
@@ -672,7 +672,7 @@
 					}
 				},
 				{
-					"id": 28,
+					"id": 34,
 					"name": "pixels",
 					"variant": "declaration",
 					"kind": 1024,
@@ -717,7 +717,7 @@
 					}
 				},
 				{
-					"id": 31,
+					"id": 37,
 					"name": "sigma_pixels",
 					"variant": "declaration",
 					"kind": 1024,
@@ -754,7 +754,7 @@
 					}
 				},
 				{
-					"id": 29,
+					"id": 35,
 					"name": "width",
 					"variant": "declaration",
 					"kind": 1024,
@@ -785,10 +785,10 @@
 				{
 					"title": "Properties",
 					"children": [
-						30,
-						28,
-						31,
-						29
+						36,
+						34,
+						37,
+						35
 					]
 				}
 			],
@@ -802,14 +802,14 @@
 			]
 		},
 		{
-			"id": 64,
+			"id": 70,
 			"name": "ImageToSvgOptions",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 74,
+					"id": 80,
 					"name": "color_space",
 					"variant": "declaration",
 					"kind": 1024,
@@ -834,13 +834,13 @@
 					],
 					"type": {
 						"type": "reference",
-						"target": 26,
+						"target": 32,
 						"name": "ColorSpace",
 						"package": "img2num"
 					}
 				},
 				{
-					"id": 67,
+					"id": 73,
 					"name": "height",
 					"variant": "declaration",
 					"kind": 1024,
@@ -867,7 +867,7 @@
 					}
 				},
 				{
-					"id": 71,
+					"id": 77,
 					"name": "max_iter",
 					"variant": "declaration",
 					"kind": 1024,
@@ -896,7 +896,7 @@
 					}
 				},
 				{
-					"id": 72,
+					"id": 78,
 					"name": "min_area",
 					"variant": "declaration",
 					"kind": 1024,
@@ -925,7 +925,7 @@
 					}
 				},
 				{
-					"id": 73,
+					"id": 79,
 					"name": "min_thickness",
 					"variant": "declaration",
 					"kind": 1024,
@@ -954,7 +954,7 @@
 					}
 				},
 				{
-					"id": 70,
+					"id": 76,
 					"name": "num_colors",
 					"variant": "declaration",
 					"kind": 1024,
@@ -983,7 +983,7 @@
 					}
 				},
 				{
-					"id": 65,
+					"id": 71,
 					"name": "pixels",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1028,7 +1028,7 @@
 					}
 				},
 				{
-					"id": 69,
+					"id": 75,
 					"name": "sigma_range",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1057,7 +1057,7 @@
 					}
 				},
 				{
-					"id": 68,
+					"id": 74,
 					"name": "sigma_spatial",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1086,7 +1086,7 @@
 					}
 				},
 				{
-					"id": 66,
+					"id": 72,
 					"name": "width",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1117,16 +1117,16 @@
 				{
 					"title": "Properties",
 					"children": [
-						74,
-						67,
-						71,
-						72,
+						80,
 						73,
-						70,
-						65,
-						69,
-						68,
-						66
+						77,
+						78,
+						79,
+						76,
+						71,
+						75,
+						74,
+						72
 					]
 				}
 			],
@@ -1140,14 +1140,140 @@
 			]
 		},
 		{
-			"id": 44,
+			"id": 84,
+			"name": "InvertOptions",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 87,
+					"name": "height",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The height of the image."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "safeWasmWrappers.js",
+							"line": 203,
+							"character": 22,
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L203"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				},
+				{
+					"id": 85,
+					"name": "pixels",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The image pixel data (flat RGBA array)."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "safeWasmWrappers.js",
+							"line": 201,
+							"character": 33,
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L201"
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": {
+							"packageName": "typescript",
+							"packagePath": "lib/lib.es5.d.ts",
+							"qualifiedName": "Uint8ClampedArray"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": {
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
+									"qualifiedName": "ArrayBufferLike"
+								},
+								"name": "ArrayBufferLike",
+								"package": "typescript"
+							}
+						],
+						"name": "Uint8ClampedArray",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 86,
+					"name": "width",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The width of the image."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "safeWasmWrappers.js",
+							"line": 202,
+							"character": 22,
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L202"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						87,
+						85,
+						86
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "safeWasmWrappers.js",
+					"line": 200,
+					"character": 21,
+					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L200"
+				}
+			]
+		},
+		{
+			"id": 50,
 			"name": "KMeansOptions",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 52,
+					"id": 58,
 					"name": "color_space",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1172,13 +1298,13 @@
 					],
 					"type": {
 						"type": "reference",
-						"target": 26,
+						"target": 32,
 						"name": "ColorSpace",
 						"package": "img2num"
 					}
 				},
 				{
-					"id": 47,
+					"id": 53,
 					"name": "height",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1205,7 +1331,7 @@
 					}
 				},
 				{
-					"id": 51,
+					"id": 57,
 					"name": "max_iter",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1234,7 +1360,7 @@
 					}
 				},
 				{
-					"id": 48,
+					"id": 54,
 					"name": "num_colors",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1261,7 +1387,7 @@
 					}
 				},
 				{
-					"id": 50,
+					"id": 56,
 					"name": "out_labels",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1316,7 +1442,7 @@
 					}
 				},
 				{
-					"id": 49,
+					"id": 55,
 					"name": "out_pixels",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1371,7 +1497,7 @@
 					}
 				},
 				{
-					"id": 45,
+					"id": 51,
 					"name": "pixels",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1416,7 +1542,7 @@
 					}
 				},
 				{
-					"id": 46,
+					"id": 52,
 					"name": "width",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1447,14 +1573,14 @@
 				{
 					"title": "Properties",
 					"children": [
-						52,
-						47,
+						58,
+						53,
+						57,
+						54,
+						56,
+						55,
 						51,
-						48,
-						50,
-						49,
-						45,
-						46
+						52
 					]
 				}
 			],
@@ -1468,7 +1594,161 @@
 			]
 		},
 		{
-			"id": 26,
+			"id": 88,
+			"name": "ThresholdOptions",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"children": [
+				{
+					"id": 91,
+					"name": "height",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The height of the image."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "safeWasmWrappers.js",
+							"line": 237,
+							"character": 22,
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L237"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				},
+				{
+					"id": 92,
+					"name": "num_thresholds",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The number of thresholds to apply."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "safeWasmWrappers.js",
+							"line": 238,
+							"character": 22,
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L238"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				},
+				{
+					"id": 89,
+					"name": "pixels",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The image pixel data (flat RGBA array)."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "safeWasmWrappers.js",
+							"line": 235,
+							"character": 33,
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L235"
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": {
+							"packageName": "typescript",
+							"packagePath": "lib/lib.es5.d.ts",
+							"qualifiedName": "Uint8ClampedArray"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": {
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
+									"qualifiedName": "ArrayBufferLike"
+								},
+								"name": "ArrayBufferLike",
+								"package": "typescript"
+							}
+						],
+						"name": "Uint8ClampedArray",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 90,
+					"name": "width",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The width of the image."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "safeWasmWrappers.js",
+							"line": 236,
+							"character": 22,
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L236"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						91,
+						92,
+						89,
+						90
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "safeWasmWrappers.js",
+					"line": 234,
+					"character": 21,
+					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L234"
+				}
+			]
+		},
+		{
+			"id": 32,
 			"name": "ColorSpace",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -1504,7 +1784,7 @@
 			}
 		},
 		{
-			"id": 53,
+			"id": 59,
 			"name": "KMeansResult",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -1520,14 +1800,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 54,
+					"id": 60,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 56,
+							"id": 62,
 							"name": "labels",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1552,7 +1832,7 @@
 							}
 						},
 						{
-							"id": 55,
+							"id": 61,
 							"name": "pixels",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1581,8 +1861,8 @@
 						{
 							"title": "Properties",
 							"children": [
-								56,
-								55
+								62,
+								61
 							]
 						}
 					]
@@ -1590,7 +1870,7 @@
 			}
 		},
 		{
-			"id": 75,
+			"id": 81,
 			"name": "SvgResult",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -1606,14 +1886,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 76,
+					"id": 82,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 77,
+							"id": 83,
 							"name": "svg",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1636,7 +1916,7 @@
 						{
 							"title": "Properties",
 							"children": [
-								77
+								83
 							]
 						}
 					]
@@ -1798,7 +2078,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 32,
+								"target": 38,
 								"name": "BilateralFilterOptions",
 								"package": "img2num"
 							}
@@ -2000,7 +2280,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 39,
+								"target": 45,
 								"name": "BlackThresholdOptions",
 								"package": "img2num"
 							}
@@ -2044,7 +2324,7 @@
 			]
 		},
 		{
-			"id": 20,
+			"id": 26,
 			"name": "findContours",
 			"variant": "declaration",
 			"kind": 64,
@@ -2052,14 +2332,14 @@
 			"sources": [
 				{
 					"fileName": "safeWasmWrappers.js",
-					"line": 236,
+					"line": 328,
 					"character": 13,
-					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L236"
+					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L328"
 				}
 			],
 			"signatures": [
 				{
-					"id": 21,
+					"id": 27,
 					"name": "findContours",
 					"variant": "signature",
 					"kind": 4096,
@@ -2144,14 +2424,14 @@
 					"sources": [
 						{
 							"fileName": "safeWasmWrappers.js",
-							"line": 236,
+							"line": 328,
 							"character": 28,
-							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L236"
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L328"
 						}
 					],
 					"parameters": [
 						{
-							"id": 22,
+							"id": 28,
 							"name": "options",
 							"variant": "param",
 							"kind": 32768,
@@ -2166,7 +2446,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 57,
+								"target": 63,
 								"name": "FindContoursOptions",
 								"package": "img2num"
 							}
@@ -2182,7 +2462,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 75,
+								"target": 81,
 								"name": "SvgResult",
 								"package": "img2num"
 							}
@@ -2333,7 +2613,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 27,
+								"target": 33,
 								"name": "GaussianBlurOptions",
 								"package": "img2num"
 							}
@@ -2377,7 +2657,7 @@
 			]
 		},
 		{
-			"id": 23,
+			"id": 29,
 			"name": "imageToSvg",
 			"variant": "declaration",
 			"kind": 64,
@@ -2385,14 +2665,14 @@
 			"sources": [
 				{
 					"fileName": "safeWasmWrappers.js",
-					"line": 265,
+					"line": 357,
 					"character": 13,
-					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L265"
+					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L357"
 				}
 			],
 			"signatures": [
 				{
-					"id": 24,
+					"id": 30,
 					"name": "imageToSvg",
 					"variant": "signature",
 					"kind": 4096,
@@ -2501,14 +2781,14 @@
 					"sources": [
 						{
 							"fileName": "safeWasmWrappers.js",
-							"line": 265,
+							"line": 357,
 							"character": 26,
-							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L265"
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L357"
 						}
 					],
 					"parameters": [
 						{
-							"id": 25,
+							"id": 31,
 							"name": "options",
 							"variant": "param",
 							"kind": 32768,
@@ -2523,7 +2803,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 64,
+								"target": 70,
 								"name": "ImageToSvgOptions",
 								"package": "img2num"
 							}
@@ -2539,7 +2819,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 75,
+								"target": 81,
 								"name": "SvgResult",
 								"package": "img2num"
 							}
@@ -2847,6 +3127,179 @@
 		},
 		{
 			"id": 17,
+			"name": "invertImage",
+			"variant": "declaration",
+			"kind": 64,
+			"flags": {},
+			"sources": [
+				{
+					"fileName": "safeWasmWrappers.js",
+					"line": 222,
+					"character": 13,
+					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L222"
+				}
+			],
+			"signatures": [
+				{
+					"id": 18,
+					"name": "invertImage",
+					"variant": "signature",
+					"kind": 4096,
+					"flags": {},
+					"comment": {
+						"summary": [],
+						"blockTags": [
+							{
+								"tag": "@summary",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Invert the RGB color channels of an image using WASM."
+									}
+								]
+							},
+							{
+								"tag": "@description",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Takes an RGBA "
+									},
+									{
+										"kind": "code",
+										"text": "`Uint8ClampedArray`"
+									},
+									{
+										"kind": "text",
+										"text": " and replaces each red, green, and blue\nchannel value with "
+									},
+									{
+										"kind": "code",
+										"text": "`255 - value`"
+									},
+									{
+										"kind": "text",
+										"text": ". The alpha channel is preserved."
+									}
+								]
+							},
+							{
+								"tag": "@async",
+								"content": [
+									{
+										"kind": "text",
+										"text": "invertImage"
+									}
+								]
+							},
+							{
+								"tag": "@returns",
+								"content": [
+									{
+										"kind": "text",
+										"text": "The inverted image pixels."
+									}
+								]
+							},
+							{
+								"tag": "@throws",
+								"content": [
+									{
+										"kind": "text",
+										"text": "If dimensions or pixel buffer are invalid, or if the WASM function fails."
+									}
+								]
+							},
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\nconst inverted = await invertImage({ pixels, width, height });\n```"
+									}
+								]
+							},
+							{
+								"tag": "@since",
+								"content": [
+									{
+										"kind": "text",
+										"text": "0.4.3"
+									}
+								]
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "safeWasmWrappers.js",
+							"line": 222,
+							"character": 27,
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L222"
+						}
+					],
+					"parameters": [
+						{
+							"id": 19,
+							"name": "options",
+							"variant": "param",
+							"kind": 32768,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The input image and its dimensions."
+									}
+								]
+							},
+							"type": {
+								"type": "reference",
+								"target": 84,
+								"name": "InvertOptions",
+								"package": "img2num"
+							}
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": {
+							"packageName": "typescript",
+							"packagePath": "lib/lib.es5.d.ts",
+							"qualifiedName": "Promise"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": {
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
+									"qualifiedName": "Uint8ClampedArray"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"packageName": "typescript",
+											"packagePath": "lib/lib.es5.d.ts",
+											"qualifiedName": "ArrayBufferLike"
+										},
+										"name": "ArrayBufferLike",
+										"package": "typescript"
+									}
+								],
+								"name": "Uint8ClampedArray",
+								"package": "typescript"
+							}
+						],
+						"name": "Promise",
+						"package": "typescript"
+					}
+				}
+			]
+		},
+		{
+			"id": 23,
 			"name": "kmeans",
 			"variant": "declaration",
 			"kind": 64,
@@ -2854,14 +3307,14 @@
 			"sources": [
 				{
 					"fileName": "safeWasmWrappers.js",
-					"line": 198,
+					"line": 290,
 					"character": 13,
-					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L198"
+					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L290"
 				}
 			],
 			"signatures": [
 				{
-					"id": 18,
+					"id": 24,
 					"name": "kmeans",
 					"variant": "signature",
 					"kind": 4096,
@@ -2970,14 +3423,14 @@
 					"sources": [
 						{
 							"fileName": "safeWasmWrappers.js",
-							"line": 198,
+							"line": 290,
 							"character": 22,
-							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L198"
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L290"
 						}
 					],
 					"parameters": [
 						{
-							"id": 19,
+							"id": 25,
 							"name": "options",
 							"variant": "param",
 							"kind": 32768,
@@ -2992,7 +3445,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 44,
+								"target": 50,
 								"name": "KMeansOptions",
 								"package": "img2num"
 							}
@@ -3008,7 +3461,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 53,
+								"target": 59,
 								"name": "KMeansResult",
 								"package": "img2num"
 							}
@@ -3020,7 +3473,7 @@
 			]
 		},
 		{
-			"id": 78,
+			"id": 93,
 			"name": "terminateWasmModule",
 			"variant": "declaration",
 			"kind": 64,
@@ -3035,7 +3488,7 @@
 			],
 			"signatures": [
 				{
-					"id": 79,
+					"id": 94,
 					"name": "terminateWasmModule",
 					"variant": "signature",
 					"kind": 4096,
@@ -3119,26 +3572,193 @@
 					}
 				}
 			]
+		},
+		{
+			"id": 20,
+			"name": "thresholdImage",
+			"variant": "declaration",
+			"kind": 64,
+			"flags": {},
+			"sources": [
+				{
+					"fileName": "safeWasmWrappers.js",
+					"line": 257,
+					"character": 13,
+					"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L257"
+				}
+			],
+			"signatures": [
+				{
+					"id": 21,
+					"name": "thresholdImage",
+					"variant": "signature",
+					"kind": 4096,
+					"flags": {},
+					"comment": {
+						"summary": [],
+						"blockTags": [
+							{
+								"tag": "@summary",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Apply thresholding to an image using WASM."
+									}
+								]
+							},
+							{
+								"tag": "@description",
+								"content": [
+									{
+										"kind": "text",
+										"text": "Quantizes the RGB channels using the requested number of thresholds. When\n"
+									},
+									{
+										"kind": "code",
+										"text": "`num_thresholds`"
+									},
+									{
+										"kind": "text",
+										"text": " is 0 or less, the image is returned unchanged."
+									}
+								]
+							},
+							{
+								"tag": "@async",
+								"content": [
+									{
+										"kind": "text",
+										"text": "thresholdImage"
+									}
+								]
+							},
+							{
+								"tag": "@returns",
+								"content": [
+									{
+										"kind": "text",
+										"text": "The thresholded image pixels."
+									}
+								]
+							},
+							{
+								"tag": "@throws",
+								"content": [
+									{
+										"kind": "text",
+										"text": "If dimensions or pixel buffer are invalid, or if the WASM function fails."
+									}
+								]
+							},
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\nconst thresholded = await thresholdImage({ pixels, width, height, num_thresholds: 4 });\n```"
+									}
+								]
+							},
+							{
+								"tag": "@since",
+								"content": [
+									{
+										"kind": "text",
+										"text": "0.4.3"
+									}
+								]
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "safeWasmWrappers.js",
+							"line": 257,
+							"character": 30,
+							"url": "https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L257"
+						}
+					],
+					"parameters": [
+						{
+							"id": 22,
+							"name": "options",
+							"variant": "param",
+							"kind": 32768,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The input image, dimensions, and threshold count."
+									}
+								]
+							},
+							"type": {
+								"type": "reference",
+								"target": 88,
+								"name": "ThresholdOptions",
+								"package": "img2num"
+							}
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": {
+							"packageName": "typescript",
+							"packagePath": "lib/lib.es5.d.ts",
+							"qualifiedName": "Promise"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": {
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
+									"qualifiedName": "Uint8ClampedArray"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"packageName": "typescript",
+											"packagePath": "lib/lib.es5.d.ts",
+											"qualifiedName": "ArrayBufferLike"
+										},
+										"name": "ArrayBufferLike",
+										"package": "typescript"
+									}
+								],
+								"name": "Uint8ClampedArray",
+								"package": "typescript"
+							}
+						],
+						"name": "Promise",
+						"package": "typescript"
+					}
+				}
+			]
 		}
 	],
 	"groups": [
 		{
 			"title": "Interfaces",
 			"children": [
-				32,
-				39,
-				57,
-				27,
-				64,
-				44
+				38,
+				45,
+				63,
+				33,
+				70,
+				84,
+				50,
+				88
 			]
 		},
 		{
 			"title": "Type Aliases",
 			"children": [
-				26,
-				53,
-				75
+				32,
+				59,
+				81
 			]
 		},
 		{
@@ -3146,12 +3766,14 @@
 			"children": [
 				11,
 				14,
-				20,
+				26,
 				8,
-				23,
+				29,
 				1,
 				17,
-				78
+				23,
+				93,
+				20
 			]
 		}
 	],
@@ -3245,12 +3867,12 @@
 		"17": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "kmeans"
+			"qualifiedName": "invertImage"
 		},
 		"18": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "kmeans"
+			"qualifiedName": "invertImage"
 		},
 		"19": {
 			"packageName": "img2num",
@@ -3260,12 +3882,12 @@
 		"20": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "findContours"
+			"qualifiedName": "thresholdImage"
 		},
 		"21": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "findContours"
+			"qualifiedName": "thresholdImage"
 		},
 		"22": {
 			"packageName": "img2num",
@@ -3275,12 +3897,12 @@
 		"23": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "imageToSvg"
+			"qualifiedName": "kmeans"
 		},
 		"24": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "imageToSvg"
+			"qualifiedName": "kmeans"
 		},
 		"25": {
 			"packageName": "img2num",
@@ -3290,202 +3912,202 @@
 		"26": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "ColorSpace"
+			"qualifiedName": "findContours"
 		},
 		"27": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "GaussianBlurOptions"
+			"qualifiedName": "findContours"
 		},
 		"28": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.pixels"
+			"qualifiedName": "__0"
 		},
 		"29": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.width"
+			"qualifiedName": "imageToSvg"
 		},
 		"30": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.height"
+			"qualifiedName": "imageToSvg"
 		},
 		"31": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.sigma_pixels"
+			"qualifiedName": "__0"
 		},
 		"32": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "BilateralFilterOptions"
+			"qualifiedName": "ColorSpace"
 		},
 		"33": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.pixels"
+			"qualifiedName": "GaussianBlurOptions"
 		},
 		"34": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.width"
+			"qualifiedName": "__type.pixels"
 		},
 		"35": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.height"
+			"qualifiedName": "__type.width"
 		},
 		"36": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.sigma_spatial"
+			"qualifiedName": "__type.height"
 		},
 		"37": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.sigma_range"
+			"qualifiedName": "__type.sigma_pixels"
 		},
 		"38": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.color_space"
+			"qualifiedName": "BilateralFilterOptions"
 		},
 		"39": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "BlackThresholdOptions"
+			"qualifiedName": "__type.pixels"
 		},
 		"40": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.pixels"
+			"qualifiedName": "__type.width"
 		},
 		"41": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.width"
+			"qualifiedName": "__type.height"
 		},
 		"42": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.height"
+			"qualifiedName": "__type.sigma_spatial"
 		},
 		"43": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.num_colors"
+			"qualifiedName": "__type.sigma_range"
 		},
 		"44": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "KMeansOptions"
+			"qualifiedName": "__type.color_space"
 		},
 		"45": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.pixels"
+			"qualifiedName": "BlackThresholdOptions"
 		},
 		"46": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.width"
+			"qualifiedName": "__type.pixels"
 		},
 		"47": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.height"
+			"qualifiedName": "__type.width"
 		},
 		"48": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.num_colors"
+			"qualifiedName": "__type.height"
 		},
 		"49": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.out_pixels"
+			"qualifiedName": "__type.num_colors"
 		},
 		"50": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.out_labels"
+			"qualifiedName": "KMeansOptions"
 		},
 		"51": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.max_iter"
+			"qualifiedName": "__type.pixels"
 		},
 		"52": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.color_space"
+			"qualifiedName": "__type.width"
 		},
 		"53": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "KMeansResult"
+			"qualifiedName": "__type.height"
 		},
 		"54": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.num_colors"
 		},
 		"55": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.pixels"
+			"qualifiedName": "__type.out_pixels"
 		},
 		"56": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.labels"
+			"qualifiedName": "__type.out_labels"
 		},
 		"57": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "FindContoursOptions"
+			"qualifiedName": "__type.max_iter"
 		},
 		"58": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.pixels"
+			"qualifiedName": "__type.color_space"
 		},
 		"59": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.labels"
+			"qualifiedName": "KMeansResult"
 		},
 		"60": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.width"
+			"qualifiedName": "__type"
 		},
 		"61": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.height"
+			"qualifiedName": "__type.pixels"
 		},
 		"62": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.min_area"
+			"qualifiedName": "__type.labels"
 		},
 		"63": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.min_thickness"
+			"qualifiedName": "FindContoursOptions"
 		},
 		"64": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "ImageToSvgOptions"
+			"qualifiedName": "__type.pixels"
 		},
 		"65": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.pixels"
+			"qualifiedName": "__type.labels"
 		},
 		"66": {
 			"packageName": "img2num",
@@ -3500,59 +4122,134 @@
 		"68": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.sigma_spatial"
+			"qualifiedName": "__type.min_area"
 		},
 		"69": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.sigma_range"
+			"qualifiedName": "__type.min_thickness"
 		},
 		"70": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.num_colors"
+			"qualifiedName": "ImageToSvgOptions"
 		},
 		"71": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.max_iter"
+			"qualifiedName": "__type.pixels"
 		},
 		"72": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.min_area"
+			"qualifiedName": "__type.width"
 		},
 		"73": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.min_thickness"
+			"qualifiedName": "__type.height"
 		},
 		"74": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.color_space"
+			"qualifiedName": "__type.sigma_spatial"
 		},
 		"75": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "SvgResult"
+			"qualifiedName": "__type.sigma_range"
 		},
 		"76": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.num_colors"
 		},
 		"77": {
 			"packageName": "img2num",
 			"packagePath": "src/safeWasmWrappers.js",
-			"qualifiedName": "__type.svg"
+			"qualifiedName": "__type.max_iter"
 		},
 		"78": {
+			"packageName": "img2num",
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.min_area"
+		},
+		"79": {
+			"packageName": "img2num",
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.min_thickness"
+		},
+		"80": {
+			"packageName": "img2num",
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.color_space"
+		},
+		"81": {
+			"packageName": "img2num",
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "SvgResult"
+		},
+		"82": {
+			"packageName": "img2num",
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type"
+		},
+		"83": {
+			"packageName": "img2num",
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.svg"
+		},
+		"84": {
+			"packageName": "img2num",
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "InvertOptions"
+		},
+		"85": {
+			"packageName": "img2num",
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.pixels"
+		},
+		"86": {
+			"packageName": "img2num",
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.width"
+		},
+		"87": {
+			"packageName": "img2num",
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.height"
+		},
+		"88": {
+			"packageName": "img2num",
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "ThresholdOptions"
+		},
+		"89": {
+			"packageName": "img2num",
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.pixels"
+		},
+		"90": {
+			"packageName": "img2num",
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.width"
+		},
+		"91": {
+			"packageName": "img2num",
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.height"
+		},
+		"92": {
+			"packageName": "img2num",
+			"packagePath": "src/safeWasmWrappers.js",
+			"qualifiedName": "__type.num_thresholds"
+		},
+		"93": {
 			"packageName": "img2num",
 			"packagePath": "src/wasmModule.js",
 			"qualifiedName": "terminateWasmModule"
 		},
-		"79": {
+		"94": {
 			"packageName": "img2num",
 			"packagePath": "src/wasmModule.js",
 			"qualifiedName": "terminateWasmModule"

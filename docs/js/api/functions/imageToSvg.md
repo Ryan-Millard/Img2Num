@@ -4,7 +4,7 @@ URL: https://img2num.dev/docs/js/api/functions/imageToSvg
 
 > **imageToSvg** ( `options` ): `Promise` <`SvgResult` >
 
-Defined in: [safeWasmWrappers.js:265](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L265)
+Defined in: [safeWasmWrappers.js:357](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L357)
 
 ## Parameters
 

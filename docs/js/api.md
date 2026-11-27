@@ -17,7 +17,9 @@ Re-exports convenience utilities, high-level image-processing functions, and hel
 - FindContoursOptions
 - GaussianBlurOptions
 - ImageToSvgOptions
+- InvertOptions
 - KMeansOptions
+- ThresholdOptions
 
 ## Type Aliases
 
@@ -33,5 +35,7 @@ Re-exports convenience utilities, high-level image-processing functions, and hel
 - gaussianBlur
 - imageToSvg
 - imageToUint8ClampedArray
+- invertImage
 - kmeans
 - terminateWasmModule
+- thresholdImage

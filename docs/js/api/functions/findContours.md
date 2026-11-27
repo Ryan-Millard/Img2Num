@@ -4,7 +4,7 @@ URL: https://img2num.dev/docs/js/api/functions/findContours
 
 > **findContours** ( `options` ): `Promise` <`SvgResult` >
 
-Defined in: [safeWasmWrappers.js:236](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L236)
+Defined in: [safeWasmWrappers.js:328](https://github.com/Ryan-Millard/Img2Num/blob/main/packages/js/src/safeWasmWrappers.js#L328)
 
 ## Parameters
 
