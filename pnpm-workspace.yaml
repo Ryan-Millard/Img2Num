@@ -3,6 +3,7 @@ packages:
   - example-apps/react-js
   - example-apps/console-js-cjs
   - example-apps/console-js-esm
+  - example-apps/console-ts-esm
   - example-apps/html-js
   - docs
   - scripts/img2num-dev-scripts
@@ -10,6 +11,7 @@ packages:
 allowBuilds:
   "@swc/core": true
   core-js: true
+  esbuild: true
   sharp: true
   webgpu: true
 

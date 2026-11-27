@@ -145,6 +145,22 @@ importers:
         specifier: ^0.35.5
         version: 0.35.5(@types/node@26.6.6)
 
+  example-apps/console-ts-esm:
+    dependencies:
+      img2num:
+        specifier: workspace:*
+        version: link:../../packages/js
+      sharp:
+        specifier: ^0.35.4
+        version: 0.35.5(@types/node@26.6.6)
+    devDependencies:
+      '@types/node':
+        specifier: ^26.6.5
+        version: 26.6.6
+      typescript:
+        specifier: ^7.0.2
+        version: 7.0.2
+
   example-apps/html-js:
     dependencies:
       img2num:
@@ -12266,7 +12282,7 @@ snapshots:
 
   '@types/sax@1.2.7':
     dependencies:
-      '@types/node': 17.0.45
+      '@types/node': 26.6.6
 
   '@types/send@0.17.6':
     dependencies:
