@@ -3,32 +3,49 @@ id: just
 title: Just
 sidebar_label: Just
 sidebar_position: 4
+keywords: [just, justfile, task runner, build, test, lint, format]
+description: How to build, test, clean, format and lint Img2Num with the Just task runner, and how to run the example apps.
 ---
 
-`just` is the project's task runner. It provides a consistent interface for
+[just](https://github.com/casey/just) is the project's task runner. It provides a consistent interface for
 building, running, testing, cleaning and linting the project.
+
+Run [`just help`](#list-commands-just-help) to see every available recipe, or `just <subsystem> help` to see
+only one subsystem (for example, `just cmake help`).
 
 :::tip[For experienced Just users]
 
-The recipes are defined in `Justfile` and in the files under `just/`:
+The recipes are defined in our [`Justfile`](https://github.com/Ryan-Millard/Img2Num/blob/main/Justfile)
+and in the [`just/` folder](https://github.com/Ryan-Millard/Img2Num/tree/main/just):
 
-```sh title="List the Just configuration files"
-$ ls Justfile just/
-Justfile
-
-just/:
-cmake.just  console.just  docs.just  js.just  py.just  react-js.just
-```
+[Justfile](https://github.com/Ryan-Millard/Img2Num/blob/main/Justfile)<br/>
+[just/](https://github.com/Ryan-Millard/Img2Num/tree/main/just)<br/>
+├── [cmake.just](https://github.com/Ryan-Millard/Img2Num/tree/main/just/cmake.just)<br/>
+├── [console.just](https://github.com/Ryan-Millard/Img2Num/tree/main/just/console.just)<br/>
+├── [docs.just](https://github.com/Ryan-Millard/Img2Num/tree/main/just/docs.just)<br/>
+├── [js.just](https://github.com/Ryan-Millard/Img2Num/tree/main/just/js.just)<br/>
+├── [py.just](https://github.com/Ryan-Millard/Img2Num/tree/main/just/py.just)<br/>
+└── [react-js.just](https://github.com/Ryan-Millard/Img2Num/tree/main/just/react-js.just)<br/>
 
 :::
 
-Run `just help` to see every available recipe, or `just <subsystem> help` to see
-only one subsystem (for example, `just cmake help`). Unless stated otherwise,
-the commands below are meant to be run inside the project's development
-container; see the [Project Setup Guide](../project-setup) if you have not set
-that up yet.
+:::danger[Environment]
+
+Unless stated otherwise, the commands below are meant to be run inside the
+project's development Docker
+container. See the [Project Setup Guide](../project-setup) if you have not set that up yet.
+
+:::
 
 ## Project-wide commands
+
+### List commands (`just help`)
+
+Lists every recipe, including recipes inside each subsystem.
+
+```bash title="List all commands"
+just help
+```
 
 ### Initialise the project (`just init`)
 
@@ -99,14 +116,6 @@ that adds or changes source files.
 
 ```bash title="Check REUSE/SPDX compliance"
 just reuse-check
-```
-
-### List commands (`just help`)
-
-Lists every recipe, including recipes inside each subsystem.
-
-```bash title="List all commands"
-just help
 ```
 
 ## Subsystem commands
